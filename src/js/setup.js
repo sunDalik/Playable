@@ -100,25 +100,25 @@ function bindKeys() {
     const sKey = keyboard(83);
     const dKey = keyboard(68);
     wKey.press = () => {
-        if (player.tilePosition.y - 1 >= 0 && walls[player.tilePosition.y - 1][player.tilePosition.x] !== 1) {
+        if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y - 1)) {
             player.tilePosition.y--;
             player.move(tileSize);
         }
     };
     aKey.press = () => {
-        if (player.tilePosition.x - 1 >= 0 && walls[player.tilePosition.y][player.tilePosition.x - 1] !== 1) {
+        if (isMovementPossible(walls, player.tilePosition.x - 1, player.tilePosition.y)) {
             player.tilePosition.x--;
             player.move(tileSize);
         }
     };
     sKey.press = () => {
-        if (player.tilePosition.y + 1 <= walls.length - 1 && walls[player.tilePosition.y + 1][player.tilePosition.x] !== 1) {
+        if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y + 1)) {
             player.tilePosition.y++;
             player.move(tileSize);
         }
     };
     dKey.press = () => {
-        if (player.tilePosition.x + 1 <= walls[0].length - 1 && walls[player.tilePosition.y][player.tilePosition.x + 1] !== 1) {
+        if (isMovementPossible(walls, player.tilePosition.x + 1, player.tilePosition.y)) {
             player.tilePosition.x++;
             player.move(tileSize);
         }
@@ -129,25 +129,25 @@ function bindKeys() {
     const downKey = keyboard(40);
     const rightKey = keyboard(39);
     upKey.press = () => {
-        if (player2.tilePosition.y - 1 >= 0 && walls[player2.tilePosition.y - 1][player2.tilePosition.x] !== 1) {
+        if (isMovementPossible(walls, player2.tilePosition.x, player2.tilePosition.y - 1)) {
             player2.tilePosition.y--;
             player2.move(tileSize);
         }
     };
     leftKey.press = () => {
-        if (player2.tilePosition.x - 1 >= 0 && walls[player2.tilePosition.y][player2.tilePosition.x - 1] !== 1) {
+        if (isMovementPossible(walls, player2.tilePosition.x - 1, player2.tilePosition.y)) {
             player2.tilePosition.x--;
             player2.move(tileSize);
         }
     };
     downKey.press = () => {
-        if (player2.tilePosition.y + 1 <= walls.length - 1 && walls[player2.tilePosition.y + 1][player2.tilePosition.x] !== 1) {
+        if (isMovementPossible(walls, player2.tilePosition.x, player2.tilePosition.y + 1)) {
             player2.tilePosition.y++;
             player2.move(tileSize);
         }
     };
     rightKey.press = () => {
-        if (player2.tilePosition.x + 1 <= walls[0].length - 1 && walls[player2.tilePosition.y][player2.tilePosition.x + 1] !== 1) {
+        if (isMovementPossible(walls, player2.tilePosition.x + 1, player2.tilePosition.y)) {
             player2.tilePosition.x++;
             player2.move(tileSize);
         }
@@ -162,4 +162,15 @@ function bindKeys() {
     teleportKey.press = () => {
         teleport();
     };
+}
+
+function isMovementPossible(walls, tilePositionX, tilePositionY) {
+    if (tilePositionX <= walls[0].length - 1 && tilePositionX >= 0) {
+        if (tilePositionY <= walls.length - 1 && tilePositionY >= 0) {
+            if (walls[tilePositionY][tilePositionX] !== 1) {
+                return true
+            }
+        }
+    }
+    return false;
 }
