@@ -51,13 +51,13 @@ function loadProgressHandler(loader, resource) {
 
 function setup() {
     player = new Player(resources["src/images/player.png"].texture, 7, 4);
-    player.scale.set(player.getScale().x, player.getScale().y);
-    player.position.set(player.getPosition().x, player.getPosition().y);
+    player.scale.set(player.getScale(tileSize).x, player.getScale(tileSize).y);
+    player.position.set(player.getPosition(tileSize).x, player.getPosition(tileSize).y);
     app.stage.addChild(player);
 
     player2 = new Player(resources["src/images/player2.png"].texture, 12, 4);
-    player2.scale.set(player2.getScale().x, player2.getScale().y);
-    player2.position.set(player2.getPosition().x, player2.getPosition().y);
+    player2.scale.set(player2.getScale(tileSize).x, player2.getScale(tileSize).y);
+    player2.position.set(player2.getPosition(tileSize).x, player2.getPosition(tileSize).y);
     app.stage.addChild(player2);
 
     app.ticker.add(delta => gameLoop(delta));
