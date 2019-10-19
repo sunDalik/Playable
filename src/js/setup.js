@@ -15,16 +15,14 @@ const walls = [
     [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
-//Creating app
 let app = new PIXI.Application();
 app.renderer.backgroundColor = 0xBB00BB;
 app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
-app.renderer.autoResize = true;
+app.renderer.autoDensity = true;
 app.renderer.resize(window.innerWidth, window.innerHeight);
 document.body.appendChild(app.view);
 
-//Adding sprites to stage
 let loader = app.loader;
 let resources = app.loader.resources;
 loader
@@ -60,8 +58,9 @@ function setup() {
     player2.position.set(player2.getPosition(tileSize).x, player2.getPosition(tileSize).y);
     app.stage.addChild(player2);
 
-    app.ticker.add(delta => gameLoop(delta));
-    createWalls(walls);
+    app.ticker.add(delta => gameLoop(delta)); // not used now
+
+    drawWalls(walls);
     displayInstructions();
     bindKeys();
 }
@@ -70,7 +69,7 @@ function gameLoop(delta) {
 
 }
 
-function createWalls(walls) {
+function drawWalls(walls) {
     for (let i = 0; i < walls.length; ++i) {
         for (let j = 0; j < walls[0].length; ++j) {
             if (walls[i][j] === 1) {
@@ -95,63 +94,8 @@ function displayInstructions() {
 }
 
 function bindKeys() {
-    const wKey = keyboard(87);
-    const aKey = keyboard(65);
-    const sKey = keyboard(83);
-    const dKey = keyboard(68);
-    wKey.press = () => {
-        if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y - 1)) {
-            player.tilePosition.y--;
-            player.move(tileSize);
-        }
-    };
-    aKey.press = () => {
-        if (isMovementPossible(walls, player.tilePosition.x - 1, player.tilePosition.y)) {
-            player.tilePosition.x--;
-            player.move(tileSize);
-        }
-    };
-    sKey.press = () => {
-        if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y + 1)) {
-            player.tilePosition.y++;
-            player.move(tileSize);
-        }
-    };
-    dKey.press = () => {
-        if (isMovementPossible(walls, player.tilePosition.x + 1, player.tilePosition.y)) {
-            player.tilePosition.x++;
-            player.move(tileSize);
-        }
-    };
-
-    const upKey = keyboard(38);
-    const leftKey = keyboard(37);
-    const downKey = keyboard(40);
-    const rightKey = keyboard(39);
-    upKey.press = () => {
-        if (isMovementPossible(walls, player2.tilePosition.x, player2.tilePosition.y - 1)) {
-            player2.tilePosition.y--;
-            player2.move(tileSize);
-        }
-    };
-    leftKey.press = () => {
-        if (isMovementPossible(walls, player2.tilePosition.x - 1, player2.tilePosition.y)) {
-            player2.tilePosition.x--;
-            player2.move(tileSize);
-        }
-    };
-    downKey.press = () => {
-        if (isMovementPossible(walls, player2.tilePosition.x, player2.tilePosition.y + 1)) {
-            player2.tilePosition.y++;
-            player2.move(tileSize);
-        }
-    };
-    rightKey.press = () => {
-        if (isMovementPossible(walls, player2.tilePosition.x + 1, player2.tilePosition.y)) {
-            player2.tilePosition.x++;
-            player2.move(tileSize);
-        }
-    };
+    bindMovement(player, {upCode: 87, leftCode: 65, downCode: 83, rightCode: 68});
+    bindMovement(player2, {upCode: 38, leftCode: 37, downCode: 40, rightCode: 39});
 
     const fireKey = keyboard(70);
     fireKey.press = () => {
@@ -162,6 +106,38 @@ function bindKeys() {
     teleportKey.press = () => {
         teleport();
     };
+}
+
+function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
+    const upKey = keyboard(upCode);
+    const leftKey = keyboard(leftCode);
+    const downKey = keyboard(downCode);
+    const rightKey = keyboard(rightCode);
+    upKey.press = () => {
+        if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y - 1)) {
+            player.tilePosition.y--;
+            player.move(tileSize);
+        }
+    };
+    leftKey.press = () => {
+        if (isMovementPossible(walls, player.tilePosition.x - 1, player.tilePosition.y)) {
+            player.tilePosition.x--;
+            player.move(tileSize);
+        }
+    };
+    downKey.press = () => {
+        if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y + 1)) {
+            player.tilePosition.y++;
+            player.move(tileSize);
+        }
+    };
+    rightKey.press = () => {
+        if (isMovementPossible(walls, player.tilePosition.x + 1, player.tilePosition.y)) {
+            player.tilePosition.x++;
+            player.move(tileSize);
+        }
+    };
+    return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
 }
 
 function isMovementPossible(walls, tilePositionX, tilePositionY) {
