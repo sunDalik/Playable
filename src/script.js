@@ -43,10 +43,10 @@ function setup() {
     triangle.scale.set(tileSize / triangle.width - 0.25, tileSize / triangle.height - 0.25);
     triangle.position.set(tileSize * 6 + (tileSize - triangle.width)/2, tileSize * 4 + (tileSize - triangle.height)/2);
     app.ticker.add(delta => gameLoop(delta));
-    const wKey = keyboard("w");
-    const aKey = keyboard("a");
-    const sKey = keyboard("s");
-    const dKey = keyboard("d");
+    const wKey = keyboard(87);
+    const aKey = keyboard(65);
+    const sKey = keyboard(83);
+    const dKey = keyboard(68);
 
     wKey.press = () => {
         triangle.y -= tileSize;
@@ -66,9 +66,9 @@ function gameLoop(delta) {
 
 }
 
-function keyboard(value) {
+function keyboard(code) {
     let key = {
-        value: value,
+        code: code,
         isDown: false,
         isUp: true,
         press: undefined,
@@ -76,7 +76,8 @@ function keyboard(value) {
     };
 
     key.downHandler = event => {
-        if (event.key === key.value) {
+        console.log(event);
+        if (event.which === key.code) {
             if (key.isUp && key.press) key.press();
             key.isDown = true;
             key.isUp = false;
@@ -85,7 +86,7 @@ function keyboard(value) {
     };
 
     key.upHandler = event => {
-        if (event.key === key.value) {
+        if (event.which === key.code) {
             if (key.isDown && key.release) key.release();
             key.isDown = false;
             key.isUp = true;
