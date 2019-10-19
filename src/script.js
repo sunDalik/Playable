@@ -5,7 +5,7 @@ let Application = PIXI.Application,
     Sprite = PIXI.Sprite,
     TextureCache = PIXI.utils.TextureCache;
 
-let triangle;
+let player, player2;
 const tileSize = 75;
 
 //Creating app
@@ -20,6 +20,8 @@ document.body.appendChild(app.view);
 //Adding sprites to stage
 loader
     .add("src/images/player.png")
+    .add("src/images/player2.png")
+    .add("src/images/fire.png")
     .on("progress", loadProgressHandler)
     .load(setup);
 
@@ -38,32 +40,83 @@ function loadProgressHandler(loader, resource) {
 }
 
 function setup() {
-    triangle = new Sprite(resources["src/images/player.png"].texture);
-    app.stage.addChild(triangle);
-    triangle.scale.set(tileSize / triangle.width - 0.25, tileSize / triangle.height - 0.25);
-    triangle.position.set(tileSize * 6 + (tileSize - triangle.width)/2, tileSize * 4 + (tileSize - triangle.height)/2);
+    player = new Sprite(resources["src/images/player.png"].texture);
+    app.stage.addChild(player);
+    player.scale.set(tileSize / player.width - 0.25, tileSize / player.height - 0.25);
+    player.position.set(tileSize * 6 + (tileSize - player.width) / 2, tileSize * 4 + (tileSize - player.height) / 2);
+    player2 = new Sprite(resources["src/images/player2.png"].texture);
+    app.stage.addChild(player2);
+    player2.scale.set(tileSize / player2.width - 0.25, tileSize / player2.height - 0.25);
+    player2.position.set(tileSize * 9 + (tileSize - player2.width) / 2, tileSize * 4 + (tileSize - player2.height) / 2);
     app.ticker.add(delta => gameLoop(delta));
+
     const wKey = keyboard(87);
     const aKey = keyboard(65);
     const sKey = keyboard(83);
     const dKey = keyboard(68);
-
     wKey.press = () => {
-        triangle.y -= tileSize;
+        player.y -= tileSize;
     };
     aKey.press = () => {
-        triangle.x -= tileSize;
+        player.x -= tileSize;
     };
     sKey.press = () => {
-        triangle.y += tileSize;
+        player.y += tileSize;
     };
     dKey.press = () => {
-        triangle.x += tileSize;
+        player.x += tileSize;
     };
+
+    const upKey = keyboard(38);
+    const leftKey = keyboard(37);
+    const downKey = keyboard(40);
+    const rightKey = keyboard(39);
+    upKey.press = () => {
+        player2.y -= tileSize;
+    };
+    leftKey.press = () => {
+        player2.x -= tileSize;
+    };
+    downKey.press = () => {
+        player2.y += tileSize;
+    };
+    rightKey.press = () => {
+        player2.x += tileSize;
+    };
+
+    const fireKey = keyboard(70);
+    fireKey.press = () => {
+        fireball();
+    }
 }
 
 function gameLoop(delta) {
 
+}
+
+function fireball() {
+    let fire = new Sprite(resources["src/images/fire.png"].texture);
+    const fireHeight = tileSize * 0.4;
+    fire.position.set(player.x + player.width / 2, player.y + player.height / 2 - fireHeight / 2);
+    fire.width = Math.sqrt((player2.x - player.x) ** 2 + (player.y - player2.y) ** 2);
+    fire.height = fireHeight;
+    app.stage.addChild(fire);
+    fire.rotation = Math.atan((player2.y - player.y) / (player2.x - player.x));
+    if ((player2.x - player.x) < 0) {
+        fire.rotation += Math.PI;
+    }
+    const disappearTime = 300;
+    let delay = 40;
+    const interval = setInterval(() => {
+        if (delay <= 0) {
+            fire.alpha -= 0.01;
+        }
+        delay--;
+    }, disappearTime / 100);
+    setTimeout(() => {
+        app.stage.removeChild(fire);
+        clearInterval(interval);
+    }, disappearTime)
 }
 
 function keyboard(code) {
@@ -76,7 +129,6 @@ function keyboard(code) {
     };
 
     key.downHandler = event => {
-        console.log(event);
         if (event.which === key.code) {
             if (key.isUp && key.press) key.press();
             key.isDown = true;
