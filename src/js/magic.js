@@ -24,5 +24,16 @@ function fireball() {
 }
 
 function teleport() {
-
+    if (player2.x === player.x) {
+        if (player2.y < player.y) player2.y = player.y - tileSize;
+        else player2.y = player.y + tileSize;
+    }
+    else if (player2.x > player.x) {
+        player2.y = player.y;
+        player2.x = player.x + tileSize;
+    }
+    else if (player2.x < player.x) {
+        player2.y = player.y;
+        player2.x = player.x - tileSize;
+    }
 }
