@@ -21,8 +21,8 @@ class Player extends PIXI.Sprite {
     }
 
     move(tileSize) {
-        this.y = tileSize * this.tilePosition.y;
-        this.x = tileSize * this.tilePosition.x;
+        this.x = tileSize * this.tilePosition.x + (tileSize - this.width) / 2;
+        this.y = tileSize * this.tilePosition.y + (tileSize - this.height) / 2;
     }
 
 }

@@ -12,8 +12,8 @@ const walls = [
     [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
 //Creating app
 let app = new PIXI.Application();
@@ -73,7 +73,6 @@ function gameLoop(delta) {
 function createWalls(walls) {
     for (let i = 0; i < walls.length; ++i) {
         for (let j = 0; j < walls[0].length; ++j) {
-            console.log(i, j, walls[i][j]);
             if (walls[i][j] === 1) {
                 const wall = new Sprite(resources["src/images/wall.png"].texture);
                 wall.position.set(tileSize * j, tileSize * i);
@@ -101,25 +100,25 @@ function bindKeys() {
     const sKey = keyboard(83);
     const dKey = keyboard(68);
     wKey.press = () => {
-        if (walls[player.tilePosition.y - 1][player.tilePosition.x] !== 1) {
+        if (player.tilePosition.y - 1 >= 0 && walls[player.tilePosition.y - 1][player.tilePosition.x] !== 1) {
             player.tilePosition.y--;
             player.move(tileSize);
         }
     };
     aKey.press = () => {
-        if (walls[player.tilePosition.y][player.tilePosition.x - 1] !== 1) {
+        if (player.tilePosition.x - 1 >= 0 && walls[player.tilePosition.y][player.tilePosition.x - 1] !== 1) {
             player.tilePosition.x--;
             player.move(tileSize);
         }
     };
     sKey.press = () => {
-        if (walls[player.tilePosition.y + 1][player.tilePosition.x] !== 1) {
+        if (player.tilePosition.y + 1 <= walls.length - 1 && walls[player.tilePosition.y + 1][player.tilePosition.x] !== 1) {
             player.tilePosition.y++;
             player.move(tileSize);
         }
     };
     dKey.press = () => {
-        if (walls[player.tilePosition.y][player.tilePosition.x + 1] !== 1) {
+        if (player.tilePosition.x + 1 <= walls[0].length - 1 && walls[player.tilePosition.y][player.tilePosition.x + 1] !== 1) {
             player.tilePosition.x++;
             player.move(tileSize);
         }
@@ -130,25 +129,25 @@ function bindKeys() {
     const downKey = keyboard(40);
     const rightKey = keyboard(39);
     upKey.press = () => {
-        if (walls[player2.tilePosition.y - 1][player2.tilePosition.x] !== 1) {
+        if (player2.tilePosition.y - 1 >= 0 && walls[player2.tilePosition.y - 1][player2.tilePosition.x] !== 1) {
             player2.tilePosition.y--;
             player2.move(tileSize);
         }
     };
     leftKey.press = () => {
-        if (walls[player2.tilePosition.y][player2.tilePosition.x - 1] !== 1) {
+        if (player2.tilePosition.x - 1 >= 0 && walls[player2.tilePosition.y][player2.tilePosition.x - 1] !== 1) {
             player2.tilePosition.x--;
             player2.move(tileSize);
         }
     };
     downKey.press = () => {
-        if (walls[player2.tilePosition.y + 1][player2.tilePosition.x] !== 1) {
+        if (player2.tilePosition.y + 1 <= walls.length - 1 && walls[player2.tilePosition.y + 1][player2.tilePosition.x] !== 1) {
             player2.tilePosition.y++;
             player2.move(tileSize);
         }
     };
     rightKey.press = () => {
-        if (walls[player2.tilePosition.y][player2.tilePosition.x + 1] !== 1) {
+        if (player2.tilePosition.x + 1 <= walls[0].length - 1 && walls[player2.tilePosition.y][player2.tilePosition.x + 1] !== 1) {
             player2.tilePosition.x++;
             player2.move(tileSize);
         }

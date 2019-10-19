@@ -24,16 +24,64 @@ function fireball() {
 }
 
 function teleport() {
-    if (player2.x === player.x) {
-        if (player2.y < player.y) player2.y = player.y - tileSize;
-        else player2.y = player.y + tileSize;
+    if (player2.tilePosition.x === player.tilePosition.x) {
+        if (player2.tilePosition.y < player.tilePosition.y) {
+            if (walls[player.tilePosition.y - 1][player.tilePosition.x] !== 1) {
+                player2.tilePosition.y = player.tilePosition.y - 1;
+            } else if (walls[player.tilePosition.y][player.tilePosition.x - 1] !== 1) {
+                player2.tilePosition.y = player.tilePosition.y;
+                player2.tilePosition.x--;
+            } else if (walls[player.tilePosition.y][player.tilePosition.x + 1] !== 1) {
+                player2.tilePosition.y = player.tilePosition.y;
+                player2.tilePosition.x++;
+            } else if (walls[player.tilePosition.y + 1][player.tilePosition.x] !== 1) {
+                player2.tilePosition.y = player.tilePosition.y + 1;
+            }
+        } else {
+            if (walls[player.tilePosition.y + 1][player.tilePosition.x] !== 1) {
+                player2.tilePosition.y = player.tilePosition.y + 1;
+            } else if (walls[player.tilePosition.y][player.tilePosition.x - 1] !== 1) {
+                player2.tilePosition.y = player.tilePosition.y;
+                player2.tilePosition.x--;
+            } else if (walls[player.tilePosition.y][player.tilePosition.x + 1] !== 1) {
+                player2.tilePosition.y = player.tilePosition.y;
+                player2.tilePosition.x++;
+            } else if (walls[player.tilePosition.y - 1][player.tilePosition.x] !== 1) {
+                player2.tilePosition.y = player.tilePosition.y - 1;
+            }
+        }
     }
     else if (player2.x > player.x) {
-        player2.y = player.y;
-        player2.x = player.x + tileSize;
+        if (walls[player.tilePosition.y][player.tilePosition.x + 1] !== 1) {
+            player2.tilePosition.y = player.tilePosition.y;
+            player2.tilePosition.x = player.tilePosition.x + 1;
+        } else if (walls[player.tilePosition.y - 1][player.tilePosition.x] !== 1) {
+            player2.tilePosition.y = player.tilePosition.y - 1;
+            player2.tilePosition.x = player.tilePosition.x
+        } else if (walls[player.tilePosition.y + 1][player.tilePosition.x] !== 1) {
+            player2.tilePosition.y = player.tilePosition.y + 1;
+            player2.tilePosition.x = player.tilePosition.x
+        } else if (walls[player.tilePosition.y][player.tilePosition.x - 1] !== 1) {
+            player2.tilePosition.y = player.tilePosition.y;
+            player2.tilePosition.x = player.tilePosition.x - 1;
+        }
     }
     else if (player2.x < player.x) {
-        player2.y = player.y;
-        player2.x = player.x - tileSize;
+        if (walls[player.tilePosition.y][player.tilePosition.x - 1] !== 1) {
+            player2.tilePosition.y = player.tilePosition.y;
+            player2.tilePosition.x = player.tilePosition.x - 1;
+        } else if (walls[player.tilePosition.y - 1][player.tilePosition.x] !== 1) {
+            player2.tilePosition.y = player.tilePosition.y - 1;
+            player2.tilePosition.x = player.tilePosition.x
+        } else if (walls[player.tilePosition.y + 1][player.tilePosition.x] !== 1) {
+            player2.tilePosition.y = player.tilePosition.y + 1;
+            player2.tilePosition.x = player.tilePosition.x
+        } else if (walls[player.tilePosition.y][player.tilePosition.x + 1] !== 1) {
+            player2.tilePosition.y = player.tilePosition.y;
+            player2.tilePosition.x = player.tilePosition.x + 1;
+        }
     }
+
+    console.log(player2.tilePosition.x, player2.tilePosition.y);
+    player2.move(tileSize);
 }
