@@ -26,7 +26,7 @@ loader
 let grid = new PIXI.Graphics();
 for (let y = 0; y < app.view.height; y += tileSize) {
     for (let x = 0; x < app.view.width; x += tileSize) {
-        grid.lineStyle(1, 0x000000);
+        grid.lineStyle(2, 0xAA00AA);
         grid.drawRect(x, y, tileSize, tileSize);
     }
 }
