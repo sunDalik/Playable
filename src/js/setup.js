@@ -3,6 +3,17 @@ let Sprite = PIXI.Sprite;
 
 let player, player2;
 const tileSize = 75;
+const walls = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
 //Creating app
 let app = new PIXI.Application();
@@ -20,6 +31,7 @@ loader
     .add("src/images/player.png")
     .add("src/images/player2.png")
     .add("src/images/fire.png")
+    .add("src/images/wall.png")
     .on("progress", loadProgressHandler)
     .load(setup);
 
@@ -38,23 +50,38 @@ function loadProgressHandler(loader, resource) {
 }
 
 function setup() {
-    player = new Sprite(resources["src/images/player.png"].texture);
-    player.scale.set(tileSize / player.width - 0.25, tileSize / player.height - 0.25);
-    player.position.set(tileSize * 6 + (tileSize - player.width) / 2, tileSize * 4 + (tileSize - player.height) / 2);
+    player = new Player(resources["src/images/player.png"].texture, 7, 4);
+    player.scale.set(player.getScale().x, player.getScale().y);
+    player.position.set(player.getPosition().x, player.getPosition().y);
     app.stage.addChild(player);
 
-    player2 = new Sprite(resources["src/images/player2.png"].texture);
-    player2.scale.set(tileSize / player2.width - 0.25, tileSize / player2.height - 0.25);
-    player2.position.set(tileSize * 9 + (tileSize - player2.width) / 2, tileSize * 4 + (tileSize - player2.height) / 2);
+    player2 = new Player(resources["src/images/player2.png"].texture, 12, 4);
+    player2.scale.set(player2.getScale().x, player2.getScale().y);
+    player2.position.set(player2.getPosition().x, player2.getPosition().y);
     app.stage.addChild(player2);
 
     app.ticker.add(delta => gameLoop(delta));
+    createWalls(walls);
     displayInstructions();
     bindKeys();
 }
 
 function gameLoop(delta) {
 
+}
+
+function createWalls(walls) {
+    for (let i = 0; i < walls.length; ++i) {
+        for (let j = 0; j < walls[0].length; ++j) {
+            console.log(i, j, walls[i][j]);
+            if (walls[i][j] === 1) {
+                const wall = new Sprite(resources["src/images/wall.png"].texture);
+                wall.position.set(tileSize * j, tileSize * i);
+                wall.width = wall.height = tileSize;
+                app.stage.addChild(wall);
+            }
+        }
+    }
 }
 
 function displayInstructions() {
