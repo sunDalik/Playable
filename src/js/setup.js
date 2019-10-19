@@ -101,16 +101,28 @@ function bindKeys() {
     const sKey = keyboard(83);
     const dKey = keyboard(68);
     wKey.press = () => {
-        player.y -= tileSize;
+        if (walls[player.tilePosition.y - 1][player.tilePosition.x] !== 1) {
+            player.tilePosition.y--;
+            player.move(tileSize);
+        }
     };
     aKey.press = () => {
-        player.x -= tileSize;
+        if (walls[player.tilePosition.y][player.tilePosition.x - 1] !== 1) {
+            player.tilePosition.x--;
+            player.move(tileSize);
+        }
     };
     sKey.press = () => {
-        player.y += tileSize;
+        if (walls[player.tilePosition.y + 1][player.tilePosition.x] !== 1) {
+            player.tilePosition.y++;
+            player.move(tileSize);
+        }
     };
     dKey.press = () => {
-        player.x += tileSize;
+        if (walls[player.tilePosition.y][player.tilePosition.x + 1] !== 1) {
+            player.tilePosition.x++;
+            player.move(tileSize);
+        }
     };
 
     const upKey = keyboard(38);
@@ -118,16 +130,28 @@ function bindKeys() {
     const downKey = keyboard(40);
     const rightKey = keyboard(39);
     upKey.press = () => {
-        player2.y -= tileSize;
+        if (walls[player2.tilePosition.y - 1][player2.tilePosition.x] !== 1) {
+            player2.tilePosition.y--;
+            player2.move(tileSize);
+        }
     };
     leftKey.press = () => {
-        player2.x -= tileSize;
+        if (walls[player2.tilePosition.y][player2.tilePosition.x - 1] !== 1) {
+            player2.tilePosition.x--;
+            player2.move(tileSize);
+        }
     };
     downKey.press = () => {
-        player2.y += tileSize;
+        if (walls[player2.tilePosition.y + 1][player2.tilePosition.x] !== 1) {
+            player2.tilePosition.y++;
+            player2.move(tileSize);
+        }
     };
     rightKey.press = () => {
-        player2.x += tileSize;
+        if (walls[player2.tilePosition.y][player2.tilePosition.x + 1] !== 1) {
+            player2.tilePosition.x++;
+            player2.move(tileSize);
+        }
     };
 
     const fireKey = keyboard(70);
