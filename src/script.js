@@ -50,6 +50,14 @@ function setup() {
     player2.position.set(tileSize * 9 + (tileSize - player2.width) / 2, tileSize * 4 + (tileSize - player2.height) / 2);
     app.ticker.add(delta => gameLoop(delta));
 
+    let instructions = new PIXI.Text("WASD to move player 1\nArrows to move player 2\nF for linked fireball attack");
+    let rect = new PIXI.Graphics();
+    rect.beginFill(0xFFFFFF);
+    rect.drawRect(30, 30, instructions.width + 20, instructions.height + 20);
+    instructions.position.set(40, 40);
+    app.stage.addChild(rect);
+    app.stage.addChild(instructions);
+
     const wKey = keyboard(87);
     const aKey = keyboard(65);
     const sKey = keyboard(83);
