@@ -17,26 +17,34 @@ const gameMap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
 PIXI.utils.skipHello();
-let app = new PIXI.Application();
-app.renderer.backgroundColor = 0xBB00BB;
-app.renderer.view.style.position = "absolute";
-app.renderer.view.style.display = "block";
-app.renderer.autoDensity = true;
-app.renderer.resize(window.innerWidth, window.innerHeight);
-document.body.appendChild(app.view);
-
-let grid = new PIXI.Graphics();
-for (let y = 0; y < app.view.height; y += tileSize) {
-    for (let x = 0; x < app.view.width; x += tileSize) {
-        grid.lineStyle(2, 0xAA00AA);
-        grid.drawRect(x, y, tileSize, tileSize);
-    }
-}
-app.stage.addChild(grid);
-
+const app = initApplication();
+const grid = drawGrid();
 let loader = app.loader;
 let resources = app.loader.resources;
 loadAll();
+
+function initApplication() {
+    let app = new PIXI.Application();
+    app.renderer.backgroundColor = 0xBB00BB;
+    app.renderer.view.style.position = "absolute";
+    app.renderer.view.style.display = "block";
+    app.renderer.autoDensity = true;
+    app.renderer.resize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(app.view);
+    return app
+}
+
+function drawGrid() {
+    let grid = new PIXI.Graphics();
+    for (let y = 0; y < app.view.height; y += tileSize) {
+        for (let x = 0; x < app.view.width; x += tileSize) {
+            grid.lineStyle(2, 0xAA00AA);
+            grid.drawRect(x, y, tileSize, tileSize);
+        }
+    }
+    app.stage.addChild(grid);
+    return grid;
+}
 
 function loadProgressHandler(loader, resource) {
     console.log("Loading resource: " + resource.url);

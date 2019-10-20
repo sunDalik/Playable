@@ -9,18 +9,21 @@ function fireball() {
     if ((player2.x - player.x) < 0) {
         fire.rotation += Math.PI;
     }
-    const disappearTime = 300;
-    let delay = 40;
-    const interval = setInterval(() => {
-        if (delay <= 0) {
-            fire.alpha -= 0.01;
-        }
-        delay--;
-    }, disappearTime / 100);
-    setTimeout(() => {
-        app.stage.removeChild(fire);
-        clearInterval(interval);
-    }, disappearTime)
+    const disappearTime = 200;
+    const delay = 20;
+    let counter = 0;
+    animateFire();
+
+    function animateFire() {
+        setTimeout(() => {
+            if (counter >= delay) {
+                fire.alpha -= 0.02;
+            }
+            counter++;
+            if (counter >= 50) app.stage.removeChild(fire);
+            else animateFire();
+        }, disappearTime / 50);
+    }
 }
 
 function teleport() {
@@ -85,40 +88,45 @@ function teleport() {
 function rotateMagic() {
     if (playerState === "none") {
         playerState = "rotate";
-        const rotateTime = 250;
-        let i = 0;
-
         for (let x = -1; x < 2; x++) {
             for (let y = -1; y < 2; y++) {
                 if (!(x === 0 && y === 0) && isNotAWall(gameMap, player.tilePosition.x + x, player.tilePosition.y + y)) {
                     const attack = new TileElement(resources["src/images/player_attack.png"].texture, player.tilePosition.x + x, player.tilePosition.y + y);
                     attack.move(tileSize);
                     app.stage.addChild(attack);
-                    const disappearTime = 250;
-                    let delay = 30;
-                    const interval = setInterval(() => {
-                        if (delay <= 0) {
-                            attack.alpha -= 0.01;
-                        }
-                        delay--;
-                    }, disappearTime / 100);
-                    setTimeout(() => {
-                        app.stage.removeChild(attack);
-                        clearInterval(interval);
-                    }, disappearTime)
+                    const disappearTime = 200;
+                    const delay = 20;
+                    let counter = 0;
+                    animateAttack();
+
+                    function animateAttack() {
+                        setTimeout(() => {
+                            if (counter >= delay) {
+                                attack.alpha -= 0.02;
+                            }
+                            counter++;
+                            if (counter < 50) animateAttack();
+                            else app.stage.removeChild(attack);
+                        }, disappearTime / 50);
+                    }
                 }
             }
         }
 
         player.setAnchorToCenter();
-        const interval = setInterval(() => {
-            player.rotation += 2 * Math.PI / 50;
-            i++;
-            if (i >= 50) {
-                clearInterval(interval);
-                player.resetAnchor();
-                playerState = "none";
-            }
-        }, rotateTime / 50);
+        const rotateTime = 200;
+        let counter = 0;
+        animateRotation();
+
+        function animateRotation() {
+            setTimeout(() => {
+                player.rotation += 2 * Math.PI / 50;
+                counter++;
+                if (counter >= 50) {
+                    player.resetAnchor();
+                    playerState = "none";
+                } else animateRotation();
+            }, rotateTime / 50);
+        }
     }
 }
