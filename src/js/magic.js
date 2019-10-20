@@ -9,21 +9,7 @@ function fireball() {
     if ((player2.x - player.x) < 0) {
         fire.rotation += Math.PI;
     }
-    const disappearTime = 200;
-    const delay = 20;
-    let counter = 0;
-    animateFire();
-
-    function animateFire() {
-        setTimeout(() => {
-            if (counter >= delay) {
-                fire.alpha -= 0.02;
-            }
-            counter++;
-            if (counter >= 50) app.stage.removeChild(fire);
-            else animateFire();
-        }, disappearTime / 50);
-    }
+    createFadingAttack(fire, false);
 }
 
 function teleport() {
@@ -91,7 +77,7 @@ function rotateAttack() {
         for (let x = -1; x < 2; x++) {
             for (let y = -1; y < 2; y++) {
                 if (!(x === 0 && y === 0) && isNotAWall(gameMap, player.tilePosition.x + x, player.tilePosition.y + y)) {
-                    createFadingAttackTile(new TileElement(resources["src/images/player_attack.png"].texture, player.tilePosition.x + x, player.tilePosition.y + y));
+                    createFadingAttack(new TileElement(resources["src/images/player_attack.png"].texture, player.tilePosition.x + x, player.tilePosition.y + y));
                 }
             }
         }
@@ -105,7 +91,7 @@ function crossAttack() {
         for (let offset = -2; offset <= 2; offset++) {
             for (let sign = -1; sign < 2; sign += 2) {
                 if (offset !== 0 && isNotAWall(gameMap, player2.tilePosition.x + offset, player2.tilePosition.y + offset * sign)) {
-                    createFadingAttackTile(new TileElement(resources["src/images/player2_attack.png"].texture, player2.tilePosition.x + offset, player2.tilePosition.y + offset * sign));
+                    createFadingAttack(new TileElement(resources["src/images/player2_attack.png"].texture, player2.tilePosition.x + offset, player2.tilePosition.y + offset * sign));
                 }
             }
         }
@@ -131,8 +117,8 @@ function rotate(object) {
     }
 }
 
-function createFadingAttackTile(attack) {
-    attack.move(tileSize);
+function createFadingAttack(attack, tileAttack = true) {
+    if (tileAttack) attack.move(tileSize);
     app.stage.addChild(attack);
     const disappearTime = 200;
     const delay = 20;
