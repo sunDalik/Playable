@@ -3,7 +3,6 @@ class Roller extends Enemy {
         super(texture, tilePositionX, tilePositionY);
         this.health = 100;
         this.direction = 1;
-        this.dead = false;
     }
 
     move(gameMap) {
@@ -18,10 +17,5 @@ class Roller extends Enemy {
             this.place(tileSize);
         }
         gameMap[this.tilePosition.y][this.tilePosition.x] = "r";
-    }
-
-    damage(health) {
-        this.health -= health;
-        return this.health;
     }
 }

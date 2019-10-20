@@ -76,7 +76,9 @@ function gameLoop(delta) {
 }
 
 function moveEnemies() {
-    for (const enemy of enemies) enemy.move(gameMap);
+    setTimeout(() => {
+        for (const enemy of enemies) enemy.move(gameMap)
+    }, 50);
 }
 
 
@@ -117,12 +119,11 @@ function addEnemyToStage(enemy) {
 function attackTile(gameMap, attackPositionX, attackPositionY) {
     if (["r"].includes(gameMap[attackPositionY][attackPositionX])) {
         for (const enemy of enemies) {
-            if (!enemy.dead && enemy.tilePosition.x === attackPositionX && enemy.tilePosition.y === attackPositionY) {
-                const health = enemy.damage(100);
-                if (health <= 0) {
+            if (!enemy.isDead() && enemy.tilePosition.x === attackPositionX && enemy.tilePosition.y === attackPositionY) {
+                enemy.damage(100);
+                if (enemy.isDead()) {
                     gameMap[enemy.tilePosition.y][enemy.tilePosition.x] = "";
                     enemy.visible = false;
-                    enemy.dead = true;
                     break;
                 }
             }
