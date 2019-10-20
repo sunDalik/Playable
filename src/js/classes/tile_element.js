@@ -13,7 +13,7 @@ class TileElement extends PIXI.Sprite {
         return {x: scaleX, y: scaleY}
     }
 
-    move(tileSize) {
+    place(tileSize) {
         this.position.x = tileSize * this.tilePosition.x + (tileSize - this.width) / 2 + this.width * this.anchor.x;
         this.position.y = tileSize * this.tilePosition.y + (tileSize - this.height) / 2 + this.height * this.anchor.y;
     }

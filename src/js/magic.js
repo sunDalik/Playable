@@ -68,7 +68,7 @@ function teleport() {
         }
     }
 
-    player2.move(tileSize);
+    player2.place(tileSize);
 }
 
 function rotateAttack() {
@@ -95,19 +95,21 @@ function crossAttack() {
                 }
             }
         }
-        rotate(player2);
+        rotate(player2, false);
     }
 }
 
-function rotate(object) {
+function rotate(object, clockwise = true) {
     object.setAnchorToCenter();
     const rotateTime = 200;
     let counter = 0;
+    let animation = {};
     animateRotation();
 
     function animateRotation() {
-        setTimeout(() => {
-            object.rotation -= 2 * Math.PI / 50;
+        animation.timeout = setTimeout(() => {
+            if (clockwise) object.rotation += 2 * Math.PI / 50;
+            else object.rotation -= 2 * Math.PI / 50;
             counter++;
             if (counter >= 50) {
                 object.resetAnchor();
@@ -115,10 +117,12 @@ function rotate(object) {
             } else animateRotation();
         }, rotateTime / 50);
     }
+
+    return animation; // animation.timeout can be cancelled
 }
 
 function createFadingAttack(attack, tileAttack = true) {
-    if (tileAttack) attack.move(tileSize);
+    if (tileAttack) attack.place(tileSize);
     app.stage.addChild(attack);
     const disappearTime = 200;
     const delay = 20;

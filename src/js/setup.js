@@ -1,16 +1,18 @@
 let player, player2;
 const tileSize = 75;
 const gameMap = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+    ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "r", "", ""],
+    ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "w", "w", "", ""],
+    ["", "", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "w", "", ""],
+    ["", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    ["", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    ["", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    ["", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+    ["", "", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "r", "w", "", ""],
+    ["", "", "", "", "", "", "", "w", "", "w", "", "", "", "", "", "", "w", "w", "", ""],
+    ["", "", "", "", "", "", "", "", "w", "", "", "", "", "", "", "", "r", "", "", ""]];
+
+let enemies = [];
 
 PIXI.utils.skipHello();
 const app = initApplication();
@@ -50,17 +52,21 @@ function loadProgressHandler(loader, resource) {
 function setup() {
     player = new Player(resources["src/images/player.png"].texture, 7, 4);
     player.scale.set(player.getScale(tileSize).x, player.getScale(tileSize).y);
-    player.move(tileSize);
+    player.place(tileSize);
     app.stage.addChild(player);
 
     player2 = new Player(resources["src/images/player2.png"].texture, 12, 4);
     player2.scale.set(player2.getScale(tileSize).x, player2.getScale(tileSize).y);
-    player2.move(tileSize);
+    player2.place(tileSize);
     app.stage.addChild(player2);
+
+    gameMap[player.tilePosition.y][player.tilePosition.x] = "p1";
+    gameMap[player2.tilePosition.y][player2.tilePosition.x] = "p2";
 
     app.ticker.add(delta => gameLoop(delta)); // not used now
 
     drawWalls(gameMap);
+    drawEnemies(gameMap);
     displayInstructions();
     bindKeys();
 }
@@ -69,10 +75,15 @@ function gameLoop(delta) {
 
 }
 
+function moveEnemies() {
+    for (const enemy of enemies) enemy.move();
+}
+
+
 function drawWalls(gameMap) {
     for (let i = 0; i < gameMap.length; ++i) {
         for (let j = 0; j < gameMap[0].length; ++j) {
-            if (gameMap[i][j] === 1) {
+            if (gameMap[i][j] === "w") {
                 let wall = new PIXI.Sprite(resources["src/images/wall.png"].texture);
                 wall.position.set(tileSize * j, tileSize * i);
                 wall.width = wall.height = tileSize;
@@ -80,6 +91,27 @@ function drawWalls(gameMap) {
             }
         }
     }
+}
+
+function drawEnemies(gameMap) {
+    for (let i = 0; i < gameMap.length; ++i) {
+        for (let j = 0; j < gameMap[0].length; ++j) {
+            let enemy = null;
+            if (gameMap[i][j] === "r") {
+                enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i)
+            }
+            if (enemy !== null) {
+                addEnemyToStage(enemy);
+                enemies.push(enemy);
+            }
+        }
+    }
+}
+
+function addEnemyToStage(enemy) {
+    enemy.place(tileSize);
+    enemy.scale.set(enemy.getScale(tileSize).x, enemy.getScale(tileSize).y);
+    app.stage.addChild(enemy);
 }
 
 function displayInstructions() {
@@ -100,21 +132,25 @@ function bindKeys() {
     const fireKey = keyboard(70);
     fireKey.press = () => {
         fireball();
+        moveEnemies();
     };
 
     const teleportKey = keyboard(84);
     teleportKey.press = () => {
         teleport();
+        moveEnemies();
     };
 
     const rotateKey = keyboard(82);
     rotateKey.press = () => {
         rotateAttack();
+        moveEnemies();
     };
 
     const crossKey = keyboard(67);
     crossKey.press = () => {
         crossAttack();
+        moveEnemies();
     };
 }
 
@@ -126,25 +162,29 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     upKey.press = () => {
         if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player.tilePosition.y--;
-            player.move(tileSize);
+            player.place(tileSize);
+            moveEnemies();
         }
     };
     leftKey.press = () => {
         if (isNotAWall(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player.tilePosition.x--;
-            player.move(tileSize);
+            player.place(tileSize);
+            moveEnemies();
         }
     };
     downKey.press = () => {
         if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player.tilePosition.y++;
-            player.move(tileSize);
+            player.place(tileSize);
+            moveEnemies();
         }
     };
     rightKey.press = () => {
         if (isNotAWall(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
             player.tilePosition.x++;
-            player.move(tileSize);
+            player.place(tileSize);
+            moveEnemies();
         }
     };
     return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
@@ -153,7 +193,7 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
 function isNotAWall(gameMap, tilePositionX, tilePositionY) {
     if (tilePositionX <= gameMap[0].length - 1 && tilePositionX >= 0) {
         if (tilePositionY <= gameMap.length - 1 && tilePositionY >= 0) {
-            if (gameMap[tilePositionY][tilePositionX] !== 1) {
+            if (gameMap[tilePositionY][tilePositionX] !== "w") {
                 return true
             }
         }

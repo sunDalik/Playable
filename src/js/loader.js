@@ -6,6 +6,7 @@ function loadAll() {
         .add("src/images/wall.png")
         .add("src/images/player_attack.png")
         .add("src/images/player2_attack.png")
+        .add("src/images/enemies/roller.png")
         .on("progress", loadProgressHandler)
         .load(setup);
 }
