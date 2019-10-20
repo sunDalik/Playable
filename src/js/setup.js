@@ -4,7 +4,7 @@ let Sprite = PIXI.Sprite;
 let player, player2;
 let playerState = "none";
 const tileSize = 75;
-const walls = [
+const gameMap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
@@ -25,16 +25,6 @@ app.renderer.autoDensity = true;
 app.renderer.resize(window.innerWidth, window.innerHeight);
 document.body.appendChild(app.view);
 
-let loader = app.loader;
-let resources = app.loader.resources;
-loader
-    .add("src/images/player.png")
-    .add("src/images/player2.png")
-    .add("src/images/fire.png")
-    .add("src/images/wall.png")
-    .on("progress", loadProgressHandler)
-    .load(setup);
-
 let grid = new PIXI.Graphics();
 for (let y = 0; y < app.view.height; y += tileSize) {
     for (let x = 0; x < app.view.width; x += tileSize) {
@@ -43,6 +33,10 @@ for (let y = 0; y < app.view.height; y += tileSize) {
     }
 }
 app.stage.addChild(grid);
+
+let loader = app.loader;
+let resources = app.loader.resources;
+loadAll();
 
 function loadProgressHandler(loader, resource) {
     console.log("Loading resource: " + resource.url);
@@ -62,7 +56,7 @@ function setup() {
 
     app.ticker.add(delta => gameLoop(delta)); // not used now
 
-    drawWalls(walls);
+    drawWalls(gameMap);
     displayInstructions();
     bindKeys();
 }
@@ -71,10 +65,10 @@ function gameLoop(delta) {
 
 }
 
-function drawWalls(walls) {
-    for (let i = 0; i < walls.length; ++i) {
-        for (let j = 0; j < walls[0].length; ++j) {
-            if (walls[i][j] === 1) {
+function drawWalls(gameMap) {
+    for (let i = 0; i < gameMap.length; ++i) {
+        for (let j = 0; j < gameMap[0].length; ++j) {
+            if (gameMap[i][j] === 1) {
                 const wall = new Sprite(resources["src/images/wall.png"].texture);
                 wall.position.set(tileSize * j, tileSize * i);
                 wall.width = wall.height = tileSize;
@@ -86,7 +80,7 @@ function drawWalls(walls) {
 
 function displayInstructions() {
     let instructions = new PIXI.Text("WASD to move player 1\nArrows to move player 2\nF for linked fireball attack\n" +
-        "T to teleport player 2 to player 1\nR for rotate attack (mb bugged)", {fontSize: "16px"});
+        "T to teleport player 2 to player 1\nR for rotate attack", {fontSize: "16px"});
     let rect = new PIXI.Graphics();
     rect.beginFill(0xFFFFFF);
     rect.drawRect(30, 30, instructions.width + 20, instructions.height + 20);
@@ -121,25 +115,25 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     const downKey = keyboard(downCode);
     const rightKey = keyboard(rightCode);
     upKey.press = () => {
-        if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y - 1)) {
+        if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player.tilePosition.y--;
             player.move(tileSize);
         }
     };
     leftKey.press = () => {
-        if (isMovementPossible(walls, player.tilePosition.x - 1, player.tilePosition.y)) {
+        if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player.tilePosition.x--;
             player.move(tileSize);
         }
     };
     downKey.press = () => {
-        if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y + 1)) {
+        if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player.tilePosition.y++;
             player.move(tileSize);
         }
     };
     rightKey.press = () => {
-        if (isMovementPossible(walls, player.tilePosition.x + 1, player.tilePosition.y)) {
+        if (isMovementPossible(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
             player.tilePosition.x++;
             player.move(tileSize);
         }
@@ -147,10 +141,10 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
 }
 
-function isMovementPossible(walls, tilePositionX, tilePositionY) {
-    if (tilePositionX <= walls[0].length - 1 && tilePositionX >= 0) {
-        if (tilePositionY <= walls.length - 1 && tilePositionY >= 0) {
-            if (walls[tilePositionY][tilePositionX] !== 1) {
+function isMovementPossible(gameMap, tilePositionX, tilePositionY) {
+    if (tilePositionX <= gameMap[0].length - 1 && tilePositionX >= 0) {
+        if (tilePositionY <= gameMap.length - 1 && tilePositionY >= 0) {
+            if (gameMap[tilePositionY][tilePositionX] !== 1) {
                 return true
             }
         }

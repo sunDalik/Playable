@@ -25,56 +25,56 @@ function fireball() {
 
 function teleport() {
     if (player2.x > player.x) {
-        if (isMovementPossible(walls, player.tilePosition.x + 1, player.tilePosition.y)) {
+        if (isMovementPossible(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x = player.tilePosition.x + 1;
-        } else if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y - 1)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player2.tilePosition.y = player.tilePosition.y - 1;
             player2.tilePosition.x = player.tilePosition.x
-        } else if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y + 1)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player2.tilePosition.y = player.tilePosition.y + 1;
             player2.tilePosition.x = player.tilePosition.x
-        } else if (isMovementPossible(walls, player.tilePosition.x - 1, player.tilePosition.y)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x = player.tilePosition.x - 1;
         }
     }
     else if (player2.x < player.x) {
-        if (isMovementPossible(walls, player.tilePosition.x - 1, player.tilePosition.y)) {
+        if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x = player.tilePosition.x - 1;
-        } else if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y - 1)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player2.tilePosition.y = player.tilePosition.y - 1;
             player2.tilePosition.x = player.tilePosition.x
-        } else if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y + 1)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player2.tilePosition.y = player.tilePosition.y + 1;
             player2.tilePosition.x = player.tilePosition.x
-        } else if (isMovementPossible(walls, player.tilePosition.x + 1, player.tilePosition.y)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x = player.tilePosition.x + 1;
         }
     } else if (player2.tilePosition.y < player.tilePosition.y) {
-        if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y - 1)) {
+        if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player2.tilePosition.y = player.tilePosition.y - 1;
-        } else if (isMovementPossible(walls, player.tilePosition.x - 1, player.tilePosition.y)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x--;
-        } else if (isMovementPossible(walls, player.tilePosition.x + 1, player.tilePosition.y - 1)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x + 1, player.tilePosition.y - 1)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x++;
-        } else if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y + 1)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player2.tilePosition.y = player.tilePosition.y + 1;
         }
     } else {
-        if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y + 1)) {
+        if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player2.tilePosition.y = player.tilePosition.y + 1;
-        } else if (isMovementPossible(walls, player.tilePosition.x - 1, player.tilePosition.y)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x--;
-        } else if (isMovementPossible(walls, player.tilePosition.x - 1, player.tilePosition.y)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x++;
-        } else if (isMovementPossible(walls, player.tilePosition.x, player.tilePosition.y - 1)) {
+        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player2.tilePosition.y = player.tilePosition.y - 1;
         }
     }
