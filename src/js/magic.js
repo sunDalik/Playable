@@ -85,7 +85,7 @@ function teleport() {
     player2.move(tileSize);
 }
 
-function rotateMagic() {
+function rotateAttack() {
     if (playerState === "none") {
         playerState = "rotate";
         for (let x = -1; x < 2; x++) {
@@ -125,6 +125,52 @@ function rotateMagic() {
                 if (counter >= 50) {
                     player.resetAnchor();
                     playerState = "none";
+                } else animateRotation();
+            }, rotateTime / 50);
+        }
+    }
+}
+
+function crossAttack() {
+    if (player2State === "none") {
+        player2State = "cross";
+        for (let offset = -2; offset <= 2; offset++) {
+            for (let sign = -1; sign < 2; sign += 2) {
+                if (offset !== 0 && isNotAWall(gameMap, player2.tilePosition.x + offset, player2.tilePosition.y + offset * sign)) {
+                    const attack = new TileElement(resources["src/images/player2_attack.png"].texture, player2.tilePosition.x + offset, player2.tilePosition.y + offset * sign);
+                    attack.move(tileSize);
+                    app.stage.addChild(attack);
+                    const disappearTime = 200;
+                    const delay = 20;
+                    let counter = 0;
+                    animateAttack();
+
+                    function animateAttack() {
+                        setTimeout(() => {
+                            if (counter >= delay) {
+                                attack.alpha -= 0.02;
+                            }
+                            counter++;
+                            if (counter < 50) animateAttack();
+                            else app.stage.removeChild(attack);
+                        }, disappearTime / 50);
+                    }
+                }
+            }
+        }
+
+        player2.setAnchorToCenter();
+        const rotateTime = 200;
+        let counter = 0;
+        animateRotation();
+
+        function animateRotation() {
+            setTimeout(() => {
+                player2.rotation -= 2 * Math.PI / 50;
+                counter++;
+                if (counter >= 50) {
+                    player2.resetAnchor();
+                    player2State = "none";
                 } else animateRotation();
             }, rotateTime / 50);
         }
