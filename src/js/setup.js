@@ -22,7 +22,7 @@ let resources = app.loader.resources;
 loadAll();
 
 function initApplication() {
-    let app = new PIXI.Application();
+    let app = new PIXI.Application({resolution: window.devicePixelRatio});
     app.renderer.backgroundColor = 0xBB00BB;
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
