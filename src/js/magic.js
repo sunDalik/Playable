@@ -77,7 +77,10 @@ function rotateAttack() {
         for (let x = -1; x < 2; x++) {
             for (let y = -1; y < 2; y++) {
                 if (!(x === 0 && y === 0) && isNotAWall(gameMap, player.tilePosition.x + x, player.tilePosition.y + y)) {
-                    createFadingAttack(new TileElement(resources["src/images/player_attack.png"].texture, player.tilePosition.x + x, player.tilePosition.y + y));
+                    const attackPositionX = player.tilePosition.x + x;
+                    const attackPositionY = player.tilePosition.y + y;
+                    createFadingAttack(new TileElement(resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
+                    attackTile(gameMap, attackPositionX, attackPositionY);
                 }
             }
         }
@@ -91,7 +94,10 @@ function crossAttack() {
         for (let offset = -2; offset <= 2; offset++) {
             for (let sign = -1; sign < 2; sign += 2) {
                 if (offset !== 0 && isNotAWall(gameMap, player2.tilePosition.x + offset, player2.tilePosition.y + offset * sign)) {
-                    createFadingAttack(new TileElement(resources["src/images/player2_attack.png"].texture, player2.tilePosition.x + offset, player2.tilePosition.y + offset * sign));
+                    const attackPositionX = player2.tilePosition.x + offset;
+                    const attackPositionY = player2.tilePosition.y + offset * sign;
+                    createFadingAttack(new TileElement(resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
+                    attackTile(gameMap, attackPositionX, attackPositionY);
                 }
             }
         }

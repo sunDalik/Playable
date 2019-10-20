@@ -76,7 +76,7 @@ function gameLoop(delta) {
 }
 
 function moveEnemies() {
-    for (const enemy of enemies) enemy.move();
+    for (const enemy of enemies) enemy.move(gameMap);
 }
 
 
@@ -112,6 +112,22 @@ function addEnemyToStage(enemy) {
     enemy.place(tileSize);
     enemy.scale.set(enemy.getScale(tileSize).x, enemy.getScale(tileSize).y);
     app.stage.addChild(enemy);
+}
+
+function attackTile(gameMap, attackPositionX, attackPositionY) {
+    if (["r"].includes(gameMap[attackPositionY][attackPositionX])) {
+        for (const enemy of enemies) {
+            if (!enemy.dead && enemy.tilePosition.x === attackPositionX && enemy.tilePosition.y === attackPositionY) {
+                const health = enemy.damage(100);
+                if (health <= 0) {
+                    gameMap[enemy.tilePosition.y][enemy.tilePosition.x] = "";
+                    enemy.visible = false;
+                    enemy.dead = true;
+                    break;
+                }
+            }
+        }
+    }
 }
 
 function displayInstructions() {

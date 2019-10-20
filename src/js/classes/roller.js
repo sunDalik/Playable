@@ -3,11 +3,12 @@ class Roller extends Enemy {
         super(texture, tilePositionX, tilePositionY);
         this.health = 100;
         this.direction = 1;
+        this.dead = false;
     }
 
-    move() {
+    move(gameMap) {
+        gameMap[this.tilePosition.y][this.tilePosition.x] = "";
         if (isNotAWall(gameMap, this.tilePosition.x + this.direction, this.tilePosition.y)) {
-            console.log(this.tilePosition.x + this.direction, this.tilePosition.y);
             this.tilePosition.x += this.direction;
             this.place(tileSize);
         } else {
@@ -15,7 +16,12 @@ class Roller extends Enemy {
             this.setAnchorToCenter();
             this.scale.x *= -1;
             this.place(tileSize);
-            console.log(this.direction);
         }
+        gameMap[this.tilePosition.y][this.tilePosition.x] = "r";
+    }
+
+    damage(health) {
+        this.health -= health;
+        return this.health;
     }
 }
