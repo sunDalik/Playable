@@ -178,30 +178,32 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     const rightKey = keyboard(rightCode);
     upKey.press = () => {
         if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
-            player.tilePosition.y--;
-            player.place(tileSize);
+            //player.tilePosition.y--;
+            player.stepY(-1);
+            //player.place(tileSize);
             moveEnemies();
         }
     };
     leftKey.press = () => {
         if (isNotAWall(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             //player.tilePosition.x--;
-            player.step(-1);
+            player.stepX(-1);
             //player.place(tileSize);
             moveEnemies();
         }
     };
     downKey.press = () => {
         if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
-            player.tilePosition.y++;
-            player.place(tileSize);
+            //player.tilePosition.y++;
+            player.stepY(1);
+            //player.place(tileSize);
             moveEnemies();
         }
     };
     rightKey.press = () => {
         if (isNotAWall(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
             //player.tilePosition.x++;
-            player.step(1);
+            player.stepX(1);
             //player.place(tileSize);
             moveEnemies();
         }
