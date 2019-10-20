@@ -117,10 +117,11 @@ function rotate(object, clockwise = true) {
             if (clockwise) object.rotation += 2 * Math.PI / 50;
             else object.rotation -= 2 * Math.PI / 50;
             counter++;
-            if (counter >= 50) {
+            if (counter < 50) animateRotation();
+            else {
                 object.resetAnchor();
                 object.state = "none";
-            } else animateRotation();
+            }
         }, rotateTime / 50);
     }
 
