@@ -46,12 +46,12 @@ function loadProgressHandler(loader, resource) {
 function setup() {
     player = new Player(resources["src/images/player.png"].texture, 7, 4);
     player.scale.set(player.getScale(tileSize).x, player.getScale(tileSize).y);
-    player.position.set(player.getPosition(tileSize).x, player.getPosition(tileSize).y);
+    player.move(tileSize);
     app.stage.addChild(player);
 
     player2 = new Player(resources["src/images/player2.png"].texture, 12, 4);
     player2.scale.set(player2.getScale(tileSize).x, player2.getScale(tileSize).y);
-    player2.position.set(player2.getPosition(tileSize).x, player2.getPosition(tileSize).y);
+    player2.move(tileSize);
     app.stage.addChild(player2);
 
     app.ticker.add(delta => gameLoop(delta)); // not used now
@@ -115,25 +115,25 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     const downKey = keyboard(downCode);
     const rightKey = keyboard(rightCode);
     upKey.press = () => {
-        if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
+        if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player.tilePosition.y--;
             player.move(tileSize);
         }
     };
     leftKey.press = () => {
-        if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
+        if (isNotAWall(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player.tilePosition.x--;
             player.move(tileSize);
         }
     };
     downKey.press = () => {
-        if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
+        if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player.tilePosition.y++;
             player.move(tileSize);
         }
     };
     rightKey.press = () => {
-        if (isMovementPossible(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
+        if (isNotAWall(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
             player.tilePosition.x++;
             player.move(tileSize);
         }
@@ -141,7 +141,7 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
 }
 
-function isMovementPossible(gameMap, tilePositionX, tilePositionY) {
+function isNotAWall(gameMap, tilePositionX, tilePositionY) {
     if (tilePositionX <= gameMap[0].length - 1 && tilePositionX >= 0) {
         if (tilePositionY <= gameMap.length - 1 && tilePositionY >= 0) {
             if (gameMap[tilePositionY][tilePositionX] !== 1) {

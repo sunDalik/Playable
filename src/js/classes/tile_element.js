@@ -1,11 +1,10 @@
-class Player extends PIXI.Sprite {
+class TileElement extends PIXI.Sprite {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture);
         this.tilePosition = {
             x: tilePositionX,
             y: tilePositionY
         };
-        this.health = 100;
     }
 
     getPosition(tileSize) {

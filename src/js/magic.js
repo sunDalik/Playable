@@ -25,56 +25,56 @@ function fireball() {
 
 function teleport() {
     if (player2.x > player.x) {
-        if (isMovementPossible(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
+        if (isNotAWall(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x = player.tilePosition.x + 1;
-        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player2.tilePosition.y = player.tilePosition.y - 1;
             player2.tilePosition.x = player.tilePosition.x
-        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player2.tilePosition.y = player.tilePosition.y + 1;
             player2.tilePosition.x = player.tilePosition.x
-        } else if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x = player.tilePosition.x - 1;
         }
     }
     else if (player2.x < player.x) {
-        if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
+        if (isNotAWall(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x = player.tilePosition.x - 1;
-        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player2.tilePosition.y = player.tilePosition.y - 1;
             player2.tilePosition.x = player.tilePosition.x
-        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player2.tilePosition.y = player.tilePosition.y + 1;
             player2.tilePosition.x = player.tilePosition.x
-        } else if (isMovementPossible(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x + 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x = player.tilePosition.x + 1;
         }
     } else if (player2.tilePosition.y < player.tilePosition.y) {
-        if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
+        if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player2.tilePosition.y = player.tilePosition.y - 1;
-        } else if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x--;
-        } else if (isMovementPossible(gameMap, player.tilePosition.x + 1, player.tilePosition.y - 1)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x + 1, player.tilePosition.y - 1)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x++;
-        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player2.tilePosition.y = player.tilePosition.y + 1;
         }
     } else {
-        if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
+        if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y + 1)) {
             player2.tilePosition.y = player.tilePosition.y + 1;
-        } else if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x--;
-        } else if (isMovementPossible(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x - 1, player.tilePosition.y)) {
             player2.tilePosition.y = player.tilePosition.y;
             player2.tilePosition.x++;
-        } else if (isMovementPossible(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
+        } else if (isNotAWall(gameMap, player.tilePosition.x, player.tilePosition.y - 1)) {
             player2.tilePosition.y = player.tilePosition.y - 1;
         }
     }
@@ -87,6 +87,29 @@ function rotateMagic() {
         playerState = "rotate";
         const rotateTime = 250;
         let i = 0;
+
+        for (let x = -1; x < 2; x++) {
+            for (let y = -1; y < 2; y++) {
+                if (!(x === 0 && y === 0) && isNotAWall(gameMap, player.tilePosition.x + x, player.tilePosition.y + y)) {
+                    const attack = new TileElement(resources["src/images/player_attack.png"].texture, player.tilePosition.x + x, player.tilePosition.y + y);
+                    attack.move(tileSize);
+                    app.stage.addChild(attack);
+                    const disappearTime = 250;
+                    let delay = 30;
+                    const interval = setInterval(() => {
+                        if (delay <= 0) {
+                            attack.alpha -= 0.01;
+                        }
+                        delay--;
+                    }, disappearTime / 100);
+                    setTimeout(() => {
+                        app.stage.removeChild(attack);
+                        clearInterval(interval);
+                    }, disappearTime)
+                }
+            }
+        }
+
         player.setAnchorToCenter();
         const interval = setInterval(() => {
             player.rotation += 2 * Math.PI / 50;
