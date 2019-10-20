@@ -1,9 +1,4 @@
-//Aliases
-let Sprite = PIXI.Sprite;
-
 let player, player2;
-let playerState = "none";
-let player2State = "none";
 const tileSize = 75;
 const gameMap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -78,7 +73,7 @@ function drawWalls(gameMap) {
     for (let i = 0; i < gameMap.length; ++i) {
         for (let j = 0; j < gameMap[0].length; ++j) {
             if (gameMap[i][j] === 1) {
-                const wall = new Sprite(resources["src/images/wall.png"].texture);
+                let wall = new PIXI.Sprite(resources["src/images/wall.png"].texture);
                 wall.position.set(tileSize * j, tileSize * i);
                 wall.width = wall.height = tileSize;
                 app.stage.addChild(wall);

@@ -1,5 +1,5 @@
 function fireball() {
-    let fire = new Sprite(resources["src/images/fire.png"].texture);
+    let fire = new PIXI.Sprite(resources["src/images/fire.png"].texture);
     const fireHeight = tileSize * 0.4;
     fire.position.set(player.x + player.width / 2, player.y + player.height / 2 - fireHeight / 2);
     fire.width = Math.sqrt((player2.x - player.x) ** 2 + (player.y - player2.y) ** 2);
@@ -86,93 +86,67 @@ function teleport() {
 }
 
 function rotateAttack() {
-    if (playerState === "none") {
-        playerState = "rotate";
+    if (player.state === "none") {
+        player.state = "rotate";
         for (let x = -1; x < 2; x++) {
             for (let y = -1; y < 2; y++) {
                 if (!(x === 0 && y === 0) && isNotAWall(gameMap, player.tilePosition.x + x, player.tilePosition.y + y)) {
-                    const attack = new TileElement(resources["src/images/player_attack.png"].texture, player.tilePosition.x + x, player.tilePosition.y + y);
-                    attack.move(tileSize);
-                    app.stage.addChild(attack);
-                    const disappearTime = 200;
-                    const delay = 20;
-                    let counter = 0;
-                    animateAttack();
-
-                    function animateAttack() {
-                        setTimeout(() => {
-                            if (counter >= delay) {
-                                attack.alpha -= 0.02;
-                            }
-                            counter++;
-                            if (counter < 50) animateAttack();
-                            else app.stage.removeChild(attack);
-                        }, disappearTime / 50);
-                    }
+                    createFadingAttackTile(new TileElement(resources["src/images/player_attack.png"].texture, player.tilePosition.x + x, player.tilePosition.y + y));
                 }
             }
         }
-
-        player.setAnchorToCenter();
-        const rotateTime = 200;
-        let counter = 0;
-        animateRotation();
-
-        function animateRotation() {
-            setTimeout(() => {
-                player.rotation += 2 * Math.PI / 50;
-                counter++;
-                if (counter >= 50) {
-                    player.resetAnchor();
-                    playerState = "none";
-                } else animateRotation();
-            }, rotateTime / 50);
-        }
+        rotate(player);
     }
 }
 
 function crossAttack() {
-    if (player2State === "none") {
-        player2State = "cross";
+    if (player2.state === "none") {
+        player2.state = "cross";
         for (let offset = -2; offset <= 2; offset++) {
             for (let sign = -1; sign < 2; sign += 2) {
                 if (offset !== 0 && isNotAWall(gameMap, player2.tilePosition.x + offset, player2.tilePosition.y + offset * sign)) {
-                    const attack = new TileElement(resources["src/images/player2_attack.png"].texture, player2.tilePosition.x + offset, player2.tilePosition.y + offset * sign);
-                    attack.move(tileSize);
-                    app.stage.addChild(attack);
-                    const disappearTime = 200;
-                    const delay = 20;
-                    let counter = 0;
-                    animateAttack();
-
-                    function animateAttack() {
-                        setTimeout(() => {
-                            if (counter >= delay) {
-                                attack.alpha -= 0.02;
-                            }
-                            counter++;
-                            if (counter < 50) animateAttack();
-                            else app.stage.removeChild(attack);
-                        }, disappearTime / 50);
-                    }
+                    createFadingAttackTile(new TileElement(resources["src/images/player2_attack.png"].texture, player2.tilePosition.x + offset, player2.tilePosition.y + offset * sign));
                 }
             }
         }
+        rotate(player2);
+    }
+}
 
-        player2.setAnchorToCenter();
-        const rotateTime = 200;
-        let counter = 0;
-        animateRotation();
+function rotate(object) {
+    object.setAnchorToCenter();
+    const rotateTime = 200;
+    let counter = 0;
+    animateRotation();
 
-        function animateRotation() {
-            setTimeout(() => {
-                player2.rotation -= 2 * Math.PI / 50;
-                counter++;
-                if (counter >= 50) {
-                    player2.resetAnchor();
-                    player2State = "none";
-                } else animateRotation();
-            }, rotateTime / 50);
-        }
+    function animateRotation() {
+        setTimeout(() => {
+            object.rotation -= 2 * Math.PI / 50;
+            counter++;
+            if (counter >= 50) {
+                object.resetAnchor();
+                object.state = "none";
+            } else animateRotation();
+        }, rotateTime / 50);
+    }
+}
+
+function createFadingAttackTile(attack) {
+    attack.move(tileSize);
+    app.stage.addChild(attack);
+    const disappearTime = 200;
+    const delay = 20;
+    let counter = 0;
+    animateAttack();
+
+    function animateAttack() {
+        setTimeout(() => {
+            if (counter >= delay) {
+                attack.alpha -= 0.02;
+            }
+            counter++;
+            if (counter < 50) animateAttack();
+            else app.stage.removeChild(attack);
+        }, disappearTime / 50);
     }
 }
