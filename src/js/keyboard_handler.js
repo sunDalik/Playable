@@ -31,7 +31,6 @@ function keyboard(code) {
     window.addEventListener("keydown", downListener, false);
     window.addEventListener("keyup", upListener, false);
 
-    // Detach event listeners
     key.unsubscribe = () => {
         window.removeEventListener("keydown", downListener);
         window.removeEventListener("keyup", upListener);

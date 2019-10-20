@@ -21,8 +21,21 @@ class Player extends PIXI.Sprite {
     }
 
     move(tileSize) {
-        this.x = tileSize * this.tilePosition.x + (tileSize - this.width) / 2;
-        this.y = tileSize * this.tilePosition.y + (tileSize - this.height) / 2;
+        this.position.x = tileSize * this.tilePosition.x + (tileSize - this.width) / 2;
+        this.position.y = tileSize * this.tilePosition.y + (tileSize - this.height) / 2;
     }
 
+    setAnchorToCenter() {
+        this.anchor.set(0.5, 0.5);
+        this.position.x += this.width * 0.5;
+        this.position.y += this.height * 0.5;
+    }
+
+    resetAnchor() {
+        const previousAnchorX = this.anchor.x;
+        const previousAnchorY = this.anchor.y;
+        this.anchor.set(0, 0);
+        this.position.x -= this.width * previousAnchorX;
+        this.position.y -= this.height * previousAnchorY;
+    }
 }

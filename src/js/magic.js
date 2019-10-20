@@ -81,3 +81,21 @@ function teleport() {
 
     player2.move(tileSize);
 }
+
+function rotateMagic() {
+    if (playerState === "none") {
+        playerState = "rotate";
+        const rotateTime = 250;
+        let i = 0;
+        player.setAnchorToCenter();
+        const interval = setInterval(() => {
+            player.rotation += 2 * Math.PI / 50;
+            i++;
+            if (i >= 50) {
+                clearInterval(interval);
+                player.resetAnchor();
+                playerState = "none";
+            }
+        }, rotateTime / 50);
+    }
+}

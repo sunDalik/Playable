@@ -2,6 +2,7 @@
 let Sprite = PIXI.Sprite;
 
 let player, player2;
+let playerState = "none";
 const tileSize = 75;
 const walls = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -15,6 +16,7 @@ const walls = [
     [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
+PIXI.utils.skipHello();
 let app = new PIXI.Application();
 app.renderer.backgroundColor = 0xBB00BB;
 app.renderer.view.style.position = "absolute";
@@ -84,7 +86,7 @@ function drawWalls(walls) {
 
 function displayInstructions() {
     let instructions = new PIXI.Text("WASD to move player 1\nArrows to move player 2\nF for linked fireball attack\n" +
-        "T to teleport player 2 to player 1", {fontSize: "16px"});
+        "T to teleport player 2 to player 1\nR for rotate attack (mb bugged)", {fontSize: "16px"});
     let rect = new PIXI.Graphics();
     rect.beginFill(0xFFFFFF);
     rect.drawRect(30, 30, instructions.width + 20, instructions.height + 20);
@@ -105,6 +107,11 @@ function bindKeys() {
     const teleportKey = keyboard(84);
     teleportKey.press = () => {
         teleport();
+    };
+
+    const rotateKey = keyboard(82);
+    rotateKey.press = () => {
+        rotateMagic();
     };
 }
 
