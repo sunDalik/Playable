@@ -8,15 +8,15 @@ class TileElement extends PIXI.Sprite {
         this.anchor.set(0.5, 0.5);
     }
 
-    getScale(tileSize) {
-        const scaleX = tileSize / this.width - 0.25;
-        const scaleY = tileSize / this.height - 0.25;
+    getScale() {
+        const scaleX = GameState.TILESIZE / this.width - 0.25;
+        const scaleY = GameState.TILESIZE / this.height - 0.25;
         return {x: scaleX, y: scaleY}
     }
 
-    place(tileSize) {
-        this.position.x = tileSize * this.tilePosition.x + (tileSize - this.width) / 2 + this.width * this.anchor.x;
-        this.position.y = tileSize * this.tilePosition.y + (tileSize - this.height) / 2 + this.height * this.anchor.y;
+    place() {
+        this.position.x = GameState.TILESIZE * this.tilePosition.x + (GameState.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
+        this.position.y = GameState.TILESIZE * this.tilePosition.y + (GameState.TILESIZE - this.height) / 2 + this.height * this.anchor.y;
     }
 
     setAnchorToCenter() {

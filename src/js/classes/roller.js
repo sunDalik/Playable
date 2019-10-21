@@ -6,25 +6,25 @@ class Roller extends Enemy {
         this.animation = null;
     }
 
-    move(gameMap) {
+    move() {
         let frequency = 15;
         let counter = 0;
         let roller = this;
-        const step = tileSize / frequency;
+        const step = GameState.TILESIZE / frequency;
         clearTimeout(this.animation);
-        this.place(tileSize);
+        this.place();
 
-        gameMap[this.tilePosition.y][this.tilePosition.x] = "";
-        if (isNotAWall(gameMap, this.tilePosition.x + this.direction, this.tilePosition.y)) {
+        GameState.gameMap[this.tilePosition.y][this.tilePosition.x] = "";
+        if (isNotAWall(this.tilePosition.x + this.direction, this.tilePosition.y)) {
             this.tilePosition.x += this.direction;
             animate();
         } else {
             this.direction *= -1;
             //this.setAnchorToCenter();
             this.scale.x *= -1;
-            //this.place(tileSize);
+            //this.place();
         }
-        gameMap[this.tilePosition.y][this.tilePosition.x] = "r";
+        GameState.gameMap[this.tilePosition.y][this.tilePosition.x] = "r";
 
         function animate() {
             roller.animation = setTimeout(() => {
@@ -33,7 +33,7 @@ class Roller extends Enemy {
                 if (counter < frequency) animate();
                 else {
                     roller.animation = null;
-                    roller.place(tileSize);
+                    roller.place();
                 }
             }, 2)
         }

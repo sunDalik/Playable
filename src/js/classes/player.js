@@ -8,16 +8,16 @@ class Player extends TileElement {
 
     stepX(tileStepX) {
         clearTimeout(this.animation);
-        this.place(tileSize);
+        this.place();
         this.tilePosition.x += tileStepX;
         const frequency = 25;
         const jumpHeight = 25;
-        const a = jumpHeight / ((tileStepX * tileSize / 2) ** 2);
-        const b = -(this.position.x + (tileStepX * tileSize) / 2) * 2 * a;
+        const a = jumpHeight / ((tileStepX * GameState.TILESIZE / 2) ** 2);
+        const b = -(this.position.x + (tileStepX * GameState.TILESIZE) / 2) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
         let counter = 0;
         let player = this;
-        const stepX = tileStepX * tileSize / frequency;
+        const stepX = tileStepX * GameState.TILESIZE / frequency;
         animate();
 
         function animate() {
@@ -28,7 +28,7 @@ class Player extends TileElement {
                 if (counter < frequency) animate();
                 else {
                     player.animation = null;
-                    player.place(tileSize);
+                    player.place();
                 }
             }, 2)
         }
@@ -36,7 +36,7 @@ class Player extends TileElement {
 
     stepY(tileStepY) {
         clearTimeout(this.animation);
-        this.place(tileSize);
+        this.place();
         this.tilePosition.y += tileStepY;
         const frequency = 25;
         let counter = 0;
@@ -60,12 +60,12 @@ class Player extends TileElement {
         function animate() {
             player.animation = setTimeout(() => {
                 x += 1 / frequency;
-                player.position.y = oldPosition + (Math.pow(1 - x, 3) * P0 + 3 * P1 * Math.pow(1 - x, 2) * x + 3 * P2 * (1 - x) * Math.pow(x, 2) + P3 * Math.pow(x, 3)) * tileSize * tileStepY;
+                player.position.y = oldPosition + (Math.pow(1 - x, 3) * P0 + 3 * P1 * Math.pow(1 - x, 2) * x + 3 * P2 * (1 - x) * Math.pow(x, 2) + P3 * Math.pow(x, 3)) * GameState.TILESIZE * tileStepY;
                 counter++;
                 if (counter < frequency) animate();
                 else {
                     player.animation = null;
-                    player.place(tileSize);
+                    player.place();
                 }
             }, 2)
         }
