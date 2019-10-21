@@ -1,3 +1,5 @@
+"use strict";
+
 class Roller extends Enemy {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);

@@ -1,3 +1,5 @@
+"use strict";
+
 class TileElement extends PIXI.Sprite {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture);
@@ -6,11 +8,12 @@ class TileElement extends PIXI.Sprite {
             y: tilePositionY
         };
         this.anchor.set(0.5, 0.5);
+        this.scale.set(this.getTileScale().x, this.getTileScale().y);
     }
 
-    getScale() {
-        const scaleX = GameState.TILESIZE / this.width - 0.25;
-        const scaleY = GameState.TILESIZE / this.height - 0.25;
+    getTileScale() {
+        const scaleX = GameState.TILESIZE / this.width * 0.80;
+        const scaleY = GameState.TILESIZE / this.height * 0.80;
         return {x: scaleX, y: scaleY}
     }
 

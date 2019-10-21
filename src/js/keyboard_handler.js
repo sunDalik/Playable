@@ -1,3 +1,5 @@
+"use strict";
+
 function keyboard(code) {
     let key = {
         code: code,

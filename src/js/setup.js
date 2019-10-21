@@ -1,3 +1,5 @@
+"use strict";
+
 GameState.TILESIZE = 75;
 GameState.gameMap = [
     ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "r", "", ""],
@@ -18,11 +20,10 @@ const grid = drawGrid();
 let loader = app.loader;
 let resources = app.loader.resources;
 loadAll();
-console.log(GameState.getTS());
 
 function initApplication() {
     let app = new PIXI.Application({resolution: window.devicePixelRatio});
-    app.renderer.backgroundColor = 0xBB00BB;
+    app.renderer.backgroundColor = 0xBB33BB;
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
     app.renderer.autoDensity = true;
@@ -35,7 +36,7 @@ function drawGrid() {
     let grid = new PIXI.Graphics();
     for (let y = 0; y < app.view.height; y += GameState.TILESIZE) {
         for (let x = 0; x < app.view.width; x += GameState.TILESIZE) {
-            grid.lineStyle(2, 0xAA00AA);
+            grid.lineStyle(2, 0xAA22AA);
             grid.drawRect(x, y, GameState.TILESIZE, GameState.TILESIZE);
         }
     }
@@ -50,14 +51,10 @@ function loadProgressHandler(loader, resource) {
 
 function setup() {
     GameState.player = new Player(resources["src/images/player.png"].texture, 7, 4);
-    GameState.player.scale.set(GameState.player.getScale(GameState.TILESIZE).x, GameState.player.getScale(GameState.TILESIZE).y);
     GameState.player.place();
-    app.stage.addChild(GameState.player);
 
     GameState.player2 = new Player(resources["src/images/player2.png"].texture, 12, 4);
-    GameState.player2.scale.set(GameState.player2.getScale(GameState.TILESIZE).x, GameState.player2.getScale(GameState.TILESIZE).y);
     GameState.player2.place();
-    app.stage.addChild(GameState.player2);
 
     GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x] = "p1";
     GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x] = "p2";
@@ -68,6 +65,8 @@ function setup() {
     drawEnemies();
     displayInstructions();
     bindKeys();
+    app.stage.addChild(GameState.player);
+    app.stage.addChild(GameState.player2);
 }
 
 function gameLoop(delta) {
@@ -99,7 +98,7 @@ function drawEnemies() {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
             let enemy = null;
             if (GameState.gameMap[i][j] === "r") {
-                enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i)
+                enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i);
             }
             if (enemy !== null) {
                 addEnemyToStage(enemy);
@@ -111,7 +110,6 @@ function drawEnemies() {
 
 function addEnemyToStage(enemy) {
     enemy.place();
-    enemy.scale.set(enemy.getScale(GameState.TILESIZE).x, enemy.getScale(GameState.TILESIZE).y);
     app.stage.addChild(enemy);
 }
 

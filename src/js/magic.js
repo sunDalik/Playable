@@ -1,3 +1,5 @@
+"use strict";
+
 function fireball() {
     let fire = new PIXI.Sprite(resources["src/images/fire.png"].texture);
     const fireHeight = GameState.TILESIZE * 0.4;

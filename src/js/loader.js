@@ -1,3 +1,5 @@
+"use strict";
+
 function loadAll() {
     loader
         .add("src/images/player.png")
