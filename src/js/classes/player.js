@@ -5,7 +5,6 @@ class Player extends TileElement {
         super(texture, tilePositionX, tilePositionY);
         this.health = 100;
         this.state = "none";
-        this.animation = null;
     }
 
     stepX(tileStepX) {

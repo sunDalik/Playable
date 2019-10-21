@@ -85,8 +85,10 @@ function gameLoop(delta) {
 }
 
 function moveEnemies() {
+    GameState.turnState = TurnState.ENEMY;
     setTimeout(() => {
         for (const enemy of GameState.enemies) enemy.move()
+        GameState.turnState = TurnState.PLAYER;
     }, 50);
 }
 
@@ -156,26 +158,22 @@ function bindKeys() {
 
     const fireKey = keyboard(70);
     fireKey.press = () => {
-        fireball();
-        moveEnemies();
+        playerTurn(null, fireball, true)
     };
 
     const teleportKey = keyboard(84);
     teleportKey.press = () => {
-        teleport();
-        moveEnemies();
+        playerTurn(GameState.player2, teleport)
     };
 
     const rotateKey = keyboard(82);
     rotateKey.press = () => {
-        rotateAttack();
-        moveEnemies();
+        playerTurn(GameState.player, rotateAttack)
     };
 
     const crossKey = keyboard(67);
     crossKey.press = () => {
-        crossAttack();
-        moveEnemies();
+        playerTurn(GameState.player2, crossAttack)
     };
 }
 
@@ -185,38 +183,44 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     const downKey = keyboard(downCode);
     const rightKey = keyboard(rightCode);
     upKey.press = () => {
-        if (isNotAWall(player.tilePosition.x, player.tilePosition.y - 1)) {
-            //player.tilePosition.y--;
-            player.stepY(-1);
-            //player.place();
-            moveEnemies();
-        }
+        playerTurn(player, () => movePlayer(player, 0, -1));
+
     };
     leftKey.press = () => {
-        if (isNotAWall(player.tilePosition.x - 1, player.tilePosition.y)) {
-            //player.tilePosition.x--;
-            player.stepX(-1);
-            //player.place();
-            moveEnemies();
-        }
+        playerTurn(player, () => movePlayer(player, -1, 0));
+
     };
     downKey.press = () => {
-        if (isNotAWall(player.tilePosition.x, player.tilePosition.y + 1)) {
-            //player.tilePosition.y++;
-            player.stepY(1);
-            //player.place();
-            moveEnemies();
-        }
+        playerTurn(player, () => movePlayer(player, 0, 1));
+
     };
     rightKey.press = () => {
-        if (isNotAWall(player.tilePosition.x + 1, player.tilePosition.y)) {
-            //player.tilePosition.x++;
-            player.stepX(1);
-            //player.place();
-            moveEnemies();
-        }
+        playerTurn(player, () => movePlayer(player, 1, 0));
     };
     return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
+}
+
+function movePlayer(player, tileStepX, tileStepY) {
+    if (tileStepX !== 0) {
+        if (isNotAWall(player.tilePosition.x + tileStepX, player.tilePosition.y)) {
+            player.stepX(tileStepX);
+        }
+    } else if (tileStepY !== 0) {
+        if (isNotAWall(player.tilePosition.x, player.tilePosition.y + tileStepY)) {
+            player.stepY(tileStepY);
+        }
+    }
+}
+
+function playerTurn(player, playerMove, bothPlayers = false) {
+    if (GameState.turnState === TurnState.PLAYER) {
+        if (bothPlayers) {
+            GameState.player.cancelAnimation();
+            GameState.player2.cancelAnimation();
+        } else player.cancelAnimation();
+        playerMove();
+        moveEnemies();
+    }
 }
 
 function isNotAWall(tilePositionX, tilePositionY) {

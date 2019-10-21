@@ -7,8 +7,15 @@ class TileElement extends PIXI.Sprite {
             x: tilePositionX,
             y: tilePositionY
         };
+        this.animation = null;
         this.anchor.set(0.5, 0.5);
         this.scale.set(this.getTileScale().x, this.getTileScale().y);
+    }
+
+    cancelAnimation() {
+        clearInterval(this.animation);
+        this.place();
+        this.rotation = 0;
     }
 
     getTileScale() {
