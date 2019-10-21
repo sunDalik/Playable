@@ -20,9 +20,9 @@ class Roller extends Enemy {
             animate();
         } else {
             this.direction *= -1;
-            this.setAnchorToCenter();
+            //this.setAnchorToCenter();
             this.scale.x *= -1;
-            this.place(tileSize);
+            //this.place(tileSize);
         }
         gameMap[this.tilePosition.y][this.tilePosition.x] = "r";
 

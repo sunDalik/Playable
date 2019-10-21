@@ -1,7 +1,8 @@
 function fireball() {
     let fire = new PIXI.Sprite(resources["src/images/fire.png"].texture);
     const fireHeight = tileSize * 0.4;
-    fire.position.set(player.x + player.width / 2, player.y + player.height / 2 - fireHeight / 2);
+    fire.anchor.set(0, 0.5);
+    fire.position.set(player.x, player.y - fireHeight / 2);
     fire.width = Math.sqrt((player2.x - player.x) ** 2 + (player.y - player2.y) ** 2);
     fire.height = fireHeight;
     app.stage.addChild(fire);
@@ -106,7 +107,7 @@ function crossAttack() {
 }
 
 function rotate(object, clockwise = true) {
-    object.setAnchorToCenter();
+    //object.setAnchorToCenter();
     const rotateTime = 200;
     let counter = 0;
     let animation = {};
@@ -119,7 +120,7 @@ function rotate(object, clockwise = true) {
             counter++;
             if (counter < 50) animateRotation();
             else {
-                object.resetAnchor();
+                //object.resetAnchor();
                 object.state = "none";
             }
         }, rotateTime / 50);

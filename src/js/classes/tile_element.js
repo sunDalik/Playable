@@ -5,6 +5,7 @@ class TileElement extends PIXI.Sprite {
             x: tilePositionX,
             y: tilePositionY
         };
+        this.anchor.set(0.5, 0.5);
     }
 
     getScale(tileSize) {
