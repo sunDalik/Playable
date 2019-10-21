@@ -16,14 +16,13 @@ GameState.gameMap = [
 GameState.enemies = [];
 PIXI.utils.skipHello();
 const app = initApplication();
-const grid = drawGrid();
 let loader = app.loader;
 let resources = app.loader.resources;
 loadAll();
 
 function initApplication() {
     let app = new PIXI.Application({resolution: window.devicePixelRatio});
-    app.renderer.backgroundColor = 0xBB33BB;
+    app.renderer.backgroundColor = 0xBB77BB;
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
     app.renderer.autoDensity = true;
@@ -33,13 +32,24 @@ function initApplication() {
 }
 
 function drawGrid() {
-    let grid = new PIXI.Graphics();
-    for (let y = 0; y < app.view.height; y += GameState.TILESIZE) {
-        for (let x = 0; x < app.view.width; x += GameState.TILESIZE) {
-            grid.lineStyle(2, 0xAA22AA);
-            grid.drawRect(x, y, GameState.TILESIZE, GameState.TILESIZE);
-        }
-    }
+    //let grid = new PIXI.Graphics();
+    //for (let y = 0; y < app.view.height; y += GameState.TILESIZE) {
+    //    for (let x = 0; x < app.view.width; x += GameState.TILESIZE) {
+    //        grid.lineStyle(2, 0xAA66AA);
+    //        grid.drawRect(x, y, GameState.TILESIZE, GameState.TILESIZE);
+    //    }
+    //}
+    //app.stage.addChild(grid);
+    //return grid;
+
+    let gridTexture = resources["src/images/grid.png"].texture;
+    gridTexture.tint = 0x00ff00;
+    let grid = new PIXI.TilingSprite(gridTexture, app.view.width * gridTexture.width / GameState.TILESIZE, app.view.height * gridTexture.height / GameState.TILESIZE);
+    grid.scale.set(GameState.TILESIZE / gridTexture.width, GameState.TILESIZE / gridTexture.height);
+    //2 is half-width of a tile's border... Don't ask me I don't understand why it works either
+    grid.position.x -= 2 * GameState.TILESIZE / gridTexture.width;
+    grid.position.y -= 2 * GameState.TILESIZE / gridTexture.height;
+    grid.tint = 0xAA66AA;
     app.stage.addChild(grid);
     return grid;
 }
@@ -61,6 +71,7 @@ function setup() {
 
     app.ticker.add(delta => gameLoop(delta)); // not used now
 
+    const grid = drawGrid();
     drawWalls();
     drawEnemies();
     displayInstructions();
