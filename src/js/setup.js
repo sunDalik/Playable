@@ -87,9 +87,11 @@ function gameLoop(delta) {
 function moveEnemies() {
     GameState.turnState = TurnState.ENEMY;
     setTimeout(() => {
-        for (const enemy of GameState.enemies) enemy.move()
-        GameState.turnState = TurnState.PLAYER;
-    }, 50);
+        for (const enemy of GameState.enemies) enemy.move();
+        setTimeout(() => {
+            GameState.turnState = TurnState.PLAYER;
+        }, 20);
+    }, 40);
 }
 
 
