@@ -4,7 +4,7 @@ function drawWalls() {
     for (let i = 0; i < GameState.gameMap.length; ++i) {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
             if (GameState.gameMap[i][j] === "w") {
-                let wall = new PIXI.Sprite(resources["src/images/wall.png"].texture);
+                let wall = new PIXI.Sprite(GameState.resources["src/images/wall.png"].texture);
                 wall.position.set(GameState.TILESIZE * j, GameState.TILESIZE * i);
                 wall.width = wall.height = GameState.TILESIZE;
                 app.stage.addChild(wall);
@@ -17,14 +17,21 @@ function drawEnemies() {
     for (let i = 0; i < GameState.gameMap.length; ++i) {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
             let enemy = null;
-            if (GameState.gameMap[i][j] === "r") {
-                enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i);
-            } else if (GameState.gameMap[i][j] === "rb") {
-                enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i);
-            } else if (GameState.gameMap[i][j] === "s") {
-                enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i);
-            } else if (GameState.gameMap[i][j] === "sb") {
-                enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i);
+            const mapSymbol = GameState.gameMap[i][j];
+            switch (mapSymbol) {
+                case "r":
+                    enemy = new Roller(j, i);
+                    break;
+                case "rb":
+                    enemy = new RollerB(j, i);
+                    break;
+                case "s":
+                    enemy = new Star(j, i);
+                    break;
+
+                case "sb":
+                    enemy = new StarB(j, i);
+                    break;
             }
             if (enemy !== null) {
                 addEnemyToStage(enemy);
@@ -32,6 +39,11 @@ function drawEnemies() {
             }
         }
     }
+}
+
+function addEnemyToStage(enemy) {
+    enemy.place();
+    app.stage.addChild(enemy);
 }
 
 function displayInstructions() {
@@ -56,7 +68,7 @@ function drawGrid() {
     //app.stage.addChild(grid);
     //return grid;
 
-    let gridTexture = resources["src/images/grid.png"].texture;
+    let gridTexture = GameState.resources["src/images/grid.png"].texture;
     let grid = new PIXI.TilingSprite(gridTexture, app.view.width * gridTexture.width / GameState.TILESIZE, app.view.height * gridTexture.height / GameState.TILESIZE);
     grid.scale.set(GameState.TILESIZE / gridTexture.width, GameState.TILESIZE / gridTexture.height);
     //2 is half-width of a tile's border... Don't ask me I don't understand why it works either

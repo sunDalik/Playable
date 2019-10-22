@@ -8,6 +8,8 @@ class GameState {
 }
 
 GameState.APP = null;
+GameState.loader = null;
+GameState.resources = null;
 GameState.TILESIZE = 75;
 GameState.gameMap = [];
 GameState.player = null;

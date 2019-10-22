@@ -2,7 +2,7 @@
 
 GameState.TILESIZE = 75;
 GameState.gameMap = [
-    ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "r", "", ""],
+    ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "rb", ""],
     ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "w", "w", "", ""],
     ["", "", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "w", "", ""],
     ["", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
@@ -11,14 +11,14 @@ GameState.gameMap = [
     ["", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
     ["", "", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "r", "w", "", ""],
     ["", "", "", "", "", "", "", "w", "", "w", "", "", "", "", "", "", "w", "w", "", ""],
-    ["", "", "", "", "", "", "", "", "w", "", "", "", "", "", "", "", "r", "", "", ""]];
+    ["rb", "", "", "", "", "", "", "", "w", "", "", "", "", "", "", "", "r", "", "", ""]];
 
 GameState.enemies = [];
 PIXI.utils.skipHello();
 const app = initApplication();
 GameState.APP = app;
-let loader = app.loader;
-let resources = app.loader.resources;
+GameState.loader = app.loader;
+GameState.resources = app.loader.resources;
 loadAll();
 
 function initApplication() {
@@ -39,10 +39,10 @@ function loadProgressHandler(loader, resource) {
 }
 
 function setup() {
-    GameState.player = new Player(resources["src/images/player.png"].texture, 7, 4);
+    GameState.player = new Player(GameState.resources["src/images/player.png"].texture, 7, 4);
     GameState.player.place();
 
-    GameState.player2 = new Player(resources["src/images/player2.png"].texture, 12, 4);
+    GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, 12, 4);
     GameState.player2.place();
 
     GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x] = "p1";

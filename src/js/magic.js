@@ -1,7 +1,7 @@
 "use strict";
 
 function fireball() {
-    let fire = new PIXI.Sprite(resources["src/images/fire.png"].texture);
+    let fire = new PIXI.Sprite(GameState.resources["src/images/fire.png"].texture);
     const fireHeight = GameState.TILESIZE * 0.4;
     fire.anchor.set(0, 0.5);
     fire.position.set(GameState.player.x, GameState.player.y - fireHeight / 2);
@@ -16,6 +16,7 @@ function fireball() {
 }
 
 function teleport() {
+    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x] = "";
     if (GameState.player2.x > GameState.player.x) {
         if (isNotAWall(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
@@ -70,7 +71,7 @@ function teleport() {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y - 1;
         }
     }
-
+    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x] = "r2";
     GameState.player2.place();
 }
 
@@ -80,7 +81,7 @@ function rotateAttack() {
             if (!(x === 0 && y === 0) && isNotAWall(GameState.player.tilePosition.x + x, GameState.player.tilePosition.y + y)) {
                 const attackPositionX = GameState.player.tilePosition.x + x;
                 const attackPositionY = GameState.player.tilePosition.y + y;
-                createFadingAttack(new TileElement(resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
+                createFadingAttack(new TileElement(GameState.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
                 attackTile(attackPositionX, attackPositionY);
             }
         }
@@ -94,7 +95,7 @@ function crossAttack() {
             if (offset !== 0 && isNotAWall(GameState.player2.tilePosition.x + offset, GameState.player2.tilePosition.y + offset * sign)) {
                 const attackPositionX = GameState.player2.tilePosition.x + offset;
                 const attackPositionY = GameState.player2.tilePosition.y + offset * sign;
-                createFadingAttack(new TileElement(resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
+                createFadingAttack(new TileElement(GameState.resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
                 attackTile(attackPositionX, attackPositionY);
             }
         }

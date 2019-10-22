@@ -1,11 +1,12 @@
 "use strict";
 
 class StarB extends Enemy {
-    constructor(texture, tilePositionX = 0, tilePositionY = 0) {
-        super(texture, tilePositionX, tilePositionY);
+    constructor(tilePositionX = 0, tilePositionY = 0) {
+        super(GameState.resources["src/images/enemies/star_b.png"].texture, tilePositionX, tilePositionY);
         this.health = 100;
         this.animation = null;
     }
+
 //change
     move() {
         let frequency = 15;

@@ -1,7 +1,7 @@
 "use strict";
 
 function loadAll() {
-    loader
+    GameState.loader
         .add("src/images/player.png")
         .add("src/images/player2.png")
         .add("src/images/fire.png")

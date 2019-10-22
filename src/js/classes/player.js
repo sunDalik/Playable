@@ -22,7 +22,7 @@ class Player extends TileElement {
             player.position.y = a * (player.position.x ** 2) + b * player.position.x + c;
             counter++;
             if (counter >= player.STEP_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(this.animation);
+                GameState.APP.ticker.remove(player.animation);
                 player.place();
             }
         };
@@ -54,7 +54,7 @@ class Player extends TileElement {
             player.position.y = oldPosition + (Math.pow(1 - x, 3) * P0 + 3 * P1 * Math.pow(1 - x, 2) * x + 3 * P2 * (1 - x) * Math.pow(x, 2) + P3 * Math.pow(x, 3)) * GameState.TILESIZE * tileStepY;
             counter++;
             if (counter >= player.STEP_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(this.animation);
+                GameState.APP.ticker.remove(player.animation);
                 player.place();
             }
         };
