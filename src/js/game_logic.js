@@ -1,3 +1,5 @@
+"use strict";
+
 function moveEnemies() {
     if (GameState.enemiesTimeout === null) {
         GameState.enemiesTimeout = setTimeout(() => {
@@ -28,6 +30,10 @@ function attackTile(attackPositionX, attackPositionY) {
     }
 }
 
+function damagePlayer(player, damage) {
+    player.damage(damage);
+}
+
 function playerTurn(player, playerMove, bothPlayers = false) {
     if (GameState.enemiesTimeout !== null) {
         clearTimeout(GameState.enemiesTimeout);
@@ -42,7 +48,6 @@ function playerTurn(player, playerMove, bothPlayers = false) {
     } else player.cancelAnimation();
     playerMove();
     moveEnemies();
-
 }
 
 function isNotAWall(tilePositionX, tilePositionY) {
@@ -56,14 +61,29 @@ function isNotAWall(tilePositionX, tilePositionY) {
     return false;
 }
 
+function getPlayerOnTile(tilePositionX, tilePositionY) {
+    if (tilePositionX <= GameState.gameMap[0].length - 1 && tilePositionX >= 0) {
+        if (tilePositionY <= GameState.gameMap.length - 1 && tilePositionY >= 0) {
+            if (GameState.gameMap[tilePositionY][tilePositionX] === "p1") return GameState.player;
+            if (GameState.gameMap[tilePositionY][tilePositionX] === "p2") return GameState.player2;
+        }
+    }
+    return null;
+}
+
 function movePlayer(player, tileStepX, tileStepY) {
+    const playerSymbol = player === GameState.player ? "p1" : "p2";
     if (tileStepX !== 0) {
         if (isNotAWall(player.tilePosition.x + tileStepX, player.tilePosition.y)) {
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x] = "";
             player.stepX(tileStepX);
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x] = playerSymbol;
         }
     } else if (tileStepY !== 0) {
         if (isNotAWall(player.tilePosition.x, player.tilePosition.y + tileStepY)) {
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x] = "";
             player.stepY(tileStepY);
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x] = playerSymbol;
         }
     }
 }

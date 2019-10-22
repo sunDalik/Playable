@@ -1,3 +1,5 @@
+"use strict";
+
 function drawWalls() {
     for (let i = 0; i < GameState.gameMap.length; ++i) {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
@@ -16,6 +18,12 @@ function drawEnemies() {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
             let enemy = null;
             if (GameState.gameMap[i][j] === "r") {
+                enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i);
+            } else if (GameState.gameMap[i][j] === "rb") {
+                enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i);
+            } else if (GameState.gameMap[i][j] === "s") {
+                enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i);
+            } else if (GameState.gameMap[i][j] === "sb") {
                 enemy = new Roller(resources["src/images/enemies/roller.png"].texture, j, i);
             }
             if (enemy !== null) {
@@ -49,13 +57,12 @@ function drawGrid() {
     //return grid;
 
     let gridTexture = resources["src/images/grid.png"].texture;
-    gridTexture.tint = 0x00ff00;
     let grid = new PIXI.TilingSprite(gridTexture, app.view.width * gridTexture.width / GameState.TILESIZE, app.view.height * gridTexture.height / GameState.TILESIZE);
     grid.scale.set(GameState.TILESIZE / gridTexture.width, GameState.TILESIZE / gridTexture.height);
     //2 is half-width of a tile's border... Don't ask me I don't understand why it works either
     grid.position.x -= 2 * GameState.TILESIZE / gridTexture.width;
     grid.position.y -= 2 * GameState.TILESIZE / gridTexture.height;
-    grid.tint = 0xAA66AA;
+    grid.tint = 0x9abec0;
     app.stage.addChild(grid);
     return grid;
 }

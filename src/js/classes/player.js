@@ -71,4 +71,8 @@ class Player extends TileElement {
             }, 2)
         }
     }
+
+    damage(damage) {
+        this.health -= damage;
+    }
 }

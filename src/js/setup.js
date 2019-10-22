@@ -22,7 +22,7 @@ loadAll();
 
 function initApplication() {
     let app = new PIXI.Application({resolution: window.devicePixelRatio});
-    app.renderer.backgroundColor = 0xBB77BB;
+    app.renderer.backgroundColor = 0xabcfd1;
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
     app.renderer.autoDensity = true;
@@ -46,7 +46,6 @@ function setup() {
 
     GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x] = "p1";
     GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x] = "p2";
-
     app.ticker.add(delta => gameLoop(delta)); // not used now
 
     const grid = drawGrid();
@@ -56,6 +55,7 @@ function setup() {
     bindKeys();
     app.stage.addChild(GameState.player);
     app.stage.addChild(GameState.player2);
+    console.log(GameState.gameMap);
 }
 
 function gameLoop(delta) {
@@ -94,11 +94,10 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     const rightKey = keyboard(rightCode);
     upKey.press = () => {
         playerTurn(player, () => movePlayer(player, 0, -1));
-
     };
     leftKey.press = () => {
+        console.log(GameState.gameMap);
         playerTurn(player, () => movePlayer(player, -1, 0));
-
     };
     downKey.press = () => {
         playerTurn(player, () => movePlayer(player, 0, 1));
