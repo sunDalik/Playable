@@ -16,6 +16,7 @@ GameState.gameMap = [
 GameState.enemies = [];
 PIXI.utils.skipHello();
 const app = initApplication();
+GameState.APP = app;
 let loader = app.loader;
 let resources = app.loader.resources;
 loadAll();
@@ -55,7 +56,6 @@ function setup() {
     bindKeys();
     app.stage.addChild(GameState.player);
     app.stage.addChild(GameState.player2);
-    console.log(GameState.gameMap);
 }
 
 function gameLoop(delta) {
@@ -96,7 +96,6 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
         playerTurn(player, () => movePlayer(player, 0, -1));
     };
     leftKey.press = () => {
-        console.log(GameState.gameMap);
         playerTurn(player, () => movePlayer(player, -1, 0));
     };
     downKey.press = () => {

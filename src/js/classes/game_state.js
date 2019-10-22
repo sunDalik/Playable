@@ -7,9 +7,11 @@ class GameState {
     }
 }
 
+GameState.APP = null;
 GameState.TILESIZE = 75;
 GameState.gameMap = [];
 GameState.player = null;
 GameState.player2 = null;
 GameState.enemies = [];
 GameState.enemiesTimeout = null;
+GameState.TURNTIME = 16;

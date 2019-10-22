@@ -103,38 +103,33 @@ function crossAttack() {
 }
 
 function rotate(object, clockwise = true) {
-    const rotateTime = 200;
     let counter = 0;
-    animateRotation();
 
-    function animateRotation() {
-        object.animation = setTimeout(() => {
-            if (clockwise) object.rotation += 2 * Math.PI / 50;
-            else object.rotation -= 2 * Math.PI / 50;
-            counter++;
-            if (counter < 50) animateRotation();
-            else {
-            }
-        }, rotateTime / 50);
-    }
+    object.animation = function (delta) {
+        if (clockwise) object.rotation += 2 * Math.PI / GameState.TURNTIME * delta;
+        else object.rotation -= 2 * Math.PI / GameState.TURNTIME * delta;
+        counter++;
+        if (counter >= GameState.TURNTIME) GameState.APP.ticker.remove(object.animation);
+    };
+
+    GameState.APP.ticker.add(object.animation);
 }
 
 function createFadingAttack(attack, tileAttack = true) {
     if (tileAttack) attack.place();
     app.stage.addChild(attack);
-    const disappearTime = 200;
-    const delay = 50 / 2.5;
+    const delay = GameState.TURNTIME / 2;
     let counter = 0;
-    animateAttack();
 
-    function animateAttack() {
-        setTimeout(() => {
-            if (counter >= delay) {
-                attack.alpha -= 0.02;
-            }
-            counter++;
-            if (counter < 50) animateAttack();
-            else app.stage.removeChild(attack);
-        }, disappearTime / 50);
-    }
+    let animation = function () {
+        if (counter >= delay) {
+            attack.alpha -= 1 / GameState.TURNTIME;
+        }
+        counter++;
+        if (counter >= GameState.TURNTIME) {
+            GameState.APP.ticker.remove(animation);
+            GameState.APP.stage.removeChild(attack);
+        }
+    };
+    GameState.APP.ticker.add(animation);
 }

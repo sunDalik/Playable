@@ -4,42 +4,34 @@ class Player extends TileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
         this.health = 100;
-        this.state = "none";
+        this.STEP_ANIMATION_TIME = 8;
     }
 
     stepX(tileStepX) {
-        clearTimeout(this.animation);
-        this.place();
         this.tilePosition.x += tileStepX;
-        const frequency = 25;
         const jumpHeight = 25;
         const a = jumpHeight / ((tileStepX * GameState.TILESIZE / 2) ** 2);
         const b = -(this.position.x + (tileStepX * GameState.TILESIZE) / 2) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
         let counter = 0;
         let player = this;
-        const stepX = tileStepX * GameState.TILESIZE / frequency;
-        animate();
+        const stepX = tileStepX * GameState.TILESIZE / this.STEP_ANIMATION_TIME;
 
-        function animate() {
-            player.animation = setTimeout(() => {
-                player.position.x += stepX;
-                player.position.y = a * (player.position.x ** 2) + b * player.position.x + c;
-                counter++;
-                if (counter < frequency) animate();
-                else {
-                    player.animation = null;
-                    player.place();
-                }
-            }, 2)
-        }
+        this.animation = function () {
+            player.position.x += stepX;
+            player.position.y = a * (player.position.x ** 2) + b * player.position.x + c;
+            counter++;
+            if (counter >= player.STEP_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                player.place();
+            }
+        };
+
+        GameState.APP.ticker.add(this.animation);
     }
 
     stepY(tileStepY) {
-        clearTimeout(this.animation);
-        this.place();
         this.tilePosition.y += tileStepY;
-        const frequency = 25;
         let counter = 0;
         let player = this;
         const oldPosition = this.position.y;
@@ -56,20 +48,17 @@ class Player extends TileElement {
             P2 = 0.97;
             P3 = 0.75;
         }
-        animate();
 
-        function animate() {
-            player.animation = setTimeout(() => {
-                x += 1 / frequency;
-                player.position.y = oldPosition + (Math.pow(1 - x, 3) * P0 + 3 * P1 * Math.pow(1 - x, 2) * x + 3 * P2 * (1 - x) * Math.pow(x, 2) + P3 * Math.pow(x, 3)) * GameState.TILESIZE * tileStepY;
-                counter++;
-                if (counter < frequency) animate();
-                else {
-                    player.animation = null;
-                    player.place();
-                }
-            }, 2)
-        }
+        this.animation = function () {
+            x += 1 / player.STEP_ANIMATION_TIME;
+            player.position.y = oldPosition + (Math.pow(1 - x, 3) * P0 + 3 * P1 * Math.pow(1 - x, 2) * x + 3 * P2 * (1 - x) * Math.pow(x, 2) + P3 * Math.pow(x, 3)) * GameState.TILESIZE * tileStepY;
+            counter++;
+            if (counter >= player.STEP_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                player.place();
+            }
+        };
+        GameState.APP.ticker.add(this.animation);
     }
 
     damage(damage) {
