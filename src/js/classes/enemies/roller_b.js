@@ -99,7 +99,6 @@ class RollerB extends Enemy {
         const b = -(this.position.x + (4 / 3) * this.direction * GameState.TILESIZE + (-this.direction * GameState.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
         this.tilePosition.x += this.direction;
-        console.log(a, b, c);
 
         this.animation = function () {
             if (counter < roller.ROLL_ANIMATION_TIME / 2) {
@@ -132,7 +131,6 @@ class RollerB extends Enemy {
         const a = jumpHeight / ((GameState.TILESIZE / 2 / 3) ** 2);
         const b = -(this.position.x + (1 / 3) * this.direction * GameState.TILESIZE + (-this.direction * GameState.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
-        console.log(a, b, c);
 
         this.animation = function () {
             if (counter < roller.BUMP_ANIMATION_TIME / 3) {

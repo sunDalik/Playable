@@ -28,7 +28,6 @@ function drawEnemies() {
                 case "s":
                     enemy = new Star(j, i);
                     break;
-
                 case "sb":
                     enemy = new StarB(j, i);
                     break;

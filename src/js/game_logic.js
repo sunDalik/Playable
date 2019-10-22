@@ -13,7 +13,7 @@ function moveEnemies() {
 }
 
 function attackTile(attackPositionX, attackPositionY) {
-    if (["r"].includes(GameState.gameMap[attackPositionY][attackPositionX])) {
+    if (["r", "rb"].includes(GameState.gameMap[attackPositionY][attackPositionX])) {
         for (const enemy of GameState.enemies) {
             if (!enemy.isDead() && enemy.tilePosition.x === attackPositionX && enemy.tilePosition.y === attackPositionY) {
                 enemy.damage(100);
