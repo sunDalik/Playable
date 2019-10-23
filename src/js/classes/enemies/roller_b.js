@@ -1,22 +1,13 @@
 "use strict";
 
-class RollerB extends Enemy {
+class RollerB extends Roller {
     constructor(tilePositionX = 0, tilePositionY = 0) {
-        super(GameState.resources["src/images/enemies/roller_b.png"].texture, tilePositionX, tilePositionY);
-        this.health = 100;
-        this.direction = 1;
+        super(tilePositionX, tilePositionY, GameState.resources["src/images/enemies/roller_b.png"].texture);
         this.ROLL_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 14;
     }
 
-    cancelAnimation() {
-        GameState.APP.ticker.remove(this.animation);
-        this.place();
-        this.correctScale();
-    }
-
     move() {
-
         let lastDirTile = "";
         let lastNotDirTile = "";
         for (let x = 1; ; x++) {
@@ -63,13 +54,6 @@ class RollerB extends Enemy {
 
 
     }
-
-    correctScale() {
-        if ((this.direction === 1 && this.scale.x < 0) || this.direction === -1 && this.scale.x > 0) {
-            this.scale.x *= -1
-        }
-    }
-
 
     roll() {
         let counter = 0;
