@@ -9,7 +9,7 @@ class TileElement extends PIXI.Sprite {
         };
         this.animation = null;
         this.anchor.set(0.5, 0.5);
-        this.scale.set(this.getTileScale().x, this.getTileScale().y);
+        this.fitToTile();
     }
 
     cancelAnimation() {
@@ -18,10 +18,10 @@ class TileElement extends PIXI.Sprite {
         this.rotation = 0;
     }
 
-    getTileScale() {
+    fitToTile() {
         const scaleX = GameState.TILESIZE / this.width * 0.80;
         const scaleY = GameState.TILESIZE / this.height * 0.80;
-        return {x: scaleX, y: scaleY}
+        this.scale.set(scaleX, scaleY);
     }
 
     place() {

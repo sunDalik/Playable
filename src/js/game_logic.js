@@ -4,8 +4,10 @@ function moveEnemies() {
     if (GameState.enemiesTimeout === null) {
         GameState.enemiesTimeout = setTimeout(() => {
             for (const enemy of GameState.enemies) {
-                enemy.cancelAnimation();
-                enemy.move();
+                if (!enemy.isDead()) {
+                    enemy.cancelAnimation();
+                    enemy.move();
+                }
             }
             GameState.enemiesTimeout = null;
         }, 60);
@@ -13,12 +15,13 @@ function moveEnemies() {
 }
 
 function attackTile(attackPositionX, attackPositionY) {
-    if (["r", "rb"].includes(GameState.gameMap[attackPositionY][attackPositionX])) {
+    if (["r", "rb", "s", "sb"].includes(GameState.gameMap[attackPositionY][attackPositionX])) {
         for (const enemy of GameState.enemies) {
             if (!enemy.isDead() && enemy.tilePosition.x === attackPositionX && enemy.tilePosition.y === attackPositionY) {
                 enemy.damage(100);
                 if (enemy.isDead()) {
                     GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x] = "";
+                    enemy.cancelAnimation();
                     enemy.visible = false;
                     break;
                 }
@@ -35,8 +38,10 @@ function playerTurn(player, playerMove, bothPlayers = false) {
     if (GameState.enemiesTimeout !== null) {
         clearTimeout(GameState.enemiesTimeout);
         for (const enemy of GameState.enemies) {
-            enemy.cancelAnimation();
-            enemy.move();
+            if (!enemy.isDead()) {
+                enemy.cancelAnimation();
+                enemy.move();
+            }
         }
         GameState.enemiesTimeout = null;
         moveEnemies();
