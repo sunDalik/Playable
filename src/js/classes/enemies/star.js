@@ -1,20 +1,29 @@
 "use strict";
 
 class Star extends Enemy {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = undefined) {
-        if (texture === undefined) {
-            super(GameState.resources["src/images/enemies/star.png"].texture, tilePositionX, tilePositionY);
-        } else {
-            super(texture, tilePositionX, tilePositionY);
-        }
+    constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/star.png"].texture) {
+        super(texture, tilePositionX, tilePositionY);
         this.health = 100;
         this.triggered = false;
         this.SHAKE_ANIMATION_TIME = 4;
-        this.shake();
     }
 
     move() {
-
+        if (this.triggered) this.attack();
+        else {
+            loop: for (let offset = -2; offset <= 2; offset++) {
+                for (let sign = -1; sign <= 1; sign += 2) {
+                    if (offset !== 0) {
+                        const player = getPlayerOnTile(this.tilePosition.x + offset, this.tilePosition.y + offset * sign);
+                        if (player !== null) {
+                            this.triggered = true;
+                            break loop;
+                        }
+                    }
+                }
+            }
+            if (this.triggered) this.shake();
+        }
     }
 
     shake() {
@@ -36,5 +45,19 @@ class Star extends Enemy {
             }
         };
         GameState.APP.ticker.add(this.animation);
+    }
+
+    attack() {
+        this.triggered = false;
+        for (let offset = -2; offset <= 2; offset++) {
+            for (let sign = -1; sign <= 1; sign += 2) {
+                if (offset !== 0 && isNotAWall(this.tilePosition.x + offset, this.tilePosition.y + offset * sign)) {
+                    const attackPositionX = this.tilePosition.x + offset;
+                    const attackPositionY = this.tilePosition.y + offset * sign;
+                    createFadingAttack(new TileElement(GameState.resources["src/images/enemy_attack.png"].texture, attackPositionX, attackPositionY));
+                    attackTile(attackPositionX, attackPositionY);
+                }
+            }
+        }
     }
 }

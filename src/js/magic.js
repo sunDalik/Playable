@@ -91,7 +91,7 @@ function rotateAttack() {
 
 function crossAttack() {
     for (let offset = -2; offset <= 2; offset++) {
-        for (let sign = -1; sign < 2; sign += 2) {
+        for (let sign = -1; sign <= 1; sign += 2) {
             if (offset !== 0 && isNotAWall(GameState.player2.tilePosition.x + offset, GameState.player2.tilePosition.y + offset * sign)) {
                 const attackPositionX = GameState.player2.tilePosition.x + offset;
                 const attackPositionY = GameState.player2.tilePosition.y + offset * sign;

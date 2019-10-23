@@ -1,8 +1,8 @@
 "use strict";
 
 class RollerB extends Roller {
-    constructor(tilePositionX = 0, tilePositionY = 0) {
-        super(tilePositionX, tilePositionY, GameState.resources["src/images/enemies/roller_b.png"].texture);
+    constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/roller_b.png"].texture) {
+        super(tilePositionX, tilePositionY, texture);
         this.ROLL_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 14;
     }

@@ -1,12 +1,8 @@
 "use strict";
 
 class Roller extends Enemy {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = undefined) {
-        if (texture === undefined) {
-            super(GameState.resources["src/images/enemies/roller.png"].texture, tilePositionX, tilePositionY);
-        } else {
-            super(texture, tilePositionX, tilePositionY);
-        }
+    constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/roller.png"].texture) {
+        super(texture, tilePositionX, tilePositionY);
         this.health = 100;
         this.direction = 1;
         this.ROLL_ANIMATION_TIME = 6;

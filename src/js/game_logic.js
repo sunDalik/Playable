@@ -51,11 +51,9 @@ function playerTurn(player, playerMove, bothPlayers = false) {
 }
 
 function getPlayerOnTile(tilePositionX, tilePositionY) {
-    if (tilePositionX <= GameState.gameMap[0].length - 1 && tilePositionX >= 0) {
-        if (tilePositionY <= GameState.gameMap.length - 1 && tilePositionY >= 0) {
-            if (GameState.gameMap[tilePositionY][tilePositionX] === "p1") return GameState.player;
-            if (GameState.gameMap[tilePositionY][tilePositionX] === "p2") return GameState.player2;
-        }
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        if (GameState.gameMap[tilePositionY][tilePositionX] === "p1") return GameState.player;
+        if (GameState.gameMap[tilePositionY][tilePositionX] === "p2") return GameState.player2;
     }
     return null;
 }
