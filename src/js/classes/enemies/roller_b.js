@@ -57,16 +57,15 @@ class RollerB extends Roller {
 
     roll() {
         let counter = 0;
-        let roller = this;
         GameState.gameMap[this.tilePosition.y][this.tilePosition.x] = "";
         const step = 2 * GameState.TILESIZE / this.ROLL_ANIMATION_TIME;
         this.tilePosition.x += 2 * this.direction;
-        this.animation = function () {
-            roller.position.x += step * roller.direction;
+        this.animation = () => {
+            this.position.x += step * this.direction;
             counter++;
-            if (counter >= roller.ROLL_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(roller.animation);
-                roller.place();
+            if (counter >= this.ROLL_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
             }
         };
         GameState.APP.ticker.add(this.animation);
@@ -75,7 +74,6 @@ class RollerB extends Roller {
 
     rollAndBump() {
         let counter = 0;
-        let roller = this;
         GameState.gameMap[this.tilePosition.y][this.tilePosition.x] = "";
         let step = this.direction * GameState.TILESIZE / (this.ROLL_ANIMATION_TIME / 2);
         const jumpHeight = 40;
@@ -84,23 +82,23 @@ class RollerB extends Roller {
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
         this.tilePosition.x += this.direction;
 
-        this.animation = function () {
-            if (counter < roller.ROLL_ANIMATION_TIME / 2) {
-                roller.position.x += step;
+        this.animation = () => {
+            if (counter < this.ROLL_ANIMATION_TIME / 2) {
+                this.position.x += step;
                 counter++;
             }
-            else if (counter < roller.ROLL_ANIMATION_TIME / 2 + roller.BUMP_ANIMATION_TIME / 3) {
-                step = roller.direction * GameState.TILESIZE / roller.BUMP_ANIMATION_TIME;
-                roller.position.x += step;
+            else if (counter < this.ROLL_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME / 3) {
+                step = this.direction * GameState.TILESIZE / this.BUMP_ANIMATION_TIME;
+                this.position.x += step;
                 counter++;
             }
-            else if (counter < roller.ROLL_ANIMATION_TIME / 2 + roller.BUMP_ANIMATION_TIME) {
-                roller.position.x -= step / 2;
-                roller.position.y = a * (roller.position.x ** 2) + b * roller.position.x + c;
+            else if (counter < this.ROLL_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
+                this.position.x -= step / 2;
+                this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;
-            } else if (counter >= roller.ROLL_ANIMATION_TIME / 2 + roller.BUMP_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(roller.animation);
-                roller.place();
+            } else if (counter >= this.ROLL_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
             }
         };
         GameState.APP.ticker.add(this.animation);
@@ -109,25 +107,24 @@ class RollerB extends Roller {
 
     bump() {
         let counter = 0;
-        let roller = this;
         const step = this.direction * GameState.TILESIZE / this.BUMP_ANIMATION_TIME;
         const jumpHeight = 40;
         const a = jumpHeight / ((GameState.TILESIZE / 2 / 3) ** 2);
         const b = -(this.position.x + (1 / 3) * this.direction * GameState.TILESIZE + (-this.direction * GameState.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
 
-        this.animation = function () {
-            if (counter < roller.BUMP_ANIMATION_TIME / 3) {
-                roller.position.x += step;
+        this.animation = () => {
+            if (counter < this.BUMP_ANIMATION_TIME / 3) {
+                this.position.x += step;
                 counter++;
             }
-            else if (counter < roller.BUMP_ANIMATION_TIME) {
-                roller.position.x -= step / 2;
-                roller.position.y = a * (roller.position.x ** 2) + b * roller.position.x + c;
+            else if (counter < this.BUMP_ANIMATION_TIME) {
+                this.position.x -= step / 2;
+                this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;
-            } else if (counter >= roller.BUMP_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(roller.animation);
-                roller.place();
+            } else if (counter >= this.BUMP_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
             }
         };
         GameState.APP.ticker.add(this.animation);

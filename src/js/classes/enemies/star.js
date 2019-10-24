@@ -28,20 +28,19 @@ class Star extends Enemy {
 
     shake() {
         let counter = 0;
-        let star = this;
         let step = GameState.TILESIZE / 20 / (this.SHAKE_ANIMATION_TIME / 2);
         let direction = -1;
-        this.animation = function () {
-            if (counter < star.SHAKE_ANIMATION_TIME / 2) {
-                star.position.x += step * direction;
+        this.animation = () => {
+            if (counter < this.SHAKE_ANIMATION_TIME / 2) {
+                this.position.x += step * direction;
                 counter++;
-            } else if (counter < star.SHAKE_ANIMATION_TIME) {
-                star.position.x -= step * direction;
+            } else if (counter < this.SHAKE_ANIMATION_TIME) {
+                this.position.x -= step * direction;
                 counter++;
             } else {
                 counter = 0;
                 direction *= -1;
-                star.place();
+                this.place();
             }
         };
         GameState.APP.ticker.add(this.animation);
