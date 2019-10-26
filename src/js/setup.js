@@ -45,8 +45,10 @@ function setup() {
     drawEnemies();
     displayInstructions();
     bindKeys();
+    GameState.player2.zIndex = GameState.player.zIndex + 1;
     app.stage.addChild(GameState.player);
     app.stage.addChild(GameState.player2);
+    app.stage.sortableChildren = true;
 }
 
 function bindKeys() {
@@ -71,6 +73,11 @@ function bindKeys() {
     const crossKey = keyboard(67);
     crossKey.press = () => {
         playerTurn(GameState.player2, crossAttack)
+    };
+
+    const switchKey = keyboard(17);
+    switchKey.press = () => {
+        playerTurn(null, switchPlayers, true)
     };
 }
 

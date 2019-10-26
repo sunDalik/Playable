@@ -147,3 +147,9 @@ function createFadingAttack(attack, tileAttack = true) {
     };
     GameState.APP.ticker.add(animation);
 }
+
+function switchPlayers() {
+    const temp = GameState.player2.zIndex;
+    GameState.player2.zIndex = GameState.player.zIndex;
+    GameState.player.zIndex = temp;
+}
