@@ -5,6 +5,7 @@ class Enemy extends TileElement {
         super(texture, tilePositionX, tilePositionY);
         this.health = 100;
         this.dead = false;
+        this.role = ROLE.ENEMY;
     }
 
     damage(health) {

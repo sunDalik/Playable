@@ -15,16 +15,14 @@ function moveEnemies() {
 }
 
 function attackTile(attackPositionX, attackPositionY) {
-    if (["r", "rb", "s", "sb"].includes(GameState.gameMap[attackPositionY][attackPositionX])) {
-        for (const enemy of GameState.enemies) {
-            if (!enemy.isDead() && enemy.tilePosition.x === attackPositionX && enemy.tilePosition.y === attackPositionY) {
-                enemy.damage(100);
-                if (enemy.isDead()) {
-                    GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x] = "";
-                    enemy.cancelAnimation();
-                    enemy.visible = false;
-                    break;
-                }
+    const tileEntity = (GameState.gameMap[attackPositionY][attackPositionX]).entity;
+    if (tileEntity !== null && tileEntity.role === ROLE.ENEMY) {
+        if (!tileEntity.isDead()) {
+            tileEntity.damage(100);
+            if (tileEntity.isDead()) {
+                GameState.gameMap[tileEntity.tilePosition.y][tileEntity.tilePosition.x].entity = null;
+                tileEntity.cancelAnimation();
+                tileEntity.visible = false;
             }
         }
     }
@@ -57,8 +55,8 @@ function playerTurn(player, playerMove, bothPlayers = false) {
 
 function getPlayerOnTile(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
-        if (GameState.gameMap[tilePositionY][tilePositionX] === "p1") return GameState.player;
-        if (GameState.gameMap[tilePositionY][tilePositionX] === "p2") return GameState.player2;
+        const tileEntity = GameState.gameMap[tilePositionY][tilePositionX].entity;
+        if (tileEntity !== null && tileEntity.role === ROLE.PLAYER) return tileEntity;
     }
     return null;
 }
@@ -66,25 +64,24 @@ function getPlayerOnTile(tilePositionX, tilePositionY) {
 
 //also check on collisions with enemy and if player tries to steps on enemy it attacks instead
 function movePlayer(player, tileStepX, tileStepY) {
-    const playerSymbol = player === GameState.player ? "p1" : "p2";
     if (tileStepX !== 0) {
         if (isNotAWall(player.tilePosition.x + tileStepX, player.tilePosition.y)) {
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x] = "";
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;
             player.stepX(tileStepX);
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x] = playerSymbol;
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = player;
         }
     } else if (tileStepY !== 0) {
         if (isNotAWall(player.tilePosition.x, player.tilePosition.y + tileStepY)) {
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x] = "";
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;
             player.stepY(tileStepY);
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x] = playerSymbol;
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = player;
         }
     }
 }
 
 function isNotAWall(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
-        if (GameState.gameMap[tilePositionY][tilePositionX] !== "w") {
+        if (GameState.gameMap[tilePositionY][tilePositionX].wall === false) {
             return true
         }
     }

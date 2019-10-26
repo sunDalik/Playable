@@ -7,6 +7,7 @@ class Roller extends Enemy {
         this.direction = 1;
         this.ROLL_ANIMATION_TIME = 6;
         this.BUMP_ANIMATION_TIME = 14;
+        this.entityType = ENEMY_TYPE.ROLLER;
     }
 
     cancelAnimation() {
@@ -17,7 +18,7 @@ class Roller extends Enemy {
 
     move() {
         let counter = 0;
-        GameState.gameMap[this.tilePosition.y][this.tilePosition.x] = "";
+        GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
         if (isNotAWall(this.tilePosition.x + this.direction, this.tilePosition.y)) {
             let player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
             if (player !== null) {
@@ -37,7 +38,7 @@ class Roller extends Enemy {
                 GameState.APP.ticker.add(this.animation);
             }
         } else this.bump();
-        GameState.gameMap[this.tilePosition.y][this.tilePosition.x] = "r";
+        GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
     }
 
     turnAround() {

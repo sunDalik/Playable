@@ -6,6 +6,7 @@ class Star extends Enemy {
         this.health = 100;
         this.triggered = false;
         this.SHAKE_ANIMATION_TIME = 4;
+        this.entityType = ENEMY_TYPE.STAR;
     }
 
     move() {

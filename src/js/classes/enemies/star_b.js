@@ -4,6 +4,7 @@ class StarB extends Star {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/star_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.health = 100;
+        this.entityType = ENEMY_TYPE.STAR_B;
     }
 
     move() {

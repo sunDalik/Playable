@@ -5,6 +5,7 @@ class Player extends TileElement {
         super(texture, tilePositionX, tilePositionY);
         this.health = 100;
         this.STEP_ANIMATION_TIME = 8;
+        this.role = ROLE.PLAYER;
     }
 
     stepX(tileStepX) {

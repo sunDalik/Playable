@@ -2,9 +2,6 @@
 
 GameState.TILESIZE = 75;
 
-//GameState.gameMap = generateMap(randomChoice(rooms));
-GameState.gameMap = randomChoice(rooms);
-
 GameState.enemies = [];
 PIXI.utils.skipHello();
 const app = initApplication();
@@ -31,14 +28,16 @@ function loadProgressHandler(loader, resource) {
 }
 
 function setup() {
+    GameState.gameMap = generateMap(randomChoice(rooms));
+
     GameState.player = new Player(GameState.resources["src/images/player.png"].texture, 7, 4);
     GameState.player.place();
 
     GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, 12, 4);
     GameState.player2.place();
 
-    GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x] = "p1";
-    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x] = "p2";
+    GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].entity = GameState.player;
+    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.player2;
 
     const grid = drawGrid();
     drawWalls();
@@ -100,4 +99,26 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
         playerTurn(player, () => movePlayer(player, 1, 0));
     };
     return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
+}
+
+function generateMap(map) {
+    for (let i = 0; i < map.length; ++i) {
+        for (let j = 0; j < map[0].length; ++j) {
+            let mapCell = {
+                wall: false,
+                hazard: null,
+                entity: null,
+            };
+            if (map[i][j] === "w") mapCell.wall = true;
+
+            if (map[i][j] === "r") mapCell.entity = new Roller(j, i);
+            else if (map[i][j] === "rb") mapCell.entity = new RollerB(j, i);
+            else if (map[i][j] === "s") mapCell.entity = new Star(j, i);
+            else if (map[i][j] === "sb") mapCell.entity = new StarB(j, i);
+
+            map[i][j] = mapCell;
+        }
+    }
+
+    return map;
 }

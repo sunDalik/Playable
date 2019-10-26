@@ -8,6 +8,7 @@ function loadAll() {
         .add("src/images/wall.png")
         .add("src/images/player_attack.png")
         .add("src/images/player2_attack.png")
+        .add("src/images/weapon_particle.png")
         .add("src/images/enemy_attack.png")
         .add("src/images/enemies/roller.png")
         .add("src/images/enemies/roller_b.png")

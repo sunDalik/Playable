@@ -5,15 +5,16 @@ class RollerB extends Roller {
         super(tilePositionX, tilePositionY, texture);
         this.ROLL_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 14;
+        this.entityType = ENEMY_TYPE.ROLLER_B;
     }
 
     move() {
-        let lastDirTile = "";
-        let lastNotDirTile = "";
+        let lastDirTile = null;
+        let lastNotDirTile = null;
         for (let x = 1; ; x++) {
             if (isNotOutOfMap(this.tilePosition.x + x * this.direction, this.tilePosition.y)) {
-                if (lastDirTile === "") {
-                    lastDirTile = GameState.gameMap[this.tilePosition.y][this.tilePosition.x + x * this.direction];
+                if (lastDirTile === null) {
+                    lastDirTile = GameState.gameMap[this.tilePosition.y][this.tilePosition.x + x * this.direction].entity;
                     let player = getPlayerOnTile(this.tilePosition.x + x * this.direction, this.tilePosition.y);
                     if (player !== null) {
                         if (x === 1) {
@@ -28,7 +29,7 @@ class RollerB extends Roller {
                 }
             }
             if (isNotOutOfMap(this.tilePosition.x - x * this.direction, this.tilePosition.y)) {
-                if (lastNotDirTile === "") {
+                if (lastNotDirTile === null) {
                     lastNotDirTile = GameState.gameMap[this.tilePosition.y][this.tilePosition.x - x * this.direction];
                     let player = getPlayerOnTile(this.tilePosition.x - x * this.direction, this.tilePosition.y);
                     if (player !== null) {
@@ -45,7 +46,7 @@ class RollerB extends Roller {
                     }
                 }
             }
-            if ((lastDirTile !== "" && lastNotDirTile !== "") ||
+            if ((lastDirTile !== null && lastNotDirTile !== null) ||
                 (!isNotOutOfMap(this.tilePosition.x + x * this.direction, this.tilePosition.y) &&
                     !isNotOutOfMap(this.tilePosition.x - x * this.direction, this.tilePosition.y))) {
                 break;
@@ -57,7 +58,7 @@ class RollerB extends Roller {
 
     roll() {
         let counter = 0;
-        GameState.gameMap[this.tilePosition.y][this.tilePosition.x] = "";
+        GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
         const step = 2 * GameState.TILESIZE / this.ROLL_ANIMATION_TIME;
         this.tilePosition.x += 2 * this.direction;
         this.animation = () => {
@@ -69,12 +70,12 @@ class RollerB extends Roller {
             }
         };
         GameState.APP.ticker.add(this.animation);
-        GameState.gameMap[this.tilePosition.y][this.tilePosition.x] = "rb";
+        GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
     }
 
     rollAndBump() {
         let counter = 0;
-        GameState.gameMap[this.tilePosition.y][this.tilePosition.x] = "";
+        GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
         let step = this.direction * GameState.TILESIZE / (this.ROLL_ANIMATION_TIME / 2);
         const jumpHeight = 40;
         const a = jumpHeight / ((GameState.TILESIZE / 2 / 3) ** 2);
@@ -102,7 +103,7 @@ class RollerB extends Roller {
             }
         };
         GameState.APP.ticker.add(this.animation);
-        GameState.gameMap[this.tilePosition.y][this.tilePosition.x] = "rb";
+        GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
     }
 
     bump() {
