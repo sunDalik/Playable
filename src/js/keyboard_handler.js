@@ -30,8 +30,8 @@ function keyboard(code) {
     const downListener = key.downHandler.bind(key);
     const upListener = key.upHandler.bind(key);
 
-    window.addEventListener("keydown", downListener, false);
-    window.addEventListener("keyup", upListener, false);
+    window.addEventListener("keydown", downListener);
+    window.addEventListener("keyup", upListener);
 
     key.unsubscribe = () => {
         window.removeEventListener("keydown", downListener);

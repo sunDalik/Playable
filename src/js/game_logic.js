@@ -67,6 +67,8 @@ function getPlayerOnTile(tilePositionX, tilePositionY) {
     return null;
 }
 
+
+//also check on collisions with enemy and if player tries to steps on enemy it attacks instead
 function movePlayer(player, tileStepX, tileStepY) {
     const playerSymbol = player === GameState.player ? "p1" : "p2";
     if (tileStepX !== 0) {
