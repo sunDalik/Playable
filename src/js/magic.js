@@ -19,7 +19,7 @@ function fireball() {
             if (collisionCheck(fire.vertexData, enemy.vertexData)) {
                 enemy.damage(100);
                 if (enemy.isDead()) {
-                    GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x] = "";
+                    GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x].entity = null;
                     enemy.cancelAnimation();
                     enemy.visible = false;
                 }
@@ -29,7 +29,7 @@ function fireball() {
 }
 
 function teleport() {
-    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x] = "";
+    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = null;
     if (GameState.player2.x > GameState.player.x) {
         if (isNotAWall(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
@@ -84,7 +84,7 @@ function teleport() {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y - 1;
         }
     }
-    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x] = "r2";
+    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.player2;
     GameState.player2.place();
 }
 
