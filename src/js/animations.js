@@ -46,3 +46,22 @@ function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
 
     GameState.APP.ticker.add(animation);
 }
+
+function createFadingAttack(attack, tileAttack = true) {
+    if (tileAttack) attack.place();
+    app.stage.addChild(attack);
+    const delay = GameState.TURNTIME / 2;
+    let counter = 0;
+
+    let animation = function () {
+        if (counter >= delay) {
+            attack.alpha -= 1 / GameState.TURNTIME;
+        }
+        counter++;
+        if (counter >= GameState.TURNTIME) {
+            GameState.APP.ticker.remove(animation);
+            GameState.APP.stage.removeChild(attack);
+        }
+    };
+    GameState.APP.ticker.add(animation);
+}

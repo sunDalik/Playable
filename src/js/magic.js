@@ -129,25 +129,6 @@ function rotate(object, clockwise = true) {
     GameState.APP.ticker.add(object.animation);
 }
 
-function createFadingAttack(attack, tileAttack = true) {
-    if (tileAttack) attack.place();
-    app.stage.addChild(attack);
-    const delay = GameState.TURNTIME / 2;
-    let counter = 0;
-
-    let animation = function () {
-        if (counter >= delay) {
-            attack.alpha -= 1 / GameState.TURNTIME;
-        }
-        counter++;
-        if (counter >= GameState.TURNTIME) {
-            GameState.APP.ticker.remove(animation);
-            GameState.APP.stage.removeChild(attack);
-        }
-    };
-    GameState.APP.ticker.add(animation);
-}
-
 function switchPlayers() {
     const temp = GameState.player2.zIndex;
     GameState.player2.zIndex = GameState.player.zIndex;

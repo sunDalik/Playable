@@ -19,7 +19,7 @@ function isNotOutOfMap(tilePositionX, tilePositionY) {
 function isEnemy(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = GameState.gameMap[tilePositionY][tilePositionX].entity;
-        if (tileEntity !== null && tileEntity.role === ROLE.ENEMY) {
+        if (tileEntity != null && tileEntity.role === ROLE.ENEMY) {
             return true
         }
     }
@@ -29,7 +29,7 @@ function isEnemy(tilePositionX, tilePositionY) {
 function getPlayerOnTile(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = GameState.gameMap[tilePositionY][tilePositionX].entity;
-        if (tileEntity !== null && tileEntity.role === ROLE.PLAYER) return tileEntity;
+        if (tileEntity != null && tileEntity.role === ROLE.PLAYER) return tileEntity;
     }
     return null;
 }
