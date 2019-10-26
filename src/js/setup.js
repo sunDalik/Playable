@@ -1,17 +1,7 @@
 "use strict";
 
 GameState.TILESIZE = 75;
-GameState.gameMap = [
-    ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "rb", ""],
-    ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "w", "w", "", ""],
-    ["", "", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "w", "", ""],
-    ["", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    ["", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    ["", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "sb", ""],
-    ["", "w", "", "s", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
-    ["", "", "w", "", "", "", "", "", "", "", "", "", "", "", "", "", "r", "w", "", ""],
-    ["", "", "", "", "", "", "", "w", "", "w", "", "", "", "", "", "", "w", "w", "", ""],
-    ["rb", "", "", "", "", "", "", "", "w", "", "", "", "", "", "", "", "r", "", "", ""]];
+GameState.gameMap = randomChoice(rooms);
 
 GameState.enemies = [];
 PIXI.utils.skipHello();
@@ -47,7 +37,6 @@ function setup() {
 
     GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x] = "p1";
     GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x] = "p2";
-    app.ticker.add(delta => gameLoop(delta)); // not used now
 
     const grid = drawGrid();
     drawWalls();
@@ -56,10 +45,6 @@ function setup() {
     bindKeys();
     app.stage.addChild(GameState.player);
     app.stage.addChild(GameState.player2);
-}
-
-function gameLoop(delta) {
-
 }
 
 function bindKeys() {
