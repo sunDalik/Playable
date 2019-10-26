@@ -1,19 +1,24 @@
 function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
     let counter = 0;
-    let attackParticles = [new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, tileX1, tileY1),
-        new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, tileX1, tileY1),
-        new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, tileX1, tileY1)];
+    const startPosX = tileX1 + 0.3 * Math.sign(tileX2 - tileX1);
+    const startPosY = tileY1 + 0.3 * Math.sign(tileY2 - tileY1);
+    let attackParticles = [new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY),
+        new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY),
+        new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY)];
+    attackParticles[0].alpha = 0.8;
+    attackParticles[1].alpha = 0.6;
+    attackParticles[2].alpha = 0.4;
     for (const particle of attackParticles) {
-        particle.width = GameState.TILESIZE / 2;
-        particle.height = GameState.TILESIZE / 2;
+        particle.width = GameState.TILESIZE / 5;
+        particle.height = GameState.TILESIZE / 5;
         particle.place();
-        console.log(particle);
+        GameState.APP.stage.addChild(particle);
     }
-    const stepX = (tileX2 - tileX1) / (GameState.TURNTIME / 2);
-    const stepY = (tileY2 - tileY1) / (GameState.TURNTIME / 2);
+    const stepX = (tileX2 - tileX1) * GameState.TILESIZE / (GameState.WEAPON_ATTACK_TIME / 2);
+    const stepY = (tileY2 - tileY1) * GameState.TILESIZE / (GameState.WEAPON_ATTACK_TIME / 2);
 
     function animate() {
-        if (counter < GameState.TURNTIME / 2) {
+        if (counter < GameState.WEAPON_ATTACK_TIME / 2) {
             attackParticles[0].position.x += stepX;
             attackParticles[0].position.y += stepY;
             if (counter >= 1) {
@@ -31,7 +36,10 @@ function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
             }
         }
         counter++;
-        if (counter >= GameState.TURNTIME) {
+        if (counter >= GameState.WEAPON_ATTACK_TIME) {
+            for (const particle of attackParticles) {
+                GameState.APP.stage.removeChild(particle);
+            }
             GameState.APP.ticker.remove(this);
         }
     }
