@@ -54,7 +54,8 @@ class Star extends Enemy {
                     const attackPositionX = this.tilePosition.x + offset;
                     const attackPositionY = this.tilePosition.y + offset * sign;
                     createFadingAttack(new TileElement(GameState.resources["src/images/enemy_attack.png"].texture, attackPositionX, attackPositionY));
-                    attackTile(attackPositionX, attackPositionY);
+                    const player = getPlayerOnTile(attackPositionX, attackPositionY);
+                    if (player !== null) damagePlayer(player, 1);
                 }
             }
         }
