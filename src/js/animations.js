@@ -17,7 +17,7 @@ function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
     const stepX = (tileX2 - tileX1) * GameState.TILESIZE / (GameState.WEAPON_ATTACK_TIME / 2);
     const stepY = (tileY2 - tileY1) * GameState.TILESIZE / (GameState.WEAPON_ATTACK_TIME / 2);
 
-    function animate() {
+    let animation = function () {
         if (counter < GameState.WEAPON_ATTACK_TIME / 2) {
             attackParticles[0].position.x += stepX;
             attackParticles[0].position.y += stepY;
@@ -40,9 +40,9 @@ function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
             for (const particle of attackParticles) {
                 GameState.APP.stage.removeChild(particle);
             }
-            GameState.APP.ticker.remove(this);
+            GameState.APP.ticker.remove(animation);
         }
-    }
+    };
 
-    GameState.APP.ticker.add(animate);
+    GameState.APP.ticker.add(animation);
 }

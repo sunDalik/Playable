@@ -63,7 +63,10 @@ class Player extends TileElement {
     }
 
     attack(tileRangeX, tileRangeY) {
-        createWeaponAnimation(this.tilePosition.x, this.tilePosition.y, this.tilePosition.x + tileRangeX, this.tilePosition.y + tileRangeY);
+        const attackTileX = this.tilePosition.x + tileRangeX;
+        const attackTileY = this.tilePosition.y + tileRangeY;
+        createWeaponAnimation(this.tilePosition.x, this.tilePosition.y, attackTileX, attackTileY);
+        attackTile(attackTileX, attackTileY);
     }
 
     damage(damage) {

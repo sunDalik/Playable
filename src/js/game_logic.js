@@ -15,7 +15,7 @@ function moveEnemies() {
 }
 
 function attackTile(attackPositionX, attackPositionY) {
-    const tileEntity = (GameState.gameMap[attackPositionY][attackPositionX]).entity;
+    const tileEntity = GameState.gameMap[attackPositionY][attackPositionX].entity;
     if (tileEntity !== null && tileEntity.role === ROLE.ENEMY) {
         if (!tileEntity.isDead()) {
             tileEntity.damage(100);
