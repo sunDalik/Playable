@@ -9,12 +9,15 @@ class RollerB extends Roller {
     }
 
     move() {
-        let lastDirTile = null;
-        let lastNotDirTile = null;
+        let lastDirTileEmpty = true;
+        let lastNotDirTileEmpty = true;
         for (let x = 1; ; x++) {
             if (isNotOutOfMap(this.tilePosition.x + x * this.direction, this.tilePosition.y)) {
-                if (lastDirTile === null) {
-                    lastDirTile = GameState.gameMap[this.tilePosition.y][this.tilePosition.x + x * this.direction].entity;
+                if (lastDirTileEmpty === true) {
+                    if (GameState.gameMap[this.tilePosition.y][this.tilePosition.x + x * this.direction].entity !== null
+                        || GameState.gameMap[this.tilePosition.y][this.tilePosition.x + x * this.direction].wall === true) {
+                        lastDirTileEmpty = false;
+                    }
                     let player = getPlayerOnTile(this.tilePosition.x + x * this.direction, this.tilePosition.y);
                     if (player !== null) {
                         if (x === 1) {
@@ -29,8 +32,11 @@ class RollerB extends Roller {
                 }
             }
             if (isNotOutOfMap(this.tilePosition.x - x * this.direction, this.tilePosition.y)) {
-                if (lastNotDirTile === null) {
-                    lastNotDirTile = GameState.gameMap[this.tilePosition.y][this.tilePosition.x - x * this.direction];
+                if (lastNotDirTileEmpty === true) {
+                    if (GameState.gameMap[this.tilePosition.y][this.tilePosition.x - x * this.direction].entity !== null
+                        || GameState.gameMap[this.tilePosition.y][this.tilePosition.x - x * this.direction].wall === true) {
+                        lastNotDirTileEmpty = false;
+                    }
                     let player = getPlayerOnTile(this.tilePosition.x - x * this.direction, this.tilePosition.y);
                     if (player !== null) {
                         this.direction *= -1;
@@ -46,14 +52,12 @@ class RollerB extends Roller {
                     }
                 }
             }
-            if ((lastDirTile !== null && lastNotDirTile !== null) ||
+            if ((lastDirTileEmpty === false && lastNotDirTileEmpty === false) ||
                 (!isNotOutOfMap(this.tilePosition.x + x * this.direction, this.tilePosition.y) &&
                     !isNotOutOfMap(this.tilePosition.x - x * this.direction, this.tilePosition.y))) {
                 break;
             }
         }
-
-
     }
 
     roll() {

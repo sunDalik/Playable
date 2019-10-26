@@ -62,6 +62,10 @@ class Player extends TileElement {
         GameState.APP.ticker.add(this.animation);
     }
 
+    attack(tileRangeX, tileRangeY) {
+        createWeaponAnimation(this.tilePosition.x, this.tilePosition.y, tileRangeX, tileRangeY);
+    }
+
     damage(damage) {
         this.health -= damage;
     }
