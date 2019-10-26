@@ -1,6 +1,8 @@
 "use strict";
 
 GameState.TILESIZE = 75;
+
+//GameState.gameMap = generateMap(randomChoice(rooms));
 GameState.gameMap = randomChoice(rooms);
 
 GameState.enemies = [];

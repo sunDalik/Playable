@@ -2,9 +2,9 @@
 
 function fireball() {
     let fire = new PIXI.Sprite(GameState.resources["src/images/fire.png"].texture);
-    const fireHeight = GameState.TILESIZE * 0.4;
+    const fireHeight = GameState.TILESIZE * 1;
     fire.anchor.set(0, 0.5);
-    fire.position.set(GameState.player.x, GameState.player.y - fireHeight / 2);
+    fire.position.set(GameState.player.x, GameState.player.y);
     fire.width = Math.sqrt((GameState.player2.x - GameState.player.x) ** 2 + (GameState.player.y - GameState.player2.y) ** 2);
     fire.height = fireHeight;
     app.stage.addChild(fire);
@@ -12,7 +12,20 @@ function fireball() {
     if ((GameState.player2.x - GameState.player.x) < 0) {
         fire.rotation += Math.PI;
     }
+    fire.getBounds();
     createFadingAttack(fire, false);
+    for (const enemy of GameState.enemies) {
+        if (!enemy.isDead()) {
+            if (collisionCheck(fire.vertexData, enemy.vertexData)) {
+                enemy.damage(100);
+                if (enemy.isDead()) {
+                    GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x] = "";
+                    enemy.cancelAnimation();
+                    enemy.visible = false;
+                }
+            }
+        }
+    }
 }
 
 function teleport() {
@@ -106,9 +119,9 @@ function crossAttack() {
 function rotate(object, clockwise = true) {
     let counter = 0;
 
-    object.animation = function (delta) {
-        if (clockwise) object.rotation += 2 * Math.PI / GameState.TURNTIME * delta;
-        else object.rotation -= 2 * Math.PI / GameState.TURNTIME * delta;
+    object.animation = function () {
+        if (clockwise) object.rotation += 2 * Math.PI / GameState.TURNTIME;
+        else object.rotation -= 2 * Math.PI / GameState.TURNTIME;
         counter++;
         if (counter >= GameState.TURNTIME) GameState.APP.ticker.remove(object.animation);
     };

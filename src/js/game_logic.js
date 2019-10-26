@@ -1,9 +1,5 @@
 "use strict";
 
-function collisionCheck(rectangle1, rectangle2) {
-
-}
-
 function moveEnemies() {
     if (GameState.enemiesTimeout === null) {
         GameState.enemiesTimeout = setTimeout(() => {
