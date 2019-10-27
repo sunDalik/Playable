@@ -14,7 +14,7 @@ function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
         particle.width = GameState.TILESIZE / 5;
         particle.height = GameState.TILESIZE / 5;
         particle.place();
-        GameState.APP.stage.addChild(particle);
+        GameState.gameWorld.addChild(particle);
     }
     const stepX = (tileX2 - tileX1) * GameState.TILESIZE / (GameState.WEAPON_ATTACK_TIME / 2);
     const stepY = (tileY2 - tileY1) * GameState.TILESIZE / (GameState.WEAPON_ATTACK_TIME / 2);
@@ -40,7 +40,7 @@ function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
         counter++;
         if (counter >= GameState.WEAPON_ATTACK_TIME) {
             for (const particle of attackParticles) {
-                GameState.APP.stage.removeChild(particle);
+                GameState.gameWorld.removeChild(particle);
             }
             GameState.APP.ticker.remove(animation);
         }
@@ -51,7 +51,7 @@ function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
 
 function createFadingAttack(attack, tileAttack = true) {
     if (tileAttack) attack.place();
-    app.stage.addChild(attack);
+    GameState.gameWorld.addChild(attack);
     const delay = GameState.TURNTIME / 2;
     let counter = 0;
 
@@ -62,7 +62,7 @@ function createFadingAttack(attack, tileAttack = true) {
         counter++;
         if (counter >= GameState.TURNTIME) {
             GameState.APP.ticker.remove(animation);
-            GameState.APP.stage.removeChild(attack);
+            GameState.gameWorld.removeChild(attack);
         }
     };
     GameState.APP.ticker.add(animation);

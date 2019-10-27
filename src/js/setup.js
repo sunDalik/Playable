@@ -40,8 +40,12 @@ function setup() {
         }
     }
 
-    GameState.gameMap = generateMap(level);
+    GameState.gameWorld = new PIXI.Container();
+    GameState.APP.stage.addChild(GameState.gameWorld);
+    GameState.HUD = new PIXI.Container();
+    GameState.APP.stage.addChild(GameState.HUD);
 
+    GameState.gameMap = generateMap(level);
     GameState.player = new Player(GameState.resources["src/images/player.png"].texture, player1StartTileX, player1StartTileY);
     GameState.player.place();
 
@@ -54,19 +58,19 @@ function setup() {
     const grid = drawGrid();
     drawWalls();
     drawVoids();
+    displayInstructions();
     drawEnemies();
     bindKeys();
-    GameState.player.zIndex = 1000;
     GameState.player2.zIndex = GameState.player.zIndex + 1;
-    GameState.APP.stage.addChild(GameState.player);
-    GameState.APP.stage.addChild(GameState.player2);
-    GameState.APP.stage.sortableChildren = true;
+    GameState.gameWorld.addChild(GameState.player);
+    GameState.gameWorld.addChild(GameState.player2);
+    GameState.gameWorld.sortableChildren = true;
     centerCameraOnPlayer(GameState.player);
 }
 
 function centerCameraOnPlayer(player) {
-    GameState.APP.stage.position.x += GameState.APP.renderer.screen.width / 2 - player.position.x;
-    GameState.APP.stage.position.y += GameState.APP.renderer.screen.height / 2 - player.position.y;
+    GameState.gameWorld.position.x += GameState.APP.renderer.screen.width / 2 - player.position.x;
+    GameState.gameWorld.position.y += GameState.APP.renderer.screen.height / 2 - player.position.y;
 }
 
 function bindKeys() {

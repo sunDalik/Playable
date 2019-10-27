@@ -7,6 +7,8 @@ class GameState {
 }
 
 GameState.APP = null;
+GameState.gameWorld = null;
+GameState.HUD = null;
 GameState.loader = null;
 GameState.resources = null;
 GameState.TILESIZE = 75;

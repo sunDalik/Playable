@@ -27,7 +27,7 @@ class Player extends TileElement {
             }
         };
         GameState.APP.ticker.add(this.animation);
-        GameState.APP.stage.position.x -= tileStepX * GameState.TILESIZE;
+        GameState.gameWorld.position.x -= tileStepX * GameState.TILESIZE;
     }
 
     stepY(tileStepY) {
@@ -59,7 +59,7 @@ class Player extends TileElement {
             }
         };
         GameState.APP.ticker.add(this.animation);
-        GameState.APP.stage.position.y -= tileStepY * GameState.TILESIZE;
+        GameState.gameWorld.position.y -= tileStepY * GameState.TILESIZE;
     }
 
     attack(tileRangeX, tileRangeY) {

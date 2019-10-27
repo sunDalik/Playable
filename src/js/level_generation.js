@@ -152,7 +152,6 @@ function mergeRoomIntoLevel(level, room, startX, startY) {
             level[i][j] = room[i - startY][j - startX];
         }
     }
-
     return level;
 }
 

@@ -7,7 +7,7 @@ function fireball() {
     fire.position.set(GameState.player.x, GameState.player.y);
     fire.width = Math.sqrt((GameState.player2.x - GameState.player.x) ** 2 + (GameState.player.y - GameState.player2.y) ** 2);
     fire.height = fireHeight;
-    app.stage.addChild(fire);
+    GameState.gameWorld.addChild(fire);
     fire.rotation = Math.atan((GameState.player2.y - GameState.player.y) / (GameState.player2.x - GameState.player.x));
     if ((GameState.player2.x - GameState.player.x) < 0) {
         fire.rotation += Math.PI;

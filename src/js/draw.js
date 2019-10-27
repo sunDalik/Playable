@@ -7,7 +7,7 @@ function drawWalls() {
                 let wall = new PIXI.Sprite(GameState.resources["src/images/wall.png"].texture);
                 wall.position.set(GameState.TILESIZE * j, GameState.TILESIZE * i);
                 wall.width = wall.height = GameState.TILESIZE;
-                app.stage.addChild(wall);
+                GameState.gameWorld.addChild(wall);
             }
         }
     }
@@ -21,7 +21,7 @@ function drawVoids() {
                 voidTile.position.set(GameState.TILESIZE * j, GameState.TILESIZE * i);
                 voidTile.width = voidTile.height = GameState.TILESIZE;
                 voidTile.zIndex = 999;
-                app.stage.addChild(voidTile);
+                GameState.gameWorld.addChild(voidTile);
             }
         }
     }
@@ -41,7 +41,7 @@ function drawEnemies() {
 
 function addEnemyToStage(enemy) {
     enemy.place();
-    app.stage.addChild(enemy);
+    GameState.gameWorld.addChild(enemy);
 }
 
 function displayInstructions() {
@@ -51,8 +51,8 @@ function displayInstructions() {
     rect.beginFill(0xFFFFFF);
     rect.drawRect(10, 10, instructions.width + 20, instructions.height + 20);
     instructions.position.set(20, 20);
-    app.stage.addChild(rect);
-    app.stage.addChild(instructions);
+    GameState.HUD.addChild(rect);
+    GameState.HUD.addChild(instructions);
 }
 
 function drawGrid() {
@@ -63,6 +63,6 @@ function drawGrid() {
     grid.position.x -= 2 * GameState.TILESIZE / gridTexture.width;
     grid.position.y -= 2 * GameState.TILESIZE / gridTexture.height;
     grid.tint = 0x9abec0;
-    app.stage.addChild(grid);
+    GameState.gameWorld.addChild(grid);
     return grid;
 }
