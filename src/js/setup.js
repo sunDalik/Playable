@@ -23,17 +23,18 @@ function initApplication() {
 
 
 function loadProgressHandler(loader, resource) {
-    console.log("Loading resource: " + resource.url);
-    console.log("Progress: " + loader.progress + "%");
+    //console.log("Loading resource: " + resource.url);
+    //console.log("Progress: " + loader.progress + "%");
 }
 
 function setup() {
-    GameState.gameMap = generateMap(randomChoice(rooms));
+    let level = generateLevel();
+    GameState.gameMap = generateMap(level);
 
-    GameState.player = new Player(GameState.resources["src/images/player.png"].texture, 7, 4);
+    GameState.player = new Player(GameState.resources["src/images/player.png"].texture, 1, 1);
     GameState.player.place();
 
-    GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, 12, 4);
+    GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, 1, 2);
     GameState.player2.place();
 
     GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].entity = GameState.player;
@@ -45,9 +46,15 @@ function setup() {
     displayInstructions();
     bindKeys();
     GameState.player2.zIndex = GameState.player.zIndex + 1;
-    app.stage.addChild(GameState.player);
-    app.stage.addChild(GameState.player2);
-    app.stage.sortableChildren = true;
+    GameState.APP.stage.addChild(GameState.player);
+    GameState.APP.stage.addChild(GameState.player2);
+    GameState.APP.stage.sortableChildren = true;
+    centerCameraOnPlayer(GameState.player);
+}
+
+function centerCameraOnPlayer(player) {
+    GameState.APP.stage.position.x += GameState.APP.renderer.screen.width / 2 - player.position.x;
+    GameState.APP.stage.position.y += GameState.APP.renderer.screen.height / 2 - player.position.y;
 }
 
 function bindKeys() {
@@ -115,6 +122,15 @@ function generateMap(map) {
             else if (map[i][j] === "rb") mapCell.entity = new RollerB(j, i);
             else if (map[i][j] === "s") mapCell.entity = new Star(j, i);
             else if (map[i][j] === "sb") mapCell.entity = new StarB(j, i);
+
+            ///////////////
+            if (map[i][j] === "v") {
+                let voidTile = new PIXI.Sprite(GameState.resources["src/images/void.png"].texture);
+                voidTile.position.set(GameState.TILESIZE * j, GameState.TILESIZE * i);
+                voidTile.width = voidTile.height = GameState.TILESIZE;
+                app.stage.addChild(voidTile);
+            }
+            //////////////////
 
             map[i][j] = mapCell;
         }

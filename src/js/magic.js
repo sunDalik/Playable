@@ -28,6 +28,7 @@ function fireball() {
     }
 }
 
+//this probably needs improvement
 function teleport() {
     GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = null;
     if (GameState.player2.x > GameState.player.x) {

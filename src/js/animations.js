@@ -1,3 +1,5 @@
+"use strict";
+
 function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
     let counter = 0;
     const startPosX = tileX1 + 0.3 * Math.sign(tileX2 - tileX1);

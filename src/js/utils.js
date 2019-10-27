@@ -1,17 +1,25 @@
+"use strict";
+
 function randomChoice(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-function collisionCheck(vertexData1, vertexData2) {
-    const lines1 = [[vertexData1[0], vertexData1[1], vertexData1[2], vertexData1[3]],
-        [vertexData1[2], vertexData1[3], vertexData1[4], vertexData1[5]],
-        [vertexData1[4], vertexData1[5], vertexData1[6], vertexData1[7]],
-        [vertexData1[6], vertexData1[7], vertexData1[0], vertexData1[1]]];
+// random: [min; max)
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
 
-    const lines2 = [[vertexData2[0], vertexData2[1], vertexData2[2], vertexData2[3]],
-        [vertexData2[2], vertexData2[3], vertexData2[4], vertexData2[5]],
-        [vertexData2[4], vertexData2[5], vertexData2[6], vertexData2[7]],
-        [vertexData2[6], vertexData2[7], vertexData2[0], vertexData2[1]]];
+function getMaxOfArray(numArray) {
+    return Math.max.apply(null, numArray);
+}
+
+function arraySum(array) {
+    return array.reduce((a, b) => a + b, 0)
+}
+
+function collisionCheck(vertexData1, vertexData2) {
+    const lines1 = getLinesByVertexData(vertexData1);
+    const lines2 = getLinesByVertexData(vertexData2);
 
     for (const line1 of lines1) {
         for (const line2 of lines2) {
@@ -24,13 +32,19 @@ function collisionCheck(vertexData1, vertexData2) {
     if (pointInsideParallelogram(vertexData1[0], vertexData1[1],
         vertexData2[0], vertexData2[1], vertexData2[2], vertexData2[3], vertexData2[4], vertexData2[5], vertexData2[6], vertexData2[7])) {
         return true;
-    }
-    else if (pointInsideParallelogram(vertexData2[0], vertexData2[1],
+    } else if (pointInsideParallelogram(vertexData2[0], vertexData2[1],
         vertexData1[0], vertexData1[1], vertexData1[2], vertexData1[3], vertexData1[4], vertexData1[5], vertexData1[6], vertexData1[7])) {
         return true;
     }
 
     return false;
+}
+
+function getLinesByVertexData(vertexData) {
+    return [[vertexData[0], vertexData[1], vertexData[2], vertexData[3]],
+        [vertexData[2], vertexData[3], vertexData[4], vertexData[5]],
+        [vertexData[4], vertexData[5], vertexData[6], vertexData[7]],
+        [vertexData[6], vertexData[7], vertexData[0], vertexData[1]]]
 }
 
 // returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s)

@@ -6,6 +6,7 @@ function loadAll() {
         .add("src/images/player2.png")
         .add("src/images/fire.png")
         .add("src/images/wall.png")
+        .add("src/images/void.png")
         .add("src/images/player_attack.png")
         .add("src/images/player2_attack.png")
         .add("src/images/weapon_particle.png")

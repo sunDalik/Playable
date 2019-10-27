@@ -1,3 +1,5 @@
+"use strict";
+
 function isNotAWall(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         if (GameState.gameMap[tilePositionY][tilePositionX].wall === false) {

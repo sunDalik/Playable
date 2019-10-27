@@ -15,20 +15,19 @@ class Player extends TileElement {
         const b = -(this.position.x + (tileStepX * GameState.TILESIZE) / 2) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
         let counter = 0;
-        let player = this;
         const stepX = tileStepX * GameState.TILESIZE / this.STEP_ANIMATION_TIME;
 
-        this.animation = function () {
-            player.position.x += stepX;
-            player.position.y = a * (player.position.x ** 2) + b * player.position.x + c;
+        this.animation = () => {
+            this.position.x += stepX;
+            this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
             counter++;
-            if (counter >= player.STEP_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(player.animation);
-                player.place();
+            if (counter >= this.STEP_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
             }
         };
-
         GameState.APP.ticker.add(this.animation);
+        GameState.APP.stage.position.x -= tileStepX * GameState.TILESIZE;
     }
 
     stepY(tileStepY) {
@@ -60,6 +59,7 @@ class Player extends TileElement {
             }
         };
         GameState.APP.ticker.add(this.animation);
+        GameState.APP.stage.position.y -= tileStepY * GameState.TILESIZE;
     }
 
     attack(tileRangeX, tileRangeY) {

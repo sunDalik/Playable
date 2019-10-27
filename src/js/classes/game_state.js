@@ -16,4 +16,4 @@ GameState.player2 = null;
 GameState.enemies = [];
 GameState.enemiesTimeout = null;
 GameState.TURNTIME = 16;
-GameState.WEAPON_ATTACK_TIME = 10;
+GameState.WEAPON_ATTACK_TIME = 8;
