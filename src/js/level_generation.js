@@ -50,8 +50,8 @@ function generateLevel() {
             previousYMaxAddition = 0;
         }
         const currentRoom = levelRooms[i];
-        const randomOffsetX = getRandomInt(3, 5);
-        const randomOffsetY = getRandomInt(3, 5);
+        const randomOffsetX = getRandomInt(2, 4);
+        const randomOffsetY = getRandomInt(2, 4);
         const startX = previousX + randomOffsetX;
         const startY = previousY + randomOffsetY;
         level = mergeRoomIntoLevel(level, currentRoom, startX, startY);
