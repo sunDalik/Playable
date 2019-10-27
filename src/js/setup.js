@@ -42,9 +42,11 @@ function setup() {
 
     const grid = drawGrid();
     drawWalls();
+    drawVoids();
     drawEnemies();
     displayInstructions();
     bindKeys();
+    GameState.player.zIndex = 1000;
     GameState.player2.zIndex = GameState.player.zIndex + 1;
     GameState.APP.stage.addChild(GameState.player);
     GameState.APP.stage.addChild(GameState.player2);
@@ -115,6 +117,7 @@ function generateMap(map) {
                 wall: false,
                 hazard: null,
                 entity: null,
+                void: false
             };
             if (map[i][j] === "w") mapCell.wall = true;
 
@@ -123,14 +126,7 @@ function generateMap(map) {
             else if (map[i][j] === "s") mapCell.entity = new Star(j, i);
             else if (map[i][j] === "sb") mapCell.entity = new StarB(j, i);
 
-            ///////////////
-            if (map[i][j] === "v") {
-                let voidTile = new PIXI.Sprite(GameState.resources["src/images/void.png"].texture);
-                voidTile.position.set(GameState.TILESIZE * j, GameState.TILESIZE * i);
-                voidTile.width = voidTile.height = GameState.TILESIZE;
-                app.stage.addChild(voidTile);
-            }
-            //////////////////
+            if (map[i][j] === "v") mapCell.void = true;
 
             map[i][j] = mapCell;
         }

@@ -13,6 +13,20 @@ function drawWalls() {
     }
 }
 
+function drawVoids() {
+    for (let i = 0; i < GameState.gameMap.length; ++i) {
+        for (let j = 0; j < GameState.gameMap[0].length; ++j) {
+            if (GameState.gameMap[i][j].void === true) {
+                let voidTile = new PIXI.Sprite(GameState.resources["src/images/void.png"].texture);
+                voidTile.position.set(GameState.TILESIZE * j, GameState.TILESIZE * i);
+                voidTile.width = voidTile.height = GameState.TILESIZE;
+                voidTile.zIndex = 999;
+                app.stage.addChild(voidTile);
+            }
+        }
+    }
+}
+
 function drawEnemies() {
     for (let i = 0; i < GameState.gameMap.length; ++i) {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
