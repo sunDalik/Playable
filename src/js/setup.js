@@ -12,7 +12,6 @@ loadAll();
 
 function initApplication() {
     let app = new PIXI.Application({resolution: window.devicePixelRatio});
-    app.renderer.backgroundColor = 0xabcfd1;
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
     app.renderer.autoDensity = true;
@@ -42,6 +41,13 @@ function setup() {
 
     GameState.gameWorld = new PIXI.Container();
     GameState.APP.stage.addChild(GameState.gameWorld);
+    //let blackBGContainer = new PIXI.Container();
+    //let blackBG = new PIXI.Sprite(GameState.resources["src/images/void.png"].texture);
+    //blackBG.width = GameState.APP.view.width;
+    //blackBG.height = GameState.APP.view.height;
+    //blackBGContainer.addChild(blackBG);
+    //blackBGContainer.zIndex = -1;
+    //GameState.APP.stage.addChild(blackBGContainer);
     GameState.HUD = new PIXI.Container();
     GameState.APP.stage.addChild(GameState.HUD);
 
@@ -65,7 +71,21 @@ function setup() {
     GameState.gameWorld.addChild(GameState.player);
     GameState.gameWorld.addChild(GameState.player2);
     GameState.gameWorld.sortableChildren = true;
+    GameState.APP.stage.sortableChildren = true;
     centerCameraOnPlayer(GameState.player);
+
+    let gameWorldBG = new PIXI.Graphics();
+    gameWorldBG.beginFill(0xabcfd1);
+    gameWorldBG.drawRect(10, 10, GameState.gameWorld.width - 20, GameState.gameWorld.height - 20);
+    gameWorldBG.zIndex = -1;
+    //to hide grid on gameWorld borders
+    const gridBorderWidth = -2 * GameState.TILESIZE / GameState.resources["src/images/grid.png"].texture.width;
+    let blackOutline = new PIXI.Graphics();
+    blackOutline.lineStyle(3, 0x000000);
+    blackOutline.drawRect(gridBorderWidth, gridBorderWidth, GameState.gameWorld.width, GameState.gameWorld.height);
+    blackOutline.endFill();
+    GameState.gameWorld.addChild(gameWorldBG);
+    GameState.gameWorld.addChild(blackOutline);
 }
 
 function centerCameraOnPlayer(player) {
