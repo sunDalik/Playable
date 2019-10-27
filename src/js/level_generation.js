@@ -21,14 +21,17 @@ function generateLevel() {
 
     for (let i = 0; i < levelRoomHeight; ++i) {
         for (let j = 0; j < levelRoomWidth; ++j) {
-            levelTileWidths[i] += levelRooms[i * levelRoomWidth + j][0].length;
-            levelTileHeights[j] += levelRooms[i * levelRoomWidth + j].length;
+            const currentRoom = levelRooms[i * levelRoomWidth + j];
+            levelTileWidths[i] += currentRoom[0].length;
+            if (currentRoom.length > levelTileHeights[j]) {
+                levelTileHeights[j] = currentRoom.length;
+            }
         }
     }
 
     const levelTileWidth = getMaxOfArray(levelTileWidths) + 5 * (levelRoomWidth + 1);
     const levelTileHeight = arraySum(levelTileHeights) + 5 * (levelRoomHeight + 1);
-
+    
     //initialize level array
     for (let i = 0; i < levelTileHeight; ++i) {
         level[i] = [];

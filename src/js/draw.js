@@ -43,7 +43,7 @@ function displayInstructions() {
 
 function drawGrid() {
     let gridTexture = GameState.resources["src/images/grid.png"].texture;
-    let grid = new PIXI.TilingSprite(gridTexture, app.view.width * gridTexture.width / GameState.TILESIZE, app.view.height * gridTexture.height / GameState.TILESIZE);
+    let grid = new PIXI.TilingSprite(gridTexture, GameState.gameMap[0].length * gridTexture.width, GameState.gameMap.length * gridTexture.height);
     grid.scale.set(GameState.TILESIZE / gridTexture.width, GameState.TILESIZE / gridTexture.height);
     //2 is half-width of a tile's border... Don't ask me I don't understand why it works either
     grid.position.x -= 2 * GameState.TILESIZE / gridTexture.width;
