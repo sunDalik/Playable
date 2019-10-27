@@ -59,6 +59,7 @@ function generateLevel() {
         if (currentRoom.length + randomOffsetY > previousYMaxAddition) previousYMaxAddition = currentRoom.length + randomOffsetY;
     }
 
+
     let entryPoints = [];
     for (let i = 0; i < level.length; ++i) {
         for (let j = 0; j < level[0].length; ++j) {
@@ -110,6 +111,22 @@ function generateLevel() {
             level = drawConnection(level, possibleConnections[minConnectionIndex].connection);
         }
     }
+
+    for (let i = 0; i < level.length; ++i) {
+        for (let j = 0; j < level[0].length; ++j) {
+            if (level[i][j] === "path") {
+                if (level[i + 1][j] === "v") level[i + 1][j] = "w";
+                if (level[i][j + 1] === "v") level[i][j + 1] = "w";
+                if (level[i + 1][j + 1] === "v") level[i + 1][j + 1] = "w";
+                if (level[i - 1][j] === "v") level[i - 1][j] = "w";
+                if (level[i][j - 1] === "v") level[i][j - 1] = "w";
+                if (level[i - 1][j - 1] === "v") level[i - 1][j - 1] = "w";
+                if (level[i - 1][j + 1] === "v") level[i - 1][j + 1] = "w";
+                if (level[i + 1][j - 1] === "v") level[i + 1][j - 1] = "w";
+            }
+        }
+    }
+
     return level;
 }
 
@@ -126,7 +143,7 @@ function mergeRoomIntoLevel(level, room, startX, startY) {
 function drawConnection(level, connection) {
     //[x][y] instead [y][x] because once again the Graph is weird
     for (let i = 0; i < connection.length; ++i) {
-        level[connection[i].x][connection[i].y] = "";
+        level[connection[i].x][connection[i].y] = "path";
     }
     return level;
 }

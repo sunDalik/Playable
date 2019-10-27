@@ -29,12 +29,23 @@ function loadProgressHandler(loader, resource) {
 
 function setup() {
     let level = generateLevel();
+    let player1StartTileX, player1StartTileY;
+    loop: for (let i = 0; i < level.length; ++i) {
+        for (let j = 0; j < level[0].length; ++j) {
+            if (level[i][j] === "") {
+                player1StartTileX = j;
+                player1StartTileY = i;
+                break loop;
+            }
+        }
+    }
+
     GameState.gameMap = generateMap(level);
 
-    GameState.player = new Player(GameState.resources["src/images/player.png"].texture, 1, 1);
+    GameState.player = new Player(GameState.resources["src/images/player.png"].texture, player1StartTileX, player1StartTileY);
     GameState.player.place();
 
-    GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, 1, 2);
+    GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, player1StartTileX, player1StartTileY + 1);
     GameState.player2.place();
 
     GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].entity = GameState.player;
