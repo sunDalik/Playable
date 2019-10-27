@@ -55,7 +55,6 @@ function setup() {
     drawWalls();
     drawVoids();
     drawEnemies();
-    displayInstructions();
     bindKeys();
     GameState.player.zIndex = 1000;
     GameState.player2.zIndex = GameState.player.zIndex + 1;

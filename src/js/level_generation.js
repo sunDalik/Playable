@@ -83,11 +83,13 @@ function generateLevel() {
     }
 
     for (const entry of entryPoints) {
-        let minConnection = getMinimalConnection(levelGraph, entry, entryPoints);
-        if (minConnection !== undefined) {
-            minConnection.entry.connected = true;
-            entry.connected = true;
-            level = drawConnection(level, minConnection.connection);
+        if (!entry.connected) {
+            let minConnection = getMinimalConnection(levelGraph, entry, entryPoints);
+            if (minConnection !== undefined) {
+                minConnection.entry.connected = true;
+                entry.connected = true;
+                level = drawConnection(level, minConnection.connection);
+            }
         }
     }
 
@@ -175,7 +177,7 @@ function getMinimalConnection(graph, startEntry, endEntries, hasToBeUnconnected 
     }
 
     let minConnectionIndex;
-    for (let i = 1; i < possibleConnections.length; ++i) {
+    for (let i = 0; i < possibleConnections.length; ++i) {
         if (minConnectionIndex === undefined) {
             if (possibleConnections[i].connection.length !== 0) {
                 minConnectionIndex = i;
