@@ -92,13 +92,40 @@ function generateLevel() {
     }
 
     if (oddEntry !== undefined) {
-        let minConnection = getMinimalConnection(levelGraph, oddEntry, entryPoints);
+        let minConnection = getMinimalConnection(levelGraph, oddEntry, entryPoints, false);
         if (minConnection !== undefined) {
             oddEntry.connected = true;
             level = drawConnection(level, minConnection.connection);
         }
     }
 
+    let levelPlayerGraph = getLevelPlayerGraph(level);
+
+    //ensure that we can reach any entry from any other entry
+    for (let i = 0; i < entryPoints.length; ++i) {
+        const testEntry = entryPoints[i % entryPoints.length];
+        const unreachableEntries = [];
+        for (const entry of entryPoints) {
+            if (!(entry.coords.x === testEntry.coords.x && entry.coords.y === testEntry.coords.y)) {
+                const start = levelPlayerGraph.grid[testEntry.coords.y][testEntry.coords.x];
+                const end = levelPlayerGraph.grid[entry.coords.y][entry.coords.x];
+                const result = astar.search(levelPlayerGraph, start, end);
+                if (result.length === 0) {
+                    unreachableEntries.push(entry);
+                }
+            }
+        }
+
+        if (unreachableEntries.length !== 0) {
+            let minConnection = getMinimalConnection(levelGraph, testEntry, unreachableEntries, false);
+            if (minConnection !== undefined) {
+                level = drawConnection(level, minConnection.connection);
+            }
+            levelPlayerGraph = getLevelPlayerGraph(level);
+        }
+    }
+
+    //outline paths with walls
     for (let i = 0; i < level.length; ++i) {
         for (let j = 0; j < level[0].length; ++j) {
             if (level[i][j] === "path") {
@@ -138,7 +165,8 @@ function drawConnection(level, connection) {
 function getMinimalConnection(graph, startEntry, endEntries, hasToBeUnconnected = true) {
     let possibleConnections = [];
     for (const entry of endEntries) {
-        if (!entry.connected || hasToBeUnconnected) {
+        if (!(entry.coords.x === startEntry.coords.x && entry.coords.y === startEntry.coords.y)
+            && (!entry.connected || !hasToBeUnconnected)) {
             const start = graph.grid[startEntry.coords.y][startEntry.coords.x];
             const end = graph.grid[entry.coords.y][entry.coords.x];
             const result = astar.search(graph, start, end);
@@ -160,4 +188,19 @@ function getMinimalConnection(graph, startEntry, endEntries, hasToBeUnconnected 
     if (minConnectionIndex !== undefined) {
         return possibleConnections[minConnectionIndex];
     } else return undefined;
+}
+
+function getLevelPlayerGraph(level) {
+    //graph where weights correspond to player's movement ability
+    let levelPlayerGraph = new Graph(level);
+    for (let i = 0; i < levelPlayerGraph.grid.length; ++i) {
+        for (let j = 0; j < levelPlayerGraph.grid[0].length; ++j) {
+            if (levelPlayerGraph.grid[i][j].weight === "v" || levelPlayerGraph.grid[i][j].weight === "w") {
+                levelPlayerGraph.grid[i][j].weight = 0;
+            } else {
+                levelPlayerGraph.grid[i][j].weight = 1;
+            }
+        }
+    }
+    return levelPlayerGraph;
 }
