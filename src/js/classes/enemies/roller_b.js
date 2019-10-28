@@ -81,7 +81,7 @@ class RollerB extends Roller {
         let counter = 0;
         GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
         let step = this.direction * GameState.TILESIZE / (this.ROLL_ANIMATION_TIME / 2);
-        const jumpHeight = 40;
+        const jumpHeight = GameState.TILESIZE * 40 / 75;
         const a = jumpHeight / ((GameState.TILESIZE / 2 / 3) ** 2);
         const b = -(this.position.x + (4 / 3) * this.direction * GameState.TILESIZE + (-this.direction * GameState.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
@@ -91,13 +91,11 @@ class RollerB extends Roller {
             if (counter < this.ROLL_ANIMATION_TIME / 2) {
                 this.position.x += step;
                 counter++;
-            }
-            else if (counter < this.ROLL_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME / 3) {
+            } else if (counter < this.ROLL_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME / 3) {
                 step = this.direction * GameState.TILESIZE / this.BUMP_ANIMATION_TIME;
                 this.position.x += step;
                 counter++;
-            }
-            else if (counter < this.ROLL_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
+            } else if (counter < this.ROLL_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
                 this.position.x -= step / 2;
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;
@@ -113,7 +111,7 @@ class RollerB extends Roller {
     bump() {
         let counter = 0;
         const step = this.direction * GameState.TILESIZE / this.BUMP_ANIMATION_TIME;
-        const jumpHeight = 40;
+        const jumpHeight = GameState.TILESIZE * 40 / 75;
         const a = jumpHeight / ((GameState.TILESIZE / 2 / 3) ** 2);
         const b = -(this.position.x + (1 / 3) * this.direction * GameState.TILESIZE + (-this.direction * GameState.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
@@ -122,8 +120,7 @@ class RollerB extends Roller {
             if (counter < this.BUMP_ANIMATION_TIME / 3) {
                 this.position.x += step;
                 counter++;
-            }
-            else if (counter < this.BUMP_ANIMATION_TIME) {
+            } else if (counter < this.BUMP_ANIMATION_TIME) {
                 this.position.x -= step / 2;
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;

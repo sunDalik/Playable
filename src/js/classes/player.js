@@ -10,7 +10,7 @@ class Player extends TileElement {
 
     stepX(tileStepX) {
         this.tilePosition.x += tileStepX;
-        const jumpHeight = 25;
+        const jumpHeight = GameState.TILESIZE * 25 / 75;
         const a = jumpHeight / ((tileStepX * GameState.TILESIZE / 2) ** 2);
         const b = -(this.position.x + (tileStepX * GameState.TILESIZE) / 2) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);

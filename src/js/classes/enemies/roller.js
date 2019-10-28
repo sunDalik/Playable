@@ -58,7 +58,7 @@ class Roller extends Enemy {
         this.direction *= -1;
         const oldStep = oldDirection * GameState.TILESIZE / this.BUMP_ANIMATION_TIME;
         const newStep = oldStep * -1;
-        const jumpHeight = 40;
+        const jumpHeight = GameState.TILESIZE * 40 / 75;
         const a = jumpHeight / ((GameState.TILESIZE / 2 / 3) ** 2);
         const b = -(this.position.x + (1 / 3) * oldDirection * GameState.TILESIZE + (this.direction * GameState.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
@@ -67,8 +67,7 @@ class Roller extends Enemy {
             if (counter < this.BUMP_ANIMATION_TIME / 3) {
                 this.position.x += oldStep;
                 counter++;
-            }
-            else if (counter >= this.BUMP_ANIMATION_TIME / 3 && counter < this.BUMP_ANIMATION_TIME) {
+            } else if (counter >= this.BUMP_ANIMATION_TIME / 3 && counter < this.BUMP_ANIMATION_TIME) {
                 this.correctScale();
                 this.position.x += newStep / 2;
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;

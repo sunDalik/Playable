@@ -17,6 +17,10 @@ function arraySum(array) {
     return array.reduce((a, b) => a + b, 0)
 }
 
+function distanceBetweenPoints(x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+}
+
 function collisionCheck(vertexData1, vertexData2) {
     const lines1 = getLinesByVertexData(vertexData1);
     const lines2 = getLinesByVertexData(vertexData2);

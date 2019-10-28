@@ -1,8 +1,5 @@
 "use strict";
 
-GameState.TILESIZE = 75;
-
-GameState.enemies = [];
 PIXI.utils.skipHello();
 const app = initApplication();
 GameState.APP = app;
@@ -49,16 +46,15 @@ function setup() {
     GameState.APP.stage.addChild(GameState.HUD);
 
     GameState.gameMap = generateMap(level);
+
     GameState.player = new Player(GameState.resources["src/images/player.png"].texture, player1StartTileX, player1StartTileY);
-    GameState.player.place();
-
     GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, player1StartTileX, player1StartTileY + 1);
-    GameState.player2.place();
-
     GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].entity = GameState.player;
     GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.player2;
+    GameState.tiles.push(GameState.player);
+    GameState.tiles.push(GameState.player2);
 
-    const grid = drawGrid();
+    GameState.grid = drawGrid();
     drawWalls();
     drawVoids();
     displayInstructions();
@@ -92,10 +88,20 @@ function centerCamera() {
 
 function centerCameraX() {
     GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - (GameState.player.position.x + (GameState.player2.position.x - GameState.player.position.x) / 2);
+    //const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
+    //if (distanceBetweenPlayers > 1000) {
+    //    GameState.TILESIZE = 75000 * 5 / distanceBetweenPlayers;
+    //    redrawTiles();
+    //}
 }
 
 function centerCameraY() {
     GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - (GameState.player.position.y + (GameState.player2.position.y - GameState.player.position.y) / 2);
+    //const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
+    //if (distanceBetweenPlayers > 1000) {
+    //    GameState.TILESIZE = 75000 * 5 / distanceBetweenPlayers;
+    //    redrawTiles();
+    //}
 }
 
 function bindKeys() {

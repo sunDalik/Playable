@@ -4,10 +4,9 @@ function drawWalls() {
     for (let i = 0; i < GameState.gameMap.length; ++i) {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
             if (GameState.gameMap[i][j].wall === true) {
-                let wall = new PIXI.Sprite(GameState.resources["src/images/wall.png"].texture);
-                wall.position.set(GameState.TILESIZE * j, GameState.TILESIZE * i);
-                wall.width = wall.height = GameState.TILESIZE;
-                GameState.gameWorld.addChild(wall);
+                let wallTile = new WallTile(j, i);
+                GameState.gameWorld.addChild(wallTile);
+                GameState.tiles.push(wallTile);
             }
         }
     }
@@ -17,11 +16,10 @@ function drawVoids() {
     for (let i = 0; i < GameState.gameMap.length; ++i) {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
             if (GameState.gameMap[i][j].void === true) {
-                let voidTile = new PIXI.Sprite(GameState.resources["src/images/void.png"].texture);
-                voidTile.position.set(GameState.TILESIZE * j, GameState.TILESIZE * i);
-                voidTile.width = voidTile.height = GameState.TILESIZE;
+                let voidTile = new VoidTile(j, i);
                 voidTile.zIndex = 999;
                 GameState.gameWorld.addChild(voidTile);
+                GameState.tiles.push(voidTile);
             }
         }
     }
@@ -32,16 +30,12 @@ function drawEnemies() {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
             const entity = GameState.gameMap[i][j].entity;
             if (entity !== null && entity.role === ROLE.ENEMY) {
-                addEnemyToStage(entity);
+                GameState.gameWorld.addChild(entity);
                 GameState.enemies.push(entity);
+                GameState.tiles.push(entity);
             }
         }
     }
-}
-
-function addEnemyToStage(enemy) {
-    enemy.place();
-    GameState.gameWorld.addChild(enemy);
 }
 
 function displayInstructions() {
@@ -65,4 +59,13 @@ function drawGrid() {
     grid.tint = 0x9abec0;
     GameState.gameWorld.addChild(grid);
     return grid;
+}
+
+function redrawTiles() {
+    GameState.gameWorld.removeChild(GameState.grid);
+    GameState.grid = drawGrid();
+    for (const tile of GameState.tiles) {
+        tile.fitToTile();
+        tile.place();
+    }
 }

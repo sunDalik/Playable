@@ -10,6 +10,7 @@ class TileElement extends PIXI.Sprite {
         this.animation = null;
         this.anchor.set(0.5, 0.5);
         this.fitToTile();
+        this.place();
     }
 
     cancelAnimation() {
@@ -19,14 +20,22 @@ class TileElement extends PIXI.Sprite {
     }
 
     fitToTile() {
-        const scaleX = GameState.TILESIZE / this.width * 0.80;
-        const scaleY = GameState.TILESIZE / this.height * 0.80;
+        const scaleX = GameState.TILESIZE / this.getUnscaledWidth() * 0.80;
+        const scaleY = GameState.TILESIZE / this.getUnscaledHeight() * 0.80;
         this.scale.set(scaleX, scaleY);
     }
 
     place() {
         this.position.x = GameState.TILESIZE * this.tilePosition.x + (GameState.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
         this.position.y = GameState.TILESIZE * this.tilePosition.y + (GameState.TILESIZE - this.height) / 2 + this.height * this.anchor.y;
+    }
+
+    getUnscaledWidth() {
+        return this.width / this.scale.x;
+    }
+
+    getUnscaledHeight() {
+        return this.width / this.scale.x;
     }
 
     setAnchorToCenter() {
