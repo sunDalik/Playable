@@ -44,6 +44,7 @@ function displayInstructions() {
     let rect = new PIXI.Graphics();
     rect.beginFill(0xFFFFFF);
     rect.drawRect(10, 10, instructions.width + 20, instructions.height + 20);
+    rect.alpha = 0.85;
     instructions.position.set(20, 20);
     GameState.HUD.addChild(rect);
     GameState.HUD.addChild(instructions);
