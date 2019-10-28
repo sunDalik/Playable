@@ -144,4 +144,3 @@ function getCrossProduct(x1, y1, x2, y2, a1, b1, a2, b2) {
     const v2 = {x: a2 - a1, y: b2 - b1};
     return v1.x * v2.y - v1.y * v2.x;
 }
-

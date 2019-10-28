@@ -13,12 +13,22 @@ function fireball() {
         fire.rotation += Math.PI;
     }
     fire.getBounds();
+    let fireCorrectVertexData;
+    const fv = fire.vertexData;
+    const fa = Math.abs(fire.angle);
+    if (fa >= 90 && fa < 180) {
+        fireCorrectVertexData = [fv[6], fv[7], fv[0], fv[1], fv[2], fv[3], fv[4], fv[5]]
+    } else if (fa >= 180 && fa < 270) {
+        fireCorrectVertexData = [fv[4], fv[5], fv[6], fv[7], fv[0], fv[1], fv[2], fv[3]]
+    } else if (fa >= 270 && fa < 360) {
+        fireCorrectVertexData = [fv[2], fv[3], fv[4], fv[5], fv[6], fv[7], fv[0], fv[1]]
+    } else {
+        fireCorrectVertexData = [fv[0], fv[1], fv[2], fv[3], fv[4], fv[5], fv[6], fv[7]]
+    }
     createFadingAttack(fire, false);
     for (const enemy of GameState.enemies) {
         if (!enemy.isDead()) {
-            //TODO: WE DONT ALWAYS PASS THE CORRECT PARALLELOGRAM IN THIS FUNCTION
-            //CORRECT ROTATION!
-            if (collisionCheck(fire.vertexData, enemy.vertexData)) {
+            if (collisionCheck(fireCorrectVertexData, enemy.vertexData)) {
                 enemy.damage(100);
                 if (enemy.isDead()) {
                     GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x].entity = null;
