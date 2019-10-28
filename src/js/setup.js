@@ -70,33 +70,34 @@ function setup() {
 }
 
 function centerCamera() {
-    const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
-    if (distanceBetweenPlayers <= GameState.chainLength) {
-        centerCameraX();
-        centerCameraY()
-    } else {
-        centerCameraOnPlayer();
-    }
+    // const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
+    // if (distanceBetweenPlayers <= GameState.chainLength) {
+    centerCameraX(false);
+    centerCameraY(false);
+    scaleGameMap();
+    //} else {
+    //    centerCameraOnPlayer();
+    //}
 }
 
-function centerCameraX() {
-    const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
-    if (distanceBetweenPlayers <= GameState.chainLength) {
-        GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - (GameState.player.position.x + (GameState.player2.position.x - GameState.player.position.x) / 2);
-        //scaleGameMap();
-    } else {
-        centerCameraXOnPlayer();
-    }
+function centerCameraX(scale = true) {
+    //const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
+    //if (distanceBetweenPlayers <= GameState.chainLength) {
+    GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - (GameState.player.position.x + (GameState.player2.position.x - GameState.player.position.x) / 2);
+    if (scale) scaleGameMap();
+    // } else {
+    //     centerCameraXOnPlayer();
+    // }
 }
 
-function centerCameraY() {
-    const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
-    if (distanceBetweenPlayers <= GameState.chainLength) {
-        GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - (GameState.player.position.y + (GameState.player2.position.y - GameState.player.position.y) / 2);
-        //scaleGameMap()
-    } else {
-        centerCameraYOnPlayer()
-    }
+function centerCameraY(scale = true) {
+    //const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
+    //if (distanceBetweenPlayers <= GameState.chainLength) {
+    GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - (GameState.player.position.y + (GameState.player2.position.y - GameState.player.position.y) / 2);
+    if (scale) scaleGameMap()
+    //} else {
+    //    centerCameraYOnPlayer()
+    //}
 }
 
 function centerCameraOnPlayer(player = GameState.player) {
@@ -113,13 +114,24 @@ function centerCameraYOnPlayer(player = GameState.player) {
 }
 
 function scaleGameMap() {
-    const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
-    const limit = GameState.TILESIZE / 0.75;
-    if (GameState.APP.renderer.screen.width - GameState.player.x < limit || GameState.player.x < limit
-        || GameState.APP.renderer.screen.width - GameState.player2.x < limit || GameState.player2.x < limit
-        || GameState.APP.renderer.screen.height - GameState.player.y < limit || GameState.player.y < limit
-        || GameState.APP.renderer.screen.height - GameState.player2.y < limit || GameState.player2.y < limit) {
+    const limit = 75 / 1;
+    const canZoom = limit * 1.5;
+    const gpx = GameState.player.getGlobalPosition().x;
+    const gpy = GameState.player.getGlobalPosition().y;
+    const gp2x = GameState.player2.getGlobalPosition().x;
+    const gp2y = GameState.player2.getGlobalPosition().y;
+    if (GameState.APP.renderer.screen.width - gpx < limit || gpx < limit
+        || GameState.APP.renderer.screen.width - gp2x < limit || gp2x < limit
+        || GameState.APP.renderer.screen.height - gpy < limit || gpy < limit
+        || GameState.APP.renderer.screen.height - gp2y < limit || gp2y < limit) {
         GameState.TILESIZE--;
+        redrawTiles();
+    } else if (GameState.TILESIZE < GameState.REFERENCE_TILESIZE &&
+        ((GameState.APP.renderer.screen.width - gpx > canZoom && gpx > canZoom
+            && GameState.APP.renderer.screen.height - gpy > canZoom && gpy > canZoom) ||
+            (GameState.APP.renderer.screen.width - gp2x > canZoom && gp2x > canZoom
+                && GameState.APP.renderer.screen.height - gp2y > canZoom && gp2y > canZoom))) {
+        GameState.TILESIZE++;
         redrawTiles();
     }
 }

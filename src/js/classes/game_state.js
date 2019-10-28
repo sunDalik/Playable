@@ -12,6 +12,7 @@ GameState.HUD = null;
 GameState.grid = null;
 GameState.loader = null;
 GameState.resources = null;
+GameState.REFERENCE_TILESIZE = 65;
 GameState.TILESIZE = 65;
 GameState.chainLength = 800;
 GameState.gameMap = [];
