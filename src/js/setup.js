@@ -86,7 +86,15 @@ function setup() {
 }
 
 function centerCamera() {
+    centerCameraX();
+    centerCameraY()
+}
+
+function centerCameraX() {
     GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - (GameState.player.position.x + (GameState.player2.position.x - GameState.player.position.x) / 2);
+}
+
+function centerCameraY() {
     GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - (GameState.player.position.y + (GameState.player2.position.y - GameState.player.position.y) / 2);
 }
 

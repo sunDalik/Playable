@@ -20,6 +20,7 @@ class Player extends TileElement {
         this.animation = () => {
             this.position.x += stepX;
             this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
+            centerCameraX();
             counter++;
             if (counter >= this.STEP_ANIMATION_TIME) {
                 GameState.APP.ticker.remove(this.animation);
@@ -52,6 +53,7 @@ class Player extends TileElement {
         this.animation = function () {
             x += 1 / player.STEP_ANIMATION_TIME;
             player.position.y = oldPosition + (Math.pow(1 - x, 3) * P0 + 3 * P1 * Math.pow(1 - x, 2) * x + 3 * P2 * (1 - x) * Math.pow(x, 2) + P3 * Math.pow(x, 3)) * GameState.TILESIZE * tileStepY;
+            centerCameraY();
             counter++;
             if (counter >= player.STEP_ANIMATION_TIME) {
                 GameState.APP.ticker.remove(player.animation);
