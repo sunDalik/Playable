@@ -98,6 +98,7 @@ function teleport() {
     }
     GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.player2;
     GameState.player2.place();
+    centerCamera();
 }
 
 function rotateAttack() {

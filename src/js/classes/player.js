@@ -14,8 +14,8 @@ class Player extends TileElement {
         const a = jumpHeight / ((tileStepX * GameState.TILESIZE / 2) ** 2);
         const b = -(this.position.x + (tileStepX * GameState.TILESIZE) / 2) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
-        let counter = 0;
         const stepX = tileStepX * GameState.TILESIZE / this.STEP_ANIMATION_TIME;
+        let counter = 0;
 
         this.animation = () => {
             this.position.x += stepX;
@@ -28,7 +28,6 @@ class Player extends TileElement {
             }
         };
         GameState.APP.ticker.add(this.animation);
-        GameState.gameWorld.position.x -= tileStepX * GameState.TILESIZE;
     }
 
     stepY(tileStepY) {
@@ -61,7 +60,6 @@ class Player extends TileElement {
             }
         };
         GameState.APP.ticker.add(this.animation);
-        GameState.gameWorld.position.y -= tileStepY * GameState.TILESIZE;
     }
 
     attack(tileRangeX, tileRangeY) {

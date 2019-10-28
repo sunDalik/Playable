@@ -1,3 +1,5 @@
+"use strict";
+
 class VoidTile extends TileElement {
     constructor(tilePositionX = 0, tilePositionY = 0) {
         super(GameState.resources["src/images/void.png"].texture, tilePositionX, tilePositionY);

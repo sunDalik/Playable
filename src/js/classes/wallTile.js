@@ -1,3 +1,5 @@
+"use strict";
+
 class WallTile extends TileElement {
     constructor(tilePositionX = 0, tilePositionY = 0) {
         super(GameState.resources["src/images/wall.png"].texture, tilePositionX, tilePositionY);

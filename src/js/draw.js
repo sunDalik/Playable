@@ -79,6 +79,7 @@ function drawOther() {
     GameState.otherGraphics.push(blackOutline);
 }
 
+//bug with player jumps
 function redrawTiles() {
     GameState.gameWorld.removeChild(GameState.grid);
     GameState.grid = drawGrid();
@@ -93,5 +94,5 @@ function redrawTiles() {
     }
 
     drawOther();
-    //centerCamera();
+    centerCamera();
 }

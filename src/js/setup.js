@@ -70,18 +70,46 @@ function setup() {
 }
 
 function centerCamera() {
-    centerCameraX();
-    centerCameraY()
+    const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
+    if (distanceBetweenPlayers <= GameState.chainLength) {
+        centerCameraX();
+        centerCameraY()
+    } else {
+        centerCameraOnPlayer();
+    }
 }
 
 function centerCameraX() {
-    GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - (GameState.player.position.x + (GameState.player2.position.x - GameState.player.position.x) / 2);
-    scaleGameMap();
+    const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
+    if (distanceBetweenPlayers <= GameState.chainLength) {
+        GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - (GameState.player.position.x + (GameState.player2.position.x - GameState.player.position.x) / 2);
+        //scaleGameMap();
+    } else {
+        centerCameraXOnPlayer();
+    }
 }
 
 function centerCameraY() {
-    GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - (GameState.player.position.y + (GameState.player2.position.y - GameState.player.position.y) / 2);
-    scaleGameMap()
+    const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
+    if (distanceBetweenPlayers <= GameState.chainLength) {
+        GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - (GameState.player.position.y + (GameState.player2.position.y - GameState.player.position.y) / 2);
+        //scaleGameMap()
+    } else {
+        centerCameraYOnPlayer()
+    }
+}
+
+function centerCameraOnPlayer(player = GameState.player) {
+    centerCameraXOnPlayer(player);
+    centerCameraYOnPlayer(player);
+}
+
+function centerCameraXOnPlayer(player = GameState.player) {
+    GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - player.position.x;
+}
+
+function centerCameraYOnPlayer(player = GameState.player) {
+    GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - player.position.y;
 }
 
 function scaleGameMap() {
@@ -91,11 +119,9 @@ function scaleGameMap() {
         || GameState.APP.renderer.screen.width - GameState.player2.x < limit || GameState.player2.x < limit
         || GameState.APP.renderer.screen.height - GameState.player.y < limit || GameState.player.y < limit
         || GameState.APP.renderer.screen.height - GameState.player2.y < limit || GameState.player2.y < limit) {
-//        GameState.TILESIZE--;
-        //      redrawTiles();
+        GameState.TILESIZE--;
+        redrawTiles();
     }
-    //GameState.TILESIZE = 25;
-    //redrawTiles();
 }
 
 function bindKeys() {
