@@ -20,11 +20,15 @@ function initApplication() {
     return app
 }
 
-
 function loadProgressHandler(loader, resource) {
     //console.log("Loading resource: " + resource.url);
     //console.log("Progress: " + loader.progress + "%");
 }
+
+window.addEventListener("resize", () => {
+    GameState.APP.renderer.resize(window.innerWidth, window.innerHeight);
+    centerCamera();
+});
 
 function setup() {
     let level = generateLevel();
@@ -41,13 +45,6 @@ function setup() {
 
     GameState.gameWorld = new PIXI.Container();
     GameState.APP.stage.addChild(GameState.gameWorld);
-    //let blackBGContainer = new PIXI.Container();
-    //let blackBG = new PIXI.Sprite(GameState.resources["src/images/void.png"].texture);
-    //blackBG.width = GameState.APP.view.width;
-    //blackBG.height = GameState.APP.view.height;
-    //blackBGContainer.addChild(blackBG);
-    //blackBGContainer.zIndex = -1;
-    //GameState.APP.stage.addChild(blackBGContainer);
     GameState.HUD = new PIXI.Container();
     GameState.APP.stage.addChild(GameState.HUD);
 
@@ -72,7 +69,7 @@ function setup() {
     GameState.gameWorld.addChild(GameState.player2);
     GameState.gameWorld.sortableChildren = true;
     GameState.APP.stage.sortableChildren = true;
-    centerCameraOnPlayer(GameState.player);
+    centerCamera();
 
     let gameWorldBG = new PIXI.Graphics();
     gameWorldBG.beginFill(0xabcfd1);
@@ -88,9 +85,9 @@ function setup() {
     GameState.gameWorld.addChild(blackOutline);
 }
 
-function centerCameraOnPlayer(player) {
-    GameState.gameWorld.position.x += GameState.APP.renderer.screen.width / 2 - player.position.x;
-    GameState.gameWorld.position.y += GameState.APP.renderer.screen.height / 2 - player.position.y;
+function centerCamera() {
+    GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - (GameState.player.position.x + (GameState.player2.position.x - GameState.player.position.x) / 2);
+    GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - (GameState.player.position.y + (GameState.player2.position.y - GameState.player.position.y) / 2);
 }
 
 function bindKeys() {
