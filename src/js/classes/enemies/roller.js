@@ -47,7 +47,7 @@ class Roller extends Enemy {
     }
 
     correctScale() {
-        if ((this.direction === 1 && this.scale.x < 0) || this.direction === -1 && this.scale.x > 0) {
+        if ((this.direction === 1 && this.scale.x < 0) || (this.direction === -1 && this.scale.x > 0)) {
             this.scale.x *= -1
         }
     }

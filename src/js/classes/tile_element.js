@@ -35,7 +35,7 @@ class TileElement extends PIXI.Sprite {
     }
 
     getUnscaledHeight() {
-        return this.width / this.scale.x;
+        return this.height / this.scale.y;
     }
 
     setAnchorToCenter() {

@@ -16,6 +16,8 @@ function fireball() {
     createFadingAttack(fire, false);
     for (const enemy of GameState.enemies) {
         if (!enemy.isDead()) {
+            //TODO: WE DONT ALWAYS PASS THE CORRECT PARALLELOGRAM IN THIS FUNCTION
+            //CORRECT ROTATION!
             if (collisionCheck(fire.vertexData, enemy.vertexData)) {
                 enemy.damage(100);
                 if (enemy.isDead()) {
@@ -45,8 +47,7 @@ function teleport() {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
             GameState.player2.tilePosition.x = GameState.player.tilePosition.x - 1;
         }
-    }
-    else if (GameState.player2.x < GameState.player.x) {
+    } else if (GameState.player2.x < GameState.player.x) {
         if (isNotAWall(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
             GameState.player2.tilePosition.x = GameState.player.tilePosition.x - 1;

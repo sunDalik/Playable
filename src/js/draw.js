@@ -57,15 +57,41 @@ function drawGrid() {
     grid.position.x -= 2 * GameState.TILESIZE / gridTexture.width;
     grid.position.y -= 2 * GameState.TILESIZE / gridTexture.height;
     grid.tint = 0x9abec0;
+    grid.zIndex = -1;
     GameState.gameWorld.addChild(grid);
     return grid;
+}
+
+function drawOther() {
+    let gameWorldBG = new PIXI.Graphics();
+    gameWorldBG.beginFill(0xabcfd1);
+    gameWorldBG.drawRect(10, 10, GameState.gameWorld.width - 20, GameState.gameWorld.height - 20);
+    gameWorldBG.zIndex = -2;
+    //to hide grid on gameWorld borders
+    const gridBorderWidth = -2 * GameState.TILESIZE / GameState.resources["src/images/grid.png"].texture.width;
+    let blackOutline = new PIXI.Graphics();
+    blackOutline.lineStyle(3, 0x000000);
+    blackOutline.drawRect(gridBorderWidth, gridBorderWidth, GameState.gameWorld.width, GameState.gameWorld.height);
+    blackOutline.endFill();
+    GameState.gameWorld.addChild(gameWorldBG);
+    GameState.gameWorld.addChild(blackOutline);
+    GameState.otherGraphics.push(gameWorldBG);
+    GameState.otherGraphics.push(blackOutline);
 }
 
 function redrawTiles() {
     GameState.gameWorld.removeChild(GameState.grid);
     GameState.grid = drawGrid();
+    for (const graphic of GameState.otherGraphics) {
+        GameState.gameWorld.removeChild(graphic);
+    }
+    GameState.otherGraphics = [];
+
     for (const tile of GameState.tiles) {
         tile.fitToTile();
         tile.place();
     }
+
+    drawOther();
+    //centerCamera();
 }

@@ -66,19 +66,7 @@ function setup() {
     GameState.gameWorld.sortableChildren = true;
     GameState.APP.stage.sortableChildren = true;
     centerCamera();
-
-    let gameWorldBG = new PIXI.Graphics();
-    gameWorldBG.beginFill(0xabcfd1);
-    gameWorldBG.drawRect(10, 10, GameState.gameWorld.width - 20, GameState.gameWorld.height - 20);
-    gameWorldBG.zIndex = -1;
-    //to hide grid on gameWorld borders
-    const gridBorderWidth = -2 * GameState.TILESIZE / GameState.resources["src/images/grid.png"].texture.width;
-    let blackOutline = new PIXI.Graphics();
-    blackOutline.lineStyle(3, 0x000000);
-    blackOutline.drawRect(gridBorderWidth, gridBorderWidth, GameState.gameWorld.width, GameState.gameWorld.height);
-    blackOutline.endFill();
-    GameState.gameWorld.addChild(gameWorldBG);
-    GameState.gameWorld.addChild(blackOutline);
+    drawOther();
 }
 
 function centerCamera() {
@@ -88,20 +76,26 @@ function centerCamera() {
 
 function centerCameraX() {
     GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - (GameState.player.position.x + (GameState.player2.position.x - GameState.player.position.x) / 2);
-    //const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
-    //if (distanceBetweenPlayers > 1000) {
-    //    GameState.TILESIZE = 75000 * 5 / distanceBetweenPlayers;
-    //    redrawTiles();
-    //}
+    scaleGameMap();
 }
 
 function centerCameraY() {
     GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - (GameState.player.position.y + (GameState.player2.position.y - GameState.player.position.y) / 2);
-    //const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
-    //if (distanceBetweenPlayers > 1000) {
-    //    GameState.TILESIZE = 75000 * 5 / distanceBetweenPlayers;
-    //    redrawTiles();
-    //}
+    scaleGameMap()
+}
+
+function scaleGameMap() {
+    const distanceBetweenPlayers = distanceBetweenPoints(GameState.player.position.x, GameState.player.position.y, GameState.player2.position.x, GameState.player2.position.y);
+    const limit = GameState.TILESIZE / 0.75;
+    if (GameState.APP.renderer.screen.width - GameState.player.x < limit || GameState.player.x < limit
+        || GameState.APP.renderer.screen.width - GameState.player2.x < limit || GameState.player2.x < limit
+        || GameState.APP.renderer.screen.height - GameState.player.y < limit || GameState.player.y < limit
+        || GameState.APP.renderer.screen.height - GameState.player2.y < limit || GameState.player2.y < limit) {
+//        GameState.TILESIZE--;
+        //      redrawTiles();
+    }
+    //GameState.TILESIZE = 25;
+    //redrawTiles();
 }
 
 function bindKeys() {
