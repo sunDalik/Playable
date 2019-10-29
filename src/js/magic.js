@@ -108,7 +108,7 @@ function rotateAttack() {
             if (!(x === 0 && y === 0) && isNotAWall(GameState.player.tilePosition.x + x, GameState.player.tilePosition.y + y)) {
                 const attackPositionX = GameState.player.tilePosition.x + x;
                 const attackPositionY = GameState.player.tilePosition.y + y;
-                createFadingAttack(new TileElement(GameState.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
+                createFadingAttack(new FullTileElement(GameState.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
                 attackTile(attackPositionX, attackPositionY);
             }
         }
@@ -122,7 +122,7 @@ function crossAttack() {
             if (offset !== 0 && isNotAWall(GameState.player2.tilePosition.x + offset, GameState.player2.tilePosition.y + offset * sign)) {
                 const attackPositionX = GameState.player2.tilePosition.x + offset;
                 const attackPositionY = GameState.player2.tilePosition.y + offset * sign;
-                createFadingAttack(new TileElement(GameState.resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
+                createFadingAttack(new FullTileElement(GameState.resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
                 attackTile(attackPositionX, attackPositionY);
             }
         }
