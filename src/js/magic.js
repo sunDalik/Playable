@@ -25,15 +25,17 @@ function fireball() {
     } else {
         fireCorrectVertexData = [fv[0], fv[1], fv[2], fv[3], fv[4], fv[5], fv[6], fv[7]]
     }
-    createFadingAttack(fire, false);
-    for (const enemy of GameState.enemies) {
-        if (!enemy.isDead()) {
-            if (collisionCheck(fireCorrectVertexData, enemy.vertexData)) {
-                enemy.damage(100);
-                if (enemy.isDead()) {
-                    GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x].entity = null;
-                    enemy.cancelAnimation();
-                    enemy.visible = false;
+    if (fire.width !== 0) {
+        createFadingAttack(fire, false);
+        for (const enemy of GameState.enemies) {
+            if (!enemy.isDead()) {
+                if (collisionCheck(fireCorrectVertexData, enemy.vertexData)) {
+                    enemy.damage(100);
+                    if (enemy.isDead()) {
+                        GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x].entity = null;
+                        enemy.cancelAnimation();
+                        enemy.visible = false;
+                    }
                 }
             }
         }

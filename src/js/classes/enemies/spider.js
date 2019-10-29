@@ -10,12 +10,12 @@ class Spider extends Enemy {
 
     move() {
         if (this.chase) {
-            GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
             let path;
             const path1 = this.getPathToPlayer1();
             const path2 = this.getPathToPlayer2();
             path = path1.length < path2.length ? path1 : path2;
             if (path.length !== 0) {
+                GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
                 if (path[0].y !== this.tilePosition.x) {
                     this.stepX(path[0].y - this.tilePosition.x);
                 } else this.stepY(path[0].x - this.tilePosition.y);
