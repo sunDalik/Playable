@@ -56,13 +56,14 @@ function generateLevel() {
     let previousX = 0;
     let previousY = 0;
     let previousYMaxAddition = 0;
-    for (let i = 0; i < levelRooms.length; ++i) {
-        if (i % levelRoomWidth === 0) {
+    let entryPoints = [];
+    for (let r = 0; r < levelRooms.length; ++r) {
+        if (r % levelRoomWidth === 0) {
             previousX = 0;
             previousY += previousYMaxAddition;
             previousYMaxAddition = 0;
         }
-        const currentRoom = levelRooms[i];
+        const currentRoom = levelRooms[r];
         const randomOffsetX = getRandomInt(2, 4);
         const randomOffsetY = getRandomInt(2, 4);
         const startX = previousX + randomOffsetX;
@@ -70,13 +71,15 @@ function generateLevel() {
         level = mergeRoomIntoLevel(level, currentRoom, startX, startY);
         previousX = startX + currentRoom[0].length;
         if (currentRoom.length + randomOffsetY > previousYMaxAddition) previousYMaxAddition = currentRoom.length + randomOffsetY;
-    }
 
-
-    let entryPoints = [];
-    for (let i = 0; i < level.length; ++i) {
-        for (let j = 0; j < level[0].length; ++j) {
-            if (level[i][j] === "entry") entryPoints.push({coords: {y: i, x: j}, connected: false});
+        for (let i = 0; i < currentRoom.length; ++i) {
+            for (let j = 0; j < currentRoom[0].length; ++j) {
+                if (currentRoom[i][j] === "entry") entryPoints.push({
+                    coords: {y: i + startY, x: j + startX},
+                    connected: false,
+                    room_id: r
+                });
+            }
         }
     }
 
@@ -180,7 +183,8 @@ function getMinimalConnection(graph, startEntry, endEntries, hasToBeUnconnected 
     let possibleConnections = [];
     for (const entry of endEntries) {
         if (!(entry.coords.x === startEntry.coords.x && entry.coords.y === startEntry.coords.y)
-            && (!entry.connected || !hasToBeUnconnected)) {
+            && (!entry.connected || !hasToBeUnconnected)
+            && startEntry.room_id !== entry.room_id) {
             const start = graph.grid[startEntry.coords.y][startEntry.coords.x];
             const end = graph.grid[entry.coords.y][entry.coords.x];
             const result = astar.search(graph, start, end);
@@ -237,4 +241,20 @@ function flipVertically(room) {
         }
     }
     return newRoom;
+}
+
+//turned out to be unnecessary but maaaaybeee will be useful later..?
+function expandLevel(level, expandX, expandY) {
+    let expandedLevel = [];
+    for (let i = 0; i < level.length + expandY; ++i) {
+        expandedLevel[i] = [];
+        for (let j = 0; j < level[0].length + expandX; ++j) {
+            if (i < expandY || j < expandX) {
+                expandedLevel[i][j] = "v";
+            } else {
+                expandedLevel[i][j] = level[i - expandY][j - expandX];
+            }
+        }
+    }
+    return expandedLevel;
 }
