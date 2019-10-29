@@ -181,6 +181,28 @@ function generateLevel() {
         }
     }
 
+    // remove walls between paths that connect diagonally
+    for (let i = 1; i < level.length - 1; ++i) {
+        for (let j = 0; j < level[0].length - 1; ++j) {
+            if (level[i][j] === "path") {
+                if (level[i - 1][j + 1] === "path") {
+                    let randomWall = getRandomInt(0, 2);
+                    if (level[i - 1][j] === "v" && level[i][j + 1] === "v") {
+                        if (randomWall === 0) level[i - 1][j] = "path";
+                        else level[i][j + 1] = "path";
+                    }
+                }
+                if (level[i + 1][j + 1] === "path") {
+                    let randomWall = getRandomInt(0, 2);
+                    if (level[i + 1][j] === "v" && level[i][j + 1] === "v") {
+                        if (randomWall === 0) level[i + 1][j] = "path";
+                        else level[i][j + 1] = "path";
+                    }
+                }
+            }
+        }
+    }
+
     return level;
 }
 
