@@ -10,16 +10,12 @@ class StarB extends Star {
         if (this.turnDelay === 0) {
             if (this.triggered) this.attack();
             else {
-                loop: for (let x = 0; x <= 3; x++) {
-                    for (let y = 0; y <= 3; y++) {
-                        for (let signX = -1; signX <= 1; signX += 2) {
-                            for (let signY = -1; signY <= 1; signY += 2) {
-                                if (!(x === 3 && y === 3) && Math.abs(x - y) <= 1) {
-                                    if (getPlayerOnTile(this.tilePosition.x + x * signX, this.tilePosition.y + y * signY)) {
-                                        this.triggered = true;
-                                        break loop;
-                                    }
-                                }
+                loop: for (let x = -3; x <= 3; x++) {
+                    for (let y = -3; y <= 3; y++) {
+                        if (!(Math.abs(x) === 3 || Math.abs(y) === 3) || (Math.abs(y) === 2 && Math.abs(x) === 3) || (Math.abs(x) === 2 && Math.abs(y) === 3)) {
+                            if (getPlayerOnTile(this.tilePosition.x + x, this.tilePosition.y + y)) {
+                                this.triggered = true;
+                                break loop;
                             }
                         }
                     }

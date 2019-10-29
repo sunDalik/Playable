@@ -135,7 +135,7 @@ function generateLevel() {
         }
 
         if (unreachableEntries.length !== 0) {
-            let minConnection = getMinimalConnection(levelGraph, testEntry, unreachableEntries, false);
+            let minConnection = getMinimalConnection(levelGraph, testEntry, unreachableEntries, false, false);
             if (minConnection !== undefined) {
                 level = drawConnection(level, minConnection.connection);
             }
@@ -179,12 +179,12 @@ function drawConnection(level, connection) {
     return level;
 }
 
-function getMinimalConnection(graph, startEntry, endEntries, hasToBeUnconnected = true) {
+function getMinimalConnection(graph, startEntry, endEntries, hasToBeUnconnected = true, hasToBeFromDifferentRoom = true) {
     let possibleConnections = [];
     for (const entry of endEntries) {
         if (!(entry.coords.x === startEntry.coords.x && entry.coords.y === startEntry.coords.y)
             && (!entry.connected || !hasToBeUnconnected)
-            && startEntry.room_id !== entry.room_id) {
+            && (startEntry.room_id !== entry.room_id || !hasToBeFromDifferentRoom)) {
             const start = graph.grid[startEntry.coords.y][startEntry.coords.x];
             const end = graph.grid[entry.coords.y][entry.coords.x];
             const result = astar.search(graph, start, end);
