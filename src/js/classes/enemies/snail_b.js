@@ -10,5 +10,6 @@ class SnailB extends Snail {
     }
 
     move() {
+        super.move();
     }
 }
