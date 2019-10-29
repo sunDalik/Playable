@@ -22,5 +22,5 @@ GameState.enemiesTimeout = null;
 GameState.TURNTIME = 16;
 GameState.WEAPON_ATTACK_TIME = 6;
 GameState.gameLevel = [];
-GameState.levelGraphImpassableEntries = null;
+GameState.playerDetectionGraph = null;
 GameState.levelGraph = null;

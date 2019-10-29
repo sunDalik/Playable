@@ -48,16 +48,15 @@ function setup() {
     GameState.gameMap = generateMap(level);
     GameState.gameLevel = level;
 
-    //maybe they can trigger when you stand on entry but can't if you are one tile away from entry?... We'll see...
-    GameState.levelGraphImpassableEntries = new Graph(level);
-    for (let i = 0; i < GameState.levelGraphImpassableEntries.grid.length; ++i) {
-        for (let j = 0; j < GameState.levelGraphImpassableEntries.grid[0].length; ++j) {
-            if (GameState.levelGraphImpassableEntries.grid[i][j].weight === "v"
-                || GameState.levelGraphImpassableEntries.grid[i][j].weight === "entry"
-                || GameState.levelGraphImpassableEntries.grid[i][j].weight === "w") {
-                GameState.levelGraphImpassableEntries.grid[i][j].weight = 0;
+    GameState.playerDetectionGraph = new Graph(level);
+    for (let i = 0; i < GameState.playerDetectionGraph.grid.length; ++i) {
+        for (let j = 0; j < GameState.playerDetectionGraph.grid[0].length; ++j) {
+            if (GameState.playerDetectionGraph.grid[i][j].weight === "v"
+                || GameState.playerDetectionGraph.grid[i][j].weight === "path"
+                || GameState.playerDetectionGraph.grid[i][j].weight === "w") {
+                GameState.playerDetectionGraph.grid[i][j].weight = 0;
             } else {
-                GameState.levelGraphImpassableEntries.grid[i][j].weight = 1;
+                GameState.playerDetectionGraph.grid[i][j].weight = 1;
             }
         }
     }

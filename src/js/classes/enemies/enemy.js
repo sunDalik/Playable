@@ -30,11 +30,11 @@ class Enemy extends TileElement {
     }
 
     canSeePlayers() {
-        const start = GameState.levelGraphImpassableEntries.grid[this.tilePosition.y][this.tilePosition.x];
-        let end = GameState.levelGraphImpassableEntries.grid[GameState.player.tilePosition.y][GameState.player.tilePosition.x];
-        const distanceToPlayer1 = astar.search(GameState.levelGraphImpassableEntries, start, end);
-        end = GameState.levelGraphImpassableEntries.grid[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x];
-        const distanceToPlayer2 = astar.search(GameState.levelGraphImpassableEntries, start, end);
+        const start = GameState.playerDetectionGraph.grid[this.tilePosition.y][this.tilePosition.x];
+        let end = GameState.playerDetectionGraph.grid[GameState.player.tilePosition.y][GameState.player.tilePosition.x];
+        const distanceToPlayer1 = astar.search(GameState.playerDetectionGraph, start, end);
+        end = GameState.playerDetectionGraph.grid[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x];
+        const distanceToPlayer2 = astar.search(GameState.playerDetectionGraph, start, end);
         return distanceToPlayer1.length !== 0 || distanceToPlayer2.length !== 0;
     }
 }
