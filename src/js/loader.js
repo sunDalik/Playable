@@ -15,6 +15,10 @@ function loadAll() {
         .add("src/images/enemies/roller_b.png")
         .add("src/images/enemies/star.png")
         .add("src/images/enemies/star_b.png")
+        .add("src/images/enemies/spider.png")
+        .add("src/images/enemies/spider_b.png")
+        .add("src/images/enemies/snail.png")
+        .add("src/images/enemies/snail_b.png")
         .add("src/images/grid.png")
         .on("progress", loadProgressHandler)
         .load(setup);

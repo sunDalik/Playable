@@ -46,6 +46,22 @@ function setup() {
     GameState.APP.stage.addChild(GameState.HUD);
 
     GameState.gameMap = generateMap(level);
+    GameState.gameLevel = level;
+
+    GameState.levelGraphImpassableEntries = new Graph(level);
+    for (let i = 0; i < GameState.levelGraphImpassableEntries.grid.length; ++i) {
+        for (let j = 0; j < GameState.levelGraphImpassableEntries.grid[0].length; ++j) {
+            if (GameState.levelGraphImpassableEntries.grid[i][j].weight === "v"
+                || GameState.levelGraphImpassableEntries.grid[i][j].weight === "entry"
+                || GameState.levelGraphImpassableEntries.grid[i][j].weight === "w") {
+                GameState.levelGraphImpassableEntries.grid[i][j].weight = 0;
+            } else {
+                GameState.levelGraphImpassableEntries.grid[i][j].weight = 1;
+            }
+        }
+    }
+
+    GameState.levelGraph = getLevelPlayerGraph(level);
 
     GameState.player = new Player(GameState.resources["src/images/player.png"].texture, player1StartTileX, player1StartTileY);
     GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, player1StartTileX, player1StartTileY + 1);
@@ -120,7 +136,8 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
 }
 
-function generateMap(map) {
+function generateMap(level) {
+    let map = copy2dArray(level);
     for (let i = 0; i < map.length; ++i) {
         for (let j = 0; j < map[0].length; ++j) {
             let mapCell = {

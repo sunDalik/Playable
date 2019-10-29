@@ -21,3 +21,6 @@ GameState.otherGraphics = [];
 GameState.enemiesTimeout = null;
 GameState.TURNTIME = 16;
 GameState.WEAPON_ATTACK_TIME = 8;
+GameState.gameLevel = [];
+GameState.levelGraphImpassableEntries = null;
+GameState.levelGraph = null;
