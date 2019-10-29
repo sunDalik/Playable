@@ -136,6 +136,10 @@ function generateMap(map) {
             else if (map[i][j] === "rb") mapCell.entity = new RollerB(j, i);
             else if (map[i][j] === "s") mapCell.entity = new Star(j, i);
             else if (map[i][j] === "sb") mapCell.entity = new StarB(j, i);
+            else if (map[i][j] === "spi") mapCell.entity = new Spider(j, i);
+            else if (map[i][j] === "spib") mapCell.entity = new SpiderB(j, i);
+            else if (map[i][j] === "sna") mapCell.entity = new Snail(j, i);
+            else if (map[i][j] === "snab") mapCell.entity = new SnailB(j, i);
 
             map[i][j] = mapCell;
         }
