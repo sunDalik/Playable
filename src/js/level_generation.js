@@ -218,7 +218,9 @@ function mergeRoomIntoLevel(level, room, startX, startY) {
 function drawConnection(level, connection) {
     //[x][y] instead [y][x] because once again the Graph is weird
     for (let i = 0; i < connection.length; ++i) {
-        level[connection[i].x][connection[i].y] = "path";
+        if (level[connection[i].x][connection[i].y] !== "entry") {
+            level[connection[i].x][connection[i].y] = "path";
+        }
     }
     return level;
 }

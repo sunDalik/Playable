@@ -5,8 +5,10 @@ class SpiderB extends Spider {
         super(tilePositionX, tilePositionY, texture);
         this.health = 3;
         this.entityType = ENEMY_TYPE.SPIDER_B;
+        this.chase = false;
     }
 
     move() {
+        super.move();
     }
 }

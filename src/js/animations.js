@@ -2,8 +2,8 @@
 
 function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
     let counter = 0;
-    const startPosX = tileX1 + 0.3 * Math.sign(tileX2 - tileX1);
-    const startPosY = tileY1 + 0.3 * Math.sign(tileY2 - tileY1);
+    const startPosX = tileX1 + 0.2 * Math.sign(tileX2 - tileX1);
+    const startPosY = tileY1 + 0.2 * Math.sign(tileY2 - tileY1);
     let attackParticles = [new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY),
         new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY),
         new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY)];

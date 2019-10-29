@@ -48,6 +48,7 @@ function setup() {
     GameState.gameMap = generateMap(level);
     GameState.gameLevel = level;
 
+    //maybe they can trigger when you stand on entry but can't if you are one tile away from entry?... We'll see...
     GameState.levelGraphImpassableEntries = new Graph(level);
     for (let i = 0; i < GameState.levelGraphImpassableEntries.grid.length; ++i) {
         for (let j = 0; j < GameState.levelGraphImpassableEntries.grid[0].length; ++j) {

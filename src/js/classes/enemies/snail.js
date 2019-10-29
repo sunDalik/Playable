@@ -5,6 +5,8 @@ class Snail extends Enemy {
         super(texture, tilePositionX, tilePositionY);
         this.health = 2;
         this.entityType = ENEMY_TYPE.SNAIL;
+        this.turnDelay = 0;
+        this.chase = false;
     }
 
     move() {
