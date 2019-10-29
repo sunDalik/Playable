@@ -85,6 +85,7 @@ function generateLevel() {
 
     let oddEntry;
     if (entryPoints.length % 2 === 1) oddEntry = entryPoints.pop();
+    entryPoints = randomShuffle(entryPoints);
 
     // the Graph class is weird, levelGraph.grid.length will return number of Xs and levelGraph.grid[0].length number of Ys
     let levelGraph = new Graph(level);
@@ -113,6 +114,7 @@ function generateLevel() {
         let minConnection = getMinimalConnection(levelGraph, oddEntry, entryPoints, false);
         if (minConnection !== undefined) {
             oddEntry.connected = true;
+            minConnection.entry.connected = true;
             level = drawConnection(level, minConnection.connection);
         }
     }
@@ -133,13 +135,33 @@ function generateLevel() {
                 }
             }
         }
-
         if (unreachableEntries.length !== 0) {
-            let minConnection = getMinimalConnection(levelGraph, testEntry, unreachableEntries, false, false);
+            let minConnection = getMinimalConnection(levelGraph, testEntry, unreachableEntries, false);
             if (minConnection !== undefined) {
+                testEntry.connected = true;
+                minConnection.entry.connected = true;
                 level = drawConnection(level, minConnection.connection);
             }
             levelPlayerGraph = getLevelPlayerGraph(level);
+        }
+    }
+
+    //if there are any unconnected entries left then connect them already!
+    for (const entry of entryPoints) {
+        if (!entry.connected) {
+            let minConnection = getMinimalConnection(levelGraph, entry, entryPoints, false);
+            if (minConnection !== undefined) {
+                minConnection.entry.connected = true;
+                entry.connected = true;
+                level = drawConnection(level, minConnection.connection);
+            } else {
+                let minConnection = getMinimalConnection(levelGraph, entry, entryPoints, false, false);
+                if (minConnection !== undefined) {
+                    minConnection.entry.connected = true;
+                    entry.connected = true;
+                    level = drawConnection(level, minConnection.connection);
+                }
+            }
         }
     }
 
