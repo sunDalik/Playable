@@ -11,7 +11,20 @@ function generateLevel() {
 
     let levelRooms = [];
     for (let i = 0; i < roomNumber; ++i) {
-        levelRooms.push(randomChoice(rooms))
+        let room = randomChoice(rooms);
+        let transformOption = getRandomInt(0, 4);
+        switch (transformOption) {
+            case 1:
+                room = flipHorizontally(room);
+                break;
+            case 2:
+                room = flipVertically(room);
+                break;
+            case 3:
+                room = flipHorizontally(flipVertically(room));
+                break;
+        }
+        levelRooms.push(room);
     }
 
     let levelTileWidths = [];
@@ -204,4 +217,24 @@ function getLevelPlayerGraph(level) {
         }
     }
     return levelPlayerGraph;
+}
+
+function flipHorizontally(room) {
+    let newRoom = copy2dArray(room);
+    for (let i = 0; i < newRoom.length; ++i) {
+        for (let j = 0; j < newRoom[0].length; ++j) {
+            newRoom[i][j] = room[i][room[0].length - 1 - j];
+        }
+    }
+    return newRoom;
+}
+
+function flipVertically(room) {
+    let newRoom = copy2dArray(room);
+    for (let i = 0; i < newRoom.length; ++i) {
+        for (let j = 0; j < newRoom[0].length; ++j) {
+            newRoom[i][j] = room[room.length - 1 - i][j];
+        }
+    }
+    return newRoom;
 }

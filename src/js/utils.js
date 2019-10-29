@@ -21,6 +21,14 @@ function distanceBetweenPoints(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
 }
 
+function copy2dArray(array) {
+    let newArray = [];
+    for (let i = 0; i < array.length; i++) {
+        newArray[i] = array[i].slice();
+    }
+    return newArray;
+}
+
 function collisionCheck(vertexData1, vertexData2) {
     const lines1 = getLinesByVertexData(vertexData1);
     const lines2 = getLinesByVertexData(vertexData2);

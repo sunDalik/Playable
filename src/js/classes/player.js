@@ -9,12 +9,14 @@ class Player extends TileElement {
     }
 
     stepX(tileStepX) {
+        let tileSize = newTileSizeOnStep(this, tileStepX); //doesnt smoothen anything...why?
+
         this.tilePosition.x += tileStepX;
-        const jumpHeight = GameState.TILESIZE * 25 / 75;
-        const a = jumpHeight / ((tileStepX * GameState.TILESIZE / 2) ** 2);
-        const b = -(this.position.x + (tileStepX * GameState.TILESIZE) / 2) * 2 * a;
+        const jumpHeight = tileSize * 25 / 75;
+        const a = jumpHeight / ((tileStepX * tileSize / 2) ** 2);
+        const b = -(this.position.x + (tileStepX * tileSize) / 2) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
-        const stepX = tileStepX * GameState.TILESIZE / this.STEP_ANIMATION_TIME;
+        const stepX = tileStepX * tileSize / this.STEP_ANIMATION_TIME;
         let counter = 0;
 
         this.animation = () => {
@@ -31,6 +33,8 @@ class Player extends TileElement {
     }
 
     stepY(tileStepY) {
+        let tileSize = newTileSizeOnStep(this, 0, tileStepY);
+
         this.tilePosition.y += tileStepY;
         let counter = 0;
         let player = this;
@@ -51,7 +55,7 @@ class Player extends TileElement {
 
         this.animation = function () {
             x += 1 / player.STEP_ANIMATION_TIME;
-            player.position.y = oldPosition + (Math.pow(1 - x, 3) * P0 + 3 * P1 * Math.pow(1 - x, 2) * x + 3 * P2 * (1 - x) * Math.pow(x, 2) + P3 * Math.pow(x, 3)) * GameState.TILESIZE * tileStepY;
+            player.position.y = oldPosition + (Math.pow(1 - x, 3) * P0 + 3 * P1 * Math.pow(1 - x, 2) * x + 3 * P2 * (1 - x) * Math.pow(x, 2) + P3 * Math.pow(x, 3)) * tileSize * tileStepY;
             centerCameraY();
             counter++;
             if (counter >= player.STEP_ANIMATION_TIME) {
