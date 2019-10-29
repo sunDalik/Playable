@@ -28,7 +28,8 @@ function centerCameraYOnPlayer(player = GameState.player) {
 }
 
 function scaleGameMap() {
-    const limit = GameState.TILESIZE * 2;
+    //const limit = GameState.TILESIZE * 2;
+    const limit = 100;
     const canZoom = limit * 1.5;
     const gpx = GameState.player.getGlobalPosition().x;
     const gpy = GameState.player.getGlobalPosition().y;
@@ -51,7 +52,8 @@ function scaleGameMap() {
 }
 
 function newTileSizeOnStep(player, stepX = 0, stepY = 0) {
-    const limit = GameState.TILESIZE * 2;
+    //const limit = GameState.TILESIZE * 2;
+    const limit = 100;
     const canZoom = limit * 1.5;
     let otherPlayer;
     if (player === GameState.player) otherPlayer = GameState.player2;

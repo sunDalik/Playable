@@ -2,11 +2,11 @@
 
 function generateLevel() {
     let level = [[]];
-    const roomNumber = randomChoice([9, 12]);
+    const roomNumber = randomChoice([12, 15]);
     let levelRoomWidth;
     let levelRoomHeight;
     if (roomNumber === 12) levelRoomWidth = 4;
-    else levelRoomWidth = 3;
+    else levelRoomWidth = 5;
     levelRoomHeight = roomNumber / levelRoomWidth;
 
     let levelRooms = [];
