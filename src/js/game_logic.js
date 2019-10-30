@@ -1,16 +1,27 @@
 "use strict";
 
-function moveEnemies() {
+function enemyTurn() {
     if (GameState.enemiesTimeout === null) {
         GameState.enemiesTimeout = setTimeout(() => {
-            for (const enemy of GameState.enemies) {
-                if (!enemy.isDead()) {
-                    enemy.cancelAnimation();
-                    enemy.move();
-                }
-            }
+            moveEnemies();
+            updateHazards();
             GameState.enemiesTimeout = null;
         }, 60);
+    }
+}
+
+function moveEnemies() {
+    for (const enemy of GameState.enemies) {
+        if (!enemy.isDead()) {
+            enemy.cancelAnimation();
+            enemy.move();
+        }
+    }
+}
+
+function updateHazards() {
+    for (const hazard of GameState.hazards) {
+        hazard.updateLifetime();
     }
 }
 
@@ -35,14 +46,10 @@ function damagePlayer(player, damage) {
 function playerTurn(player, playerMove, bothPlayers = false) {
     if (GameState.enemiesTimeout !== null) {
         clearTimeout(GameState.enemiesTimeout);
-        for (const enemy of GameState.enemies) {
-            if (!enemy.isDead()) {
-                enemy.cancelAnimation();
-                enemy.move();
-            }
-        }
-        GameState.enemiesTimeout = null;
         moveEnemies();
+        updateHazards();
+        GameState.enemiesTimeout = null;
+        enemyTurn();
     }
 
     if (bothPlayers) {
@@ -50,7 +57,7 @@ function playerTurn(player, playerMove, bothPlayers = false) {
         GameState.player2.cancelAnimation();
     } else player.cancelAnimation();
     playerMove();
-    moveEnemies();
+    enemyTurn();
 }
 
 function movePlayer(player, tileStepX, tileStepY) {

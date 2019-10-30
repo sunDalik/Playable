@@ -47,6 +47,9 @@ class Snail extends Enemy {
                 }
             }
         } else this.turnDelay--;
+        if (GameState.gameMap[this.tilePosition.y][this.tilePosition.x].hazard === null) {
+            new PoisonHazard(this.tilePosition.x, this.tilePosition.y).addToWorld();
+        } else GameState.gameMap[this.tilePosition.y][this.tilePosition.x].hazard.refreshLifetime();
     }
 
     stepX(tileStepX) {

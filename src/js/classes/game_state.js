@@ -16,6 +16,7 @@ GameState.gameMap = [];
 GameState.player = null;
 GameState.player2 = null;
 GameState.enemies = [];
+GameState.hazards = [];
 GameState.tiles = [];
 GameState.otherGraphics = [];
 GameState.enemiesTimeout = null;

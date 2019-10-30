@@ -58,7 +58,7 @@ function drawGrid() {
     grid.position.x -= 2 * GameState.TILESIZE / gridTexture.width;
     grid.position.y -= 2 * GameState.TILESIZE / gridTexture.height;
     grid.tint = 0x9abec0;
-    grid.zIndex = -1;
+    grid.zIndex = -2;
     GameState.gameWorld.addChild(grid);
     return grid;
 }
@@ -67,7 +67,7 @@ function drawOther() {
     let gameWorldBG = new PIXI.Graphics();
     gameWorldBG.beginFill(0xabcfd1);
     gameWorldBG.drawRect(10, 10, GameState.gameWorld.width - 20, GameState.gameWorld.height - 20);
-    gameWorldBG.zIndex = -2;
+    gameWorldBG.zIndex = -3;
     //to hide grid on gameWorld borders
     const gridBorderWidth = -2 * GameState.TILESIZE / GameState.resources["src/images/grid.png"].texture.width;
     let blackOutline = new PIXI.Graphics();
@@ -80,7 +80,6 @@ function drawOther() {
     GameState.otherGraphics.push(blackOutline);
 }
 
-//bug with player jumps
 function redrawTiles() {
     GameState.gameWorld.removeChild(GameState.grid);
     GameState.grid = drawGrid();
@@ -92,6 +91,11 @@ function redrawTiles() {
     for (const tile of GameState.tiles) {
         tile.fitToTile();
         tile.place();
+    }
+
+    for (const hazard of GameState.hazards) {
+        hazard.fitToTile();
+        hazard.place();
     }
 
     drawOther();
