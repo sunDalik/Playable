@@ -3,7 +3,7 @@
 class Roller extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/roller.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = 100;
+        this.health = 1;
         this.direction = 1;
         this.ROLL_ANIMATION_TIME = 6;
         this.BUMP_ANIMATION_TIME = 14;

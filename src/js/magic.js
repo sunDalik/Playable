@@ -30,7 +30,7 @@ function fireball() {
         for (const enemy of GameState.enemies) {
             if (!enemy.isDead()) {
                 if (collisionCheck(fireCorrectVertexData, enemy.vertexData)) {
-                    enemy.damage(100);
+                    enemy.damage(2);
                     if (enemy.isDead()) {
                         GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x].entity = null;
                         enemy.cancelAnimation();
@@ -111,7 +111,7 @@ function rotateAttack() {
                 const attackPositionX = GameState.player.tilePosition.x + x;
                 const attackPositionY = GameState.player.tilePosition.y + y;
                 createFadingAttack(new FullTileElement(GameState.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
-                attackTile(attackPositionX, attackPositionY);
+                attackTile(attackPositionX, attackPositionY, 2);
             }
         }
     }
@@ -125,7 +125,7 @@ function crossAttack() {
                 const attackPositionX = GameState.player2.tilePosition.x + offset;
                 const attackPositionY = GameState.player2.tilePosition.y + offset * sign;
                 createFadingAttack(new FullTileElement(GameState.resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
-                attackTile(attackPositionX, attackPositionY);
+                attackTile(attackPositionX, attackPositionY, 2);
             }
         }
     }

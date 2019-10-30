@@ -14,11 +14,11 @@ function moveEnemies() {
     }
 }
 
-function attackTile(attackPositionX, attackPositionY) {
+function attackTile(attackPositionX, attackPositionY, atk) {
     const tileEntity = GameState.gameMap[attackPositionY][attackPositionX].entity;
     if (tileEntity != null && tileEntity.role === ROLE.ENEMY) {
         if (!tileEntity.isDead()) {
-            tileEntity.damage(100);
+            tileEntity.damage(atk);
             if (tileEntity.isDead()) {
                 GameState.gameMap[tileEntity.tilePosition.y][tileEntity.tilePosition.x].entity = null;
                 tileEntity.cancelAnimation();

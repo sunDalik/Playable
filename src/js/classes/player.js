@@ -3,7 +3,8 @@
 class Player extends TileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = 100;
+        this.health = 4;
+        this.atk = 1;
         this.STEP_ANIMATION_TIME = 8;
         this.role = ROLE.PLAYER;
     }
@@ -77,7 +78,7 @@ class Player extends TileElement {
         const attackTileX = this.tilePosition.x + tileRangeX;
         const attackTileY = this.tilePosition.y + tileRangeY;
         createWeaponAnimation(this.tilePosition.x, this.tilePosition.y, attackTileX, attackTileY);
-        attackTile(attackTileX, attackTileY);
+        attackTile(attackTileX, attackTileY, this.atk);
     }
 
     damage(damage) {
