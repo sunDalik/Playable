@@ -4,6 +4,7 @@ class Roller extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/roller.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.health = 1;
+        this.atk = 1;
         this.direction = 1;
         this.ROLL_ANIMATION_TIME = 6;
         this.BUMP_ANIMATION_TIME = 14;
@@ -22,7 +23,7 @@ class Roller extends Enemy {
         if (isNotAWall(this.tilePosition.x + this.direction, this.tilePosition.y) && !isEnemy(this.tilePosition.x + this.direction, this.tilePosition.y)) {
             let player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
             if (player !== null) {
-                damagePlayer(player, 5);
+                damagePlayer(player, this.atk);
                 this.bump();
             } else {
                 const step = GameState.TILESIZE / this.ROLL_ANIMATION_TIME;

@@ -4,6 +4,7 @@ class Star extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/star.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.health = 2;
+        this.atk = 1;
         this.triggered = false;
         this.triggeredDirections = null;
         this.SHAKE_ANIMATION_TIME = 4;
@@ -90,7 +91,7 @@ class Star extends Enemy {
         if (isNotAWall(attackPositionX, attackPositionY) && !isEnemy(attackPositionX, attackPositionY)) {
             createFadingAttack(new TileElement(GameState.resources["src/images/enemy_attack.png"].texture, attackPositionX, attackPositionY));
             const player = getPlayerOnTile(attackPositionX, attackPositionY);
-            if (player !== null) damagePlayer(player, 1);
+            if (player !== null) damagePlayer(player, this.atk);
         }
     }
 }
