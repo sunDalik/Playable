@@ -15,7 +15,7 @@ function fireball() {
     fire.getBounds();
     let fireCorrectVertexData;
     const fv = fire.vertexData;
-    const fa = fire.angle >= 0 ? fire.angle : 360 - fire.angle;
+    const fa = fire.angle >= 0 ? fire.angle : 360 - Math.abs(fire.angle);
     if (fa > 0 && fa <= 90) {
         fireCorrectVertexData = [fv[6], fv[7], fv[0], fv[1], fv[2], fv[3], fv[4], fv[5]]
     } else if (fa > 90 && fa <= 180) {
