@@ -50,6 +50,27 @@ function displayInstructions() {
     GameState.HUD.addChild(instructions);
 }
 
+function drawHUD() {
+    const heartOffset = 70;
+
+}
+
+function getHealthArray(entity) {
+    let health = [];
+    for (let i = 0; i < entity.maxhealth; ++i) {
+        if (i === Math.trunc(entity.health)) {
+            health[i] = (entity.health - Math.trunc(entity.health)).toFixed(2);
+        } else {
+            if (i + 1 <= entity.health) {
+                health[i] = 1;
+            } else {
+                health[i] = 0;
+            }
+        }
+    }
+    return health;
+}
+
 function drawGrid() {
     let gridTexture = GameState.resources["src/images/grid.png"].texture;
     let grid = new PIXI.TilingSprite(gridTexture, GameState.gameMap[0].length * gridTexture.width, GameState.gameMap.length * gridTexture.height);
