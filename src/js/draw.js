@@ -64,9 +64,9 @@ function redrawHealthForPlayer(player) {
     removeAllChildrenFromContainer(container);
     const heartXOffset = player === GameState.player ? 50 : GameState.APP.renderer.screen.width - 350;
     const heartYOffset = 20;
-    const heartRowOffset = 20;
+    const heartRowOffset = 0;
     const heartColOffset = 5;
-    const heartSize = 50;
+    const heartSize = 45;
     const healthArray = getHealthArray(player);
     for (let i = 0; i < healthArray.length; ++i) {
         let heart;
@@ -97,7 +97,7 @@ function redrawHealthForPlayer(player) {
         }
         heart.width = heartSize;
         heart.height = heartSize;
-        heart.position.y = i > 4 ? heartYOffset + heartRowOffset : heartYOffset;
+        heart.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.floor(i / 5);
         heart.position.x = heartXOffset + (i % 5) * (heartColOffset + heartSize);
         container.addChild(heart);
     }

@@ -3,8 +3,8 @@
 class Player extends TileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = 4;
-        this.maxhealth = 4;
+        this.health = 9.75;
+        this.maxhealth = 10;
         this.atk = 1;
         this.STEP_ANIMATION_TIME = 8;
         this.role = ROLE.PLAYER;
