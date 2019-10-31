@@ -144,10 +144,16 @@ function rotate(object, clockwise = true) {
 }
 
 function switchPlayers() {
-    const temp = GameState.player2.zIndex;
+    let temp = GameState.player2.zIndex;
     GameState.player2.zIndex = GameState.player.zIndex;
     GameState.player.zIndex = temp;
     if (GameState.primaryPlayer === GameState.player2) {
         GameState.primaryPlayer = GameState.player;
     } else GameState.primaryPlayer = GameState.player2;
+    if (GameState.player.tilePosition.x === GameState.player2.tilePosition.x
+        && GameState.player.tilePosition.y === GameState.player2.tilePosition.y) {
+        temp = GameState.gameMap[GameState.player.tilePosition.y][GameState.player2.tilePosition.x].entity;
+        GameState.gameMap[GameState.player.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.gameMap[GameState.player.tilePosition.y][GameState.player2.tilePosition.x].secondaryEntity;
+        GameState.gameMap[GameState.player.tilePosition.y][GameState.player2.tilePosition.x].secondaryEntity = temp;
+    }
 }
