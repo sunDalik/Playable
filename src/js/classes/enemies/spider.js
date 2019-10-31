@@ -9,7 +9,7 @@ class Spider extends Enemy {
         this.chase = false;
         this.thrown = false;
         this.STEP_ANIMATION_TIME = 6;
-        this.BUMP_ANIMATION_TIME = 10;
+        this.BUMP_ANIMATION_TIME = 12;
     }
 
     move() {

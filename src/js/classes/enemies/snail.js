@@ -8,6 +8,7 @@ class Snail extends Enemy {
         this.atk = 1;
         this.turnDelay = 0;
         this.chase = false;
+        this.SLIDE_ANIMATION_TIME = 12;
     }
 
     move() {
@@ -53,13 +54,75 @@ class Snail extends Enemy {
     }
 
     stepX(tileStepX) {
+        if (Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
+            this.scale.x *= -1;
+        }
+        let counter = 0;
+        const step = GameState.TILESIZE * tileStepX / this.SLIDE_ANIMATION_TIME;
         this.tilePosition.x += tileStepX;
-        this.place();
+        this.animation = () => {
+            this.position.x += step;
+            counter++;
+            if (counter >= this.SLIDE_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        GameState.APP.ticker.add(this.animation);
     }
 
     stepY(tileStepY) {
+        let counter = 0;
+        const step = GameState.TILESIZE * tileStepY / this.SLIDE_ANIMATION_TIME;
         this.tilePosition.y += tileStepY;
-        this.place();
+        this.animation = () => {
+            this.position.y += step;
+            counter++;
+            if (counter >= this.SLIDE_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        GameState.APP.ticker.add(this.animation);
+    }
+
+    slideAttackX(tileStepX) {
+        if (Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
+            this.scale.x *= -1;
+        }
+        let counter = 0;
+        const step = GameState.TILESIZE * tileStepX / this.SLIDE_ANIMATION_TIME;
+        this.animation = () => {
+            if (counter < this.SLIDE_ANIMATION_TIME / 2) {
+                this.position.x += step;
+            } else {
+                this.position.x -= step;
+            }
+            counter++;
+            if (counter >= this.SLIDE_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        GameState.APP.ticker.add(this.animation);
+    }
+
+    slideAttackY(tileStepY) {
+        let counter = 0;
+        const step = GameState.TILESIZE * tileStepY / this.SLIDE_ANIMATION_TIME;
+        this.animation = () => {
+            if (counter < this.SLIDE_ANIMATION_TIME / 2) {
+                this.position.y += step;
+            } else {
+                this.position.y -= step;
+            }
+            counter++;
+            if (counter >= this.SLIDE_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        GameState.APP.ticker.add(this.animation);
     }
 
     chasePlayer(player) {
@@ -70,21 +133,25 @@ class Snail extends Enemy {
 
         if (Math.abs(playerDistX) > Math.abs(playerDistY)) {
             if (!this.tryToStepX(playerDirX)) {
-                this.tryToStepY(playerDirY);
+                if (playerDirY === 0) this.slideAttackX(playerDirX);
+                else if (!this.tryToStepY(playerDirY)) this.slideAttackY(playerDirY);
             }
         } else if (Math.abs(playerDistX) < Math.abs(playerDistY)) {
             if (!this.tryToStepY(playerDirY)) {
-                this.tryToStepX(playerDirX);
+                if (playerDirX === 0) this.slideAttackY(playerDirY);
+                else if (!this.tryToStepX(playerDirX)) this.slideAttackX(playerDirX);
             }
         } else {
             const randomDirection = getRandomInt(0, 2);
             if (randomDirection === 0) {
                 if (!this.tryToStepX(playerDirX)) {
-                    this.tryToStepY(playerDirY);
+                    if (playerDirY === 0) this.slideAttackX(playerDirX);
+                    else if (!this.tryToStepY(playerDirY)) this.slideAttackY(playerDirY);
                 }
             } else {
                 if (!this.tryToStepY(playerDirY)) {
-                    this.tryToStepX(playerDirX);
+                    if (playerDirX === 0) this.slideAttackY(playerDirY);
+                    else if (!this.tryToStepX(playerDirX)) this.slideAttackX(playerDirX);
                 }
             }
         }
@@ -93,8 +160,10 @@ class Snail extends Enemy {
     tryToStepX(tileStepX) {
         if (isNotAWallOrEnemy(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
             const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y);
-            if (player !== null) damagePlayer(player, this.atk);
-            else this.stepX(tileStepX);
+            if (player !== null) {
+                damagePlayer(player, this.atk);
+                this.slideAttackX(tileStepX);
+            } else this.stepX(tileStepX);
             return true;
         }
         return false;
@@ -103,8 +172,10 @@ class Snail extends Enemy {
     tryToStepY(tileStepY) {
         if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
             const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + tileStepY);
-            if (player !== null) damagePlayer(player, this.atk);
-            else this.stepY(tileStepY);
+            if (player !== null) {
+                damagePlayer(player, this.atk);
+                this.slideAttackY(tileStepY);
+            } else this.stepY(tileStepY);
             return true;
         }
         return false;
