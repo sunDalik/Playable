@@ -24,6 +24,7 @@ function loadProgressHandler(loader, resource) {
 
 window.addEventListener("resize", () => {
     GameState.APP.renderer.resize(window.innerWidth, window.innerHeight);
+    drawHUD();
     centerCamera();
 });
 

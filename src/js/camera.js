@@ -1,17 +1,29 @@
 function centerCamera() {
-    centerCameraX(false);
-    centerCameraY(false);
-    scaleGameMap();
+    if (GameState.player2.dead) centerCameraOnPlayer(GameState.player);
+    else if (GameState.player.dead) centerCameraOnPlayer(GameState.player2);
+    else {
+        centerCameraX(false);
+        centerCameraY(false);
+        scaleGameMap();
+    }
 }
 
 function centerCameraX(scale = true) {
-    GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - (GameState.player.position.x + (GameState.player2.position.x - GameState.player.position.x) / 2);
-    if (scale) scaleGameMap();
+    if (GameState.player2.dead) centerCameraXOnPlayer(GameState.player);
+    else if (GameState.player.dead) centerCameraXOnPlayer(GameState.player2);
+    else {
+        GameState.gameWorld.position.x = GameState.APP.renderer.screen.width / 2 - (GameState.player.position.x + (GameState.player2.position.x - GameState.player.position.x) / 2);
+        if (scale) scaleGameMap();
+    }
 }
 
 function centerCameraY(scale = true) {
-    GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - (GameState.player.position.y + (GameState.player2.position.y - GameState.player.position.y) / 2);
-    if (scale) scaleGameMap()
+    if (GameState.player2.dead) centerCameraYOnPlayer(GameState.player);
+    else if (GameState.player.dead) centerCameraYOnPlayer(GameState.player2);
+    else {
+        GameState.gameWorld.position.y = GameState.APP.renderer.screen.height / 2 - (GameState.player.position.y + (GameState.player2.position.y - GameState.player.position.y) / 2);
+        if (scale) scaleGameMap()
+    }
 }
 
 function centerCameraOnPlayer(player = GameState.player) {
@@ -29,25 +41,27 @@ function centerCameraYOnPlayer(player = GameState.player) {
 
 function scaleGameMap() {
     //const limit = GameState.TILESIZE * 2;
-    const limit = 100;
-    const canZoom = limit * 1.5;
-    const gpx = GameState.player.getGlobalPosition().x;
-    const gpy = GameState.player.getGlobalPosition().y;
-    const gp2x = GameState.player2.getGlobalPosition().x;
-    const gp2y = GameState.player2.getGlobalPosition().y;
-    if (GameState.APP.renderer.screen.width - gpx < limit || gpx < limit
-        || GameState.APP.renderer.screen.width - gp2x < limit || gp2x < limit
-        || GameState.APP.renderer.screen.height - gpy < limit || gpy < limit
-        || GameState.APP.renderer.screen.height - gp2y < limit || gp2y < limit) {
-        GameState.TILESIZE--;
-        redrawTiles();
-    } else if (GameState.TILESIZE < GameState.REFERENCE_TILESIZE &&
-        ((GameState.APP.renderer.screen.width - gpx > canZoom && gpx > canZoom
-            && GameState.APP.renderer.screen.height - gpy > canZoom && gpy > canZoom) ||
-            (GameState.APP.renderer.screen.width - gp2x > canZoom && gp2x > canZoom
-                && GameState.APP.renderer.screen.height - gp2y > canZoom && gp2y > canZoom))) {
-        GameState.TILESIZE++;
-        redrawTiles();
+    if (!GameState.player2.dead && !GameState.player.dead) {
+        const limit = 100;
+        const canZoom = limit * 1.5;
+        const gpx = GameState.player.getGlobalPosition().x;
+        const gpy = GameState.player.getGlobalPosition().y;
+        const gp2x = GameState.player2.getGlobalPosition().x;
+        const gp2y = GameState.player2.getGlobalPosition().y;
+        if (GameState.APP.renderer.screen.width - gpx < limit || gpx < limit
+            || GameState.APP.renderer.screen.width - gp2x < limit || gp2x < limit
+            || GameState.APP.renderer.screen.height - gpy < limit || gpy < limit
+            || GameState.APP.renderer.screen.height - gp2y < limit || gp2y < limit) {
+            GameState.TILESIZE--;
+            redrawTiles();
+        } else if (GameState.TILESIZE < GameState.REFERENCE_TILESIZE &&
+            ((GameState.APP.renderer.screen.width - gpx > canZoom && gpx > canZoom
+                && GameState.APP.renderer.screen.height - gpy > canZoom && gpy > canZoom) ||
+                (GameState.APP.renderer.screen.width - gp2x > canZoom && gp2x > canZoom
+                    && GameState.APP.renderer.screen.height - gp2y > canZoom && gp2y > canZoom))) {
+            GameState.TILESIZE++;
+            redrawTiles();
+        }
     }
 }
 

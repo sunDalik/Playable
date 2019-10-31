@@ -8,6 +8,7 @@ class Player extends TileElement {
         this.atk = 1;
         this.STEP_ANIMATION_TIME = 8;
         this.role = ROLE.PLAYER;
+        this.dead = false;
     }
 
     cancelAnimation() {
@@ -16,8 +17,7 @@ class Player extends TileElement {
     }
 
     stepX(tileStepX) {
-        let tileSize = newTileSizeOnStep(this, tileStepX); //doesnt smoothen anything...why?
-
+        let tileSize = GameState.TILESIZE;
         this.tilePosition.x += tileStepX;
         const jumpHeight = tileSize * 25 / 75;
         const a = jumpHeight / ((tileStepX * tileSize / 2) ** 2);
@@ -41,8 +41,7 @@ class Player extends TileElement {
     }
 
     stepY(tileStepY) {
-        let tileSize = newTileSizeOnStep(this, 0, tileStepY);
-
+        let tileSize = GameState.TILESIZE;
         this.tilePosition.y += tileStepY;
         let counter = 0;
         const oldPosition = this.position.y;
@@ -84,5 +83,15 @@ class Player extends TileElement {
     damage(damage) {
         this.health -= damage;
         redrawHealthForPlayer(this);
+        if (this.health <= 0) {
+            this.dead = true;
+            GameState.gameWorld.removeChild(this);
+            if (GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity !== null) {
+                GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
+                GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
+            } else GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+            GameState.TILESIZE = GameState.REFERENCE_TILESIZE;
+            redrawTiles();
+        }
     }
 }

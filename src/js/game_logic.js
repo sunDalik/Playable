@@ -66,10 +66,10 @@ function playerTurn(player, playerMove, bothPlayers = false) {
 }
 
 function damagePlayersWithHazards() {
-    if (GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].hazard !== null) {
+    if (GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].hazard !== null && !GameState.player.dead) {
         GameState.player.damage(GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].hazard.atk)
     }
-    if (GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].hazard !== null) {
+    if (GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].hazard !== null && !GameState.player2.dead) {
         GameState.player2.damage(GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].hazard.atk)
     }
 }

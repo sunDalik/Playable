@@ -47,7 +47,7 @@ function copy2dArray(array) {
 }
 
 function removeAllChildrenFromContainer(container) {
-    for (let i = container.length - 1; i >= 0; i--) {
+    for (let i = container.children.length - 1; i >= 0; i--) {
         container.removeChild(container.children[i]);
     }
 }

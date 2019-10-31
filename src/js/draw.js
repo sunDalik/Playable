@@ -51,6 +51,8 @@ function displayInstructions() {
 }
 
 function drawHUD() {
+    removeAllChildrenFromContainer(GameState.HEARTS1);
+    removeAllChildrenFromContainer(GameState.HEARTS2);
     drawHealth();
 }
 
@@ -106,7 +108,7 @@ function redrawHealthForPlayer(player) {
 function getHealthArray(entity) {
     let health = [];
     for (let i = 0; i < entity.maxhealth; ++i) {
-        if (i === Math.trunc(entity.health)) {
+        if (i === Math.trunc(entity.health) && entity.health > 0) {
             health[i] = Number((entity.health - Math.trunc(entity.health)).toFixed(2));
         } else {
             if (i + 1 <= entity.health) {

@@ -3,6 +3,7 @@
 class RollerB extends Roller {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/roller_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
+        this.atk = 1.5;
         this.ROLL_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 14;
         this.entityType = ENEMY_TYPE.ROLLER_B;
@@ -21,8 +22,10 @@ class RollerB extends Roller {
                     let player = getPlayerOnTile(this.tilePosition.x + x * this.direction, this.tilePosition.y);
                     if (player !== null) {
                         if (x === 1) {
+                            damagePlayer(player, this.atk);
                             this.bump();
                         } else if (x === 2) {
+                            damagePlayer(player, this.atk);
                             this.rollAndBump();
                         } else if (x >= 3) {
                             this.roll();
@@ -42,8 +45,10 @@ class RollerB extends Roller {
                         this.direction *= -1;
                         this.correctScale();
                         if (x === 1) {
+                            damagePlayer(player, this.atk);
                             this.bump();
                         } else if (x === 2) {
+                            damagePlayer(player, this.atk);
                             this.rollAndBump();
                         } else if (x >= 3) {
                             this.roll();
