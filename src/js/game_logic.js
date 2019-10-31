@@ -13,7 +13,9 @@ function enemyTurn() {
 function moveEnemies() {
     for (const enemy of GameState.enemies) {
         if (!enemy.isDead()) {
-            enemy.cancelAnimation();
+            if (enemy.cancellable) {
+                enemy.cancelAnimation();
+            }
             enemy.move();
         }
     }
@@ -25,7 +27,7 @@ function updateHazards() {
     }
 }
 
-function attackTile(attackPositionX, attackPositionY, atk) {
+function attackTile(attackPositionX, attackPositionY, atk, inputX, inputY) {
     const tileEntity = GameState.gameMap[attackPositionY][attackPositionX].entity;
     if (tileEntity != null && tileEntity.role === ROLE.ENEMY) {
         if (!tileEntity.isDead()) {
@@ -34,6 +36,8 @@ function attackTile(attackPositionX, attackPositionY, atk) {
                 GameState.gameMap[tileEntity.tilePosition.y][tileEntity.tilePosition.x].entity = null;
                 tileEntity.cancelAnimation();
                 tileEntity.visible = false;
+            } else if (tileEntity.entityType === ENEMY_TYPE.SPIDER || tileEntity.entityType === ENEMY_TYPE.SPIDER_B) {
+                tileEntity.throwAway(inputX, inputY);
             }
         }
     }

@@ -13,26 +13,31 @@ class Spider extends Enemy {
     }
 
     move() {
-        if (this.chase) {
-            GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
-            const player1DistX = GameState.player.tilePosition.x - this.tilePosition.x;
-            const player1DistY = GameState.player.tilePosition.y - this.tilePosition.y;
-            const player1Dist = Math.abs(player1DistX) + Math.abs(player1DistY);
+        if (!this.thrown) {
+            if (this.chase) {
+                GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                const player1DistX = GameState.player.tilePosition.x - this.tilePosition.x;
+                const player1DistY = GameState.player.tilePosition.y - this.tilePosition.y;
+                const player1Dist = Math.abs(player1DistX) + Math.abs(player1DistY);
 
-            const player2DistX = GameState.player2.tilePosition.x - this.tilePosition.x;
-            const player2DistY = GameState.player2.tilePosition.y - this.tilePosition.y;
-            const player2Dist = Math.abs(player2DistX) + Math.abs(player2DistY);
-            if (player1Dist < player2Dist) {
-                this.chasePlayer(GameState.player);
+                const player2DistX = GameState.player2.tilePosition.x - this.tilePosition.x;
+                const player2DistY = GameState.player2.tilePosition.y - this.tilePosition.y;
+                const player2Dist = Math.abs(player2DistX) + Math.abs(player2DistY);
+                if (player1Dist < player2Dist) {
+                    this.chasePlayer(GameState.player);
+                } else {
+                    this.chasePlayer(GameState.player2);
+                }
+                GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
             } else {
-                this.chasePlayer(GameState.player2);
+                if (this.canSeePlayers()) {
+                    this.chase = true;
+                    this.move();
+                }
             }
-            GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
         } else {
-            if (this.canSeePlayers()) {
-                this.chase = true;
-                this.move();
-            }
+            this.thrown = false;
+            this.cancellable = true;
         }
     }
 
@@ -200,5 +205,31 @@ class Spider extends Enemy {
             return true;
         }
         return false;
+    }
+
+    throwAway(throwX, throwY) {
+        if (throwX !== 0) {
+            if (isNotAWallOrEnemy(this.tilePosition.x + throwX, this.tilePosition.y)) {
+                const player = getPlayerOnTile(this.tilePosition.x + throwX, this.tilePosition.y);
+                if (player === null) {
+                    GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                    this.stepX(throwX);
+                    this.thrown = true;
+                    this.cancellable = false;
+                    GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+                }
+            }
+        } else if (throwY !== 0) {
+            if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + throwY)) {
+                const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + throwY);
+                if (player === null) {
+                    GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                    this.stepY(throwY);
+                    this.thrown = true;
+                    this.cancellable = false;
+                    GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+                }
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ class PoisonHazard extends Hazard {
         super(texture, tilePositionX, tilePositionY);
         this.width = GameState.TILESIZE;
         this.height = GameState.TILESIZE;
-        this.LIFETIME = 10;
+        this.LIFETIME = 12;
         this.turnsLeft = this.LIFETIME;
     }
 }
