@@ -6,6 +6,7 @@ class Enemy extends TileElement {
         this.health = 100;
         this.dead = false;
         this.role = ROLE.ENEMY;
+        this.STEP_ANIMATION_TIME = 8;
     }
 
     damage(health) {

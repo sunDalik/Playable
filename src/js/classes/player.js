@@ -44,7 +44,6 @@ class Player extends TileElement {
 
         this.tilePosition.y += tileStepY;
         let counter = 0;
-        let player = this;
         const oldPosition = this.position.y;
         let x = 0;
         let P0, P1, P2, P3;
@@ -60,14 +59,14 @@ class Player extends TileElement {
             P3 = 0.75;
         }
 
-        this.animation = function () {
-            x += 1 / player.STEP_ANIMATION_TIME;
-            player.position.y = oldPosition + (Math.pow(1 - x, 3) * P0 + 3 * P1 * Math.pow(1 - x, 2) * x + 3 * P2 * (1 - x) * Math.pow(x, 2) + P3 * Math.pow(x, 3)) * tileSize * tileStepY;
+        this.animation = () => {
+            x += 1 / this.STEP_ANIMATION_TIME;
+            this.position.y = oldPosition + cubicBezier(x, P0, P1, P2, P3) * tileSize * tileStepY;
             centerCameraY(false);
             counter++;
-            if (counter >= player.STEP_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(player.animation);
-                player.place();
+            if (counter >= this.STEP_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
                 scaleGameMap();
             }
         };

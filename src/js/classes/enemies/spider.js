@@ -7,6 +7,9 @@ class Spider extends Enemy {
         this.entityType = ENEMY_TYPE.SPIDER;
         this.atk = 0.5;
         this.chase = false;
+        this.thrown = false;
+        this.STEP_ANIMATION_TIME = 6;
+        this.BUMP_ANIMATION_TIME = 10;
     }
 
     move() {
@@ -35,12 +38,112 @@ class Spider extends Enemy {
 
     stepX(tileStepX) {
         this.tilePosition.x += tileStepX;
-        this.place();
+        const jumpHeight = GameState.TILESIZE * 25 / 75;
+        const a = jumpHeight / ((tileStepX * GameState.TILESIZE / 2) ** 2);
+        const b = -(this.position.x + (tileStepX * GameState.TILESIZE) / 2) * 2 * a;
+        const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
+        const stepX = tileStepX * GameState.TILESIZE / this.STEP_ANIMATION_TIME;
+        let counter = 0;
+
+        this.animation = () => {
+            this.position.x += stepX;
+            this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
+            counter++;
+            if (counter >= this.STEP_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        GameState.APP.ticker.add(this.animation);
+    }
+
+    bumpX(tileStepX) {
+        const jumpHeight = GameState.TILESIZE * 25 / 75;
+        const a = jumpHeight / ((tileStepX * GameState.TILESIZE / 2) ** 2);
+        const b = -(this.position.x + (tileStepX * GameState.TILESIZE / 2) / 2) * 2 * a;
+        const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
+        const stepX = tileStepX * GameState.TILESIZE / this.BUMP_ANIMATION_TIME;
+        let counter = 0;
+
+        this.animation = () => {
+            if (counter < this.BUMP_ANIMATION_TIME / 2) {
+                this.position.x += stepX;
+            } else {
+                this.position.x -= stepX;
+            }
+            this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
+            counter++;
+            if (counter >= this.BUMP_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        GameState.APP.ticker.add(this.animation);
     }
 
     stepY(tileStepY) {
         this.tilePosition.y += tileStepY;
-        this.place();
+        let counter = 0;
+        const oldPosition = this.position.y;
+        let x = 0;
+        let P0, P1, P2, P3;
+        if (tileStepY < 0) {
+            P0 = 0.17;
+            P1 = 0.89;
+            P2 = 0.84;
+            P3 = 1.24;
+        } else {
+            P0 = 0.42;
+            P1 = -0.37;
+            P2 = 0.97;
+            P3 = 0.75;
+        }
+
+        this.animation = () => {
+            x += 1 / this.STEP_ANIMATION_TIME;
+            this.position.y = oldPosition + cubicBezier(x, P0, P1, P2, P3) * GameState.TILESIZE * tileStepY;
+            counter++;
+            if (counter >= this.STEP_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        GameState.APP.ticker.add(this.animation);
+    }
+
+    bumpY(tileStepY) {
+        let counter = 0;
+        const oldPosition = this.position.y;
+        let newPosition = null;
+        let x = 0;
+        let P0, P1, P2, P3;
+        if (tileStepY < 0) {
+            P0 = 0.17;
+            P1 = 0.89;
+            P2 = 0.84;
+            P3 = 1.24;
+        } else {
+            P0 = 0.42;
+            P1 = -0.37;
+            P2 = 0.97;
+            P3 = 0.75;
+        }
+
+        this.animation = () => {
+            x += 1 / this.BUMP_ANIMATION_TIME;
+            if (counter < this.BUMP_ANIMATION_TIME / 2) {
+                this.position.y = oldPosition + cubicBezier(x, P0, P1, P2, P3) * GameState.TILESIZE / 2 * tileStepY;
+                newPosition = this.position.y;
+            } else {
+                this.position.y = newPosition - cubicBezier(x, P0, P1, P2, P3) * GameState.TILESIZE / 2 * tileStepY;
+            }
+            counter++;
+            if (counter >= this.BUMP_ANIMATION_TIME) {
+                GameState.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        GameState.APP.ticker.add(this.animation);
     }
 
     chasePlayer(player) {
@@ -51,21 +154,25 @@ class Spider extends Enemy {
 
         if (Math.abs(playerDistX) > Math.abs(playerDistY)) {
             if (!this.tryToStepX(playerDirX)) {
-                this.tryToStepY(playerDirY);
+                if (playerDirY === 0) this.bumpX(playerDirX);
+                else if (!this.tryToStepY(playerDirY)) this.bumpY(playerDirY);
             }
         } else if (Math.abs(playerDistX) < Math.abs(playerDistY)) {
             if (!this.tryToStepY(playerDirY)) {
-                this.tryToStepX(playerDirX);
+                if (playerDirX === 0) this.bumpY(playerDirY);
+                else if (!this.tryToStepX(playerDirX)) this.bumpX(playerDirX);
             }
         } else {
             const randomDirection = getRandomInt(0, 2);
             if (randomDirection === 0) {
                 if (!this.tryToStepX(playerDirX)) {
-                    this.tryToStepY(playerDirY);
+                    if (playerDirY === 0) this.bumpX(playerDirX);
+                    else if (!this.tryToStepY(playerDirY)) this.bumpY(playerDirY);
                 }
             } else {
                 if (!this.tryToStepY(playerDirY)) {
-                    this.tryToStepX(playerDirX);
+                    if (playerDirX === 0) this.bumpY(playerDirY);
+                    else if (!this.tryToStepX(playerDirX)) this.bumpX(playerDirX);
                 }
             }
         }
@@ -74,8 +181,10 @@ class Spider extends Enemy {
     tryToStepX(tileStepX) {
         if (isNotAWallOrEnemy(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
             const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y);
-            if (player !== null) damagePlayer(player, this.atk);
-            else this.stepX(tileStepX);
+            if (player !== null) {
+                damagePlayer(player, this.atk);
+                this.bumpX(tileStepX);
+            } else this.stepX(tileStepX);
             return true;
         }
         return false;
@@ -84,8 +193,10 @@ class Spider extends Enemy {
     tryToStepY(tileStepY) {
         if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
             const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + tileStepY);
-            if (player !== null) damagePlayer(player, this.atk);
-            else this.stepY(tileStepY);
+            if (player !== null) {
+                damagePlayer(player, this.atk);
+                this.bumpY(tileStepY);
+            } else this.stepY(tileStepY);
             return true;
         }
         return false;
