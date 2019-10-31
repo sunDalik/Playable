@@ -44,7 +44,7 @@ function attackTile(attackPositionX, attackPositionY, atk, inputX, inputY) {
 }
 
 function playerTurn(player, playerMove, bothPlayers = false) {
-    if (!player.dead) {
+    if ((bothPlayers && !GameState.player.dead && !GameState.player2.dead) || (!bothPlayers && !player.dead)) {
         if (GameState.enemiesTimeout !== null) {
             clearTimeout(GameState.enemiesTimeout);
             moveEnemies();
