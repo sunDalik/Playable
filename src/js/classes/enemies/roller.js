@@ -23,7 +23,7 @@ class Roller extends Enemy {
         if (isNotAWallOrEnemy(this.tilePosition.x + this.direction, this.tilePosition.y)) {
             let player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
             if (player !== null) {
-                damagePlayer(player, this.atk);
+                player.damage(this.atk);
                 this.bump();
             } else {
                 const step = GameState.TILESIZE / this.ROLL_ANIMATION_TIME;

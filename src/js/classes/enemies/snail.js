@@ -34,7 +34,9 @@ class Snail extends Enemy {
                 const player2DistX = GameState.player2.tilePosition.x - this.tilePosition.x;
                 const player2DistY = GameState.player2.tilePosition.y - this.tilePosition.y;
                 const player2Dist = Math.abs(player2DistX) + Math.abs(player2DistY);
-                if (player1Dist < player2Dist) {
+                if (GameState.player.dead) this.chasePlayer(GameState.player2);
+                else if (GameState.player2.dead) this.chasePlayer(GameState.player);
+                else if (player1Dist < player2Dist) {
                     this.chasePlayer(GameState.player);
                 } else {
                     this.chasePlayer(GameState.player2);
@@ -161,7 +163,7 @@ class Snail extends Enemy {
         if (isNotAWallOrEnemy(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
             const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y);
             if (player !== null) {
-                damagePlayer(player, this.atk);
+                player.damage(this.atk);
                 this.slideAttackX(tileStepX);
             } else this.stepX(tileStepX);
             return true;
@@ -173,7 +175,7 @@ class Snail extends Enemy {
         if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
             const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + tileStepY);
             if (player !== null) {
-                damagePlayer(player, this.atk);
+                player.damage(this.atk);
                 this.slideAttackY(tileStepY);
             } else this.stepY(tileStepY);
             return true;

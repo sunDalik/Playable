@@ -22,10 +22,10 @@ class RollerB extends Roller {
                     let player = getPlayerOnTile(this.tilePosition.x + x * this.direction, this.tilePosition.y);
                     if (player !== null) {
                         if (x === 1) {
-                            damagePlayer(player, this.atk);
+                            player.damage(this.atk);
                             this.bump();
                         } else if (x === 2) {
-                            damagePlayer(player, this.atk);
+                            player.damage(this.atk);
                             this.rollAndBump();
                         } else if (x >= 3) {
                             this.roll();
@@ -45,10 +45,10 @@ class RollerB extends Roller {
                         this.direction *= -1;
                         this.correctScale();
                         if (x === 1) {
-                            damagePlayer(player, this.atk);
+                            player.damage(this.atk);
                             this.bump();
                         } else if (x === 2) {
-                            damagePlayer(player, this.atk);
+                            player.damage(this.atk);
                             this.rollAndBump();
                         } else if (x >= 3) {
                             this.roll();

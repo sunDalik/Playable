@@ -80,18 +80,20 @@ class Player extends TileElement {
         attackTile(attackTileX, attackTileY, this.atk, tileRangeX, tileRangeY);
     }
 
-    damage(damage) {
-        this.health -= damage;
-        redrawHealthForPlayer(this);
-        if (this.health <= 0) {
-            this.dead = true;
-            GameState.gameWorld.removeChild(this);
-            if (GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity !== null) {
-                GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
-                GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
-            } else GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
-            GameState.TILESIZE = GameState.REFERENCE_TILESIZE;
-            redrawTiles();
+    damage(atk) {
+        if (!this.dead) {
+            this.health -= atk;
+            redrawHealthForPlayer(this);
+            if (this.health <= 0) {
+                this.dead = true;
+                GameState.gameWorld.removeChild(this);
+                if (GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity !== null) {
+                    GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
+                    GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
+                } else GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                GameState.TILESIZE = GameState.REFERENCE_TILESIZE;
+                redrawTiles();
+            }
         }
     }
 }
