@@ -61,6 +61,12 @@ function playerTurn(player, playerMove, bothPlayers = false) {
         GameState.player2.cancelAnimation();
     } else player.cancelAnimation();
     playerMove();
+    if (GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].hazard !== null) {
+        GameState.player.damage(GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].hazard.atk)
+    }
+    if (GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].hazard !== null) {
+        GameState.player2.damage(GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].hazard.atk)
+    }
     enemyTurn();
 }
 

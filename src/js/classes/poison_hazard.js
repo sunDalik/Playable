@@ -5,5 +5,6 @@ class PoisonHazard extends Hazard {
         this.height = GameState.TILESIZE;
         this.LIFETIME = 12;
         this.turnsLeft = this.LIFETIME;
+        this.atk = 0.5;
     }
 }

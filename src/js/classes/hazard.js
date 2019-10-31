@@ -6,6 +6,7 @@ class Hazard extends FullTileElement {
         this.zIndex = -1;
         this.LIFETIME = 0;
         this.turnsLeft = this.LIFETIME;
+        this.atk = 0;
     }
 
     addToWorld() {
