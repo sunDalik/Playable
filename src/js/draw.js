@@ -51,15 +51,63 @@ function displayInstructions() {
 }
 
 function drawHUD() {
-    const heartOffset = 70;
+    drawHealth();
+}
 
+function drawHealth() {
+    redrawHealthForPlayer(GameState.player);
+    redrawHealthForPlayer(GameState.player2);
+}
+
+function redrawHealthForPlayer(player) {
+    const container = player === GameState.player ? GameState.HEARTS1 : GameState.HEARTS2;
+    removeAllChildrenFromContainer(container);
+    const heartXOffset = player === GameState.player ? 50 : GameState.APP.renderer.screen.width - 350;
+    const heartYOffset = 20;
+    const heartRowOffset = 20;
+    const heartColOffset = 5;
+    const heartSize = 50;
+    const healthArray = getHealthArray(player);
+    for (let i = 0; i < healthArray.length; ++i) {
+        let heart;
+        switch (healthArray[i]) {
+            case 1:
+                heart = new PIXI.Sprite(GameState.resources["src/images/HUD/heart_full.png"].texture);
+                break;
+
+            case 0.75:
+                heart = new PIXI.Sprite(GameState.resources["src/images/HUD/heart_75.png"].texture);
+                break;
+
+            case 0.5:
+                heart = new PIXI.Sprite(GameState.resources["src/images/HUD/heart_half.png"].texture);
+                break;
+
+            case 0.25:
+                heart = new PIXI.Sprite(GameState.resources["src/images/HUD/heart_25.png"].texture);
+                break;
+
+            case 0:
+                heart = new PIXI.Sprite(GameState.resources["src/images/HUD/heart_empty.png"].texture);
+                break;
+
+            default:
+                heart = new PIXI.Sprite(GameState.resources["src/images/void.png"].texture);
+                break;
+        }
+        heart.width = heartSize;
+        heart.height = heartSize;
+        heart.position.y = i > 4 ? heartYOffset + heartRowOffset : heartYOffset;
+        heart.position.x = heartXOffset + (i % 5) * (heartColOffset + heartSize);
+        container.addChild(heart);
+    }
 }
 
 function getHealthArray(entity) {
     let health = [];
     for (let i = 0; i < entity.maxhealth; ++i) {
         if (i === Math.trunc(entity.health)) {
-            health[i] = (entity.health - Math.trunc(entity.health)).toFixed(2);
+            health[i] = Number((entity.health - Math.trunc(entity.health)).toFixed(2));
         } else {
             if (i + 1 <= entity.health) {
                 health[i] = 1;

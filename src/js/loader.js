@@ -20,6 +20,11 @@ function loadAll() {
         .add("src/images/enemies/spider_b.png")
         .add("src/images/enemies/snail.png")
         .add("src/images/enemies/snail_b.png")
+        .add("src/images/HUD/heart_full.png")
+        .add("src/images/HUD/heart_75.png")
+        .add("src/images/HUD/heart_half.png")
+        .add("src/images/HUD/heart_25.png")
+        .add("src/images/HUD/heart_empty.png")
         .add("src/images/grid.png")
         .on("progress", loadProgressHandler)
         .load(setup);

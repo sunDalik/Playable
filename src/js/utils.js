@@ -19,6 +19,7 @@ function arraySum(array) {
 
 function distanceBetweenPoints(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+
 }
 
 //stolen
@@ -43,6 +44,12 @@ function copy2dArray(array) {
         newArray[i] = array[i].slice();
     }
     return newArray;
+}
+
+function removeAllChildrenFromContainer(container) {
+    for (let i = container.length - 1; i >= 0; i--) {
+        container.removeChild(container.children[i]);
+    }
 }
 
 function collisionCheck(vertexData1, vertexData2) {

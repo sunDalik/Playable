@@ -43,7 +43,11 @@ function setup() {
     GameState.gameWorld = new PIXI.Container();
     GameState.APP.stage.addChild(GameState.gameWorld);
     GameState.HUD = new PIXI.Container();
+    GameState.HEARTS1 = new PIXI.Container();
+    GameState.HEARTS2 = new PIXI.Container();
     GameState.APP.stage.addChild(GameState.HUD);
+    GameState.HUD.addChild(GameState.HEARTS1);
+    GameState.HUD.addChild(GameState.HEARTS2);
 
     GameState.gameMap = generateMap(level);
     GameState.gameLevel = level;
@@ -73,7 +77,8 @@ function setup() {
     GameState.grid = drawGrid();
     drawWalls();
     drawVoids();
-    displayInstructions();
+    //displayInstructions();
+    drawHUD();
     drawEnemies();
     bindKeys();
     GameState.player2.zIndex = GameState.player.zIndex + 1;

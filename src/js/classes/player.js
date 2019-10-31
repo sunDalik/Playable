@@ -83,5 +83,6 @@ class Player extends TileElement {
 
     damage(damage) {
         this.health -= damage;
+        redrawHealthForPlayer(this);
     }
 }
