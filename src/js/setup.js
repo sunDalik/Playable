@@ -77,6 +77,7 @@ function setup() {
     drawEnemies();
     bindKeys();
     GameState.player2.zIndex = GameState.player.zIndex + 1;
+    GameState.primaryPlayer = GameState.player2;
     GameState.gameWorld.addChild(GameState.player);
     GameState.gameWorld.addChild(GameState.player2);
     GameState.gameWorld.sortableChildren = true;
@@ -144,7 +145,8 @@ function generateMap(level) {
                 wall: false,
                 hazard: null,
                 entity: null,
-                void: false
+                void: false,
+                secondaryEntity: null
             };
             if (map[i][j] === "w") mapCell.wall = true;
             if (map[i][j] === "v") mapCell.void = true;

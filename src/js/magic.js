@@ -30,7 +30,7 @@ function fireball() {
         for (const enemy of GameState.enemies) {
             if (!enemy.isDead()) {
                 if (collisionCheck(fireCorrectVertexData, enemy.vertexData)) {
-                    enemy.damage(2);
+                    enemy.damage(3);
                     if (enemy.isDead()) {
                         GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x].entity = null;
                         enemy.cancelAnimation();
@@ -147,4 +147,7 @@ function switchPlayers() {
     const temp = GameState.player2.zIndex;
     GameState.player2.zIndex = GameState.player.zIndex;
     GameState.player.zIndex = temp;
+    if (GameState.primaryPlayer === GameState.player2) {
+        GameState.primaryPlayer = GameState.player;
+    } else GameState.primaryPlayer = GameState.player2;
 }

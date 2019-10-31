@@ -65,17 +65,46 @@ function movePlayer(player, tileStepX, tileStepY) {
         if (isEnemy(player.tilePosition.x + tileStepX, player.tilePosition.y)) {
             player.attack(tileStepX, 0);
         } else if (isNotAWall(player.tilePosition.x + tileStepX, player.tilePosition.y)) {
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;
+            removePlayerFromGameMap(player);
             player.stepX(tileStepX);
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = player;
+            placePlayerOnGameMap(player);
         }
     } else if (tileStepY !== 0) {
         if (isEnemy(player.tilePosition.x, player.tilePosition.y + tileStepY)) {
             player.attack(0, tileStepY);
         } else if (isNotAWall(player.tilePosition.x, player.tilePosition.y + tileStepY)) {
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;
+            removePlayerFromGameMap(player);
             player.stepY(tileStepY);
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = player;
+            placePlayerOnGameMap(player);
         }
+    }
+}
+
+function removePlayerFromGameMap(player) {
+    if (player === GameState.primaryPlayer) {
+        GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;
+        if (GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity !== null && GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity.role === ROLE.PLAYER) {
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity;
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
+        }
+    } else {
+        if (player === GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity) {
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
+        } else {
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;
+        }
+    }
+}
+
+function placePlayerOnGameMap(player) {
+    if (GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity !== null && GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity.role === ROLE.PLAYER) {
+        if (player === GameState.primaryPlayer) {
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity;
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = player;
+        } else {
+            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = player;
+        }
+    } else {
+        GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = player;
     }
 }
