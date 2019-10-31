@@ -42,60 +42,58 @@ function fireball() {
     }
 }
 
-//this probably needs improvement
-//TODO: check enemies too, not just walls
 function teleport() {
     GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = null;
     if (GameState.player2.x > GameState.player.x) {
-        if (isNotAWall(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
+        if (isNotAWallOrEnemy(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
             GameState.player2.tilePosition.x = GameState.player.tilePosition.x + 1;
-        } else if (isNotAWall(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y - 1;
             GameState.player2.tilePosition.x = GameState.player.tilePosition.x
-        } else if (isNotAWall(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y + 1;
             GameState.player2.tilePosition.x = GameState.player.tilePosition.x
-        } else if (isNotAWall(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
             GameState.player2.tilePosition.x = GameState.player.tilePosition.x - 1;
         }
     } else if (GameState.player2.x < GameState.player.x) {
-        if (isNotAWall(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
+        if (isNotAWallOrEnemy(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
             GameState.player2.tilePosition.x = GameState.player.tilePosition.x - 1;
-        } else if (isNotAWall(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y - 1;
             GameState.player2.tilePosition.x = GameState.player.tilePosition.x
-        } else if (isNotAWall(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y + 1;
             GameState.player2.tilePosition.x = GameState.player.tilePosition.x
-        } else if (isNotAWall(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
             GameState.player2.tilePosition.x = GameState.player.tilePosition.x + 1;
         }
     } else if (GameState.player2.tilePosition.y < GameState.player.tilePosition.y) {
-        if (isNotAWall(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
+        if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y - 1;
-        } else if (isNotAWall(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
             GameState.player2.tilePosition.x--;
-        } else if (isNotAWall(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y - 1)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y - 1)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
             GameState.player2.tilePosition.x++;
-        } else if (isNotAWall(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y + 1;
         }
     } else {
-        if (isNotAWall(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
+        if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y + 1;
-        } else if (isNotAWall(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
             GameState.player2.tilePosition.x--;
-        } else if (isNotAWall(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
             GameState.player2.tilePosition.x++;
-        } else if (isNotAWall(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
+        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
             GameState.player2.tilePosition.y = GameState.player.tilePosition.y - 1;
         }
     }

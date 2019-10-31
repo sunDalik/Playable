@@ -28,6 +28,10 @@ function isEnemy(tilePositionX, tilePositionY) {
     return false;
 }
 
+function isNotAWallOrEnemy(tilePositionX, tilePositionY) {
+    return isNotAWall(tilePositionX, tilePositionY) && !isEnemy(tilePositionX, tilePositionY);
+}
+
 function getPlayerOnTile(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = GameState.gameMap[tilePositionY][tilePositionX].entity;

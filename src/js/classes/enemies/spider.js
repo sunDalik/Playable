@@ -3,7 +3,7 @@
 class Spider extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/spider.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = 3;
+        this.health = 2;
         this.entityType = ENEMY_TYPE.SPIDER;
         this.atk = 0.5;
         this.chase = false;
@@ -72,7 +72,7 @@ class Spider extends Enemy {
     }
 
     tryToStepX(tileStepX) {
-        if (!isEnemy(this.tilePosition.x + tileStepX, this.tilePosition.y) && isNotAWall(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
+        if (isNotAWallOrEnemy(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
             const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y);
             if (player !== null) damagePlayer(player, this.atk);
             else this.stepX(tileStepX);
@@ -82,7 +82,7 @@ class Spider extends Enemy {
     }
 
     tryToStepY(tileStepY) {
-        if (!isEnemy(this.tilePosition.x, this.tilePosition.y + tileStepY) && isNotAWall(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
+        if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
             const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + tileStepY);
             if (player !== null) damagePlayer(player, this.atk);
             else this.stepY(tileStepY);
