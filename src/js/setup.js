@@ -63,6 +63,8 @@ function setup() {
     GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.player2;
     GameState.tiles.push(GameState.player);
     GameState.tiles.push(GameState.player2);
+    GameState.player.setStats(1, 0.5, 0, 1.5);
+    GameState.player2.setStats(1, 1.5, 0, 0.5);
 
     GameState.grid = drawGrid();
     drawWalls();

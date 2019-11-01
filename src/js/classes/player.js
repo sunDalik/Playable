@@ -5,7 +5,12 @@ class Player extends TileElement {
         super(texture, tilePositionX, tilePositionY);
         this.health = 9.75;
         this.maxhealth = 10;
-        this.atk = 1;
+        this.atkBase = 1;
+        this.atkMul = 1;
+        this.atk = Math.round(this.atkBase * this.atkMul * 4) / 4;
+        this.defBase = 1;
+        this.defMul = 1;
+        this.def = Math.round(this.defBase * this.defMul * 4) / 4;
         this.STEP_ANIMATION_TIME = 8;
         this.role = ROLE.PLAYER;
         this.dead = false;
@@ -14,6 +19,15 @@ class Player extends TileElement {
     cancelAnimation() {
         super.cancelAnimation();
         scaleGameMap();
+    }
+
+    setStats(atkBase, atkMul, defBase, defMul) {
+        this.atkBase = atkBase;
+        this.atkMul = atkMul;
+        this.atk = Math.round(this.atkBase * this.atkMul * 4) / 4;
+        this.defBase = defBase;
+        this.defMul = defMul;
+        this.def = Math.round(this.defBase * this.defMul * 4) / 4;
     }
 
     stepX(tileStepX) {
@@ -82,7 +96,9 @@ class Player extends TileElement {
 
     damage(atk) {
         if (!this.dead) {
-            this.health -= atk;
+            let dmg = atk - this.def;
+            if (dmg < 0.25) dmg = 0.25;
+            this.health -= dmg;
             redrawHealthForPlayer(this);
             if (this.health <= 0) {
                 this.dead = true;
