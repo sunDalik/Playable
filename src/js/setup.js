@@ -30,17 +30,6 @@ window.addEventListener("resize", () => {
 
 function setup() {
     let level = generateLevel();
-    let player1StartTileX, player1StartTileY;
-    loop: for (let i = 0; i < level.length; ++i) {
-        for (let j = 0; j < level[0].length; ++j) {
-            if (level[i][j] === "") {
-                player1StartTileX = j;
-                player1StartTileY = i;
-                break loop;
-            }
-        }
-    }
-
     GameState.gameWorld = new PIXI.Container();
     GameState.APP.stage.addChild(GameState.gameWorld);
     GameState.HUD = new PIXI.Container();
@@ -68,8 +57,8 @@ function setup() {
 
     GameState.levelGraph = getLevelPlayerGraph(level);
 
-    GameState.player = new Player(GameState.resources["src/images/player.png"].texture, player1StartTileX, player1StartTileY);
-    GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, player1StartTileX, player1StartTileY + 1);
+    GameState.player = new Player(GameState.resources["src/images/player.png"].texture, GameState.startX, GameState.startY);
+    GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, GameState.startX + 1, GameState.startY + 1);
     GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].entity = GameState.player;
     GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.player2;
     GameState.tiles.push(GameState.player);

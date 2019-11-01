@@ -26,3 +26,5 @@ GameState.WEAPON_ATTACK_TIME = 6;
 GameState.gameLevel = [];
 GameState.playerDetectionGraph = null;
 GameState.levelGraph = null;
+GameState.startX = 0;
+GameState.startY = 0;

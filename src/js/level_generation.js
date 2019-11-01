@@ -27,6 +27,79 @@ function generateLevel() {
         levelRooms.push(room);
     }
 
+    //generate starting room
+    const startRoomY = getRandomInt(0, levelRoomHeight);
+    let startRoomX;
+    if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) startRoomX = getRandomInt(0, levelRoomWidth);
+    else startRoomX = randomChoice([0, levelRoomWidth - 1]);
+    const startRoomI = startRoomY * levelRoomWidth + startRoomX;
+    let startRoom = [];
+    levelRooms[startRoomI] = startRoom;
+
+    //for the sake of our future
+    let endingRoomX;
+    let endingRoomY;
+    if (startRoomX + 1 <= (levelRoomWidth + 1) / 2) endingRoomX = levelRoomWidth - 1;
+    else endingRoomX = 0;
+    if (startRoomY + 1 <= (levelRoomHeight + 1) / 2) endingRoomY = levelRoomHeight - 1;
+    else endingRoomY = 0;
+    /////
+
+    let entryCount = 0;
+    for (let r = 0; r < levelRooms.length; ++r) {
+        for (let i = 0; i < levelRooms[r].length; ++i) {
+            for (let j = 0; j < levelRooms[r][0].length; ++j) {
+                if (levelRooms[r][i][j] === "entry") entryCount++;
+            }
+        }
+    }
+
+    let startRoomEntriesCount;
+    if (entryCount % 2 === 0) startRoomEntriesCount = 2;
+    else startRoomEntriesCount = 3;
+
+    const startRoomWidth = getRandomInt(6, 9);
+    const startRoomHeight = getRandomInt(6, 9);
+
+    const startRoomEntries = [];
+    if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};
+    else startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: startRoomHeight - 1};
+
+    if (endingRoomX === 0) startRoomEntries[1] = {x: 0, y: getRandomInt(1, startRoomHeight - 1)};
+    else startRoomEntries[1] = {x: startRoomWidth - 1, y: getRandomInt(1, startRoomHeight - 1)};
+
+    if (startRoomEntriesCount === 3) {
+        const option = getRandomInt(0, 2);
+        if (option === 0) {
+            if (endingRoomY === 0) startRoomEntries[2] = {
+                x: getRandomInt(1, startRoomWidth - 1),
+                y: startRoomHeight - 1
+            };
+            else startRoomEntries[2] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};
+        } else {
+            if (endingRoomX === 0) startRoomEntries[2] = {
+                x: startRoomWidth - 1,
+                y: getRandomInt(1, startRoomHeight - 1)
+            };
+            else startRoomEntries[2] = {x: 0, y: getRandomInt(1, startRoomHeight - 1)};
+        }
+    }
+
+    for (let i = 0; i < startRoomHeight; ++i) {
+        startRoom[i] = [];
+        for (let j = 0; j < startRoomWidth; ++j) {
+            if (j === 0 || j === startRoomWidth - 1 || i === 0 || i === startRoomHeight - 1) {
+                startRoom[i][j] = "w";
+            } else startRoom[i][j] = "";
+            for (const entry of startRoomEntries) {
+                if (i === entry.y && j === entry.x) {
+                    startRoom[i][j] = "entry";
+                }
+            }
+        }
+    }
+
+    //calculating max width and total height of the level
     let levelTileWidths = [];
     let levelTileHeights = [];
     for (let i = 0; i < levelRoomWidth; ++i) levelTileWidths.push(0);
@@ -45,7 +118,7 @@ function generateLevel() {
     const levelTileWidth = getMaxOfArray(levelTileWidths) + 5 * (levelRoomWidth + 1);
     const levelTileHeight = arraySum(levelTileHeights) + 5 * (levelRoomHeight + 1);
 
-    //initialize level array
+//initialize level array
     for (let i = 0; i < levelTileHeight; ++i) {
         level[i] = [];
         for (let j = 0; j < levelTileWidth; ++j) {
@@ -69,6 +142,11 @@ function generateLevel() {
         const startX = previousX + randomOffsetX;
         const startY = previousY + randomOffsetY;
         level = mergeRoomIntoLevel(level, currentRoom, startX, startY);
+        if (r === startRoomI) {
+            GameState.startX = startX + Math.floor(startRoomWidth / 2) - 1;
+            GameState.startY = startY + Math.floor(startRoomHeight / 2) - 1;
+        }
+
         previousX = startX + currentRoom[0].length;
         if (currentRoom.length + randomOffsetY > previousYMaxAddition) previousYMaxAddition = currentRoom.length + randomOffsetY;
 
@@ -87,7 +165,7 @@ function generateLevel() {
     if (entryPoints.length % 2 === 1) oddEntry = entryPoints.pop();
     entryPoints = randomShuffle(entryPoints);
 
-    // the Graph class is weird, levelGraph.grid.length will return number of Xs and levelGraph.grid[0].length number of Ys
+// the Graph class is weird, levelGraph.grid.length will return number of Xs and levelGraph.grid[0].length number of Ys
     let levelGraph = new Graph(level);
     for (let i = 0; i < levelGraph.grid.length; ++i) {
         for (let j = 0; j < levelGraph.grid[0].length; ++j) {
@@ -121,7 +199,7 @@ function generateLevel() {
 
     let levelPlayerGraph = getLevelPlayerGraph(level);
 
-    //ensure that we can reach any entry from any other entry
+//ensure that we can reach any entry from any other entry
     for (let i = 0; i < entryPoints.length; ++i) {
         const testEntry = entryPoints[i % entryPoints.length];
         const unreachableEntries = [];
@@ -146,7 +224,7 @@ function generateLevel() {
         }
     }
 
-    //if there are any unconnected entries left then connect them already!
+//if there are any unconnected entries left then connect them already!
     for (const entry of entryPoints) {
         if (!entry.connected) {
             let minConnection = getMinimalConnection(levelGraph, entry, entryPoints, false);
@@ -165,7 +243,7 @@ function generateLevel() {
         }
     }
 
-    //outline paths with walls
+//outline paths with walls
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 1; j < level[0].length - 1; ++j) {
             if (level[i][j] === "path" || level[i][j] === "entry") {
@@ -181,7 +259,7 @@ function generateLevel() {
         }
     }
 
-    // remove walls between paths that connect diagonally
+// remove walls between paths that connect diagonally
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 0; j < level[0].length - 1; ++j) {
             if (level[i][j] === "path") {
