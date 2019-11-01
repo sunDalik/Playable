@@ -52,6 +52,7 @@ function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
 function createFadingAttack(attack, tileAttack = true) {
     if (tileAttack) attack.place();
     GameState.gameWorld.addChild(attack);
+    GameState.tiles.push(attack);
     const delay = GameState.TURNTIME / 2;
     let counter = 0;
 
@@ -63,6 +64,7 @@ function createFadingAttack(attack, tileAttack = true) {
         if (counter >= GameState.TURNTIME) {
             GameState.APP.ticker.remove(animation);
             GameState.gameWorld.removeChild(attack);
+            removeObjectFromArray(attack, GameState.tiles);
         }
     };
     GameState.APP.ticker.add(animation);

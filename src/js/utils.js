@@ -52,6 +52,13 @@ function removeAllChildrenFromContainer(container) {
     }
 }
 
+function removeObjectFromArray(object, array) {
+    const index = array.indexOf(object);
+    if (index !== -1) {
+        array.splice(index, 1);
+    }
+}
+
 function collisionCheck(vertexData1, vertexData2) {
     const lines1 = getLinesByVertexData(vertexData1);
     const lines2 = getLinesByVertexData(vertexData2);

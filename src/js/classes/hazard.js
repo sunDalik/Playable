@@ -17,9 +17,7 @@ class Hazard extends FullTileElement {
 
     removeFromWorld() {
         GameState.gameWorld.removeChild(this);
-        GameState.hazards = GameState.hazards.filter((h) => {
-            return !(h.tilePosition.x === this.tilePosition.x && h.tilePosition.y === this.tilePosition.y);
-        });
+        removeObjectFromArray(this, GameState.hazards);
         GameState.gameMap[this.tilePosition.y][this.tilePosition.x].hazard = null;
     }
 
