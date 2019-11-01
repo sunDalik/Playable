@@ -161,8 +161,6 @@ function generateLevel() {
         }
     }
 
-    let oddEntry;
-    if (entryPoints.length % 2 === 1) oddEntry = entryPoints.pop();
     entryPoints = randomShuffle(entryPoints);
 
 // the Graph class is weird, levelGraph.grid.length will return number of Xs and levelGraph.grid[0].length number of Ys
@@ -185,15 +183,6 @@ function generateLevel() {
                 entry.connected = true;
                 level = drawConnection(level, minConnection.connection);
             }
-        }
-    }
-
-    if (oddEntry !== undefined) {
-        let minConnection = getMinimalConnection(levelGraph, oddEntry, entryPoints, false);
-        if (minConnection !== undefined) {
-            oddEntry.connected = true;
-            minConnection.entry.connected = true;
-            level = drawConnection(level, minConnection.connection);
         }
     }
 
