@@ -110,6 +110,10 @@ function rotateAttack() {
                 const attackPositionY = GameState.player.tilePosition.y + y;
                 createFadingAttack(new FullTileElement(GameState.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
                 attackTile(attackPositionX, attackPositionY, 2);
+                const player = getPlayerOnTile(attackPositionX, attackPositionY);
+                if (player !== null) {
+                    player.heal(1);
+                }
             }
         }
     }
@@ -124,6 +128,10 @@ function crossAttack() {
                 const attackPositionY = GameState.player2.tilePosition.y + offset * sign;
                 createFadingAttack(new FullTileElement(GameState.resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
                 attackTile(attackPositionX, attackPositionY, 2);
+                const player = getPlayerOnTile(attackPositionX, attackPositionY);
+                if (player !== null) {
+                    player.damage(1);
+                }
             }
         }
     }

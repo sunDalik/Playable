@@ -96,4 +96,14 @@ class Player extends TileElement {
             }
         }
     }
+
+    heal(healHP) {
+        if (!this.dead) {
+            this.health += healHP;
+            if (this.health > this.maxhealth) {
+                this.health = this.maxhealth;
+            }
+            redrawHealthForPlayer(this);
+        }
+    }
 }
