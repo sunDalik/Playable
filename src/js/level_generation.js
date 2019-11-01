@@ -168,7 +168,7 @@ function generateLevel() {
     //outline paths with walls
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 1; j < level[0].length - 1; ++j) {
-            if (level[i][j] === "path") {
+            if (level[i][j] === "path" || level[i][j] === "entry") {
                 if (level[i + 1][j] === "v") level[i + 1][j] = "w"; //threw exception once. Possibly will generate unclosed path at some point?
                 if (level[i][j + 1] === "v") level[i][j + 1] = "w";
                 if (level[i + 1][j + 1] === "v") level[i + 1][j + 1] = "w";
