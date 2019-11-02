@@ -223,7 +223,7 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, litAreas = []) {
                 if (GameState.gameMap[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY + 1, lightPaths, distance);
                 if (GameState.gameMap[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY - 1, lightPaths, distance);
             }
-            if (!isInArray(litAreas, tile => tile.x === tileX && tile.y === tileY)) {
+            if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY)) {
                 litAreas.push({x: tileX, y: tileY});
             }
             if (litAreas.some(tile => !(tile.x === tileX + 1 && tile.y === tileY))) lightWorld(tileX + 1, tileY, lightPaths, distance - 1, litAreas);
