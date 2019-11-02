@@ -46,6 +46,13 @@ function copy2dArray(array) {
     return newArray;
 }
 
+function isInArray(array, comparator) {
+    for (let i = 0; i < array.length; ++i) {
+        if (comparator(array[i])) return true;
+    }
+    return false;
+}
+
 function removeAllChildrenFromContainer(container) {
     for (let i = container.children.length - 1; i >= 0; i--) {
         container.removeChild(container.children[i]);

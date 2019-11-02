@@ -15,8 +15,7 @@ class RollerB extends Roller {
         for (let x = 1; ; x++) {
             if (isNotOutOfMap(this.tilePosition.x + x * this.direction, this.tilePosition.y)) {
                 if (lastDirTileEmpty === true) {
-                    if (GameState.gameMap[this.tilePosition.y][this.tilePosition.x + x * this.direction].entity !== null
-                        || GameState.gameMap[this.tilePosition.y][this.tilePosition.x + x * this.direction].wall === true) {
+                    if (!isNotAWallOrEnemy(this.tilePosition.x + x * this.direction, this.tilePosition.y)) {
                         lastDirTileEmpty = false;
                     }
                     let player = getPlayerOnTile(this.tilePosition.x + x * this.direction, this.tilePosition.y);
@@ -36,8 +35,7 @@ class RollerB extends Roller {
             }
             if (isNotOutOfMap(this.tilePosition.x - x * this.direction, this.tilePosition.y)) {
                 if (lastNotDirTileEmpty === true) {
-                    if (GameState.gameMap[this.tilePosition.y][this.tilePosition.x - x * this.direction].entity !== null
-                        || GameState.gameMap[this.tilePosition.y][this.tilePosition.x - x * this.direction].wall === true) {
+                    if (!isNotAWallOrEnemy(this.tilePosition.x - x * this.direction, this.tilePosition.y)) {
                         lastNotDirTileEmpty = false;
                     }
                     let player = getPlayerOnTile(this.tilePosition.x - x * this.direction, this.tilePosition.y);

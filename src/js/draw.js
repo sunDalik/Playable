@@ -210,22 +210,26 @@ function lightPlayerPosition(player) {
 }
 
 //lightPaths == true -> light paths until we encounter none else light nones until we encounter path
-function lightWorld(tileX, tileY, lightPaths) {
-    if (!GameState.gameMap[tileY][tileX].lit) {
+function lightWorld(tileX, tileY, lightPaths, distance = 8, litAreas = []) {
+    if (distance > -1) {
         if (GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.ENTRY
             || (lightPaths && GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.PATH)
             || (!lightPaths && GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.NONE)) {
-            GameState.gameWorld.removeChild(GameState.darkTiles[tileY][tileX]);
-            GameState.gameMap[tileY][tileX].lit = true;
-            lightWorld(tileX + 1, tileY, lightPaths);
-            lightWorld(tileX - 1, tileY, lightPaths);
-            lightWorld(tileX, tileY + 1, lightPaths);
-            lightWorld(tileX, tileY - 1, lightPaths);
-            if (GameState.gameMap[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY + 1, lightPaths);
-            if (GameState.gameMap[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY - 1, lightPaths);
-            if (GameState.gameMap[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY + 1, lightPaths);
-            if (GameState.gameMap[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY - 1, lightPaths);
-
+            if (!GameState.gameMap[tileY][tileX].lit) {
+                GameState.gameWorld.removeChild(GameState.darkTiles[tileY][tileX]);
+                GameState.gameMap[tileY][tileX].lit = true;
+                if (GameState.gameMap[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY + 1, lightPaths, distance);
+                if (GameState.gameMap[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY - 1, lightPaths, distance);
+                if (GameState.gameMap[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY + 1, lightPaths, distance);
+                if (GameState.gameMap[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY - 1, lightPaths, distance);
+            }
+            if (!isInArray(litAreas, tile => tile.x === tileX && tile.y === tileY)) {
+                litAreas.push({x: tileX, y: tileY});
+            }
+            if (litAreas.some(tile => !(tile.x === tileX + 1 && tile.y === tileY))) lightWorld(tileX + 1, tileY, lightPaths, distance - 1, litAreas);
+            if (litAreas.some(tile => !(tile.x === tileX - 1 && tile.y === tileY))) lightWorld(tileX - 1, tileY, lightPaths, distance - 1, litAreas);
+            if (litAreas.some(tile => !(tile.x === tileX && tile.y === tileY + 1))) lightWorld(tileX, tileY + 1, lightPaths, distance - 1, litAreas);
+            if (litAreas.some(tile => !(tile.x === tileX && tile.y === tileY - 1))) lightWorld(tileX, tileY - 1, lightPaths, distance - 1, litAreas);
         } else if (GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.WALL) {
             GameState.gameWorld.removeChild(GameState.darkTiles[tileY][tileX]);
             GameState.gameMap[tileY][tileX].lit = true;
