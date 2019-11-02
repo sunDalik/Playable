@@ -2,7 +2,7 @@
 
 function isNotAWall(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
-        if (GameState.gameMap[tilePositionY][tilePositionX].wall === false) {
+        if (GameState.gameMap[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL) {
             return true
         }
     }

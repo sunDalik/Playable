@@ -139,14 +139,15 @@ function generateMap(level) {
     for (let i = 0; i < map.length; ++i) {
         for (let j = 0; j < map[0].length; ++j) {
             let mapCell = {
-                wall: false,
+                tileType: TILE_TYPE.NONE,
                 hazard: null,
                 entity: null,
-                void: false,
                 secondaryEntity: null
             };
-            if (map[i][j] === "w") mapCell.wall = true;
-            if (map[i][j] === "v") mapCell.void = true;
+            if (map[i][j] === "w") mapCell.tileType = TILE_TYPE.WALL;
+            else if (map[i][j] === "v") mapCell.tileType = TILE_TYPE.VOID;
+            else if (map[i][j] === "entry") mapCell.tileType = TILE_TYPE.ENTRY;
+            else if (map[i][j] === "path") mapCell.tileType = TILE_TYPE.PATH;
 
             if (map[i][j] === "r") mapCell.entity = new Roller(j, i);
             else if (map[i][j] === "rb") mapCell.entity = new RollerB(j, i);

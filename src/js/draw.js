@@ -3,7 +3,7 @@
 function drawWalls() {
     for (let i = 0; i < GameState.gameMap.length; ++i) {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
-            if (GameState.gameMap[i][j].wall === true) {
+            if (GameState.gameMap[i][j].tileType === TILE_TYPE.WALL) {
                 let wallTile = new WallTile(j, i);
                 GameState.gameWorld.addChild(wallTile);
                 GameState.tiles.push(wallTile);
@@ -15,7 +15,7 @@ function drawWalls() {
 function drawVoids() {
     for (let i = 0; i < GameState.gameMap.length; ++i) {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
-            if (GameState.gameMap[i][j].void === true) {
+            if (GameState.gameMap[i][j].tileType === TILE_TYPE.VOID) {
                 let voidTile = new VoidTile(j, i);
                 voidTile.zIndex = 999;
                 GameState.gameWorld.addChild(voidTile);
