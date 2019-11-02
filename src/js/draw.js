@@ -25,6 +25,25 @@ function drawVoids() {
     }
 }
 
+function createDarkness() {
+    for (let i = 0; i < GameState.gameMap.length; ++i) {
+        GameState.darkTiles[i] = [];
+        for (let j = 0; j < GameState.gameMap[0].length; ++j) {
+            GameState.darkTiles[i][j] = null;
+        }
+    }
+
+    for (let i = 0; i < GameState.gameMap.length; ++i) {
+        for (let j = 0; j < GameState.gameMap[0].length; ++j) {
+            let voidTile = new VoidTile(j, i);
+            voidTile.zIndex = 999;
+            GameState.gameWorld.addChild(voidTile);
+            GameState.tiles.push(voidTile);
+            GameState.darkTiles[i][j] = voidTile;
+        }
+    }
+}
+
 function drawEnemies() {
     for (let i = 0; i < GameState.gameMap.length; ++i) {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
@@ -171,4 +190,45 @@ function redrawTiles() {
 
     drawOther();
     centerCamera();
+}
+
+function lightPlayerPosition(player) {
+    const px = player.tilePosition.x;
+    const py = player.tilePosition.y;
+    if (GameState.gameMap[py][px].tileType === TILE_TYPE.PATH) {
+        lightWorld(px, py, true);
+    } else if (GameState.gameMap[py][px].tileType === TILE_TYPE.NONE) {
+        lightWorld(px, py, false);
+    } else if (GameState.gameMap[py][px].tileType === TILE_TYPE.ENTRY) {
+        if ((GameState.gameMap[py + 1][px].tileType === TILE_TYPE.PATH && !GameState.gameMap[py + 1][px].lit)
+            || (GameState.gameMap[py - 1][px].tileType === TILE_TYPE.PATH && !GameState.gameMap[py - 1][px].lit)
+            || (GameState.gameMap[py][px + 1].tileType === TILE_TYPE.PATH && !GameState.gameMap[py][px + 1].lit)
+            || (GameState.gameMap[py][px - 1].tileType === TILE_TYPE.PATH && !GameState.gameMap[py][px - 1].lit)) {
+            lightWorld(px, py, true);
+        } else lightWorld(px, py, false);
+    }
+}
+
+//lightPaths == true -> light paths until we encounter none else light nones until we encounter path
+function lightWorld(tileX, tileY, lightPaths) {
+    if (!GameState.gameMap[tileY][tileX].lit) {
+        if (GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.ENTRY
+            || (lightPaths && GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.PATH)
+            || (!lightPaths && GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.NONE)) {
+            GameState.gameWorld.removeChild(GameState.darkTiles[tileY][tileX]);
+            GameState.gameMap[tileY][tileX].lit = true;
+            lightWorld(tileX + 1, tileY, lightPaths);
+            lightWorld(tileX - 1, tileY, lightPaths);
+            lightWorld(tileX, tileY + 1, lightPaths);
+            lightWorld(tileX, tileY - 1, lightPaths);
+            if (GameState.gameMap[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY + 1, lightPaths);
+            if (GameState.gameMap[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY - 1, lightPaths);
+            if (GameState.gameMap[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY + 1, lightPaths);
+            if (GameState.gameMap[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY - 1, lightPaths);
+
+        } else if (GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.WALL) {
+            GameState.gameWorld.removeChild(GameState.darkTiles[tileY][tileX]);
+            GameState.gameMap[tileY][tileX].lit = true;
+        }
+    }
 }

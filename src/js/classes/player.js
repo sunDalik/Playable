@@ -52,6 +52,7 @@ class Player extends TileElement {
             }
         };
         GameState.APP.ticker.add(this.animation);
+        lightPlayerPosition(this);
     }
 
     stepY(tileStepY) {
@@ -85,6 +86,7 @@ class Player extends TileElement {
             }
         };
         GameState.APP.ticker.add(this.animation);
+        lightPlayerPosition(this);
     }
 
     attack(tileRangeX, tileRangeY) {

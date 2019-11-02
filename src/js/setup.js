@@ -68,7 +68,10 @@ function setup() {
 
     GameState.grid = drawGrid();
     drawWalls();
-    drawVoids();
+    //drawVoids();
+    createDarkness();
+    lightPlayerPosition(GameState.player);
+    lightPlayerPosition(GameState.player2);
     //displayInstructions();
     drawHUD();
     drawEnemies();
@@ -142,7 +145,8 @@ function generateMap(level) {
                 tileType: TILE_TYPE.NONE,
                 hazard: null,
                 entity: null,
-                secondaryEntity: null
+                secondaryEntity: null,
+                lit: false
             };
             if (map[i][j] === "w") mapCell.tileType = TILE_TYPE.WALL;
             else if (map[i][j] === "v") mapCell.tileType = TILE_TYPE.VOID;

@@ -19,6 +19,7 @@ GameState.primaryPlayer = null;
 GameState.enemies = [];
 GameState.hazards = [];
 GameState.tiles = [];
+GameState.darkTiles = [];
 GameState.otherGraphics = [];
 GameState.enemiesTimeout = null;
 GameState.TURNTIME = 16;
