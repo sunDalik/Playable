@@ -141,7 +141,7 @@ function generateLevel() {
         const randomOffsetY = getRandomInt(2, 4);
         const startX = previousX + randomOffsetX;
         const startY = previousY + randomOffsetY;
-        level = mergeRoomIntoLevel(level, currentRoom, startX, startY);
+        mergeRoomIntoLevel(level, currentRoom, startX, startY);
         if (r === startRoomI) {
             GameState.startX = startX + Math.floor(startRoomWidth / 2) - 1;
             GameState.startY = startY + Math.floor(startRoomHeight / 2) - 1;
@@ -175,13 +175,17 @@ function generateLevel() {
         }
     }
 
+    //this array contains all room connections to ensure that a room is not connected to the same other room twice through different entries
+    let roomConnections = [];
+    for (let i = 0; i < levelRooms.length; ++i) {
+        roomConnections[i] = [];
+    }
+
     for (const entry of entryPoints) {
         if (!entry.connected) {
-            let minConnection = getMinimalConnection(levelGraph, entry, entryPoints);
+            let minConnection = getMinimalConnection(levelGraph, roomConnections, entry, entryPoints);
             if (minConnection !== undefined) {
-                minConnection.entry.connected = true;
-                entry.connected = true;
-                level = drawConnection(level, minConnection.connection);
+                connectEntries(minConnection.entry, entry, minConnection.connection, roomConnections, level);
             }
         }
     }
@@ -203,11 +207,9 @@ function generateLevel() {
             }
         }
         if (unreachableEntries.length !== 0) {
-            let minConnection = getMinimalConnection(levelGraph, testEntry, unreachableEntries, false);
+            let minConnection = getMinimalConnection(levelGraph, roomConnections, testEntry, unreachableEntries, false);
             if (minConnection !== undefined) {
-                testEntry.connected = true;
-                minConnection.entry.connected = true;
-                level = drawConnection(level, minConnection.connection);
+                connectEntries(minConnection.entry, testEntry, minConnection.connection, roomConnections, level);
             }
             levelPlayerGraph = getLevelPlayerGraph(level);
         }
@@ -216,17 +218,18 @@ function generateLevel() {
 //if there are any unconnected entries left then connect them already!
     for (const entry of entryPoints) {
         if (!entry.connected) {
-            let minConnection = getMinimalConnection(levelGraph, entry, entryPoints, false);
+            let minConnection = getMinimalConnection(levelGraph, roomConnections, entry, entryPoints, false);
             if (minConnection !== undefined) {
-                minConnection.entry.connected = true;
-                entry.connected = true;
-                level = drawConnection(level, minConnection.connection);
+                connectEntries(minConnection.entry, entry, minConnection.connection, roomConnections, level);
             } else {
-                let minConnection = getMinimalConnection(levelGraph, entry, entryPoints, false, false);
+                let minConnection = getMinimalConnection(levelGraph, roomConnections, entry, entryPoints, false, true, false);
                 if (minConnection !== undefined) {
-                    minConnection.entry.connected = true;
-                    entry.connected = true;
-                    level = drawConnection(level, minConnection.connection);
+                    connectEntries(minConnection.entry, entry, minConnection.connection, roomConnections, level);
+                } else {
+                    let minConnection = getMinimalConnection(levelGraph, roomConnections, entry, entryPoints, false, false, false);
+                    if (minConnection !== undefined) {
+                        connectEntries(minConnection.entry, entry, minConnection.connection, roomConnections, level);
+                    }
                 }
             }
         }
@@ -279,7 +282,6 @@ function mergeRoomIntoLevel(level, room, startX, startY) {
             level[i][j] = room[i - startY][j - startX];
         }
     }
-    return level;
 }
 
 function drawConnection(level, connection) {
@@ -289,15 +291,15 @@ function drawConnection(level, connection) {
             level[connection[i].x][connection[i].y] = "path";
         }
     }
-    return level;
 }
 
-function getMinimalConnection(graph, startEntry, endEntries, hasToBeUnconnected = true, hasToBeFromDifferentRoom = true) {
+function getMinimalConnection(graph, roomConnections, startEntry, endEntries, hasToBeUnconnected = true, hasToBeFromDifferentRoom = true, roomsMustNotBeAlreadyConnected = true) {
     let possibleConnections = [];
     for (const entry of endEntries) {
         if (!(entry.coords.x === startEntry.coords.x && entry.coords.y === startEntry.coords.y)
             && (!entry.connected || !hasToBeUnconnected)
-            && (startEntry.room_id !== entry.room_id || !hasToBeFromDifferentRoom)) {
+            && (startEntry.room_id !== entry.room_id || !hasToBeFromDifferentRoom)
+            && (!isRoomConnectedToRoom(roomConnections, entry.room_id, startEntry.room_id) || !roomsMustNotBeAlreadyConnected)) {
             const start = graph.grid[startEntry.coords.y][startEntry.coords.x];
             const end = graph.grid[entry.coords.y][entry.coords.x];
             const result = astar.search(graph, start, end);
@@ -319,6 +321,23 @@ function getMinimalConnection(graph, startEntry, endEntries, hasToBeUnconnected 
     if (minConnectionIndex !== undefined) {
         return possibleConnections[minConnectionIndex];
     } else return undefined;
+}
+
+function isRoomConnectedToRoom(roomConnections, roomI1, roomI2) {
+    for (let i = 0; i < roomConnections[roomI1].length; ++i) {
+        if (roomConnections[roomI1][i] === roomI2) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function connectEntries(entry1, entry2, connection, roomConnections, level) {
+    entry1.connected = true;
+    entry2.connected = true;
+    roomConnections[entry1.room_id].push(entry2.room_id);
+    roomConnections[entry2.room_id].push(entry1.room_id);
+    drawConnection(level, connection);
 }
 
 function getLevelPlayerGraph(level) {
