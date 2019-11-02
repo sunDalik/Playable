@@ -52,6 +52,7 @@ class Spider extends Enemy {
         const stepX = tileStepX * GameState.TILESIZE / this.STEP_ANIMATION_TIME;
         let counter = 0;
 
+        GameState.APP.ticker.remove(this.animation); //spider specific (or rather cancellable specific). I don't really understand why do I need this but I need this
         this.animation = () => {
             this.position.x += stepX;
             this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
@@ -72,6 +73,7 @@ class Spider extends Enemy {
         const stepX = tileStepX * GameState.TILESIZE / this.BUMP_ANIMATION_TIME;
         let counter = 0;
 
+        GameState.APP.ticker.remove(this.animation);
         this.animation = () => {
             if (counter < this.BUMP_ANIMATION_TIME / 2) {
                 this.position.x += stepX;
@@ -106,6 +108,7 @@ class Spider extends Enemy {
             P3 = 0.75;
         }
 
+        GameState.APP.ticker.remove(this.animation);
         this.animation = () => {
             x += 1 / this.STEP_ANIMATION_TIME;
             this.position.y = oldPosition + cubicBezier(x, P0, P1, P2, P3) * GameState.TILESIZE * tileStepY;
@@ -136,6 +139,7 @@ class Spider extends Enemy {
             P3 = 0.75;
         }
 
+        GameState.APP.ticker.remove(this.animation);
         this.animation = () => {
             x += 1 / this.BUMP_ANIMATION_TIME;
             if (counter < this.BUMP_ANIMATION_TIME / 2) {

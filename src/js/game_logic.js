@@ -50,7 +50,6 @@ function playerTurn(player, playerMove, bothPlayers = false) {
             moveEnemies();
             updateHazards();
             GameState.enemiesTimeout = null;
-            enemyTurn();
         }
 
         if (bothPlayers) {
