@@ -153,10 +153,6 @@ function getHeartsBottomLineForPlayer(player) {
     return heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxhealth / 5)
 }
 
-function getSlotOffsetXForPlayer2(slotSize, slotsColOffset) {
-    return GameState.APP.renderer.screen.width - 20 - (slotSize + slotsColOffset) * 6 + slotsColOffset;
-}
-
 function redrawSlotsForPlayer(player) {
     const container = player === GameState.player ? GameState.SLOTS1 : GameState.SLOTS2;
     removeAllChildrenFromContainer(container);
@@ -164,8 +160,9 @@ function redrawSlotsForPlayer(player) {
     const slotsRowOffset = 10;
     const slotsColOffset = 10;
     const slotsYOffset = getHeartsBottomLineForPlayer(player) + 15;
-    const slotsXOffset = player === GameState.player ? 20 : getSlotOffsetXForPlayer2(slotSize, slotsColOffset);
+    const slotsXOffset = player === GameState.player ? 20 : GameState.APP.renderer.screen.width - 20 - (slotSize + slotsColOffset) * 4 + slotsColOffset;
     const slotsEquipmentOffset = player === GameState.player ? slotsXOffset : GameState.APP.renderer.screen.width - 20 - slotSize;
+    const slotsSecondRowXOffset = player === GameState.player ? slotsXOffset : GameState.APP.renderer.screen.width - 20 - (slotSize + slotsColOffset) * 2 + slotsColOffset;
     const weaponSlot = new PIXI.Sprite(GameState.resources["src/images/HUD/slot_weapon.png"].texture);
     const secondHandSlot = new PIXI.Sprite(GameState.resources["src/images/HUD/slot_second_hand.png"].texture);
     const magicSlot1 = new PIXI.Sprite(GameState.resources["src/images/HUD/slot_magic.png"].texture);
@@ -175,7 +172,8 @@ function redrawSlotsForPlayer(player) {
     const headSlot = new PIXI.Sprite(GameState.resources["src/images/HUD/slot_head.png"].texture);
     const armorSlot = new PIXI.Sprite(GameState.resources["src/images/HUD/slot_armor.png"].texture);
     const feetSlot = new PIXI.Sprite(GameState.resources["src/images/HUD/slot_feet.png"].texture);
-    const topRowSlots = [weaponSlot, secondHandSlot, magicSlot1, magicSlot2, magicSlot3, magicSlot4];
+    const topRowSlots = [magicSlot1, magicSlot2, magicSlot3, magicSlot4];
+    const secondRowSlots = [weaponSlot, secondHandSlot];
     const columnSlots = [headSlot, armorSlot, feetSlot];
     for (let i = 0; i < topRowSlots.length; ++i) {
         topRowSlots[i].position.y = slotsYOffset;
@@ -184,8 +182,15 @@ function redrawSlotsForPlayer(player) {
         topRowSlots[i].height = slotSize;
         container.addChild(topRowSlots[i]);
     }
+    for (let i = 0; i < secondRowSlots.length; ++i) {
+        secondRowSlots[i].position.y = slotsYOffset + slotSize + slotsRowOffset;
+        secondRowSlots[i].position.x = slotsSecondRowXOffset + (slotSize + slotsColOffset) * i;
+        secondRowSlots[i].width = slotSize;
+        secondRowSlots[i].height = slotSize;
+        container.addChild(secondRowSlots[i]);
+    }
     for (let i = 0; i < columnSlots.length; ++i) {
-        columnSlots[i].position.y = slotsYOffset + (slotSize + slotsRowOffset) * (i + 1);
+        columnSlots[i].position.y = slotsYOffset + (slotSize + slotsRowOffset) * (i + 2);
         columnSlots[i].position.x = slotsEquipmentOffset;
         columnSlots[i].width = slotSize;
         columnSlots[i].height = slotSize;
