@@ -69,6 +69,7 @@ function setup() {
     Game.gameMap[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
     Game.player.setStats(1, 0.5, 0, 1.5);
     Game.player2.setStats(1, 1.5, 0, 0.5);
+    Game.player2.weapon = new Knife();
 
     Game.grid = drawGrid();
     drawWalls();
@@ -163,14 +164,7 @@ function generateMap(level) {
             else if (map[i][j] === "spib") mapCell.entity = new SpiderB(j, i);
             else if (map[i][j] === "sna") mapCell.entity = new Snail(j, i);
             else if (map[i][j] === "snab") mapCell.entity = new SnailB(j, i);
-            else if (map[i][j] === "statue") {
-                let weaponType;
-                while (true) {
-                    weaponType = getRandomValue(WEAPON_TYPE);
-                    if (weaponType !== WEAPON_TYPE.NONE) break;
-                }
-                mapCell.entity = new Statue(j, i, weaponType);
-            }
+            else if (map[i][j] === "statue") mapCell.entity = new Statue(j, i, getRandomWeapon());
 
             map[i][j] = mapCell;
         }

@@ -12,8 +12,8 @@ class TallTileElement extends TileElement {
     }
 
     fitToTile() {
-        const scaleX = Game.TILESIZE / this.getUnscaledWidth() * 0.9;
-        const scaleY = Game.TILESIZE * this.tileHeight / this.getUnscaledHeight() * 0.9;
+        const scaleX = Game.TILESIZE / this.getUnscaledWidth();
+        const scaleY = Game.TILESIZE * 2 * this.tileHeight / this.getUnscaledHeight();
         this.scale.set(scaleX, scaleY);
     }
 }

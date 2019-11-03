@@ -51,6 +51,10 @@ function getRandomValue(obj) {
     return obj[keys[keys.length * Math.random() << 0]];
 }
 
+function getRandomWeapon() {
+    return randomChoice([new Knife(), new NinjaKnife(), new Sword()]);
+}
+
 function removeAllChildrenFromContainer(container) {
     for (let i = container.children.length - 1; i >= 0; i--) {
         container.removeChild(container.children[i]);
