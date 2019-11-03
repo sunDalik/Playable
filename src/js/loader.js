@@ -30,6 +30,12 @@ function loadAll() {
         .add("src/images/HUD/heart_half.png")
         .add("src/images/HUD/heart_25.png")
         .add("src/images/HUD/heart_empty.png")
+        .add("src/images/HUD/slot_weapon.png")
+        .add("src/images/HUD/slot_second_hand.png")
+        .add("src/images/HUD/slot_magic.png")
+        .add("src/images/HUD/slot_armor.png")
+        .add("src/images/HUD/slot_head.png")
+        .add("src/images/HUD/slot_feet.png")
 
         .add("src/images/other/statue.png")
         .add("src/images/other/statue_knife.png")

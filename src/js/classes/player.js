@@ -14,6 +14,15 @@ class Player extends TileElement {
         this.STEP_ANIMATION_TIME = 8;
         this.role = ROLE.PLAYER;
         this.dead = false;
+        this.weapon = WEAPON_TYPE.NONE;
+        this.secondHand = WEAPON_TYPE.NONE;
+        this.headwear = HEAD_TYPE.NONE;
+        this.armor = ARMOR_TYPE.NONE;
+        this.footwear = FOOTWEAR_TYPE.NONE;
+        this.magic1 = MAGIC_TYPE.NONE;
+        this.magic2 = MAGIC_TYPE.NONE;
+        this.magic3 = MAGIC_TYPE.NONE;
+        this.magic4 = MAGIC_TYPE.NONE;
     }
 
     cancelAnimation() {

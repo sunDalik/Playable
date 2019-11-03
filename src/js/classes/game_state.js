@@ -6,6 +6,10 @@ class GameState {
 GameState.APP = null;
 GameState.gameWorld = null;
 GameState.HUD = null;
+GameState.HEARTS1 = null;
+GameState.HEARTS2 = null;
+GameState.SLOTS1 = null;
+GameState.SLOTS2 = null;
 GameState.grid = null;
 GameState.loader = null;
 GameState.resources = null;

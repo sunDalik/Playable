@@ -12,6 +12,7 @@ function initApplication() {
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
     app.renderer.autoDensity = true;
+    app.renderer.resolution = 2;
     app.renderer.resize(window.innerWidth, window.innerHeight);
     document.body.appendChild(app.view);
     return app
@@ -32,12 +33,17 @@ function setup() {
     let level = generateLevel();
     GameState.gameWorld = new PIXI.Container();
     GameState.APP.stage.addChild(GameState.gameWorld);
+
     GameState.HUD = new PIXI.Container();
     GameState.HEARTS1 = new PIXI.Container();
     GameState.HEARTS2 = new PIXI.Container();
-    GameState.APP.stage.addChild(GameState.HUD);
+    GameState.SLOTS1 = new PIXI.Container();
+    GameState.SLOTS2 = new PIXI.Container();
     GameState.HUD.addChild(GameState.HEARTS1);
     GameState.HUD.addChild(GameState.HEARTS2);
+    GameState.HUD.addChild(GameState.SLOTS1);
+    GameState.HUD.addChild(GameState.SLOTS2);
+    GameState.APP.stage.addChild(GameState.HUD);
 
     GameState.gameMap = generateMap(level);
     GameState.gameLevel = level;

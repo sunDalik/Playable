@@ -5,6 +5,7 @@ class TallTileElement extends TileElement {
         this.place();
     }
 
+    //something wrong with these methods, don't know yet
     place() {
         this.position.x = GameState.TILESIZE * this.tilePosition.x + (GameState.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
         this.position.y = GameState.TILESIZE * this.tilePosition.y - GameState.TILESIZE * (this.tileHeight - 1) + (GameState.TILESIZE * this.tileHeight - this.height) + this.height * this.anchor.y;
