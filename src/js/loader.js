@@ -1,7 +1,7 @@
 "use strict";
 
 function loadAll() {
-    GameState.loader
+    Game.loader
         .add("src/images/player.png")
         .add("src/images/player2.png")
         .add("src/images/player_moved.png")
@@ -36,6 +36,10 @@ function loadAll() {
         .add("src/images/HUD/slot_armor.png")
         .add("src/images/HUD/slot_head.png")
         .add("src/images/HUD/slot_feet.png")
+
+        .add("src/images/weapons/knife.png")
+        .add("src/images/weapons/ninja_knife.png")
+        .add("src/images/weapons/sword.png")
 
         .add("src/images/other/statue.png")
         .add("src/images/other/statue_knife.png")

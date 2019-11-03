@@ -1,7 +1,7 @@
 "use strict";
 
 class Star extends Enemy {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/star.png"].texture) {
+    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/star.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.health = 2;
         this.atk = 1;
@@ -47,7 +47,7 @@ class Star extends Enemy {
 
     shake() {
         let counter = 0;
-        let step = GameState.TILESIZE / 20 / (this.SHAKE_ANIMATION_TIME / 2);
+        let step = Game.TILESIZE / 20 / (this.SHAKE_ANIMATION_TIME / 2);
         let direction = -1;
         this.animation = () => {
             if (counter < this.SHAKE_ANIMATION_TIME / 2) {
@@ -62,7 +62,7 @@ class Star extends Enemy {
                 this.place();
             }
         };
-        GameState.APP.ticker.add(this.animation);
+        Game.APP.ticker.add(this.animation);
     }
 
     attack() {
@@ -89,7 +89,7 @@ class Star extends Enemy {
         const attackPositionX = this.tilePosition.x + tileOffsetX;
         const attackPositionY = this.tilePosition.y + tileOffsetY;
         if (isNotAWall(attackPositionX, attackPositionY) && !isEnemy(attackPositionX, attackPositionY)) {
-            createFadingAttack(new TileElement(GameState.resources["src/images/enemy_attack.png"].texture, attackPositionX, attackPositionY));
+            createFadingAttack(new TileElement(Game.resources["src/images/enemy_attack.png"].texture, attackPositionX, attackPositionY));
             const player = getPlayerOnTile(attackPositionX, attackPositionY);
             if (player !== null) player.damage(this.atk);
         }

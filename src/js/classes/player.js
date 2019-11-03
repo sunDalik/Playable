@@ -31,13 +31,13 @@ class Player extends TileElement {
     }
 
     setMovedTexture() {
-        if (this === GameState.player) this.texture = GameState.resources["src/images/player_moved.png"].texture;
-        else this.texture = GameState.resources["src/images/player2_moved.png"].texture;
+        if (this === Game.player) this.texture = Game.resources["src/images/player_moved.png"].texture;
+        else this.texture = Game.resources["src/images/player2_moved.png"].texture;
     }
 
     setUnmovedTexture() {
-        if (this === GameState.player) this.texture = GameState.resources["src/images/player.png"].texture;
-        else this.texture = GameState.resources["src/images/player2.png"].texture;
+        if (this === Game.player) this.texture = Game.resources["src/images/player.png"].texture;
+        else this.texture = Game.resources["src/images/player2.png"].texture;
     }
 
     setStats(atkBase, atkMul, defBase, defMul) {
@@ -50,7 +50,7 @@ class Player extends TileElement {
     }
 
     stepX(tileStepX) {
-        let tileSize = GameState.TILESIZE;
+        let tileSize = Game.TILESIZE;
         this.tilePosition.x += tileStepX;
         const jumpHeight = tileSize * 25 / 75;
         const a = jumpHeight / ((tileStepX * tileSize / 2) ** 2);
@@ -65,17 +65,17 @@ class Player extends TileElement {
             centerCameraX(false);
             counter++;
             if (counter >= this.STEP_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(this.animation);
+                Game.APP.ticker.remove(this.animation);
                 this.place();
                 scaleGameMap();
             }
         };
-        GameState.APP.ticker.add(this.animation);
+        Game.APP.ticker.add(this.animation);
         lightPlayerPosition(this);
     }
 
     stepY(tileStepY) {
-        let tileSize = GameState.TILESIZE;
+        let tileSize = Game.TILESIZE;
         this.tilePosition.y += tileStepY;
         let counter = 0;
         const oldPosition = this.position.y;
@@ -99,12 +99,12 @@ class Player extends TileElement {
             centerCameraY(false);
             counter++;
             if (counter >= this.STEP_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(this.animation);
+                Game.APP.ticker.remove(this.animation);
                 this.place();
                 scaleGameMap();
             }
         };
-        GameState.APP.ticker.add(this.animation);
+        Game.APP.ticker.add(this.animation);
         lightPlayerPosition(this);
     }
 
@@ -123,12 +123,12 @@ class Player extends TileElement {
             redrawHealthForPlayer(this);
             if (this.health <= 0) {
                 this.dead = true;
-                GameState.gameWorld.removeChild(this);
-                if (GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity !== null) {
-                    GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
-                    GameState.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
-                } else GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
-                GameState.TILESIZE = GameState.REFERENCE_TILESIZE;
+                Game.gameWorld.removeChild(this);
+                if (Game.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity !== null) {
+                    Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = Game.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
+                    Game.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
+                } else Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                Game.TILESIZE = Game.REFERENCE_TILESIZE;
                 redrawTiles();
             }
         }

@@ -1,17 +1,17 @@
 "use strict";
 
 function enemyTurn() {
-    if (GameState.enemiesTimeout === null) {
-        GameState.enemiesTimeout = setTimeout(() => {
+    if (Game.enemiesTimeout === null) {
+        Game.enemiesTimeout = setTimeout(() => {
             moveEnemies();
             updateHazards();
-            GameState.enemiesTimeout = null;
+            Game.enemiesTimeout = null;
         }, 60);
     }
 }
 
 function moveEnemies() {
-    for (const enemy of GameState.enemies) {
+    for (const enemy of Game.enemies) {
         if (!enemy.isDead()) {
             if (enemy.cancellable) {
                 enemy.cancelAnimation();
@@ -22,18 +22,18 @@ function moveEnemies() {
 }
 
 function updateHazards() {
-    for (const hazard of GameState.hazards) {
+    for (const hazard of Game.hazards) {
         hazard.updateLifetime();
     }
 }
 
 function attackTile(attackPositionX, attackPositionY, atk, inputX, inputY) {
-    const tileEntity = GameState.gameMap[attackPositionY][attackPositionX].entity;
+    const tileEntity = Game.gameMap[attackPositionY][attackPositionX].entity;
     if (tileEntity != null && tileEntity.role === ROLE.ENEMY) {
         if (!tileEntity.isDead()) {
             tileEntity.damage(atk);
             if (tileEntity.isDead()) {
-                GameState.gameMap[tileEntity.tilePosition.y][tileEntity.tilePosition.x].entity = null;
+                Game.gameMap[tileEntity.tilePosition.y][tileEntity.tilePosition.x].entity = null;
                 tileEntity.cancelAnimation();
                 tileEntity.visible = false;
             } else if (tileEntity.entityType === ENEMY_TYPE.SPIDER || tileEntity.entityType === ENEMY_TYPE.SPIDER_B) {
@@ -44,38 +44,38 @@ function attackTile(attackPositionX, attackPositionY, atk, inputX, inputY) {
 }
 
 function playerTurn(player, playerMove, bothPlayers = false) {
-    if (/*GameState.playerMoved !== player
-        &&*/ ((bothPlayers && !GameState.player.dead && !GameState.player2.dead) || (!bothPlayers && !player.dead))) {
-        if (GameState.enemiesTimeout !== null) {
-            clearTimeout(GameState.enemiesTimeout);
+    if (/*Game.playerMoved !== player
+        &&*/ ((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead))) {
+        if (Game.enemiesTimeout !== null) {
+            clearTimeout(Game.enemiesTimeout);
             moveEnemies();
             updateHazards();
-            GameState.enemiesTimeout = null;
+            Game.enemiesTimeout = null;
         }
 
         if (bothPlayers) {
-            GameState.player.cancelAnimation();
-            GameState.player2.cancelAnimation();
+            Game.player.cancelAnimation();
+            Game.player2.cancelAnimation();
         } else player.cancelAnimation();
         playerMove();
         damagePlayersWithHazards();
-        /*if (GameState.playerMoved !== null) {
-            GameState.playerMoved.setUnmovedTexture();
-            GameState.playerMoved = null;*/
+        /*if (Game.playerMoved !== null) {
+            Game.playerMoved.setUnmovedTexture();
+            Game.playerMoved = null;*/
         enemyTurn();
         /*} else {
-            GameState.playerMoved = player;
-            GameState.playerMoved.setMovedTexture();
+            Game.playerMoved = player;
+            Game.playerMoved.setMovedTexture();
         }*/
     }
 }
 
 function damagePlayersWithHazards() {
-    if (GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].hazard !== null && !GameState.player.dead) {
-        GameState.player.damage(GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].hazard.atk)
+    if (Game.gameMap[Game.player.tilePosition.y][Game.player.tilePosition.x].hazard !== null && !Game.player.dead) {
+        Game.player.damage(Game.gameMap[Game.player.tilePosition.y][Game.player.tilePosition.x].hazard.atk)
     }
-    if (GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].hazard !== null && !GameState.player2.dead) {
-        GameState.player2.damage(GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].hazard.atk)
+    if (Game.gameMap[Game.player2.tilePosition.y][Game.player2.tilePosition.x].hazard !== null && !Game.player2.dead) {
+        Game.player2.damage(Game.gameMap[Game.player2.tilePosition.y][Game.player2.tilePosition.x].hazard.atk)
     }
 }
 
@@ -100,30 +100,30 @@ function movePlayer(player, tileStepX, tileStepY) {
 }
 
 function removePlayerFromGameMap(player) {
-    if (player === GameState.primaryPlayer) {
-        GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;
-        if (GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity !== null && GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity.role === ROLE.PLAYER) {
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity;
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
+    if (player === Game.primaryPlayer) {
+        Game.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;
+        if (Game.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity !== null && Game.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity.role === ROLE.PLAYER) {
+            Game.gameMap[player.tilePosition.y][player.tilePosition.x].entity = Game.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity;
+            Game.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
         }
     } else {
-        if (player === GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity) {
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
+        if (player === Game.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity) {
+            Game.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
         } else {
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;
+            Game.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;
         }
     }
 }
 
 function placePlayerOnGameMap(player) {
-    if (GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity !== null && GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity.role === ROLE.PLAYER) {
-        if (player === GameState.primaryPlayer) {
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity;
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = player;
+    if (Game.gameMap[player.tilePosition.y][player.tilePosition.x].entity !== null && Game.gameMap[player.tilePosition.y][player.tilePosition.x].entity.role === ROLE.PLAYER) {
+        if (player === Game.primaryPlayer) {
+            Game.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = Game.gameMap[player.tilePosition.y][player.tilePosition.x].entity;
+            Game.gameMap[player.tilePosition.y][player.tilePosition.x].entity = player;
         } else {
-            GameState.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = player;
+            Game.gameMap[player.tilePosition.y][player.tilePosition.x].secondaryEntity = player;
         }
     } else {
-        GameState.gameMap[player.tilePosition.y][player.tilePosition.x].entity = player;
+        Game.gameMap[player.tilePosition.y][player.tilePosition.x].entity = player;
     }
 }

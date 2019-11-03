@@ -20,23 +20,23 @@ class Enemy extends TileElement {
     }
 
     getPathToPlayer1() {
-        const start = GameState.levelGraph.grid[this.tilePosition.y][this.tilePosition.x];
-        const end = GameState.levelGraph.grid[GameState.player.tilePosition.y][GameState.player.tilePosition.x];
-        return astar.search(GameState.levelGraph, start, end);
+        const start = Game.levelGraph.grid[this.tilePosition.y][this.tilePosition.x];
+        const end = Game.levelGraph.grid[Game.player.tilePosition.y][Game.player.tilePosition.x];
+        return astar.search(Game.levelGraph, start, end);
     }
 
     getPathToPlayer2() {
-        const start = GameState.levelGraph.grid[this.tilePosition.y][this.tilePosition.x];
-        const end = GameState.levelGraph.grid[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x];
-        return astar.search(GameState.levelGraph, start, end);
+        const start = Game.levelGraph.grid[this.tilePosition.y][this.tilePosition.x];
+        const end = Game.levelGraph.grid[Game.player2.tilePosition.y][Game.player2.tilePosition.x];
+        return astar.search(Game.levelGraph, start, end);
     }
 
     canSeePlayers() {
-        const start = GameState.playerDetectionGraph.grid[this.tilePosition.y][this.tilePosition.x];
-        let end = GameState.playerDetectionGraph.grid[GameState.player.tilePosition.y][GameState.player.tilePosition.x];
-        const distanceToPlayer1 = astar.search(GameState.playerDetectionGraph, start, end);
-        end = GameState.playerDetectionGraph.grid[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x];
-        const distanceToPlayer2 = astar.search(GameState.playerDetectionGraph, start, end);
+        const start = Game.playerDetectionGraph.grid[this.tilePosition.y][this.tilePosition.x];
+        let end = Game.playerDetectionGraph.grid[Game.player.tilePosition.y][Game.player.tilePosition.x];
+        const distanceToPlayer1 = astar.search(Game.playerDetectionGraph, start, end);
+        end = Game.playerDetectionGraph.grid[Game.player2.tilePosition.y][Game.player2.tilePosition.x];
+        const distanceToPlayer2 = astar.search(Game.playerDetectionGraph, start, end);
         return distanceToPlayer1.length !== 0 || distanceToPlayer2.length !== 0;
     }
 }

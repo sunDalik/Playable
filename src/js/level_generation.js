@@ -160,8 +160,8 @@ function generateLevel() {
         const startY = previousY + randomOffsetY;
         mergeRoomIntoLevel(level, currentRoom, startX, startY);
         if (r === startRoomI) {
-            GameState.startX = startX + Math.floor(startRoomWidth / 2) - 1;
-            GameState.startY = startY + Math.floor(startRoomHeight / 2) - 1;
+            Game.startX = startX + Math.floor(startRoomWidth / 2) - 1;
+            Game.startY = startY + Math.floor(startRoomHeight / 2) - 1;
         }
 
         previousX = startX + currentRoom[0].length;

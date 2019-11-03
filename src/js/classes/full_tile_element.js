@@ -4,8 +4,8 @@ class FullTileElement extends TileElement {
     }
 
     fitToTile() {
-        const scaleX = GameState.TILESIZE / this.getUnscaledWidth();
-        const scaleY = GameState.TILESIZE / this.getUnscaledHeight();
+        const scaleX = Game.TILESIZE / this.getUnscaledWidth();
+        const scaleY = Game.TILESIZE / this.getUnscaledHeight();
         this.scale.set(scaleX, scaleY);
     }
 }

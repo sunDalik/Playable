@@ -1,7 +1,7 @@
 "use strict";
 
 class Snail extends Enemy {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/snail.png"].texture) {
+    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/snail.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.health = 2;
         this.entityType = ENEMY_TYPE.SNAIL;
@@ -26,23 +26,23 @@ class Snail extends Enemy {
                     }
                  */
 
-                GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
-                const player1DistX = GameState.player.tilePosition.x - this.tilePosition.x;
-                const player1DistY = GameState.player.tilePosition.y - this.tilePosition.y;
+                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                const player1DistX = Game.player.tilePosition.x - this.tilePosition.x;
+                const player1DistY = Game.player.tilePosition.y - this.tilePosition.y;
                 const player1Dist = Math.abs(player1DistX) + Math.abs(player1DistY);
 
-                const player2DistX = GameState.player2.tilePosition.x - this.tilePosition.x;
-                const player2DistY = GameState.player2.tilePosition.y - this.tilePosition.y;
+                const player2DistX = Game.player2.tilePosition.x - this.tilePosition.x;
+                const player2DistY = Game.player2.tilePosition.y - this.tilePosition.y;
                 const player2Dist = Math.abs(player2DistX) + Math.abs(player2DistY);
-                if (GameState.player.dead) this.chasePlayer(GameState.player2);
-                else if (GameState.player2.dead) this.chasePlayer(GameState.player);
+                if (Game.player.dead) this.chasePlayer(Game.player2);
+                else if (Game.player2.dead) this.chasePlayer(Game.player);
                 else if (player1Dist < player2Dist) {
-                    this.chasePlayer(GameState.player);
+                    this.chasePlayer(Game.player);
                 } else {
-                    this.chasePlayer(GameState.player2);
+                    this.chasePlayer(Game.player2);
                 }
                 this.turnDelay = 1;
-                GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
             } else {
                 if (this.canSeePlayers()) {
                     this.chase = true;
@@ -50,9 +50,9 @@ class Snail extends Enemy {
                 }
             }
         } else this.turnDelay--;
-        if (GameState.gameMap[this.tilePosition.y][this.tilePosition.x].hazard === null) {
+        if (Game.gameMap[this.tilePosition.y][this.tilePosition.x].hazard === null) {
             new PoisonHazard(this.tilePosition.x, this.tilePosition.y).addToWorld();
-        } else GameState.gameMap[this.tilePosition.y][this.tilePosition.x].hazard.refreshLifetime();
+        } else Game.gameMap[this.tilePosition.y][this.tilePosition.x].hazard.refreshLifetime();
     }
 
     stepX(tileStepX) {
@@ -60,32 +60,32 @@ class Snail extends Enemy {
             this.scale.x *= -1;
         }
         let counter = 0;
-        const step = GameState.TILESIZE * tileStepX / this.SLIDE_ANIMATION_TIME;
+        const step = Game.TILESIZE * tileStepX / this.SLIDE_ANIMATION_TIME;
         this.tilePosition.x += tileStepX;
         this.animation = () => {
             this.position.x += step;
             counter++;
             if (counter >= this.SLIDE_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(this.animation);
+                Game.APP.ticker.remove(this.animation);
                 this.place();
             }
         };
-        GameState.APP.ticker.add(this.animation);
+        Game.APP.ticker.add(this.animation);
     }
 
     stepY(tileStepY) {
         let counter = 0;
-        const step = GameState.TILESIZE * tileStepY / this.SLIDE_ANIMATION_TIME;
+        const step = Game.TILESIZE * tileStepY / this.SLIDE_ANIMATION_TIME;
         this.tilePosition.y += tileStepY;
         this.animation = () => {
             this.position.y += step;
             counter++;
             if (counter >= this.SLIDE_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(this.animation);
+                Game.APP.ticker.remove(this.animation);
                 this.place();
             }
         };
-        GameState.APP.ticker.add(this.animation);
+        Game.APP.ticker.add(this.animation);
     }
 
     slideAttackX(tileStepX) {
@@ -93,7 +93,7 @@ class Snail extends Enemy {
             this.scale.x *= -1;
         }
         let counter = 0;
-        const step = GameState.TILESIZE * tileStepX / this.SLIDE_ANIMATION_TIME;
+        const step = Game.TILESIZE * tileStepX / this.SLIDE_ANIMATION_TIME;
         this.animation = () => {
             if (counter < this.SLIDE_ANIMATION_TIME / 2) {
                 this.position.x += step;
@@ -102,16 +102,16 @@ class Snail extends Enemy {
             }
             counter++;
             if (counter >= this.SLIDE_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(this.animation);
+                Game.APP.ticker.remove(this.animation);
                 this.place();
             }
         };
-        GameState.APP.ticker.add(this.animation);
+        Game.APP.ticker.add(this.animation);
     }
 
     slideAttackY(tileStepY) {
         let counter = 0;
-        const step = GameState.TILESIZE * tileStepY / this.SLIDE_ANIMATION_TIME;
+        const step = Game.TILESIZE * tileStepY / this.SLIDE_ANIMATION_TIME;
         this.animation = () => {
             if (counter < this.SLIDE_ANIMATION_TIME / 2) {
                 this.position.y += step;
@@ -120,11 +120,11 @@ class Snail extends Enemy {
             }
             counter++;
             if (counter >= this.SLIDE_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(this.animation);
+                Game.APP.ticker.remove(this.animation);
                 this.place();
             }
         };
-        GameState.APP.ticker.add(this.animation);
+        Game.APP.ticker.add(this.animation);
     }
 
     chasePlayer(player) {

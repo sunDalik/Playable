@@ -2,9 +2,9 @@
 
 PIXI.utils.skipHello();
 const app = initApplication();
-GameState.APP = app;
-GameState.loader = app.loader;
-GameState.resources = app.loader.resources;
+Game.APP = app;
+Game.loader = app.loader;
+Game.resources = app.loader.resources;
 loadAll();
 
 function initApplication() {
@@ -24,73 +24,73 @@ function loadProgressHandler(loader, resource) {
 }
 
 window.addEventListener("resize", () => {
-    GameState.APP.renderer.resize(window.innerWidth, window.innerHeight);
+    Game.APP.renderer.resize(window.innerWidth, window.innerHeight);
     drawHUD();
     centerCamera();
 });
 
 function setup() {
     let level = generateLevel();
-    GameState.gameWorld = new PIXI.Container();
-    GameState.APP.stage.addChild(GameState.gameWorld);
+    Game.gameWorld = new PIXI.Container();
+    Game.APP.stage.addChild(Game.gameWorld);
 
-    GameState.HUD = new PIXI.Container();
-    GameState.HEARTS1 = new PIXI.Container();
-    GameState.HEARTS2 = new PIXI.Container();
-    GameState.SLOTS1 = new PIXI.Container();
-    GameState.SLOTS2 = new PIXI.Container();
-    GameState.HUD.addChild(GameState.HEARTS1);
-    GameState.HUD.addChild(GameState.HEARTS2);
-    GameState.HUD.addChild(GameState.SLOTS1);
-    GameState.HUD.addChild(GameState.SLOTS2);
-    GameState.APP.stage.addChild(GameState.HUD);
+    Game.HUD = new PIXI.Container();
+    Game.HEARTS1 = new PIXI.Container();
+    Game.HEARTS2 = new PIXI.Container();
+    Game.SLOTS1 = new PIXI.Container();
+    Game.SLOTS2 = new PIXI.Container();
+    Game.HUD.addChild(Game.HEARTS1);
+    Game.HUD.addChild(Game.HEARTS2);
+    Game.HUD.addChild(Game.SLOTS1);
+    Game.HUD.addChild(Game.SLOTS2);
+    Game.APP.stage.addChild(Game.HUD);
 
-    GameState.gameMap = generateMap(level);
-    GameState.gameLevel = level;
+    Game.gameMap = generateMap(level);
+    Game.gameLevel = level;
 
-    GameState.playerDetectionGraph = new Graph(level);
-    for (let i = 0; i < GameState.playerDetectionGraph.grid.length; ++i) {
-        for (let j = 0; j < GameState.playerDetectionGraph.grid[0].length; ++j) {
-            if (GameState.playerDetectionGraph.grid[i][j].weight === "v"
-                || GameState.playerDetectionGraph.grid[i][j].weight === "path"
-                || GameState.playerDetectionGraph.grid[i][j].weight === "w") {
-                GameState.playerDetectionGraph.grid[i][j].weight = 0;
+    Game.playerDetectionGraph = new Graph(level);
+    for (let i = 0; i < Game.playerDetectionGraph.grid.length; ++i) {
+        for (let j = 0; j < Game.playerDetectionGraph.grid[0].length; ++j) {
+            if (Game.playerDetectionGraph.grid[i][j].weight === "v"
+                || Game.playerDetectionGraph.grid[i][j].weight === "path"
+                || Game.playerDetectionGraph.grid[i][j].weight === "w") {
+                Game.playerDetectionGraph.grid[i][j].weight = 0;
             } else {
-                GameState.playerDetectionGraph.grid[i][j].weight = 1;
+                Game.playerDetectionGraph.grid[i][j].weight = 1;
             }
         }
     }
 
-    GameState.levelGraph = getLevelPlayerGraph(level);
+    Game.levelGraph = getLevelPlayerGraph(level);
 
-    GameState.player = new Player(GameState.resources["src/images/player.png"].texture, GameState.startX, GameState.startY);
-    GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, GameState.startX + 1, GameState.startY + 1);
-    GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].entity = GameState.player;
-    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.player2;
-    GameState.player.setStats(1, 0.5, 0, 1.5);
-    GameState.player2.setStats(1, 1.5, 0, 0.5);
+    Game.player = new Player(Game.resources["src/images/player.png"].texture, Game.startX, Game.startY);
+    Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, Game.startX + 1, Game.startY + 1);
+    Game.gameMap[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
+    Game.gameMap[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+    Game.player.setStats(1, 0.5, 0, 1.5);
+    Game.player2.setStats(1, 1.5, 0, 0.5);
 
-    GameState.grid = drawGrid();
+    Game.grid = drawGrid();
     drawWalls();
     //drawVoids();
     createDarkness();
-    lightPlayerPosition(GameState.player);
-    lightPlayerPosition(GameState.player2);
+    lightPlayerPosition(Game.player);
+    lightPlayerPosition(Game.player2);
     //displayInstructions();
     drawHUD();
     drawEntities();
     bindKeys();
-    GameState.player.zIndex = GameState.player2.zIndex + 1;
-    GameState.primaryPlayer = GameState.player;
-    GameState.gameWorld.sortableChildren = true;
-    GameState.APP.stage.sortableChildren = true;
+    Game.player.zIndex = Game.player2.zIndex + 1;
+    Game.primaryPlayer = Game.player;
+    Game.gameWorld.sortableChildren = true;
+    Game.APP.stage.sortableChildren = true;
     centerCamera();
     drawOther();
 }
 
 function bindKeys() {
-    bindMovement(GameState.player, {upCode: 87, leftCode: 65, downCode: 83, rightCode: 68});
-    bindMovement(GameState.player2, {upCode: 38, leftCode: 37, downCode: 40, rightCode: 39});
+    bindMovement(Game.player, {upCode: 87, leftCode: 65, downCode: 83, rightCode: 68});
+    bindMovement(Game.player2, {upCode: 38, leftCode: 37, downCode: 40, rightCode: 39});
 
     const fireKey = keyboard(70);
     fireKey.press = () => {
@@ -99,17 +99,17 @@ function bindKeys() {
 
     const teleportKey = keyboard(84);
     teleportKey.press = () => {
-        playerTurn(GameState.player2, teleport)
+        playerTurn(Game.player2, teleport)
     };
 
     const rotateKey = keyboard(82);
     rotateKey.press = () => {
-        playerTurn(GameState.player, rotateAttack)
+        playerTurn(Game.player, rotateAttack)
     };
 
     const crossKey = keyboard(67);
     crossKey.press = () => {
-        playerTurn(GameState.player2, crossAttack)
+        playerTurn(Game.player2, crossAttack)
     };
 
     const switchKey = keyboard(17);

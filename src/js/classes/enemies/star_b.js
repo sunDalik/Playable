@@ -1,7 +1,7 @@
 "use strict";
 
 class StarB extends Star {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/star_b.png"].texture) {
+    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/star_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.entityType = ENEMY_TYPE.STAR_B;
     }

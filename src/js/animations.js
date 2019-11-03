@@ -4,23 +4,23 @@ function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
     let counter = 0;
     const startPosX = tileX1 + 0.2 * Math.sign(tileX2 - tileX1);
     const startPosY = tileY1 + 0.2 * Math.sign(tileY2 - tileY1);
-    let attackParticles = [new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY),
-        new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY),
-        new TileElement(GameState.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY)];
+    let attackParticles = [new TileElement(Game.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY),
+        new TileElement(Game.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY),
+        new TileElement(Game.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY)];
     attackParticles[0].alpha = 0.8;
     attackParticles[1].alpha = 0.6;
     attackParticles[2].alpha = 0.4;
     for (const particle of attackParticles) {
-        particle.width = GameState.TILESIZE / 5;
-        particle.height = GameState.TILESIZE / 5;
+        particle.width = Game.TILESIZE / 5;
+        particle.height = Game.TILESIZE / 5;
         particle.place();
-        GameState.gameWorld.addChild(particle);
+        Game.gameWorld.addChild(particle);
     }
-    const stepX = (tileX2 - tileX1) * GameState.TILESIZE / (GameState.WEAPON_ATTACK_TIME / 2);
-    const stepY = (tileY2 - tileY1) * GameState.TILESIZE / (GameState.WEAPON_ATTACK_TIME / 2);
+    const stepX = (tileX2 - tileX1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
+    const stepY = (tileY2 - tileY1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
 
     let animation = function () {
-        if (counter < GameState.WEAPON_ATTACK_TIME / 2) {
+        if (counter < Game.WEAPON_ATTACK_TIME / 2) {
             attackParticles[0].position.x += stepX;
             attackParticles[0].position.y += stepY;
             if (counter >= 1) {
@@ -38,34 +38,34 @@ function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
             }
         }
         counter++;
-        if (counter >= GameState.WEAPON_ATTACK_TIME) {
+        if (counter >= Game.WEAPON_ATTACK_TIME) {
             for (const particle of attackParticles) {
-                GameState.gameWorld.removeChild(particle);
+                Game.gameWorld.removeChild(particle);
             }
-            GameState.APP.ticker.remove(animation);
+            Game.APP.ticker.remove(animation);
         }
     };
 
-    GameState.APP.ticker.add(animation);
+    Game.APP.ticker.add(animation);
 }
 
 function createFadingAttack(attack, tileAttack = true) {
     if (tileAttack) attack.place();
-    GameState.gameWorld.addChild(attack);
-    GameState.tiles.push(attack);
-    const delay = GameState.TURNTIME / 2;
+    Game.gameWorld.addChild(attack);
+    Game.tiles.push(attack);
+    const delay = Game.TURNTIME / 2;
     let counter = 0;
 
     let animation = function () {
         if (counter >= delay) {
-            attack.alpha -= 1 / GameState.TURNTIME;
+            attack.alpha -= 1 / Game.TURNTIME;
         }
         counter++;
-        if (counter >= GameState.TURNTIME) {
-            GameState.APP.ticker.remove(animation);
-            GameState.gameWorld.removeChild(attack);
-            removeObjectFromArray(attack, GameState.tiles);
+        if (counter >= Game.TURNTIME) {
+            Game.APP.ticker.remove(animation);
+            Game.gameWorld.removeChild(attack);
+            removeObjectFromArray(attack, Game.tiles);
         }
     };
-    GameState.APP.ticker.add(animation);
+    Game.APP.ticker.add(animation);
 }

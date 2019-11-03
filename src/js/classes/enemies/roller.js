@@ -1,7 +1,7 @@
 "use strict";
 
 class Roller extends Enemy {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = GameState.resources["src/images/enemies/roller.png"].texture) {
+    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/roller.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.health = 1;
         this.atk = 1;
@@ -12,34 +12,34 @@ class Roller extends Enemy {
     }
 
     cancelAnimation() {
-        GameState.APP.ticker.remove(this.animation);
+        Game.APP.ticker.remove(this.animation);
         this.place();
         this.correctScale();
     }
 
     move() {
         let counter = 0;
-        GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+        Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
         if (isNotAWallOrEnemy(this.tilePosition.x + this.direction, this.tilePosition.y)) {
             let player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
             if (player !== null) {
                 player.damage(this.atk);
                 this.bump();
             } else {
-                const step = GameState.TILESIZE / this.ROLL_ANIMATION_TIME;
+                const step = Game.TILESIZE / this.ROLL_ANIMATION_TIME;
                 this.tilePosition.x += this.direction;
                 this.animation = () => {
                     this.position.x += step * this.direction;
                     counter++;
                     if (counter >= this.ROLL_ANIMATION_TIME) {
-                        GameState.APP.ticker.remove(this.animation);
+                        Game.APP.ticker.remove(this.animation);
                         this.place();
                     }
                 };
-                GameState.APP.ticker.add(this.animation);
+                Game.APP.ticker.add(this.animation);
             }
         } else this.bump();
-        GameState.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+        Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
     }
 
     turnAround() {
@@ -57,11 +57,11 @@ class Roller extends Enemy {
         let counter = 0;
         const oldDirection = this.direction;
         this.direction *= -1;
-        const oldStep = oldDirection * GameState.TILESIZE / this.BUMP_ANIMATION_TIME;
+        const oldStep = oldDirection * Game.TILESIZE / this.BUMP_ANIMATION_TIME;
         const newStep = oldStep * -1;
-        const jumpHeight = GameState.TILESIZE * 40 / 75;
-        const a = jumpHeight / ((GameState.TILESIZE / 2 / 3) ** 2);
-        const b = -(this.position.x + (1 / 3) * oldDirection * GameState.TILESIZE + (this.direction * GameState.TILESIZE) / 2 / 3) * 2 * a;
+        const jumpHeight = Game.TILESIZE * 40 / 75;
+        const a = jumpHeight / ((Game.TILESIZE / 2 / 3) ** 2);
+        const b = -(this.position.x + (1 / 3) * oldDirection * Game.TILESIZE + (this.direction * Game.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
 
         this.animation = () => {
@@ -74,10 +74,10 @@ class Roller extends Enemy {
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;
             } else if (counter >= this.BUMP_ANIMATION_TIME) {
-                GameState.APP.ticker.remove(this.animation);
+                Game.APP.ticker.remove(this.animation);
                 this.place();
             }
         };
-        GameState.APP.ticker.add(this.animation);
+        Game.APP.ticker.add(this.animation);
     }
 }

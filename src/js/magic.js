@@ -1,15 +1,15 @@
 "use strict";
 
 function fireball() {
-    let fire = new PIXI.Sprite(GameState.resources["src/images/fire.png"].texture);
-    const fireHeight = GameState.TILESIZE * 1;
+    let fire = new PIXI.Sprite(Game.resources["src/images/fire.png"].texture);
+    const fireHeight = Game.TILESIZE * 1;
     fire.anchor.set(0, 0.5);
-    fire.position.set(GameState.player.x, GameState.player.y);
-    fire.width = Math.sqrt((GameState.player2.x - GameState.player.x) ** 2 + (GameState.player.y - GameState.player2.y) ** 2);
+    fire.position.set(Game.player.x, Game.player.y);
+    fire.width = Math.sqrt((Game.player2.x - Game.player.x) ** 2 + (Game.player.y - Game.player2.y) ** 2);
     fire.height = fireHeight;
-    GameState.gameWorld.addChild(fire);
-    fire.rotation = Math.atan((GameState.player2.y - GameState.player.y) / (GameState.player2.x - GameState.player.x));
-    if ((GameState.player2.x - GameState.player.x) < 0) {
+    Game.gameWorld.addChild(fire);
+    fire.rotation = Math.atan((Game.player2.y - Game.player.y) / (Game.player2.x - Game.player.x));
+    if ((Game.player2.x - Game.player.x) < 0) {
         fire.rotation += Math.PI;
     }
     fire.getBounds();
@@ -27,12 +27,12 @@ function fireball() {
     }
     if (fire.width !== 0) {
         createFadingAttack(fire, false);
-        for (const enemy of GameState.enemies) {
+        for (const enemy of Game.enemies) {
             if (!enemy.isDead()) {
                 if (collisionCheck(fireCorrectVertexData, enemy.vertexData)) {
                     enemy.damage(3);
                     if (enemy.isDead()) {
-                        GameState.gameMap[enemy.tilePosition.y][enemy.tilePosition.x].entity = null;
+                        Game.gameMap[enemy.tilePosition.y][enemy.tilePosition.x].entity = null;
                         enemy.cancelAnimation();
                         enemy.visible = false;
                     }
@@ -43,72 +43,72 @@ function fireball() {
 }
 
 function teleport() {
-    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = null;
-    if (GameState.player2.x > GameState.player.x) {
-        if (isNotAWallOrEnemy(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
-            GameState.player2.tilePosition.x = GameState.player.tilePosition.x + 1;
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y - 1;
-            GameState.player2.tilePosition.x = GameState.player.tilePosition.x
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y + 1;
-            GameState.player2.tilePosition.x = GameState.player.tilePosition.x
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
-            GameState.player2.tilePosition.x = GameState.player.tilePosition.x - 1;
+    Game.gameMap[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = null;
+    if (Game.player2.x > Game.player.x) {
+        if (isNotAWallOrEnemy(Game.player.tilePosition.x + 1, Game.player.tilePosition.y)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y;
+            Game.player2.tilePosition.x = Game.player.tilePosition.x + 1;
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y - 1;
+            Game.player2.tilePosition.x = Game.player.tilePosition.x
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y + 1;
+            Game.player2.tilePosition.x = Game.player.tilePosition.x
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y;
+            Game.player2.tilePosition.x = Game.player.tilePosition.x - 1;
         }
-    } else if (GameState.player2.x < GameState.player.x) {
-        if (isNotAWallOrEnemy(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
-            GameState.player2.tilePosition.x = GameState.player.tilePosition.x - 1;
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y - 1;
-            GameState.player2.tilePosition.x = GameState.player.tilePosition.x
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y + 1;
-            GameState.player2.tilePosition.x = GameState.player.tilePosition.x
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
-            GameState.player2.tilePosition.x = GameState.player.tilePosition.x + 1;
+    } else if (Game.player2.x < Game.player.x) {
+        if (isNotAWallOrEnemy(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y;
+            Game.player2.tilePosition.x = Game.player.tilePosition.x - 1;
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y - 1;
+            Game.player2.tilePosition.x = Game.player.tilePosition.x
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y + 1;
+            Game.player2.tilePosition.x = Game.player.tilePosition.x
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x + 1, Game.player.tilePosition.y)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y;
+            Game.player2.tilePosition.x = Game.player.tilePosition.x + 1;
         }
-    } else if (GameState.player2.tilePosition.y < GameState.player.tilePosition.y) {
-        if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y - 1;
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
-            GameState.player2.tilePosition.x--;
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y - 1)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
-            GameState.player2.tilePosition.x++;
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y + 1;
+    } else if (Game.player2.tilePosition.y < Game.player.tilePosition.y) {
+        if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y - 1;
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y;
+            Game.player2.tilePosition.x--;
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x + 1, Game.player.tilePosition.y - 1)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y;
+            Game.player2.tilePosition.x++;
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y + 1;
         }
     } else {
-        if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y + 1)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y + 1;
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x - 1, GameState.player.tilePosition.y)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
-            GameState.player2.tilePosition.x--;
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x + 1, GameState.player.tilePosition.y)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y;
-            GameState.player2.tilePosition.x++;
-        } else if (isNotAWallOrEnemy(GameState.player.tilePosition.x, GameState.player.tilePosition.y - 1)) {
-            GameState.player2.tilePosition.y = GameState.player.tilePosition.y - 1;
+        if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y + 1;
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y;
+            Game.player2.tilePosition.x--;
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x + 1, Game.player.tilePosition.y)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y;
+            Game.player2.tilePosition.x++;
+        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
+            Game.player2.tilePosition.y = Game.player.tilePosition.y - 1;
         }
     }
-    GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.player2;
-    GameState.player2.place();
+    Game.gameMap[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+    Game.player2.place();
     centerCamera();
 }
 
 function rotateAttack() {
     for (let x = -1; x < 2; x++) {
         for (let y = -1; y < 2; y++) {
-            if (!(x === 0 && y === 0) && isNotAWall(GameState.player.tilePosition.x + x, GameState.player.tilePosition.y + y)) {
-                const attackPositionX = GameState.player.tilePosition.x + x;
-                const attackPositionY = GameState.player.tilePosition.y + y;
-                createFadingAttack(new FullTileElement(GameState.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
+            if (!(x === 0 && y === 0) && isNotAWall(Game.player.tilePosition.x + x, Game.player.tilePosition.y + y)) {
+                const attackPositionX = Game.player.tilePosition.x + x;
+                const attackPositionY = Game.player.tilePosition.y + y;
+                createFadingAttack(new FullTileElement(Game.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
                 attackTile(attackPositionX, attackPositionY, 2);
                 const player = getPlayerOnTile(attackPositionX, attackPositionY);
                 if (player !== null) {
@@ -117,16 +117,16 @@ function rotateAttack() {
             }
         }
     }
-    rotate(GameState.player);
+    rotate(Game.player);
 }
 
 function crossAttack() {
     for (let offset = -2; offset <= 2; offset++) {
         for (let sign = -1; sign <= 1; sign += 2) {
-            if (offset !== 0 && isNotAWall(GameState.player2.tilePosition.x + offset, GameState.player2.tilePosition.y + offset * sign)) {
-                const attackPositionX = GameState.player2.tilePosition.x + offset;
-                const attackPositionY = GameState.player2.tilePosition.y + offset * sign;
-                createFadingAttack(new FullTileElement(GameState.resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
+            if (offset !== 0 && isNotAWall(Game.player2.tilePosition.x + offset, Game.player2.tilePosition.y + offset * sign)) {
+                const attackPositionX = Game.player2.tilePosition.x + offset;
+                const attackPositionY = Game.player2.tilePosition.y + offset * sign;
+                createFadingAttack(new FullTileElement(Game.resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
                 attackTile(attackPositionX, attackPositionY, 2);
                 const player = getPlayerOnTile(attackPositionX, attackPositionY);
                 if (player !== null) {
@@ -135,33 +135,33 @@ function crossAttack() {
             }
         }
     }
-    rotate(GameState.player2, false);
+    rotate(Game.player2, false);
 }
 
 function rotate(object, clockwise = true) {
     let counter = 0;
 
     object.animation = function () {
-        if (clockwise) object.rotation += 2 * Math.PI / GameState.TURNTIME;
-        else object.rotation -= 2 * Math.PI / GameState.TURNTIME;
+        if (clockwise) object.rotation += 2 * Math.PI / Game.TURNTIME;
+        else object.rotation -= 2 * Math.PI / Game.TURNTIME;
         counter++;
-        if (counter >= GameState.TURNTIME) GameState.APP.ticker.remove(object.animation);
+        if (counter >= Game.TURNTIME) Game.APP.ticker.remove(object.animation);
     };
 
-    GameState.APP.ticker.add(object.animation);
+    Game.APP.ticker.add(object.animation);
 }
 
 function switchPlayers() {
-    let temp = GameState.player2.zIndex;
-    GameState.player2.zIndex = GameState.player.zIndex;
-    GameState.player.zIndex = temp;
-    if (GameState.primaryPlayer === GameState.player2) {
-        GameState.primaryPlayer = GameState.player;
-    } else GameState.primaryPlayer = GameState.player2;
-    if (GameState.player.tilePosition.x === GameState.player2.tilePosition.x
-        && GameState.player.tilePosition.y === GameState.player2.tilePosition.y) {
-        temp = GameState.gameMap[GameState.player.tilePosition.y][GameState.player2.tilePosition.x].entity;
-        GameState.gameMap[GameState.player.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.gameMap[GameState.player.tilePosition.y][GameState.player2.tilePosition.x].secondaryEntity;
-        GameState.gameMap[GameState.player.tilePosition.y][GameState.player2.tilePosition.x].secondaryEntity = temp;
+    let temp = Game.player2.zIndex;
+    Game.player2.zIndex = Game.player.zIndex;
+    Game.player.zIndex = temp;
+    if (Game.primaryPlayer === Game.player2) {
+        Game.primaryPlayer = Game.player;
+    } else Game.primaryPlayer = Game.player2;
+    if (Game.player.tilePosition.x === Game.player2.tilePosition.x
+        && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
+        temp = Game.gameMap[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
+        Game.gameMap[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity = Game.gameMap[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity;
+        Game.gameMap[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;
     }
 }

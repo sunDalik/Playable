@@ -1,8 +1,8 @@
 class Hazard extends FullTileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
-        this.width = GameState.TILESIZE;
-        this.height = GameState.TILESIZE;
+        this.width = Game.TILESIZE;
+        this.height = Game.TILESIZE;
         this.zIndex = -1;
         this.LIFETIME = 0;
         this.turnsLeft = this.LIFETIME;
@@ -10,15 +10,15 @@ class Hazard extends FullTileElement {
     }
 
     addToWorld() {
-        GameState.gameWorld.addChild(this);
-        GameState.hazards.push(this);
-        GameState.gameMap[this.tilePosition.y][this.tilePosition.x].hazard = this;
+        Game.gameWorld.addChild(this);
+        Game.hazards.push(this);
+        Game.gameMap[this.tilePosition.y][this.tilePosition.x].hazard = this;
     }
 
     removeFromWorld() {
-        GameState.gameWorld.removeChild(this);
-        removeObjectFromArray(this, GameState.hazards);
-        GameState.gameMap[this.tilePosition.y][this.tilePosition.x].hazard = null;
+        Game.gameWorld.removeChild(this);
+        removeObjectFromArray(this, Game.hazards);
+        Game.gameMap[this.tilePosition.y][this.tilePosition.x].hazard = null;
     }
 
     updateLifetime() {
