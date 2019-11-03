@@ -192,10 +192,10 @@ function redrawTiles() {
     centerCamera();
 }
 
-let lightCounter = 0;
+let litAreas = [];
 
 function lightPlayerPosition(player) {
-    lightCounter = 0;
+    litAreas = [];
     const px = player.tilePosition.x;
     const py = player.tilePosition.y;
     if (GameState.gameMap[py][px].tileType === TILE_TYPE.PATH) {
@@ -212,13 +212,10 @@ function lightPlayerPosition(player) {
             lightWorld(px, py, false, 9);
         }
     }
-    console.log(lightCounter);
 }
 
-//TODO:
-//NEEDS IMPROVEMENT. It is not bad now, but it definitely can be improved further
 //lightPaths == true -> light paths until we encounter none else light nones until we encounter path
-function lightWorld(tileX, tileY, lightPaths, distance = 8, prevDirX = 0, prevDirY = 0, pPrevDirX = prevDirX, pPrevDirY = prevDirY) {
+function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sourceDirY = 0) {
     if (distance > -1) {
         if (GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.ENTRY
             || (lightPaths && GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.PATH)
@@ -226,23 +223,46 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, prevDirX = 0, prevDi
             if (!GameState.gameMap[tileY][tileX].lit) {
                 GameState.gameWorld.removeChild(GameState.darkTiles[tileY][tileX]);
                 GameState.gameMap[tileY][tileX].lit = true;
-                //light diagonal walls
-                if (GameState.gameMap[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY + 1, lightPaths, distance);
-                if (GameState.gameMap[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY - 1, lightPaths, distance);
-                if (GameState.gameMap[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY + 1, lightPaths, distance);
-                if (GameState.gameMap[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY - 1, lightPaths, distance);
             }
 
-            if (!(1 === prevDirX && 0 === prevDirY) && !(1 === pPrevDirX && 0 === pPrevDirY)) lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, 0, prevDirX, prevDirY);
-            if (!(-1 === prevDirX && 0 === prevDirY) && !(-1 === pPrevDirX && 0 === pPrevDirY)) lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, 0, prevDirX, prevDirY);
-            if (!(0 === prevDirX && 1 === prevDirY) && !(0 === pPrevDirX && 1 === pPrevDirY)) lightWorld(tileX, tileY + 1, lightPaths, distance - 1, 0, -1, prevDirX, prevDirY);
-            if (!(0 === prevDirX && -1 === prevDirY) && !(0 === pPrevDirX && -1 === pPrevDirY)) lightWorld(tileX, tileY - 1, lightPaths, distance - 1, 0, 1, prevDirX, prevDirY);
+            litAreas.push({x: tileX, y: tileY});
+            if (sourceDirX === 0 && sourceDirY === 0) {
+                lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, 0);
+                lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, 0);
+                lightWorld(tileX, tileY + 1, lightPaths, distance - 1, 0, -1);
+                lightWorld(tileX, tileY - 1, lightPaths, distance - 1, 0, 1);
+            } else {
+                if (sourceDirY === 0) {
+                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) lightWorld(tileX, tileY - 1, lightPaths, distance - 1, sourceDirX, 1);
+                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) lightWorld(tileX, tileY + 1, lightPaths, distance - 1, sourceDirX, -1);
+                }
+                if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorld(tileX, tileY - sourceDirY, lightPaths, distance - 1, sourceDirX, sourceDirY);
+                if (sourceDirX === 0) {
+                    if (!litAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, sourceDirY);
+                    if (!litAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, sourceDirY);
+                }
+                if (!litAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorld(tileX - sourceDirX, tileY, lightPaths, distance - 1, sourceDirX, sourceDirY);
+            }
+
+            //light diagonal walls
+            if (!GameState.gameMap[tileY + 1][tileX + 1].lit && GameState.gameMap[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL) {
+                lightWorld(tileX + 1, tileY + 1, lightPaths, distance - 1);
+            }
+            if (!GameState.gameMap[tileY - 1][tileX - 1].lit && GameState.gameMap[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL) {
+                lightWorld(tileX - 1, tileY - 1, lightPaths, distance - 1);
+            }
+            if (!GameState.gameMap[tileY + 1][tileX - 1].lit && GameState.gameMap[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) {
+                lightWorld(tileX - 1, tileY + 1, lightPaths, distance - 1);
+            }
+            if (!GameState.gameMap[tileY - 1][tileX + 1].lit && GameState.gameMap[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) {
+                lightWorld(tileX + 1, tileY - 1, lightPaths, distance - 1);
+            }
+
         } else if (GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.WALL) {
             if (!GameState.gameMap[tileY][tileX].lit) {
                 GameState.gameWorld.removeChild(GameState.darkTiles[tileY][tileX]);
                 GameState.gameMap[tileY][tileX].lit = true;
             }
         }
-        lightCounter++;
     }
 }
