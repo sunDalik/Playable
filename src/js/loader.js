@@ -41,6 +41,8 @@ function loadAll() {
         .add("src/images/weapons/ninja_knife.png")
         .add("src/images/weapons/sword.png")
 
+        .add("src/images/armor/basic.png")
+
         .add("src/images/other/statue.png")
         .add("src/images/other/statue_knife.png")
         .add("src/images/other/statue_ninja_knife.png")

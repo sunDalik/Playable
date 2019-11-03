@@ -59,18 +59,6 @@ function drawEntities() {
     }
 }
 
-function displayInstructions() {
-    let instructions = new PIXI.Text("WASD to move player 1\nArrows to move player 2\nF for linked fireball attack\n" +
-        "T to teleport player 2 to player 1\nR for rotate attack\nC for cross attack\nCtrl to switch z-index", {fontSize: "16px"});
-    let rect = new PIXI.Graphics();
-    rect.beginFill(0xFFFFFF);
-    rect.drawRect(10, 10, instructions.width + 20, instructions.height + 20);
-    rect.alpha = 0.85;
-    instructions.position.set(20, 20);
-    Game.HUD.addChild(rect);
-    Game.HUD.addChild(instructions);
-}
-
 function drawHUD() {
     drawHealth();
     drawSlots();
@@ -175,12 +163,28 @@ function redrawSlotsForPlayer(player) {
     const topRowSlots = [magicSlot1, magicSlot2, magicSlot3, magicSlot4];
     const secondRowSlots = [weaponSlot, secondHandSlot];
     const columnSlots = [headSlot, armorSlot, feetSlot];
+
+    const itemMargin = 15;
     for (let i = 0; i < topRowSlots.length; ++i) {
         topRowSlots[i].position.y = slotsYOffset;
         topRowSlots[i].position.x = slotsXOffset + (slotSize + slotsColOffset) * i;
         topRowSlots[i].width = slotSize;
         topRowSlots[i].height = slotSize;
         container.addChild(topRowSlots[i]);
+        switch (topRowSlots[i]) {
+            case magicSlot1:
+                if (player.magic1 !== null) drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic1.texture);
+                break;
+            case magicSlot2:
+                if (player.magic2 !== null) drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic2.texture);
+                break;
+            case magicSlot3:
+                if (player.magic3 !== null) drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic3.texture);
+                break;
+            case magicSlot4:
+                if (player.magic4 !== null) drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic4.texture);
+                break;
+        }
     }
     for (let i = 0; i < secondRowSlots.length; ++i) {
         secondRowSlots[i].position.y = slotsYOffset + slotSize + slotsRowOffset;
@@ -188,6 +192,14 @@ function redrawSlotsForPlayer(player) {
         secondRowSlots[i].width = slotSize;
         secondRowSlots[i].height = slotSize;
         container.addChild(secondRowSlots[i]);
+        switch (secondRowSlots[i]) {
+            case weaponSlot:
+                if (player.weapon !== null) drawEquipment(secondRowSlots[i].position.x + itemMargin / 2, secondRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.weapon.texture);
+                break;
+            case secondHandSlot:
+                if (player.secondHand !== null) drawEquipment(secondRowSlots[i].position.x + itemMargin / 2, secondRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.secondHand.texture);
+                break;
+        }
     }
     for (let i = 0; i < columnSlots.length; ++i) {
         columnSlots[i].position.y = slotsYOffset + (slotSize + slotsRowOffset) * (i + 2);
@@ -195,8 +207,29 @@ function redrawSlotsForPlayer(player) {
         columnSlots[i].width = slotSize;
         columnSlots[i].height = slotSize;
         container.addChild(columnSlots[i]);
+        switch (columnSlots[i]) {
+            case headSlot:
+                if (player.headwear !== null) drawEquipment(columnSlots[i].position.x + itemMargin / 2, columnSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.headwear.texture);
+                break;
+            case armorSlot:
+                if (player.armor !== null) drawEquipment(columnSlots[i].position.x + itemMargin / 2, columnSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.armor.texture);
+                break;
+            case feetSlot:
+                if (player.footwear !== null) drawEquipment(columnSlots[i].position.x + itemMargin / 2, columnSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.footwear.texture);
+                break;
+        }
+    }
+
+    function drawEquipment(posX, posY, size, container, texture) {
+        const sprite = new PIXI.Sprite(texture);
+        sprite.position.set(posX, posY);
+        sprite.width = size;
+        sprite.height = size;
+        sprite.zIndex = -1;
+        container.addChild(sprite);
     }
 }
+
 
 function drawGrid() {
     let gridTexture = Game.resources["src/images/grid.png"].texture;

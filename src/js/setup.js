@@ -70,6 +70,7 @@ function setup() {
     Game.player.setStats(1, 0.5, 0, 1.5);
     Game.player2.setStats(1, 1.5, 0, 0.5);
     Game.player2.weapon = new Knife();
+    Game.player.armor = new BasicArmor();
 
     Game.grid = drawGrid();
     drawWalls();
@@ -77,7 +78,6 @@ function setup() {
     createDarkness();
     lightPlayerPosition(Game.player);
     lightPlayerPosition(Game.player2);
-    //displayInstructions();
     drawHUD();
     drawEntities();
     bindKeys();
@@ -85,6 +85,8 @@ function setup() {
     Game.primaryPlayer = Game.player;
     Game.gameWorld.sortableChildren = true;
     Game.APP.stage.sortableChildren = true;
+    Game.SLOTS1.sortableChildren = true;
+    Game.SLOTS2.sortableChildren = true;
     centerCamera();
     drawOther();
 }
