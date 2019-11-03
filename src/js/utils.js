@@ -46,6 +46,11 @@ function copy2dArray(array) {
     return newArray;
 }
 
+function getRandomValue(obj) {
+    const keys = Object.keys(obj);
+    return obj[keys[keys.length * Math.random() << 0]];
+}
+
 function removeAllChildrenFromContainer(container) {
     for (let i = container.children.length - 1; i >= 0; i--) {
         container.removeChild(container.children[i]);

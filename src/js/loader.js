@@ -12,7 +12,9 @@ function loadAll() {
         .add("src/images/player_attack.png")
         .add("src/images/player2_attack.png")
         .add("src/images/weapon_particle.png")
+
         .add("src/images/hazards/poison.png")
+
         .add("src/images/enemy_attack.png")
         .add("src/images/enemies/roller.png")
         .add("src/images/enemies/roller_b.png")
@@ -22,11 +24,18 @@ function loadAll() {
         .add("src/images/enemies/spider_b.png")
         .add("src/images/enemies/snail.png")
         .add("src/images/enemies/snail_b.png")
+
         .add("src/images/HUD/heart_full.png")
         .add("src/images/HUD/heart_75.png")
         .add("src/images/HUD/heart_half.png")
         .add("src/images/HUD/heart_25.png")
         .add("src/images/HUD/heart_empty.png")
+
+        .add("src/images/other/statue.png")
+        .add("src/images/other/statue_knife.png")
+        .add("src/images/other/statue_ninja_knife.png")
+        .add("src/images/other/statue_sword.png")
+
         .add("src/images/grid.png")
         .on("progress", loadProgressHandler)
         .load(setup);

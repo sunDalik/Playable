@@ -44,14 +44,16 @@ function createDarkness() {
     }
 }
 
-function drawEnemies() {
+function drawEntities() {
     for (let i = 0; i < GameState.gameMap.length; ++i) {
         for (let j = 0; j < GameState.gameMap[0].length; ++j) {
             const entity = GameState.gameMap[i][j].entity;
-            if (entity !== null && entity.role === ROLE.ENEMY) {
+            if (entity !== null) {
                 GameState.gameWorld.addChild(entity);
-                GameState.enemies.push(entity);
                 GameState.tiles.push(entity);
+                if (entity.role === ROLE.ENEMY) {
+                    GameState.enemies.push(entity);
+                }
             }
         }
     }

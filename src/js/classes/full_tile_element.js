@@ -1,8 +1,6 @@
 class FullTileElement extends TileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
-        this.width = GameState.TILESIZE;
-        this.height = GameState.TILESIZE;
     }
 
     fitToTile() {

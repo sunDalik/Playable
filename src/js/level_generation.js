@@ -2,32 +2,16 @@
 
 function generateLevel() {
     let level = [[]];
-    const roomNumber = randomChoice([12, 15]);
+    const roomNumber = randomChoice([12, 15, 16]);
     let levelRoomWidth;
     let levelRoomHeight;
-    if (roomNumber === 12) levelRoomWidth = 4;
-    else levelRoomWidth = 5;
+    if (roomNumber === 12 || roomNumber === 16) levelRoomWidth = 4;
+    else if (roomNumber === 15) levelRoomWidth = 5;
     levelRoomHeight = roomNumber / levelRoomWidth;
 
     let levelRooms = [];
-    for (let i = 0; i < roomNumber; ++i) {
-        let room = randomChoice(FCNormalRooms);
-        let transformOption = getRandomInt(0, 4);
-        switch (transformOption) {
-            case 1:
-                room = flipHorizontally(room);
-                break;
-            case 2:
-                room = flipVertically(room);
-                break;
-            case 3:
-                room = flipHorizontally(flipVertically(room));
-                break;
-        }
-        levelRooms.push(room);
-    }
 
-    //generate starting room
+    //generate starting room position
     const startRoomY = getRandomInt(0, levelRoomHeight);
     let startRoomX;
     if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) startRoomX = getRandomInt(0, levelRoomWidth);
@@ -43,7 +27,40 @@ function generateLevel() {
     else endingRoomX = 0;
     if (startRoomY + 1 <= (levelRoomHeight + 1) / 2) endingRoomY = levelRoomHeight - 1;
     else endingRoomY = 0;
+    const endingRoomI = endingRoomY * levelRoomWidth + endingRoomX;
     /////
+
+    //determining statue rooms indexes
+    let statueRoomsNumber = randomChoice([1, 2]);
+    let statueRoomIs = [];
+    for (let i = 0; i < statueRoomsNumber; ++i) {
+        while (true) {
+            statueRoomIs[i] = getRandomInt(0, roomNumber);
+            if (statueRoomIs[i] !== startRoomI) break;
+        }
+    }
+
+    //picking rooms for level
+    for (let i = 0; i < roomNumber; ++i) {
+        if (i !== startRoomI) {
+            let room;
+            if (statueRoomIs.includes(i)) room = randomChoice(FCStatueRooms);
+            else room = randomChoice(FCNormalRooms);
+            let transformOption = getRandomInt(0, 4);
+            switch (transformOption) {
+                case 1:
+                    room = flipHorizontally(room);
+                    break;
+                case 2:
+                    room = flipVertically(room);
+                    break;
+                case 3:
+                    room = flipHorizontally(flipVertically(room));
+                    break;
+            }
+            levelRooms[i] = room;
+        }
+    }
 
     let entryCount = 0;
     for (let r = 0; r < levelRooms.length; ++r) {

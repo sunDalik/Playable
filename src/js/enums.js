@@ -11,5 +11,5 @@ const ENEMY_TYPE = Object.freeze({
 
 const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1});
 const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
-
 const TILE_TYPE = Object.freeze({NONE: 0, WALL: 1, VOID: 2, PATH: 3, ENTRY: 4});
+const WEAPON_TYPE = Object.freeze({NONE: 0, KNIFE: 1, SWORD: 2, NINJA_KNIFE: 3});

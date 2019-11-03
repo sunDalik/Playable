@@ -61,8 +61,6 @@ function setup() {
     GameState.player2 = new Player(GameState.resources["src/images/player2.png"].texture, GameState.startX + 1, GameState.startY + 1);
     GameState.gameMap[GameState.player.tilePosition.y][GameState.player.tilePosition.x].entity = GameState.player;
     GameState.gameMap[GameState.player2.tilePosition.y][GameState.player2.tilePosition.x].entity = GameState.player2;
-    GameState.tiles.push(GameState.player);
-    GameState.tiles.push(GameState.player2);
     GameState.player.setStats(1, 0.5, 0, 1.5);
     GameState.player2.setStats(1, 1.5, 0, 0.5);
 
@@ -74,12 +72,10 @@ function setup() {
     lightPlayerPosition(GameState.player2);
     //displayInstructions();
     drawHUD();
-    drawEnemies();
+    drawEntities();
     bindKeys();
     GameState.player.zIndex = GameState.player2.zIndex + 1;
     GameState.primaryPlayer = GameState.player;
-    GameState.gameWorld.addChild(GameState.player);
-    GameState.gameWorld.addChild(GameState.player2);
     GameState.gameWorld.sortableChildren = true;
     GameState.APP.stage.sortableChildren = true;
     centerCamera();
@@ -161,6 +157,14 @@ function generateMap(level) {
             else if (map[i][j] === "spib") mapCell.entity = new SpiderB(j, i);
             else if (map[i][j] === "sna") mapCell.entity = new Snail(j, i);
             else if (map[i][j] === "snab") mapCell.entity = new SnailB(j, i);
+            else if (map[i][j] === "statue") {
+                let weaponType;
+                while (true) {
+                    weaponType = getRandomValue(WEAPON_TYPE);
+                    if (weaponType !== WEAPON_TYPE.NONE) break;
+                }
+                mapCell.entity = new Statue(j, i, weaponType);
+            }
 
             map[i][j] = mapCell;
         }
