@@ -5,7 +5,6 @@ class TallTileElement extends TileElement {
         this.place();
     }
 
-    //something wrong with these methods, don't know yet
     place() {
         this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
         this.position.y = Game.TILESIZE * this.tilePosition.y - Game.TILESIZE * (this.tileHeight - 1) + (Game.TILESIZE * this.tileHeight - this.height) + this.height * this.anchor.y;
@@ -13,7 +12,7 @@ class TallTileElement extends TileElement {
 
     fitToTile() {
         const scaleX = Game.TILESIZE / this.getUnscaledWidth();
-        const scaleY = Game.TILESIZE * 2 * this.tileHeight / this.getUnscaledHeight();
+        const scaleY = Game.TILESIZE * this.tileHeight / this.getUnscaledHeight();
         this.scale.set(scaleX, scaleY);
     }
 }

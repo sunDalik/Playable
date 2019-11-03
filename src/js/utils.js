@@ -185,9 +185,3 @@ function pointInsideParallelogram(a, b, p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y) 
 
     return true;
 }
-
-function getCrossProduct(x1, y1, x2, y2, a1, b1, a2, b2) {
-    const v1 = {x: x2 - x1, y: y2 - y1};
-    const v2 = {x: a2 - a1, y: b2 - b1};
-    return v1.x * v2.y - v1.y * v2.x;
-}
