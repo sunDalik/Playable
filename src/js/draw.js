@@ -192,25 +192,33 @@ function redrawTiles() {
     centerCamera();
 }
 
+let lightCounter = 0;
+
 function lightPlayerPosition(player) {
+    lightCounter = 0;
     const px = player.tilePosition.x;
     const py = player.tilePosition.y;
     if (GameState.gameMap[py][px].tileType === TILE_TYPE.PATH) {
-        lightWorld(px, py, true);
+        lightWorld(px, py, true, 5);
     } else if (GameState.gameMap[py][px].tileType === TILE_TYPE.NONE) {
-        lightWorld(px, py, false);
+        lightWorld(px, py, false, 9);
     } else if (GameState.gameMap[py][px].tileType === TILE_TYPE.ENTRY) {
         if ((GameState.gameMap[py + 1][px].tileType === TILE_TYPE.PATH && !GameState.gameMap[py + 1][px].lit)
             || (GameState.gameMap[py - 1][px].tileType === TILE_TYPE.PATH && !GameState.gameMap[py - 1][px].lit)
             || (GameState.gameMap[py][px + 1].tileType === TILE_TYPE.PATH && !GameState.gameMap[py][px + 1].lit)
             || (GameState.gameMap[py][px - 1].tileType === TILE_TYPE.PATH && !GameState.gameMap[py][px - 1].lit)) {
-            lightWorld(px, py, true);
-        } else lightWorld(px, py, false);
+            lightWorld(px, py, true, 5);
+        } else {
+            lightWorld(px, py, false, 9);
+        }
     }
+    console.log(lightCounter);
 }
 
+//TODO:
+//NEEDS IMPROVEMENT. It is not bad now, but it definitely can be improved further
 //lightPaths == true -> light paths until we encounter none else light nones until we encounter path
-function lightWorld(tileX, tileY, lightPaths, distance = 8, prevDirX = 0, prevDirY = 0) {
+function lightWorld(tileX, tileY, lightPaths, distance = 8, prevDirX = 0, prevDirY = 0, pPrevDirX = prevDirX, pPrevDirY = prevDirY) {
     if (distance > -1) {
         if (GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.ENTRY
             || (lightPaths && GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.PATH)
@@ -218,20 +226,23 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, prevDirX = 0, prevDi
             if (!GameState.gameMap[tileY][tileX].lit) {
                 GameState.gameWorld.removeChild(GameState.darkTiles[tileY][tileX]);
                 GameState.gameMap[tileY][tileX].lit = true;
+                //light diagonal walls
                 if (GameState.gameMap[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY + 1, lightPaths, distance);
                 if (GameState.gameMap[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY - 1, lightPaths, distance);
                 if (GameState.gameMap[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY + 1, lightPaths, distance);
                 if (GameState.gameMap[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY - 1, lightPaths, distance);
             }
-            if (!(1 === prevDirX && 0 === prevDirY)) lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, 0);
-            if (!(-1 === prevDirX && 0 === prevDirY)) lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, 0);
-            if (!(0 === prevDirX && 1 === prevDirY)) lightWorld(tileX, tileY + 1, lightPaths, distance - 1, 0, -1);
-            if (!(0 === prevDirX && -1 === prevDirY)) lightWorld(tileX, tileY - 1, lightPaths, distance - 1, 0, 1);
+
+            if (!(1 === prevDirX && 0 === prevDirY) && !(1 === pPrevDirX && 0 === pPrevDirY)) lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, 0, prevDirX, prevDirY);
+            if (!(-1 === prevDirX && 0 === prevDirY) && !(-1 === pPrevDirX && 0 === pPrevDirY)) lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, 0, prevDirX, prevDirY);
+            if (!(0 === prevDirX && 1 === prevDirY) && !(0 === pPrevDirX && 1 === pPrevDirY)) lightWorld(tileX, tileY + 1, lightPaths, distance - 1, 0, -1, prevDirX, prevDirY);
+            if (!(0 === prevDirX && -1 === prevDirY) && !(0 === pPrevDirX && -1 === pPrevDirY)) lightWorld(tileX, tileY - 1, lightPaths, distance - 1, 0, 1, prevDirX, prevDirY);
         } else if (GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.WALL) {
             if (!GameState.gameMap[tileY][tileX].lit) {
                 GameState.gameWorld.removeChild(GameState.darkTiles[tileY][tileX]);
                 GameState.gameMap[tileY][tileX].lit = true;
             }
         }
+        lightCounter++;
     }
 }
