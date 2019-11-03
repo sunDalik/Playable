@@ -76,8 +76,8 @@ function setup() {
     drawHUD();
     drawEnemies();
     bindKeys();
-    GameState.player2.zIndex = GameState.player.zIndex + 1;
-    GameState.primaryPlayer = GameState.player2;
+    GameState.player.zIndex = GameState.player2.zIndex + 1;
+    GameState.primaryPlayer = GameState.player;
     GameState.gameWorld.addChild(GameState.player);
     GameState.gameWorld.addChild(GameState.player2);
     GameState.gameWorld.sortableChildren = true;

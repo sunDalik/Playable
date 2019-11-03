@@ -16,6 +16,7 @@ GameState.gameMap = [];
 GameState.player = null;
 GameState.player2 = null;
 GameState.primaryPlayer = null;
+GameState.playerMoved = null;
 GameState.enemies = [];
 GameState.hazards = [];
 GameState.tiles = [];

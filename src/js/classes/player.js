@@ -21,6 +21,16 @@ class Player extends TileElement {
         scaleGameMap();
     }
 
+    setMovedTexture() {
+        if (this === GameState.player) this.texture = GameState.resources["src/images/player_moved.png"].texture;
+        else this.texture = GameState.resources["src/images/player2_moved.png"].texture;
+    }
+
+    setUnmovedTexture() {
+        if (this === GameState.player) this.texture = GameState.resources["src/images/player.png"].texture;
+        else this.texture = GameState.resources["src/images/player2.png"].texture;
+    }
+
     setStats(atkBase, atkMul, defBase, defMul) {
         this.atkBase = atkBase;
         this.atkMul = atkMul;

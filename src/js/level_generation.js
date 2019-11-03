@@ -11,7 +11,7 @@ function generateLevel() {
 
     let levelRooms = [];
     for (let i = 0; i < roomNumber; ++i) {
-        let room = randomChoice(rooms);
+        let room = randomChoice(FCNormalRooms);
         let transformOption = getRandomInt(0, 4);
         switch (transformOption) {
             case 1:

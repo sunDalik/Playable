@@ -44,7 +44,8 @@ function attackTile(attackPositionX, attackPositionY, atk, inputX, inputY) {
 }
 
 function playerTurn(player, playerMove, bothPlayers = false) {
-    if ((bothPlayers && !GameState.player.dead && !GameState.player2.dead) || (!bothPlayers && !player.dead)) {
+    if (/*GameState.playerMoved !== player
+        &&*/ ((bothPlayers && !GameState.player.dead && !GameState.player2.dead) || (!bothPlayers && !player.dead))) {
         if (GameState.enemiesTimeout !== null) {
             clearTimeout(GameState.enemiesTimeout);
             moveEnemies();
@@ -58,7 +59,14 @@ function playerTurn(player, playerMove, bothPlayers = false) {
         } else player.cancelAnimation();
         playerMove();
         damagePlayersWithHazards();
+        /*if (GameState.playerMoved !== null) {
+            GameState.playerMoved.setUnmovedTexture();
+            GameState.playerMoved = null;*/
         enemyTurn();
+        /*} else {
+            GameState.playerMoved = player;
+            GameState.playerMoved.setMovedTexture();
+        }*/
     }
 }
 
