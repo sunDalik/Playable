@@ -210,7 +210,7 @@ function lightPlayerPosition(player) {
 }
 
 //lightPaths == true -> light paths until we encounter none else light nones until we encounter path
-function lightWorld(tileX, tileY, lightPaths, distance = 8) {
+function lightWorld(tileX, tileY, lightPaths, distance = 8, prevDirX = 0, prevDirY = 0) {
     if (distance > -1) {
         if (GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.ENTRY
             || (lightPaths && GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.PATH)
@@ -223,10 +223,10 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8) {
                 if (GameState.gameMap[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) lightWorld(tileX - 1, tileY + 1, lightPaths, distance);
                 if (GameState.gameMap[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) lightWorld(tileX + 1, tileY - 1, lightPaths, distance);
             }
-            lightWorld(tileX + 1, tileY, lightPaths, distance - 1);
-            lightWorld(tileX - 1, tileY, lightPaths, distance - 1);
-            lightWorld(tileX, tileY + 1, lightPaths, distance - 1);
-            lightWorld(tileX, tileY - 1, lightPaths, distance - 1);
+            if (!(1 === prevDirX && 0 === prevDirY)) lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, 0);
+            if (!(-1 === prevDirX && 0 === prevDirY)) lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, 0);
+            if (!(0 === prevDirX && 1 === prevDirY)) lightWorld(tileX, tileY + 1, lightPaths, distance - 1, 0, -1);
+            if (!(0 === prevDirX && -1 === prevDirY)) lightWorld(tileX, tileY - 1, lightPaths, distance - 1, 0, 1);
         } else if (GameState.gameMap[tileY][tileX].tileType === TILE_TYPE.WALL) {
             if (!GameState.gameMap[tileY][tileX].lit) {
                 GameState.gameWorld.removeChild(GameState.darkTiles[tileY][tileX]);
