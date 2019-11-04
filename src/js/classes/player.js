@@ -59,11 +59,23 @@ class Player extends TileElement {
         this.atk = Math.round(this.atkBase * this.atkMul * 4) / 4;
         this.defBase = defBase;
         this.defMul = defMul;
-        this.def = Math.round(this.defBase * this.defMul * 4) / 4;
+        this.def = this.getDef();
     }
 
     getAtkWithWeapon(weapon) {
+        //todo: for each equipment add atk to base if has atk
         return (Math.round((this.atkBase + weapon.atk) * this.atkMul * 4) / 4)
+    }
+
+    getDef() {
+        const defEquipment = [this.headwear, this.armor, this.footwear, this.secondHand];
+        let defBase = this.defBase;
+        for (const equipment of defEquipment) {
+            if (equipment !== null) {
+                defBase += equipment.def;
+            }
+        }
+        return (Math.round(defBase * this.defMul * 4) / 4)
     }
 
     stepX(tileStepX) {
@@ -188,7 +200,7 @@ class Player extends TileElement {
 
     damage(atk) {
         if (!this.dead) {
-            let dmg = atk - this.def;
+            let dmg = atk - this.getDef();
             if (dmg < 0.25) dmg = 0.25;
             this.health -= dmg;
             redrawHealthForPlayer(this);

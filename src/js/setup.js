@@ -67,8 +67,8 @@ function setup() {
     Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, Game.startX + 1, Game.startY + 1);
     Game.gameMap[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
     Game.gameMap[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
-    Game.player.setStats(0, 0.5, 0, 1.5);
-    Game.player2.setStats(0, 1.5, 0, 0.5);
+    Game.player.setStats(0, 0.5, 0, 1.00);
+    Game.player2.setStats(0, 1.00, 0, 0.5);
     Game.player2.weapon = new Sword();
     Game.player.armor = new BasicArmor();
 
