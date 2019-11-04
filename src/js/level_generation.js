@@ -35,8 +35,11 @@ function generateLevel() {
     let statueRoomIs = [];
     for (let i = 0; i < statueRoomsNumber; ++i) {
         while (true) {
-            statueRoomIs[i] = getRandomInt(0, roomNumber);
-            if (statueRoomIs[i] !== startRoomI) break;
+            const randomI = getRandomInt(0, roomNumber);
+            if (randomI !== startRoomI && !statueRoomIs.includes(randomI)) {
+                statueRoomIs[i] = randomI;
+                break;
+            }
         }
     }
 

@@ -35,6 +35,7 @@ Game.primaryPlayer = null;
 Game.playerMoved = null;
 
 Game.enemiesTimeout = null;
+Game.maraudedStatues = [];
 
 Game.TURNTIME = 16;
 Game.WEAPON_ATTACK_TIME = 6;

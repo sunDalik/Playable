@@ -38,12 +38,14 @@ class Player extends TileElement {
                     const entity = Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].entity;
                     switch (entity.type) {
                         case INANIMATE_TYPE.STATUE:
+                            if (!entity.marauded) Game.maraudedStatues.push(entity.weapon);
                             const temp = entity.weapon;
                             entity.weapon = this.weapon;
                             this.weapon = temp;
                             entity.updateTexture();
                             redrawSlotsForPlayer(this);
                             this.bumpX(tileStepX);
+                            entity.maraud();
                             break;
                         case INANIMATE_TYPE.OBELISK:
 
@@ -61,12 +63,14 @@ class Player extends TileElement {
                     const entity = Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].entity;
                     switch (entity.type) {
                         case INANIMATE_TYPE.STATUE:
+                            if (!entity.marauded) Game.maraudedStatues.push(entity.weapon);
                             const temp = entity.weapon;
                             entity.weapon = this.weapon;
                             this.weapon = temp;
                             entity.updateTexture();
                             redrawSlotsForPlayer(this);
                             this.bumpY(tileStepY);
+                            entity.maraud();
                             break;
                         case INANIMATE_TYPE.OBELISK:
 

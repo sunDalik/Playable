@@ -36,7 +36,7 @@ function createDarkness() {
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
             let voidTile = new VoidTile(j, i);
-            voidTile.zIndex = 999;
+            voidTile.zIndex = 10;
             Game.world.addChild(voidTile);
             Game.tiles.push(voidTile);
             Game.darkTiles[i][j] = voidTile;
