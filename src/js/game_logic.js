@@ -33,9 +33,7 @@ function attackTile(attackPositionX, attackPositionY, atk, inputX, inputY) {
         if (!tileEntity.isDead()) {
             tileEntity.damage(atk);
             if (tileEntity.isDead()) {
-                Game.gameMap[tileEntity.tilePosition.y][tileEntity.tilePosition.x].entity = null;
-                tileEntity.cancelAnimation();
-                tileEntity.visible = false;
+                tileEntity.die();
             } else if (tileEntity.entityType === ENEMY_TYPE.SPIDER || tileEntity.entityType === ENEMY_TYPE.SPIDER_B) {
                 tileEntity.throwAway(inputX, inputY);
             }

@@ -3,7 +3,8 @@
 class Snail extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/snail.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = 2;
+        this.maxHealth = 2;
+        this.health = this.maxHealth;
         this.entityType = ENEMY_TYPE.SNAIL;
         this.atk = 1;
         this.turnDelay = 0;
@@ -64,6 +65,7 @@ class Snail extends Enemy {
         this.tilePosition.x += tileStepX;
         this.animation = () => {
             this.position.x += step;
+            this.moveHealthContainer();
             counter++;
             if (counter >= this.SLIDE_ANIMATION_TIME) {
                 Game.APP.ticker.remove(this.animation);
@@ -79,6 +81,7 @@ class Snail extends Enemy {
         this.tilePosition.y += tileStepY;
         this.animation = () => {
             this.position.y += step;
+            this.moveHealthContainer();
             counter++;
             if (counter >= this.SLIDE_ANIMATION_TIME) {
                 Game.APP.ticker.remove(this.animation);
@@ -100,6 +103,7 @@ class Snail extends Enemy {
             } else {
                 this.position.x -= step;
             }
+            this.moveHealthContainer();
             counter++;
             if (counter >= this.SLIDE_ANIMATION_TIME) {
                 Game.APP.ticker.remove(this.animation);
@@ -118,6 +122,7 @@ class Snail extends Enemy {
             } else {
                 this.position.y -= step;
             }
+            this.moveHealthContainer();
             counter++;
             if (counter >= this.SLIDE_ANIMATION_TIME) {
                 Game.APP.ticker.remove(this.animation);

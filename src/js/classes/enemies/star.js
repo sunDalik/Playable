@@ -3,7 +3,8 @@
 class Star extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/star.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = 2;
+        this.maxHealth = 2;
+        this.health = this.maxHealth;
         this.atk = 1;
         this.triggered = false;
         this.triggeredDirections = null;

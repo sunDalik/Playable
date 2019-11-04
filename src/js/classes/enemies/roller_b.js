@@ -70,6 +70,7 @@ class RollerB extends Roller {
         this.tilePosition.x += 2 * this.direction;
         this.animation = () => {
             this.position.x += step * this.direction;
+            this.moveHealthContainer();
             counter++;
             if (counter >= this.ROLL_ANIMATION_TIME) {
                 Game.APP.ticker.remove(this.animation);
@@ -106,6 +107,7 @@ class RollerB extends Roller {
                 Game.APP.ticker.remove(this.animation);
                 this.place();
             }
+            this.moveHealthContainer();
         };
         Game.APP.ticker.add(this.animation);
         Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
@@ -131,6 +133,7 @@ class RollerB extends Roller {
                 Game.APP.ticker.remove(this.animation);
                 this.place();
             }
+            this.moveHealthContainer();
         };
         Game.APP.ticker.add(this.animation);
     }

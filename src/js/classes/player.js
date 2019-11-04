@@ -4,7 +4,7 @@ class Player extends TileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
         this.health = 4;
-        this.maxhealth = 4;
+        this.maxHealth = 4;
         this.atkBase = 0;
         this.atkMul = 1;
         this.atk = Math.round(this.atkBase * this.atkMul * 4) / 4;
@@ -220,8 +220,8 @@ class Player extends TileElement {
     heal(healHP) {
         if (!this.dead) {
             this.health += healHP;
-            if (this.health > this.maxhealth) {
-                this.health = this.maxhealth;
+            if (this.health > this.maxHealth) {
+                this.health = this.maxHealth;
             }
             redrawHealthForPlayer(this);
         }

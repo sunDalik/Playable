@@ -32,9 +32,7 @@ function fireball() {
                 if (collisionCheck(fireCorrectVertexData, enemy.vertexData)) {
                     enemy.damage(3);
                     if (enemy.isDead()) {
-                        Game.gameMap[enemy.tilePosition.y][enemy.tilePosition.x].entity = null;
-                        enemy.cancelAnimation();
-                        enemy.visible = false;
+                        enemy.die();
                     }
                 }
             }

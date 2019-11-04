@@ -3,7 +3,8 @@
 class SpiderB extends Spider {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/spider_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
-        this.health = 3;
+        this.maxHealth = 3;
+        this.health = this.maxHealth;
         this.entityType = ENEMY_TYPE.SPIDER_B;
         this.chase = false;
     }

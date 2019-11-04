@@ -120,7 +120,7 @@ function redrawHealthForPlayer(player) {
 
 function getHealthArray(entity) {
     let health = [];
-    for (let i = 0; i < entity.maxhealth; ++i) {
+    for (let i = 0; i < entity.maxHealth; ++i) {
         if (i === Math.trunc(entity.health) && entity.health > 0) {
             health[i] = Number((entity.health - Math.trunc(entity.health)).toFixed(2));
         } else {
@@ -138,7 +138,7 @@ function getHeartsBottomLineForPlayer(player) {
     const heartYOffset = 20;
     const heartRowOffset = 0;
     const heartSize = 45;
-    return heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxhealth / 5)
+    return heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5)
 }
 
 function redrawSlotsForPlayer(player) {

@@ -3,7 +3,8 @@
 class Roller extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/roller.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = 1;
+        this.maxHealth = 1;
+        this.health = this.maxHealth;
         this.atk = 1;
         this.direction = 1;
         this.ROLL_ANIMATION_TIME = 6;
@@ -30,6 +31,7 @@ class Roller extends Enemy {
                 this.tilePosition.x += this.direction;
                 this.animation = () => {
                     this.position.x += step * this.direction;
+                    this.moveHealthContainer();
                     counter++;
                     if (counter >= this.ROLL_ANIMATION_TIME) {
                         Game.APP.ticker.remove(this.animation);
@@ -77,6 +79,7 @@ class Roller extends Enemy {
                 Game.APP.ticker.remove(this.animation);
                 this.place();
             }
+            this.moveHealthContainer();
         };
         Game.APP.ticker.add(this.animation);
     }

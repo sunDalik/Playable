@@ -3,7 +3,8 @@
 class Spider extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/spider.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = 2;
+        this.maxHealth = 2;
+        this.health = this.maxHealth;
         this.entityType = ENEMY_TYPE.SPIDER;
         this.atk = 0.5;
         this.chase = false;
@@ -57,6 +58,7 @@ class Spider extends Enemy {
             this.position.x += stepX;
             this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
             counter++;
+            this.moveHealthContainer();
             if (counter >= this.STEP_ANIMATION_TIME) {
                 Game.APP.ticker.remove(this.animation);
                 this.place();
@@ -81,6 +83,7 @@ class Spider extends Enemy {
                 this.position.x -= stepX;
             }
             this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
+            this.moveHealthContainer();
             counter++;
             if (counter >= this.BUMP_ANIMATION_TIME) {
                 Game.APP.ticker.remove(this.animation);
@@ -112,6 +115,7 @@ class Spider extends Enemy {
         this.animation = () => {
             x += 1 / this.STEP_ANIMATION_TIME;
             this.position.y = oldPosition + cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE * tileStepY;
+            this.moveHealthContainer();
             counter++;
             if (counter >= this.STEP_ANIMATION_TIME) {
                 Game.APP.ticker.remove(this.animation);
@@ -148,6 +152,7 @@ class Spider extends Enemy {
             } else {
                 this.position.y = newPosition - cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE / 2 * tileStepY;
             }
+            this.moveHealthContainer();
             counter++;
             if (counter >= this.BUMP_ANIMATION_TIME) {
                 Game.APP.ticker.remove(this.animation);
