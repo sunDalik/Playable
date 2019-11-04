@@ -195,7 +195,7 @@ class Spider extends Enemy {
     }
 
     tryToStepX(tileStepX) {
-        if (isNotAWallOrEnemy(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
+        if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
             const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y);
             if (player !== null) {
                 player.damage(this.atk);
@@ -207,7 +207,7 @@ class Spider extends Enemy {
     }
 
     tryToStepY(tileStepY) {
-        if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
+        if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
             const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + tileStepY);
             if (player !== null) {
                 player.damage(this.atk);
@@ -220,7 +220,7 @@ class Spider extends Enemy {
 
     throwAway(throwX, throwY) {
         if (throwX !== 0) {
-            if (isNotAWallOrEnemy(this.tilePosition.x + throwX, this.tilePosition.y)) {
+            if (isRelativelyEmpty(this.tilePosition.x + throwX, this.tilePosition.y)) {
                 const player = getPlayerOnTile(this.tilePosition.x + throwX, this.tilePosition.y);
                 if (player === null) {
                     Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
@@ -231,7 +231,7 @@ class Spider extends Enemy {
                 }
             }
         } else if (throwY !== 0) {
-            if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + throwY)) {
+            if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + throwY)) {
                 const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + throwY);
                 if (player === null) {
                     Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;

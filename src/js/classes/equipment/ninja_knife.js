@@ -14,15 +14,18 @@ class NinjaKnife {
         const attackTileY = wielder.tilePosition.y + tileDirY;
         const atk = wielder.getAtkWithWeapon(this);
         if (isEnemy(attackTileX, attackTileY)) {
-            attackTile(attackTileX, attackTileY, atk, tileDirX, tileDirY, this);
-            if (isNotAWallOrEnemy(wielder.tilePosition.x + tileDirX * 2, wielder.tilePosition.y + tileDirY * 2)) {
+            if (isRelativelyEmpty(wielder.tilePosition.x + tileDirX * 2, wielder.tilePosition.y + tileDirY * 2)) {
                 createNinjaKnifeAnimation(this);
                 removePlayerFromGameMap(wielder);
                 if (tileDirX !== 0) wielder.slideX(tileDirX * 2, this.SLIDE_ANIMATION_TIME);
                 else wielder.slideY(tileDirY * 2, this.SLIDE_ANIMATION_TIME);
                 placePlayerOnGameMap(wielder);
                 if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun = 1;
-            } else createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
+                attackTile(attackTileX, attackTileY, atk, tileDirX, tileDirY, this);
+            } else {
+                createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
+                attackTile(attackTileX, attackTileY, atk, tileDirX, tileDirY, this);
+            }
             return true;
         } else return false;
 

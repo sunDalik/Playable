@@ -21,7 +21,7 @@ class Roller extends Enemy {
     move() {
         let counter = 0;
         Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-        if (isNotAWallOrEnemy(this.tilePosition.x + this.direction, this.tilePosition.y)) {
+        if (isRelativelyEmpty(this.tilePosition.x + this.direction, this.tilePosition.y)) {
             let player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
             if (player !== null) {
                 player.damage(this.atk);

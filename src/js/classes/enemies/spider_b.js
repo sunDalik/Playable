@@ -15,7 +15,7 @@ class SpiderB extends Spider {
 
     throwAway(throwX, throwY) {
         if (throwX !== 0) {
-            if (isNotAWallOrEnemy(this.tilePosition.x + throwX + Math.sign(throwX), this.tilePosition.y)
+            if (isRelativelyEmpty(this.tilePosition.x + throwX + Math.sign(throwX), this.tilePosition.y)
                 && getPlayerOnTile(this.tilePosition.x + throwX + Math.sign(throwX), this.tilePosition.y) === null
                 && isNotAWall(this.tilePosition.x + throwX, this.tilePosition.y)) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
@@ -23,7 +23,7 @@ class SpiderB extends Spider {
                 this.thrown = true;
                 this.cancellable = false;
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
-            } else if (isNotAWallOrEnemy(this.tilePosition.x + throwX, this.tilePosition.y) && getPlayerOnTile(this.tilePosition.x + throwX, this.tilePosition.y) === null) {
+            } else if (isRelativelyEmpty(this.tilePosition.x + throwX, this.tilePosition.y) && getPlayerOnTile(this.tilePosition.x + throwX, this.tilePosition.y) === null) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.stepX(throwX);
                 this.thrown = true;
@@ -31,7 +31,7 @@ class SpiderB extends Spider {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             }
         } else if (throwY !== 0) {
-            if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + throwY + Math.sign(throwY))
+            if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + throwY + Math.sign(throwY))
                 && getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + throwY + Math.sign(throwY)) === null
                 && isNotAWall(this.tilePosition.x, this.tilePosition.y + throwY)) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
@@ -39,7 +39,7 @@ class SpiderB extends Spider {
                 this.thrown = true;
                 this.cancellable = false;
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
-            } else if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + throwY) && getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + throwY) === null) {
+            } else if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + throwY) && getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + throwY) === null) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.stepY(throwY);
                 this.thrown = true;

@@ -28,8 +28,19 @@ function isEnemy(tilePositionX, tilePositionY) {
     return false;
 }
 
-function isNotAWallOrEnemy(tilePositionX, tilePositionY) {
-    return isNotAWall(tilePositionX, tilePositionY) && !isEnemy(tilePositionX, tilePositionY);
+function isInanimate(tilePositionX, tilePositionY) {
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
+        if (tileEntity != null && tileEntity.role === ROLE.INANIMATE) {
+            return true
+        }
+    }
+    return false;
+}
+
+
+function isRelativelyEmpty(tilePositionX, tilePositionY) {
+    return isNotAWall(tilePositionX, tilePositionY) && !isEnemy(tilePositionX, tilePositionY) && !isInanimate(tilePositionX, tilePositionY);
 }
 
 function getPlayerOnTile(tilePositionX, tilePositionY) {

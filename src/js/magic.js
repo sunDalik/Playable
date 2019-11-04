@@ -43,55 +43,55 @@ function fireball() {
 function teleport() {
     Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = null;
     if (Game.player2.x > Game.player.x) {
-        if (isNotAWallOrEnemy(Game.player.tilePosition.x + 1, Game.player.tilePosition.y)) {
+        if (isRelativelyEmpty(Game.player.tilePosition.x + 1, Game.player.tilePosition.y)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y;
             Game.player2.tilePosition.x = Game.player.tilePosition.x + 1;
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y - 1;
             Game.player2.tilePosition.x = Game.player.tilePosition.x
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y + 1;
             Game.player2.tilePosition.x = Game.player.tilePosition.x
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y;
             Game.player2.tilePosition.x = Game.player.tilePosition.x - 1;
         }
     } else if (Game.player2.x < Game.player.x) {
-        if (isNotAWallOrEnemy(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
+        if (isRelativelyEmpty(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y;
             Game.player2.tilePosition.x = Game.player.tilePosition.x - 1;
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y - 1;
             Game.player2.tilePosition.x = Game.player.tilePosition.x
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y + 1;
             Game.player2.tilePosition.x = Game.player.tilePosition.x
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x + 1, Game.player.tilePosition.y)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x + 1, Game.player.tilePosition.y)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y;
             Game.player2.tilePosition.x = Game.player.tilePosition.x + 1;
         }
     } else if (Game.player2.tilePosition.y < Game.player.tilePosition.y) {
-        if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
+        if (isRelativelyEmpty(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y - 1;
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y;
             Game.player2.tilePosition.x--;
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x + 1, Game.player.tilePosition.y - 1)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x + 1, Game.player.tilePosition.y - 1)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y;
             Game.player2.tilePosition.x++;
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y + 1;
         }
     } else {
-        if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
+        if (isRelativelyEmpty(Game.player.tilePosition.x, Game.player.tilePosition.y + 1)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y + 1;
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x - 1, Game.player.tilePosition.y)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y;
             Game.player2.tilePosition.x--;
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x + 1, Game.player.tilePosition.y)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x + 1, Game.player.tilePosition.y)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y;
             Game.player2.tilePosition.x++;
-        } else if (isNotAWallOrEnemy(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
+        } else if (isRelativelyEmpty(Game.player.tilePosition.x, Game.player.tilePosition.y - 1)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y - 1;
         }
     }

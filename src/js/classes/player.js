@@ -34,7 +34,22 @@ class Player extends TileElement {
     move(tileStepX, tileStepY, event) {
         if (event.shiftKey || this.weapon === null || this.weapon.attack(this, tileStepX, tileStepY) === false) {
             if (tileStepX !== 0) {
-                if (isNotAWallOrEnemy(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
+                if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
+                    const entity = Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].entity;
+                    switch (entity.type) {
+                        case INANIMATE_TYPE.STATUE:
+                            const temp = entity.weapon;
+                            entity.weapon = this.weapon;
+                            this.weapon = temp;
+                            entity.updateTexture();
+                            redrawSlotsForPlayer(this);
+                            this.bumpX(tileStepX);
+                            break;
+                        case INANIMATE_TYPE.OBELISK:
+
+                            break;
+                    }
+                } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
                     removePlayerFromGameMap(this);
                     this.stepX(tileStepX);
                     placePlayerOnGameMap(this);
@@ -42,7 +57,22 @@ class Player extends TileElement {
                     this.bumpX(tileStepX);
                 }
             } else if (tileStepY !== 0) {
-                if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
+                if (isInanimate(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
+                    const entity = Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].entity;
+                    switch (entity.type) {
+                        case INANIMATE_TYPE.STATUE:
+                            const temp = entity.weapon;
+                            entity.weapon = this.weapon;
+                            this.weapon = temp;
+                            entity.updateTexture();
+                            redrawSlotsForPlayer(this);
+                            this.bumpY(tileStepY);
+                            break;
+                        case INANIMATE_TYPE.OBELISK:
+
+                            break;
+                    }
+                } else if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
                     removePlayerFromGameMap(this);
                     this.stepY(tileStepY);
                     placePlayerOnGameMap(this);

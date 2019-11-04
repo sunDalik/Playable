@@ -165,7 +165,7 @@ class Snail extends Enemy {
     }
 
     tryToStepX(tileStepX) {
-        if (isNotAWallOrEnemy(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
+        if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
             const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y);
             if (player !== null) {
                 player.damage(this.atk);
@@ -177,7 +177,7 @@ class Snail extends Enemy {
     }
 
     tryToStepY(tileStepY) {
-        if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
+        if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
             const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + tileStepY);
             if (player !== null) {
                 player.damage(this.atk);
