@@ -13,10 +13,12 @@ function enemyTurn() {
 function moveEnemies() {
     for (const enemy of Game.enemies) {
         if (!enemy.isDead()) {
-            if (enemy.cancellable) {
-                enemy.cancelAnimation();
-            }
-            enemy.move();
+            if (enemy.stun <= 0) {
+                if (enemy.cancellable) {
+                    enemy.cancelAnimation();
+                }
+                enemy.move();
+            } else enemy.stun--;
         }
     }
 }
@@ -27,14 +29,15 @@ function updateHazards() {
     }
 }
 
-function attackTile(attackPositionX, attackPositionY, atk, inputX, inputY) {
+//probably needs some revision
+function attackTile(attackPositionX, attackPositionY, atk, inputX, inputY, weapon) {
     const tileEntity = Game.gameMap[attackPositionY][attackPositionX].entity;
     if (tileEntity != null && tileEntity.role === ROLE.ENEMY) {
         if (!tileEntity.isDead()) {
             tileEntity.damage(atk);
             if (tileEntity.isDead()) {
                 tileEntity.die();
-            } else if (tileEntity.entityType === ENEMY_TYPE.SPIDER || tileEntity.entityType === ENEMY_TYPE.SPIDER_B) {
+            } else if ((tileEntity.entityType === ENEMY_TYPE.SPIDER || tileEntity.entityType === ENEMY_TYPE.SPIDER_B) && weapon.type !== WEAPON_TYPE.NINJA_KNIFE) {
                 tileEntity.throwAway(inputX, inputY);
             }
         }

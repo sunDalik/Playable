@@ -12,7 +12,7 @@ class Player extends TileElement {
         this.defMul = 1;
         this.def = Math.round(this.defBase * this.defMul * 4) / 4;
         this.STEP_ANIMATION_TIME = 8;
-        this.BUMP_ANIMATION_TIME = 14;
+        this.BUMP_ANIMATION_TIME = 12;
         this.role = ROLE.PLAYER;
         this.dead = false;
         this.weapon = null;
@@ -235,5 +235,41 @@ class Player extends TileElement {
     setUnmovedTexture() {
         if (this === Game.player) this.texture = Game.resources["src/images/player.png"].texture;
         else this.texture = Game.resources["src/images/player2.png"].texture;
+    }
+
+    slideX(tileDirX, SLIDE_ANIMATION_TIME) {
+        let counter = 0;
+        const step = Game.TILESIZE * tileDirX / SLIDE_ANIMATION_TIME;
+        this.tilePosition.x += tileDirX;
+        this.animation = () => {
+            this.position.x += step;
+            counter++;
+            centerCameraX(false);
+            if (counter >= SLIDE_ANIMATION_TIME) {
+                Game.APP.ticker.remove(this.animation);
+                this.place();
+                scaleGameMap();
+            }
+        };
+        Game.APP.ticker.add(this.animation);
+        lightPlayerPosition(this);
+    }
+
+    slideY(tileDirY, SLIDE_ANIMATION_TIME) {
+        let counter = 0;
+        const step = Game.TILESIZE * tileDirY / SLIDE_ANIMATION_TIME;
+        this.tilePosition.y += tileDirY;
+        this.animation = () => {
+            this.position.y += step;
+            counter++;
+            centerCameraY(false);
+            if (counter >= SLIDE_ANIMATION_TIME) {
+                Game.APP.ticker.remove(this.animation);
+                this.place();
+                scaleGameMap();
+            }
+        };
+        Game.APP.ticker.add(this.animation);
+        lightPlayerPosition(this);
     }
 }

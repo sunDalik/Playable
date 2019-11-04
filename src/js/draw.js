@@ -270,7 +270,7 @@ function redrawTiles() {
     Game.otherGraphics = [];
 
     for (const enemy of Game.enemies) {
-        enemy.redrawHealth();
+        if (!enemy.dead) enemy.redrawHealth();
     }
 
     for (const tile of Game.tiles) {

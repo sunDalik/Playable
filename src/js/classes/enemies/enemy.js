@@ -5,8 +5,8 @@ class Enemy extends TileElement {
         super(texture, tilePositionX, tilePositionY);
         this.dead = false;
         this.role = ROLE.ENEMY;
-        this.STEP_ANIMATION_TIME = 8;
         this.cancellable = true;
+        this.stun = 0;
         this.healthContainer = new PIXI.Container();
         Game.gameWorld.addChild(this.healthContainer);
         this.healthContainer.visible = false;

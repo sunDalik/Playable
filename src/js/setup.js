@@ -71,6 +71,7 @@ function setup() {
     Game.player2.setStats(0, 1.00, 0, 0.5);
     Game.player2.weapon = new Sword();
     Game.player.armor = new BasicArmor();
+    Game.player.weapon = new NinjaKnife();
 
     Game.grid = drawGrid();
     drawWalls();
