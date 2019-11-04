@@ -3,12 +3,12 @@
 class Player extends TileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = 9.75;
-        this.maxhealth = 10;
-        this.atkBase = 1;
+        this.health = 4;
+        this.maxhealth = 4;
+        this.atkBase = 0;
         this.atkMul = 1;
         this.atk = Math.round(this.atkBase * this.atkMul * 4) / 4;
-        this.defBase = 1;
+        this.defBase = 0;
         this.defMul = 1;
         this.def = Math.round(this.defBase * this.defMul * 4) / 4;
         this.STEP_ANIMATION_TIME = 8;
@@ -60,6 +60,10 @@ class Player extends TileElement {
         this.defBase = defBase;
         this.defMul = defMul;
         this.def = Math.round(this.defBase * this.defMul * 4) / 4;
+    }
+
+    getAtkWithWeapon(weapon) {
+        return (Math.round((this.atkBase + weapon.atk) * this.atkMul * 4) / 4)
     }
 
     stepX(tileStepX) {

@@ -8,9 +8,10 @@ class Knife {
     attack(wielder, tileDirX, tileDirY) {
         const attackTileX = wielder.tilePosition.x + tileDirX;
         const attackTileY = wielder.tilePosition.y + tileDirY;
+        const atk = wielder.getAtkWithWeapon(this);
         if (isEnemy(attackTileX, attackTileY)) {
             createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
-            attackTile(attackTileX, attackTileY, wielder.atk + this.atk, tileDirX, tileDirY);
+            attackTile(attackTileX, attackTileY, atk, tileDirX, tileDirY);
             return true;
         } else return false;
     }
