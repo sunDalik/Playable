@@ -1,7 +1,7 @@
 "use strict";
 
 function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
-    let attackParticle = new TileElement(Game.resources["src/images/weapon_particle.png"].texture, tileX1, tileY1);
+    let attackParticle = new PIXI.Sprite(Game.resources["src/images/weapon_particle.png"].texture);
     attackParticle.width = Game.TILESIZE / 3;
     attackParticle.height = Game.TILESIZE / 3;
     if (tileX2 > tileX1) attackParticle.anchor.set(0, 0.5);
