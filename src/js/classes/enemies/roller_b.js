@@ -65,7 +65,7 @@ class RollerB extends Roller {
 
     roll() {
         let counter = 0;
-        Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
         const step = 2 * Game.TILESIZE / this.ROLL_ANIMATION_TIME;
         this.tilePosition.x += 2 * this.direction;
         this.animation = () => {
@@ -78,12 +78,12 @@ class RollerB extends Roller {
             }
         };
         Game.APP.ticker.add(this.animation);
-        Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+        Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
     }
 
     rollAndBump() {
         let counter = 0;
-        Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
         let step = this.direction * Game.TILESIZE / (this.ROLL_ANIMATION_TIME / 2);
         const jumpHeight = Game.TILESIZE * 40 / 75;
         const a = jumpHeight / ((Game.TILESIZE / 2 / 3) ** 2);
@@ -110,7 +110,7 @@ class RollerB extends Roller {
             this.moveHealthContainer();
         };
         Game.APP.ticker.add(this.animation);
-        Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+        Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
     }
 
     bump() {

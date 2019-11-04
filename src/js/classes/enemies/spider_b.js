@@ -18,33 +18,33 @@ class SpiderB extends Spider {
             if (isNotAWallOrEnemy(this.tilePosition.x + throwX + Math.sign(throwX), this.tilePosition.y)
                 && getPlayerOnTile(this.tilePosition.x + throwX + Math.sign(throwX), this.tilePosition.y) === null
                 && isNotAWall(this.tilePosition.x + throwX, this.tilePosition.y)) {
-                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.stepX(throwX + Math.sign(throwX));
                 this.thrown = true;
                 this.cancellable = false;
-                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             } else if (isNotAWallOrEnemy(this.tilePosition.x + throwX, this.tilePosition.y) && getPlayerOnTile(this.tilePosition.x + throwX, this.tilePosition.y) === null) {
-                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.stepX(throwX);
                 this.thrown = true;
                 this.cancellable = false;
-                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             }
         } else if (throwY !== 0) {
             if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + throwY + Math.sign(throwY))
                 && getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + throwY + Math.sign(throwY)) === null
                 && isNotAWall(this.tilePosition.x, this.tilePosition.y + throwY)) {
-                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.stepY(throwY + Math.sign(throwY));
                 this.thrown = true;
                 this.cancellable = false;
-                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             } else if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + throwY) && getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + throwY) === null) {
-                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.stepY(throwY);
                 this.thrown = true;
                 this.cancellable = false;
-                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             }
         }
     }

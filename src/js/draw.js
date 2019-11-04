@@ -1,11 +1,11 @@
 "use strict";
 
 function drawWalls() {
-    for (let i = 0; i < Game.gameMap.length; ++i) {
-        for (let j = 0; j < Game.gameMap[0].length; ++j) {
-            if (Game.gameMap[i][j].tileType === TILE_TYPE.WALL) {
+    for (let i = 0; i < Game.map.length; ++i) {
+        for (let j = 0; j < Game.map[0].length; ++j) {
+            if (Game.map[i][j].tileType === TILE_TYPE.WALL) {
                 let wallTile = new WallTile(j, i);
-                Game.gameWorld.addChild(wallTile);
+                Game.world.addChild(wallTile);
                 Game.tiles.push(wallTile);
             }
         }
@@ -13,12 +13,12 @@ function drawWalls() {
 }
 
 function drawVoids() {
-    for (let i = 0; i < Game.gameMap.length; ++i) {
-        for (let j = 0; j < Game.gameMap[0].length; ++j) {
-            if (Game.gameMap[i][j].tileType === TILE_TYPE.VOID) {
+    for (let i = 0; i < Game.map.length; ++i) {
+        for (let j = 0; j < Game.map[0].length; ++j) {
+            if (Game.map[i][j].tileType === TILE_TYPE.VOID) {
                 let voidTile = new VoidTile(j, i);
                 voidTile.zIndex = 999;
-                Game.gameWorld.addChild(voidTile);
+                Game.world.addChild(voidTile);
                 Game.tiles.push(voidTile);
             }
         }
@@ -26,18 +26,18 @@ function drawVoids() {
 }
 
 function createDarkness() {
-    for (let i = 0; i < Game.gameMap.length; ++i) {
+    for (let i = 0; i < Game.map.length; ++i) {
         Game.darkTiles[i] = [];
-        for (let j = 0; j < Game.gameMap[0].length; ++j) {
+        for (let j = 0; j < Game.map[0].length; ++j) {
             Game.darkTiles[i][j] = null;
         }
     }
 
-    for (let i = 0; i < Game.gameMap.length; ++i) {
-        for (let j = 0; j < Game.gameMap[0].length; ++j) {
+    for (let i = 0; i < Game.map.length; ++i) {
+        for (let j = 0; j < Game.map[0].length; ++j) {
             let voidTile = new VoidTile(j, i);
             voidTile.zIndex = 999;
-            Game.gameWorld.addChild(voidTile);
+            Game.world.addChild(voidTile);
             Game.tiles.push(voidTile);
             Game.darkTiles[i][j] = voidTile;
         }
@@ -45,11 +45,11 @@ function createDarkness() {
 }
 
 function drawEntities() {
-    for (let i = 0; i < Game.gameMap.length; ++i) {
-        for (let j = 0; j < Game.gameMap[0].length; ++j) {
-            const entity = Game.gameMap[i][j].entity;
+    for (let i = 0; i < Game.map.length; ++i) {
+        for (let j = 0; j < Game.map[0].length; ++j) {
+            const entity = Game.map[i][j].entity;
             if (entity !== null) {
-                Game.gameWorld.addChild(entity);
+                Game.world.addChild(entity);
                 Game.tiles.push(entity);
                 if (entity.role === ROLE.ENEMY) {
                     Game.enemies.push(entity);
@@ -75,7 +75,7 @@ function drawSlots() {
 }
 
 function redrawHealthForPlayer(player) {
-    const container = player === Game.player ? Game.HEARTS1 : Game.HEARTS2;
+    const container = player === Game.player ? Game.hearts1 : Game.hearts2;
     removeAllChildrenFromContainer(container);
     const heartSize = 45;
     const heartRowOffset = 0;
@@ -142,7 +142,7 @@ function getHeartsBottomLineForPlayer(player) {
 }
 
 function redrawSlotsForPlayer(player) {
-    const container = player === Game.player ? Game.SLOTS1 : Game.SLOTS2;
+    const container = player === Game.player ? Game.slots1 : Game.slots2;
     removeAllChildrenFromContainer(container);
     const slotSize = 70;
     const slotsRowOffset = 10;
@@ -233,39 +233,39 @@ function redrawSlotsForPlayer(player) {
 
 function drawGrid() {
     let gridTexture = Game.resources["src/images/grid.png"].texture;
-    let grid = new PIXI.TilingSprite(gridTexture, Game.gameMap[0].length * gridTexture.width, Game.gameMap.length * gridTexture.height);
+    let grid = new PIXI.TilingSprite(gridTexture, Game.map[0].length * gridTexture.width, Game.map.length * gridTexture.height);
     grid.scale.set(Game.TILESIZE / gridTexture.width, Game.TILESIZE / gridTexture.height);
     //2 is half-width of a tile's border... Don't ask me I don't understand why it works either
     grid.position.x -= 2 * Game.TILESIZE / gridTexture.width;
     grid.position.y -= 2 * Game.TILESIZE / gridTexture.height;
     grid.tint = 0x9abec0;
     grid.zIndex = -2;
-    Game.gameWorld.addChild(grid);
+    Game.world.addChild(grid);
     return grid;
 }
 
 function drawOther() {
     let gameWorldBG = new PIXI.Graphics();
     gameWorldBG.beginFill(0xabcfd1);
-    gameWorldBG.drawRect(10, 10, Game.gameWorld.width - 20, Game.gameWorld.height - 20);
+    gameWorldBG.drawRect(10, 10, Game.world.width - 20, Game.world.height - 20);
     gameWorldBG.zIndex = -3;
     //to hide grid on world borders
     const gridBorderWidth = -2 * Game.TILESIZE / Game.resources["src/images/grid.png"].texture.width;
     let blackOutline = new PIXI.Graphics();
     blackOutline.lineStyle(3, 0x000000);
-    blackOutline.drawRect(gridBorderWidth, gridBorderWidth, Game.gameWorld.width, Game.gameWorld.height);
+    blackOutline.drawRect(gridBorderWidth, gridBorderWidth, Game.world.width, Game.world.height);
     blackOutline.endFill();
-    Game.gameWorld.addChild(gameWorldBG);
-    Game.gameWorld.addChild(blackOutline);
+    Game.world.addChild(gameWorldBG);
+    Game.world.addChild(blackOutline);
     Game.otherGraphics.push(gameWorldBG);
     Game.otherGraphics.push(blackOutline);
 }
 
 function redrawTiles() {
-    Game.gameWorld.removeChild(Game.grid);
+    Game.world.removeChild(Game.grid);
     Game.grid = drawGrid();
     for (const graphic of Game.otherGraphics) {
-        Game.gameWorld.removeChild(graphic);
+        Game.world.removeChild(graphic);
     }
     Game.otherGraphics = [];
 
@@ -293,15 +293,15 @@ function lightPlayerPosition(player) {
     litAreas = [];
     const px = player.tilePosition.x;
     const py = player.tilePosition.y;
-    if (Game.gameMap[py][px].tileType === TILE_TYPE.PATH) {
+    if (Game.map[py][px].tileType === TILE_TYPE.PATH) {
         lightWorld(px, py, true, 5);
-    } else if (Game.gameMap[py][px].tileType === TILE_TYPE.NONE) {
+    } else if (Game.map[py][px].tileType === TILE_TYPE.NONE) {
         lightWorld(px, py, false, 9);
-    } else if (Game.gameMap[py][px].tileType === TILE_TYPE.ENTRY) {
-        if ((Game.gameMap[py + 1][px].tileType === TILE_TYPE.PATH && !Game.gameMap[py + 1][px].lit)
-            || (Game.gameMap[py - 1][px].tileType === TILE_TYPE.PATH && !Game.gameMap[py - 1][px].lit)
-            || (Game.gameMap[py][px + 1].tileType === TILE_TYPE.PATH && !Game.gameMap[py][px + 1].lit)
-            || (Game.gameMap[py][px - 1].tileType === TILE_TYPE.PATH && !Game.gameMap[py][px - 1].lit)) {
+    } else if (Game.map[py][px].tileType === TILE_TYPE.ENTRY) {
+        if ((Game.map[py + 1][px].tileType === TILE_TYPE.PATH && !Game.map[py + 1][px].lit)
+            || (Game.map[py - 1][px].tileType === TILE_TYPE.PATH && !Game.map[py - 1][px].lit)
+            || (Game.map[py][px + 1].tileType === TILE_TYPE.PATH && !Game.map[py][px + 1].lit)
+            || (Game.map[py][px - 1].tileType === TILE_TYPE.PATH && !Game.map[py][px - 1].lit)) {
             lightWorld(px, py, true, 5);
         } else {
             lightWorld(px, py, false, 9);
@@ -312,12 +312,12 @@ function lightPlayerPosition(player) {
 //lightPaths == true -> light paths until we encounter none else light nones until we encounter path
 function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sourceDirY = 0) {
     if (distance > -1) {
-        if (Game.gameMap[tileY][tileX].tileType === TILE_TYPE.ENTRY
-            || (lightPaths && Game.gameMap[tileY][tileX].tileType === TILE_TYPE.PATH)
-            || (!lightPaths && Game.gameMap[tileY][tileX].tileType === TILE_TYPE.NONE)) {
-            if (!Game.gameMap[tileY][tileX].lit) {
-                Game.gameWorld.removeChild(Game.darkTiles[tileY][tileX]);
-                Game.gameMap[tileY][tileX].lit = true;
+        if (Game.map[tileY][tileX].tileType === TILE_TYPE.ENTRY
+            || (lightPaths && Game.map[tileY][tileX].tileType === TILE_TYPE.PATH)
+            || (!lightPaths && Game.map[tileY][tileX].tileType === TILE_TYPE.NONE)) {
+            if (!Game.map[tileY][tileX].lit) {
+                Game.world.removeChild(Game.darkTiles[tileY][tileX]);
+                Game.map[tileY][tileX].lit = true;
             }
 
             litAreas.push({x: tileX, y: tileY});
@@ -340,23 +340,23 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
             }
 
             //light diagonal walls
-            if (!Game.gameMap[tileY + 1][tileX + 1].lit && Game.gameMap[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL) {
+            if (!Game.map[tileY + 1][tileX + 1].lit && Game.map[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL) {
                 lightWorld(tileX + 1, tileY + 1, lightPaths, distance - 1);
             }
-            if (!Game.gameMap[tileY - 1][tileX - 1].lit && Game.gameMap[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL) {
+            if (!Game.map[tileY - 1][tileX - 1].lit && Game.map[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL) {
                 lightWorld(tileX - 1, tileY - 1, lightPaths, distance - 1);
             }
-            if (!Game.gameMap[tileY + 1][tileX - 1].lit && Game.gameMap[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) {
+            if (!Game.map[tileY + 1][tileX - 1].lit && Game.map[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) {
                 lightWorld(tileX - 1, tileY + 1, lightPaths, distance - 1);
             }
-            if (!Game.gameMap[tileY - 1][tileX + 1].lit && Game.gameMap[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) {
+            if (!Game.map[tileY - 1][tileX + 1].lit && Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) {
                 lightWorld(tileX + 1, tileY - 1, lightPaths, distance - 1);
             }
 
-        } else if (Game.gameMap[tileY][tileX].tileType === TILE_TYPE.WALL) {
-            if (!Game.gameMap[tileY][tileX].lit) {
-                Game.gameWorld.removeChild(Game.darkTiles[tileY][tileX]);
-                Game.gameMap[tileY][tileX].lit = true;
+        } else if (Game.map[tileY][tileX].tileType === TILE_TYPE.WALL) {
+            if (!Game.map[tileY][tileX].lit) {
+                Game.world.removeChild(Game.darkTiles[tileY][tileX]);
+                Game.map[tileY][tileX].lit = true;
             }
         }
     }

@@ -2,7 +2,7 @@
 
 function isNotAWall(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
-        if (Game.gameMap[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL) {
+        if (Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL) {
             return true
         }
     }
@@ -10,8 +10,8 @@ function isNotAWall(tilePositionX, tilePositionY) {
 }
 
 function isNotOutOfMap(tilePositionX, tilePositionY) {
-    if (tilePositionX <= Game.gameMap[0].length - 1 && tilePositionX >= 0) {
-        if (tilePositionY <= Game.gameMap.length - 1 && tilePositionY >= 0) {
+    if (tilePositionX <= Game.map[0].length - 1 && tilePositionX >= 0) {
+        if (tilePositionY <= Game.map.length - 1 && tilePositionY >= 0) {
             return true
         }
     }
@@ -20,7 +20,7 @@ function isNotOutOfMap(tilePositionX, tilePositionY) {
 
 function isEnemy(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
-        const tileEntity = Game.gameMap[tilePositionY][tilePositionX].entity;
+        const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
         if (tileEntity != null && tileEntity.role === ROLE.ENEMY) {
             return true
         }
@@ -34,7 +34,7 @@ function isNotAWallOrEnemy(tilePositionX, tilePositionY) {
 
 function getPlayerOnTile(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
-        const tileEntity = Game.gameMap[tilePositionY][tilePositionX].entity;
+        const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
         if (tileEntity != null && tileEntity.role === ROLE.PLAYER) return tileEntity;
     }
     return null;

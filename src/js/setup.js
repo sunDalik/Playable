@@ -31,22 +31,22 @@ window.addEventListener("resize", () => {
 
 function setup() {
     let level = generateLevel();
-    Game.gameWorld = new PIXI.Container();
-    Game.APP.stage.addChild(Game.gameWorld);
+    Game.world = new PIXI.Container();
+    Game.APP.stage.addChild(Game.world);
 
     Game.HUD = new PIXI.Container();
-    Game.HEARTS1 = new PIXI.Container();
-    Game.HEARTS2 = new PIXI.Container();
-    Game.SLOTS1 = new PIXI.Container();
-    Game.SLOTS2 = new PIXI.Container();
-    Game.HUD.addChild(Game.HEARTS1);
-    Game.HUD.addChild(Game.HEARTS2);
-    Game.HUD.addChild(Game.SLOTS1);
-    Game.HUD.addChild(Game.SLOTS2);
+    Game.hearts1 = new PIXI.Container();
+    Game.hearts2 = new PIXI.Container();
+    Game.slots1 = new PIXI.Container();
+    Game.slots2 = new PIXI.Container();
+    Game.HUD.addChild(Game.hearts1);
+    Game.HUD.addChild(Game.hearts2);
+    Game.HUD.addChild(Game.slots1);
+    Game.HUD.addChild(Game.slots2);
     Game.APP.stage.addChild(Game.HUD);
 
-    Game.gameMap = generateMap(level);
-    Game.gameLevel = level;
+    Game.map = generateMap(level);
+    Game.level = level;
 
     Game.playerDetectionGraph = new Graph(level);
     for (let i = 0; i < Game.playerDetectionGraph.grid.length; ++i) {
@@ -65,8 +65,8 @@ function setup() {
 
     Game.player = new Player(Game.resources["src/images/player.png"].texture, Game.startX, Game.startY);
     Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, Game.startX + 1, Game.startY + 1);
-    Game.gameMap[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
-    Game.gameMap[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+    Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
+    Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
     Game.player.setStats(0, 0.5, 0, 1.00);
     Game.player2.setStats(0, 1.00, 0, 0.5);
     Game.player2.weapon = new Sword();
@@ -84,10 +84,10 @@ function setup() {
     bindKeys();
     Game.player.zIndex = Game.player2.zIndex + 1;
     Game.primaryPlayer = Game.player;
-    Game.gameWorld.sortableChildren = true;
+    Game.world.sortableChildren = true;
     Game.APP.stage.sortableChildren = true;
-    Game.SLOTS1.sortableChildren = true;
-    Game.SLOTS2.sortableChildren = true;
+    Game.slots1.sortableChildren = true;
+    Game.slots2.sortableChildren = true;
     centerCamera();
     drawOther();
 }

@@ -21,7 +21,7 @@ class NinjaKnife {
                 if (tileDirX !== 0) wielder.slideX(tileDirX * 2, this.SLIDE_ANIMATION_TIME);
                 else wielder.slideY(tileDirY * 2, this.SLIDE_ANIMATION_TIME);
                 placePlayerOnGameMap(wielder);
-                if (Game.gameMap[attackTileY][attackTileX].entity) Game.gameMap[attackTileY][attackTileX].entity.stun = 1;
+                if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun = 1;
             } else createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
             return true;
         } else return false;
@@ -47,7 +47,7 @@ class NinjaKnife {
             const playerPositionXOld = wielder.tilePosition.x * Game.TILESIZE;
             const playerPositionYOld = wielder.tilePosition.y * Game.TILESIZE;
             centerAttackParticleToOldPlayer();
-            Game.gameWorld.addChild(attackParticle);
+            Game.world.addChild(attackParticle);
             const stepX = Math.abs(tileDirX * 2) * Game.TILESIZE / (context.SLIDE_ANIMATION_TIME);
             const stepY = Math.abs(tileDirY * 2) * Game.TILESIZE / (context.SLIDE_ANIMATION_TIME);
             const stepXFinish = Math.abs(tileDirX * 2) * Game.TILESIZE / (context.FINISH_SLIDE_TIME);
@@ -69,7 +69,7 @@ class NinjaKnife {
                 }
                 counter++;
                 if (counter >= context.SLIDE_ANIMATION_TIME + context.FINISH_SLIDE_TIME) {
-                    Game.gameWorld.removeChild(attackParticle);
+                    Game.world.removeChild(attackParticle);
                     Game.APP.ticker.remove(animation);
                 }
             };

@@ -9,7 +9,7 @@ function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
     else if (tileY2 > tileY1) attackParticle.anchor.set(0.5, 0);
     else if (tileY2 < tileY1) attackParticle.anchor.set(0.5, 1);
     centerAttackParticleToPlayer();
-    Game.gameWorld.addChild(attackParticle);
+    Game.world.addChild(attackParticle);
     const stepX = Math.abs(tileX2 - tileX1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
     const stepY = Math.abs(tileY2 - tileY1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
     if (stepX === 0) attackParticle.height = 0;
@@ -28,7 +28,7 @@ function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
         }
         counter++;
         if (counter >= Game.WEAPON_ATTACK_TIME) {
-            Game.gameWorld.removeChild(attackParticle);
+            Game.world.removeChild(attackParticle);
             Game.APP.ticker.remove(animation);
         }
     };
@@ -42,7 +42,7 @@ function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
 
 function createFadingAttack(attack, tileAttack = true) {
     if (tileAttack) attack.place();
-    Game.gameWorld.addChild(attack);
+    Game.world.addChild(attack);
     Game.tiles.push(attack);
     const delay = Game.TURNTIME / 2;
     let counter = 0;
@@ -54,7 +54,7 @@ function createFadingAttack(attack, tileAttack = true) {
         counter++;
         if (counter >= Game.TURNTIME) {
             Game.APP.ticker.remove(animation);
-            Game.gameWorld.removeChild(attack);
+            Game.world.removeChild(attack);
             removeObjectFromArray(attack, Game.tiles);
         }
     };

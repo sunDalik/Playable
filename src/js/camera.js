@@ -14,7 +14,7 @@ function centerCameraX(scale = true) {
     if (Game.player2.dead) centerCameraXOnPlayer(Game.player);
     else if (Game.player.dead) centerCameraXOnPlayer(Game.player2);
     else {
-        Game.gameWorld.position.x = Game.APP.renderer.screen.width / 2 - (Game.player.position.x + (Game.player2.position.x - Game.player.position.x) / 2);
+        Game.world.position.x = Game.APP.renderer.screen.width / 2 - (Game.player.position.x + (Game.player2.position.x - Game.player.position.x) / 2);
         if (scale) scaleGameMap();
     }
 }
@@ -23,7 +23,7 @@ function centerCameraY(scale = true) {
     if (Game.player2.dead) centerCameraYOnPlayer(Game.player);
     else if (Game.player.dead) centerCameraYOnPlayer(Game.player2);
     else {
-        Game.gameWorld.position.y = Game.APP.renderer.screen.height / 2 - (Game.player.position.y + (Game.player2.position.y - Game.player.position.y) / 2);
+        Game.world.position.y = Game.APP.renderer.screen.height / 2 - (Game.player.position.y + (Game.player2.position.y - Game.player.position.y) / 2);
         if (scale) scaleGameMap()
     }
 }
@@ -34,11 +34,11 @@ function centerCameraOnPlayer(player = Game.player) {
 }
 
 function centerCameraXOnPlayer(player = Game.player) {
-    Game.gameWorld.position.x = Game.APP.renderer.screen.width / 2 - player.position.x;
+    Game.world.position.x = Game.APP.renderer.screen.width / 2 - player.position.x;
 }
 
 function centerCameraYOnPlayer(player = Game.player) {
-    Game.gameWorld.position.y = Game.APP.renderer.screen.height / 2 - player.position.y;
+    Game.world.position.y = Game.APP.renderer.screen.height / 2 - player.position.y;
 }
 
 function scaleGameMap() {

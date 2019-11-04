@@ -8,7 +8,7 @@ class Enemy extends TileElement {
         this.cancellable = true;
         this.stun = 0;
         this.healthContainer = new PIXI.Container();
-        Game.gameWorld.addChild(this.healthContainer);
+        Game.world.addChild(this.healthContainer);
         this.healthContainer.visible = false;
         this.healthContainer.zIndex = 1;
         this.place();
@@ -79,7 +79,7 @@ class Enemy extends TileElement {
     }
 
     die() {
-        Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
         this.cancelAnimation();
         this.visible = false;
         this.healthContainer.visible = false;

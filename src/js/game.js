@@ -2,7 +2,7 @@
 
 const Game = {};
 
-Game.app = null;
+Game.APP = null;
 Game.loader = null;
 Game.resources = null;
 

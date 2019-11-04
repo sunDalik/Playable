@@ -10,15 +10,15 @@ class Hazard extends FullTileElement {
     }
 
     addToWorld() {
-        Game.gameWorld.addChild(this);
+        Game.world.addChild(this);
         Game.hazards.push(this);
-        Game.gameMap[this.tilePosition.y][this.tilePosition.x].hazard = this;
+        Game.map[this.tilePosition.y][this.tilePosition.x].hazard = this;
     }
 
     removeFromWorld() {
-        Game.gameWorld.removeChild(this);
+        Game.world.removeChild(this);
         removeObjectFromArray(this, Game.hazards);
-        Game.gameMap[this.tilePosition.y][this.tilePosition.x].hazard = null;
+        Game.map[this.tilePosition.y][this.tilePosition.x].hazard = null;
     }
 
     updateLifetime() {

@@ -206,11 +206,11 @@ class Player extends TileElement {
             redrawHealthForPlayer(this);
             if (this.health <= 0) {
                 this.dead = true;
-                Game.gameWorld.removeChild(this);
-                if (Game.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity !== null) {
-                    Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = Game.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
-                    Game.gameMap[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
-                } else Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                Game.world.removeChild(this);
+                if (Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity !== null) {
+                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
+                    Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
+                } else Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 Game.TILESIZE = Game.REFERENCE_TILESIZE;
                 redrawTiles();
             }

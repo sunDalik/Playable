@@ -7,7 +7,7 @@ function fireball() {
     fire.position.set(Game.player.x, Game.player.y);
     fire.width = Math.sqrt((Game.player2.x - Game.player.x) ** 2 + (Game.player.y - Game.player2.y) ** 2);
     fire.height = fireHeight;
-    Game.gameWorld.addChild(fire);
+    Game.world.addChild(fire);
     fire.rotation = Math.atan((Game.player2.y - Game.player.y) / (Game.player2.x - Game.player.x));
     if ((Game.player2.x - Game.player.x) < 0) {
         fire.rotation += Math.PI;
@@ -41,7 +41,7 @@ function fireball() {
 }
 
 function teleport() {
-    Game.gameMap[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = null;
+    Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = null;
     if (Game.player2.x > Game.player.x) {
         if (isNotAWallOrEnemy(Game.player.tilePosition.x + 1, Game.player.tilePosition.y)) {
             Game.player2.tilePosition.y = Game.player.tilePosition.y;
@@ -95,7 +95,7 @@ function teleport() {
             Game.player2.tilePosition.y = Game.player.tilePosition.y - 1;
         }
     }
-    Game.gameMap[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+    Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
     Game.player2.place();
     centerCamera();
 }
@@ -158,8 +158,8 @@ function switchPlayers() {
     } else Game.primaryPlayer = Game.player2;
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x
         && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
-        temp = Game.gameMap[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
-        Game.gameMap[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity = Game.gameMap[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity;
-        Game.gameMap[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;
+        temp = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
+        Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity;
+        Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;
     }
 }

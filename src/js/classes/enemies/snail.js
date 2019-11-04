@@ -27,7 +27,7 @@ class Snail extends Enemy {
                     }
                  */
 
-                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = null;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 const player1DistX = Game.player.tilePosition.x - this.tilePosition.x;
                 const player1DistY = Game.player.tilePosition.y - this.tilePosition.y;
                 const player1Dist = Math.abs(player1DistX) + Math.abs(player1DistY);
@@ -43,7 +43,7 @@ class Snail extends Enemy {
                     this.chasePlayer(Game.player2);
                 }
                 this.turnDelay = 1;
-                Game.gameMap[this.tilePosition.y][this.tilePosition.x].entity = this;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             } else {
                 if (this.canSeePlayers()) {
                     this.chase = true;
@@ -51,9 +51,9 @@ class Snail extends Enemy {
                 }
             }
         } else this.turnDelay--;
-        if (Game.gameMap[this.tilePosition.y][this.tilePosition.x].hazard === null) {
+        if (Game.map[this.tilePosition.y][this.tilePosition.x].hazard === null) {
             new PoisonHazard(this.tilePosition.x, this.tilePosition.y).addToWorld();
-        } else Game.gameMap[this.tilePosition.y][this.tilePosition.x].hazard.refreshLifetime();
+        } else Game.map[this.tilePosition.y][this.tilePosition.x].hazard.refreshLifetime();
     }
 
     stepX(tileStepX) {
