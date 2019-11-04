@@ -79,26 +79,6 @@ function damagePlayersWithHazards() {
     }
 }
 
-function movePlayer(player, tileStepX, tileStepY) {
-    if (tileStepX !== 0) {
-        if (isEnemy(player.tilePosition.x + tileStepX, player.tilePosition.y)) {
-            player.attack(tileStepX, 0);
-        } else if (isNotAWall(player.tilePosition.x + tileStepX, player.tilePosition.y)) {
-            removePlayerFromGameMap(player);
-            player.stepX(tileStepX);
-            placePlayerOnGameMap(player);
-        }
-    } else if (tileStepY !== 0) {
-        if (isEnemy(player.tilePosition.x, player.tilePosition.y + tileStepY)) {
-            player.attack(0, tileStepY);
-        } else if (isNotAWall(player.tilePosition.x, player.tilePosition.y + tileStepY)) {
-            removePlayerFromGameMap(player);
-            player.stepY(tileStepY);
-            placePlayerOnGameMap(player);
-        }
-    }
-}
-
 function removePlayerFromGameMap(player) {
     if (player === Game.primaryPlayer) {
         Game.gameMap[player.tilePosition.y][player.tilePosition.x].entity = null;

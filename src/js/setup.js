@@ -126,18 +126,18 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     const leftKey = keyboard(leftCode);
     const downKey = keyboard(downCode);
     const rightKey = keyboard(rightCode);
-    upKey.press = () => {
-        playerTurn(player, () => movePlayer(player, 0, -1));
+    upKey.press = (e) => {
+        playerTurn(player, () => player.move(0, -1, e));
     };
-    leftKey.press = () => {
-        playerTurn(player, () => movePlayer(player, -1, 0));
+    leftKey.press = (e) => {
+        playerTurn(player, () => player.move(-1, 0, e));
     };
-    downKey.press = () => {
-        playerTurn(player, () => movePlayer(player, 0, 1));
+    downKey.press = (e) => {
+        playerTurn(player, () => player.move(0, 1, e));
 
     };
-    rightKey.press = () => {
-        playerTurn(player, () => movePlayer(player, 1, 0));
+    rightKey.press = (e) => {
+        playerTurn(player, () => player.move(1, 0, e));
     };
     return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
 }

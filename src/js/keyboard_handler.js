@@ -11,7 +11,7 @@ function keyboard(code) {
 
     key.downHandler = event => {
         if (event.which === key.code) {
-            if (key.isUp && key.press) key.press();
+            if (key.isUp && key.press) key.press(event);
             key.isDown = true;
             key.isUp = false;
             //event.preventDefault();
@@ -20,7 +20,7 @@ function keyboard(code) {
 
     key.upHandler = event => {
         if (event.which === key.code) {
-            if (key.isDown && key.release) key.release();
+            if (key.isDown && key.release) key.release(event);
             key.isDown = false;
             key.isUp = true;
             //event.preventDefault();

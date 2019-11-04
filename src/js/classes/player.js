@@ -12,6 +12,7 @@ class Player extends TileElement {
         this.defMul = 1;
         this.def = Math.round(this.defBase * this.defMul * 4) / 4;
         this.STEP_ANIMATION_TIME = 8;
+        this.BUMP_ANIMATION_TIME = 14;
         this.role = ROLE.PLAYER;
         this.dead = false;
         this.weapon = null;
@@ -30,14 +31,26 @@ class Player extends TileElement {
         scaleGameMap();
     }
 
-    setMovedTexture() {
-        if (this === Game.player) this.texture = Game.resources["src/images/player_moved.png"].texture;
-        else this.texture = Game.resources["src/images/player2_moved.png"].texture;
-    }
-
-    setUnmovedTexture() {
-        if (this === Game.player) this.texture = Game.resources["src/images/player.png"].texture;
-        else this.texture = Game.resources["src/images/player2.png"].texture;
+    move(tileStepX, tileStepY, event) {
+        if (event.shiftKey || this.weapon === null || this.weapon.attack(this, tileStepX, tileStepY) === false) {
+            if (tileStepX !== 0) {
+                if (isNotAWallOrEnemy(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
+                    removePlayerFromGameMap(this);
+                    this.stepX(tileStepX);
+                    placePlayerOnGameMap(this);
+                } else {
+                    this.bumpX(tileStepX);
+                }
+            } else if (tileStepY !== 0) {
+                if (isNotAWallOrEnemy(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
+                    removePlayerFromGameMap(this);
+                    this.stepY(tileStepY);
+                    placePlayerOnGameMap(this);
+                } else {
+                    this.bumpY(tileStepY);
+                }
+            }
+        }
     }
 
     setStats(atkBase, atkMul, defBase, defMul) {
@@ -74,6 +87,31 @@ class Player extends TileElement {
         lightPlayerPosition(this);
     }
 
+    bumpX(tileStepX) {
+        const jumpHeight = Game.TILESIZE * 25 / 75;
+        const a = jumpHeight / ((tileStepX * Game.TILESIZE / 2) ** 2);
+        const b = -(this.position.x + (tileStepX * Game.TILESIZE / 2) / 2) * 2 * a;
+        const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
+        const stepX = tileStepX * Game.TILESIZE / this.BUMP_ANIMATION_TIME;
+        let counter = 0;
+
+        Game.APP.ticker.remove(this.animation);
+        this.animation = () => {
+            if (counter < this.BUMP_ANIMATION_TIME / 2) {
+                this.position.x += stepX;
+            } else {
+                this.position.x -= stepX;
+            }
+            this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
+            counter++;
+            if (counter >= this.BUMP_ANIMATION_TIME) {
+                Game.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        Game.APP.ticker.add(this.animation);
+    }
+
     stepY(tileStepY) {
         let tileSize = Game.TILESIZE;
         this.tilePosition.y += tileStepY;
@@ -108,11 +146,40 @@ class Player extends TileElement {
         lightPlayerPosition(this);
     }
 
-    attack(tileRangeX, tileRangeY) {
-        const attackTileX = this.tilePosition.x + tileRangeX;
-        const attackTileY = this.tilePosition.y + tileRangeY;
-        createWeaponAnimation(this.tilePosition.x, this.tilePosition.y, attackTileX, attackTileY);
-        attackTile(attackTileX, attackTileY, this.atk, tileRangeX, tileRangeY);
+    bumpY(tileStepY) {
+        let counter = 0;
+        const oldPosition = this.position.y;
+        let newPosition = null;
+        let x = 0;
+        let P0, P1, P2, P3;
+        if (tileStepY < 0) {
+            P0 = 0.17;
+            P1 = 0.89;
+            P2 = 0.84;
+            P3 = 1.24;
+        } else {
+            P0 = 0.42;
+            P1 = -0.37;
+            P2 = 0.97;
+            P3 = 0.75;
+        }
+
+        Game.APP.ticker.remove(this.animation);
+        this.animation = () => {
+            x += 1 / this.BUMP_ANIMATION_TIME;
+            if (counter < this.BUMP_ANIMATION_TIME / 2) {
+                this.position.y = oldPosition + cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE / 2 * tileStepY;
+                newPosition = this.position.y;
+            } else {
+                this.position.y = newPosition - cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE / 2 * tileStepY;
+            }
+            counter++;
+            if (counter >= this.BUMP_ANIMATION_TIME) {
+                Game.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        Game.APP.ticker.add(this.animation);
     }
 
     damage(atk) {
@@ -142,5 +209,15 @@ class Player extends TileElement {
             }
             redrawHealthForPlayer(this);
         }
+    }
+
+    setMovedTexture() {
+        if (this === Game.player) this.texture = Game.resources["src/images/player_moved.png"].texture;
+        else this.texture = Game.resources["src/images/player2_moved.png"].texture;
+    }
+
+    setUnmovedTexture() {
+        if (this === Game.player) this.texture = Game.resources["src/images/player.png"].texture;
+        else this.texture = Game.resources["src/images/player2.png"].texture;
     }
 }
