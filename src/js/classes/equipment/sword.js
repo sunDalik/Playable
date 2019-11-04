@@ -6,11 +6,17 @@ class Sword {
     }
 
     attack(wielder, tileDirX, tileDirY) {
-        const attackTileX = wielder.tilePosition.x + tileDirX * 2;
-        const attackTileY = wielder.tilePosition.y + tileDirY * 2;
-        if (isEnemy(attackTileX, attackTileY)) {
-            createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
-            attackTile(attackTileX, attackTileY, wielder.atk + this.atk, tileDirX, tileDirY);
+        const attackTileX1 = wielder.tilePosition.x + tileDirX;
+        const attackTileY1 = wielder.tilePosition.y + tileDirY;
+        const attackTileX2 = wielder.tilePosition.x + tileDirX * 2;
+        const attackTileY2 = wielder.tilePosition.y + tileDirY * 2;
+        if (isEnemy(attackTileX1, attackTileY1)) {
+            createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX1, attackTileY1);
+            attackTile(attackTileX1, attackTileY1, wielder.atk + this.atk, tileDirX, tileDirY);
+            return true;
+        } else if (isEnemy(attackTileX2, attackTileY2) && isNotAWall(attackTileX1, attackTileY1)) {
+            createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX2, attackTileY2);
+            attackTile(attackTileX2, attackTileY2, wielder.atk + this.atk, tileDirX, tileDirY);
             return true;
         } else return false;
     }
