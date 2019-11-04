@@ -1,52 +1,43 @@
 "use strict";
 
-function createWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
-    let counter = 0;
-    const startPosX = tileX1 + 0.2 * Math.sign(tileX2 - tileX1);
-    const startPosY = tileY1 + 0.2 * Math.sign(tileY2 - tileY1);
-    let attackParticles = [new TileElement(Game.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY),
-        new TileElement(Game.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY),
-        new TileElement(Game.resources["src/images/weapon_particle.png"].texture, startPosX, startPosY)];
-    attackParticles[0].alpha = 0.8;
-    attackParticles[1].alpha = 0.6;
-    attackParticles[2].alpha = 0.4;
-    for (const particle of attackParticles) {
-        particle.width = Game.TILESIZE / 5;
-        particle.height = Game.TILESIZE / 5;
-        particle.place();
-        Game.gameWorld.addChild(particle);
-    }
-    const stepX = (tileX2 - tileX1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
-    const stepY = (tileY2 - tileY1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
+function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
+    let attackParticle = new TileElement(Game.resources["src/images/weapon_particle.png"].texture, tileX1, tileY1);
+    attackParticle.width = Game.TILESIZE / 3;
+    attackParticle.height = Game.TILESIZE / 3;
+    if (tileX2 > tileX1) attackParticle.anchor.set(0, 0.5);
+    else if (tileX2 < tileX1) attackParticle.anchor.set(1, 0.5);
+    else if (tileY2 > tileY1) attackParticle.anchor.set(0.5, 0);
+    else if (tileY2 < tileY1) attackParticle.anchor.set(0.5, 1);
+    centerAttackParticleToPlayer();
+    Game.gameWorld.addChild(attackParticle);
+    const stepX = Math.abs(tileX2 - tileX1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
+    const stepY = Math.abs(tileY2 - tileY1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
+    if (stepX === 0) attackParticle.height = 0;
+    if (stepY === 0) attackParticle.width = 0;
 
+    let counter = 0;
     let animation = function () {
         if (counter < Game.WEAPON_ATTACK_TIME / 2) {
-            attackParticles[0].position.x += stepX;
-            attackParticles[0].position.y += stepY;
-            if (counter >= 1) {
-                attackParticles[1].position.x += stepX;
-                attackParticles[1].position.y += stepY;
-            }
-            if (counter >= 2) {
-                attackParticles[2].position.x += stepX;
-                attackParticles[2].position.y += stepY;
-            }
+            attackParticle.width += stepX;
+            attackParticle.height += stepY;
+            centerAttackParticleToPlayer()
         } else {
-            for (const particle of attackParticles) {
-                particle.position.x -= stepX;
-                particle.position.y -= stepY
-            }
+            attackParticle.width -= stepX;
+            attackParticle.height -= stepY;
+            centerAttackParticleToPlayer()
         }
         counter++;
         if (counter >= Game.WEAPON_ATTACK_TIME) {
-            for (const particle of attackParticles) {
-                Game.gameWorld.removeChild(particle);
-            }
+            Game.gameWorld.removeChild(attackParticle);
             Game.APP.ticker.remove(animation);
         }
     };
-
     Game.APP.ticker.add(animation);
+
+    function centerAttackParticleToPlayer() {
+        attackParticle.position.x = Game.TILESIZE * tileX1 + (Game.TILESIZE - Game.player.width) / 2 + Game.player.width / 2;
+        attackParticle.position.y = Game.TILESIZE * tileY1 + (Game.TILESIZE - Game.player.height) / 2 + Game.player.height / 2;
+    }
 }
 
 function createFadingAttack(attack, tileAttack = true) {

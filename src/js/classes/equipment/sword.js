@@ -9,7 +9,7 @@ class Sword {
         const attackTileX = wielder.tilePosition.x + tileDirX * 2;
         const attackTileY = wielder.tilePosition.y + tileDirY * 2;
         if (isEnemy(attackTileX, attackTileY)) {
-            createWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
+            createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
             attackTile(attackTileX, attackTileY, wielder.atk + this.atk, tileDirX, tileDirY);
             return true;
         } else return false;
