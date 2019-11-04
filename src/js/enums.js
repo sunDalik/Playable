@@ -1,3 +1,5 @@
+"use strict";
+
 const ENEMY_TYPE = Object.freeze({
     ROLLER: 0,
     ROLLER_B: 1,
@@ -9,7 +11,7 @@ const ENEMY_TYPE = Object.freeze({
     SNAIL_B: 7
 });
 
-const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1});
+const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1, STATUE: 2});
 const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
 const TILE_TYPE = Object.freeze({NONE: 0, WALL: 1, VOID: 2, PATH: 3, ENTRY: 4});
 

@@ -1,3 +1,5 @@
+"use strict";
+
 function centerCamera() {
     if (Game.player2.dead) centerCameraOnPlayer(Game.player);
     else if (Game.player.dead) centerCameraOnPlayer(Game.player2);

@@ -2,25 +2,25 @@
 
 const Game = {};
 
-Game.APP = null;
+Game.app = null;
 Game.loader = null;
 Game.resources = null;
 
-Game.gameWorld = null;
+Game.world = null;
 Game.grid = null;
 Game.HUD = null;
-Game.HEARTS1 = null;
-Game.HEARTS2 = null;
-Game.SLOTS1 = null;
-Game.SLOTS2 = null;
+Game.hearts1 = null;
+Game.hearts2 = null;
+Game.slots1 = null;
+Game.slots2 = null;
 
 Game.TILESIZE = 65;
 Game.REFERENCE_TILESIZE = Game.TILESIZE;
 
 Game.chainLength = 800;
 
-Game.gameLevel = [];
-Game.gameMap = [];
+Game.level = [];
+Game.map = [];
 Game.enemies = [];
 Game.hazards = [];
 Game.tiles = [];

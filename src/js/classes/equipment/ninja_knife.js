@@ -1,3 +1,5 @@
+"use strict";
+
 class NinjaKnife {
     constructor() {
         this.texture = Game.resources["src/images/weapons/ninja_knife.png"].texture;

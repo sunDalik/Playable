@@ -1,3 +1,5 @@
+"use strict";
+
 class Statue extends TallTileElement {
     constructor(tilePositionX, tilePositionY, weapon) {
         if (weapon === null) super(Game.resources["src/images/other/statue.png"].texture, tilePositionX, tilePositionY);
@@ -15,5 +17,6 @@ class Statue extends TallTileElement {
             }
         }
         this.weapon = weapon;
+        this.role = ROLE.STATUE;
     }
 }

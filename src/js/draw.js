@@ -249,7 +249,7 @@ function drawOther() {
     gameWorldBG.beginFill(0xabcfd1);
     gameWorldBG.drawRect(10, 10, Game.gameWorld.width - 20, Game.gameWorld.height - 20);
     gameWorldBG.zIndex = -3;
-    //to hide grid on gameWorld borders
+    //to hide grid on world borders
     const gridBorderWidth = -2 * Game.TILESIZE / Game.resources["src/images/grid.png"].texture.width;
     let blackOutline = new PIXI.Graphics();
     blackOutline.lineStyle(3, 0x000000);
