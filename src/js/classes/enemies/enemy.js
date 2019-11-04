@@ -29,13 +29,13 @@ class Enemy extends TileElement {
     }
 
     moveHealthContainer() {
-        this.healthContainer.position.x = this.position.x - getHealthArray(this).length * (20 + 5) / 2 + 5 / 2;
+        this.healthContainer.position.x = this.position.x - getHealthArray(this).length * (Game.TILESIZE / 65 * 20 + 5) / 2 + 5 / 2;
         this.healthContainer.position.y = this.position.y + this.height * 0.5 + 10;
     }
 
     redrawHealth() {
         removeAllChildrenFromContainer(this.healthContainer);
-        const heartSize = 20;
+        const heartSize = Game.TILESIZE / 65 * 20;
         const heartRowOffset = 0;
         const heartColOffset = 5;
         const healthArray = getHealthArray(this);

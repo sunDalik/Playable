@@ -269,6 +269,10 @@ function redrawTiles() {
     }
     Game.otherGraphics = [];
 
+    for (const enemy of Game.enemies) {
+        enemy.redrawHealth();
+    }
+
     for (const tile of Game.tiles) {
         tile.fitToTile();
         tile.place();
