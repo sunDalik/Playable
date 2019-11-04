@@ -1,6 +1,6 @@
 "use strict";
 
-class Enemy extends TileElement {
+class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
         this.dead = false;
@@ -104,5 +104,37 @@ class Enemy extends TileElement {
         end = Game.playerDetectionGraph.grid[Game.player2.tilePosition.y][Game.player2.tilePosition.x];
         const distanceToPlayer2 = astar.search(Game.playerDetectionGraph, start, end);
         return distanceToPlayer1.length !== 0 || distanceToPlayer2.length !== 0;
+    }
+
+    stepX(tileStepX) {
+        super.stepX(tileStepX, () => this.moveHealthContainer())
+    }
+
+    bumpX(tileStepX) {
+        super.bumpX(tileStepX, () => this.moveHealthContainer())
+    }
+
+    stepY(tileStepY) {
+        super.stepY(tileStepY, () => this.moveHealthContainer())
+    }
+
+    bumpY(tileStepY) {
+        super.bumpY(tileStepY, () => this.moveHealthContainer())
+    }
+
+    slideX(tileStepX) {
+        super.slideX(tileStepX, () => this.moveHealthContainer());
+    }
+
+    slideY(tileStepY) {
+        super.slideY(tileStepY, () => this.moveHealthContainer());
+    }
+
+    slideBumpX(tileStepX) {
+        super.slideBumpX(tileStepX, () => this.moveHealthContainer())
+    }
+
+    slideBumpY(tileStepY) {
+        super.slideBumpY(tileStepY, () => this.moveHealthContainer());
     }
 }

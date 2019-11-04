@@ -37,7 +37,7 @@ class Statue extends TallTileElement {
                 fill: 0xffffff,
                 fontWeight: "bold"
             });
-            text.position.set(this.position.x - text.width / 2, this.position.y - text.height * 2);
+            text.position.set(this.position.x - text.width / 2, this.position.y - text.height * 1.5);
             text.zIndex = 99;
             Game.world.addChild(text);
             const stepY = Game.TILESIZE / 65 * 30 / this.TEXT_ANIMATION_TIME;

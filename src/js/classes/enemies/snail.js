@@ -22,8 +22,8 @@ class Snail extends Enemy {
                     path = path1.length < path2.length ? path1 : path2;
                     if (path.length !== 0) {
                         if (path[0].y !== this.tilePosition.x) {
-                            this.stepX(path[0].y - this.tilePosition.x);
-                        } else this.stepY(path[0].x - this.tilePosition.y);
+                            this.slideX(path[0].y - this.tilePosition.x);
+                        } else this.slideY(path[0].x - this.tilePosition.y);
                     }
                  */
 
@@ -56,80 +56,18 @@ class Snail extends Enemy {
         } else Game.map[this.tilePosition.y][this.tilePosition.x].hazard.refreshLifetime();
     }
 
-    stepX(tileStepX) {
+    slideX(tileStepX) {
         if (Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
             this.scale.x *= -1;
         }
-        let counter = 0;
-        const step = Game.TILESIZE * tileStepX / this.SLIDE_ANIMATION_TIME;
-        this.tilePosition.x += tileStepX;
-        this.animation = () => {
-            this.position.x += step;
-            this.moveHealthContainer();
-            counter++;
-            if (counter >= this.SLIDE_ANIMATION_TIME) {
-                Game.APP.ticker.remove(this.animation);
-                this.place();
-            }
-        };
-        Game.APP.ticker.add(this.animation);
+        super.slideX(tileStepX, () => this.moveHealthContainer())
     }
 
-    stepY(tileStepY) {
-        let counter = 0;
-        const step = Game.TILESIZE * tileStepY / this.SLIDE_ANIMATION_TIME;
-        this.tilePosition.y += tileStepY;
-        this.animation = () => {
-            this.position.y += step;
-            this.moveHealthContainer();
-            counter++;
-            if (counter >= this.SLIDE_ANIMATION_TIME) {
-                Game.APP.ticker.remove(this.animation);
-                this.place();
-            }
-        };
-        Game.APP.ticker.add(this.animation);
-    }
-
-    slideAttackX(tileStepX) {
+    slideBumpX(tileStepX) {
         if (Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
             this.scale.x *= -1;
         }
-        let counter = 0;
-        const step = Game.TILESIZE * tileStepX / this.SLIDE_ANIMATION_TIME;
-        this.animation = () => {
-            if (counter < this.SLIDE_ANIMATION_TIME / 2) {
-                this.position.x += step;
-            } else {
-                this.position.x -= step;
-            }
-            this.moveHealthContainer();
-            counter++;
-            if (counter >= this.SLIDE_ANIMATION_TIME) {
-                Game.APP.ticker.remove(this.animation);
-                this.place();
-            }
-        };
-        Game.APP.ticker.add(this.animation);
-    }
-
-    slideAttackY(tileStepY) {
-        let counter = 0;
-        const step = Game.TILESIZE * tileStepY / this.SLIDE_ANIMATION_TIME;
-        this.animation = () => {
-            if (counter < this.SLIDE_ANIMATION_TIME / 2) {
-                this.position.y += step;
-            } else {
-                this.position.y -= step;
-            }
-            this.moveHealthContainer();
-            counter++;
-            if (counter >= this.SLIDE_ANIMATION_TIME) {
-                Game.APP.ticker.remove(this.animation);
-                this.place();
-            }
-        };
-        Game.APP.ticker.add(this.animation);
+        super.slideBumpX(tileStepX, () => this.moveHealthContainer())
     }
 
     chasePlayer(player) {
@@ -140,25 +78,25 @@ class Snail extends Enemy {
 
         if (Math.abs(playerDistX) > Math.abs(playerDistY)) {
             if (!this.tryToStepX(playerDirX)) {
-                if (playerDirY === 0) this.slideAttackX(playerDirX);
-                else if (!this.tryToStepY(playerDirY)) this.slideAttackY(playerDirY);
+                if (playerDirY === 0) this.slideBumpX(playerDirX);
+                else if (!this.tryToStepY(playerDirY)) this.slideBumpY(playerDirY);
             }
         } else if (Math.abs(playerDistX) < Math.abs(playerDistY)) {
             if (!this.tryToStepY(playerDirY)) {
-                if (playerDirX === 0) this.slideAttackY(playerDirY);
-                else if (!this.tryToStepX(playerDirX)) this.slideAttackX(playerDirX);
+                if (playerDirX === 0) this.slideBumpY(playerDirY);
+                else if (!this.tryToStepX(playerDirX)) this.slideBumpX(playerDirX);
             }
         } else {
             const randomDirection = getRandomInt(0, 2);
             if (randomDirection === 0) {
                 if (!this.tryToStepX(playerDirX)) {
-                    if (playerDirY === 0) this.slideAttackX(playerDirX);
-                    else if (!this.tryToStepY(playerDirY)) this.slideAttackY(playerDirY);
+                    if (playerDirY === 0) this.slideBumpX(playerDirX);
+                    else if (!this.tryToStepY(playerDirY)) this.slideBumpY(playerDirY);
                 }
             } else {
                 if (!this.tryToStepY(playerDirY)) {
-                    if (playerDirX === 0) this.slideAttackY(playerDirY);
-                    else if (!this.tryToStepX(playerDirX)) this.slideAttackX(playerDirX);
+                    if (playerDirX === 0) this.slideBumpY(playerDirY);
+                    else if (!this.tryToStepX(playerDirX)) this.slideBumpX(playerDirX);
                 }
             }
         }
@@ -169,8 +107,8 @@ class Snail extends Enemy {
             const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y);
             if (player !== null) {
                 player.damage(this.atk);
-                this.slideAttackX(tileStepX);
-            } else this.stepX(tileStepX);
+                this.slideBumpX(tileStepX);
+            } else this.slideX(tileStepX);
             return true;
         }
         return false;
@@ -181,8 +119,8 @@ class Snail extends Enemy {
             const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + tileStepY);
             if (player !== null) {
                 player.damage(this.atk);
-                this.slideAttackY(tileStepY);
-            } else this.stepY(tileStepY);
+                this.slideBumpY(tileStepY);
+            } else this.slideY(tileStepY);
             return true;
         }
         return false;

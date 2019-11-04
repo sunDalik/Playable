@@ -44,11 +44,6 @@ class Roller extends Enemy {
         Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
     }
 
-    turnAround() {
-        this.direction *= -1;
-        this.scale.x *= -1;
-    }
-
     correctScale() {
         if ((this.direction === 1 && this.scale.x < 0) || (this.direction === -1 && this.scale.x > 0)) {
             this.scale.x *= -1
@@ -56,7 +51,6 @@ class Roller extends Enemy {
     }
 
     bump() {
-        let counter = 0;
         const oldDirection = this.direction;
         this.direction *= -1;
         const oldStep = oldDirection * Game.TILESIZE / this.BUMP_ANIMATION_TIME;
@@ -65,6 +59,7 @@ class Roller extends Enemy {
         const a = jumpHeight / ((Game.TILESIZE / 2 / 3) ** 2);
         const b = -(this.position.x + (1 / 3) * oldDirection * Game.TILESIZE + (this.direction * Game.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
+        let counter = 0;
 
         this.animation = () => {
             if (counter < this.BUMP_ANIMATION_TIME / 3) {
