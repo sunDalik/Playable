@@ -55,6 +55,7 @@ function getRandomWeapon() {
     return randomChoice([new Knife(), new NinjaKnife(), new Sword(), new Bow()]);
 }
 
+//hmmm you probably need to remove spells from pool once they have been chosen by player so they dont appear again in the game?
 function getRandomSpell() {
     return randomChoice([new Aura(), new Spikes(), new Fireball(), new Necromancy(), new Petrification(), new Teleport()]);
 }

@@ -51,7 +51,7 @@ function loadAll() {
         .add("src/images/other/statue_bow.png")
 
         .add("src/images/other/grail.png")
-        .add("src/images/other/grail_fire.png")
+        .add("src/images/other/grail_fireball.png")
         .add("src/images/other/grail_aura.png")
         .add("src/images/other/grail_spikes.png")
         .add("src/images/other/grail_teleport.png")

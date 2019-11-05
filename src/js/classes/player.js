@@ -35,22 +35,8 @@ class Player extends AnimatedTileElement {
         if (event.shiftKey || this.weapon === null || this.weapon.attack(this, tileStepX, tileStepY) === false) {
             if (tileStepX !== 0) {
                 if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
-                    const entity = Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].entity;
-                    switch (entity.type) {
-                        case INANIMATE_TYPE.STATUE:
-                            if (!entity.marauded) Game.maraudedStatues.push(entity.weapon);
-                            const temp = entity.weapon;
-                            entity.weapon = this.weapon;
-                            this.weapon = temp;
-                            entity.updateTexture();
-                            redrawSlotsForPlayer(this);
-                            this.bumpX(tileStepX);
-                            entity.maraud();
-                            break;
-                        case INANIMATE_TYPE.OBELISK:
-
-                            break;
-                    }
+                    this.interactWithInanimateEntity(Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].entity);
+                    this.bumpX(tileStepX);
                 } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
                     removePlayerFromGameMap(this);
                     this.stepX(tileStepX);
@@ -60,22 +46,8 @@ class Player extends AnimatedTileElement {
                 }
             } else if (tileStepY !== 0) {
                 if (isInanimate(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
-                    const entity = Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].entity;
-                    switch (entity.type) {
-                        case INANIMATE_TYPE.STATUE:
-                            if (!entity.marauded) Game.maraudedStatues.push(entity.weapon);
-                            const temp = entity.weapon;
-                            entity.weapon = this.weapon;
-                            this.weapon = temp;
-                            entity.updateTexture();
-                            redrawSlotsForPlayer(this);
-                            this.bumpY(tileStepY);
-                            entity.maraud();
-                            break;
-                        case INANIMATE_TYPE.OBELISK:
-
-                            break;
-                    }
+                    this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].entity);
+                    this.bumpY(tileStepY);
                 } else if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
                     removePlayerFromGameMap(this);
                     this.stepY(tileStepY);
@@ -169,5 +141,38 @@ class Player extends AnimatedTileElement {
     slideY(tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
         super.slideY(tileDirY, () => centerCameraY(false), scaleGameMap, SLIDE_ANIMATION_TIME);
         lightPlayerPosition(this);
+    }
+
+    interactWithInanimateEntity(entity) {
+        switch (entity.type) {
+            case INANIMATE_TYPE.STATUE:
+                if (!entity.marauded) Game.maraudedStatues.push(entity.weapon);
+                const temp = entity.weapon;
+                entity.weapon = this.weapon;
+                this.weapon = temp;
+                entity.updateTexture();
+                redrawSlotsForPlayer(this);
+                entity.maraud();
+                break;
+            case INANIMATE_TYPE.OBELISK:
+                if (entity.working) {
+                    if (!entity.activated) entity.activate();
+                    else entity.donate(this);
+                }
+                break;
+            case INANIMATE_TYPE.GRAIL:
+                if (entity.magic) {
+                    entity.choose(this);
+                }
+                break;
+        }
+    }
+
+    giveNewMagic(magic) {
+        if (this.magic1 === null) this.magic1 = magic;
+        else if (this.magic2 === null) this.magic2 = magic;
+        else if (this.magic3 === null) this.magic4 = magic;
+        else if (this.magic4 === null) this.magic4 = magic;
+        redrawSlotsForPlayer(this);
     }
 }
