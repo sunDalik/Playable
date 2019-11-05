@@ -137,4 +137,19 @@ class RollerB extends Roller {
         };
         Game.APP.ticker.add(this.animation);
     }
+
+    damage(health, inputX, inputY) {
+        if (inputX === 0 && this.stun === 0) {
+            if (isEmpty(this.tilePosition.x, this.tilePosition.y + inputY)) {
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+                this.stepY(inputY);
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+            } else this.bumpY(inputY);
+        } else {
+            this.health -= health;
+            if (this.health <= 0) this.dead = true;
+            this.healthContainer.visible = true;
+            this.redrawHealth();
+        }
+    }
 }

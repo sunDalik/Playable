@@ -40,6 +40,7 @@ function fireball() {
     }
 }
 
+//maybe should actually teleport on the same exact tile where player1 stands?
 function teleport() {
     Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = null;
     if (Game.player2.x > Game.player.x) {

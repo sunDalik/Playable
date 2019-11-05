@@ -43,6 +43,15 @@ function isRelativelyEmpty(tilePositionX, tilePositionY) {
     return isNotAWall(tilePositionX, tilePositionY) && !isEnemy(tilePositionX, tilePositionY) && !isInanimate(tilePositionX, tilePositionY);
 }
 
+function isEmpty(tilePositionX, tilePositionY) {
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        if (Game.map[tilePositionY][tilePositionX].entity === null && Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL) {
+            return true
+        }
+    }
+    return false;
+}
+
 function getPlayerOnTile(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;

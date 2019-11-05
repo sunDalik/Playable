@@ -34,10 +34,10 @@ function attackTile(attackPositionX, attackPositionY, atk, inputX, inputY, weapo
     const tileEntity = Game.map[attackPositionY][attackPositionX].entity;
     if (tileEntity != null && tileEntity.role === ROLE.ENEMY) {
         if (!tileEntity.isDead()) {
-            tileEntity.damage(atk);
+            tileEntity.damage(atk, inputX, inputY);
             if (tileEntity.isDead()) {
                 tileEntity.die();
-            } else if ((tileEntity.entityType === ENEMY_TYPE.SPIDER || tileEntity.entityType === ENEMY_TYPE.SPIDER_B) && tileEntity.stun === 0) {
+            } else if (tileEntity.entityType === ENEMY_TYPE.SPIDER || tileEntity.entityType === ENEMY_TYPE.SPIDER_B) {
                 tileEntity.throwAway(inputX, inputY);
             }
         }

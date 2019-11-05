@@ -101,26 +101,28 @@ class Spider extends Enemy {
     }
 
     throwAway(throwX, throwY) {
-        if (throwX !== 0) {
-            if (isRelativelyEmpty(this.tilePosition.x + throwX, this.tilePosition.y)) {
-                const player = getPlayerOnTile(this.tilePosition.x + throwX, this.tilePosition.y);
-                if (player === null) {
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                    this.stepX(throwX);
-                    this.thrown = true;
-                    this.cancellable = false;
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+        if (this.stun === 0) {
+            if (throwX !== 0) {
+                if (isRelativelyEmpty(this.tilePosition.x + throwX, this.tilePosition.y)) {
+                    const player = getPlayerOnTile(this.tilePosition.x + throwX, this.tilePosition.y);
+                    if (player === null) {
+                        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+                        this.stepX(throwX);
+                        this.thrown = true;
+                        this.cancellable = false;
+                        Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+                    }
                 }
-            }
-        } else if (throwY !== 0) {
-            if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + throwY)) {
-                const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + throwY);
-                if (player === null) {
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                    this.stepY(throwY);
-                    this.thrown = true;
-                    this.cancellable = false;
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+            } else if (throwY !== 0) {
+                if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + throwY)) {
+                    const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + throwY);
+                    if (player === null) {
+                        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+                        this.stepY(throwY);
+                        this.thrown = true;
+                        this.cancellable = false;
+                        Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+                    }
                 }
             }
         }
