@@ -17,26 +17,28 @@ class Star extends Enemy {
         if (this.turnDelay === 0) {
             if (this.triggered) this.attack();
             else {
-                loop: for (let offset = -2; offset <= 2; offset++) {
-                    for (let sign = -1; sign <= 1; sign += 2) {
-                        if (offset !== 0) {
-                            const player = getPlayerOnTile(this.tilePosition.x + offset, this.tilePosition.y + offset * sign);
-                            if (player !== null) {
-                                this.triggered = true;
-                                this.triggeredDirections = DIRECTIONS.DIAGONAL;
-                                break loop;
+                if (this.canSeePlayers()) {
+                    loop: for (let offset = -2; offset <= 2; offset++) {
+                        for (let sign = -1; sign <= 1; sign += 2) {
+                            if (offset !== 0) {
+                                const player = getPlayerOnTile(this.tilePosition.x + offset, this.tilePosition.y + offset * sign);
+                                if (player !== null) {
+                                    this.triggered = true;
+                                    this.triggeredDirections = DIRECTIONS.DIAGONAL;
+                                    break loop;
+                                }
                             }
                         }
                     }
-                }
-                loop2: for (let x = -1; x <= 1; x++) {
-                    for (let y = -1; y <= 1; y++) {
-                        if (Math.abs(x) !== Math.abs(y)) {
-                            const player = getPlayerOnTile(this.tilePosition.x + x, this.tilePosition.y + y);
-                            if (player !== null) {
-                                this.triggered = true;
-                                this.triggeredDirections = DIRECTIONS.CARDINAL;
-                                break loop2;
+                    loop2: for (let x = -1; x <= 1; x++) {
+                        for (let y = -1; y <= 1; y++) {
+                            if (Math.abs(x) !== Math.abs(y)) {
+                                const player = getPlayerOnTile(this.tilePosition.x + x, this.tilePosition.y + y);
+                                if (player !== null) {
+                                    this.triggered = true;
+                                    this.triggeredDirections = DIRECTIONS.CARDINAL;
+                                    break loop2;
+                                }
                             }
                         }
                     }
