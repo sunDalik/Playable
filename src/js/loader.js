@@ -50,6 +50,27 @@ function loadAll() {
         .add("src/images/other/statue_sword.png")
         .add("src/images/other/statue_bow.png")
 
+        .add("src/images/other/grail.png")
+        .add("src/images/other/grail_fire.png")
+        .add("src/images/other/grail_aura.png")
+        .add("src/images/other/grail_spikes.png")
+        .add("src/images/other/grail_teleport.png")
+        .add("src/images/other/grail_necromancy.png")
+        .add("src/images/other/grail_petrification.png")
+        .add("src/images/other/obelisk.png")
+        .add("src/images/other/obelisk_used.png")
+        .add("src/images/other/obelisk_broken.png")
+
+        .add("src/images/magic/aura.png")
+        .add("src/images/magic/fireball.png")
+        .add("src/images/magic/fireball_1.png")
+        .add("src/images/magic/fireball_2.png")
+        .add("src/images/magic/fireball_3.png")
+        .add("src/images/magic/spikes.png")
+        .add("src/images/magic/teleport.png")
+        .add("src/images/magic/necromancy.png")
+        .add("src/images/magic/petrification.png")
+
         .add("src/images/grid.png")
         .on("progress", loadProgressHandler)
         .load(setup);

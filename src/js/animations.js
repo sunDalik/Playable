@@ -65,3 +65,32 @@ function createFadingAttack(attack, tileAttack = true) {
     };
     Game.APP.ticker.add(animation);
 }
+
+function createFadingText(caption, positionX, positionY) {
+    const TEXT_ANIMATION_TIME = 80;
+    let counter = 0;
+    let text = new PIXI.Text(caption, {
+        fontSize: Game.TILESIZE / 65 * 26,
+        fill: 0xffffff,
+        fontWeight: "bold"
+    });
+    text.position.set(positionX - text.width / 2, positionY - text.height * 1.5);
+    text.zIndex = 99;
+    Game.world.addChild(text);
+    const stepY = Game.TILESIZE / 65 * 30 / TEXT_ANIMATION_TIME;
+    const alphaStep = 1 / TEXT_ANIMATION_TIME;
+
+    let animation = () => {
+        text.position.y -= stepY;
+        if (counter >= TEXT_ANIMATION_TIME / 2) {
+            text.alpha -= alphaStep;
+        }
+        counter++;
+        if (counter >= TEXT_ANIMATION_TIME) {
+            Game.world.removeChild(text);
+            Game.APP.ticker.remove(animation);
+        }
+    };
+
+    Game.APP.ticker.add(animation);
+}
