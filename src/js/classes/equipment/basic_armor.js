@@ -1,3 +1,5 @@
+"use strict";
+
 class BasicArmor {
     constructor() {
         this.texture = Game.resources["src/images/armor/basic.png"].texture;
