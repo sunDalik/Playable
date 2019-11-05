@@ -2,7 +2,7 @@
 
 function generateLevel() {
     let level = [[]];
-    const roomNumber = randomChoice([12, 12, 12]);
+    const roomNumber = randomChoice([12, 15, 16]);
     let levelRoomWidth;
     let levelRoomHeight;
     if (roomNumber === 12 || roomNumber === 16) levelRoomWidth = 4;
@@ -31,7 +31,7 @@ function generateLevel() {
     /////
 
     //determining statue rooms indexes
-    let statueRoomsNumber = randomChoice([0, 0]);
+    let statueRoomsNumber = randomChoice([1, 2]);
     let statueRoomIs = [];
     for (let i = 0; i < statueRoomsNumber; ++i) {
         while (true) {
@@ -44,7 +44,7 @@ function generateLevel() {
     }
 
     //determining obelisk room index
-    let obeliskRoomNumber = randomChoice([11, 11]); //this is for testing purposes. Actually there will always be only one obelisk
+    let obeliskRoomNumber = randomChoice([1, 1]); //this is for testing purposes. Actually there will always be only one obelisk
     let obeliskRoomIs = [];
     for (let i = 0; i < obeliskRoomNumber; ++i) {
         while (true) {
