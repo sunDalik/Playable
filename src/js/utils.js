@@ -55,6 +55,10 @@ function getRandomWeapon() {
     return randomChoice([new Knife(), new NinjaKnife(), new Sword(), new Bow()]);
 }
 
+function getRandomSpell() {
+    return randomChoice([new Aura(), new Spikes(), new Fireball(), new Necromancy(), new Petrification(), new Teleport()]);
+}
+
 function removeAllChildrenFromContainer(container) {
     for (let i = container.children.length - 1; i >= 0; i--) {
         container.removeChild(container.children[i]);

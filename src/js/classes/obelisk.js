@@ -12,6 +12,10 @@ class Obelisk extends TileElement {
         this.magic2 = magic[1];
         this.magic3 = magic[2];
         this.magic4 = magic[3];
+        this.grail1 = new Grail(0, 0, this);
+        this.grail2 = new Grail(0, 0, this);
+        this.grail3 = new Grail(0, 0, this);
+        this.grail4 = new Grail(0, 0, this);
     }
 
     activateObelisk() {
@@ -26,7 +30,7 @@ class Obelisk extends TileElement {
         createFadingText("Be blessed...", this.position.x, this.position.y);
     }
 
-    ruin() {
+    destroy() {
         createFadingText("Live with it... you will not...", this.position.x, this.position.y);
     }
 }

@@ -2,7 +2,7 @@
 
 function generateLevel() {
     let level = [[]];
-    const roomNumber = randomChoice([12, 15, 16]);
+    const roomNumber = randomChoice([12, 12, 12]);
     let levelRoomWidth;
     let levelRoomHeight;
     if (roomNumber === 12 || roomNumber === 16) levelRoomWidth = 4;
@@ -31,13 +31,26 @@ function generateLevel() {
     /////
 
     //determining statue rooms indexes
-    let statueRoomsNumber = randomChoice([1, 2]);
+    let statueRoomsNumber = randomChoice([0, 0]);
     let statueRoomIs = [];
     for (let i = 0; i < statueRoomsNumber; ++i) {
         while (true) {
             const randomI = getRandomInt(0, roomNumber);
-            if (randomI !== startRoomI && !statueRoomIs.includes(randomI)) {
+            if (randomI !== startRoomI && !statueRoomIs.includes(randomI)) { //later you will need to check for endingRoomI too
                 statueRoomIs[i] = randomI;
+                break;
+            }
+        }
+    }
+
+    //determining obelisk room index
+    let obeliskRoomNumber = randomChoice([11, 11]); //this is for testing purposes. Actually there will always be only one obelisk
+    let obeliskRoomIs = [];
+    for (let i = 0; i < obeliskRoomNumber; ++i) {
+        while (true) {
+            const randomI = getRandomInt(0, roomNumber);
+            if (randomI !== startRoomI && !statueRoomIs.includes(randomI) && !obeliskRoomIs.includes(randomI)) {
+                obeliskRoomIs[i] = randomI;
                 break;
             }
         }
@@ -48,8 +61,10 @@ function generateLevel() {
         if (i !== startRoomI) {
             let room;
             if (statueRoomIs.includes(i)) room = randomChoice(FCStatueRooms);
+            else if (obeliskRoomIs.includes(i)) room = randomChoice(FCObeliskRooms);
             else room = randomChoice(FCNormalRooms);
             let transformOption = getRandomInt(0, 4);
+            if (obeliskRoomIs.includes(i)) transformOption = randomChoice([0, 1]);
             switch (transformOption) {
                 case 1:
                     room = flipHorizontally(room);

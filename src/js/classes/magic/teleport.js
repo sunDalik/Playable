@@ -10,7 +10,7 @@ class Teleport {
         this.uses = this.maxUses;
     }
 
-    attack(wielder) {
+    cast(wielder) {
 
     }
 }

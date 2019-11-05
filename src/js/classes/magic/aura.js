@@ -10,7 +10,7 @@ class Aura {
         this.uses = this.maxUses;
     }
 
-    attack(wielder) {
+    cast(wielder) {
 
     }
 }

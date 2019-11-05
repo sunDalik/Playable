@@ -40,7 +40,14 @@ function isInanimate(tilePositionX, tilePositionY) {
 
 
 function isRelativelyEmpty(tilePositionX, tilePositionY) {
-    return isNotAWall(tilePositionX, tilePositionY) && !isEnemy(tilePositionX, tilePositionY) && !isInanimate(tilePositionX, tilePositionY);
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
+        if (Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL
+            && (tileEntity === null || (tileEntity.role !== ROLE.ENEMY && tileEntity.role !== ROLE.INANIMATE))) {
+            return true
+        }
+    }
+    return false;
 }
 
 function isEmpty(tilePositionX, tilePositionY) {

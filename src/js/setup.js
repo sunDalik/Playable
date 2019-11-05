@@ -144,6 +144,7 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
 
 function generateMap(level) {
     let map = copy2dArray(level);
+    let obeliskTiles = [];
     for (let i = 0; i < map.length; ++i) {
         for (let j = 0; j < map[0].length; ++j) {
             let mapCell = {
@@ -167,8 +168,53 @@ function generateMap(level) {
             else if (map[i][j] === "sna") mapCell.entity = new Snail(j, i);
             else if (map[i][j] === "snab") mapCell.entity = new SnailB(j, i);
             else if (map[i][j] === "statue") mapCell.entity = new Statue(j, i, getRandomWeapon());
+            else if (map[i][j] === "obelisk") {
+                let magicPool = [];
+                for (let i = 0; i < 4; ++i) {
+                    while (true) {
+                        const randomSpell = getRandomSpell();
+                        if (!magicPool.some(magic => magic.type === randomSpell.type)) {
+                            magicPool.push(randomSpell);
+                            break;
+                        }
+                    }
+                }
+                obeliskTiles.push({x: j, y: i});
+                mapCell.entity = new Obelisk(j, i, magicPool);
+            }
 
             map[i][j] = mapCell;
+        }
+    }
+
+    for (const obelisk of obeliskTiles) {
+        const obeliskEntity = map[obelisk.y][obelisk.x].entity;
+        if (map[obelisk.y][obelisk.x - 2].tileType === TILE_TYPE.WALL || map[obelisk.y][obelisk.x + 2].tileType === TILE_TYPE.WALL) {
+            map[obelisk.y + 1][obelisk.x - 1].entity = obeliskEntity.grail1;
+            obeliskEntity.grail1.tilePosition.set(obelisk.x - 1, obelisk.y + 1);
+            obeliskEntity.grail1.place();
+            map[obelisk.y + 1][obelisk.x + 1].entity = obeliskEntity.grail2;
+            obeliskEntity.grail2.tilePosition.set(obelisk.x + 1, obelisk.y + 1);
+            obeliskEntity.grail2.place();
+            map[obelisk.y + 2][obelisk.x - 1].entity = obeliskEntity.grail3;
+            obeliskEntity.grail3.tilePosition.set(obelisk.x - 1, obelisk.y + 2);
+            obeliskEntity.grail3.place();
+            map[obelisk.y + 2][obelisk.x + 1].entity = obeliskEntity.grail4;
+            obeliskEntity.grail4.tilePosition.set(obelisk.x + 1, obelisk.y + 2);
+            obeliskEntity.grail4.place();
+        } else {
+            map[obelisk.y][obelisk.x - 1].entity = obeliskEntity.grail1;
+            obeliskEntity.grail1.tilePosition.set(obelisk.x - 1, obelisk.y);
+            obeliskEntity.grail1.place();
+            map[obelisk.y][obelisk.x + 1].entity = obeliskEntity.grail2;
+            obeliskEntity.grail2.tilePosition.set(obelisk.x + 1, obelisk.y);
+            obeliskEntity.grail2.place();
+            map[obelisk.y][obelisk.x - 2].entity = obeliskEntity.grail3;
+            obeliskEntity.grail3.tilePosition.set(obelisk.x - 2, obelisk.y);
+            obeliskEntity.grail3.place();
+            map[obelisk.y][obelisk.x + 2].entity = obeliskEntity.grail4;
+            obeliskEntity.grail4.tilePosition.set(obelisk.x + 2, obelisk.y);
+            obeliskEntity.grail4.place();
         }
     }
 

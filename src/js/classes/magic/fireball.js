@@ -11,7 +11,7 @@ class Fireball {
         this.uses = this.maxUses;
     }
 
-    attack(wielder) {
+    cast(wielder) {
 
     }
 }

@@ -5,7 +5,11 @@ class TileElement extends PIXI.Sprite {
         super(texture);
         this.tilePosition = {
             x: tilePositionX,
-            y: tilePositionY
+            y: tilePositionY,
+            set(x, y) {
+                this.x = x;
+                this.y = y;
+            }
         };
         this.animation = null;
         this.anchor.set(0.5, 0.5);

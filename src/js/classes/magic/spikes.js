@@ -10,7 +10,7 @@ class Spikes {
         this.uses = this.maxUses;
     }
 
-    attack(wielder) {
+    cast(wielder) {
 
     }
 }
