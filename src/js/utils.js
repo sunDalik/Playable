@@ -52,7 +52,7 @@ function getRandomValue(obj) {
 }
 
 function getRandomWeapon() {
-    return randomChoice([new Knife(), new NinjaKnife(), new Sword()]);
+    return randomChoice([new Knife(), new NinjaKnife(), new Sword(), new Bow()]);
 }
 
 function removeAllChildrenFromContainer(container) {

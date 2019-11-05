@@ -1,9 +1,14 @@
 "use strict";
 
-function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2) {
+function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2, thin = false) {
     let attackParticle = new PIXI.Sprite(Game.resources["src/images/weapon_particle.png"].texture);
-    attackParticle.width = Game.TILESIZE / 3;
-    attackParticle.height = Game.TILESIZE / 3;
+    if (thin) {
+        attackParticle.width = Game.TILESIZE / 5;
+        attackParticle.height = Game.TILESIZE / 5;
+    } else {
+        attackParticle.width = Game.TILESIZE / 3;
+        attackParticle.height = Game.TILESIZE / 3;
+    }
     if (tileX2 > tileX1) attackParticle.anchor.set(0, 0.5);
     else if (tileX2 < tileX1) attackParticle.anchor.set(1, 0.5);
     else if (tileY2 > tileY1) attackParticle.anchor.set(0.5, 0);

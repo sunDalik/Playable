@@ -26,6 +26,9 @@ class Statue extends TallTileElement {
             case WEAPON_TYPE.NINJA_KNIFE:
                 this.texture = Game.resources["src/images/other/statue_ninja_knife.png"].texture;
                 break;
+            case WEAPON_TYPE.BOW:
+                this.texture = Game.resources["src/images/other/statue_bow.png"].texture;
+                break;
         }
     }
 

@@ -40,6 +40,7 @@ function loadAll() {
         .add("src/images/weapons/knife.png")
         .add("src/images/weapons/ninja_knife.png")
         .add("src/images/weapons/sword.png")
+        .add("src/images/weapons/bow.png")
 
         .add("src/images/armor/basic.png")
 
@@ -47,6 +48,7 @@ function loadAll() {
         .add("src/images/other/statue_knife.png")
         .add("src/images/other/statue_ninja_knife.png")
         .add("src/images/other/statue_sword.png")
+        .add("src/images/other/statue_bow.png")
 
         .add("src/images/grid.png")
         .on("progress", loadProgressHandler)

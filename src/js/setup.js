@@ -69,9 +69,8 @@ function setup() {
     Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
     Game.player.setStats(0, 0.5, 0, 1.00);
     Game.player2.setStats(0, 1.00, 0, 0.5);
-    Game.player2.weapon = new Sword();
+    Game.player2.weapon = new Bow();
     Game.player.armor = new BasicArmor();
-    Game.player.weapon = new Knife();
 
     Game.grid = drawGrid();
     drawWalls();
