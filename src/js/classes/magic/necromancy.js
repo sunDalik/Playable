@@ -11,6 +11,25 @@ class Necromancy {
     }
 
     cast(wielder) {
-        this.uses = -1;
+        if (this.uses <= 0) return false;
+        let otherPlayer;
+        if (wielder === Game.player2) otherPlayer = Game.player;
+        else otherPlayer = Game.player2;
+        if (otherPlayer.dead) {
+            otherPlayer.dead = false;
+            otherPlayer.visible = true;
+            otherPlayer.tilePosition.set(wielder.tilePosition.x, wielder.tilePosition.y);
+            placePlayerOnGameMap(otherPlayer);
+            otherPlayer.place();
+            centerCamera();
+            this.uses = -1;
+            //maybe should shift all magic to left? who knows...
+            for (let i = 1; i <= 4; ++i) {
+                if (wielder.getMagicById(i) === this) {
+                    wielder.setMagicById(i, null);
+                    break;
+                }
+            }
+        } else return false
     }
 }

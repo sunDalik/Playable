@@ -11,11 +11,12 @@ class Teleport {
     }
 
     cast(wielder) {
+        if (this.uses <= 0) return false;
         let otherPlayer;
         if (wielder === Game.player2) otherPlayer = Game.player;
         else otherPlayer = Game.player2;
         removePlayerFromGameMap(wielder);
-        wielder.tilePosition.set(otherPlayer.x, otherPlayer.y);
+        wielder.tilePosition.set(otherPlayer.tilePosition.x, otherPlayer.tilePosition.y);
         placePlayerOnGameMap(wielder);
         wielder.place();
         centerCamera();

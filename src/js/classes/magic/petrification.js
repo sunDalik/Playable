@@ -11,6 +11,7 @@ class Petrification {
     }
 
     cast(wielder) {
+        if (this.uses <= 0) return false;
         for (const enemy of Game.enemies) {
             if (!enemy.dead) enemy.stun += 5;
         }

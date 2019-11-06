@@ -12,6 +12,7 @@ class Aura {
     }
 
     cast(wielder) {
+        if (this.uses <= 0) return false;
         for (let x = -1; x < 2; x++) {
             for (let y = -1; y < 2; y++) {
                 const attackPositionX = wielder.tilePosition.x + x;

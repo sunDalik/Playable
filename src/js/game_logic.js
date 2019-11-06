@@ -43,16 +43,18 @@ function playerTurn(player, playerMove, bothPlayers = false) {
             Game.player.cancelAnimation();
             Game.player2.cancelAnimation();
         } else player.cancelAnimation();
-        playerMove();
-        damagePlayersWithHazards();
-        /*if (Game.playerMoved !== null) {
-            Game.playerMoved.setUnmovedTexture();
-            Game.playerMoved = null;*/
-        enemyTurn();
-        /*} else {
-            Game.playerMoved = player;
-            Game.playerMoved.setMovedTexture();
-        }*/
+        const moveResult = playerMove();
+        if (moveResult !== false) {
+            damagePlayersWithHazards();
+            /*if (Game.playerMoved !== null) {
+                Game.playerMoved.setUnmovedTexture();
+                Game.playerMoved = null;*/
+            enemyTurn();
+            /*} else {
+                Game.playerMoved = player;
+                Game.playerMoved.setMovedTexture();
+            }*/
+        }
     }
 }
 
@@ -66,18 +68,11 @@ function damagePlayersWithHazards() {
 }
 
 function removePlayerFromGameMap(player) {
-    if (player === Game.primaryPlayer) {
-        Game.map[player.tilePosition.y][player.tilePosition.x].entity = null;
-        if (Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity !== null && Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity.role === ROLE.PLAYER) {
-            Game.map[player.tilePosition.y][player.tilePosition.x].entity = Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity;
-            Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
-        }
-    } else {
-        if (player === Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity) {
-            Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
-        } else {
-            Game.map[player.tilePosition.y][player.tilePosition.x].entity = null;
-        }
+    if (player === Game.map[player.tilePosition.y][player.tilePosition.x].entity) {
+        Game.map[player.tilePosition.y][player.tilePosition.x].entity = Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity;
+        Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
+    } else if (player === Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity) {
+        Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
     }
 }
 

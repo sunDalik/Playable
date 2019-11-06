@@ -62,9 +62,26 @@ class Player extends AnimatedTileElement {
 
     castMagic(magic) {
         if (magic) {
-            magic.cast(this);
+            const magicResult = magic.cast(this);
+            if (magicResult === false) return false;
+
             redrawSlotsForPlayer(this);
         }
+    }
+
+    getMagicById(i) {
+        if (i === 1) return this.magic1;
+        else if (i === 2) return this.magic2;
+        else if (i === 3) return this.magic3;
+        else if (i === 4) return this.magic4;
+        else return null;
+    }
+
+    setMagicById(i, magic) {
+        if (i === 1) this.magic1 = magic;
+        else if (i === 2) this.magic2 = magic;
+        else if (i === 3) this.magic3 = magic;
+        else if (i === 4) this.magic4 = magic;
     }
 
     setStats(atkBase, atkMul, defBase, defMul) {
@@ -110,11 +127,8 @@ class Player extends AnimatedTileElement {
             redrawHealthForPlayer(this);
             if (this.health <= 0) {
                 this.dead = true;
-                Game.world.removeChild(this);
-                if (Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity !== null) {
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
-                    Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
-                } else Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+                this.visible = false;
+                removePlayerFromGameMap(this);
                 Game.TILESIZE = Game.REFERENCE_TILESIZE;
                 redrawTiles();
             }

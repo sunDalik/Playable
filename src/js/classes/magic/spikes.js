@@ -12,6 +12,7 @@ class Spikes {
     }
 
     cast(wielder) {
+        if (this.uses <= 0) return false;
         for (let offset = -2; offset <= 2; offset++) {
             for (let sign = -1; sign <= 1; sign += 2) {
                 const attackPositionX = wielder.tilePosition.x + offset;
