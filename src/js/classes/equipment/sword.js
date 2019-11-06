@@ -17,7 +17,7 @@ class Sword {
             createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX1, attackTileY1);
             Game.map[attackTileY1][attackTileX1].entity.damage(atk, tileDirX, tileDirY, false);
             return true;
-        } else if (isEnemy(attackTileX2, attackTileY2) && isNotAWall(attackTileX1, attackTileY1)) {
+        } else if (isEnemy(attackTileX2, attackTileY2) && isNotAWall(attackTileX1, attackTileY1) && isLit(attackTileX2, attackTileY2)) {
             createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX2, attackTileY2);
             Game.map[attackTileY2][attackTileX2].entity.damage(atk, tileDirX, tileDirY, false);
             return true;

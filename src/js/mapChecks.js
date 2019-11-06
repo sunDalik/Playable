@@ -59,6 +59,13 @@ function isEmpty(tilePositionX, tilePositionY) {
     return false;
 }
 
+function isLit(tilePositionX, tilePositionY) {
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        return Game.map[tilePositionY][tilePositionX].lit;
+    }
+    return false;
+}
+
 function getPlayerOnTile(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
