@@ -62,7 +62,7 @@ class Player extends AnimatedTileElement {
 
     castMagic(magic) {
         if (magic) {
-            magic.cast();
+            magic.cast(this);
             redrawSlotsForPlayer(this);
         }
     }

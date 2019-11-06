@@ -17,7 +17,7 @@ class Teleport {
         removePlayerFromGameMap(wielder);
         wielder.tilePosition.set(otherPlayer.x, otherPlayer.y);
         placePlayerOnGameMap(wielder);
-        Game.player2.place();
+        wielder.place();
         centerCamera();
         this.uses--;
     }
