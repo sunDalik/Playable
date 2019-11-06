@@ -32,6 +32,7 @@ class Player extends AnimatedTileElement {
     }
 
     move(tileStepX, tileStepY, event) {
+        //todo: make it so weapons CAN'T attack unlit tiles
         if (event.shiftKey || this.weapon === null || this.weapon.attack(this, tileStepX, tileStepY) === false) {
             if (tileStepX !== 0) {
                 if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
@@ -171,7 +172,7 @@ class Player extends AnimatedTileElement {
     giveNewMagic(magic) {
         if (this.magic1 === null) this.magic1 = magic;
         else if (this.magic2 === null) this.magic2 = magic;
-        else if (this.magic3 === null) this.magic4 = magic;
+        else if (this.magic3 === null) this.magic3 = magic;
         else if (this.magic4 === null) this.magic4 = magic;
         redrawSlotsForPlayer(this);
     }

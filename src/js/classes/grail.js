@@ -38,7 +38,7 @@ class Grail extends FullTileElement {
             ((this.magic.alignment === MAGIC_ALIGNMENT.WHITE && player === Game.player)
                 || (this.magic.alignment === MAGIC_ALIGNMENT.DARK && player === Game.player2)
                 || this.magic.alignment === MAGIC_ALIGNMENT.GRAY)
-            && player.magic4 === null) { //not sure about the last part yet. What to do when the player has no free magic slots?...
+            && (player.magic4 === null || player.magic3 === null || player.magic2 === null || player.magic1 === null)) { //not sure about the last part yet. What to do when the player has no free magic slots?...
             player.giveNewMagic(this.magic);
             this.obelisk.deactivate();
         }

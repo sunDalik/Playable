@@ -12,7 +12,7 @@ function enemyTurn() {
 
 function moveEnemies() {
     for (const enemy of Game.enemies) {
-        if (!enemy.isDead()) {
+        if (!enemy.dead) {
             if (enemy.stun <= 0) {
                 if (enemy.cancellable) {
                     enemy.cancelAnimation();
@@ -26,21 +26,6 @@ function moveEnemies() {
 function updateHazards() {
     for (const hazard of Game.hazards) {
         hazard.updateLifetime();
-    }
-}
-
-//probably needs some revision
-function attackTile(attackPositionX, attackPositionY, atk, inputX, inputY, weapon = null) {
-    const tileEntity = Game.map[attackPositionY][attackPositionX].entity;
-    if (tileEntity != null && tileEntity.role === ROLE.ENEMY) {
-        if (!tileEntity.isDead()) {
-            tileEntity.damage(atk, inputX, inputY);
-            if (tileEntity.isDead()) {
-                tileEntity.die();
-            } else if (tileEntity.entityType === ENEMY_TYPE.SPIDER || tileEntity.entityType === ENEMY_TYPE.SPIDER_B) {
-                tileEntity.throwAway(inputX, inputY);
-            }
-        }
     }
 }
 
@@ -106,5 +91,20 @@ function placePlayerOnGameMap(player) {
         }
     } else {
         Game.map[player.tilePosition.y][player.tilePosition.x].entity = player;
+    }
+}
+
+function switchPlayers() {
+    let temp = Game.player2.zIndex;
+    Game.player2.zIndex = Game.player.zIndex;
+    Game.player.zIndex = temp;
+    if (Game.primaryPlayer === Game.player2) {
+        Game.primaryPlayer = Game.player;
+    } else Game.primaryPlayer = Game.player2;
+    if (Game.player.tilePosition.x === Game.player2.tilePosition.x
+        && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
+        temp = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
+        Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity;
+        Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;
     }
 }

@@ -21,11 +21,10 @@ class NinjaKnife {
                 else wielder.slideY(tileDirY * 2, this.SLIDE_ANIMATION_TIME);
                 placePlayerOnGameMap(wielder);
                 if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun = 1;
-                attackTile(attackTileX, attackTileY, atk, tileDirX, tileDirY, this);
             } else {
                 createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
-                attackTile(attackTileX, attackTileY, atk, tileDirX, tileDirY, this);
             }
+            Game.map[attackTileY][attackTileX].entity.damage(atk, tileDirX, tileDirY, false);
             return true;
         } else return false;
 

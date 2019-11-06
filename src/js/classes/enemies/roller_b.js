@@ -3,6 +3,7 @@
 class RollerB extends Roller {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/roller_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
+        this.health = 0.25;
         this.atk = 1.25;
         this.ROLL_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 14;
@@ -138,18 +139,15 @@ class RollerB extends Roller {
         Game.APP.ticker.add(this.animation);
     }
 
-    damage(health, inputX, inputY) {
-        if (inputX === 0 && this.stun === 0) {
+    damage(dmg, inputX, inputY, magical = false) {
+        if (inputX === 0 && this.stun === 0 && !magical) {
             if (isEmpty(this.tilePosition.x, this.tilePosition.y + inputY)) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.stepY(inputY);
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             } else this.bumpY(inputY);
         } else {
-            this.health -= health;
-            if (this.health <= 0) this.dead = true;
-            this.healthContainer.visible = true;
-            this.redrawHealth();
+            super.damage(dmg, inputX, inputY, magical);
         }
     }
 }

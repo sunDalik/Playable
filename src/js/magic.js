@@ -28,12 +28,9 @@ function fireball() {
     if (fire.width !== 0) {
         createFadingAttack(fire, false);
         for (const enemy of Game.enemies) {
-            if (!enemy.isDead()) {
+            if (!enemy.dead) {
                 if (collisionCheck(fireCorrectVertexData, enemy.vertexData)) {
-                    enemy.damage(3);
-                    if (enemy.isDead()) {
-                        enemy.die();
-                    }
+                    enemy.damage(3, 0, 0, true);
                 }
             }
         }
@@ -108,7 +105,10 @@ function rotateAttack() {
                 const attackPositionX = Game.player.tilePosition.x + x;
                 const attackPositionY = Game.player.tilePosition.y + y;
                 createFadingAttack(new FullTileElement(Game.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
-                attackTile(attackPositionX, attackPositionY, 2);
+                const tileEntity = Game.map[attackPositionY][attackPositionX].entity;
+                if (tileEntity !== null && tileEntity.role === ROLE.ENEMY) {
+                    tileEntity.damage(2, 0, 0, true);
+                }
                 const player = getPlayerOnTile(attackPositionX, attackPositionY);
                 if (player !== null) {
                     player.heal(1);
@@ -126,7 +126,10 @@ function crossAttack() {
                 const attackPositionX = Game.player2.tilePosition.x + offset;
                 const attackPositionY = Game.player2.tilePosition.y + offset * sign;
                 createFadingAttack(new FullTileElement(Game.resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
-                attackTile(attackPositionX, attackPositionY, 2);
+                const tileEntity = Game.map[attackPositionY][attackPositionX].entity;
+                if (tileEntity !== null && tileEntity.role === ROLE.ENEMY) {
+                    tileEntity.damage(2, 0, 0, true);
+                }
                 const player = getPlayerOnTile(attackPositionX, attackPositionY);
                 if (player !== null) {
                     player.damage(1);
@@ -148,19 +151,4 @@ function rotate(object, clockwise = true) {
     };
 
     Game.APP.ticker.add(object.animation);
-}
-
-function switchPlayers() {
-    let temp = Game.player2.zIndex;
-    Game.player2.zIndex = Game.player.zIndex;
-    Game.player.zIndex = temp;
-    if (Game.primaryPlayer === Game.player2) {
-        Game.primaryPlayer = Game.player;
-    } else Game.primaryPlayer = Game.player2;
-    if (Game.player.tilePosition.x === Game.player2.tilePosition.x
-        && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
-        temp = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
-        Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity;
-        Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;
-    }
 }

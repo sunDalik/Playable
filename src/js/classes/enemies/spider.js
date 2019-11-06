@@ -100,6 +100,11 @@ class Spider extends Enemy {
         return false;
     }
 
+    damage(dmg, inputX, inputY, magical) {
+        super.damage(dmg, inputX, inputY, magical);
+        if (!this.dead && this.stun === 0) this.throwAway(inputX, inputY);
+    }
+
     throwAway(throwX, throwY) {
         if (this.stun === 0) {
             if (throwX !== 0) {

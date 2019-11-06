@@ -21,11 +21,16 @@ class Enemy extends AnimatedTileElement {
         }
     }
 
-    damage(health) {
-        this.health -= health;
-        if (this.health <= 0) this.dead = true;
-        this.healthContainer.visible = true;
-        this.redrawHealth();
+    damage(dmg, inputX = 0, inputY = 0, magical = false) {
+        if (!this.dead) {
+            this.health -= dmg;
+            if (this.health <= 0) {
+                this.die();
+            } else {
+                this.healthContainer.visible = true;
+                this.redrawHealth();
+            }
+        }
     }
 
     moveHealthContainer() {
@@ -74,11 +79,8 @@ class Enemy extends AnimatedTileElement {
         }
     }
 
-    isDead() {
-        return this.dead;
-    }
-
     die() {
+        this.dead = true;
         Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
         this.cancelAnimation();
         this.visible = false;

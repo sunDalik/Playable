@@ -13,7 +13,7 @@ class Knife {
         const atk = wielder.getAtkWithWeapon(this);
         if (isEnemy(attackTileX, attackTileY)) {
             createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
-            attackTile(attackTileX, attackTileY, atk, tileDirX, tileDirY);
+            Game.map[attackTileY][attackTileX].entity.damage(atk, tileDirX, tileDirY, false);
             return true;
         } else return false;
     }

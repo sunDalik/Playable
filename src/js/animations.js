@@ -72,7 +72,9 @@ function createFadingText(caption, positionX, positionY) {
     let text = new PIXI.Text(caption, {
         fontSize: Game.TILESIZE / 65 * 26,
         fill: 0xffffff,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        stroke: 0x000000,
+        strokeThickness: 1
     });
     text.position.set(positionX - text.width / 2, positionY - text.height * 1.5);
     text.zIndex = 99;

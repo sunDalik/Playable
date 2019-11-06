@@ -42,8 +42,8 @@ class Obelisk extends FullTileElement {
     donate(player) {
         if (this.working && this.activated) {
             if (this.timesDonated < 2) {
-                if (player.health > 0.5) {
-                    player.health -= 0.5;
+                if (player.health > 1) {
+                    player.health -= 1;
                     redrawHealthForPlayer(player);
                     this.timesDonated++;
                     if (this.timesDonated === 1) this.grail3.setMagic(this.magic3);

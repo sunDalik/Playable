@@ -115,7 +115,7 @@ function bindKeys() {
         playerTurn(Game.player2, crossAttack)
     };
 
-    const switchKey = keyboard(17);
+    const switchKey = keyboard(90); //Z
     switchKey.press = () => {
         playerTurn(null, switchPlayers, true)
     };
