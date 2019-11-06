@@ -213,6 +213,8 @@ function redrawSlotsForPlayer(player) {
                 break;
         }
     }
+    if (player === Game.player) drawStatsForPlayer(secondRowSlots[1].position.x + secondRowSlots[1].width + 20, secondRowSlots[1].position.y + secondRowSlots[1].height / 2, container, player);
+    else drawStatsForPlayer(secondRowSlots[0].position.x - 10, secondRowSlots[0].position.y + secondRowSlots[0].height / 2, container, player);
     for (let i = 0; i < columnSlots.length; ++i) {
         columnSlots[i].position.y = slotsYOffset + (slotSize + slotsRowOffset) * (i + 2);
         columnSlots[i].position.x = slotsEquipmentOffset;
@@ -251,6 +253,20 @@ function redrawSlotsForPlayer(player) {
             strokeThickness: 2
         });
         text.position.set(rightPosX - text.width, topPosY);
+        container.addChild(text);
+    }
+
+    function drawStatsForPlayer(posX, posY, container, player) {
+        const fontSize = 16;
+        const text = new PIXI.Text(`ATK = ${player.getAtkBaseWithWeapon(player.weapon)} * ${player.atkMul} = ${player.getAtkWithWeapon(player.weapon)}\n\nDEF = ${player.getDefBase()} * ${player.defMul} = ${player.getDef()}`, {
+            fontSize: fontSize,
+            fill: 0xffffff,
+            fontWeight: "bold",
+            stroke: 0x000000,
+            strokeThickness: 2
+        });
+        if (player === Game.player) text.position.set(posX, posY - text.height / 2);
+        else text.position.set(posX - text.width, posY - text.height / 2);
         container.addChild(text);
     }
 }

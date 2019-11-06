@@ -95,7 +95,15 @@ class Player extends AnimatedTileElement {
 
     getAtkWithWeapon(weapon) {
         //todo: for each equipment add atk to base if has atk
-        return (Math.round((this.atkBase + weapon.atk) * this.atkMul * 4) / 4)
+        let weaponAtk = 0;
+        if (weapon) weaponAtk = weapon.atk;
+        return (Math.round((this.atkBase + weaponAtk) * this.atkMul * 4) / 4)
+    }
+
+    getAtkBaseWithWeapon(weapon) {
+        let weaponAtk = 0;
+        if (weapon) weaponAtk = weapon.atk;
+        return this.atkBase + weaponAtk;
     }
 
     getDef() {
@@ -107,6 +115,17 @@ class Player extends AnimatedTileElement {
             }
         }
         return (Math.round(defBase * this.defMul * 4) / 4)
+    }
+
+    getDefBase() {
+        const defEquipment = [this.headwear, this.armor, this.footwear, this.secondHand];
+        let defBase = this.defBase;
+        for (const equipment of defEquipment) {
+            if (equipment !== null) {
+                defBase += equipment.def;
+            }
+        }
+        return defBase;
     }
 
     stepX(tileStepX) {
