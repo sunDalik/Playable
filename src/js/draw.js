@@ -173,16 +173,28 @@ function redrawSlotsForPlayer(player) {
         container.addChild(topRowSlots[i]);
         switch (topRowSlots[i]) {
             case magicSlot1:
-                if (player.magic1 !== null) drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic1.texture);
+                if (player.magic1 !== null) {
+                    drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic1.texture);
+                    drawMagicUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic1);
+                }
                 break;
             case magicSlot2:
-                if (player.magic2 !== null) drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic2.texture);
+                if (player.magic2 !== null) {
+                    drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic2.texture);
+                    drawMagicUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic2);
+                }
                 break;
             case magicSlot3:
-                if (player.magic3 !== null) drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic3.texture);
+                if (player.magic3 !== null) {
+                    drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic3.texture);
+                    drawMagicUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic3);
+                }
                 break;
             case magicSlot4:
-                if (player.magic4 !== null) drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic4.texture);
+                if (player.magic4 !== null) {
+                    drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic4.texture);
+                    drawMagicUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic4);
+                }
                 break;
         }
     }
@@ -227,6 +239,19 @@ function redrawSlotsForPlayer(player) {
         sprite.height = size;
         sprite.zIndex = -1;
         container.addChild(sprite);
+    }
+
+    function drawMagicUses(rightPosX, topPosY, container, magic) {
+        const fontSize = 16;
+        const text = new PIXI.Text(magic.uses + "/" + magic.maxUses, {
+            fontSize: fontSize,
+            fill: 0xffffff,
+            fontWeight: "bold",
+            stroke: 0x000000,
+            strokeThickness: 2
+        });
+        text.position.set(rightPosX - text.width, topPosY);
+        container.addChild(text);
     }
 }
 
