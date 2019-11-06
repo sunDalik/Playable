@@ -11,6 +11,6 @@ class Necromancy {
     }
 
     cast(wielder) {
-
+        this.uses = -1;
     }
 }

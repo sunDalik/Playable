@@ -96,3 +96,14 @@ function createFadingText(caption, positionX, positionY) {
 
     Game.APP.ticker.add(animation);
 }
+
+function rotate(object, clockwise = true) {
+    let counter = 0;
+    object.animation = function () {
+        if (clockwise) object.rotation += 2 * Math.PI / Game.TURNTIME;
+        else object.rotation -= 2 * Math.PI / Game.TURNTIME;
+        counter++;
+        if (counter >= Game.TURNTIME) Game.APP.ticker.remove(object.animation);
+    };
+    Game.APP.ticker.add(object.animation);
+}

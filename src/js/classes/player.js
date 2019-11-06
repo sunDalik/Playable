@@ -60,6 +60,13 @@ class Player extends AnimatedTileElement {
         }
     }
 
+    castMagic(magic) {
+        if (magic) {
+            magic.cast();
+            redrawSlotsForPlayer(this);
+        }
+    }
+
     setStats(atkBase, atkMul, defBase, defMul) {
         this.atkBase = atkBase;
         this.atkMul = atkMul;

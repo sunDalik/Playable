@@ -92,28 +92,10 @@ function setup() {
 }
 
 function bindKeys() {
-    bindMovement(Game.player, {upCode: 87, leftCode: 65, downCode: 83, rightCode: 68});
-    bindMovement(Game.player2, {upCode: 38, leftCode: 37, downCode: 40, rightCode: 39});
-
-    const fireKey = keyboard(70);
-    fireKey.press = () => {
-        playerTurn(null, fireball, true)
-    };
-
-    const teleportKey = keyboard(84);
-    teleportKey.press = () => {
-        playerTurn(Game.player2, teleport)
-    };
-
-    const rotateKey = keyboard(82);
-    rotateKey.press = () => {
-        playerTurn(Game.player, rotateAttack)
-    };
-
-    const crossKey = keyboard(67);
-    crossKey.press = () => {
-        playerTurn(Game.player2, crossAttack)
-    };
+    bindMovement(Game.player, {upCode: 87, leftCode: 65, downCode: 83, rightCode: 68}); //w a s d
+    bindMovement(Game.player2, {upCode: 38, leftCode: 37, downCode: 40, rightCode: 39}); //arrows
+    bindMagic(Game.player, {oneCode: 49, twoCode: 50, threeCode: 51, fourCode: 52}); //1 2 3 4
+    bindMagic(Game.player, {oneCode: 55, twoCode: 56, threeCode: 57, fourCode: 48}); //7 8 9 0
 
     const switchKey = keyboard(90); //Z
     switchKey.press = () => {
@@ -140,6 +122,27 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
         playerTurn(player, () => player.move(1, 0, e));
     };
     return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
+}
+
+function bindMagic(player, {oneCode, twoCode, threeCode, fourCode}) {
+    const oneKey = keyboard(oneCode);
+    const twoKey = keyboard(twoCode);
+    const threeKey = keyboard(threeCode);
+    const fourKey = keyboard(fourCode);
+    oneKey.press = () => {
+        if (player.magic1) playerTurn(player, player.castMagic(player.magic1));
+    };
+    twoKey.press = () => {
+        if (player.magic2) playerTurn(player, player.castMagic(player.magic2));
+    };
+    threeKey.press = () => {
+        if (player.magic3) playerTurn(player, player.castMagic(player.magic3));
+    };
+    fourKey.press = () => {
+        if (player.magic4) playerTurn(player, player.castMagic(player.magic4));
+    };
+
+    return {oneKey: oneKey, twoKey: twoKey, threeKey: threeKey, fourKey: fourKey}
 }
 
 function generateMap(level) {
