@@ -8,6 +8,7 @@ function loadAll() {
         .add("src/images/player2_moved.png")
         .add("src/images/fire.png")
         .add("src/images/wall.png")
+        .add("src/images/super_wall.png")
         .add("src/images/void.png")
         .add("src/images/player_attack.png")
         .add("src/images/player2_attack.png")

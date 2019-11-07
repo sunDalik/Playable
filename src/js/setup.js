@@ -158,6 +158,7 @@ function generateMap(level) {
                 lit: false
             };
             if (map[i][j] === "w") mapCell.tileType = TILE_TYPE.WALL;
+            else if (map[i][j] === "sw") mapCell.tileType = TILE_TYPE.SUPER_WALL;
             else if (map[i][j] === "v") mapCell.tileType = TILE_TYPE.VOID;
             else if (map[i][j] === "entry") mapCell.tileType = TILE_TYPE.ENTRY;
             else if (map[i][j] === "path") mapCell.tileType = TILE_TYPE.PATH;

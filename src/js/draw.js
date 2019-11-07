@@ -4,9 +4,13 @@ function drawWalls() {
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
             if (Game.map[i][j].tileType === TILE_TYPE.WALL) {
-                let wallTile = new WallTile(j, i);
+                const wallTile = new WallTile(j, i);
                 Game.world.addChild(wallTile);
                 Game.tiles.push(wallTile);
+            } else if (Game.map[i][j].tileType === TILE_TYPE.SUPER_WALL) {
+                const superWallTile = new SuperWallTile(j, i);
+                Game.world.addChild(superWallTile);
+                Game.tiles.push(superWallTile);
             }
         }
     }
@@ -16,7 +20,7 @@ function drawVoids() {
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
             if (Game.map[i][j].tileType === TILE_TYPE.VOID) {
-                let voidTile = new VoidTile(j, i);
+                const voidTile = new VoidTile(j, i);
                 voidTile.zIndex = 999;
                 Game.world.addChild(voidTile);
                 Game.tiles.push(voidTile);
@@ -35,7 +39,7 @@ function createDarkness() {
 
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
-            let voidTile = new VoidTile(j, i);
+            const voidTile = new VoidTile(j, i);
             voidTile.zIndex = 10;
             Game.world.addChild(voidTile);
             Game.tiles.push(voidTile);
@@ -372,20 +376,20 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
             }
 
             //light diagonal walls
-            if (!Game.map[tileY + 1][tileX + 1].lit && Game.map[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL) {
+            if (!Game.map[tileY + 1][tileX + 1].lit && (Game.map[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL || Game.map[tileY + 1][tileX + 1].tileType === TILE_TYPE.SUPER_WALL)) {
                 lightWorld(tileX + 1, tileY + 1, lightPaths, distance - 1);
             }
-            if (!Game.map[tileY - 1][tileX - 1].lit && Game.map[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL) {
+            if (!Game.map[tileY - 1][tileX - 1].lit && (Game.map[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL || Game.map[tileY - 1][tileX - 1].tileType === TILE_TYPE.SUPER_WALL)) {
                 lightWorld(tileX - 1, tileY - 1, lightPaths, distance - 1);
             }
-            if (!Game.map[tileY + 1][tileX - 1].lit && Game.map[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL) {
+            if (!Game.map[tileY + 1][tileX - 1].lit && (Game.map[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL || Game.map[tileY + 1][tileX - 1].tileType === TILE_TYPE.SUPER_WALL)) {
                 lightWorld(tileX - 1, tileY + 1, lightPaths, distance - 1);
             }
-            if (!Game.map[tileY - 1][tileX + 1].lit && Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL) {
+            if (!Game.map[tileY - 1][tileX + 1].lit && (Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL || Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.SUPER_WALL)) {
                 lightWorld(tileX + 1, tileY - 1, lightPaths, distance - 1);
             }
 
-        } else if (Game.map[tileY][tileX].tileType === TILE_TYPE.WALL) {
+        } else if (Game.map[tileY][tileX].tileType === TILE_TYPE.WALL || Game.map[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
             if (!Game.map[tileY][tileX].lit) {
                 Game.world.removeChild(Game.darkTiles[tileY][tileX]);
                 Game.map[tileY][tileX].lit = true;

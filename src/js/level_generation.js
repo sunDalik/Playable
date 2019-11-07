@@ -137,15 +137,17 @@ function generateLevel() {
     //calculating max width and total height of the level
     let levelTileWidths = [];
     let levelTileHeights = [];
-    for (let i = 0; i < levelRoomWidth; ++i) levelTileWidths.push(0);
-    for (let i = 0; i < levelRoomHeight; ++i) levelTileHeights.push(0);
+    for (let i = 0; i < levelRoomHeight; ++i) {
+        levelTileWidths[i] = 0;
+        levelTileHeights[i] = 0;
+    }
 
     for (let i = 0; i < levelRoomHeight; ++i) {
         for (let j = 0; j < levelRoomWidth; ++j) {
             const currentRoom = levelRooms[i * levelRoomWidth + j];
             levelTileWidths[i] += currentRoom[0].length;
-            if (currentRoom.length > levelTileHeights[j]) {
-                levelTileHeights[j] = currentRoom.length;
+            if (currentRoom.length > levelTileHeights[i]) {
+                levelTileHeights[i] = currentRoom.length;
             }
         }
     }
@@ -153,8 +155,8 @@ function generateLevel() {
     const minRandRoomOffset = 2;
     const maxRandRoomOffset = 3;
 
-    const levelTileWidth = getMaxOfArray(levelTileWidths) + maxRandRoomOffset * (levelRoomWidth + 1);
-    const levelTileHeight = arraySum(levelTileHeights) + maxRandRoomOffset * (levelRoomHeight + 1);
+    const levelTileWidth = getMaxOfArray(levelTileWidths) + maxRandRoomOffset * levelRoomWidth + 2;
+    const levelTileHeight = arraySum(levelTileHeights) + maxRandRoomOffset * levelRoomHeight + 2;
 
     //initialize level array
     for (let i = 0; i < levelTileHeight; ++i) {
@@ -277,7 +279,7 @@ function generateLevel() {
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 1; j < level[0].length - 1; ++j) {
             if (level[i][j] === "path" || level[i][j] === "entry") {
-                if (level[i + 1][j] === "v") level[i + 1][j] = "w"; //threw exception once. Possibly will generate unclosed path at some point?
+                if (level[i + 1][j] === "v") level[i + 1][j] = "w";
                 if (level[i][j + 1] === "v") level[i][j + 1] = "w";
                 if (level[i + 1][j + 1] === "v") level[i + 1][j + 1] = "w";
                 if (level[i - 1][j] === "v") level[i - 1][j] = "w";
@@ -293,7 +295,16 @@ function generateLevel() {
     level = expandLevel(level, 1, 1);
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 1; j < level[0].length - 1; ++j) {
-            //later
+            if (level[i][j] === "w") {
+                if (level[i + 1][j] === "v") level[i + 1][j] = "sw";
+                if (level[i][j + 1] === "v") level[i][j + 1] = "sw";
+                if (level[i + 1][j + 1] === "v") level[i + 1][j + 1] = "sw";
+                if (level[i - 1][j] === "v") level[i - 1][j] = "sw";
+                if (level[i][j - 1] === "v") level[i][j - 1] = "sw";
+                if (level[i - 1][j - 1] === "v") level[i - 1][j - 1] = "sw";
+                if (level[i - 1][j + 1] === "v") level[i - 1][j + 1] = "sw";
+                if (level[i + 1][j - 1] === "v") level[i + 1][j - 1] = "sw";
+            }
         }
     }
 
