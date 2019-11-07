@@ -271,7 +271,6 @@ function redrawSlotsForPlayer(player) {
     }
 }
 
-
 function drawGrid() {
     let gridTexture = Game.resources["src/images/grid.png"].texture;
     let grid = new PIXI.TilingSprite(gridTexture, Game.map[0].length * gridTexture.width, Game.map.length * gridTexture.height);

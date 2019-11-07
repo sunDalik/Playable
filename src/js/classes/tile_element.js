@@ -20,7 +20,6 @@ class TileElement extends PIXI.Sprite {
     cancelAnimation() {
         Game.APP.ticker.remove(this.animation);
         this.place();
-        this.rotation = 0;
     }
 
     fitToTile() {

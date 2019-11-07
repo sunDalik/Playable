@@ -28,11 +28,11 @@ class Player extends AnimatedTileElement {
 
     cancelAnimation() {
         super.cancelAnimation();
+        this.rotation = 0;
         scaleGameMap();
     }
 
     move(tileStepX, tileStepY, event) {
-        //todo: make it so weapons CAN'T attack unlit tiles
         if (event.shiftKey || this.weapon === null || this.weapon.attack(this, tileStepX, tileStepY) === false) {
             if (tileStepX !== 0) {
                 if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y)) {

@@ -150,8 +150,11 @@ function generateLevel() {
         }
     }
 
-    const levelTileWidth = getMaxOfArray(levelTileWidths) + 5 * (levelRoomWidth + 1);
-    const levelTileHeight = arraySum(levelTileHeights) + 5 * (levelRoomHeight + 1);
+    const minRandRoomOffset = 2;
+    const maxRandRoomOffset = 3;
+
+    const levelTileWidth = getMaxOfArray(levelTileWidths) + maxRandRoomOffset * (levelRoomWidth + 1);
+    const levelTileHeight = arraySum(levelTileHeights) + maxRandRoomOffset * (levelRoomHeight + 1);
 
 //initialize level array
     for (let i = 0; i < levelTileHeight; ++i) {
@@ -172,8 +175,8 @@ function generateLevel() {
             previousYMaxAddition = 0;
         }
         const currentRoom = levelRooms[r];
-        const randomOffsetX = getRandomInt(2, 4);
-        const randomOffsetY = getRandomInt(2, 4);
+        const randomOffsetX = getRandomInt(minRandRoomOffset, maxRandRoomOffset + 1);
+        const randomOffsetY = getRandomInt(minRandRoomOffset, maxRandRoomOffset + 1);
         const startX = previousX + randomOffsetX;
         const startY = previousY + randomOffsetY;
         mergeRoomIntoLevel(level, currentRoom, startX, startY);
@@ -285,6 +288,16 @@ function generateLevel() {
             }
         }
     }
+
+    level = expandLevel(level, 1, 1);
+
+    //outline walls with SUPER WALLS
+    for (let i = 1; i < level.length - 1; ++i) {
+        for (let j = 1; j < level[0].length - 1; ++j) {
+            //later
+        }
+    }
+
 
 // remove walls between paths that connect diagonally
     for (let i = 1; i < level.length - 1; ++i) {
@@ -410,13 +423,12 @@ function flipVertically(room) {
     return newRoom;
 }
 
-//turned out to be unnecessary but maaaaybeee will be useful later..?
 function expandLevel(level, expandX, expandY) {
     let expandedLevel = [];
-    for (let i = 0; i < level.length + expandY; ++i) {
+    for (let i = 0; i < level.length + expandY * 2; ++i) {
         expandedLevel[i] = [];
-        for (let j = 0; j < level[0].length + expandX; ++j) {
-            if (i < expandY || j < expandX) {
+        for (let j = 0; j < level[0].length + expandX * 2; ++j) {
+            if (i < expandY || j < expandX || i >= level.length + expandY || j >= level.length + expandX) {
                 expandedLevel[i][j] = "v";
             } else {
                 expandedLevel[i][j] = level[i - expandY][j - expandX];
