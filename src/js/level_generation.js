@@ -44,7 +44,7 @@ function generateLevel() {
     }
 
     //determining obelisk room index
-    let obeliskRoomNumber = randomChoice([1, 1]); //this is for testing purposes. Actually there will always be only one obelisk
+    let obeliskRoomNumber = randomChoice([1]); //this is for testing purposes. Actually there will always be only one obelisk
     let obeliskRoomIs = [];
     for (let i = 0; i < obeliskRoomNumber; ++i) {
         while (true) {
@@ -56,13 +56,25 @@ function generateLevel() {
         }
     }
 
+    let normalRoomIs = [];
     //picking rooms for level
     for (let i = 0; i < roomNumber; ++i) {
         if (i !== startRoomI) {
             let room;
             if (statueRoomIs.includes(i)) room = randomChoice(FCStatueRooms);
             else if (obeliskRoomIs.includes(i)) room = randomChoice(FCObeliskRooms);
-            else room = randomChoice(FCNormalRooms);
+            else {
+                //maybe should do this for statue/chest rooms too? Not sure about that, will decide later
+                while (true) {
+                    const roomI = randomArrayIndex(FCNormalRooms);
+                    if (!normalRoomIs.includes(roomI)) {
+                        normalRoomIs.push(roomI);
+                        room = FCNormalRooms[roomI];
+                        break;
+                    }
+                }
+            }
+
             let transformOption = getRandomInt(0, 4);
             if (obeliskRoomIs.includes(i)) transformOption = randomChoice([0, 1]);
             switch (transformOption) {

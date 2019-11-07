@@ -4,6 +4,10 @@ function randomChoice(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
+function randomArrayIndex(array) {
+    return Math.floor(Math.random() * array.length);
+}
+
 // random: [min; max)
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
