@@ -84,32 +84,7 @@ function redrawHealthForPlayer(player) {
     const heartXOffset = player === Game.player ? 50 : Game.APP.renderer.screen.width - 50 - (heartSize + heartColOffset) * 5 + heartColOffset;
     const healthArray = getHealthArray(player);
     for (let i = 0; i < healthArray.length; ++i) {
-        let heart;
-        switch (healthArray[i]) {
-            case 1:
-                heart = new PIXI.Sprite(Game.resources["src/images/HUD/heart_full.png"].texture);
-                break;
-
-            case 0.75:
-                heart = new PIXI.Sprite(Game.resources["src/images/HUD/heart_75.png"].texture);
-                break;
-
-            case 0.5:
-                heart = new PIXI.Sprite(Game.resources["src/images/HUD/heart_half.png"].texture);
-                break;
-
-            case 0.25:
-                heart = new PIXI.Sprite(Game.resources["src/images/HUD/heart_25.png"].texture);
-                break;
-
-            case 0:
-                heart = new PIXI.Sprite(Game.resources["src/images/HUD/heart_empty.png"].texture);
-                break;
-
-            default:
-                heart = new PIXI.Sprite(Game.resources["src/images/void.png"].texture);
-                break;
-        }
+        const heart = new PIXI.Sprite(getHeartTexture(healthArray[i]));
         heart.width = heartSize;
         heart.height = heartSize;
         heart.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.floor(i / 5);
@@ -132,6 +107,23 @@ function getHealthArray(entity) {
         }
     }
     return health;
+}
+
+function getHeartTexture(heartValue) {
+    switch (heartValue) {
+        case 1:
+            return Game.resources["src/images/HUD/heart_full.png"].texture;
+        case 0.75:
+            return Game.resources["src/images/HUD/heart_75.png"].texture;
+        case 0.5:
+            return Game.resources["src/images/HUD/heart_half.png"].texture;
+        case 0.25:
+            return Game.resources["src/images/HUD/heart_25.png"].texture;
+        case 0:
+            return Game.resources["src/images/HUD/heart_empty.png"].texture;
+        default:
+            return Game.resources["src/images/void.png"].texture;
+    }
 }
 
 function getHeartsBottomLineForPlayer(player) {

@@ -156,7 +156,7 @@ function generateLevel() {
     const levelTileWidth = getMaxOfArray(levelTileWidths) + maxRandRoomOffset * (levelRoomWidth + 1);
     const levelTileHeight = arraySum(levelTileHeights) + maxRandRoomOffset * (levelRoomHeight + 1);
 
-//initialize level array
+    //initialize level array
     for (let i = 0; i < levelTileHeight; ++i) {
         level[i] = [];
         for (let j = 0; j < levelTileWidth; ++j) {
@@ -201,7 +201,7 @@ function generateLevel() {
 
     entryPoints = randomShuffle(entryPoints);
 
-// the Graph class is weird, levelGraph.grid.length will return number of Xs and levelGraph.grid[0].length number of Ys
+    // the Graph class is weird, levelGraph.grid.length will return number of Xs and levelGraph.grid[0].length number of Ys
     let levelGraph = new Graph(level);
     for (let i = 0; i < levelGraph.grid.length; ++i) {
         for (let j = 0; j < levelGraph.grid[0].length; ++j) {
@@ -230,7 +230,7 @@ function generateLevel() {
 
     let levelPlayerGraph = getLevelPlayerGraph(level);
 
-//ensure that we can reach any entry from any other entry
+    //ensure that we can reach any entry from any other entry
     for (let i = 0; i < entryPoints.length; ++i) {
         const testEntry = entryPoints[i % entryPoints.length];
         const unreachableEntries = [];
@@ -253,7 +253,7 @@ function generateLevel() {
         }
     }
 
-//if there are any unconnected entries left then connect them already!
+    //if there are any unconnected entries left then connect them already!
     for (const entry of entryPoints) {
         if (!entry.connected) {
             let minConnection = getMinimalConnection(levelGraph, roomConnections, entry, entryPoints, false);
@@ -273,7 +273,7 @@ function generateLevel() {
         }
     }
 
-//outline paths with walls
+    //outline paths with walls
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 1; j < level[0].length - 1; ++j) {
             if (level[i][j] === "path" || level[i][j] === "entry") {
@@ -289,9 +289,8 @@ function generateLevel() {
         }
     }
 
-    level = expandLevel(level, 1, 1);
-
     //outline walls with SUPER WALLS
+    level = expandLevel(level, 1, 1);
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 1; j < level[0].length - 1; ++j) {
             //later
@@ -299,7 +298,7 @@ function generateLevel() {
     }
 
 
-// remove walls between paths that connect diagonally
+    // remove walls between paths that connect diagonally
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 0; j < level[0].length - 1; ++j) {
             if (level[i][j] === "path") {
@@ -355,7 +354,7 @@ function getMinimalConnection(graph, roomConnections, startEntry, endEntries, ha
         }
     }
 
-    let minConnectionIndex;
+    let minConnectionIndex = undefined;
     for (let i = 0; i < possibleConnections.length; ++i) {
         if (minConnectionIndex === undefined) {
             if (possibleConnections[i].connection.length !== 0) {
@@ -428,7 +427,7 @@ function expandLevel(level, expandX, expandY) {
     for (let i = 0; i < level.length + expandY * 2; ++i) {
         expandedLevel[i] = [];
         for (let j = 0; j < level[0].length + expandX * 2; ++j) {
-            if (i < expandY || j < expandX || i >= level.length + expandY || j >= level.length + expandX) {
+            if (i < expandY || j < expandX || i >= level.length + expandY || j >= level[0].length + expandX) {
                 expandedLevel[i][j] = "v";
             } else {
                 expandedLevel[i][j] = level[i - expandY][j - expandX];
