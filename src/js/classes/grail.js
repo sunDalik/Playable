@@ -5,31 +5,40 @@ class Grail extends FullTileElement {
         this.type = INANIMATE_TYPE.GRAIL;
         this.obelisk = obelisk;
         this.magic = null;
+        //just some default texture
+        this.magicSprite = new TileElement(Game.resources["src/images/magic/aura.png"].texture, 0, 0);
+        this.magicSprite.visible = false;
+        this.magicSprite.zIndex = 2;
+        Game.world.addChild(this.magicSprite);
+        Game.tiles.push(this.magicSprite);
+        createFloatingItemAnimation(this.magicSprite);
+    }
+
+    placeGrail() {
+        this.place();
+        this.magicSprite.tilePosition.set(this.tilePosition.x, this.tilePosition.y - 0.3);
+        this.magicSprite.place();
     }
 
     setMagic(magic) {
         this.magic = magic;
-        //maybe you will at some point update it so this switch will not be necessary? so you just draw this.magic as a separate sprite?
-        if (this.magic === null) this.texture = Game.resources["src/images/other/grail.png"].texture;
-        else switch (this.magic.type) {
-            case MAGIC_TYPE.AURA:
-                this.texture = Game.resources["src/images/other/grail_aura.png"].texture;
-                break;
-            case MAGIC_TYPE.FIREBALL:
-                this.texture = Game.resources["src/images/other/grail_fireball.png"].texture;
-                break;
-            case MAGIC_TYPE.PETRIFICATION:
-                this.texture = Game.resources["src/images/other/grail_petrification.png"].texture;
-                break;
-            case MAGIC_TYPE.NECROMANCY:
-                this.texture = Game.resources["src/images/other/grail_necromancy.png"].texture;
-                break;
-            case MAGIC_TYPE.TELEPORT:
-                this.texture = Game.resources["src/images/other/grail_teleport.png"].texture;
-                break;
-            case MAGIC_TYPE.SPIKES:
-                this.texture = Game.resources["src/images/other/grail_spikes.png"].texture;
-                break;
+        if (this.magic) {
+            switch (this.magic.alignment) {
+                case MAGIC_ALIGNMENT.WHITE:
+                    this.texture = Game.resources["src/images/other/grail_white.png"].texture;
+                    break;
+                case MAGIC_ALIGNMENT.DARK:
+                    this.texture = Game.resources["src/images/other/grail_dark.png"].texture;
+                    break;
+                case MAGIC_ALIGNMENT.GRAY:
+                    this.texture = Game.resources["src/images/other/grail_gray.png"].texture;
+                    break;
+            }
+            this.magicSprite.texture = this.magic.texture;
+            this.magicSprite.visible = true;
+        } else {
+            this.magicSprite.visible = false;
+            this.texture = Game.resources["src/images/other/grail.png"].texture;
         }
     }
 

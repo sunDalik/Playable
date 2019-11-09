@@ -107,3 +107,21 @@ function rotate(object, clockwise = true) {
     };
     Game.APP.ticker.add(object.animation);
 }
+
+function createFloatingItemAnimation(item) {
+    let counter = 0;
+    const step = item.height / 4 / Game.ITEM_FLOAT_ANIMATION_TIME;
+    Game.APP.ticker.add(() => {
+        if (counter < Game.ITEM_FLOAT_ANIMATION_TIME / 4) {
+            item.position.y -= step;
+        } else if (counter < Game.ITEM_FLOAT_ANIMATION_TIME * 3 / 4) {
+            item.position.y += step;
+        } else if (counter < Game.ITEM_FLOAT_ANIMATION_TIME) {
+            item.position.y -= step;
+        }
+        counter++;
+        if (counter >= Game.ITEM_FLOAT_ANIMATION_TIME) {
+            counter = 0;
+        }
+    })
+}

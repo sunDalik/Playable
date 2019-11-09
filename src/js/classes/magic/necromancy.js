@@ -18,6 +18,8 @@ class Necromancy {
         if (otherPlayer.dead) {
             otherPlayer.dead = false;
             otherPlayer.visible = true;
+            otherPlayer.health = otherPlayer.maxHealth;
+            redrawHealthForPlayer(otherPlayer);
             otherPlayer.tilePosition.set(wielder.tilePosition.x, wielder.tilePosition.y);
             placePlayerOnGameMap(otherPlayer);
             otherPlayer.place();

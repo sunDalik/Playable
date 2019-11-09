@@ -195,30 +195,23 @@ function generateMap(level) {
         if (map[obelisk.y][obelisk.x - 2].tileType === TILE_TYPE.WALL || map[obelisk.y][obelisk.x + 2].tileType === TILE_TYPE.WALL) {
             map[obelisk.y + 1][obelisk.x - 1].entity = obeliskEntity.grail1;
             obeliskEntity.grail1.tilePosition.set(obelisk.x - 1, obelisk.y + 1);
-            obeliskEntity.grail1.place();
             map[obelisk.y + 1][obelisk.x + 1].entity = obeliskEntity.grail2;
             obeliskEntity.grail2.tilePosition.set(obelisk.x + 1, obelisk.y + 1);
-            obeliskEntity.grail2.place();
             map[obelisk.y + 2][obelisk.x - 1].entity = obeliskEntity.grail3;
             obeliskEntity.grail3.tilePosition.set(obelisk.x - 1, obelisk.y + 2);
-            obeliskEntity.grail3.place();
             map[obelisk.y + 2][obelisk.x + 1].entity = obeliskEntity.grail4;
             obeliskEntity.grail4.tilePosition.set(obelisk.x + 1, obelisk.y + 2);
-            obeliskEntity.grail4.place();
         } else {
             map[obelisk.y][obelisk.x - 1].entity = obeliskEntity.grail1;
             obeliskEntity.grail1.tilePosition.set(obelisk.x - 1, obelisk.y);
-            obeliskEntity.grail1.place();
             map[obelisk.y][obelisk.x + 1].entity = obeliskEntity.grail2;
             obeliskEntity.grail2.tilePosition.set(obelisk.x + 1, obelisk.y);
-            obeliskEntity.grail2.place();
             map[obelisk.y][obelisk.x - 2].entity = obeliskEntity.grail3;
             obeliskEntity.grail3.tilePosition.set(obelisk.x - 2, obelisk.y);
-            obeliskEntity.grail3.place();
             map[obelisk.y][obelisk.x + 2].entity = obeliskEntity.grail4;
             obeliskEntity.grail4.tilePosition.set(obelisk.x + 2, obelisk.y);
-            obeliskEntity.grail4.place();
         }
+        obeliskEntity.placeGrails();
     }
 
     return map;

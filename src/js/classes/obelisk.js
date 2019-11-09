@@ -18,6 +18,12 @@ class Obelisk extends FullTileElement {
         this.grail4 = new Grail(0, 0, this);
     }
 
+    placeGrails() {
+        for (const grail of [this.grail1, this.grail2, this.grail3, this.grail4]) {
+            grail.placeGrail();
+        }
+    }
+
     activate() {
         if (!this.activated && this.working) {
             this.grail1.setMagic(this.magic1);
