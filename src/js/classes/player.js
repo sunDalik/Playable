@@ -42,6 +42,7 @@ class Player extends AnimatedTileElement {
                     removePlayerFromGameMap(this);
                     this.stepX(tileStepX);
                     placePlayerOnGameMap(this);
+                    if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.EXIT) gotoNextLevel();
                 } else if (isAWall(this.tilePosition.x + tileStepX, this.tilePosition.y)
                     && this.secondHand !== null && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.PICKAXE) {
                     removeTileFromWorld(Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].tile);
@@ -65,6 +66,7 @@ class Player extends AnimatedTileElement {
                     removePlayerFromGameMap(this);
                     this.stepY(tileStepY);
                     placePlayerOnGameMap(this);
+                    if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.EXIT) gotoNextLevel();
                 } else if (isAWall(this.tilePosition.x, this.tilePosition.y + tileStepY)
                     && this.secondHand !== null && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.PICKAXE) {
                     removeTileFromWorld(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].tile);

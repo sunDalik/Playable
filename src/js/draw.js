@@ -345,7 +345,7 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
     if (distance > -1) {
         if (Game.map[tileY][tileX].tileType === TILE_TYPE.ENTRY
             || (lightPaths && Game.map[tileY][tileX].tileType === TILE_TYPE.PATH)
-            || (!lightPaths && Game.map[tileY][tileX].tileType === TILE_TYPE.NONE)) {
+            || ((!lightPaths && Game.map[tileY][tileX].tileType === TILE_TYPE.NONE) || Game.map[tileY][tileX].tileType === TILE_TYPE.EXIT)) {
             if (!Game.map[tileY][tileX].lit) {
                 Game.world.removeChild(Game.darkTiles[tileY][tileX]);
                 Game.map[tileY][tileX].lit = true;

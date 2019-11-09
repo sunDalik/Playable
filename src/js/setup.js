@@ -168,7 +168,7 @@ function generateMap(level) {
                 mapCell.tileType = TILE_TYPE.PATH;
             } else if (map[i][j] === "exit") {
                 mapCell.tileType = TILE_TYPE.EXIT;
-                mapCell.tile = new FullTileElement(Game.resources["src/images/exit.png"].texture, j, i)
+                mapCell.tile = new FullTileElement(Game.resources["src/images/exit.png"].texture, j, i);
             }
 
             if (map[i][j] === "r") mapCell.entity = new Roller(j, i);

@@ -167,3 +167,29 @@ function removeEquipmentFromPlayer(player, equipmentType) {
     redrawSlotsForPlayer(player);
     return removedEquipment;
 }
+
+function gotoNextLevel() {
+    cleanGameWorld();
+    Game.tiles = [];
+    Game.enemies = [];
+    Game.darkTiles = [];
+    incrementStage();
+    setVariablesForStage();
+    initializeLevel();
+}
+
+function cleanGameWorld() {
+    for (const tile of Game.tiles) {
+        Game.world.removeChild(tile);
+    }
+    for (const tile of Game.darkTiles) {
+        Game.world.removeChild(tile);
+    }
+    for (const graphic of Game.otherGraphics) {
+        Game.world.removeChild(graphic);
+    }
+    for (const hazard of Game.hazards) {
+        Game.world.removeChild(hazard);
+    }
+    Game.world.removeChild(Game.grid);
+}
