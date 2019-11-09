@@ -8,14 +8,11 @@ class Chest extends FullTileElement {
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.CHEST;
         this.opened = false;
-        this.contentsSprite = new PIXI.Sprite(this.contents.texture);
+        this.contentsSprite = new FullTileElement(this.contents.texture, this.tilePosition.x, this.tilePosition.y - 0.5);
         this.contentsSprite.visible = false;
-        this.contentsSprite.anchor.set(0.5, 0.5);
-        this.contentsSprite.position.set(this.position.x, this.position.y - this.height / 2);
-        this.contentsSprite.width = Game.TILESIZE;
-        this.contentsSprite.height = Game.TILESIZE;
         this.contentsSprite.zIndex = 1;
         Game.world.addChild(this.contentsSprite);
+        Game.tiles.push(this.contentsSprite);
     }
 
     interact(player) {
