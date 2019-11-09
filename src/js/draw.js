@@ -453,6 +453,7 @@ function lightWorldDTSpecial(tileX, tileY, distance = 3, sourceDirX = 0, sourceD
             }
         } else if (Game.map[tileY][tileX].tileType === TILE_TYPE.WALL || Game.map[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
             Game.semiDarkTiles[tileY][tileX].visible = false;
+            litDTAreas.push({x: tileX, y: tileY});
         }
     }
 }

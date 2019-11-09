@@ -28,6 +28,7 @@ Game.tiles = [];
 Game.darkTiles = [];
 Game.semiDarkTiles = [];
 Game.otherGraphics = [];
+Game.infiniteAnimations = [];
 
 Game.normalRooms = null;
 Game.statueRooms = null;

@@ -2,6 +2,7 @@
 
 function generateLevel() {
     let level = [[]];
+    //set different parameters for dark tunnel
     const roomNumber = randomChoice([12, 15, 16]);
     let levelRoomWidth;
     let levelRoomHeight;

@@ -111,7 +111,8 @@ function rotate(object, clockwise = true) {
 function createFloatingItemAnimation(item) {
     let counter = 0;
     const step = item.height / 4 / Game.ITEM_FLOAT_ANIMATION_TIME;
-    Game.APP.ticker.add(() => {
+
+    function animate() {
         if (counter < Game.ITEM_FLOAT_ANIMATION_TIME / 4) {
             item.position.y -= step;
         } else if (counter < Game.ITEM_FLOAT_ANIMATION_TIME * 3 / 4) {
@@ -123,5 +124,8 @@ function createFloatingItemAnimation(item) {
         if (counter >= Game.ITEM_FLOAT_ANIMATION_TIME) {
             counter = 0;
         }
-    })
+    }
+
+    Game.APP.ticker.add(animate);
+    Game.infiniteAnimations.push(animate);
 }

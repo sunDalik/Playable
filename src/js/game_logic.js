@@ -176,6 +176,7 @@ function gotoNextLevel() {
     Game.darkTiles = [];
     Game.hazards = [];
     Game.otherGraphics = [];
+    Game.infiniteAnimations = [];
     incrementStage();
     setVariablesForStage();
     initializeLevel();
@@ -196,6 +197,9 @@ function cleanGameWorld() {
     }
     for (const hazard of Game.hazards) {
         Game.world.removeChild(hazard);
+    }
+    for (const animation of Game.infiniteAnimations) {
+        Game.APP.ticker.remove(animation);
     }
     Game.world.removeChild(Game.grid);
 }
