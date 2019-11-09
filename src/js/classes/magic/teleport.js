@@ -12,6 +12,7 @@ class Teleport {
 
     cast(wielder) {
         if (this.uses <= 0) return false;
+        if (Game.player.dead || Game.player2.dead) return false;
         let otherPlayer;
         if (wielder === Game.player2) otherPlayer = Game.player;
         else otherPlayer = Game.player2;

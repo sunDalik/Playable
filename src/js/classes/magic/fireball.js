@@ -14,6 +14,7 @@ class Fireball {
     //don't know yet bro
     cast() {
         if (this.uses <= 0) return false;
+        if (Game.player.dead || Game.player2.dead) return false;
         let fire = new PIXI.Sprite(Game.resources["src/images/fire.png"].texture);
         const fireHeight = Game.TILESIZE * this.multiplier;
         fire.anchor.set(0, 0.5);
