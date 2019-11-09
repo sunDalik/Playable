@@ -236,6 +236,8 @@ function generateLevel() {
             Game.startY = startY + Math.floor(startRoomHeight / 2) - 1;
         } else if (r === endingRoomI) {
             level[startY + Math.floor(endingRoomHeight / 2)][startX + Math.floor(endingRoomWidth / 2)] = "exit";
+            //Game.startX = startX + Math.floor(endingRoomWidth / 2) - 2; //for tests
+            //Game.startY = startY + Math.floor(endingRoomHeight / 2) - 2;
         }
 
         previousX = startX + currentRoom[0].length;

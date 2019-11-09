@@ -172,7 +172,10 @@ function gotoNextLevel() {
     cleanGameWorld();
     Game.tiles = [];
     Game.enemies = [];
+    Game.semiDarkTiles = [];
     Game.darkTiles = [];
+    Game.hazards = [];
+    Game.otherGraphics = [];
     incrementStage();
     setVariablesForStage();
     initializeLevel();
@@ -183,6 +186,9 @@ function cleanGameWorld() {
         Game.world.removeChild(tile);
     }
     for (const tile of Game.darkTiles) {
+        Game.world.removeChild(tile);
+    }
+    for (const tile of Game.semiDarkTiles) {
         Game.world.removeChild(tile);
     }
     for (const graphic of Game.otherGraphics) {

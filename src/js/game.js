@@ -26,6 +26,7 @@ Game.enemies = [];
 Game.hazards = [];
 Game.tiles = [];
 Game.darkTiles = [];
+Game.semiDarkTiles = [];
 Game.otherGraphics = [];
 
 Game.normalRooms = null;

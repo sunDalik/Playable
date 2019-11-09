@@ -41,6 +41,26 @@ function createDarkness() {
             Game.darkTiles[i][j] = voidTile;
         }
     }
+
+    if (Game.stage === STAGE.DARK_TUNNEL) {
+        for (let i = 0; i < Game.map.length; ++i) {
+            Game.semiDarkTiles[i] = [];
+            for (let j = 0; j < Game.map[0].length; ++j) {
+                Game.semiDarkTiles[i][j] = null;
+            }
+        }
+
+        for (let i = 0; i < Game.map.length; ++i) {
+            for (let j = 0; j < Game.map[0].length; ++j) {
+                const voidTile = new VoidTile(j, i);
+                voidTile.zIndex = 9;
+                voidTile.alpha = 0.85;
+                Game.world.addChild(voidTile);
+                Game.tiles.push(voidTile);
+                Game.semiDarkTiles[i][j] = voidTile;
+            }
+        }
+    }
 }
 
 function drawEntities() {
@@ -319,6 +339,7 @@ function redrawTiles() {
 }
 
 let litAreas = [];
+let litDTAreas = [];
 
 function lightPlayerPosition(player) {
     litAreas = [];
@@ -337,6 +358,15 @@ function lightPlayerPosition(player) {
         } else {
             lightWorld(px, py, false, 9);
         }
+    }
+
+    //later you will change that if so it checks if player has torch
+    if (Game.stage === STAGE.DARK_TUNNEL && player === Game.player) {
+        for (const tile of litDTAreas) {
+            Game.semiDarkTiles[tile.y][tile.x].visible = true;
+        }
+        litDTAreas = [];
+        lightWorldDTSpecial(px, py, 3);
     }
 }
 
@@ -389,6 +419,34 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
                 Game.world.removeChild(Game.darkTiles[tileY][tileX]);
                 Game.map[tileY][tileX].lit = true;
             }
+        }
+    }
+}
+
+function lightWorldDTSpecial(tileX, tileY, distance = 3, sourceDirX = 0, sourceDirY = 0) {
+    if (distance > -1) {
+        if (Game.map[tileY][tileX].lit) {
+            Game.semiDarkTiles[tileY][tileX].visible = false;
+            litDTAreas.push({x: tileX, y: tileY});
+            if (sourceDirX === 0 && sourceDirY === 0) {
+                lightWorldDTSpecial(tileX + 1, tileY, distance - 1, -1, 0);
+                lightWorldDTSpecial(tileX - 1, tileY, distance - 1, 1, 0);
+                lightWorldDTSpecial(tileX, tileY + 1, distance - 1, 0, -1);
+                lightWorldDTSpecial(tileX, tileY - 1, distance - 1, 0, 1);
+            } else {
+                if (sourceDirY === 0) {
+                    if (!litDTAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) lightWorldDTSpecial(tileX, tileY - 1, distance - 1, sourceDirX, 1);
+                    if (!litDTAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) lightWorldDTSpecial(tileX, tileY + 1, distance - 1, sourceDirX, -1);
+                }
+                if (!litDTAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorldDTSpecial(tileX, tileY - sourceDirY, distance - 1, sourceDirX, sourceDirY);
+                if (sourceDirX === 0) {
+                    if (!litDTAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) lightWorldDTSpecial(tileX - 1, tileY, distance - 1, 1, sourceDirY);
+                    if (!litDTAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) lightWorldDTSpecial(tileX + 1, tileY, distance - 1, -1, sourceDirY);
+                }
+                if (!litDTAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorldDTSpecial(tileX - sourceDirX, tileY, distance - 1, sourceDirX, sourceDirY);
+            }
+        } else if (Game.map[tileY][tileX].tileType === TILE_TYPE.WALL || Game.map[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
+            Game.semiDarkTiles[tileY][tileX].visible = false;
         }
     }
 }
