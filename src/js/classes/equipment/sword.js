@@ -4,6 +4,7 @@ class Sword {
     constructor() {
         this.texture = Game.resources["src/images/weapons/sword.png"].texture;
         this.type = WEAPON_TYPE.SWORD;
+        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
     }
 

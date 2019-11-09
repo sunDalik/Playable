@@ -60,7 +60,6 @@ function setup() {
     Game.player2.setStats(0, 1.00, 0, 0.5);
     Game.player2.weapon = new Bow();
     Game.player.armor = new BasicArmor();
-    Game.player.secondHand = new Pickaxe();
 
     Game.grid = drawGrid();
     drawTiles();
@@ -171,6 +170,7 @@ function generateMap(level) {
             else if (map[i][j] === "sna") mapCell.entity = new Snail(j, i);
             else if (map[i][j] === "snab") mapCell.entity = new SnailB(j, i);
             else if (map[i][j] === "statue") mapCell.entity = new Statue(j, i, getRandomWeapon());
+            else if (map[i][j] === "chest") mapCell.entity = new Chest(j, i, getRandomChestDrop());
             else if (map[i][j] === "obelisk") {
                 let magicPool = [];
                 for (let i = 0; i < 4; ++i) {

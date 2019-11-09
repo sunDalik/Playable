@@ -4,6 +4,7 @@ class NinjaKnife {
     constructor() {
         this.texture = Game.resources["src/images/weapons/ninja_knife.png"].texture;
         this.type = WEAPON_TYPE.NINJA_KNIFE;
+        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.SLIDE_ANIMATION_TIME = 4;
         this.FINISH_SLIDE_TIME = 2;
         this.atk = 1.25 //maybe I should actually lower it?

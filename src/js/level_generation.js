@@ -43,13 +43,27 @@ function generateLevel() {
         }
     }
 
+    //this will generate 2-3 chests.
+    let chestRoomNumber = 4 - statueRoomsNumber;
+    //let chestRoomNumber = 8; //for tests
+    let chestRoomIs = [];
+    for (let i = 0; i < chestRoomNumber; ++i) {
+        while (true) {
+            const randomI = getRandomInt(0, roomNumber);
+            if (randomI !== startRoomI && !chestRoomIs.includes(randomI) && !statueRoomIs.includes(randomI)) { //later you will need to check for endingRoomI too
+                chestRoomIs[i] = randomI;
+                break;
+            }
+        }
+    }
+
     //determining obelisk room index
     let obeliskRoomNumber = randomChoice([1]); //this is for testing purposes. Actually there will always be only one obelisk
     let obeliskRoomIs = [];
     for (let i = 0; i < obeliskRoomNumber; ++i) {
         while (true) {
             const randomI = getRandomInt(0, roomNumber);
-            if (randomI !== startRoomI && !statueRoomIs.includes(randomI) && !obeliskRoomIs.includes(randomI)) {
+            if (randomI !== startRoomI && !statueRoomIs.includes(randomI) && !chestRoomIs.includes(randomI) && !obeliskRoomIs.includes(randomI)) {
                 obeliskRoomIs[i] = randomI;
                 break;
             }
@@ -63,6 +77,7 @@ function generateLevel() {
             let room;
             if (statueRoomIs.includes(i)) room = randomChoice(FCStatueRooms);
             else if (obeliskRoomIs.includes(i)) room = randomChoice(FCObeliskRooms);
+            else if (chestRoomIs.includes(i)) room = randomChoice(FCChestRooms);
             else {
                 //maybe should do this for statue/chest rooms too? Not sure about that, will decide later
                 while (true) {

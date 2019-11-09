@@ -232,6 +232,9 @@ class Player extends AnimatedTileElement {
                     entity.choose(this);
                 }
                 break;
+            case INANIMATE_TYPE.CHEST:
+                entity.interact(this);
+                break;
         }
     }
 

@@ -64,6 +64,11 @@ function getRandomSpell() {
     return randomChoice([new Aura(), new Spikes(), new Fireball(), new Necromancy(), new Petrification(), new Teleport()]);
 }
 
+//probably need to remove item from the pool once you randomly picked it
+function getRandomChestDrop() {
+    return randomChoice([new Pickaxe(), new BasicArmor()]);
+}
+
 function removeAllChildrenFromContainer(container) {
     for (let i = container.children.length - 1; i >= 0; i--) {
         container.removeChild(container.children[i]);

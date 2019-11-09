@@ -108,3 +108,62 @@ function removeTileFromWorld(tile) {
     removeObjectFromArray(tile, Game.tiles);
     Game.world.removeChild(tile);
 }
+
+function swapEquipmentWithPlayer(player, equipment) {
+    let swappedEquipment = null;
+    if (!equipment) return null;
+    switch (equipment.equipmentType) {
+        case EQUIPMENT_TYPE.WEAPON:
+            swappedEquipment = player.weapon;
+            player.weapon = equipment;
+            break;
+        case EQUIPMENT_TYPE.TOOL:
+        case EQUIPMENT_TYPE.SHIELD:
+            swappedEquipment = player.secondHand;
+            player.secondHand = equipment;
+            break;
+        case EQUIPMENT_TYPE.HEAD:
+            swappedEquipment = player.headwear;
+            player.headwear = equipment;
+            break;
+        case EQUIPMENT_TYPE.ARMOR:
+            swappedEquipment = player.armor;
+            player.armor = equipment;
+            break;
+        case EQUIPMENT_TYPE.FOOT:
+            swappedEquipment = player.footwear;
+            player.footwear = equipment;
+            break;
+    }
+    redrawSlotsForPlayer(player);
+    return swappedEquipment
+}
+
+function removeEquipmentFromPlayer(player, equipmentType) {
+    let removedEquipment;
+    switch (equipmentType) {
+        case EQUIPMENT_TYPE.WEAPON:
+            removedEquipment = player.weapon;
+            player.weapon = null;
+            break;
+        case EQUIPMENT_TYPE.TOOL:
+        case EQUIPMENT_TYPE.SHIELD:
+            removedEquipment = player.secondHand;
+            player.secondHand = null;
+            break;
+        case EQUIPMENT_TYPE.HEAD:
+            removedEquipment = player.headwear;
+            player.headwear = null;
+            break;
+        case EQUIPMENT_TYPE.ARMOR:
+            removedEquipment = player.armor;
+            player.armor = null;
+            break;
+        case EQUIPMENT_TYPE.FOOT:
+            removedEquipment = player.footwear;
+            player.footwear = null;
+            break;
+    }
+    redrawSlotsForPlayer(player);
+    return removedEquipment;
+}
