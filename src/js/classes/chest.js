@@ -10,9 +10,10 @@ class Chest extends FullTileElement {
         this.opened = false;
         this.contentsSprite = new FullTileElement(this.contents.texture, this.tilePosition.x, this.tilePosition.y - 0.5);
         this.contentsSprite.visible = false;
-        this.contentsSprite.zIndex = 1;
+        this.contentsSprite.zIndex = 2;
         Game.world.addChild(this.contentsSprite);
         Game.tiles.push(this.contentsSprite);
+        this.animateContents();
     }
 
     interact(player) {
@@ -26,5 +27,23 @@ class Chest extends FullTileElement {
             this.contentsSprite.visible = true;
         } else this.contentsSprite.visible = false;
         this.opened = true;
+    }
+
+    animateContents() {
+        let counter = 0;
+        const step = this.contentsSprite.height / 4 / Game.ITEM_FLOAT_ANIMATION_TIME;
+        Game.APP.ticker.add(() => {
+            if (counter < Game.ITEM_FLOAT_ANIMATION_TIME / 4) {
+                this.contentsSprite.position.y -= step;
+            } else if (counter < Game.ITEM_FLOAT_ANIMATION_TIME * 3 / 4) {
+                this.contentsSprite.position.y += step;
+            } else if (counter < Game.ITEM_FLOAT_ANIMATION_TIME) {
+                this.contentsSprite.position.y -= step;
+            }
+            counter++;
+            if (counter >= Game.ITEM_FLOAT_ANIMATION_TIME) {
+                counter = 0;
+            }
+        })
     }
 }

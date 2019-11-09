@@ -39,6 +39,7 @@ Game.maraudedStatues = [];
 
 Game.TURNTIME = 16;
 Game.WEAPON_ATTACK_TIME = 6;
+Game.ITEM_FLOAT_ANIMATION_TIME = 90;
 
 Game.playerDetectionGraph = null;
 Game.levelGraph = null;
