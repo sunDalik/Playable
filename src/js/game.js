@@ -20,12 +20,18 @@ Game.REFERENCE_TILESIZE = Game.TILESIZE;
 Game.chainLength = 800;
 
 Game.level = [];
+Game.stage = STAGE.FLOODED_CAVE;
 Game.map = [];
 Game.enemies = [];
 Game.hazards = [];
 Game.tiles = [];
 Game.darkTiles = [];
 Game.otherGraphics = [];
+
+Game.normalRooms = null;
+Game.statueRooms = null;
+Game.obeliskRooms = null;
+Game.chestRooms = null;
 
 Game.player = null;
 Game.player2 = null;

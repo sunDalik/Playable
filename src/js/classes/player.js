@@ -3,8 +3,8 @@
 class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = 4;
         this.maxHealth = 4;
+        this.health = this.maxHealth;
         this.atkBase = 0;
         this.atkMul = 1;
         this.atk = Math.round(this.atkBase * this.atkMul * 4) / 4;

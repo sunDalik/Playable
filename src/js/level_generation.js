@@ -75,16 +75,16 @@ function generateLevel() {
     for (let i = 0; i < roomNumber; ++i) {
         if (i !== startRoomI) {
             let room;
-            if (statueRoomIs.includes(i)) room = randomChoice(FCStatueRooms);
-            else if (obeliskRoomIs.includes(i)) room = randomChoice(FCObeliskRooms);
-            else if (chestRoomIs.includes(i)) room = randomChoice(FCChestRooms);
+            if (statueRoomIs.includes(i)) room = randomChoice(Game.statueRooms);
+            else if (obeliskRoomIs.includes(i)) room = randomChoice(Game.obeliskRooms);
+            else if (chestRoomIs.includes(i)) room = randomChoice(Game.chestRooms);
             else {
                 //maybe should do this for statue/chest rooms too? Not sure about that, will decide later
                 while (true) {
-                    const roomI = randomArrayIndex(FCNormalRooms);
+                    const roomI = randomArrayIndex(Game.normalRooms);
                     if (!normalRoomIs.includes(roomI)) {
                         normalRoomIs.push(roomI);
-                        room = FCNormalRooms[roomI];
+                        room = Game.normalRooms[roomI];
                         break;
                     }
                 }
@@ -302,39 +302,10 @@ function generateLevel() {
         }
     }
 
-    //outline paths with walls
-    for (let i = 1; i < level.length - 1; ++i) {
-        for (let j = 1; j < level[0].length - 1; ++j) {
-            if (level[i][j] === "path" || level[i][j] === "entry") {
-                if (level[i + 1][j] === "v") level[i + 1][j] = "w";
-                if (level[i][j + 1] === "v") level[i][j + 1] = "w";
-                if (level[i + 1][j + 1] === "v") level[i + 1][j + 1] = "w";
-                if (level[i - 1][j] === "v") level[i - 1][j] = "w";
-                if (level[i][j - 1] === "v") level[i][j - 1] = "w";
-                if (level[i - 1][j - 1] === "v") level[i - 1][j - 1] = "w";
-                if (level[i - 1][j + 1] === "v") level[i - 1][j + 1] = "w";
-                if (level[i + 1][j - 1] === "v") level[i + 1][j - 1] = "w";
-            }
-        }
-    }
+    outlinePathsWithWalls(level);
 
-    //outline walls with SUPER WALLS
     level = expandLevel(level, 1, 1);
-    for (let i = 1; i < level.length - 1; ++i) {
-        for (let j = 1; j < level[0].length - 1; ++j) {
-            if (level[i][j] === "w") {
-                if (level[i + 1][j] === "v") level[i + 1][j] = "sw";
-                if (level[i][j + 1] === "v") level[i][j + 1] = "sw";
-                if (level[i + 1][j + 1] === "v") level[i + 1][j + 1] = "sw";
-                if (level[i - 1][j] === "v") level[i - 1][j] = "sw";
-                if (level[i][j - 1] === "v") level[i][j - 1] = "sw";
-                if (level[i - 1][j - 1] === "v") level[i - 1][j - 1] = "sw";
-                if (level[i - 1][j + 1] === "v") level[i - 1][j + 1] = "sw";
-                if (level[i + 1][j - 1] === "v") level[i + 1][j - 1] = "sw";
-            }
-        }
-    }
-
+    outlineWallsWithSuperWalls(level);
 
     // remove walls between paths that connect diagonally
     for (let i = 1; i < level.length - 1; ++i) {
@@ -474,4 +445,38 @@ function expandLevel(level, expandX, expandY) {
         }
     }
     return expandedLevel;
+}
+
+function outlinePathsWithWalls(level) {
+    for (let i = 1; i < level.length - 1; ++i) {
+        for (let j = 1; j < level[0].length - 1; ++j) {
+            if (level[i][j] === "path" || level[i][j] === "entry") {
+                if (level[i + 1][j] === "v") level[i + 1][j] = "w";
+                if (level[i][j + 1] === "v") level[i][j + 1] = "w";
+                if (level[i + 1][j + 1] === "v") level[i + 1][j + 1] = "w";
+                if (level[i - 1][j] === "v") level[i - 1][j] = "w";
+                if (level[i][j - 1] === "v") level[i][j - 1] = "w";
+                if (level[i - 1][j - 1] === "v") level[i - 1][j - 1] = "w";
+                if (level[i - 1][j + 1] === "v") level[i - 1][j + 1] = "w";
+                if (level[i + 1][j - 1] === "v") level[i + 1][j - 1] = "w";
+            }
+        }
+    }
+}
+
+function outlineWallsWithSuperWalls(level) {
+    for (let i = 1; i < level.length - 1; ++i) {
+        for (let j = 1; j < level[0].length - 1; ++j) {
+            if (level[i][j] === "w") {
+                if (level[i + 1][j] === "v") level[i + 1][j] = "sw";
+                if (level[i][j + 1] === "v") level[i][j + 1] = "sw";
+                if (level[i + 1][j + 1] === "v") level[i + 1][j + 1] = "sw";
+                if (level[i - 1][j] === "v") level[i - 1][j] = "sw";
+                if (level[i][j - 1] === "v") level[i][j - 1] = "sw";
+                if (level[i - 1][j - 1] === "v") level[i - 1][j - 1] = "sw";
+                if (level[i - 1][j + 1] === "v") level[i - 1][j + 1] = "sw";
+                if (level[i + 1][j - 1] === "v") level[i + 1][j - 1] = "sw";
+            }
+        }
+    }
 }

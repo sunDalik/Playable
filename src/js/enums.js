@@ -21,6 +21,8 @@ const MAGIC_TYPE = Object.freeze({
     PETRIFICATION: 6
 });
 
+const STAGE = Object.freeze({FLOODED_CAVE: 0, DARK_TUNNEL: 1, RUINS: 2, DUNNO: 3, FINALE: 4});
+
 const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});
 
 const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1, INANIMATE: 2});

@@ -11,8 +11,14 @@ class Fireball {
         this.uses = this.maxUses;
     }
 
-    //don't know yet bro
     cast() {
+        if (this.multiplier < 3) {
+            this.multiplier++;
+        } else this.release();
+    }
+
+    //don't know yet bro
+    release() {
         if (this.uses <= 0) return false;
         if (Game.player.dead || Game.player2.dead) return false;
         let fire = new PIXI.Sprite(Game.resources["src/images/fire.png"].texture);
@@ -50,11 +56,5 @@ class Fireball {
             }
         }
         this.uses--;
-    }
-
-    charge() {
-        if (this.multiplier < 3) {
-            this.multiplier++;
-        } else this.cast();
     }
 }

@@ -30,7 +30,6 @@ window.addEventListener("resize", () => {
 });
 
 function setup() {
-    let level = generateLevel();
     Game.world = new PIXI.Container();
     Game.APP.stage.addChild(Game.world);
 
@@ -45,39 +44,51 @@ function setup() {
     Game.HUD.addChild(Game.slots2);
     Game.APP.stage.addChild(Game.HUD);
 
-    Game.map = generateMap(level);
-    Game.level = level;
+    Game.world.sortableChildren = true;
+    Game.APP.stage.sortableChildren = true;
+    Game.slots1.sortableChildren = true;
+    Game.slots2.sortableChildren = true;
 
-    calculateDetectionGraph(Game.map);
-
-    Game.levelGraph = getLevelPlayerGraph(level);
-
-    Game.player = new Player(Game.resources["src/images/player.png"].texture, Game.startX, Game.startY);
-    Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, Game.startX + 1, Game.startY + 1);
-    Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
-    Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+    Game.player = new Player(Game.resources["src/images/player.png"].texture, 0, 0);
+    Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, 0, 0);
     Game.player.setStats(0, 0.5, 0, 1.00);
     Game.player2.setStats(0, 1.00, 0, 0.5);
     Game.player2.weapon = new Bow();
     Game.player.armor = new BasicArmor();
 
-    Game.grid = drawGrid();
-    drawTiles();
-    //drawVoids();
-    createDarkness();
-    lightPlayerPosition(Game.player);
-    lightPlayerPosition(Game.player2);
     drawHUD();
-    drawEntities();
     bindKeys();
     Game.player.zIndex = Game.player2.zIndex + 1;
     Game.primaryPlayer = Game.player;
-    Game.world.sortableChildren = true;
-    Game.APP.stage.sortableChildren = true;
-    Game.slots1.sortableChildren = true;
-    Game.slots2.sortableChildren = true;
-    centerCamera();
+
+    Game.stage = STAGE.FLOODED_CAVE;
+    setVariablesForStage();
+    initializeLevel();
+}
+
+function initializeLevel() {
+    let level = generateLevel();
+    Game.map = generateMap(level);
+    Game.level = level;
+    calculateDetectionGraph(Game.map);
+    Game.levelGraph = getLevelPlayerGraph(level);
+
+    Game.player.tilePosition.set(Game.startX, Game.startY);
+    Game.player2.tilePosition.set(Game.startX + 1, Game.startY + 1);
+    Game.player.place();
+    Game.player2.place();
+    Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
+    Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+
+    Game.grid = drawGrid();
+    drawTiles();
+    drawEntities();
+    drawHUD();
     drawOther();
+    createDarkness();
+    lightPlayerPosition(Game.player);
+    lightPlayerPosition(Game.player2);
+    centerCamera();
 }
 
 function bindKeys() {
@@ -215,6 +226,40 @@ function generateMap(level) {
     }
 
     return map;
+}
+
+function incrementStage() {
+    switch (Game.stage) {
+        case STAGE.FLOODED_CAVE:
+            Game.stage = STAGE.DARK_TUNNEL;
+            break;
+        case STAGE.DARK_TUNNEL:
+            Game.stage = STAGE.RUINS;
+            break;
+        case STAGE.RUINS:
+            Game.stage = STAGE.DUNNO;
+            break;
+        case STAGE.DUNNO:
+            Game.stage = STAGE.FINALE;
+            break;
+    }
+}
+
+function setVariablesForStage() {
+    switch (Game.stage) {
+        case STAGE.FLOODED_CAVE:
+            Game.normalRooms = FCNormalRooms;
+            Game.statueRooms = FCStatueRooms;
+            Game.obeliskRooms = FCObeliskRooms;
+            Game.chestRooms = FCChestRooms;
+            break;
+        case STAGE.DARK_TUNNEL:
+            Game.normalRooms = DTNormalRooms;
+            Game.statueRooms = DTStatueRooms;
+            Game.obeliskRooms = DTObeliskRooms;
+            Game.chestRooms = DTChestRooms;
+            break;
+    }
 }
 
 function calculateDetectionGraph(map) {
