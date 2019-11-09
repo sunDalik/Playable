@@ -42,9 +42,21 @@ class Player extends AnimatedTileElement {
                     removePlayerFromGameMap(this);
                     this.stepX(tileStepX);
                     placePlayerOnGameMap(this);
-                } else {
+                } else if (isAWall(this.tilePosition.x + tileStepX, this.tilePosition.y)
+                    && this.secondHand !== null && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.PICKAXE) {
+                    removeTileFromWorld(Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].tile);
+                    if (Game.map[this.tilePosition.y + 1][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.ENTRY
+                        || Game.map[this.tilePosition.y - 1][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.ENTRY
+                        || Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX + 1].tileType === TILE_TYPE.ENTRY
+                        || Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX - 1].tileType === TILE_TYPE.ENTRY) {
+                        Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].tileType = TILE_TYPE.ENTRY;
+                    } else {
+                        Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].tileType = Game.map[this.tilePosition.y][this.tilePosition.x].tileType;
+                    }
+                    lightPlayerPosition(this);
+                    calculateDetectionGraph(Game.map);
                     this.bumpX(tileStepX);
-                }
+                } else this.bumpX(tileStepX);
             } else if (tileStepY !== 0) {
                 if (isInanimate(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
                     this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].entity);
@@ -53,12 +65,26 @@ class Player extends AnimatedTileElement {
                     removePlayerFromGameMap(this);
                     this.stepY(tileStepY);
                     placePlayerOnGameMap(this);
-                } else {
+                } else if (isAWall(this.tilePosition.x, this.tilePosition.y + tileStepY)
+                    && this.secondHand !== null && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.PICKAXE) {
+                    removeTileFromWorld(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].tile);
+                    if (Game.map[this.tilePosition.y + tileStepY + 1][this.tilePosition.x].tileType === TILE_TYPE.ENTRY
+                        || Game.map[this.tilePosition.y + tileStepY - 1][this.tilePosition.x].tileType === TILE_TYPE.ENTRY
+                        || Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + 1].tileType === TILE_TYPE.ENTRY
+                        || Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x - 1].tileType === TILE_TYPE.ENTRY) {
+                        Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].tileType = TILE_TYPE.ENTRY;
+                    } else {
+                        Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].tileType = Game.map[this.tilePosition.y][this.tilePosition.x].tileType;
+                    }
+                    lightPlayerPosition(this);
+                    calculateDetectionGraph(Game.map);
                     this.bumpY(tileStepY);
-                }
+                } else
+                    this.bumpY(tileStepY);
             }
         }
     }
+
 
     castMagic(magic) {
         if (magic) {
@@ -110,7 +136,7 @@ class Player extends AnimatedTileElement {
         const defEquipment = [this.headwear, this.armor, this.footwear, this.secondHand];
         let defBase = this.defBase;
         for (const equipment of defEquipment) {
-            if (equipment !== null) {
+            if (equipment && equipment.def) {
                 defBase += equipment.def;
             }
         }
@@ -121,7 +147,7 @@ class Player extends AnimatedTileElement {
         const defEquipment = [this.headwear, this.armor, this.footwear, this.secondHand];
         let defBase = this.defBase;
         for (const equipment of defEquipment) {
-            if (equipment !== null) {
+            if (equipment && equipment.def) {
                 defBase += equipment.def;
             }
         }

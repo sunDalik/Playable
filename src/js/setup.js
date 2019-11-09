@@ -48,18 +48,7 @@ function setup() {
     Game.map = generateMap(level);
     Game.level = level;
 
-    Game.playerDetectionGraph = new Graph(level);
-    for (let i = 0; i < Game.playerDetectionGraph.grid.length; ++i) {
-        for (let j = 0; j < Game.playerDetectionGraph.grid[0].length; ++j) {
-            if (Game.playerDetectionGraph.grid[i][j].weight === "v"
-                || Game.playerDetectionGraph.grid[i][j].weight === "path"
-                || Game.playerDetectionGraph.grid[i][j].weight === "w") {
-                Game.playerDetectionGraph.grid[i][j].weight = 0;
-            } else {
-                Game.playerDetectionGraph.grid[i][j].weight = 1;
-            }
-        }
-    }
+    calculateDetectionGraph(Game.map);
 
     Game.levelGraph = getLevelPlayerGraph(level);
 
@@ -71,9 +60,10 @@ function setup() {
     Game.player2.setStats(0, 1.00, 0, 0.5);
     Game.player2.weapon = new Bow();
     Game.player.armor = new BasicArmor();
+    Game.player.secondHand = new Pickaxe();
 
     Game.grid = drawGrid();
-    drawWalls();
+    drawTiles();
     //drawVoids();
     createDarkness();
     lightPlayerPosition(Game.player);
@@ -152,16 +142,25 @@ function generateMap(level) {
         for (let j = 0; j < map[0].length; ++j) {
             let mapCell = {
                 tileType: TILE_TYPE.NONE,
+                tile: null,
                 hazard: null,
                 entity: null,
                 secondaryEntity: null,
                 lit: false
             };
-            if (map[i][j] === "w") mapCell.tileType = TILE_TYPE.WALL;
-            else if (map[i][j] === "sw") mapCell.tileType = TILE_TYPE.SUPER_WALL;
-            else if (map[i][j] === "v") mapCell.tileType = TILE_TYPE.VOID;
-            else if (map[i][j] === "entry") mapCell.tileType = TILE_TYPE.ENTRY;
-            else if (map[i][j] === "path") mapCell.tileType = TILE_TYPE.PATH;
+            if (map[i][j] === "w") {
+                mapCell.tileType = TILE_TYPE.WALL;
+                mapCell.tile = new WallTile(j, i);
+            } else if (map[i][j] === "sw") {
+                mapCell.tileType = TILE_TYPE.SUPER_WALL;
+                mapCell.tile = new SuperWallTile(j, i);
+            } else if (map[i][j] === "v") {
+                mapCell.tileType = TILE_TYPE.VOID;
+            } else if (map[i][j] === "entry") {
+                mapCell.tileType = TILE_TYPE.ENTRY;
+            } else if (map[i][j] === "path") {
+                mapCell.tileType = TILE_TYPE.PATH;
+            }
 
             if (map[i][j] === "r") mapCell.entity = new Roller(j, i);
             else if (map[i][j] === "rb") mapCell.entity = new RollerB(j, i);
@@ -223,4 +222,20 @@ function generateMap(level) {
     }
 
     return map;
+}
+
+function calculateDetectionGraph(map) {
+    Game.playerDetectionGraph = new Graph(map);
+    for (let i = 0; i < Game.playerDetectionGraph.grid.length; ++i) {
+        for (let j = 0; j < Game.playerDetectionGraph.grid[0].length; ++j) {
+            if (Game.playerDetectionGraph.grid[i][j].weight.tileType === TILE_TYPE.VOID
+                || Game.playerDetectionGraph.grid[i][j].weight.tileType === TILE_TYPE.PATH
+                || Game.playerDetectionGraph.grid[i][j].weight.tileType === TILE_TYPE.WALL
+                || Game.playerDetectionGraph.grid[i][j].weight.tileType === TILE_TYPE.SUPER_WALL) {
+                Game.playerDetectionGraph.grid[i][j].weight = 0;
+            } else {
+                Game.playerDetectionGraph.grid[i][j].weight = 1;
+            }
+        }
+    }
 }

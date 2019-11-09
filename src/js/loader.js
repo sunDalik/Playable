@@ -25,6 +25,8 @@ function loadAll() {
         .add("src/images/enemies/spider_b.png")
         .add("src/images/enemies/snail.png")
         .add("src/images/enemies/snail_b.png")
+        .add("src/images/enemies/eel.png")
+        //.add("src/images/enemies/eel_poison.png")
 
         .add("src/images/HUD/heart_full.png")
         .add("src/images/HUD/heart_75.png")
@@ -42,6 +44,8 @@ function loadAll() {
         .add("src/images/weapons/ninja_knife.png")
         .add("src/images/weapons/sword.png")
         .add("src/images/weapons/bow.png")
+
+        .add("src/images/tools/pickaxe.png")
 
         .add("src/images/armor/basic.png")
 

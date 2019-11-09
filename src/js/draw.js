@@ -1,16 +1,11 @@
 "use strict";
 
-function drawWalls() {
+function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
-            if (Game.map[i][j].tileType === TILE_TYPE.WALL) {
-                const wallTile = new WallTile(j, i);
-                Game.world.addChild(wallTile);
-                Game.tiles.push(wallTile);
-            } else if (Game.map[i][j].tileType === TILE_TYPE.SUPER_WALL) {
-                const superWallTile = new SuperWallTile(j, i);
-                Game.world.addChild(superWallTile);
-                Game.tiles.push(superWallTile);
+            if (Game.map[i][j].tile !== null) {
+                Game.world.addChild(Game.map[i][j].tile);
+                Game.tiles.push(Game.map[i][j].tile);
             }
         }
     }

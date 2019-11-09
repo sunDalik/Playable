@@ -410,6 +410,7 @@ function connectEntries(entry1, entry2, connection, roomConnections, level) {
     drawConnection(level, connection);
 }
 
+//you will have to update it if you will use it (look at calculateDetectionGraph)
 function getLevelPlayerGraph(level) {
     //graph where weights correspond to player's movement ability
     let levelPlayerGraph = new Graph(level);

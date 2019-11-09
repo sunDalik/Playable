@@ -1,8 +1,17 @@
 "use strict";
 
+function isAWall(tilePositionX, tilePositionY) {
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        if (Game.map[tilePositionY][tilePositionX].tileType === TILE_TYPE.WALL) {
+            return true
+        }
+    }
+    return false;
+}
+
 function isNotAWall(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
-        if (Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL) {
+        if (Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL && Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.SUPER_WALL) {
             return true
         }
     }

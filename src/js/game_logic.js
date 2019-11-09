@@ -103,3 +103,8 @@ function switchPlayers() {
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;
     }
 }
+
+function removeTileFromWorld(tile) {
+    removeObjectFromArray(tile, Game.tiles);
+    Game.world.removeChild(tile);
+}
