@@ -18,11 +18,6 @@ function initApplication() {
     return app
 }
 
-function loadProgressHandler(loader, resource) {
-    //console.log("Loading resource: " + resource.url);
-    //console.log("Progress: " + loader.progress + "%");
-}
-
 window.addEventListener("resize", () => {
     Game.APP.renderer.resize(window.innerWidth, window.innerHeight);
     drawHUD();
@@ -58,6 +53,7 @@ function setup() {
 
     drawHUD();
     bindKeys();
+
     Game.player.zIndex = Game.player2.zIndex + 1;
     Game.primaryPlayer = Game.player;
 
@@ -252,12 +248,14 @@ function setVariablesForStage() {
             Game.statueRooms = FCStatueRooms;
             Game.obeliskRooms = FCObeliskRooms;
             Game.chestRooms = FCChestRooms;
+            Game.BGColor = "0xabcfd1";
             break;
         case STAGE.DARK_TUNNEL:
             Game.normalRooms = DTNormalRooms;
             Game.statueRooms = DTStatueRooms;
             Game.obeliskRooms = DTObeliskRooms;
             Game.chestRooms = DTChestRooms;
+            Game.BGColor = "0x666666";
             break;
     }
 }

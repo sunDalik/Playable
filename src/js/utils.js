@@ -82,6 +82,14 @@ function removeObjectFromArray(object, array) {
     }
 }
 
+function decrementEachDigitInHex(hex) {
+    let newHex = "0x";
+    for (let i = 2; i < hex.length; i++) {
+        newHex += (parseInt(hex[i], 16) - 1).toString(16);
+    }
+    return newHex;
+}
+
 function collisionCheck(vertexData1, vertexData2) {
     const lines1 = getLinesByVertexData(vertexData1);
     const lines2 = getLinesByVertexData(vertexData2);

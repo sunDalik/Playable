@@ -77,6 +77,5 @@ function loadAll() {
         .add("src/images/magic/petrification.png")
 
         .add("src/images/grid.png")
-        .on("progress", loadProgressHandler)
         .load(setup);
 }

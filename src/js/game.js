@@ -32,6 +32,7 @@ Game.normalRooms = null;
 Game.statueRooms = null;
 Game.obeliskRooms = null;
 Game.chestRooms = null;
+Game.BGColor = 0xffffff;
 
 Game.player = null;
 Game.player2 = null;

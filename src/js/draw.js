@@ -269,7 +269,7 @@ function drawGrid() {
     //2 is half-width of a tile's border... Don't ask me I don't understand why it works either
     grid.position.x -= 2 * Game.TILESIZE / gridTexture.width;
     grid.position.y -= 2 * Game.TILESIZE / gridTexture.height;
-    grid.tint = 0x9abec0;
+    grid.tint = decrementEachDigitInHex(Game.BGColor);
     grid.zIndex = -2;
     Game.world.addChild(grid);
     return grid;
@@ -277,7 +277,7 @@ function drawGrid() {
 
 function drawOther() {
     let gameWorldBG = new PIXI.Graphics();
-    gameWorldBG.beginFill(0xabcfd1);
+    gameWorldBG.beginFill(Game.BGColor);
     gameWorldBG.drawRect(10, 10, Game.world.width - 20, Game.world.height - 20);
     gameWorldBG.zIndex = -3;
     //to hide grid on world borders
