@@ -343,20 +343,26 @@ let litDTAreas = [];
 
 function lightPlayerPosition(player) {
     litAreas = [];
+    let pathDist = 5;
+    let roomDist = 9;
+    if (Game.stage === STAGE.DARK_TUNNEL) {
+        pathDist = 2;
+        roomDist = 2;
+    }
     const px = player.tilePosition.x;
     const py = player.tilePosition.y;
     if (Game.map[py][px].tileType === TILE_TYPE.PATH) {
-        lightWorld(px, py, true, 5);
+        lightWorld(px, py, true, pathDist);
     } else if (Game.map[py][px].tileType === TILE_TYPE.NONE) {
-        lightWorld(px, py, false, 9);
+        lightWorld(px, py, false, roomDist);
     } else if (Game.map[py][px].tileType === TILE_TYPE.ENTRY) {
         if ((Game.map[py + 1][px].tileType === TILE_TYPE.PATH && !Game.map[py + 1][px].lit)
             || (Game.map[py - 1][px].tileType === TILE_TYPE.PATH && !Game.map[py - 1][px].lit)
             || (Game.map[py][px + 1].tileType === TILE_TYPE.PATH && !Game.map[py][px + 1].lit)
             || (Game.map[py][px - 1].tileType === TILE_TYPE.PATH && !Game.map[py][px - 1].lit)) {
-            lightWorld(px, py, true, 5);
+            lightWorld(px, py, true, pathDist);
         } else {
-            lightWorld(px, py, false, 9);
+            lightWorld(px, py, false, roomDist);
         }
     }
 
@@ -366,7 +372,7 @@ function lightPlayerPosition(player) {
             Game.semiDarkTiles[tile.y][tile.x].visible = true;
         }
         litDTAreas = [];
-        lightWorldDTSpecial(px, py, 3);
+        lightWorldDTSpecial(px, py, 2);
     }
 }
 
