@@ -9,7 +9,8 @@ function loadAll() {
         .add("src/images/fire.png")
         .add("src/images/wall.png")
         .add("src/images/super_wall.png")
-        .add("src/images/void.png")
+        .add("src/images/void.png") //put all blocks into blocks folder
+        .add("src/images/exit.png")
         .add("src/images/player_attack.png")
         .add("src/images/player2_attack.png")
         .add("src/images/weapon_particle.png")

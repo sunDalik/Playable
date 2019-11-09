@@ -20,15 +20,35 @@ function generateLevel() {
     let startRoom = [];
     levelRooms[startRoomI] = startRoom;
 
-    //for the sake of our future
     let endingRoomX;
     let endingRoomY;
+    const endingRoomWidth = getRandomInt(8, 11);
+    const endingRoomHeight = getRandomInt(8, 11);
+    let endingRoomEntry;
     if (startRoomX + 1 <= (levelRoomWidth + 1) / 2) endingRoomX = levelRoomWidth - 1;
     else endingRoomX = 0;
-    if (startRoomY + 1 <= (levelRoomHeight + 1) / 2) endingRoomY = levelRoomHeight - 1;
-    else endingRoomY = 0;
+    if (startRoomY + 1 <= (levelRoomHeight + 1) / 2) {
+        endingRoomY = levelRoomHeight - 1;
+        endingRoomEntry = {x: getRandomInt(1, endingRoomWidth - 1), y: 0}
+    } else {
+        endingRoomY = 0;
+        endingRoomEntry = {x: getRandomInt(1, endingRoomWidth - 1), y: endingRoomHeight - 1}
+    }
     const endingRoomI = endingRoomY * levelRoomWidth + endingRoomX;
-    /////
+    let endingRoom = [];
+    levelRooms[endingRoomI] = endingRoom;
+
+    for (let i = 0; i < endingRoomHeight; ++i) {
+        endingRoom[i] = [];
+        for (let j = 0; j < endingRoomWidth; ++j) {
+            if (j === 0 || j === endingRoomWidth - 1 || i === 0 || i === endingRoomHeight - 1) {
+                endingRoom[i][j] = "w";
+            } else endingRoom[i][j] = "";
+            if (i === endingRoomEntry.y && j === endingRoomEntry.x) {
+                endingRoom[i][j] = "entry";
+            }
+        }
+    }
 
     //determining statue rooms indexes
     let statueRoomsNumber = randomChoice([1, 2]);
@@ -36,7 +56,7 @@ function generateLevel() {
     for (let i = 0; i < statueRoomsNumber; ++i) {
         while (true) {
             const randomI = getRandomInt(0, roomNumber);
-            if (randomI !== startRoomI && !statueRoomIs.includes(randomI)) { //later you will need to check for endingRoomI too
+            if (randomI !== startRoomI && randomI !== endingRoomI && !statueRoomIs.includes(randomI)) {
                 statueRoomIs[i] = randomI;
                 break;
             }
@@ -45,12 +65,13 @@ function generateLevel() {
 
     //this will generate 2-3 chests.
     let chestRoomNumber = 4 - statueRoomsNumber;
-    //let chestRoomNumber = 8; //for tests
+    //let chestRoomNumber = 7; //for tests
     let chestRoomIs = [];
     for (let i = 0; i < chestRoomNumber; ++i) {
         while (true) {
             const randomI = getRandomInt(0, roomNumber);
-            if (randomI !== startRoomI && !chestRoomIs.includes(randomI) && !statueRoomIs.includes(randomI)) { //later you will need to check for endingRoomI too
+            if (randomI !== startRoomI && !chestRoomIs.includes(randomI) && randomI !== endingRoomI
+                && !statueRoomIs.includes(randomI)) {
                 chestRoomIs[i] = randomI;
                 break;
             }
@@ -63,7 +84,8 @@ function generateLevel() {
     for (let i = 0; i < obeliskRoomNumber; ++i) {
         while (true) {
             const randomI = getRandomInt(0, roomNumber);
-            if (randomI !== startRoomI && !statueRoomIs.includes(randomI) && !chestRoomIs.includes(randomI) && !obeliskRoomIs.includes(randomI)) {
+            if (randomI !== startRoomI && !statueRoomIs.includes(randomI) && randomI !== endingRoomI
+                && !chestRoomIs.includes(randomI) && !obeliskRoomIs.includes(randomI)) {
                 obeliskRoomIs[i] = randomI;
                 break;
             }
@@ -73,7 +95,7 @@ function generateLevel() {
     let normalRoomIs = [];
     //picking rooms for level
     for (let i = 0; i < roomNumber; ++i) {
-        if (i !== startRoomI) {
+        if (i !== startRoomI && i !== endingRoomI) {
             let room;
             if (statueRoomIs.includes(i)) room = randomChoice(Game.statueRooms);
             else if (obeliskRoomIs.includes(i)) room = randomChoice(Game.obeliskRooms);
@@ -212,6 +234,8 @@ function generateLevel() {
         if (r === startRoomI) {
             Game.startX = startX + Math.floor(startRoomWidth / 2) - 1;
             Game.startY = startY + Math.floor(startRoomHeight / 2) - 1;
+        } else if (r === endingRoomI) {
+            level[startY + Math.floor(currentRoom.length / 2)][startX + Math.floor(currentRoom[0].length) / 2] = "exit";
         }
 
         previousX = startX + currentRoom[0].length;
