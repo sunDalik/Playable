@@ -11,12 +11,14 @@ class Eel extends Enemy {
         this.inMemoryAngle = this.angle;
         this.SLIDE_ANIMATION_TIME = 10;
         this.ROTATE_TIME = 6;
+        this.wiggled = false;
         this.entityType = ENEMY_TYPE.EEL;
     }
 
     cancelAnimation() {
         super.cancelAnimation();
         this.angle = this.inMemoryAngle;
+        this.wiggled = false;
     }
 
     move() {
@@ -44,8 +46,14 @@ class Eel extends Enemy {
                 this.slideBumpX(tileStepX);
             } else {
                 this.slideX(tileStepX, () => {
+                    //fun fact: rotation applies after scaling!
+                    if (this.animationCounter >= this.SLIDE_ANIMATION_TIME / 2 && !this.wiggled) {
+                        this.scale.x *= -1;
+                        this.wiggled = true;
+                    }
                 }, () => {
-                    if (!isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y)) this.turnAround()
+                    if (!isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y)) this.turnAround();
+                    this.wiggled = false;
                 });
             }
         } else this.turnAround();
@@ -59,8 +67,13 @@ class Eel extends Enemy {
                 this.slideBumpY(tileStepY);
             } else {
                 this.slideY(tileStepY, () => {
+                    if (this.animationCounter >= this.SLIDE_ANIMATION_TIME / 2 && !this.wiggled) {
+                        this.scale.x *= -1;
+                        this.wiggled = true;
+                    }
                 }, () => {
-                    if (!isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + tileStepY)) this.turnAround()
+                    if (!isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + tileStepY)) this.turnAround();
+                    this.wiggled = false;
                 });
             }
         } else this.turnAround();
