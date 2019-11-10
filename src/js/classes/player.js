@@ -171,6 +171,7 @@ class Player extends AnimatedTileElement {
             let dmg = atk - this.getDef();
             if (dmg < 0.25) dmg = 0.25;
             this.health -= dmg;
+            shakeScreen();
             redrawHealthForPlayer(this);
             if (this.health <= 0) {
                 this.dead = true;

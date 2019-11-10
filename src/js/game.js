@@ -49,6 +49,11 @@ Game.maraudedStatues = [];
 Game.TURNTIME = 16;
 Game.WEAPON_ATTACK_TIME = 6;
 Game.ITEM_FLOAT_ANIMATION_TIME = 90;
+Game.SHAKE_TIME = 6;
+Game.LONG_SHAKE_TIME = 12;
+Game.SHAKE_AMPLITUDE = 50;
+Game.SHORT_SHAKE_AMPLITUDE = 35;
+Game.shakeAnimation = null;
 
 Game.playerDetectionGraph = null;
 Game.levelGraph = null;

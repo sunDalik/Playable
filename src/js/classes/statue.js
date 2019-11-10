@@ -34,6 +34,7 @@ class Statue extends TallTileElement {
     maraud() {
         if (!this.marauded) {
             createFadingText("Marauder!", this.position.x, this.position.y);
+            longShakeScreen();
             this.marauded = true;
         }
     }

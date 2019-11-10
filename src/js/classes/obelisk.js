@@ -30,6 +30,7 @@ class Obelisk extends FullTileElement {
             this.grail2.setMagic(this.magic2);
             this.activated = true;
             createFadingText("Choose one...", this.position.x, this.position.y);
+            longShakeScreen();
         }
     }
 
@@ -42,6 +43,7 @@ class Obelisk extends FullTileElement {
             this.grail3.setMagic(null);
             this.grail4.setMagic(null);
             createFadingText("Goodbye...", this.position.x, this.position.y);
+            longShakeScreen();
         }
     }
 
@@ -55,6 +57,7 @@ class Obelisk extends FullTileElement {
                     if (this.timesDonated === 1) this.grail3.setMagic(this.magic3);
                     else this.grail4.setMagic(this.magic4);
                     createFadingText("Be blessed...", this.position.x, this.position.y);
+                    longShakeScreen();
                 } else {
                     createFadingText("Your offer is fictitious...", this.position.x, this.position.y);
                 }

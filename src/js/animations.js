@@ -129,3 +129,35 @@ function createFloatingItemAnimation(item) {
     Game.APP.ticker.add(animate);
     Game.infiniteAnimations.push(animate);
 }
+
+function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1, shakeAmplitude = Game.SHAKE_AMPLITUDE) {
+    let counter = 0;
+    let shakeCounter = 0;
+    const step = shakeAmplitude / shakeAnimationTime;
+    if (Game.shakeAnimation) Game.APP.ticker.remove(Game.shakeAnimation);
+
+    function animate() {
+        if (counter < shakeAnimationTime / 4) {
+            Game.world.position.x -= step;
+        } else if (counter < shakeAnimationTime * 3 / 4) {
+            Game.world.position.x += step;
+        } else if (counter < shakeAnimationTime) {
+            Game.world.position.x -= step;
+        }
+        counter++;
+        if (counter >= shakeAnimationTime) {
+            counter = 0;
+            shakeCounter++;
+        }
+        if (shakeCounter >= shakeCount) {
+            Game.APP.ticker.remove(Game.shakeAnimation);
+        }
+    }
+
+    Game.shakeAnimation = animate;
+    Game.APP.ticker.add(animate);
+}
+
+function longShakeScreen() {
+    shakeScreen(Game.LONG_SHAKE_TIME, 2, Game.SHORT_SHAKE_AMPLITUDE);
+}

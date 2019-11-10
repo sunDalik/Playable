@@ -46,7 +46,7 @@ function setup() {
     Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, 0, 0);
     Game.player.setStats(0, 0.5, 0, 1.00);
     Game.player2.setStats(0, 1.00, 0, 0.5);
-    Game.player2.weapon = new Bow();
+    Game.player2.weapon = new Knife();
     Game.player.armor = new BasicArmor();
 
     drawHUD();
