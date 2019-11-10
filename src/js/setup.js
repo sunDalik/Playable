@@ -20,8 +20,6 @@ function initApplication() {
 
 window.addEventListener("resize", () => {
     Game.APP.renderer.resize(window.innerWidth, window.innerHeight);
-    drawHUD();
-    centerCamera();
 });
 
 function setup() {
@@ -53,6 +51,10 @@ function setup() {
 
     drawHUD();
     bindKeys();
+    window.addEventListener("resize", () => {
+        drawHUD();
+        centerCamera();
+    });
 
     Game.player.zIndex = Game.player2.zIndex + 1;
     Game.primaryPlayer = Game.player;
