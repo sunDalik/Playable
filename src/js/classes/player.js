@@ -7,10 +7,8 @@ class Player extends AnimatedTileElement {
         this.health = this.maxHealth;
         this.atkBase = 0;
         this.atkMul = 1;
-        this.atk = Math.round(this.atkBase * this.atkMul * 4) / 4;
         this.defBase = 0;
         this.defMul = 1;
-        this.def = Math.round(this.defBase * this.defMul * 4) / 4;
         this.STEP_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 12;
         this.role = ROLE.PLAYER;
@@ -115,10 +113,8 @@ class Player extends AnimatedTileElement {
     setStats(atkBase, atkMul, defBase, defMul) {
         this.atkBase = atkBase;
         this.atkMul = atkMul;
-        this.atk = Math.round(this.atkBase * this.atkMul * 4) / 4;
         this.defBase = defBase;
         this.defMul = defMul;
-        this.def = this.getDef();
     }
 
     getAtkWithWeapon(weapon) {
