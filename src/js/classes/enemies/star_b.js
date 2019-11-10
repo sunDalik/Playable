@@ -22,7 +22,7 @@ class StarB extends Star {
                         }
                     }
                 }
-                if (this.triggered) this.shake();
+                if (this.triggered) this.shake(1, 0);
             }
         } else this.turnDelay--;
     }

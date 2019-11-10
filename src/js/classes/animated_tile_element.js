@@ -7,6 +7,7 @@ class AnimatedTileElement extends TileElement {
         this.BUMP_ANIMATION_TIME = 12;
         this.SLIDE_ANIMATION_TIME = 12;
         this.ROTATE_TIME = 6;
+        this.SHAKE_ANIMATION_TIME = 9;
         this.animationCounter = 0;
         this.animation = null;
     }
@@ -136,6 +137,7 @@ class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(this.animation);
     }
 
+    //unify it
     slideX(tileStepX, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         this.animationCounter = 0;
         const step = Game.TILESIZE * tileStepX / animationTime;
@@ -214,14 +216,37 @@ class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(this.animation);
     }
 
-    rotateByAngle(angle, rotateTime = this.ROTATE_TIME) {
+    rotateByAngle(angle, rotateTime = this.ROTATE_TIME, cancellable = true) {
         this.animationCounter = 0;
-        this.cancelAnimation();
+        if (cancellable) this.cancelAnimation();
         this.animation = () => {
             this.angle += angle / rotateTime;
             this.animationCounter++;
             if (this.animationCounter >= rotateTime) {
                 Game.APP.ticker.remove(this.animation);
+                this.place();
+            }
+        };
+        Game.APP.ticker.add(this.animation);
+    }
+
+    shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
+        this.animationCounter = 0;
+        let step = Game.TILESIZE / 20 / (animationTime / 4);
+        this.animation = () => {
+            if (this.animationCounter < animationTime / 4) {
+                this.position.x += step * dirX;
+                this.position.y += step * dirY;
+            } else if (this.animationCounter < animationTime * 3 / 4) {
+                this.position.x -= step * dirX;
+                this.position.y -= step * dirY;
+            } else if (this.animationCounter < animationTime) {
+                this.position.x += step * dirX;
+                this.position.y += step * dirY;
+            }
+            this.animationCounter++;
+            if (this.animationCounter >= animationTime) {
+                this.animationCounter = 0;
                 this.place();
             }
         };

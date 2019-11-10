@@ -8,43 +8,47 @@ class PoisonEel extends Eel {
         this.atk = 1.25;
         this.damaged = false;
         this.triggered = false;
-        this.FULL_ROTATE_TIME = 12;
+        this.FULL_ROTATE_TIME = 15;
         this.entityType = ENEMY_TYPE.POISON_EEL;
     }
 
-    move() {
-        super.move();
-    }
-
-
     fitToTile() {
-        const scaleX = Game.TILESIZE / this.getUnscaledWidth() * 1.05;
-        const scaleY = scaleX;
+        const scaleX = Game.TILESIZE / this.getUnscaledWidth() * 1.1;
+        const scaleY = Math.abs(scaleX);
         this.scale.set(scaleX, scaleY);
     }
-}
 
+    move() {
+        if (this.triggered && this.turnDelay === 0) {
+            this.attack();
+            this.cancellable = true;
+            this.triggered = false;
+            this.turnDelay = 0;
+        } else if (this.triggered) {
+            this.turnDelay--;
+            if (this.inMemoryAngle === 0 || this.inMemoryAngle === 180) this.shake(1, 0);
+            else this.shake(0, 1);
+        } else super.move();
+    }
 
-/*
-I tried... Didn't work out :(
-place() {
-    switch (this.angle) {
-        case 0:
-            this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
-            this.position.y = Game.TILESIZE * this.tilePosition.y + Game.TILESIZE - Game.TILESIZE / 65 * 60 + this.height * this.anchor.y;
-            break;
-        case 90:
-            this.position.x = Game.TILESIZE * this.tilePosition.x + Game.TILESIZE * 2 - this.width - Game.TILESIZE / 65 * 75 + this.width * this.anchor.x;
-            this.position.y = Game.TILESIZE * this.tilePosition.y + (Game.TILESIZE - this.height) / 2 + this.height * this.anchor.y;
-            break;
-        case 180:
-            this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
-            this.position.y = Game.TILESIZE * this.tilePosition.y + Game.TILESIZE * 2 - this.height - Game.TILESIZE / 65 * 70 + this.height * this.anchor.y;
-            break;
-        case 270:
-            this.position.x = Game.TILESIZE * this.tilePosition.x + Game.TILESIZE - Game.TILESIZE / 65 * 55 + this.width * this.anchor.x;
-            this.position.y = Game.TILESIZE * this.tilePosition.y + (Game.TILESIZE - this.height) / 2 + this.height * this.anchor.y;
-            break;
+    damage(dmg, inputX = 0, inputY = 0, magical = false) {
+        super.damage(dmg, inputX, inputY, magical);
+        if (this.turnDelay === 0) {
+            this.cancellable = false;
+            Game.APP.ticker.remove(this.animation);
+        }
+        this.triggered = true;
+    }
+
+    attack() {
+        this.rotateByAngleMaximal(this.inMemoryAngle - this.angle, this.FULL_ROTATE_TIME, this.cancellable);
+    }
+
+    rotateByAngleMaximal(angle, rotateTime = this.FULL_ROTATE_TIME) {
+        if (angle < 180 && angle > -180) {
+            const sign = Math.sign(angle) !== 0 ? Math.sign(angle) : 1;
+            angle = -sign * (360 - Math.abs(angle));
+        }
+        super.rotateByAngle(angle, rotateTime, this.cancellable);
     }
 }
- */

@@ -25,7 +25,7 @@ class TileElement extends PIXI.Sprite {
     //probably should just make size parameter
     fitToTile() {
         const scaleX = Game.TILESIZE / this.getUnscaledWidth() * 0.80;
-        const scaleY = scaleX;
+        const scaleY = Math.abs(scaleX);
         this.scale.set(scaleX, scaleY);
     }
 

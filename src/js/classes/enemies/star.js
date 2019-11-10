@@ -8,7 +8,6 @@ class Star extends Enemy {
         this.atk = 1;
         this.triggered = false;
         this.triggeredDirections = null;
-        this.SHAKE_ANIMATION_TIME = 4;
         this.entityType = ENEMY_TYPE.STAR;
         this.turnDelay = 0;
     }
@@ -43,29 +42,9 @@ class Star extends Enemy {
                         }
                     }
                 }
-                if (this.triggered) this.shake();
+                if (this.triggered) this.shake(1, 0);
             }
         } else this.turnDelay--;
-    }
-
-    shake() {
-        let counter = 0;
-        let step = Game.TILESIZE / 20 / (this.SHAKE_ANIMATION_TIME / 2);
-        let direction = -1;
-        this.animation = () => {
-            if (counter < this.SHAKE_ANIMATION_TIME / 2) {
-                this.position.x += step * direction;
-                counter++;
-            } else if (counter < this.SHAKE_ANIMATION_TIME) {
-                this.position.x -= step * direction;
-                counter++;
-            } else {
-                counter = 0;
-                direction *= -1;
-                this.place();
-            }
-        };
-        Game.APP.ticker.add(this.animation);
     }
 
     attack() {
