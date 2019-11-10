@@ -182,6 +182,8 @@ function generateMap(level) {
             else if (map[i][j] === "sna") mapCell.entity = new Snail(j, i);
             else if (map[i][j] === "snab") mapCell.entity = new SnailB(j, i);
             else if (map[i][j] === "eel") mapCell.entity = new Eel(j, i);
+            else if (map[i][j] === "eel_dark") mapCell.entity = new PoisonEel(j, i);
+            else if (map[i][j] === "eel_poison") mapCell.entity = new DarkEel(j, i);
             else if (map[i][j] === "statue") mapCell.entity = new Statue(j, i, getRandomWeapon());
             else if (map[i][j] === "chest") mapCell.entity = new Chest(j, i, getRandomChestDrop());
             else if (map[i][j] === "obelisk") {

@@ -27,7 +27,8 @@ function loadAll() {
         .add("src/images/enemies/snail.png")
         .add("src/images/enemies/snail_b.png")
         .add("src/images/enemies/eel.png")
-        //.add("src/images/enemies/eel_poison.png")
+        .add("src/images/enemies/eel_poison.png")
+        .add("src/images/enemies/eel_dark.png")
 
         .add("src/images/HUD/heart_full.png")
         .add("src/images/HUD/heart_75.png")

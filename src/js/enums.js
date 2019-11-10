@@ -9,7 +9,9 @@ const ENEMY_TYPE = Object.freeze({
     SPIDER_B: 5,
     SNAIL: 6,
     SNAIL_B: 7,
-    EEL: 8
+    EEL: 8,
+    POISON_EEL: 9,
+    DARK_EEL: 10
 });
 
 const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});
