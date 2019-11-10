@@ -176,9 +176,9 @@ function generateLevel() {
             if (j === 0 || j === startRoomWidth - 1 || i === 0 || i === startRoomHeight - 1) {
                 startRoom[i][j] = "w";
             } else startRoom[i][j] = "";
-            if (j === startRoomWidth - 2 && i === startRoomHeight - 2) {
+            /*if (j === startRoomWidth - 2 && i === startRoomHeight - 2) {
                 startRoom[i][j] = "eel_poison";
-            } //for tests
+            } */ //for tests
             for (const entry of startRoomEntries) {
                 if (i === entry.y && j === entry.x) {
                     startRoom[i][j] = "entry";

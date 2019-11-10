@@ -42,6 +42,19 @@ class PoisonEel extends Eel {
 
     attack() {
         this.rotateByAngleMaximal(this.inMemoryAngle - this.angle, this.FULL_ROTATE_TIME, this.cancellable);
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                if (!(x === 0 && y === 0)) {
+                    const attackPositionX = this.tilePosition.x + x;
+                    const attackPositionY = this.tilePosition.y + y;
+                    if (Game.map[attackPositionY][attackPositionX].hazard === null) {
+                        new PoisonHazard(attackPositionX, attackPositionY).addToWorld();
+                    } else Game.map[attackPositionY][attackPositionX].hazard.refreshLifetime();
+                    const player = getPlayerOnTile(attackPositionX, attackPositionY);
+                    if (player) player.damage(this.atk);
+                }
+            }
+        }
     }
 
     rotateByAngleMaximal(angle, rotateTime = this.FULL_ROTATE_TIME) {

@@ -3,7 +3,7 @@ class Hazard extends FullTileElement {
         super(texture, tilePositionX, tilePositionY);
         this.width = Game.TILESIZE;
         this.height = Game.TILESIZE;
-        this.zIndex = -1;
+        this.zIndex = -3;
         this.LIFETIME = 0;
         this.turnsLeft = this.LIFETIME;
         this.atk = 0;
