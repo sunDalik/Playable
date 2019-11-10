@@ -222,6 +222,7 @@ class AnimatedTileElement extends TileElement {
             this.animationCounter++;
             if (this.animationCounter >= rotateTime) {
                 Game.APP.ticker.remove(this.animation);
+                this.place();
             }
         };
         Game.APP.ticker.add(this.animation);
