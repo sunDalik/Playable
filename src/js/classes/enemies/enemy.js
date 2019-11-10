@@ -34,7 +34,7 @@ class Enemy extends AnimatedTileElement {
     }
 
     moveHealthContainer() {
-        this.healthContainer.position.x = this.position.x - getHealthArray(this).length * (Game.TILESIZE / 65 * 20 + 5) / 2 + 5 / 2;
+        this.healthContainer.position.x = this.position.x - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 5) / 2 + 5 / 2;
         this.healthContainer.position.y = this.position.y + this.height * 0.5 + 10;
     }
 
@@ -83,6 +83,7 @@ class Enemy extends AnimatedTileElement {
         return distanceToPlayer1.length !== 0 || distanceToPlayer2.length !== 0;
     }
 
+    //probably will need to change those so it accepts more parameters and sends them?
     stepX(tileStepX) {
         super.stepX(tileStepX, () => this.moveHealthContainer())
     }
@@ -99,19 +100,31 @@ class Enemy extends AnimatedTileElement {
         super.bumpY(tileStepY, () => this.moveHealthContainer())
     }
 
-    slideX(tileStepX) {
-        super.slideX(tileStepX, () => this.moveHealthContainer());
+    slideX(tileStepX, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        super.slideX(tileStepX, () => {
+            if (onFrame) onFrame();
+            this.moveHealthContainer()
+        }, onEnd, animationTime);
     }
 
-    slideY(tileStepY) {
-        super.slideY(tileStepY, () => this.moveHealthContainer());
+    slideY(tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        super.slideY(tileStepY, () => {
+            if (onFrame) onFrame();
+            this.moveHealthContainer()
+        }, onEnd, animationTime);
     }
 
-    slideBumpX(tileStepX) {
-        super.slideBumpX(tileStepX, () => this.moveHealthContainer())
+    slideBumpX(tileStepX, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        super.slideBumpX(tileStepX, () => {
+            if (onFrame) onFrame();
+            this.moveHealthContainer()
+        }, onEnd, animationTime);
     }
 
-    slideBumpY(tileStepY) {
-        super.slideBumpY(tileStepY, () => this.moveHealthContainer());
+    slideBumpY(tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        super.slideBumpY(tileStepY, () => {
+            if (onFrame) onFrame();
+            this.moveHealthContainer()
+        }, onEnd, animationTime);
     }
 }

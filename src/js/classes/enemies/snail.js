@@ -60,14 +60,14 @@ class Snail extends Enemy {
         if (Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
             this.scale.x *= -1;
         }
-        super.slideX(tileStepX, () => this.moveHealthContainer())
+        super.slideX(tileStepX)
     }
 
     slideBumpX(tileStepX) {
         if (Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
             this.scale.x *= -1;
         }
-        super.slideBumpX(tileStepX, () => this.moveHealthContainer())
+        super.slideBumpX(tileStepX)
     }
 
     chasePlayer(player) {

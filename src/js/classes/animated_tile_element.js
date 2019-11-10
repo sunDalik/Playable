@@ -134,9 +134,9 @@ class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(this.animation);
     }
 
-    slideX(tileStepX, onFrame = null, onEnd = null, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
+    slideX(tileStepX, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         let counter = 0;
-        const step = Game.TILESIZE * tileStepX / SLIDE_ANIMATION_TIME;
+        const step = Game.TILESIZE * tileStepX / animationTime;
         this.tilePosition.x += tileStepX;
 
         Game.APP.ticker.remove(this.animation);
@@ -144,7 +144,7 @@ class AnimatedTileElement extends TileElement {
             this.position.x += step;
             counter++;
             if (onFrame) onFrame();
-            if (counter >= SLIDE_ANIMATION_TIME) {
+            if (counter >= animationTime) {
                 Game.APP.ticker.remove(this.animation);
                 this.place();
                 if (onEnd) onEnd();
@@ -153,9 +153,9 @@ class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(this.animation);
     }
 
-    slideY(tileStepY, onFrame = null, onEnd = null, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
+    slideY(tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         let counter = 0;
-        const step = Game.TILESIZE * tileStepY / SLIDE_ANIMATION_TIME;
+        const step = Game.TILESIZE * tileStepY / animationTime;
         this.tilePosition.y += tileStepY;
 
         Game.APP.ticker.remove(this.animation);
@@ -163,7 +163,7 @@ class AnimatedTileElement extends TileElement {
             this.position.y += step;
             counter++;
             if (onFrame) onFrame();
-            if (counter >= SLIDE_ANIMATION_TIME) {
+            if (counter >= animationTime) {
                 Game.APP.ticker.remove(this.animation);
                 this.place();
                 if (onEnd) onEnd();
@@ -172,18 +172,18 @@ class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(this.animation);
     }
 
-    slideBumpX(tileStepX, onFrame = null, onEnd = null) {
+    slideBumpX(tileStepX, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         let counter = 0;
-        const step = Game.TILESIZE * tileStepX / this.SLIDE_ANIMATION_TIME;
+        const step = Game.TILESIZE * tileStepX / animationTime;
         this.animation = () => {
-            if (counter < this.SLIDE_ANIMATION_TIME / 2) {
+            if (counter < animationTime / 2) {
                 this.position.x += step;
             } else {
                 this.position.x -= step;
             }
             counter++;
             if (onFrame) onFrame();
-            if (counter >= this.SLIDE_ANIMATION_TIME) {
+            if (counter >= animationTime) {
                 Game.APP.ticker.remove(this.animation);
                 this.place();
                 if (onEnd) onEnd();
@@ -192,22 +192,33 @@ class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(this.animation);
     }
 
-    slideBumpY(tileStepY, onFrame = null, onEnd = null) {
+    slideBumpY(tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         let counter = 0;
-        const step = Game.TILESIZE * tileStepY / this.SLIDE_ANIMATION_TIME;
+        const step = Game.TILESIZE * tileStepY / animationTime;
         this.animation = () => {
-            if (counter < this.SLIDE_ANIMATION_TIME / 2) {
+            if (counter < animationTime / 2) {
                 this.position.y += step;
             } else {
                 this.position.y -= step;
             }
             counter++;
             if (onFrame) onFrame();
-            if (counter >= this.SLIDE_ANIMATION_TIME) {
+            if (counter >= animationTime) {
                 Game.APP.ticker.remove(this.animation);
                 this.place();
                 if (onEnd) onEnd();
             }
+        };
+        Game.APP.ticker.add(this.animation);
+    }
+
+    rotateByAngle(angle, rotateTime = this.ROTATE_TIME) {
+        let counter = 0;
+        this.cancelAnimation();
+        this.animation = () => {
+            this.angle += angle / rotateTime;
+            counter++;
+            if (counter >= rotateTime) Game.APP.ticker.remove(this.animation);
         };
         Game.APP.ticker.add(this.animation);
     }

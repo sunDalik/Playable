@@ -97,6 +97,7 @@ function createFadingText(caption, positionX, positionY) {
     Game.APP.ticker.add(animation);
 }
 
+//maybe need to move it to AnimatedTileElement class?
 function rotate(object, clockwise = true) {
     let counter = 0;
     object.animation = function () {
