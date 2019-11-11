@@ -1,6 +1,7 @@
-"use strict";
+import {Game} from "../../game"
+import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
 
-class Petrification {
+export class Petrification {
     constructor() {
         this.texture = Game.resources["src/images/magic/petrification.png"].texture;
         this.type = MAGIC_TYPE.PETRIFICATION;

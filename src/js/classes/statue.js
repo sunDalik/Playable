@@ -1,6 +1,9 @@
-"use strict";
+import {Game} from "../game"
+import {TallTileElement} from "./tall_tile_element"
+import {ROLE, INANIMATE_TYPE, WEAPON_TYPE} from "../enums";
+import {createFadingText, longShakeScreen} from "../animations";
 
-class Statue extends TallTileElement {
+export class Statue extends TallTileElement {
     constructor(tilePositionX, tilePositionY, weapon) {
         super(Game.resources["src/images/other/statue.png"].texture, tilePositionX, tilePositionY);
         this.weapon = weapon;

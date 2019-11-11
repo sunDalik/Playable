@@ -1,6 +1,7 @@
-"use strict";
+import {Game} from "../../../game"
+import {EQUIPMENT_TYPE, TOOL_TYPE} from "../../../enums";
 
-class Pickaxe {
+export class Pickaxe {
     constructor() {
         this.texture = Game.resources["src/images/tools/pickaxe.png"].texture;
         this.type = TOOL_TYPE.PICKAXE;

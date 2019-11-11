@@ -1,6 +1,11 @@
-"use strict";
+import {Game} from "./game"
+import * as PIXI from "pixi.js"
+import {STAGE, TILE_TYPE, ROLE} from "./enums";
+import {VoidTile} from "./classes/void_tile";
+import {removeAllChildrenFromContainer, decrementEachDigitInHex} from "./utils";
+import {centerCamera} from "./camera";
 
-function drawTiles() {
+export function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
             if (Game.map[i][j].tile !== null) {
@@ -11,7 +16,7 @@ function drawTiles() {
     }
 }
 
-function drawVoids() {
+export function drawVoids() {
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
             if (Game.map[i][j].tileType === TILE_TYPE.VOID) {
@@ -24,7 +29,7 @@ function drawVoids() {
     }
 }
 
-function createDarkness() {
+export function createDarkness() {
     for (let i = 0; i < Game.map.length; ++i) {
         Game.darkTiles[i] = [];
         for (let j = 0; j < Game.map[0].length; ++j) {
@@ -63,7 +68,7 @@ function createDarkness() {
     }
 }
 
-function drawEntities() {
+export function drawEntities() {
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
             const entity = Game.map[i][j].entity;
@@ -78,22 +83,22 @@ function drawEntities() {
     }
 }
 
-function drawHUD() {
+export function drawHUD() {
     drawHealth();
     drawSlots();
 }
 
-function drawHealth() {
+export function drawHealth() {
     redrawHealthForPlayer(Game.player);
     redrawHealthForPlayer(Game.player2);
 }
 
-function drawSlots() {
+export function drawSlots() {
     redrawSlotsForPlayer(Game.player);
     redrawSlotsForPlayer(Game.player2);
 }
 
-function redrawHealthForPlayer(player) {
+export function redrawHealthForPlayer(player) {
     const container = player === Game.player ? Game.hearts1 : Game.hearts2;
     removeAllChildrenFromContainer(container);
     const heartSize = 45;
@@ -112,7 +117,7 @@ function redrawHealthForPlayer(player) {
     }
 }
 
-function getHealthArray(entity) {
+export function getHealthArray(entity) {
     let health = [];
     for (let i = 0; i < entity.maxHealth; ++i) {
         if (i === Math.trunc(entity.health) && entity.health > 0) {
@@ -128,7 +133,7 @@ function getHealthArray(entity) {
     return health;
 }
 
-function getHeartTexture(heartValue) {
+export function getHeartTexture(heartValue) {
     switch (heartValue) {
         case 1:
             return Game.resources["src/images/HUD/heart_full.png"].texture;
@@ -145,14 +150,14 @@ function getHeartTexture(heartValue) {
     }
 }
 
-function getHeartsBottomLineForPlayer(player) {
+export function getHeartsBottomLineForPlayer(player) {
     const heartYOffset = 20;
     const heartRowOffset = 0;
     const heartSize = 45;
     return heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5)
 }
 
-function redrawSlotsForPlayer(player) {
+export function redrawSlotsForPlayer(player) {
     const container = player === Game.player ? Game.slots1 : Game.slots2;
     removeAllChildrenFromContainer(container);
     const slotSize = 70;
@@ -282,7 +287,7 @@ function redrawSlotsForPlayer(player) {
     }
 }
 
-function drawGrid() {
+export function drawGrid() {
     let gridTexture = Game.resources["src/images/grid.png"].texture;
     let grid = new PIXI.TilingSprite(gridTexture, Game.map[0].length * gridTexture.width, Game.map.length * gridTexture.height);
     grid.scale.set(Game.TILESIZE / gridTexture.width, Game.TILESIZE / gridTexture.height);
@@ -295,7 +300,7 @@ function drawGrid() {
     return grid;
 }
 
-function drawOther() {
+export function drawOther() {
     let gameWorldBG = new PIXI.Graphics();
     gameWorldBG.beginFill(Game.BGColor);
     gameWorldBG.drawRect(10, 10, Game.world.width - 20, Game.world.height - 20);
@@ -312,7 +317,7 @@ function drawOther() {
     Game.otherGraphics.push(blackOutline);
 }
 
-function redrawTiles() {
+export function redrawTiles() {
     Game.world.removeChild(Game.grid);
     Game.grid = drawGrid();
     for (const graphic of Game.otherGraphics) {
@@ -341,7 +346,7 @@ function redrawTiles() {
 let litAreas = [];
 let litDTAreas = [];
 
-function lightPlayerPosition(player) {
+export function lightPlayerPosition(player) {
     litAreas = [];
     let pathDist = 5;
     let roomDist = 9;

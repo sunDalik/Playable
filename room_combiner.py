@@ -2,7 +2,7 @@ import os
 
 def compileDirectoryIntoVariable(directory, variable):
     files_number = len([name for name in os.listdir(directory) if os.path.isfile(directory + name)])
-    rooms_combined = "const " + variable + " = JSON.parse('["
+    rooms_combined = "export const " + variable + " = JSON.parse('["
 
     for index, file in enumerate(os.listdir(directory)):
         with open(directory + file, "r") as f:

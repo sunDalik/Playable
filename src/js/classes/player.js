@@ -1,6 +1,14 @@
-"use strict";
+import {Game} from "../game"
+import {AnimatedTileElement} from "./animated_tile_element";
+import {ROLE, INANIMATE_TYPE, TILE_TYPE, EQUIPMENT_TYPE, TOOL_TYPE} from "../enums";
+import {scaleGameMap, centerCameraX, centerCameraY} from "../camera";
+import {shakeScreen} from "../animations";
+import {lightPlayerPosition, redrawHealthForPlayer, redrawSlotsForPlayer, redrawTiles} from "../draw";
+import {isInanimate, isRelativelyEmpty, isAWall} from "../mapChecks";
+import {calculateDetectionGraph} from "../map_generation"
+import {placePlayerOnGameMap, removePlayerFromGameMap, removeTileFromWorld, gotoNextLevel} from "../game_logic";
 
-class Player extends AnimatedTileElement {
+export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 4;

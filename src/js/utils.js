@@ -1,33 +1,38 @@
-"use strict";
+import {Game} from "./game"
+import {Knife} from "./classes/equipment/weapons/knife";
+import {Bow} from "./classes/equipment/weapons/bow";
+import {NinjaKnife} from "./classes/equipment/weapons/ninja_knife";
+import {Sword} from "./classes/equipment/weapons/sword";
+import {getCrossProduct} from "./math";
 
-function randomChoice(array) {
+export function randomChoice(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-function randomArrayIndex(array) {
+export function randomArrayIndex(array) {
     return Math.floor(Math.random() * array.length);
 }
 
 // random: [min; max)
-function getRandomInt(min, max) {
+export function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-function getMaxOfArray(numArray) {
+export function getMaxOfArray(numArray) {
     return Math.max.apply(null, numArray);
 }
 
-function arraySum(array) {
+export function arraySum(array) {
     return array.reduce((a, b) => a + b, 0)
 }
 
-function distanceBetweenPoints(x1, y1, x2, y2) {
+export function distanceBetweenPoints(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
 
 }
 
 //stolen
-function randomShuffle(array) {
+export function randomShuffle(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
@@ -42,7 +47,7 @@ function randomShuffle(array) {
     return array;
 }
 
-function copy2dArray(array) {
+export function copy2dArray(array) {
     let newArray = [];
     for (let i = 0; i < array.length; i++) {
         newArray[i] = array[i].slice();
@@ -50,43 +55,43 @@ function copy2dArray(array) {
     return newArray;
 }
 
-function getRandomValue(obj) {
+export function getRandomValue(obj) {
     const keys = Object.keys(obj);
     return obj[keys[keys.length * Math.random() << 0]];
 }
 
-function getRandomWeapon() {
+export function getRandomWeapon() {
     return randomChoice([new Knife(), new NinjaKnife(), new Sword(), new Bow()]);
 }
 
 //todo implement rarity system
-function getRandomSpell() {
+export function getRandomSpell() {
     if (Game.magicPool.length === 0) return null;
     return randomChoice(Game.magicPool);
 }
 
 //todo implement rarity system
-function getRandomChestDrop() {
+export function getRandomChestDrop() {
     if (Game.chestItemPool.length === 0) return null;
     const item = randomChoice(Game.chestItemPool);
     removeObjectFromArray(item, Game.chestItemPool);
     return item;
 }
 
-function removeAllChildrenFromContainer(container) {
+export function removeAllChildrenFromContainer(container) {
     for (let i = container.children.length - 1; i >= 0; i--) {
         container.removeChild(container.children[i]);
     }
 }
 
-function removeObjectFromArray(object, array) {
+export function removeObjectFromArray(object, array) {
     const index = array.indexOf(object);
     if (index !== -1) {
         array.splice(index, 1);
     }
 }
 
-function decrementEachDigitInHex(hex) {
+export function decrementEachDigitInHex(hex) {
     let newHex = "0x";
     for (let i = 2; i < hex.length; i++) {
         if (hex[i] === "0") newHex += "0";
@@ -95,7 +100,7 @@ function decrementEachDigitInHex(hex) {
     return newHex;
 }
 
-function collisionCheck(vertexData1, vertexData2) {
+export function collisionCheck(vertexData1, vertexData2) {
     const lines1 = getLinesByVertexData(vertexData1);
     const lines2 = getLinesByVertexData(vertexData2);
 
@@ -118,7 +123,7 @@ function collisionCheck(vertexData1, vertexData2) {
     return false;
 }
 
-function getLinesByVertexData(vertexData) {
+export function getLinesByVertexData(vertexData) {
     return [[vertexData[0], vertexData[1], vertexData[2], vertexData[3]],
         [vertexData[2], vertexData[3], vertexData[4], vertexData[5]],
         [vertexData[4], vertexData[5], vertexData[6], vertexData[7]],
@@ -127,7 +132,7 @@ function getLinesByVertexData(vertexData) {
 
 // returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
 // from stackoverflow.com/questions/9043805/test-if-two-lines-intersect-javascript-function
-function linesIntersect(a, b, c, d, p, q, r, s) {
+export function linesIntersect(a, b, c, d, p, q, r, s) {
     const det = (c - a) * (s - q) - (r - p) * (d - b);
     if (det === 0) {
         return false;
@@ -140,7 +145,7 @@ function linesIntersect(a, b, c, d, p, q, r, s) {
 
 //returns true if the point (a,b) is inside parallelogram (p0,p1,p2,p3)
 // (p0 is the upper left corner, p1 is the upper right etc.)
-function pointInsideParallelogram(a, b, p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y) {
+export function pointInsideParallelogram(a, b, p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y) {
     let skewedLeft = p0x < p3x;
     let notSkewed = p0x === p3x;
     let x1, x2, y1, y2, k, xp;

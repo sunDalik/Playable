@@ -1,6 +1,10 @@
-"use strict";
+import {Game} from "../game"
+import {FullTileElement} from "./full_tile_element"
+import {ROLE, INANIMATE_TYPE} from "../enums";
+import {createFloatingItemAnimation} from "../animations";
+import {swapEquipmentWithPlayer, removeEquipmentFromPlayer} from "../game_logic";
 
-class Chest extends FullTileElement {
+export class Chest extends FullTileElement {
     constructor(tilePositionX, tilePositionY, contents) {
         super(Game.resources["src/images/other/chest.png"].texture, tilePositionX, tilePositionY);
         this.contents = contents;

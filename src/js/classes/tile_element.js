@@ -1,6 +1,7 @@
-"use strict";
+import {Sprite} from "pixi.js"
+import {Game} from "../game"
 
-class TileElement extends PIXI.Sprite {
+export class TileElement extends Sprite {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture);
         this.tilePosition = {

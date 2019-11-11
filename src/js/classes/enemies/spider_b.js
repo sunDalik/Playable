@@ -1,16 +1,15 @@
-"use strict";
+import {Game} from "../../game"
+import {Spider} from "./spider"
+import {ENEMY_TYPE} from "../../enums";
+import {getPlayerOnTile, isNotAWall, isRelativelyEmpty} from "../../mapChecks";
 
-class SpiderB extends Spider {
+export class SpiderB extends Spider {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/spider_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 3;
         this.health = this.maxHealth;
-        this.entityType = ENEMY_TYPE.SPIDER_B;
+        this.this = ENEMY_TYPE.SPIDER_B;
         this.chase = false;
-    }
-
-    move() {
-        super.move();
     }
 
     throwAway(throwX, throwY) {

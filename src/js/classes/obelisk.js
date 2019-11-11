@@ -1,6 +1,11 @@
-"use strict";
+import {Game} from "../game"
+import {FullTileElement} from "./full_tile_element";
+import {ROLE, INANIMATE_TYPE} from "../enums";
+import {Grail} from "./grail";
+import {createFadingText, longShakeScreen} from "../animations";
+import {redrawHealthForPlayer} from "../draw";
 
-class Obelisk extends FullTileElement {
+export class Obelisk extends FullTileElement {
     constructor(tilePositionX, tilePositionY, magic) {
         super(Game.resources["src/images/other/obelisk.png"].texture, tilePositionX, tilePositionY);
         this.role = ROLE.INANIMATE;

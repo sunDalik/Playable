@@ -1,6 +1,8 @@
-"use strict";
+import {Game} from "../game"
+import {TileElement} from "./tile_element"
+import {cubicBezier} from "../math";
 
-class AnimatedTileElement extends TileElement {
+export class AnimatedTileElement extends TileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
         this.STEP_ANIMATION_TIME = 8;

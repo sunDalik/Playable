@@ -1,13 +1,16 @@
-"use strict";
+import {Game} from "../../game"
+import {Roller} from "./roller"
+import {ENEMY_TYPE} from "../../enums";
+import {isNotOutOfMap, isRelativelyEmpty, getPlayerOnTile, isEmpty} from "../../mapChecks";
 
-class RollerB extends Roller {
+export class RollerB extends Roller {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/roller_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.health = 0.25;
         this.atk = 1.25;
         this.ROLL_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 14;
-        this.entityType = ENEMY_TYPE.ROLLER_B;
+        this.this = ENEMY_TYPE.ROLLER_B;
     }
 
     move() {

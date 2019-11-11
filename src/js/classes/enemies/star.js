@@ -1,6 +1,10 @@
-"use strict";
+import {Game} from "../../game"
+import {Enemy} from "./enemy"
+import {ENEMY_TYPE, DIRECTIONS} from "../../enums";
+import {getPlayerOnTile, isNotAWall, isEnemy, isRelativelyEmpty} from "../../mapChecks";
+import {createFadingAttack} from "../../animations";
 
-class Star extends Enemy {
+export class Star extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/star.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
@@ -8,7 +12,7 @@ class Star extends Enemy {
         this.atk = 1;
         this.triggered = false;
         this.triggeredDirections = null;
-        this.entityType = ENEMY_TYPE.STAR;
+        this.this = ENEMY_TYPE.STAR;
         this.turnDelay = 0;
     }
 
@@ -70,7 +74,7 @@ class Star extends Enemy {
     attackTileAtOffset(tileOffsetX, tileOffsetY) {
         const attackPositionX = this.tilePosition.x + tileOffsetX;
         const attackPositionY = this.tilePosition.y + tileOffsetY;
-        if (isNotAWall(attackPositionX, attackPositionY) && !isEnemy(attackPositionX, attackPositionY)) {
+        if (isRelativelyEmpty(attackPositionX, attackPositionY)) {
             createFadingAttack(new TileElement(Game.resources["src/images/enemy_attack.png"].texture, attackPositionX, attackPositionY));
             const player = getPlayerOnTile(attackPositionX, attackPositionY);
             if (player !== null) player.damage(this.atk);

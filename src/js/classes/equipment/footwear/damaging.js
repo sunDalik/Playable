@@ -1,6 +1,7 @@
-"use strict";
+import {Game} from "../../../game"
+import {EQUIPMENT_TYPE, FOOTWEAR_TYPE} from "../../../enums";
 
-class DamagingBoots {
+export class DamagingBoots {
     constructor() {
         this.texture = Game.resources["src/images/footwear/damaging.png"].texture;
         this.type = FOOTWEAR_TYPE.DAMAGING;

@@ -1,6 +1,8 @@
-"use strict";
+import {Game} from "./game"
+import {removeObjectFromArray} from "./utils"
+import * as PIXI from "pixi.js"
 
-function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2, thin = false) {
+export function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2, thin = false) {
     let attackParticle = new PIXI.Sprite(Game.resources["src/images/weapon_particle.png"].texture);
     if (thin) {
         attackParticle.width = Game.TILESIZE / 5;
@@ -45,7 +47,7 @@ function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2, thin = fals
     }
 }
 
-function createFadingAttack(attack, tileAttack = true) {
+export function createFadingAttack(attack, tileAttack = true) {
     if (tileAttack) attack.place();
     Game.world.addChild(attack);
     Game.tiles.push(attack);
@@ -66,7 +68,7 @@ function createFadingAttack(attack, tileAttack = true) {
     Game.APP.ticker.add(animation);
 }
 
-function createFadingText(caption, positionX, positionY) {
+export function createFadingText(caption, positionX, positionY) {
     const TEXT_ANIMATION_TIME = 80;
     let counter = 0;
     let text = new PIXI.Text(caption, {
@@ -98,7 +100,7 @@ function createFadingText(caption, positionX, positionY) {
 }
 
 //maybe need to move it to AnimatedTileElement class?
-function rotate(object, clockwise = true) {
+export function rotate(object, clockwise = true) {
     let counter = 0;
     object.animation = function () {
         if (clockwise) object.rotation += 2 * Math.PI / Game.TURNTIME;
@@ -109,7 +111,7 @@ function rotate(object, clockwise = true) {
     Game.APP.ticker.add(object.animation);
 }
 
-function createFloatingItemAnimation(item) {
+export function createFloatingItemAnimation(item) {
     let counter = 0;
     const step = item.height / 4 / Game.ITEM_FLOAT_ANIMATION_TIME;
 
@@ -131,7 +133,7 @@ function createFloatingItemAnimation(item) {
     Game.infiniteAnimations.push(animate);
 }
 
-function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1, shakeAmplitude = Game.SHAKE_AMPLITUDE) {
+export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1, shakeAmplitude = Game.SHAKE_AMPLITUDE) {
     let counter = 0;
     let shakeCounter = 0;
     const step = shakeAmplitude / shakeAnimationTime;
@@ -159,6 +161,6 @@ function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1, shake
     Game.APP.ticker.add(animate);
 }
 
-function longShakeScreen() {
+export function longShakeScreen() {
     shakeScreen(Game.LONG_SHAKE_TIME, 2, Game.SHORT_SHAKE_AMPLITUDE);
 }

@@ -1,6 +1,4 @@
-"use strict";
-
-function keyboard(code) {
+export function keyboard(code) {
     let key = {
         code: code,
         isDown: false,

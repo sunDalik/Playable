@@ -1,6 +1,6 @@
-"use strict";
+import {Game} from "./game";
 
-function loadAll() {
+export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/player.png")
         .add("src/images/player2.png")
@@ -86,5 +86,5 @@ function loadAll() {
         .add("src/images/magic/petrification.png")
 
         .add("src/images/grid.png")
-        .load(setup);
+        .load(afterLoad);
 }

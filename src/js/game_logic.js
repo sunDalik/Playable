@@ -1,6 +1,10 @@
-"use strict";
+import {Game} from "./game"
+import {incrementStage, initializeLevel, setVariablesForStage} from "./setup"
+import {ROLE, EQUIPMENT_TYPE, FOOTWEAR_TYPE} from "./enums"
+import {removeObjectFromArray} from "./utils";
+import {redrawSlotsForPlayer} from "./draw";
 
-function enemyTurn() {
+export function enemyTurn() {
     if (Game.enemiesTimeout === null) {
         Game.enemiesTimeout = setTimeout(() => {
             moveEnemies();
@@ -10,7 +14,7 @@ function enemyTurn() {
     }
 }
 
-function moveEnemies() {
+export function moveEnemies() {
     for (const enemy of Game.enemies) {
         if (!enemy.dead) {
             if (enemy.stun <= 0) {
@@ -23,14 +27,14 @@ function moveEnemies() {
     }
 }
 
-function updateHazards() {
+export function updateHazards() {
     for (let i = 0; i < Game.hazards.length; ++i) {
         const lives = Game.hazards[i].updateLifetime();
         if (!lives) i--; //dead hazards are removed from array, so we don't increment i
     }
 }
 
-function playerTurn(player, playerMove, bothPlayers = false) {
+export function playerTurn(player, playerMove, bothPlayers = false) {
     if (/*Game.playerMoved !== player
         &&*/ ((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead))) {
         if (Game.enemiesTimeout !== null) {
@@ -59,13 +63,13 @@ function playerTurn(player, playerMove, bothPlayers = false) {
     }
 }
 
-function damagePlayersWithHazards() {
+export function damagePlayersWithHazards() {
     damagePlayerWithHazards(Game.player);
     damagePlayerWithHazards(Game.player2);
 }
 
 //should change later when there will be more hazards
-function damagePlayerWithHazards(player) {
+export function damagePlayerWithHazards(player) {
     if (Game.map[player.tilePosition.y][player.tilePosition.x].hazard !== null && !player.dead) {
         if (!(player.footwear && player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD)) {
             player.damage(Game.map[player.tilePosition.y][player.tilePosition.x].hazard.atk)
@@ -73,7 +77,7 @@ function damagePlayerWithHazards(player) {
     }
 }
 
-function removePlayerFromGameMap(player) {
+export function removePlayerFromGameMap(player) {
     if (player === Game.map[player.tilePosition.y][player.tilePosition.x].entity) {
         Game.map[player.tilePosition.y][player.tilePosition.x].entity = Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity;
         Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
@@ -82,7 +86,7 @@ function removePlayerFromGameMap(player) {
     }
 }
 
-function placePlayerOnGameMap(player) {
+export function placePlayerOnGameMap(player) {
     if (Game.map[player.tilePosition.y][player.tilePosition.x].entity !== null && Game.map[player.tilePosition.y][player.tilePosition.x].entity.role === ROLE.PLAYER) {
         if (player === Game.primaryPlayer) {
             Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity = Game.map[player.tilePosition.y][player.tilePosition.x].entity;
@@ -95,7 +99,7 @@ function placePlayerOnGameMap(player) {
     }
 }
 
-function switchPlayers() {
+export function switchPlayers() {
     let temp = Game.player2.zIndex;
     Game.player2.zIndex = Game.player.zIndex;
     Game.player.zIndex = temp;
@@ -110,12 +114,12 @@ function switchPlayers() {
     }
 }
 
-function removeTileFromWorld(tile) {
+export function removeTileFromWorld(tile) {
     removeObjectFromArray(tile, Game.tiles);
     Game.world.removeChild(tile);
 }
 
-function swapEquipmentWithPlayer(player, equipment) {
+export function swapEquipmentWithPlayer(player, equipment) {
     let swappedEquipment = null;
     if (!equipment) return null;
     switch (equipment.equipmentType) {
@@ -145,7 +149,7 @@ function swapEquipmentWithPlayer(player, equipment) {
     return swappedEquipment
 }
 
-function removeEquipmentFromPlayer(player, equipmentType) {
+export function removeEquipmentFromPlayer(player, equipmentType) {
     let removedEquipment;
     switch (equipmentType) {
         case EQUIPMENT_TYPE.WEAPON:
@@ -174,7 +178,7 @@ function removeEquipmentFromPlayer(player, equipmentType) {
     return removedEquipment;
 }
 
-function gotoNextLevel() {
+export function gotoNextLevel() {
     cleanGameWorld();
     Game.tiles = [];
     Game.enemies = [];
@@ -188,7 +192,7 @@ function gotoNextLevel() {
     initializeLevel();
 }
 
-function cleanGameWorld() {
+export function cleanGameWorld() {
     for (const tile of Game.tiles) {
         Game.world.removeChild(tile);
     }

@@ -1,6 +1,10 @@
-"use strict";
+import {Game} from "../../game"
+import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
+import {isNotAWall, getPlayerOnTile, isEnemy} from "../../mapChecks";
+import {createFadingAttack, rotate} from "../../animations";
+import {FullTileElement} from "../full_tile_element";
 
-class Aura {
+export class Aura {
     constructor() {
         this.texture = Game.resources["src/images/magic/aura.png"].texture;
         this.type = MAGIC_TYPE.AURA;
@@ -19,14 +23,11 @@ class Aura {
                 const attackPositionY = wielder.tilePosition.y + y;
                 if (!(x === 0 && y === 0) && isNotAWall(attackPositionX, attackPositionY)) {
                     createFadingAttack(new FullTileElement(Game.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
-                    const tileEntity = Game.map[attackPositionY][attackPositionX].entity;
-                    if (tileEntity !== null && tileEntity.role === ROLE.ENEMY) {
-                        tileEntity.damage(this.atk, 0, 0, true);
+                    if (isEnemy(attackPositionX, attackPositionY)) {
+                        Game.map[attackPositionY][attackPositionX].entity.damage(this.atk, 0, 0, true);
                     }
                     const player = getPlayerOnTile(attackPositionX, attackPositionY);
-                    if (player !== null) {
-                        player.heal(this.healAmount);
-                    }
+                    if (player) player.heal(this.healAmount);
                 }
             }
         }

@@ -1,11 +1,16 @@
-"use strict";
+import {Game} from "../../game"
+import {Enemy} from "./enemy"
+import {ENEMY_TYPE} from "../../enums";
+import {PoisonHazard} from "../poison_hazard";
+import {isRelativelyEmpty, getPlayerOnTile} from "../../mapChecks";
+import {getRandomInt} from "../../utils";
 
-class Snail extends Enemy {
+export class Snail extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/snail.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
         this.health = this.maxHealth;
-        this.entityType = ENEMY_TYPE.SNAIL;
+        this.this = ENEMY_TYPE.SNAIL;
         this.atk = 1;
         this.turnDelay = 0;
         this.chase = false;

@@ -1,6 +1,10 @@
-"use strict";
+import {Game} from "../../game"
+import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
+import {isNotAWall, getPlayerOnTile, isEnemy} from "../../mapChecks";
+import {createFadingAttack, rotate} from "../../animations";
+import {FullTileElement} from "../full_tile_element";
 
-class Spikes {
+export class Spikes {
     constructor() {
         this.texture = Game.resources["src/images/magic/spikes.png"].texture;
         this.type = MAGIC_TYPE.SPIKES;
@@ -19,14 +23,11 @@ class Spikes {
                 const attackPositionY = wielder.tilePosition.y + offset * sign;
                 if (offset !== 0 && isNotAWall(attackPositionX, attackPositionY)) {
                     createFadingAttack(new FullTileElement(Game.resources["src/images/player2_attack.png"].texture, attackPositionX, attackPositionY));
-                    const tileEntity = Game.map[attackPositionY][attackPositionX].entity;
-                    if (tileEntity !== null && tileEntity.role === ROLE.ENEMY) {
-                        tileEntity.damage(this.atk, 0, 0, true);
+                    if (isEnemy(attackPositionX, attackPositionY)) {
+                        Game.map[attackPositionY][attackPositionX].entity.damage(this.atk, 0, 0, true);
                     }
                     const player = getPlayerOnTile(attackPositionX, attackPositionY);
-                    if (player !== null) {
-                        player.damage(this.friendlyFire);
-                    }
+                    if (player) player.damage(this.friendlyFire);
                 }
             }
         }

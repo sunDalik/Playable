@@ -1,6 +1,16 @@
-"use strict";
+import {Game} from "./game"
+import astar from "javascript-astar"
+import {
+    randomChoice,
+    getRandomInt,
+    copy2dArray,
+    randomArrayIndex,
+    getMaxOfArray,
+    arraySum,
+    randomShuffle
+} from "./utils";
 
-function generateLevel() {
+export function generateLevel() {
     let level = [[]];
     //set different parameters for dark tunnel
     const roomNumber = randomChoice([12, 15, 16]);
@@ -261,7 +271,7 @@ function generateLevel() {
     entryPoints = randomShuffle(entryPoints);
 
     // the Graph class is weird, levelGraph.grid.length will return number of Xs and levelGraph.grid[0].length number of Ys
-    let levelGraph = new Graph(level);
+    let levelGraph = new astar.Graph(level);
     for (let i = 0; i < levelGraph.grid.length; ++i) {
         for (let j = 0; j < levelGraph.grid[0].length; ++j) {
             if (levelGraph.grid[i][j].weight === "v" || levelGraph.grid[i][j].weight === "entry") {
@@ -297,7 +307,7 @@ function generateLevel() {
             if (!(entry.coords.x === testEntry.coords.x && entry.coords.y === testEntry.coords.y)) {
                 const start = levelPlayerGraph.grid[testEntry.coords.y][testEntry.coords.x];
                 const end = levelPlayerGraph.grid[entry.coords.y][entry.coords.x];
-                const result = astar.search(levelPlayerGraph, start, end);
+                const result = astar.astar.search(levelPlayerGraph, start, end);
                 if (result.length === 0) {
                     unreachableEntries.push(entry);
                 }
@@ -388,7 +398,7 @@ function getMinimalConnection(graph, roomConnections, startEntry, endEntries, ha
             && (!isRoomConnectedToRoom(roomConnections, entry.room_id, startEntry.room_id) || !roomsMustNotBeAlreadyConnected)) {
             const start = graph.grid[startEntry.coords.y][startEntry.coords.x];
             const end = graph.grid[entry.coords.y][entry.coords.x];
-            const result = astar.search(graph, start, end);
+            const result = astar.astar.search(graph, start, end);
             possibleConnections.push({connection: result, entry: entry});
         }
     }
@@ -427,9 +437,9 @@ function connectEntries(entry1, entry2, connection, roomConnections, level) {
 }
 
 //you will have to update it if you will use it (look at calculateDetectionGraph)
-function getLevelPlayerGraph(level) {
+export function getLevelPlayerGraph(level) {
     //graph where weights correspond to player's movement ability
-    let levelPlayerGraph = new Graph(level);
+    let levelPlayerGraph = new astar.Graph(level);
     for (let i = 0; i < levelPlayerGraph.grid.length; ++i) {
         for (let j = 0; j < levelPlayerGraph.grid[0].length; ++j) {
             if (levelPlayerGraph.grid[i][j].weight === "v" || levelPlayerGraph.grid[i][j].weight === "w") {

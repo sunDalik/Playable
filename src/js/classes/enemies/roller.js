@@ -1,6 +1,9 @@
-"use strict";
+import {Game} from "../../game"
+import {Enemy} from "./enemy"
+import {ENEMY_TYPE} from "../../enums";
+import {isRelativelyEmpty, getPlayerOnTile} from "../../mapChecks";
 
-class Roller extends Enemy {
+export class Roller extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/roller.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 1;
@@ -9,7 +12,7 @@ class Roller extends Enemy {
         this.direction = 1;
         this.ROLL_ANIMATION_TIME = 6;
         this.BUMP_ANIMATION_TIME = 14;
-        this.entityType = ENEMY_TYPE.ROLLER;
+        this.this = ENEMY_TYPE.ROLLER;
     }
 
     cancelAnimation() {

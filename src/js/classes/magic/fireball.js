@@ -1,6 +1,9 @@
-"use strict";
+import {Game} from "../../game"
+import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
+import {collisionCheck} from "../../utils";
+import {createFadingAttack} from "../../animations";
 
-class Fireball {
+export class Fireball {
     constructor() {
         this.texture = Game.resources["src/images/magic/fireball.png"].texture;
         this.type = MAGIC_TYPE.FIREBALL;

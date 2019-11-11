@@ -1,4 +1,11 @@
-class Grail extends FullTileElement {
+import {Game} from "../game"
+import {FullTileElement} from "./full_tile_element";
+import {ROLE, INANIMATE_TYPE, MAGIC_ALIGNMENT} from "../enums";
+import {createFloatingItemAnimation} from "../animations";
+import {removeObjectFromArray} from "../utils";
+import {TileElement} from "./tile_element";
+
+export class Grail extends FullTileElement {
     constructor(tilePositionX, tilePositionY, obelisk) {
         super(Game.resources["src/images/other/grail.png"].texture, tilePositionX, tilePositionY);
         this.role = ROLE.INANIMATE;

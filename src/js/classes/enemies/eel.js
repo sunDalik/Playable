@@ -1,6 +1,9 @@
-"use strict";
+import {Game} from "../../game"
+import {Enemy} from "./enemy"
+import {ENEMY_TYPE} from "../../enums";
+import {getPlayerOnTile, isRelativelyEmpty} from "../../mapChecks";
 
-class Eel extends Enemy {
+export class Eel extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/eel.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
@@ -12,7 +15,7 @@ class Eel extends Enemy {
         this.SLIDE_ANIMATION_TIME = 10;
         this.ROTATE_TIME = 6;
         this.wiggled = false;
-        this.entityType = ENEMY_TYPE.EEL;
+        this.this = ENEMY_TYPE.EEL;
     }
 
     cancelAnimation() {

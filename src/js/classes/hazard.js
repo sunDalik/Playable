@@ -1,4 +1,8 @@
-class Hazard extends FullTileElement {
+import {Game} from "../game"
+import {FullTileElement} from "./full_tile_element";
+import {removeObjectFromArray} from "../utils";
+
+export class Hazard extends FullTileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
         this.zIndex = -3;

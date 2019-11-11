@@ -1,6 +1,7 @@
-"use strict";
+import {Game} from "./game"
+import {redrawTiles} from "./draw";
 
-function centerCamera() {
+export function centerCamera() {
     if (Game.player2.dead) centerCameraOnPlayer(Game.player);
     else if (Game.player.dead) centerCameraOnPlayer(Game.player2);
     else {
@@ -10,7 +11,7 @@ function centerCamera() {
     }
 }
 
-function centerCameraX(scale = true) {
+export function centerCameraX(scale = true) {
     if (Game.player2.dead) centerCameraXOnPlayer(Game.player);
     else if (Game.player.dead) centerCameraXOnPlayer(Game.player2);
     else {
@@ -19,7 +20,7 @@ function centerCameraX(scale = true) {
     }
 }
 
-function centerCameraY(scale = true) {
+export function centerCameraY(scale = true) {
     if (Game.player2.dead) centerCameraYOnPlayer(Game.player);
     else if (Game.player.dead) centerCameraYOnPlayer(Game.player2);
     else {
@@ -28,20 +29,20 @@ function centerCameraY(scale = true) {
     }
 }
 
-function centerCameraOnPlayer(player = Game.player) {
+export function centerCameraOnPlayer(player = Game.player) {
     centerCameraXOnPlayer(player);
     centerCameraYOnPlayer(player);
 }
 
-function centerCameraXOnPlayer(player = Game.player) {
+export function centerCameraXOnPlayer(player = Game.player) {
     Game.world.position.x = Game.APP.renderer.screen.width / 2 - player.position.x;
 }
 
-function centerCameraYOnPlayer(player = Game.player) {
+export function centerCameraYOnPlayer(player = Game.player) {
     Game.world.position.y = Game.APP.renderer.screen.height / 2 - player.position.y;
 }
 
-function scaleGameMap() {
+export function scaleGameMap() {
     //const limit = Game.TILESIZE * 2;
     if (!Game.player2.dead && !Game.player.dead) {
         const limit = 100;

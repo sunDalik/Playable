@@ -1,6 +1,6 @@
-"use strict";
+import {STAGE} from "./enums"
 
-const Game = {};
+export const Game = {};
 
 Game.APP = null;
 Game.loader = null;

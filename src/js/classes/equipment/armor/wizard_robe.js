@@ -1,6 +1,7 @@
-"use strict";
+import {Game} from "../../../game"
+import {EQUIPMENT_TYPE, ARMOR_TYPE} from "../../../enums";
 
-class WizardRobe {
+export class WizardRobe {
     constructor() {
         this.texture = Game.resources["src/images/armor/wizard_robe.png"].texture;
         this.type = ARMOR_TYPE.WIZARD_ROBE;

@@ -1,6 +1,10 @@
-"use strict";
+import {Game} from "../../game"
+import {Eel} from "./eel"
+import {ENEMY_TYPE} from "../../enums";
+import {PoisonHazard} from "../poison_hazard";
+import {getPlayerOnTile} from "../../mapChecks";
 
-class PoisonEel extends Eel {
+export class PoisonEel extends Eel {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/eel_poison.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 4;
@@ -9,7 +13,7 @@ class PoisonEel extends Eel {
         this.damaged = false;
         this.triggered = false;
         this.FULL_ROTATE_TIME = 15;
-        this.entityType = ENEMY_TYPE.POISON_EEL;
+        this.this = ENEMY_TYPE.POISON_EEL;
         this.scaleModifier = 1.1;
         this.fitToTile();
     }

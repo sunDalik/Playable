@@ -1,6 +1,7 @@
-"use strict";
+import {Game} from "./game"
+import {TILE_TYPE, ROLE} from "./enums";
 
-function isAWall(tilePositionX, tilePositionY) {
+export function isAWall(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         if (Game.map[tilePositionY][tilePositionX].tileType === TILE_TYPE.WALL) {
             return true
@@ -9,7 +10,7 @@ function isAWall(tilePositionX, tilePositionY) {
     return false;
 }
 
-function isNotAWall(tilePositionX, tilePositionY) {
+export function isNotAWall(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         if (Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL && Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.SUPER_WALL) {
             return true
@@ -18,7 +19,7 @@ function isNotAWall(tilePositionX, tilePositionY) {
     return false;
 }
 
-function isNotOutOfMap(tilePositionX, tilePositionY) {
+export function isNotOutOfMap(tilePositionX, tilePositionY) {
     if (tilePositionX <= Game.map[0].length - 1 && tilePositionX >= 0) {
         if (tilePositionY <= Game.map.length - 1 && tilePositionY >= 0) {
             return true
@@ -27,7 +28,7 @@ function isNotOutOfMap(tilePositionX, tilePositionY) {
     return false;
 }
 
-function isEnemy(tilePositionX, tilePositionY) {
+export function isEnemy(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
         if (tileEntity != null && tileEntity.role === ROLE.ENEMY) {
@@ -37,7 +38,7 @@ function isEnemy(tilePositionX, tilePositionY) {
     return false;
 }
 
-function isInanimate(tilePositionX, tilePositionY) {
+export function isInanimate(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
         if (tileEntity != null && tileEntity.role === ROLE.INANIMATE) {
@@ -48,7 +49,7 @@ function isInanimate(tilePositionX, tilePositionY) {
 }
 
 
-function isRelativelyEmpty(tilePositionX, tilePositionY) {
+export function isRelativelyEmpty(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
         if (Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL
@@ -60,7 +61,7 @@ function isRelativelyEmpty(tilePositionX, tilePositionY) {
     return false;
 }
 
-function isEmpty(tilePositionX, tilePositionY) {
+export function isEmpty(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         if (Game.map[tilePositionY][tilePositionX].entity === null && Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL) {
             return true
@@ -69,14 +70,14 @@ function isEmpty(tilePositionX, tilePositionY) {
     return false;
 }
 
-function isLit(tilePositionX, tilePositionY) {
+export function isLit(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         return Game.map[tilePositionY][tilePositionX].lit;
     }
     return false;
 }
 
-function getPlayerOnTile(tilePositionX, tilePositionY) {
+export function getPlayerOnTile(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
         if (tileEntity != null && tileEntity.role === ROLE.PLAYER) return tileEntity;

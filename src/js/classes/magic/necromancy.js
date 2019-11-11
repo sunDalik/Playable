@@ -1,6 +1,10 @@
-"use strict";
+import {Game} from "../../game"
+import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
+import {redrawHealthForPlayer} from "../../draw";
+import {placePlayerOnGameMap} from "../../game_logic";
+import {centerCamera} from "../../camera";
 
-class Necromancy {
+export class Necromancy {
     constructor() {
         this.texture = Game.resources["src/images/magic/necromancy.png"].texture;
         this.type = MAGIC_TYPE.NECROMANCY;

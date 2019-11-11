@@ -1,6 +1,9 @@
-"use strict";
+import {Game} from "../../../game"
+import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {isEnemy, isNotAWall, isLit} from "../../../mapChecks";
+import {createPlayerWeaponAnimation} from "../../../animations";
 
-class Sword {
+export class Sword {
     constructor() {
         this.texture = Game.resources["src/images/weapons/sword.png"].texture;
         this.type = WEAPON_TYPE.SWORD;

@@ -1,6 +1,10 @@
-"use strict";
+import {Game} from "../../../game"
+import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {isEnemy, isRelativelyEmpty} from "../../../mapChecks";
+import {createPlayerWeaponAnimation} from "../../../animations";
+import {removePlayerFromGameMap, placePlayerOnGameMap} from "../../../game_logic";
 
-class NinjaKnife {
+export class NinjaKnife {
     constructor() {
         this.texture = Game.resources["src/images/weapons/ninja_knife.png"].texture;
         this.type = WEAPON_TYPE.NINJA_KNIFE;
