@@ -118,26 +118,26 @@ class Player extends AnimatedTileElement {
     }
 
     getAtkWithWeapon(weapon) {
-        //todo: for each equipment add atk to base if has atk
-        let weaponAtk = 0;
-        if (weapon) weaponAtk = weapon.atk;
-        return (Math.round((this.atkBase + weaponAtk) * this.atkMul * 4) / 4)
+        const atkBase = this.getAtkBaseWithWeapon(weapon);
+        return (Math.round(atkBase * this.atkMul * 4) / 4)
     }
 
     getAtkBaseWithWeapon(weapon) {
         let weaponAtk = 0;
         if (weapon) weaponAtk = weapon.atk;
-        return this.atkBase + weaponAtk;
+        let atkBase = this.atkBase + weaponAtk;
+        const atkEquipment = [this.headwear, this.armor, this.footwear, this.secondHand];
+        for (const equipment of atkEquipment) {
+            if (equipment && equipment.atk) {
+                atkBase += equipment.atk;
+            }
+        }
+        return atkBase;
+
     }
 
     getDef() {
-        const defEquipment = [this.headwear, this.armor, this.footwear, this.secondHand];
-        let defBase = this.defBase;
-        for (const equipment of defEquipment) {
-            if (equipment && equipment.def) {
-                defBase += equipment.def;
-            }
-        }
+        const defBase = this.getDefBase();
         return (Math.round(defBase * this.defMul * 4) / 4)
     }
 
