@@ -89,7 +89,8 @@ function removeObjectFromArray(object, array) {
 function decrementEachDigitInHex(hex) {
     let newHex = "0x";
     for (let i = 2; i < hex.length; i++) {
-        newHex += (parseInt(hex[i], 16) - 1).toString(16);
+        if (hex[i] === "0") newHex += "0";
+        else newHex += (parseInt(hex[i], 16) - 1).toString(16);
     }
     return newHex;
 }

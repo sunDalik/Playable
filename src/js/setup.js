@@ -269,6 +269,15 @@ function setVariablesForStage() {
             Game.chestRooms = DTChestRooms;
             Game.BGColor = "0x666666";
             break;
+        case STAGE.RUINS:
+            Game.BGColor = "0xd8d9d7";
+            break;
+        case STAGE.DUNNO:
+            Game.BGColor = "0x75c978";
+            break;
+        case STAGE.FINALE:
+            Game.BGColor = "0xcc76cc";
+            break;
     }
 }
 
