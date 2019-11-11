@@ -7,5 +7,7 @@ class DarkEel extends Eel {
         this.health = this.maxHealth;
         this.atk = 1.5;
         this.entityType = ENEMY_TYPE.DARK_EEL;
+        this.scaleModifier = 1;
+        this.fitToTile();
     }
 }

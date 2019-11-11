@@ -10,12 +10,8 @@ class PoisonEel extends Eel {
         this.triggered = false;
         this.FULL_ROTATE_TIME = 15;
         this.entityType = ENEMY_TYPE.POISON_EEL;
-    }
-
-    fitToTile() {
-        const scaleX = Game.TILESIZE / this.getUnscaledWidth() * 1.1;
-        const scaleY = Math.abs(scaleX);
-        this.scale.set(scaleX, scaleY);
+        this.scaleModifier = 1.1;
+        this.fitToTile();
     }
 
     move() {

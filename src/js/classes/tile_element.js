@@ -12,6 +12,7 @@ class TileElement extends PIXI.Sprite {
             }
         };
         this.animation = null;
+        this.scaleModifier = 0.8;
         this.anchor.set(0.5, 0.5);
         this.fitToTile();
         this.place();
@@ -22,9 +23,8 @@ class TileElement extends PIXI.Sprite {
         this.place();
     }
 
-    //probably should just make size parameter
     fitToTile() {
-        const scaleX = Game.TILESIZE / this.getUnscaledWidth() * 0.80;
+        const scaleX = Game.TILESIZE / this.getUnscaledWidth() * this.scaleModifier;
         const scaleY = Math.abs(scaleX);
         this.scale.set(scaleX, scaleY);
     }
