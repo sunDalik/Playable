@@ -60,11 +60,16 @@ function playerTurn(player, playerMove, bothPlayers = false) {
 }
 
 function damagePlayersWithHazards() {
-    if (Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].hazard !== null && !Game.player.dead) {
-        Game.player.damage(Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].hazard.atk)
-    }
-    if (Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].hazard !== null && !Game.player2.dead) {
-        Game.player2.damage(Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].hazard.atk)
+    damagePlayerWithHazards(Game.player);
+    damagePlayerWithHazards(Game.player2);
+}
+
+//should change later when there will be more hazards
+function damagePlayerWithHazards(player) {
+    if (Game.map[player.tilePosition.y][player.tilePosition.x].hazard !== null && !player.dead) {
+        if (!(player.footwear && player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD)) {
+            player.damage(Game.map[player.tilePosition.y][player.tilePosition.x].hazard.atk)
+        }
     }
 }
 
