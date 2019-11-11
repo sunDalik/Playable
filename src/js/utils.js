@@ -66,7 +66,8 @@ function getRandomSpell() {
 
 //probably need to remove item from the pool once you randomly picked it
 function getRandomChestDrop() {
-    return randomChoice([new Pickaxe(), new BasicArmor()]);
+    return randomChoice([new Pickaxe(), new BasicArmor(), new WizardRobe(), new SeerCirclet(),
+        new WizardHat(), new AntiHazardBoots(), new DamagingBoots()]);
 }
 
 function removeAllChildrenFromContainer(container) {

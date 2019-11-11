@@ -32,9 +32,9 @@ const INANIMATE_TYPE = Object.freeze({STATUE: 0, OBELISK: 1, GRAIL: 2, CHEST: 3,
 
 const EQUIPMENT_TYPE = Object.freeze({WEAPON: 0, HEAD: 1, ARMOR: 2, FOOT: 3, SHIELD: 5, TOOL: 6});
 const WEAPON_TYPE = Object.freeze({NONE: 0, KNIFE: 1, SWORD: 2, NINJA_KNIFE: 3, BOW: 4});
-const HEAD_TYPE = Object.freeze({NONE: 0, WIZARD_HAT: 1, SEER_AMULET: 2});
-const ARMOR_TYPE = Object.freeze({NONE: 0, BASIC: 1});
-const FOOTWEAR_TYPE = Object.freeze({NONE: 0, DIAGONAL: 1, ANTI_POISON: 2, DAMAGING: 3});
+const HEAD_TYPE = Object.freeze({NONE: 0, WIZARD_HAT: 1, SEER_CIRCLET: 2});
+const ARMOR_TYPE = Object.freeze({NONE: 0, BASIC: 1, WIZARD_ROBE: 2});
+const FOOTWEAR_TYPE = Object.freeze({NONE: 0, DIAGONAL: 1, ANTI_HAZARD: 2, DAMAGING: 3});
 const SHIELD_TYPE = Object.freeze({NONE: 0, PARRY: 1, PASSIVE: 2, STUNNING: 3, SPIKY: 4, ARMORING: 5});
 const TOOL_TYPE = Object.freeze({NONE: 0, PICKAXE: 1});
 
