@@ -1,8 +1,6 @@
 class Hazard extends FullTileElement {
     constructor(texture, tilePositionX = 0, tilePositionY = 0) {
         super(texture, tilePositionX, tilePositionY);
-        this.width = Game.TILESIZE;
-        this.height = Game.TILESIZE;
         this.zIndex = -3;
         this.LIFETIME = 0;
         this.turnsLeft = this.LIFETIME;
@@ -21,11 +19,16 @@ class Hazard extends FullTileElement {
         Game.map[this.tilePosition.y][this.tilePosition.x].hazard = null;
     }
 
+    //returns true if hazard still lives
     updateLifetime() {
         if (this.turnsLeft === 0) {
             this.removeFromWorld();
             this.turnsLeft = -99;
-        } else this.turnsLeft--;
+            return false;
+        } else {
+            this.turnsLeft--;
+            return true;
+        }
     }
 
     refreshLifetime() {

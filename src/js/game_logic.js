@@ -24,8 +24,9 @@ function moveEnemies() {
 }
 
 function updateHazards() {
-    for (const hazard of Game.hazards) {
-        hazard.updateLifetime();
+    for (let i = 0; i < Game.hazards.length; ++i) {
+        const lives = Game.hazards[i].updateLifetime();
+        if (!lives) i--; //dead hazards are removed from array, so we don't increment i
     }
 }
 
