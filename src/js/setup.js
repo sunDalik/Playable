@@ -60,6 +60,9 @@ function setup() {
     Game.primaryPlayer = Game.player;
 
     Game.stage = STAGE.FLOODED_CAVE;
+    Game.magicPool = [new Aura(), new Spikes(), new Fireball(), new Necromancy(), new Petrification(), new Teleport()];
+    Game.chestItemPool = [new Pickaxe(), new BasicArmor(), new WizardRobe(), new SeerCirclet(), new WizardHat(),
+        new AntiHazardBoots(), new DamagingBoots()];
     setVariablesForStage();
     initializeLevel();
 }
@@ -195,6 +198,7 @@ function generateMap(level) {
                             magicPool.push(randomSpell);
                             break;
                         }
+                        if (magicPool.length === Game.magicPool.length) break;
                     }
                 }
                 obeliskTiles.push({x: j, y: i});

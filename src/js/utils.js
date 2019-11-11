@@ -59,15 +59,18 @@ function getRandomWeapon() {
     return randomChoice([new Knife(), new NinjaKnife(), new Sword(), new Bow()]);
 }
 
-//hmmm you probably need to remove spells from pool once they have been chosen by player so they dont appear again in the game?
+//todo implement rarity system
 function getRandomSpell() {
-    return randomChoice([new Aura(), new Spikes(), new Fireball(), new Necromancy(), new Petrification(), new Teleport()]);
+    if (Game.magicPool.length === 0) return null;
+    return randomChoice(Game.magicPool);
 }
 
-//probably need to remove item from the pool once you randomly picked it
+//todo implement rarity system
 function getRandomChestDrop() {
-    return randomChoice([new Pickaxe(), new BasicArmor(), new WizardRobe(), new SeerCirclet(),
-        new WizardHat(), new AntiHazardBoots(), new DamagingBoots()]);
+    if (Game.chestItemPool.length === 0) return null;
+    const item = randomChoice(Game.chestItemPool);
+    removeObjectFromArray(item, Game.chestItemPool);
+    return item;
 }
 
 function removeAllChildrenFromContainer(container) {
