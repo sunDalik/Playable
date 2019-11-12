@@ -1,4 +1,3 @@
-"use strict";
 import * as PIXI from "pixi.js"
 import {Game} from "./game"
 import {loadAll} from "./loader"

@@ -3,6 +3,7 @@ import {Enemy} from "./enemy"
 import {ENEMY_TYPE, DIRECTIONS} from "../../enums";
 import {getPlayerOnTile, isNotAWall, isEnemy, isRelativelyEmpty} from "../../mapChecks";
 import {createFadingAttack} from "../../animations";
+import {TileElement} from "../tile_element";
 
 export class Star extends Enemy {
     constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/star.png"].texture) {
