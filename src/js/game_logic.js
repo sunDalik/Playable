@@ -121,60 +121,59 @@ export function removeTileFromWorld(tile) {
 }
 
 export function swapEquipmentWithPlayer(player, equipment) {
-    let swappedEquipment = null;
     if (!equipment) return null;
+    let slot;
     switch (equipment.equipmentType) {
         case EQUIPMENT_TYPE.WEAPON:
-            swappedEquipment = player.weapon;
-            player.weapon = equipment;
+            slot = "weapon";
             break;
         case EQUIPMENT_TYPE.TOOL:
         case EQUIPMENT_TYPE.SHIELD:
-            swappedEquipment = player.secondHand;
-            player.secondHand = equipment;
+            slot = "secondHand";
             break;
         case EQUIPMENT_TYPE.HEAD:
-            swappedEquipment = player.headwear;
-            player.headwear = equipment;
+            slot = "headwear";
             break;
         case EQUIPMENT_TYPE.ARMOR:
-            swappedEquipment = player.armor;
-            player.armor = equipment;
+            slot = "armor";
             break;
         case EQUIPMENT_TYPE.FOOT:
-            swappedEquipment = player.footwear;
-            player.footwear = equipment;
+            slot = "footwear";
             break;
     }
+    if (!slot) return null;
+    if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);
+    const swappedEquipment = player[slot];
+    player[slot] = equipment;
+    if (player[slot].onWear) player[slot].onWear(player);
     redrawSlotsForPlayer(player);
     return swappedEquipment
 }
 
 export function removeEquipmentFromPlayer(player, equipmentType) {
-    let removedEquipment;
+    let slot;
     switch (equipmentType) {
         case EQUIPMENT_TYPE.WEAPON:
-            removedEquipment = player.weapon;
-            player.weapon = null;
+            slot = "weapon";
             break;
         case EQUIPMENT_TYPE.TOOL:
         case EQUIPMENT_TYPE.SHIELD:
-            removedEquipment = player.secondHand;
-            player.secondHand = null;
+            slot = "secondHand";
             break;
         case EQUIPMENT_TYPE.HEAD:
-            removedEquipment = player.headwear;
-            player.headwear = null;
+            slot = "headwear";
             break;
         case EQUIPMENT_TYPE.ARMOR:
-            removedEquipment = player.armor;
-            player.armor = null;
+            slot = "armor";
             break;
         case EQUIPMENT_TYPE.FOOT:
-            removedEquipment = player.footwear;
-            player.footwear = null;
+            slot = "footwear";
             break;
     }
+    if (!slot) return null;
+    if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff();
+    const removedEquipment = player[slot];
+    player[slot] = null;
     redrawSlotsForPlayer(player);
     return removedEquipment;
 }

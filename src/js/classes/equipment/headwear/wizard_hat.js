@@ -1,5 +1,6 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, HEAD_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE} from "../../../enums";
+import {redrawSlotsForPlayer} from "../../../draw";
 
 export class WizardHat {
     constructor() {
@@ -10,10 +11,28 @@ export class WizardHat {
     }
 
     onWear(player) {
-
+        for (const magic of [player.magic1, player.magic2, player.magic3, player.magic4]) {
+            if (magic) {
+                magic.maxUses += this.magUses;
+                magic.uses += this.magUses;
+            }
+        }
+        redrawSlotsForPlayer(player);
     }
 
     onTakeOff(player) {
+        for (const magic of [player.magic1, player.magic2, player.magic3, player.magic4]) {
+            if (magic) {
+                magic.maxUses -= this.magUses;
+                magic.uses -= this.magUses;
+                if (magic.type === MAGIC_TYPE.NECROMANCY) magic.removeIfExhausted(player);
+            }
+        }
+        redrawSlotsForPlayer(player);
+    }
 
+    onMagicReceive(magic) {
+        magic.maxUses += this.magUses;
+        magic.uses += this.magUses;
     }
 }

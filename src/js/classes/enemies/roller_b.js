@@ -31,7 +31,9 @@ export class RollerB extends Roller {
                             player.damage(this.atk);
                             this.rollThenBump();
                         } else if (x >= 3) {
-                            this.roll();
+                            Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+                            this.slide(this.direction * 2, 0);
+                            Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
                         }
                         break;
                     }

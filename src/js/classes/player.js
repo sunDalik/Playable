@@ -113,6 +113,7 @@ export class Player extends AnimatedTileElement {
         else return null;
     }
 
+    //only used by necromancy. should revise it
     setMagicById(i, magic) {
         if (i === 1) this.magic1 = magic;
         else if (i === 2) this.magic2 = magic;
@@ -251,6 +252,16 @@ export class Player extends AnimatedTileElement {
         else if (this.magic2 === null) this.magic2 = magic;
         else if (this.magic3 === null) this.magic3 = magic;
         else if (this.magic4 === null) this.magic4 = magic;
+        else return;
+        this.applyOnMagicReceiveMethods(magic);
         redrawSlotsForPlayer(this);
+    }
+
+    applyOnMagicReceiveMethods(magic) {
+        for (const eq of [this.weapon, this.secondHand, this.headwear, this.armor, this.footwear]) {
+            if (eq && eq.onMagicReceive) {
+                eq.onMagicReceive(magic);
+            }
+        }
     }
 }
