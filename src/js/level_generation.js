@@ -271,16 +271,19 @@ export function generateLevel() {
     entryPoints = randomShuffle(entryPoints);
 
     // the Graph class is weird, levelGraph.grid.length will return number of Xs and levelGraph.grid[0].length number of Ys
-    let levelGraph = new astar.Graph(level);
-    for (let i = 0; i < levelGraph.grid.length; ++i) {
-        for (let j = 0; j < levelGraph.grid[0].length; ++j) {
-            if (levelGraph.grid[i][j].weight === "v" || levelGraph.grid[i][j].weight === "entry") {
-                levelGraph.grid[i][j].weight = 1;
+    let levelWithPathWeights = [];
+    for (let i = 0; i < level.length; ++i) {
+        levelWithPathWeights[i] = [];
+        for (let j = 0; j < level[0].length; ++j) {
+            if (level[i][j] === "v" || level[i][j] === "entry") {
+                levelWithPathWeights[i][j] = 1;
             } else {
-                levelGraph.grid[i][j].weight = 0;
+                levelWithPathWeights[i][j] = 0;
             }
         }
     }
+    let levelGraph = new astar.Graph(levelWithPathWeights);
+
 
     //this array contains all room connections to ensure that a room is not connected to the same other room twice through different entries
     let roomConnections = [];
@@ -439,17 +442,18 @@ function connectEntries(entry1, entry2, connection, roomConnections, level) {
 //you will have to update it if you will use it (look at calculateDetectionGraph)
 export function getLevelPlayerGraph(level) {
     //graph where weights correspond to player's movement ability
-    let levelPlayerGraph = new astar.Graph(level);
-    for (let i = 0; i < levelPlayerGraph.grid.length; ++i) {
-        for (let j = 0; j < levelPlayerGraph.grid[0].length; ++j) {
-            if (levelPlayerGraph.grid[i][j].weight === "v" || levelPlayerGraph.grid[i][j].weight === "w") {
-                levelPlayerGraph.grid[i][j].weight = 0;
+    let levelWithPlayerWeights = [];
+    for (let i = 0; i < level.length; ++i) {
+        levelWithPlayerWeights[i] = [];
+        for (let j = 0; j < level[0].length; ++j) {
+            if (level[i][j] === "v" || level[i][j] === "w") {
+                levelWithPlayerWeights[i][j] = 0;
             } else {
-                levelPlayerGraph.grid[i][j].weight = 1;
+                levelWithPlayerWeights[i][j] = 1;
             }
         }
     }
-    return levelPlayerGraph;
+    return new astar.Graph(levelWithPlayerWeights);
 }
 
 function flipHorizontally(room) {

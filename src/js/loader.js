@@ -7,13 +7,12 @@ export function loadAll(afterLoad) {
         .add("src/images/player_moved.png")
         .add("src/images/player2_moved.png")
         .add("src/images/fire.png")
+        //put all blocks into blocks folder
         .add("src/images/wall.png")
         .add("src/images/super_wall.png")
-        .add("src/images/void.png") //put all blocks into blocks folder
         .add("src/images/exit.png")
         .add("src/images/player_attack.png")
         .add("src/images/player2_attack.png")
-        .add("src/images/weapon_particle.png")
 
         .add("src/images/hazards/poison.png")
 
@@ -72,7 +71,9 @@ export function loadAll(afterLoad) {
         .add("src/images/other/grail_dark.png")
         .add("src/images/other/grail_gray.png")
         .add("src/images/other/obelisk.png")
+        .add("src/images/other/obelisk_damaged.png")
         .add("src/images/other/obelisk_used.png")
+        .add("src/images/other/obelisk_used_damaged.png")
         .add("src/images/other/obelisk_broken.png")
 
         .add("src/images/magic/aura.png")

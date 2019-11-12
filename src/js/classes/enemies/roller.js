@@ -4,15 +4,15 @@ import {ENEMY_TYPE} from "../../enums";
 import {isRelativelyEmpty, getPlayerOnTile} from "../../mapChecks";
 
 export class Roller extends Enemy {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/roller.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/roller.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 1;
         this.health = this.maxHealth;
         this.atk = 1;
         this.direction = 1;
-        this.ROLL_ANIMATION_TIME = 6;
+        this.SLIDE_ANIMATION_TIME = 6;
         this.BUMP_ANIMATION_TIME = 14;
-        this.this = ENEMY_TYPE.ROLLER;
+        this.type = ENEMY_TYPE.ROLLER;
     }
 
     cancelAnimation() {
@@ -22,29 +22,17 @@ export class Roller extends Enemy {
     }
 
     move() {
-        let counter = 0;
-        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
         if (isRelativelyEmpty(this.tilePosition.x + this.direction, this.tilePosition.y)) {
             let player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
             if (player !== null) {
                 player.damage(this.atk);
-                this.bump();
+                this.rollBump();
             } else {
-                const step = Game.TILESIZE / this.ROLL_ANIMATION_TIME;
-                this.tilePosition.x += this.direction;
-                this.animation = () => {
-                    this.position.x += step * this.direction;
-                    this.moveHealthContainer();
-                    counter++;
-                    if (counter >= this.ROLL_ANIMATION_TIME) {
-                        Game.APP.ticker.remove(this.animation);
-                        this.place();
-                    }
-                };
-                Game.APP.ticker.add(this.animation);
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+                this.slide(this.direction, 0);
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             }
-        } else this.bump();
-        Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+        } else this.rollBump();
     }
 
     correctScale() {
@@ -53,7 +41,7 @@ export class Roller extends Enemy {
         }
     }
 
-    bump() {
+    rollBump() {
         const oldDirection = this.direction;
         this.direction *= -1;
         const oldStep = oldDirection * Game.TILESIZE / this.BUMP_ANIMATION_TIME;

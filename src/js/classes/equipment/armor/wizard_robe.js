@@ -9,4 +9,12 @@ export class WizardRobe {
         this.magUses = 1;
         this.magAtk = 1;
     }
+
+    onWear(player) {
+
+    }
+
+    onTakeOff(player) {
+
+    }
 }

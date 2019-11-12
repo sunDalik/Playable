@@ -3,7 +3,7 @@ import {removeObjectFromArray} from "./utils"
 import * as PIXI from "pixi.js"
 
 export function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2, thin = false) {
-    let attackParticle = new PIXI.Sprite(Game.resources["src/images/weapon_particle.png"].texture);
+    let attackParticle = new PIXI.Sprite(PIXI.Texture.WHITE);
     if (thin) {
         attackParticle.width = Game.TILESIZE / 5;
         attackParticle.height = Game.TILESIZE / 5;

@@ -3,7 +3,7 @@ import {TileElement} from "./tile_element"
 import {cubicBezier} from "../math";
 
 export class AnimatedTileElement extends TileElement {
-    constructor(texture, tilePositionX = 0, tilePositionY = 0) {
+    constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.STEP_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 12;
@@ -139,34 +139,17 @@ export class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(this.animation);
     }
 
-    //unify it
-    slideX(tileStepX, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+    slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         this.animationCounter = 0;
-        const step = Game.TILESIZE * tileStepX / animationTime;
+        const stepX = Game.TILESIZE * tileStepX / animationTime;
+        const stepY = Game.TILESIZE * tileStepY / animationTime;
         this.tilePosition.x += tileStepX;
-
-        Game.APP.ticker.remove(this.animation);
-        this.animation = () => {
-            this.position.x += step;
-            this.animationCounter++;
-            if (onFrame) onFrame();
-            if (this.animationCounter >= animationTime) {
-                Game.APP.ticker.remove(this.animation);
-                this.place();
-                if (onEnd) onEnd();
-            }
-        };
-        Game.APP.ticker.add(this.animation);
-    }
-
-    slideY(tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
-        this.animationCounter = 0;
-        const step = Game.TILESIZE * tileStepY / animationTime;
         this.tilePosition.y += tileStepY;
 
         Game.APP.ticker.remove(this.animation);
         this.animation = () => {
-            this.position.y += step;
+            this.position.x += stepX;
+            this.position.y += stepY;
             this.animationCounter++;
             if (onFrame) onFrame();
             if (this.animationCounter >= animationTime) {
@@ -178,34 +161,17 @@ export class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(this.animation);
     }
 
-    slideBumpX(tileStepX, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+    slideBump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         this.animationCounter = 0;
-        const step = Game.TILESIZE * tileStepX / animationTime;
+        const stepX = Game.TILESIZE * tileStepX / animationTime;
+        const stepY = Game.TILESIZE * tileStepY / animationTime;
         this.animation = () => {
             if (this.animationCounter < animationTime / 2) {
-                this.position.x += step;
+                this.position.x += stepX;
+                this.position.y += stepY;
             } else {
-                this.position.x -= step;
-            }
-            this.animationCounter++;
-            if (onFrame) onFrame();
-            if (this.animationCounter >= animationTime) {
-                Game.APP.ticker.remove(this.animation);
-                this.place();
-                if (onEnd) onEnd();
-            }
-        };
-        Game.APP.ticker.add(this.animation);
-    }
-
-    slideBumpY(tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
-        this.animationCounter = 0;
-        const step = Game.TILESIZE * tileStepY / animationTime;
-        this.animation = () => {
-            if (this.animationCounter < animationTime / 2) {
-                this.position.y += step;
-            } else {
-                this.position.y -= step;
+                this.position.x -= stepX;
+                this.position.y += stepY;
             }
             this.animationCounter++;
             if (onFrame) onFrame();

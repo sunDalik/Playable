@@ -6,11 +6,11 @@ import {isRelativelyEmpty, getPlayerOnTile} from "../../mapChecks";
 import {getRandomInt} from "../../utils";
 
 export class Snail extends Enemy {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/snail.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/snail.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
         this.health = this.maxHealth;
-        this.this = ENEMY_TYPE.SNAIL;
+        this.type = ENEMY_TYPE.SNAIL;
         this.atk = 1;
         this.turnDelay = 0;
         this.chase = false;
@@ -61,18 +61,18 @@ export class Snail extends Enemy {
         } else Game.map[this.tilePosition.y][this.tilePosition.x].hazard.refreshLifetime();
     }
 
-    slideX(tileStepX) {
-        if (Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
+    slide(tileStepX, tileStepY) {
+        if (tileStepX !== 0 && Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
             this.scale.x *= -1;
         }
-        super.slideX(tileStepX)
+        super.slide(tileStepX, tileStepY);
     }
 
-    slideBumpX(tileStepX) {
-        if (Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
+    slideBump(tileStepX, tileStepY) {
+        if (tileStepX !== 0 && Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
             this.scale.x *= -1;
         }
-        super.slideBumpX(tileStepX)
+        super.slideBump(tileStepX, tileStepY);
     }
 
     chasePlayer(player) {
@@ -82,50 +82,38 @@ export class Snail extends Enemy {
         const playerDirY = Math.sign(playerDistY);
 
         if (Math.abs(playerDistX) > Math.abs(playerDistY)) {
-            if (!this.tryToStepX(playerDirX)) {
-                if (playerDirY === 0) this.slideBumpX(playerDirX);
-                else if (!this.tryToStepY(playerDirY)) this.slideBumpY(playerDirY);
+            if (!this.tryToStep(playerDirX, 0)) {
+                if (playerDirY === 0) this.slideBump(playerDirX, 0);
+                else if (!this.tryToStep(0, playerDirY)) this.slideBump(0, playerDirY);
             }
         } else if (Math.abs(playerDistX) < Math.abs(playerDistY)) {
-            if (!this.tryToStepY(playerDirY)) {
-                if (playerDirX === 0) this.slideBumpY(playerDirY);
-                else if (!this.tryToStepX(playerDirX)) this.slideBumpX(playerDirX);
+            if (!this.tryToStep(0, playerDirY)) {
+                if (playerDirX === 0) this.slideBump(0, playerDirY);
+                else if (!this.tryToStep(playerDirX, 0)) this.slideBump(playerDirX, 0);
             }
         } else {
             const randomDirection = getRandomInt(0, 2);
             if (randomDirection === 0) {
-                if (!this.tryToStepX(playerDirX)) {
-                    if (playerDirY === 0) this.slideBumpX(playerDirX);
-                    else if (!this.tryToStepY(playerDirY)) this.slideBumpY(playerDirY);
+                if (!this.tryToStep(playerDirX, 0)) {
+                    if (playerDirY === 0) this.slideBump(playerDirX, 0);
+                    else if (!this.tryToStep(0, playerDirY)) this.slideBump(0, playerDirY);
                 }
             } else {
-                if (!this.tryToStepY(playerDirY)) {
-                    if (playerDirX === 0) this.slideBumpY(playerDirY);
-                    else if (!this.tryToStepX(playerDirX)) this.slideBumpX(playerDirX);
+                if (!this.tryToStep(0, playerDirY)) {
+                    if (playerDirX === 0) this.slideBump(0, playerDirY);
+                    else if (!this.tryToStep(playerDirX, 0)) this.slideBump(playerDirX, 0);
                 }
             }
         }
     }
 
-    tryToStepX(tileStepX) {
-        if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
-            const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y);
+    tryToStep(tileStepX, tileStepY) {
+        if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
+            const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY);
             if (player !== null) {
                 player.damage(this.atk);
-                this.slideBumpX(tileStepX);
-            } else this.slideX(tileStepX);
-            return true;
-        }
-        return false;
-    }
-
-    tryToStepY(tileStepY) {
-        if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
-            const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + tileStepY);
-            if (player !== null) {
-                player.damage(this.atk);
-                this.slideBumpY(tileStepY);
-            } else this.slideY(tileStepY);
+                this.slideBump(tileStepX, tileStepY);
+            } else this.slide(tileStepX, tileStepY);
             return true;
         }
         return false;

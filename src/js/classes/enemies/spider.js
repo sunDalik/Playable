@@ -5,11 +5,11 @@ import {getPlayerOnTile, isRelativelyEmpty} from "../../mapChecks";
 import {getRandomInt} from "../../utils";
 
 export class Spider extends Enemy {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/spider.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/spider.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
         this.health = this.maxHealth;
-        this.this = ENEMY_TYPE.SPIDER;
+        this.type = ENEMY_TYPE.SPIDER;
         this.atk = 0.5;
         this.chase = false;
         this.thrown = false;

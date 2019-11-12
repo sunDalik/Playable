@@ -12,6 +12,7 @@ export class Obelisk extends FullTileElement {
         this.type = INANIMATE_TYPE.OBELISK;
         this.activated = false;
         this.working = true;
+        this.timesDamaged = 0;
         this.timesDonated = 0;
         this.magic1 = magic[0];
         this.magic2 = magic[1];
@@ -42,7 +43,8 @@ export class Obelisk extends FullTileElement {
     deactivate() {
         if (this.working && this.activated) {
             this.working = false;
-            this.texture = Game.resources["src/images/other/obelisk_used.png"].texture;
+            if (this.timesDamaged > 0) this.texture = Game.resources["src/images/other/obelisk_used_damaged.png"].texture;
+            else this.texture = Game.resources["src/images/other/obelisk_used.png"].texture;
             this.grail1.setMagic(null);
             this.grail2.setMagic(null);
             this.grail3.setMagic(null);
@@ -77,6 +79,17 @@ export class Obelisk extends FullTileElement {
             this.working = false;
             this.texture = Game.resources["src/images/other/obelisk_broken.png"].texture;
             createFadingText("Live with it... you will not...", this.position.x, this.position.y);
+        }
+    }
+
+    damage() {
+        if (this.working) {
+            if (this.timesDamaged >= 1) this.destroy();
+            else {
+                this.timesDamaged++;
+                this.texture = Game.resources["src/images/other/obelisk_damaged.png"].texture;
+                createFadingText("Don't", this.position.x, this.position.y);
+            }
         }
     }
 }

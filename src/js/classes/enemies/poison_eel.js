@@ -5,7 +5,7 @@ import {PoisonHazard} from "../poison_hazard";
 import {getPlayerOnTile} from "../../mapChecks";
 
 export class PoisonEel extends Eel {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/eel_poison.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/eel_poison.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 4;
         this.health = this.maxHealth;
@@ -13,7 +13,7 @@ export class PoisonEel extends Eel {
         this.damaged = false;
         this.triggered = false;
         this.FULL_ROTATE_TIME = 15;
-        this.this = ENEMY_TYPE.POISON_EEL;
+        this.type = ENEMY_TYPE.POISON_EEL;
         this.scaleModifier = 1.1;
         this.fitToTile();
     }
@@ -41,7 +41,7 @@ export class PoisonEel extends Eel {
     }
 
     attack() {
-        this.rotateByAngleMaximal(this.inMemoryAngle - this.angle, this.FULL_ROTATE_TIME, this.cancellable);
+        this.rotateByAngleMaximal(this.inMemoryAngle - this.angle, this.FULL_ROTATE_TIME);
         for (let x = -1; x <= 1; x++) {
             for (let y = -1; y <= 1; y++) {
                 if (!(x === 0 && y === 0)) {

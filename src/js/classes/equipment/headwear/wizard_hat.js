@@ -8,4 +8,12 @@ export class WizardHat {
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.magUses = 1;
     }
+
+    onWear(player) {
+
+    }
+
+    onTakeOff(player) {
+
+    }
 }

@@ -1,8 +1,6 @@
 import {Game} from "./game"
 import astar from "javascript-astar"
 import {TILE_TYPE} from "./enums";
-import {WallTile} from "./classes/wall_tile"
-import {SuperWallTile} from "./classes/super_wall_tile"
 import {FullTileElement} from "./classes/full_tile_element"
 
 import {copy2dArray, getRandomSpell, getRandomChestDrop, getRandomWeapon} from "./utils"
@@ -36,10 +34,10 @@ export function generateMap(level) {
             };
             if (map[i][j] === "w") {
                 mapCell.tileType = TILE_TYPE.WALL;
-                mapCell.tile = new WallTile(j, i);
+                mapCell.tile = new FullTileElement(Game.resources["src/images/wall.png"].texture, j, i);
             } else if (map[i][j] === "sw") {
                 mapCell.tileType = TILE_TYPE.SUPER_WALL;
-                mapCell.tile = new SuperWallTile(j, i);
+                mapCell.tile = new FullTileElement(Game.resources["src/images/super_wall.png"].texture, j, i);
             } else if (map[i][j] === "v") {
                 mapCell.tileType = TILE_TYPE.VOID;
             } else if (map[i][j] === "entry") {
@@ -112,17 +110,17 @@ export function generateMap(level) {
 }
 
 export function calculateDetectionGraph(map) {
-    Game.playerDetectionGraph = new astar.Graph(map);
-    for (let i = 0; i < Game.playerDetectionGraph.grid.length; ++i) {
-        for (let j = 0; j < Game.playerDetectionGraph.grid[0].length; ++j) {
-            if (Game.playerDetectionGraph.grid[i][j].weight.tileType === TILE_TYPE.VOID
-                || Game.playerDetectionGraph.grid[i][j].weight.tileType === TILE_TYPE.PATH
-                || Game.playerDetectionGraph.grid[i][j].weight.tileType === TILE_TYPE.WALL
-                || Game.playerDetectionGraph.grid[i][j].weight.tileType === TILE_TYPE.SUPER_WALL) {
-                Game.playerDetectionGraph.grid[i][j].weight = 0;
+    let mapWithWeights = [];
+    for (let i = 0; i < map.length; ++i) {
+        mapWithWeights[i] = [];
+        for (let j = 0; j < map[0].length; ++j) {
+            if (map[i][j].tileType === TILE_TYPE.VOID || map[i][j].tileType === TILE_TYPE.PATH
+                || map[i][j].tileType === TILE_TYPE.WALL || map[i][j].tileType === TILE_TYPE.SUPER_WALL) {
+                mapWithWeights[i][j] = 0;
             } else {
-                Game.playerDetectionGraph.grid[i][j].weight = 1;
+                mapWithWeights[i][j] = 1;
             }
         }
     }
+    Game.playerDetectionGraph = new astar.Graph(mapWithWeights);
 }

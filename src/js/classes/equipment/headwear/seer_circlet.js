@@ -7,4 +7,12 @@ export class SeerCirclet {
         this.type = HEAD_TYPE.SEER_CIRCLET;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
     }
+
+    onWear(player) {
+
+    }
+
+    onTakeOff(player) {
+
+    }
 }

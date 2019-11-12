@@ -8,7 +8,7 @@ export function keyboard(code) {
     };
 
     key.downHandler = event => {
-        if (event.which === key.code) {
+        if (event.code === key.code) {
             if (key.isUp && key.press) key.press(event);
             key.isDown = true;
             key.isUp = false;
@@ -17,7 +17,7 @@ export function keyboard(code) {
     };
 
     key.upHandler = event => {
-        if (event.which === key.code) {
+        if (event.code === key.code) {
             if (key.isDown && key.release) key.release(event);
             key.isDown = false;
             key.isUp = true;

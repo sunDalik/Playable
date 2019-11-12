@@ -3,13 +3,15 @@ import {AnimatedTileElement} from "./animated_tile_element";
 import {ROLE, INANIMATE_TYPE, TILE_TYPE, EQUIPMENT_TYPE, TOOL_TYPE} from "../enums";
 import {scaleGameMap, centerCameraX, centerCameraY} from "../camera";
 import {shakeScreen} from "../animations";
-import {lightPlayerPosition, redrawHealthForPlayer, redrawSlotsForPlayer, redrawTiles} from "../draw";
+import {redrawHealthForPlayer, redrawSlotsForPlayer} from "../draw";
 import {isInanimate, isRelativelyEmpty, isAWall} from "../mapChecks";
 import {calculateDetectionGraph} from "../map_generation"
 import {placePlayerOnGameMap, removePlayerFromGameMap, removeTileFromWorld, gotoNextLevel} from "../game_logic";
+import {lightPlayerPosition} from "../lighting";
+import {redrawTiles} from "../camera";
 
 export class Player extends AnimatedTileElement {
-    constructor(texture, tilePositionX = 0, tilePositionY = 0) {
+    constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 4;
         this.health = this.maxHealth;
@@ -178,13 +180,17 @@ export class Player extends AnimatedTileElement {
             shakeScreen();
             redrawHealthForPlayer(this);
             if (this.health <= 0) {
-                this.dead = true;
-                this.visible = false;
-                removePlayerFromGameMap(this);
-                Game.TILESIZE = Game.REFERENCE_TILESIZE;
-                redrawTiles();
+                this.die();
             }
         }
+    }
+
+    die() {
+        this.dead = true;
+        this.visible = false;
+        removePlayerFromGameMap(this);
+        Game.TILESIZE = Game.REFERENCE_TILESIZE;
+        redrawTiles();
     }
 
     heal(healHP) {
@@ -207,13 +213,8 @@ export class Player extends AnimatedTileElement {
         else this.texture = Game.resources["src/images/player2.png"].texture;
     }
 
-    slideX(tileDirX, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
-        super.slideX(tileDirX, () => centerCameraX(false), scaleGameMap, SLIDE_ANIMATION_TIME);
-        lightPlayerPosition(this);
-    }
-
-    slideY(tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
-        super.slideY(tileDirY, () => centerCameraY(false), scaleGameMap, SLIDE_ANIMATION_TIME);
+    slide(tileDirX, tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
+        super.slide(tileDirX, tileDirY, () => centerCameraX(false), scaleGameMap, SLIDE_ANIMATION_TIME);
         lightPlayerPosition(this);
     }
 

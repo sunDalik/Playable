@@ -1,5 +1,5 @@
 import {Game} from "./game"
-import {redrawTiles} from "./draw";
+import {drawGrid, drawOther} from "./draw";
 
 export function centerCamera() {
     if (Game.player2.dead) centerCameraOnPlayer(Game.player);
@@ -68,28 +68,28 @@ export function scaleGameMap() {
     }
 }
 
-function newTileSizeOnStep(player, stepX = 0, stepY = 0) {
-    //const limit = Game.TILESIZE * 2;
-    const limit = 100;
-    const canZoom = limit * 1.5;
-    let otherPlayer;
-    if (player === Game.player) otherPlayer = Game.player2;
-    else otherPlayer = Game.player;
-    const gpx = player.getGlobalPosition().x + stepX * Game.TILESIZE;
-    const gpy = player.getGlobalPosition().y + stepY * Game.TILESIZE;
-    const gp2x = otherPlayer.getGlobalPosition().x;
-    const gp2y = otherPlayer.getGlobalPosition().y;
-    if (Game.APP.renderer.screen.width - gpx < limit || gpx < limit
-        || Game.APP.renderer.screen.width - gp2x < limit || gp2x < limit
-        || Game.APP.renderer.screen.height - gpy < limit || gpy < limit
-        || Game.APP.renderer.screen.height - gp2y < limit || gp2y < limit) {
-        return Game.TILESIZE - 1;
-    } else if (Game.TILESIZE < Game.REFERENCE_TILESIZE &&
-        ((Game.APP.renderer.screen.width - gpx > canZoom && gpx > canZoom
-            && Game.APP.renderer.screen.height - gpy > canZoom && gpy > canZoom) ||
-            (Game.APP.renderer.screen.width - gp2x > canZoom && gp2x > canZoom
-                && Game.APP.renderer.screen.height - gp2y > canZoom && gp2y > canZoom))) {
-        return Game.TILESIZE + 1;
+export function redrawTiles() {
+    Game.world.removeChild(Game.grid);
+    Game.grid = drawGrid();
+    for (const graphic of Game.otherGraphics) {
+        Game.world.removeChild(graphic);
     }
-    return Game.TILESIZE;
+    Game.otherGraphics = [];
+
+    for (const enemy of Game.enemies) {
+        if (!enemy.dead) enemy.redrawHealth();
+    }
+
+    for (const tile of Game.tiles) {
+        tile.fitToTile();
+        tile.place();
+    }
+
+    for (const hazard of Game.hazards) {
+        hazard.fitToTile();
+        hazard.place();
+    }
+
+    drawOther();
+    centerCamera();
 }

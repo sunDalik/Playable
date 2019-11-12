@@ -1,5 +1,6 @@
 import {Game} from "./game"
-import {incrementStage, initializeLevel, setVariablesForStage} from "./setup"
+import {incrementStage, setVariablesForStage} from "./game_changer";
+import {initializeLevel} from "./setup"
 import {ROLE, EQUIPMENT_TYPE, FOOTWEAR_TYPE} from "./enums"
 import {removeObjectFromArray} from "./utils";
 import {redrawSlotsForPlayer} from "./draw";

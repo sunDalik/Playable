@@ -1,4 +1,5 @@
 import {Game} from "../../../game"
+import * as PIXI from "pixi.js"
 import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isRelativelyEmpty} from "../../../mapChecks";
 import {createPlayerWeaponAnimation} from "../../../animations";
@@ -22,8 +23,7 @@ export class NinjaKnife {
             if (isRelativelyEmpty(wielder.tilePosition.x + tileDirX * 2, wielder.tilePosition.y + tileDirY * 2)) {
                 createNinjaKnifeAnimation(this);
                 removePlayerFromGameMap(wielder);
-                if (tileDirX !== 0) wielder.slideX(tileDirX * 2, this.SLIDE_ANIMATION_TIME);
-                else wielder.slideY(tileDirY * 2, this.SLIDE_ANIMATION_TIME);
+                wielder.slide(tileDirX * 2, tileDirY * 2, this.SLIDE_ANIMATION_TIME);
                 placePlayerOnGameMap(wielder);
                 if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun = 1;
             } else {

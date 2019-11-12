@@ -7,7 +7,7 @@ import {removeAllChildrenFromContainer} from "../../utils";
 import astar from "javascript-astar"
 
 export class Enemy extends AnimatedTileElement {
-    constructor(texture, tilePositionX = 0, tilePositionY = 0) {
+    constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.dead = false;
         this.role = ROLE.ENEMY;
@@ -106,29 +106,15 @@ export class Enemy extends AnimatedTileElement {
         super.bumpY(tileStepY, () => this.moveHealthContainer())
     }
 
-    slideX(tileStepX, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
-        super.slideX(tileStepX, () => {
+    slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        super.slide(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
             this.moveHealthContainer()
         }, onEnd, animationTime);
     }
 
-    slideY(tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
-        super.slideY(tileStepY, () => {
-            if (onFrame) onFrame();
-            this.moveHealthContainer()
-        }, onEnd, animationTime);
-    }
-
-    slideBumpX(tileStepX, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
-        super.slideBumpX(tileStepX, () => {
-            if (onFrame) onFrame();
-            this.moveHealthContainer()
-        }, onEnd, animationTime);
-    }
-
-    slideBumpY(tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
-        super.slideBumpY(tileStepY, () => {
+    slideBump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        super.slideBump(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
             this.moveHealthContainer()
         }, onEnd, animationTime);

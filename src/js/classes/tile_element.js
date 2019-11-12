@@ -2,7 +2,7 @@ import {Sprite} from "pixi.js"
 import {Game} from "../game"
 
 export class TileElement extends Sprite {
-    constructor(texture, tilePositionX = 0, tilePositionY = 0) {
+    constructor(texture, tilePositionX, tilePositionY) {
         super(texture);
         this.tilePosition = {
             x: tilePositionX,

@@ -7,23 +7,12 @@ import {BasicArmor} from "./classes/equipment/armor/basic_armor"
 import * as draw from "./draw"
 import * as camera from "./camera"
 import {STAGE} from "./enums"
-import {Aura} from "./classes/magic/aura"
-import {Spikes} from "./classes/magic/spikes"
-import {Necromancy} from "./classes/magic/necromancy"
-import {Fireball} from "./classes/magic/fireball"
-import {Petrification} from "./classes/magic/petrification"
-import {Teleport} from "./classes/magic/teleport"
-import {Pickaxe} from "./classes/equipment/tools/pickaxe"
-import {WizardRobe} from "./classes/equipment/armor/wizard_robe"
-import {DamagingBoots} from "./classes/equipment/footwear/damaging"
-import {AntiHazardBoots} from "./classes/equipment/footwear/anti_hazard"
-import {SeerCirclet} from "./classes/equipment/headwear/seer_circlet"
-import {WizardHat} from "./classes/equipment/headwear/wizard_hat"
 import {generateLevel, getLevelPlayerGraph} from "./level_generation"
 import {keyboard} from "./keyboard_handler"
 import {playerTurn, switchPlayers} from "./game_logic"
-import * as rooms from "./rooms"
 import {generateMap, calculateDetectionGraph} from "./map_generation"
+import {lightPlayerPosition} from "./lighting";
+import {initPools, setVariablesForStage} from "./game_changer";
 
 
 PIXI.utils.skipHello();
@@ -86,9 +75,7 @@ function setup() {
     Game.primaryPlayer = Game.player;
 
     Game.stage = STAGE.FLOODED_CAVE;
-    Game.magicPool = [new Aura(), new Spikes(), new Fireball(), new Necromancy(), new Petrification(), new Teleport()];
-    Game.chestItemPool = [new Pickaxe(), new BasicArmor(), new WizardRobe(), new SeerCirclet(), new WizardHat(),
-        new AntiHazardBoots(), new DamagingBoots()];
+    initPools();
     setVariablesForStage();
     initializeLevel();
 }
@@ -113,18 +100,23 @@ export function initializeLevel() {
     draw.drawHUD();
     draw.drawOther();
     draw.createDarkness();
-    draw.lightPlayerPosition(Game.player);
-    draw.lightPlayerPosition(Game.player2);
+    lightPlayerPosition(Game.player);
+    lightPlayerPosition(Game.player2);
     camera.centerCamera();
 }
 
 function bindKeys() {
-    bindMovement(Game.player, {upCode: 87, leftCode: 65, downCode: 83, rightCode: 68}); //w a s d
-    bindMovement(Game.player2, {upCode: 38, leftCode: 37, downCode: 40, rightCode: 39}); //arrows
-    bindMagic(Game.player, {oneCode: 49, twoCode: 50, threeCode: 51, fourCode: 52}); //1 2 3 4
-    bindMagic(Game.player2, {oneCode: 55, twoCode: 56, threeCode: 57, fourCode: 48}); //7 8 9 0
+    bindMovement(Game.player, {upCode: "KeyW", leftCode: "KeyA", downCode: "KeyS", rightCode: "KeyD"});
+    bindMovement(Game.player2, {
+        upCode: "ArrowUp",
+        leftCode: "ArrowLeft",
+        downCode: "ArrowDown",
+        rightCode: "ArrowRight"
+    });
+    bindMagic(Game.player, {oneCode: "Digit1", twoCode: "Digit2", threeCode: "Digit3", fourCode: "Digit4"});
+    bindMagic(Game.player2, {oneCode: "Digit7", twoCode: "Digit8", threeCode: "Digit9", fourCode: "Digit0"});
 
-    const switchKey = keyboard(90); //Z
+    const switchKey = keyboard("KeyZ");
     switchKey.press = () => {
         playerTurn(null, switchPlayers, true)
     };
@@ -170,49 +162,4 @@ function bindMagic(player, {oneCode, twoCode, threeCode, fourCode}) {
     };
 
     return {oneKey: oneKey, twoKey: twoKey, threeKey: threeKey, fourKey: fourKey}
-}
-
-export function incrementStage() {
-    switch (Game.stage) {
-        case STAGE.FLOODED_CAVE:
-            Game.stage = STAGE.DARK_TUNNEL;
-            break;
-        case STAGE.DARK_TUNNEL:
-            Game.stage = STAGE.RUINS;
-            break;
-        case STAGE.RUINS:
-            Game.stage = STAGE.DUNNO;
-            break;
-        case STAGE.DUNNO:
-            Game.stage = STAGE.FINALE;
-            break;
-    }
-}
-
-export function setVariablesForStage() {
-    switch (Game.stage) {
-        case STAGE.FLOODED_CAVE:
-            Game.normalRooms = rooms.FCNormalRooms;
-            Game.statueRooms = rooms.FCStatueRooms;
-            Game.obeliskRooms = rooms.FCObeliskRooms;
-            Game.chestRooms = rooms.FCChestRooms;
-            Game.BGColor = "0xabcfd1";
-            break;
-        case STAGE.DARK_TUNNEL:
-            Game.normalRooms = rooms.DTNormalRooms;
-            Game.statueRooms = rooms.DTStatueRooms;
-            Game.obeliskRooms = rooms.DTObeliskRooms;
-            Game.chestRooms = rooms.DTChestRooms;
-            Game.BGColor = "0x666666";
-            break;
-        case STAGE.RUINS:
-            Game.BGColor = "0xd8d9d7";
-            break;
-        case STAGE.DUNNO:
-            Game.BGColor = "0x75c978";
-            break;
-        case STAGE.FINALE:
-            Game.BGColor = "0xcc76cc";
-            break;
-    }
 }

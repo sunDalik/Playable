@@ -2,7 +2,7 @@ import {Game} from "../game"
 import {Hazard} from "./hazard";
 
 export class PoisonHazard extends Hazard {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/hazards/poison.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/hazards/poison.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.LIFETIME = 12;
         this.turnsLeft = this.LIFETIME;

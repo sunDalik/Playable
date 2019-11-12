@@ -1,19 +1,19 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE, DIRECTIONS} from "../../enums";
-import {getPlayerOnTile, isNotAWall, isEnemy, isRelativelyEmpty} from "../../mapChecks";
+import {getPlayerOnTile, isRelativelyEmpty} from "../../mapChecks";
 import {createFadingAttack} from "../../animations";
 import {TileElement} from "../tile_element";
 
 export class Star extends Enemy {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/star.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/star.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
         this.health = this.maxHealth;
         this.atk = 1;
         this.triggered = false;
         this.triggeredDirections = null;
-        this.this = ENEMY_TYPE.STAR;
+        this.type = ENEMY_TYPE.STAR;
         this.turnDelay = 0;
     }
 

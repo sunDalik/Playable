@@ -3,7 +3,7 @@ import {FullTileElement} from "./full_tile_element";
 import {removeObjectFromArray} from "../utils";
 
 export class Hazard extends FullTileElement {
-    constructor(texture, tilePositionX = 0, tilePositionY = 0) {
+    constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.zIndex = -3;
         this.LIFETIME = 0;

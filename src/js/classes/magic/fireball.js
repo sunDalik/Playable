@@ -1,6 +1,7 @@
 import {Game} from "../../game"
+import * as PIXI from "pixi.js"
 import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
-import {collisionCheck} from "../../utils";
+import {collisionCheck} from "../../collision_check";
 import {createFadingAttack} from "../../animations";
 
 export class Fireball {
@@ -58,6 +59,7 @@ export class Fireball {
                 }
             }
         }
+        this.multiplier = 0;
         this.uses--;
     }
 }

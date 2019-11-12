@@ -4,13 +4,13 @@ import {ENEMY_TYPE} from "../../enums";
 import {isNotOutOfMap, isRelativelyEmpty, getPlayerOnTile, isEmpty} from "../../mapChecks";
 
 export class RollerB extends Roller {
-    constructor(tilePositionX = 0, tilePositionY = 0, texture = Game.resources["src/images/enemies/roller_b.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/roller_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.health = 0.25;
         this.atk = 1.25;
-        this.ROLL_ANIMATION_TIME = 8;
+        this.SLIDE_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 14;
-        this.this = ENEMY_TYPE.ROLLER_B;
+        this.type = ENEMY_TYPE.ROLLER_B;
     }
 
     move() {
@@ -26,10 +26,10 @@ export class RollerB extends Roller {
                     if (player !== null) {
                         if (x === 1) {
                             player.damage(this.atk);
-                            this.bump();
+                            this.rollBump();
                         } else if (x === 2) {
                             player.damage(this.atk);
-                            this.rollAndBump();
+                            this.rollThenBump();
                         } else if (x >= 3) {
                             this.roll();
                         }
@@ -48,12 +48,14 @@ export class RollerB extends Roller {
                         this.correctScale();
                         if (x === 1) {
                             player.damage(this.atk);
-                            this.bump();
+                            this.rollBump();
                         } else if (x === 2) {
                             player.damage(this.atk);
-                            this.rollAndBump();
+                            this.rollThenBump();
                         } else if (x >= 3) {
-                            this.roll();
+                            Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+                            this.slide(2 * this.direction, 0);
+                            Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
                         }
                         break;
                     }
@@ -67,28 +69,10 @@ export class RollerB extends Roller {
         }
     }
 
-    roll() {
+    rollThenBump() {
         let counter = 0;
         Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-        const step = 2 * Game.TILESIZE / this.ROLL_ANIMATION_TIME;
-        this.tilePosition.x += 2 * this.direction;
-        this.animation = () => {
-            this.position.x += step * this.direction;
-            this.moveHealthContainer();
-            counter++;
-            if (counter >= this.ROLL_ANIMATION_TIME) {
-                Game.APP.ticker.remove(this.animation);
-                this.place();
-            }
-        };
-        Game.APP.ticker.add(this.animation);
-        Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
-    }
-
-    rollAndBump() {
-        let counter = 0;
-        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-        let step = this.direction * Game.TILESIZE / (this.ROLL_ANIMATION_TIME / 2);
+        let step = this.direction * Game.TILESIZE / (this.SLIDE_ANIMATION_TIME / 2);
         const jumpHeight = Game.TILESIZE * 40 / 75;
         const a = jumpHeight / ((Game.TILESIZE / 2 / 3) ** 2);
         const b = -(this.position.x + (4 / 3) * this.direction * Game.TILESIZE + (-this.direction * Game.TILESIZE) / 2 / 3) * 2 * a;
@@ -96,18 +80,18 @@ export class RollerB extends Roller {
         this.tilePosition.x += this.direction;
 
         this.animation = () => {
-            if (counter < this.ROLL_ANIMATION_TIME / 2) {
+            if (counter < this.SLIDE_ANIMATION_TIME / 2) {
                 this.position.x += step;
                 counter++;
-            } else if (counter < this.ROLL_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME / 3) {
+            } else if (counter < this.SLIDE_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME / 3) {
                 step = this.direction * Game.TILESIZE / this.BUMP_ANIMATION_TIME;
                 this.position.x += step;
                 counter++;
-            } else if (counter < this.ROLL_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
+            } else if (counter < this.SLIDE_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
                 this.position.x -= step / 2;
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;
-            } else if (counter >= this.ROLL_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
+            } else if (counter >= this.SLIDE_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
                 Game.APP.ticker.remove(this.animation);
                 this.place();
             }
@@ -117,7 +101,7 @@ export class RollerB extends Roller {
         Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
     }
 
-    bump() {
+    rollBump() {
         let counter = 0;
         const step = this.direction * Game.TILESIZE / this.BUMP_ANIMATION_TIME;
         const jumpHeight = Game.TILESIZE * 40 / 75;

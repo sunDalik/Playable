@@ -1,9 +1,17 @@
 import {Game} from "./game"
 import * as PIXI from "pixi.js"
-import {STAGE, TILE_TYPE, ROLE} from "./enums";
-import {VoidTile} from "./classes/void_tile";
+import {STAGE, ROLE} from "./enums";
 import {removeAllChildrenFromContainer, decrementEachDigitInHex} from "./utils";
-import {centerCamera} from "./camera";
+import {
+    heartColOffset,
+    heartRowOffset,
+    heartSize,
+    heartYOffset,
+    slotsColOffset,
+    slotSize,
+    slotsRowOffset
+} from "./draw_constants";
+import {FullTileElement} from "./classes/full_tile_element";
 
 export function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {
@@ -11,19 +19,6 @@ export function drawTiles() {
             if (Game.map[i][j].tile !== null) {
                 Game.world.addChild(Game.map[i][j].tile);
                 Game.tiles.push(Game.map[i][j].tile);
-            }
-        }
-    }
-}
-
-export function drawVoids() {
-    for (let i = 0; i < Game.map.length; ++i) {
-        for (let j = 0; j < Game.map[0].length; ++j) {
-            if (Game.map[i][j].tileType === TILE_TYPE.VOID) {
-                const voidTile = new VoidTile(j, i);
-                voidTile.zIndex = 999;
-                Game.world.addChild(voidTile);
-                Game.tiles.push(voidTile);
             }
         }
     }
@@ -39,7 +34,8 @@ export function createDarkness() {
 
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
-            const voidTile = new VoidTile(j, i);
+            const voidTile = new FullTileElement(PIXI.Texture.WHITE, j, i);
+            voidTile.tint = 0x000000;
             voidTile.zIndex = 10;
             Game.world.addChild(voidTile);
             Game.tiles.push(voidTile);
@@ -57,7 +53,8 @@ export function createDarkness() {
 
         for (let i = 0; i < Game.map.length; ++i) {
             for (let j = 0; j < Game.map[0].length; ++j) {
-                const voidTile = new VoidTile(j, i);
+                const voidTile = new FullTileElement(PIXI.Texture.WHITE, j, i);
+                voidTile.tint = 0x000000;
                 voidTile.zIndex = 9;
                 voidTile.alpha = 0.85;
                 Game.world.addChild(voidTile);
@@ -101,10 +98,6 @@ export function drawSlots() {
 export function redrawHealthForPlayer(player) {
     const container = player === Game.player ? Game.hearts1 : Game.hearts2;
     removeAllChildrenFromContainer(container);
-    const heartSize = 45;
-    const heartRowOffset = 0;
-    const heartColOffset = 5;
-    const heartYOffset = 20;
     const heartXOffset = player === Game.player ? 50 : Game.APP.renderer.screen.width - 50 - (heartSize + heartColOffset) * 5 + heartColOffset;
     const healthArray = getHealthArray(player);
     for (let i = 0; i < healthArray.length; ++i) {
@@ -150,20 +143,10 @@ export function getHeartTexture(heartValue) {
     }
 }
 
-export function getHeartsBottomLineForPlayer(player) {
-    const heartYOffset = 20;
-    const heartRowOffset = 0;
-    const heartSize = 45;
-    return heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5)
-}
-
 export function redrawSlotsForPlayer(player) {
     const container = player === Game.player ? Game.slots1 : Game.slots2;
     removeAllChildrenFromContainer(container);
-    const slotSize = 70;
-    const slotsRowOffset = 10;
-    const slotsColOffset = 10;
-    const slotsYOffset = getHeartsBottomLineForPlayer(player) + 15;
+    const slotsYOffset = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5) + 15;
     const slotsXOffset = player === Game.player ? 20 : Game.APP.renderer.screen.width - 20 - (slotSize + slotsColOffset) * 4 + slotsColOffset;
     const slotsEquipmentOffset = player === Game.player ? slotsXOffset : Game.APP.renderer.screen.width - 20 - slotSize;
     const slotsSecondRowXOffset = player === Game.player ? slotsXOffset : Game.APP.renderer.screen.width - 20 - (slotSize + slotsColOffset) * 2 + slotsColOffset;
@@ -315,150 +298,4 @@ export function drawOther() {
     Game.world.addChild(blackOutline);
     Game.otherGraphics.push(gameWorldBG);
     Game.otherGraphics.push(blackOutline);
-}
-
-export function redrawTiles() {
-    Game.world.removeChild(Game.grid);
-    Game.grid = drawGrid();
-    for (const graphic of Game.otherGraphics) {
-        Game.world.removeChild(graphic);
-    }
-    Game.otherGraphics = [];
-
-    for (const enemy of Game.enemies) {
-        if (!enemy.dead) enemy.redrawHealth();
-    }
-
-    for (const tile of Game.tiles) {
-        tile.fitToTile();
-        tile.place();
-    }
-
-    for (const hazard of Game.hazards) {
-        hazard.fitToTile();
-        hazard.place();
-    }
-
-    drawOther();
-    centerCamera();
-}
-
-let litAreas = [];
-let litDTAreas = [];
-
-export function lightPlayerPosition(player) {
-    litAreas = [];
-    let pathDist = 5;
-    let roomDist = 9;
-    if (Game.stage === STAGE.DARK_TUNNEL) {
-        pathDist = 2;
-        roomDist = 2;
-    }
-    const px = player.tilePosition.x;
-    const py = player.tilePosition.y;
-    if (Game.map[py][px].tileType === TILE_TYPE.PATH) {
-        lightWorld(px, py, true, pathDist);
-    } else if (Game.map[py][px].tileType === TILE_TYPE.NONE) {
-        lightWorld(px, py, false, roomDist);
-    } else if (Game.map[py][px].tileType === TILE_TYPE.ENTRY) {
-        if ((Game.map[py + 1][px].tileType === TILE_TYPE.PATH && !Game.map[py + 1][px].lit)
-            || (Game.map[py - 1][px].tileType === TILE_TYPE.PATH && !Game.map[py - 1][px].lit)
-            || (Game.map[py][px + 1].tileType === TILE_TYPE.PATH && !Game.map[py][px + 1].lit)
-            || (Game.map[py][px - 1].tileType === TILE_TYPE.PATH && !Game.map[py][px - 1].lit)) {
-            lightWorld(px, py, true, pathDist);
-        } else {
-            lightWorld(px, py, false, roomDist);
-        }
-    }
-
-    //later you will change that if so it checks if player has torch
-    if (Game.stage === STAGE.DARK_TUNNEL && player === Game.player) {
-        for (const tile of litDTAreas) {
-            Game.semiDarkTiles[tile.y][tile.x].visible = true;
-        }
-        litDTAreas = [];
-        lightWorldDTSpecial(px, py, 2);
-    }
-}
-
-//lightPaths == true -> light paths until we encounter none else light nones until we encounter path
-function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sourceDirY = 0) {
-    if (distance > -1) {
-        if (Game.map[tileY][tileX].tileType === TILE_TYPE.ENTRY
-            || (lightPaths && Game.map[tileY][tileX].tileType === TILE_TYPE.PATH)
-            || ((!lightPaths && Game.map[tileY][tileX].tileType === TILE_TYPE.NONE) || Game.map[tileY][tileX].tileType === TILE_TYPE.EXIT)) {
-            if (!Game.map[tileY][tileX].lit) {
-                Game.world.removeChild(Game.darkTiles[tileY][tileX]);
-                Game.map[tileY][tileX].lit = true;
-            }
-
-            litAreas.push({x: tileX, y: tileY});
-            if (sourceDirX === 0 && sourceDirY === 0) {
-                lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, 0);
-                lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, 0);
-                lightWorld(tileX, tileY + 1, lightPaths, distance - 1, 0, -1);
-                lightWorld(tileX, tileY - 1, lightPaths, distance - 1, 0, 1);
-            } else {
-                if (sourceDirY === 0) {
-                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) lightWorld(tileX, tileY - 1, lightPaths, distance - 1, sourceDirX, 1);
-                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) lightWorld(tileX, tileY + 1, lightPaths, distance - 1, sourceDirX, -1);
-                }
-                if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorld(tileX, tileY - sourceDirY, lightPaths, distance - 1, sourceDirX, sourceDirY);
-                if (sourceDirX === 0) {
-                    if (!litAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, sourceDirY);
-                    if (!litAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, sourceDirY);
-                }
-                if (!litAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorld(tileX - sourceDirX, tileY, lightPaths, distance - 1, sourceDirX, sourceDirY);
-            }
-
-            //light diagonal walls
-            if (!Game.map[tileY + 1][tileX + 1].lit && (Game.map[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL || Game.map[tileY + 1][tileX + 1].tileType === TILE_TYPE.SUPER_WALL)) {
-                lightWorld(tileX + 1, tileY + 1, lightPaths, distance - 1);
-            }
-            if (!Game.map[tileY - 1][tileX - 1].lit && (Game.map[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL || Game.map[tileY - 1][tileX - 1].tileType === TILE_TYPE.SUPER_WALL)) {
-                lightWorld(tileX - 1, tileY - 1, lightPaths, distance - 1);
-            }
-            if (!Game.map[tileY + 1][tileX - 1].lit && (Game.map[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL || Game.map[tileY + 1][tileX - 1].tileType === TILE_TYPE.SUPER_WALL)) {
-                lightWorld(tileX - 1, tileY + 1, lightPaths, distance - 1);
-            }
-            if (!Game.map[tileY - 1][tileX + 1].lit && (Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL || Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.SUPER_WALL)) {
-                lightWorld(tileX + 1, tileY - 1, lightPaths, distance - 1);
-            }
-
-        } else if (Game.map[tileY][tileX].tileType === TILE_TYPE.WALL || Game.map[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
-            if (!Game.map[tileY][tileX].lit) {
-                Game.world.removeChild(Game.darkTiles[tileY][tileX]);
-                Game.map[tileY][tileX].lit = true;
-            }
-        }
-    }
-}
-
-function lightWorldDTSpecial(tileX, tileY, distance = 3, sourceDirX = 0, sourceDirY = 0) {
-    if (distance > -1) {
-        if (Game.map[tileY][tileX].lit) {
-            Game.semiDarkTiles[tileY][tileX].visible = false;
-            litDTAreas.push({x: tileX, y: tileY});
-            if (sourceDirX === 0 && sourceDirY === 0) {
-                lightWorldDTSpecial(tileX + 1, tileY, distance - 1, -1, 0);
-                lightWorldDTSpecial(tileX - 1, tileY, distance - 1, 1, 0);
-                lightWorldDTSpecial(tileX, tileY + 1, distance - 1, 0, -1);
-                lightWorldDTSpecial(tileX, tileY - 1, distance - 1, 0, 1);
-            } else {
-                if (sourceDirY === 0) {
-                    if (!litDTAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) lightWorldDTSpecial(tileX, tileY - 1, distance - 1, sourceDirX, 1);
-                    if (!litDTAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) lightWorldDTSpecial(tileX, tileY + 1, distance - 1, sourceDirX, -1);
-                }
-                if (!litDTAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorldDTSpecial(tileX, tileY - sourceDirY, distance - 1, sourceDirX, sourceDirY);
-                if (sourceDirX === 0) {
-                    if (!litDTAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) lightWorldDTSpecial(tileX - 1, tileY, distance - 1, 1, sourceDirY);
-                    if (!litDTAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) lightWorldDTSpecial(tileX + 1, tileY, distance - 1, -1, sourceDirY);
-                }
-                if (!litDTAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorldDTSpecial(tileX - sourceDirX, tileY, distance - 1, sourceDirX, sourceDirY);
-            }
-        } else if (Game.map[tileY][tileX].tileType === TILE_TYPE.WALL || Game.map[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
-            Game.semiDarkTiles[tileY][tileX].visible = false;
-            litDTAreas.push({x: tileX, y: tileY});
-        }
-    }
 }

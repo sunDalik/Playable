@@ -16,9 +16,6 @@ export class Statue extends TallTileElement {
     updateTexture() {
         if (this.weapon === null) this.texture = Game.resources["src/images/other/statue.png"].texture;
         else switch (this.weapon.type) {
-            case WEAPON_TYPE.NONE:
-                this.texture = Game.resources["src/images/other/statue.png"].texture;
-                break;
             case WEAPON_TYPE.KNIFE:
                 this.texture = Game.resources["src/images/other/statue_knife.png"].texture;
                 break;

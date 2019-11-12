@@ -45,6 +45,7 @@ Game.playerMoved = null;
 
 Game.enemiesTimeout = null;
 Game.maraudedStatues = [];
+Game.weaponPool = [];
 Game.magicPool = [];
 Game.chestItemPool = [];
 
