@@ -46,7 +46,7 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
             || (lightPaths && Game.map[tileY][tileX].tileType === TILE_TYPE.PATH)
             || ((!lightPaths && Game.map[tileY][tileX].tileType === TILE_TYPE.NONE) || Game.map[tileY][tileX].tileType === TILE_TYPE.EXIT)) {
             if (!Game.map[tileY][tileX].lit) {
-                Game.world.removeChild(Game.darkTiles[tileY][tileX]);
+                Game.darkTiles[tileY][tileX].visible = false;
                 Game.map[tileY][tileX].lit = true;
             }
 
@@ -85,7 +85,7 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
 
         } else if (Game.map[tileY][tileX].tileType === TILE_TYPE.WALL || Game.map[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
             if (!Game.map[tileY][tileX].lit) {
-                Game.world.removeChild(Game.darkTiles[tileY][tileX]);
+                Game.darkTiles[tileY][tileX].visible = false;
                 Game.map[tileY][tileX].lit = true;
             }
         }

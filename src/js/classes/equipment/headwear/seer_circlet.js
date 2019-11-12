@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, HEAD_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, TILE_TYPE} from "../../../enums";
 
 export class SeerCirclet {
     constructor() {
@@ -8,11 +8,27 @@ export class SeerCirclet {
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
     }
 
-    onWear(player) {
-
+    onWear() {
+        for (let i = 0; i < Game.darkTiles.length; i++) {
+            for (let j = 0; j < Game.darkTiles[0].length; j++) {
+                if (Game.map[i][j].tileType === TILE_TYPE.NONE) {
+                    Game.darkTiles[i][j].visible = false;
+                }
+            }
+        }
     }
 
-    onTakeOff(player) {
+    onTakeOff() {
+        for (let i = 0; i < Game.darkTiles.length; i++) {
+            for (let j = 0; j < Game.darkTiles[0].length; j++) {
+                if (!Game.map[i][j].lit) {
+                    Game.darkTiles[i][j].visible = true;
+                }
+            }
+        }
+    }
 
+    onNextLevel() {
+        this.onWear()
     }
 }

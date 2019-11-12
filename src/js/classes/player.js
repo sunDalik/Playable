@@ -264,4 +264,15 @@ export class Player extends AnimatedTileElement {
             }
         }
     }
+
+    applyNextLevelMethods() {
+        for (const eq of [this.weapon, this.secondHand, this.headwear, this.armor, this.footwear]) {
+            if (eq && eq.onNextLevel) {
+                eq.onNextLevel();
+            }
+        }
+        for (const mg of [this.magic1, this.magic2, this.magic3, this.magic4]) {
+            if (mg) mg.uses = mg.maxUses;
+        }
+    }
 }

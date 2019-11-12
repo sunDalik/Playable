@@ -171,7 +171,7 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
             break;
     }
     if (!slot) return null;
-    if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff();
+    if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);
     const removedEquipment = player[slot];
     player[slot] = null;
     redrawSlotsForPlayer(player);
@@ -190,6 +190,8 @@ export function gotoNextLevel() {
     incrementStage();
     setVariablesForStage();
     initializeLevel();
+    Game.player.applyNextLevelMethods();
+    Game.player2.applyNextLevelMethods();
 }
 
 export function cleanGameWorld() {
