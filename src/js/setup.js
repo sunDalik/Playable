@@ -10,7 +10,7 @@ import {STAGE} from "./enums"
 import {generateLevel, getLevelPlayerGraph} from "./level_generation"
 import {keyboard} from "./keyboard_handler"
 import {playerTurn, switchPlayers} from "./game_logic"
-import {generateMap, calculateDetectionGraph} from "./map_generation"
+import {calculateDetectionGraph, generateMap} from "./map_generation"
 import {lightPlayerPosition} from "./lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 
@@ -107,18 +107,30 @@ export function initializeLevel() {
 
 function bindKeys() {
     bindMovement(Game.player, {upCode: "KeyW", leftCode: "KeyA", downCode: "KeyS", rightCode: "KeyD"});
-    bindMovement(Game.player2, {
+    /*bindMovement(Game.player2, {
         upCode: "ArrowUp",
         leftCode: "ArrowLeft",
         downCode: "ArrowDown",
         rightCode: "ArrowRight"
-    });
+    }); */
+    //experimental
+    bindMovement(Game.player2, {upCode: "KeyI", leftCode: "KeyJ", downCode: "KeyK", rightCode: "KeyL"});
     bindMagic(Game.player, {oneCode: "Digit1", twoCode: "Digit2", threeCode: "Digit3", fourCode: "Digit4"});
     bindMagic(Game.player2, {oneCode: "Digit7", twoCode: "Digit8", threeCode: "Digit9", fourCode: "Digit0"});
 
     const switchKey = keyboard("KeyZ");
     switchKey.press = () => {
         playerTurn(null, switchPlayers, true)
+    };
+
+    const shieldKeyP1 = keyboard("KeyE");
+    shieldKeyP1.press = () => {
+        playerTurn(Game.player, () => Game.player.activateShield())
+    };
+
+    const shieldKeyP2 = keyboard("KeyO");
+    shieldKeyP2.press = () => {
+        playerTurn(Game.player2, () => Game.player2.activateShield())
     };
 }
 

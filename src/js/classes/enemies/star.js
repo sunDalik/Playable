@@ -55,21 +55,29 @@ export class Star extends Enemy {
     attack() {
         this.triggered = false;
         if (this.triggeredDirections === DIRECTIONS.CARDINAL) {
-            this.attackTileAtOffset(0, 1);
-            this.attackTileAtOffset(1, 0);
-            this.attackTileAtOffset(0, -1);
-            this.attackTileAtOffset(-1, 0);
+            this.attackCardinal();
         } else if (this.triggeredDirections === DIRECTIONS.DIAGONAL) {
-            this.attackTileAtOffset(-2, -2);
-            this.attackTileAtOffset(-1, -1);
-            this.attackTileAtOffset(2, 2);
-            this.attackTileAtOffset(1, 1);
-            this.attackTileAtOffset(-2, 2);
-            this.attackTileAtOffset(-1, 1);
-            this.attackTileAtOffset(2, -2);
-            this.attackTileAtOffset(1, -1);
+            this.attackDiagonal();
         }
         this.turnDelay = 1;
+    }
+
+    attackCardinal() {
+        this.attackTileAtOffset(0, 1);
+        this.attackTileAtOffset(1, 0);
+        this.attackTileAtOffset(0, -1);
+        this.attackTileAtOffset(-1, 0);
+    }
+
+    attackDiagonal() {
+        this.attackTileAtOffset(-2, -2);
+        this.attackTileAtOffset(-1, -1);
+        this.attackTileAtOffset(2, 2);
+        this.attackTileAtOffset(1, 1);
+        this.attackTileAtOffset(-2, 2);
+        this.attackTileAtOffset(-1, 1);
+        this.attackTileAtOffset(2, -2);
+        this.attackTileAtOffset(1, -1);
     }
 
     attackTileAtOffset(tileOffsetX, tileOffsetY) {
@@ -78,7 +86,7 @@ export class Star extends Enemy {
         if (isRelativelyEmpty(attackPositionX, attackPositionY)) {
             createFadingAttack(new TileElement(Game.resources["src/images/enemy_attack.png"].texture, attackPositionX, attackPositionY));
             const player = getPlayerOnTile(attackPositionX, attackPositionY);
-            if (player !== null) player.damage(this.atk);
+            if (player !== null) player.damage(this.atk, this, false);
         }
     }
 }

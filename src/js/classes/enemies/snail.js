@@ -48,7 +48,7 @@ export class Snail extends Enemy {
                     this.chasePlayer(Game.player2);
                 }
                 this.turnDelay = 1;
-                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+                this.updateMapPosition();
             } else {
                 if (this.canSeePlayers()) {
                     this.chase = true;
@@ -111,7 +111,7 @@ export class Snail extends Enemy {
         if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
             const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY);
             if (player !== null) {
-                player.damage(this.atk);
+                player.damage(this.atk, this);
                 this.slideBump(tileStepX, tileStepY);
             } else this.slide(tileStepX, tileStepY);
             return true;

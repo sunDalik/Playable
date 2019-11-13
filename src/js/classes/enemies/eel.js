@@ -36,7 +36,7 @@ export class Eel extends Enemy {
             } else if (this.inMemoryAngle === 270) {
                 this.swimToTile(-1, 0);
             }
-            Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+            this.updateMapPosition();
             this.turnDelay = 1;
         } else this.turnDelay--;
     }
@@ -45,7 +45,7 @@ export class Eel extends Enemy {
         if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
             const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY);
             if (player) {
-                player.damage(this.atk);
+                player.damage(this.atk, this);
                 this.slideBump(tileStepX, tileStepY);
             } else {
                 this.slide(tileStepX, tileStepY, () => {

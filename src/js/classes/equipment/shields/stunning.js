@@ -1,8 +1,10 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, SHIELD_TYPE} from "../../../enums";
+import {Shield} from "./shield";
 
-export class StunningShield {
+export class StunningShield extends Shield{
     constructor() {
+        super();
         this.texture = Game.resources["src/images/shields/stunning.png"].texture;
         this.type = SHIELD_TYPE.STUNNING;
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
@@ -10,7 +12,7 @@ export class StunningShield {
         this.uses = this.maxUses;
     }
 
-    onBlock() {
-
+    onBlock(source) {
+        source.stun += 2;
     }
 }

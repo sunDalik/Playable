@@ -25,12 +25,12 @@ export class Roller extends Enemy {
         if (isRelativelyEmpty(this.tilePosition.x + this.direction, this.tilePosition.y)) {
             let player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
             if (player !== null) {
-                player.damage(this.atk);
+                player.damage(this.atk, this);
                 this.rollBump();
             } else {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.slide(this.direction, 0);
-                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+                this.updateMapPosition();
             }
         } else this.rollBump();
     }

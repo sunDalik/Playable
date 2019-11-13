@@ -27,7 +27,7 @@ export class Spikes {
                         Game.map[attackPositionY][attackPositionX].entity.damage(this.atk, 0, 0, true);
                     }
                     const player = getPlayerOnTile(attackPositionX, attackPositionY);
-                    if (player) player.damage(this.friendlyFire);
+                    if (player) player.damage(this.friendlyFire, wielder);
                 }
             }
         }

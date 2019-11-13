@@ -174,25 +174,25 @@ export function redrawSlotsForPlayer(player) {
             case magicSlot1:
                 if (player.magic1 !== null) {
                     drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic1.texture);
-                    drawMagicUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic1);
+                    drawUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic1);
                 }
                 break;
             case magicSlot2:
                 if (player.magic2 !== null) {
                     drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic2.texture);
-                    drawMagicUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic2);
+                    drawUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic2);
                 }
                 break;
             case magicSlot3:
                 if (player.magic3 !== null) {
                     drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic3.texture);
-                    drawMagicUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic3);
+                    drawUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic3);
                 }
                 break;
             case magicSlot4:
                 if (player.magic4 !== null) {
                     drawEquipment(topRowSlots[i].position.x + itemMargin / 2, topRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.magic4.texture);
-                    drawMagicUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic4);
+                    drawUses(topRowSlots[i].position.x + topRowSlots[i].width, topRowSlots[i].position.y, container, player.magic4);
                 }
                 break;
         }
@@ -208,7 +208,10 @@ export function redrawSlotsForPlayer(player) {
                 if (player.weapon !== null) drawEquipment(secondRowSlots[i].position.x + itemMargin / 2, secondRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.weapon.texture);
                 break;
             case secondHandSlot:
-                if (player.secondHand !== null) drawEquipment(secondRowSlots[i].position.x + itemMargin / 2, secondRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.secondHand.texture);
+                if (player.secondHand !== null) {
+                    drawEquipment(secondRowSlots[i].position.x + itemMargin / 2, secondRowSlots[i].position.y + itemMargin / 2, slotSize - itemMargin, container, player.secondHand.texture);
+                    drawUses(secondRowSlots[i].position.x + secondRowSlots[i].width, secondRowSlots[i].position.y, container, player.secondHand);
+                }
                 break;
         }
     }
@@ -242,9 +245,10 @@ export function redrawSlotsForPlayer(player) {
         container.addChild(sprite);
     }
 
-    function drawMagicUses(rightPosX, topPosY, container, magic) {
+    function drawUses(rightPosX, topPosY, container, item) {
+        if (!(item.uses && item.maxUses)) return false;
         const fontSize = 16;
-        const text = new PIXI.Text(magic.uses + "/" + magic.maxUses, {
+        const text = new PIXI.Text(item.uses + "/" + item.maxUses, {
             fontSize: fontSize,
             fill: 0xffffff,
             fontWeight: "bold",

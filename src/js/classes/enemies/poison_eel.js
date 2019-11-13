@@ -51,7 +51,7 @@ export class PoisonEel extends Eel {
                         new PoisonHazard(attackPositionX, attackPositionY).addToWorld();
                     } else Game.map[attackPositionY][attackPositionX].hazard.refreshLifetime();
                     const player = getPlayerOnTile(attackPositionX, attackPositionY);
-                    if (player) player.damage(this.atk);
+                    if (player) player.damage(this.atk, this);
                 }
             }
         }

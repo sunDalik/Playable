@@ -5,14 +5,20 @@ import {ROLE, EQUIPMENT_TYPE, FOOTWEAR_TYPE} from "./enums"
 import {removeObjectFromArray} from "./utils";
 import {redrawSlotsForPlayer} from "./draw";
 
-export function enemyTurn() {
+export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
         Game.enemiesTimeout = setTimeout(() => {
-            moveEnemies();
-            updateHazards();
-            Game.enemiesTimeout = null;
+            enemyTurn();
         }, 60);
     }
+}
+
+function enemyTurn() {
+    moveEnemies();
+    updateHazards();
+    Game.enemiesTimeout = null;
+    Game.player.afterEnemyTurn();
+    Game.player2.afterEnemyTurn();
 }
 
 export function moveEnemies() {
@@ -40,9 +46,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
         &&*/ ((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead))) {
         if (Game.enemiesTimeout !== null) {
             clearTimeout(Game.enemiesTimeout);
-            moveEnemies();
-            updateHazards();
-            Game.enemiesTimeout = null;
+            enemyTurn();
         }
 
         if (bothPlayers) {
@@ -55,7 +59,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
             /*if (Game.playerMoved !== null) {
                 Game.playerMoved.setUnmovedTexture();
                 Game.playerMoved = null;*/
-            enemyTurn();
+            setEnemyTurnTimeout();
             /*} else {
                 Game.playerMoved = player;
                 Game.playerMoved.setMovedTexture();
@@ -71,9 +75,10 @@ export function damagePlayersWithHazards() {
 
 //should change later when there will be more hazards
 export function damagePlayerWithHazards(player) {
-    if (Game.map[player.tilePosition.y][player.tilePosition.x].hazard !== null && !player.dead) {
+    const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
+    if (hazard !== null && !player.dead) {
         if (!(player.footwear && player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD)) {
-            player.damage(Game.map[player.tilePosition.y][player.tilePosition.x].hazard.atk)
+            player.damage(hazard.atk, hazard);
         }
     }
 }

@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
-import {getPlayerOnTile, isRelativelyEmpty} from "../../mapChecks";
+import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../mapChecks";
 import {getRandomInt} from "../../utils";
 
 export class Spider extends Enemy {
@@ -35,7 +35,7 @@ export class Spider extends Enemy {
                 } else {
                     this.chasePlayer(Game.player2);
                 }
-                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+                this.updateMapPosition();
             } else {
                 if (this.canSeePlayers()) {
                     this.chase = true;
@@ -84,7 +84,7 @@ export class Spider extends Enemy {
         if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
             const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y);
             if (player !== null) {
-                player.damage(this.atk);
+                player.damage(this.atk, this);
                 this.bumpX(tileStepX);
             } else this.stepX(tileStepX);
             return true;
@@ -96,7 +96,7 @@ export class Spider extends Enemy {
         if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
             const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + tileStepY);
             if (player !== null) {
-                player.damage(this.atk);
+                player.damage(this.atk, this);
                 this.bumpY(tileStepY);
             } else this.stepY(tileStepY);
             return true;
@@ -112,26 +112,20 @@ export class Spider extends Enemy {
     throwAway(throwX, throwY) {
         if (this.stun === 0) {
             if (throwX !== 0) {
-                if (isRelativelyEmpty(this.tilePosition.x + throwX, this.tilePosition.y)) {
-                    const player = getPlayerOnTile(this.tilePosition.x + throwX, this.tilePosition.y);
-                    if (player === null) {
-                        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                        this.stepX(throwX);
-                        this.thrown = true;
-                        this.cancellable = false;
-                        Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
-                    }
+                if (isEmpty(this.tilePosition.x + throwX, this.tilePosition.y)) {
+                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+                    this.stepX(throwX);
+                    this.thrown = true;
+                    this.cancellable = false;
+                    this.updateMapPosition();
                 }
             } else if (throwY !== 0) {
-                if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + throwY)) {
-                    const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + throwY);
-                    if (player === null) {
-                        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                        this.stepY(throwY);
-                        this.thrown = true;
-                        this.cancellable = false;
-                        Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
-                    }
+                if (isEmpty(this.tilePosition.x, this.tilePosition.y + throwY)) {
+                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+                    this.stepY(throwY);
+                    this.thrown = true;
+                    this.cancellable = false;
+                    this.updateMapPosition();
                 }
             }
         }

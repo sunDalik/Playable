@@ -63,7 +63,8 @@ export function isRelativelyEmpty(tilePositionX, tilePositionY) {
 
 export function isEmpty(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
-        if (Game.map[tilePositionY][tilePositionX].entity === null && Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL) {
+        if (Game.map[tilePositionY][tilePositionX].entity === null && Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL
+            && Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.SUPER_WALL) {
             return true
         }
     }

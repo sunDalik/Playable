@@ -1,14 +1,14 @@
 import {Game} from "../game"
+import * as PIXI from "pixi.js"
 import {AnimatedTileElement} from "./animated_tile_element";
-import {ROLE, INANIMATE_TYPE, TILE_TYPE, EQUIPMENT_TYPE, TOOL_TYPE, MAGIC_TYPE} from "../enums";
-import {scaleGameMap, centerCameraX, centerCameraY} from "../camera";
+import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE, TOOL_TYPE} from "../enums";
+import {centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
 import {redrawHealthForPlayer, redrawSlotsForPlayer} from "../draw";
-import {isInanimate, isRelativelyEmpty, isAWall} from "../mapChecks";
+import {isAWall, isInanimate, isRelativelyEmpty} from "../mapChecks";
 import {calculateDetectionGraph} from "../map_generation"
-import {placePlayerOnGameMap, removePlayerFromGameMap, removeTileFromWorld, gotoNextLevel} from "../game_logic";
+import {gotoNextLevel, placePlayerOnGameMap, removePlayerFromGameMap, removeTileFromWorld} from "../game_logic";
 import {lightPlayerPosition} from "../lighting";
-import {redrawTiles} from "../camera";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -32,10 +32,16 @@ export class Player extends AnimatedTileElement {
         this.magic2 = null;
         this.magic3 = null;
         this.magic4 = null;
+        this.shielded = false;
+        this.animationSubSprites = [];
     }
 
     cancelAnimation() {
         super.cancelAnimation();
+        for (const subSprite of this.animationSubSprites) {
+            Game.world.removeChild(subSprite);
+        }
+        this.animationSubSprites = [];
         this.rotation = 0;
         scaleGameMap();
     }
@@ -173,15 +179,25 @@ export class Player extends AnimatedTileElement {
         lightPlayerPosition(this);
     }
 
-    damage(atk) {
+    damage(atk, source, directHit = true) {
         if (!this.dead) {
-            let dmg = atk - this.getDef();
-            if (dmg < 0.25) dmg = 0.25;
-            this.health -= dmg;
-            shakeScreen();
-            redrawHealthForPlayer(this);
-            if (this.health <= 0) {
-                this.die();
+            const otherPlayer = this === Game.player ? Game.player2 : Game.player;
+            if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
+                && (this.shielded || this.secondHand.type === SHIELD_TYPE.PASSIVE)) {
+                this.secondHand.onBlock(source, this, directHit);
+            } else if (otherPlayer.tilePosition.x === this.tilePosition.x && otherPlayer.tilePosition.y === this.tilePosition.y
+                && otherPlayer.secondHand && otherPlayer.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
+                && (otherPlayer.shielded || otherPlayer.secondHand.type === SHIELD_TYPE.PASSIVE)) {
+                otherPlayer.secondHand.onBlock(source, otherPlayer);
+            } else {
+                let dmg = atk - this.getDef();
+                if (dmg < 0.25) dmg = 0.25;
+                this.health -= dmg;
+                shakeScreen();
+                redrawHealthForPlayer(this);
+                if (this.health <= 0) {
+                    this.die();
+                }
             }
         }
     }
@@ -258,7 +274,7 @@ export class Player extends AnimatedTileElement {
     }
 
     applyOnMagicReceiveMethods(magic) {
-        for (const eq of [this.weapon, this.secondHand, this.headwear, this.armor, this.footwear]) {
+        for (const eq of this.getEquipment()) {
             if (eq && eq.onMagicReceive) {
                 eq.onMagicReceive(magic);
             }
@@ -266,7 +282,7 @@ export class Player extends AnimatedTileElement {
     }
 
     applyNextLevelMethods() {
-        for (const eq of [this.weapon, this.secondHand, this.headwear, this.armor, this.footwear]) {
+        for (const eq of this.getEquipment()) {
             if (eq && eq.onNextLevel) {
                 eq.onNextLevel();
             }
@@ -274,5 +290,50 @@ export class Player extends AnimatedTileElement {
         for (const mg of [this.magic1, this.magic2, this.magic3, this.magic4]) {
             if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) mg.uses = mg.maxUses;
         }
+    }
+
+    getEquipment() {
+        return [this.weapon, this.secondHand, this.headwear, this.armor, this.footwear];
+    }
+
+    afterEnemyTurn() {
+        this.shielded = false;
+        for (const eq of this.getEquipment()) {
+            if (eq && eq.onNewTurn) eq.onNewTurn();
+        }
+        if (this.secondHand && this.secondHand.exhausted) this.secondHand = null;
+        redrawSlotsForPlayer(this);
+    }
+
+    activateShield() {
+        if (!this.secondHand || this.secondHand.equipmentType !== EQUIPMENT_TYPE.SHIELD) return false;
+        if (this.secondHand.activate(this)) {
+            this.shielded = true;
+            this.spinItem(this.secondHand);
+            redrawSlotsForPlayer(this);
+        } else return false;
+    }
+
+    spinItem(item, animationTime = 20, fullSpinTimes = 1) {
+        this.animationCounter = 0;
+        const step = 360 * fullSpinTimes / animationTime;
+        const itemSprite = new PIXI.Sprite(item.texture);
+        itemSprite.anchor.set(0.5, 0.5);
+        itemSprite.position.set(this.tilePosition.x * Game.TILESIZE + Game.TILESIZE / 2, this.tilePosition.y * Game.TILESIZE + Game.TILESIZE / 2);
+        itemSprite.width = Game.TILESIZE * 0.9;
+        itemSprite.height = Game.TILESIZE * 0.9;
+        itemSprite.zIndex = 1;
+        Game.world.addChild(itemSprite);
+
+        this.cancelAnimation();
+        this.animationSubSprites.push(itemSprite);
+        this.animation = () => {
+            itemSprite.angle += step;
+            this.animationCounter++;
+            if (this.animationCounter >= animationTime) {
+                this.cancelAnimation();
+            }
+        };
+        Game.APP.ticker.add(this.animation);
     }
 }

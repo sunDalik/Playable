@@ -32,18 +32,8 @@ export class StarB extends Star {
 
     attack() {
         this.triggered = false;
-        this.attackTileAtOffset(-2, -2);
-        this.attackTileAtOffset(-1, -1);
-        this.attackTileAtOffset(2, 2);
-        this.attackTileAtOffset(1, 1);
-        this.attackTileAtOffset(-2, 2);
-        this.attackTileAtOffset(-1, 1);
-        this.attackTileAtOffset(2, -2);
-        this.attackTileAtOffset(1, -1);
-        this.attackTileAtOffset(0, 1);
-        this.attackTileAtOffset(1, 0);
-        this.attackTileAtOffset(0, -1);
-        this.attackTileAtOffset(-1, 0);
+        this.attackCardinal();
+        this.attackDiagonal();
         this.turnDelay = 1;
     }
 }

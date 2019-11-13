@@ -89,6 +89,12 @@ export class Enemy extends AnimatedTileElement {
         return distanceToPlayer1.length !== 0 || distanceToPlayer2.length !== 0;
     }
 
+    updateMapPosition() {
+        if (!this.dead) {
+            Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+        }
+    }
+
     //probably will need to change those so it accepts more parameters and sends them?
     stepX(tileStepX) {
         super.stepX(tileStepX, () => this.moveHealthContainer())

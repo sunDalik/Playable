@@ -25,15 +25,15 @@ export class RollerB extends Roller {
                     let player = getPlayerOnTile(this.tilePosition.x + x * this.direction, this.tilePosition.y);
                     if (player !== null) {
                         if (x === 1) {
-                            player.damage(this.atk);
+                            player.damage(this.atk, this);
                             this.rollBump();
                         } else if (x === 2) {
-                            player.damage(this.atk);
+                            player.damage(this.atk, this);
                             this.rollThenBump();
                         } else if (x >= 3) {
                             Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                             this.slide(this.direction * 2, 0);
-                            Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+                            this.updateMapPosition();
                         }
                         break;
                     }
@@ -49,15 +49,15 @@ export class RollerB extends Roller {
                         this.direction *= -1;
                         this.correctScale();
                         if (x === 1) {
-                            player.damage(this.atk);
+                            player.damage(this.atk, this);
                             this.rollBump();
                         } else if (x === 2) {
-                            player.damage(this.atk);
+                            player.damage(this.atk, this);
                             this.rollThenBump();
                         } else if (x >= 3) {
                             Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                             this.slide(2 * this.direction, 0);
-                            Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+                            this.updateMapPosition();
                         }
                         break;
                     }
@@ -100,7 +100,7 @@ export class RollerB extends Roller {
             this.moveHealthContainer();
         };
         Game.APP.ticker.add(this.animation);
-        Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+        this.updateMapPosition();
     }
 
     rollBump() {
@@ -133,7 +133,7 @@ export class RollerB extends Roller {
             if (isEmpty(this.tilePosition.x, this.tilePosition.y + inputY)) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.stepY(inputY);
-                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+                this.updateMapPosition();
             } else this.bumpY(inputY);
         } else {
             super.damage(dmg, inputX, inputY, magical);
