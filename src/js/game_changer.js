@@ -18,12 +18,15 @@ import {Knife} from "./classes/equipment/weapons/knife";
 import {NinjaKnife} from "./classes/equipment/weapons/ninja_knife";
 import {Sword} from "./classes/equipment/weapons/sword";
 import {Bow} from "./classes/equipment/weapons/bow";
+import {PassiveShield} from "./classes/equipment/shields/passive";
+import {SpikyShield} from "./classes/equipment/shields/spiky";
+import {StunningShield} from "./classes/equipment/shields/stunning";
 
 export function initPools() {
     Game.weaponPool = [new Knife(), new NinjaKnife(), new Sword(), new Bow()];
     Game.magicPool = [new Aura(), new Spikes(), new Fireball(), new Necromancy(), new Petrification(), new Teleport()];
     Game.chestItemPool = [new Pickaxe(), new BasicArmor(), new WizardRobe(), new SeerCirclet(), new WizardHat(),
-        new AntiHazardBoots(), new DamagingBoots()];
+        new AntiHazardBoots(), new DamagingBoots(), new PassiveShield(), new SpikyShield(), new StunningShield()];
 }
 
 export function incrementStage() {

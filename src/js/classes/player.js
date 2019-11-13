@@ -1,6 +1,6 @@
 import {Game} from "../game"
 import {AnimatedTileElement} from "./animated_tile_element";
-import {ROLE, INANIMATE_TYPE, TILE_TYPE, EQUIPMENT_TYPE, TOOL_TYPE} from "../enums";
+import {ROLE, INANIMATE_TYPE, TILE_TYPE, EQUIPMENT_TYPE, TOOL_TYPE, MAGIC_TYPE} from "../enums";
 import {scaleGameMap, centerCameraX, centerCameraY} from "../camera";
 import {shakeScreen} from "../animations";
 import {redrawHealthForPlayer, redrawSlotsForPlayer} from "../draw";
@@ -272,7 +272,7 @@ export class Player extends AnimatedTileElement {
             }
         }
         for (const mg of [this.magic1, this.magic2, this.magic3, this.magic4]) {
-            if (mg) mg.uses = mg.maxUses;
+            if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) mg.uses = mg.maxUses;
         }
     }
 }
