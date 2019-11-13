@@ -34,7 +34,7 @@ export class NinjaKnife {
         } else return false;
 
         function createNinjaKnifeAnimation(context) {
-            let attackParticle = new PIXI.Sprite(Game.resources["src/images/weapon_particle.png"].texture);
+            let attackParticle = new PIXI.Sprite(PIXI.Texture.WHITE);
             attackParticle.width = Game.TILESIZE / 3;
             attackParticle.height = Game.TILESIZE / 3;
             let newAnchor;
