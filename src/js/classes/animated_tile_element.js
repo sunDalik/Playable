@@ -171,7 +171,7 @@ export class AnimatedTileElement extends TileElement {
                 this.position.y += stepY;
             } else {
                 this.position.x -= stepX;
-                this.position.y += stepY;
+                this.position.y -= stepY;
             }
             this.animationCounter++;
             if (onFrame) onFrame();
