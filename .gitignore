@@ -4,3 +4,4 @@ pixi.js
 local/
 *.psd
 node_modules/
+bower_components/

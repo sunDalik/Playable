@@ -1,5 +1,8 @@
 import {Game} from "./game"
-import astar from "javascript-astar"
+
+//https://github.com/qiao/PathFinding.js
+import PF from "../../bower_components/pathfinding/pathfinding-browser";
+
 import {
     randomChoice,
     getRandomInt,
@@ -271,19 +274,19 @@ export function generateLevel() {
 
     entryPoints = randomShuffle(entryPoints);
 
-    // the Graph class is weird, levelGraph.grid.length will return number of Xs and levelGraph.grid[0].length number of Ys
+    //0 is walkable, 1 is not
     let levelWithPathWeights = [];
     for (let i = 0; i < level.length; ++i) {
         levelWithPathWeights[i] = [];
         for (let j = 0; j < level[0].length; ++j) {
             if (level[i][j] === "v" || level[i][j] === "entry") {
-                levelWithPathWeights[i][j] = 1;
-            } else {
                 levelWithPathWeights[i][j] = 0;
+            } else {
+                levelWithPathWeights[i][j] = 1;
             }
         }
     }
-    let levelGraph = new astar.Graph(levelWithPathWeights);
+    let levelGraph = new PF.Grid(levelWithPathWeights);
 
 
     //this array contains all room connections to ensure that a room is not connected to the same other room twice through different entries
@@ -309,9 +312,7 @@ export function generateLevel() {
         const unreachableEntries = [];
         for (const entry of entryPoints) {
             if (!(entry.coords.x === testEntry.coords.x && entry.coords.y === testEntry.coords.y)) {
-                const start = levelPlayerGraph.grid[testEntry.coords.y][testEntry.coords.x];
-                const end = levelPlayerGraph.grid[entry.coords.y][entry.coords.x];
-                const result = astar.astar.search(levelPlayerGraph, start, end);
+                const result = Game.finder.findPath(testEntry.coords.x, testEntry.coords.y, entry.coords.x, entry.coords.y, levelPlayerGraph.clone());
                 if (result.length === 0) {
                     unreachableEntries.push(entry);
                 }
@@ -387,8 +388,8 @@ function mergeRoomIntoLevel(level, room, startX, startY) {
 function drawConnection(level, connection) {
     //[x][y] instead [y][x] because once again the Graph is weird
     for (let i = 0; i < connection.length; ++i) {
-        if (level[connection[i].x][connection[i].y] !== "entry") {
-            level[connection[i].x][connection[i].y] = "path";
+        if (level[connection[i][1]][connection[i][0]] !== "entry") {
+            level[connection[i][1]][connection[i][0]] = "path";
         }
     }
 }
@@ -400,9 +401,7 @@ function getMinimalConnection(graph, roomConnections, startEntry, endEntries, ha
             && (!entry.connected || !hasToBeUnconnected)
             && (startEntry.room_id !== entry.room_id || !hasToBeFromDifferentRoom)
             && (!isRoomConnectedToRoom(roomConnections, entry.room_id, startEntry.room_id) || !roomsMustNotBeAlreadyConnected)) {
-            const start = graph.grid[startEntry.coords.y][startEntry.coords.x];
-            const end = graph.grid[entry.coords.y][entry.coords.x];
-            const result = astar.astar.search(graph, start, end);
+            const result = Game.finder.findPath(startEntry.coords.x, startEntry.coords.y, entry.coords.x, entry.coords.y, graph.clone());
             possibleConnections.push({connection: result, entry: entry});
         }
     }
@@ -448,13 +447,13 @@ export function getLevelPlayerGraph(level) {
         levelWithPlayerWeights[i] = [];
         for (let j = 0; j < level[0].length; ++j) {
             if (level[i][j] === "v" || level[i][j] === "w") {
-                levelWithPlayerWeights[i][j] = 0;
-            } else {
                 levelWithPlayerWeights[i][j] = 1;
+            } else {
+                levelWithPlayerWeights[i][j] = 0;
             }
         }
     }
-    return new astar.Graph(levelWithPlayerWeights);
+    return new PF.Grid(levelWithPlayerWeights);
 }
 
 function flipHorizontally(room) {

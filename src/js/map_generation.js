@@ -1,6 +1,6 @@
 import {Game} from "./game"
-import astar from "javascript-astar"
 import {TILE_TYPE} from "./enums";
+import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {FullTileElement} from "./classes/full_tile_element"
 
 import {copy2dArray, getRandomSpell, getRandomChestDrop, getRandomWeapon} from "./utils"
@@ -109,6 +109,7 @@ export function generateMap(level) {
     return map;
 }
 
+//0 is walkable, 1 is not
 export function calculateDetectionGraph(map) {
     let mapWithWeights = [];
     for (let i = 0; i < map.length; ++i) {
@@ -116,11 +117,11 @@ export function calculateDetectionGraph(map) {
         for (let j = 0; j < map[0].length; ++j) {
             if (map[i][j].tileType === TILE_TYPE.VOID || map[i][j].tileType === TILE_TYPE.PATH
                 || map[i][j].tileType === TILE_TYPE.WALL || map[i][j].tileType === TILE_TYPE.SUPER_WALL) {
-                mapWithWeights[i][j] = 0;
-            } else {
                 mapWithWeights[i][j] = 1;
+            } else {
+                mapWithWeights[i][j] = 0;
             }
         }
     }
-    Game.playerDetectionGraph = new astar.Graph(mapWithWeights);
+    Game.playerDetectionGraph = new PF.Grid(mapWithWeights);
 }

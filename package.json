@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/sunDalik/Playable#readme",
   "devDependencies": {
-    "javascript-astar": "^0.4.1",
     "rollup": "^1.26.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-builtins": "^2.1.2",

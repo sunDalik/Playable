@@ -1,4 +1,5 @@
 import {STAGE} from "./enums"
+import PF from "../../bower_components/pathfinding/pathfinding-browser";
 
 export const Game = {};
 
@@ -60,3 +61,4 @@ Game.shakeAnimation = null;
 
 Game.playerDetectionGraph = null;
 Game.levelGraph = null;
+Game.finder = new PF.AStarFinder();

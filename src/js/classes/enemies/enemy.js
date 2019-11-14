@@ -4,7 +4,6 @@ import {AnimatedTileElement} from "../animated_tile_element"
 import {ROLE} from "../../enums";
 import {getHealthArray, getHeartTexture} from "../../draw";
 import {removeAllChildrenFromContainer} from "../../utils";
-import astar from "javascript-astar"
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -69,26 +68,20 @@ export class Enemy extends AnimatedTileElement {
     }
 
     getPathToPlayer1() {
-        const start = Game.levelGraph.grid[this.tilePosition.y][this.tilePosition.x];
-        const end = Game.levelGraph.grid[Game.player.tilePosition.y][Game.player.tilePosition.x];
-        return astar.astar.search(Game.levelGraph, start, end);
+        return Game.finder.findPath(this.tilePosition.x, this.tilePosition.y,
+            Game.player.tilePosition.x, Game.player.tilePosition.y, Game.levelGraph.clone());
     }
 
     getPathToPlayer2() {
-        const start = Game.levelGraph.grid[this.tilePosition.y][this.tilePosition.x];
-        const end = Game.levelGraph.grid[Game.player2.tilePosition.y][Game.player2.tilePosition.x];
-        return astar.astar.search(Game.levelGraph, start, end);
+        return Game.finder.findPath(this.tilePosition.x, this.tilePosition.y,
+            Game.player2.tilePosition.x, Game.player2.tilePosition.y, Game.levelGraph.clone());
     }
 
-    /* ASTAR WARNING:
-    * https://github.com/bgrins/javascript-astar/issues/52
-    * this fix was applied to the module */
     canSeePlayers() {
-        const start = Game.playerDetectionGraph.grid[this.tilePosition.y][this.tilePosition.x];
-        let end = Game.playerDetectionGraph.grid[Game.player.tilePosition.y][Game.player.tilePosition.x];
-        const distanceToPlayer1 = astar.astar.search(Game.playerDetectionGraph, start, end);
-        end = Game.playerDetectionGraph.grid[Game.player2.tilePosition.y][Game.player2.tilePosition.x];
-        const distanceToPlayer2 = astar.astar.search(Game.playerDetectionGraph, start, end);
+        const distanceToPlayer1 = Game.finder.findPath(this.tilePosition.x, this.tilePosition.y,
+            Game.player.tilePosition.x, Game.player.tilePosition.y, Game.playerDetectionGraph.clone());
+        const distanceToPlayer2 = Game.finder.findPath(this.tilePosition.x, this.tilePosition.y,
+            Game.player2.tilePosition.x, Game.player2.tilePosition.y, Game.playerDetectionGraph.clone());
         return distanceToPlayer1.length !== 0 || distanceToPlayer2.length !== 0;
     }
 
