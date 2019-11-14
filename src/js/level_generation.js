@@ -12,16 +12,29 @@ import {
     arraySum,
     randomShuffle
 } from "./utils";
+import {STAGE} from "./enums";
 
-//TODO: Find a better A* library
 export function generateLevel() {
     let level = [[]];
-    //set different parameters for dark tunnel
-    const roomNumber = randomChoice([12, 15, 16]);
+    let roomNumber;
     let levelRoomWidth;
     let levelRoomHeight;
-    if (roomNumber === 12 || roomNumber === 16) levelRoomWidth = 4;
-    else if (roomNumber === 15) levelRoomWidth = 5;
+    switch (Game.stage) {
+        case STAGE.FLOODED_CAVE:
+            roomNumber = randomChoice([12, 15, 16]);
+            if (roomNumber === 12 || roomNumber === 16) levelRoomWidth = 4;
+            else if (roomNumber === 15) levelRoomWidth = 5;
+            break;
+        case STAGE.DARK_TUNNEL:
+            roomNumber = randomChoice([10, 12, 14]);
+            levelRoomWidth = roomNumber / 2;
+            break;
+        default:
+            roomNumber = randomChoice(15);
+            levelRoomWidth = 5;
+            break;
+    }
+
     levelRoomHeight = roomNumber / levelRoomWidth;
 
     let levelRooms = [];
@@ -346,34 +359,10 @@ export function generateLevel() {
             }
         }
     }
-
     outlinePathsWithWalls(level);
-
     level = expandLevel(level, 1, 1);
     outlineWallsWithSuperWalls(level);
-
-    // remove walls between paths that connect diagonally
-    for (let i = 1; i < level.length - 1; ++i) {
-        for (let j = 0; j < level[0].length - 1; ++j) {
-            if (level[i][j] === "path") {
-                if (level[i - 1][j + 1] === "path") {
-                    let randomWall = getRandomInt(0, 2);
-                    if (level[i - 1][j] === "w" && level[i][j + 1] === "w") {
-                        if (randomWall === 0) level[i - 1][j] = "path";
-                        else level[i][j + 1] = "path";
-                    }
-                }
-                if (level[i + 1][j + 1] === "path") {
-                    let randomWall = getRandomInt(0, 2);
-                    if (level[i + 1][j] === "w" && level[i][j + 1] === "w") {
-                        if (randomWall === 0) level[i + 1][j] = "path";
-                        else level[i][j + 1] = "path";
-                    }
-                }
-            }
-        }
-    }
-
+    connectDiagonalPaths(level);
     return level;
 }
 
@@ -386,7 +375,7 @@ function mergeRoomIntoLevel(level, room, startX, startY) {
 }
 
 function drawConnection(level, connection) {
-    //[x][y] instead [y][x] because once again the Graph is weird
+    //connection format is [[x1,y1], [x2,y2] ... ]
     for (let i = 0; i < connection.length; ++i) {
         if (level[connection[i][1]][connection[i][0]] !== "entry") {
             level[connection[i][1]][connection[i][0]] = "path";
@@ -439,7 +428,6 @@ function connectEntries(entry1, entry2, connection, roomConnections, level) {
     drawConnection(level, connection);
 }
 
-//you will have to update it if you will use it (look at calculateDetectionGraph)
 export function getLevelPlayerGraph(level) {
     //graph where weights correspond to player's movement ability
     let levelWithPlayerWeights = [];
@@ -520,6 +508,29 @@ function outlineWallsWithSuperWalls(level) {
                 if (level[i - 1][j - 1] === "v") level[i - 1][j - 1] = "sw";
                 if (level[i - 1][j + 1] === "v") level[i - 1][j + 1] = "sw";
                 if (level[i + 1][j - 1] === "v") level[i + 1][j - 1] = "sw";
+            }
+        }
+    }
+}
+
+function connectDiagonalPaths(level) {
+    for (let i = 1; i < level.length - 1; ++i) {
+        for (let j = 0; j < level[0].length - 1; ++j) {
+            if (level[i][j] === "path") {
+                if (level[i - 1][j + 1] === "path") {
+                    let randomWall = getRandomInt(0, 2);
+                    if (level[i - 1][j] === "w" && level[i][j + 1] === "w") {
+                        if (randomWall === 0) level[i - 1][j] = "path";
+                        else level[i][j + 1] = "path";
+                    }
+                }
+                if (level[i + 1][j + 1] === "path") {
+                    let randomWall = getRandomInt(0, 2);
+                    if (level[i + 1][j] === "w" && level[i][j + 1] === "w") {
+                        if (randomWall === 0) level[i + 1][j] = "path";
+                        else level[i][j + 1] = "path";
+                    }
+                }
             }
         }
     }
