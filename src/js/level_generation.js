@@ -37,8 +37,6 @@ export function generateLevel() {
     if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) startRoomX = getRandomInt(0, levelRoomWidth);
     else startRoomX = randomChoice([0, levelRoomWidth - 1]);
     const startRoomI = startRoomY * levelRoomWidth + startRoomX;
-    let startRoom = [];
-    levelRooms[startRoomI] = startRoom;
 
     let endingRoomX;
     let endingRoomY;
@@ -55,20 +53,7 @@ export function generateLevel() {
         endingRoomEntry = {x: getRandomInt(1, endingRoomWidth - 1), y: endingRoomHeight - 1}
     }
     const endingRoomI = endingRoomY * levelRoomWidth + endingRoomX;
-    let endingRoom = [];
-    levelRooms[endingRoomI] = endingRoom;
-
-    for (let i = 0; i < endingRoomHeight; ++i) {
-        endingRoom[i] = [];
-        for (let j = 0; j < endingRoomWidth; ++j) {
-            if (j === 0 || j === endingRoomWidth - 1 || i === 0 || i === endingRoomHeight - 1) {
-                endingRoom[i][j] = "w";
-            } else endingRoom[i][j] = "";
-            if (i === endingRoomEntry.y && j === endingRoomEntry.x) {
-                endingRoom[i][j] = "entry";
-            }
-        }
-    }
+    levelRooms[endingRoomI] = createRoom(endingRoomWidth, endingRoomHeight, [endingRoomEntry]);
 
     //determining statue rooms indexes
     let statueRoomsNumber = randomChoice([1, 2]);
@@ -151,9 +136,11 @@ export function generateLevel() {
 
     let entryCount = 0;
     for (let r = 0; r < levelRooms.length; ++r) {
-        for (let i = 0; i < levelRooms[r].length; ++i) {
-            for (let j = 0; j < levelRooms[r][0].length; ++j) {
-                if (levelRooms[r][i][j] === "entry") entryCount++;
+        if (levelRooms[r]) {
+            for (let i = 0; i < levelRooms[r].length; ++i) {
+                for (let j = 0; j < levelRooms[r][0].length; ++j) {
+                    if (levelRooms[r][i][j] === "entry") entryCount++;
+                }
             }
         }
     }
@@ -189,22 +176,7 @@ export function generateLevel() {
         }
     }
 
-    for (let i = 0; i < startRoomHeight; ++i) {
-        startRoom[i] = [];
-        for (let j = 0; j < startRoomWidth; ++j) {
-            if (j === 0 || j === startRoomWidth - 1 || i === 0 || i === startRoomHeight - 1) {
-                startRoom[i][j] = "w";
-            } else startRoom[i][j] = "";
-            /*if (j === startRoomWidth - 2 && i === startRoomHeight - 2) {
-                startRoom[i][j] = "eel_poison";
-            } */ //for tests
-            for (const entry of startRoomEntries) {
-                if (i === entry.y && j === entry.x) {
-                    startRoom[i][j] = "entry";
-                }
-            }
-        }
-    }
+    levelRooms[startRoomI] = createRoom(startRoomWidth, startRoomHeight, startRoomEntries);
 
     //calculating max width and total height of the level
     let levelTileWidths = [];
@@ -526,4 +498,26 @@ function connectDiagonalPaths(level) {
             }
         }
     }
+}
+
+//entries format = [{x: 1, y:3}, {x:4, y:2} ... ]
+function createRoom(width, height, entries) {
+    let room = [];
+    for (let i = 0; i < height; ++i) {
+        room[i] = [];
+        for (let j = 0; j < width; ++j) {
+            if (j === 0 || j === width - 1 || i === 0 || i === height - 1) {
+                room[i][j] = "w";
+            } else room[i][j] = "";
+            /*if (j === startRoomWidth - 2 && i === startRoomHeight - 2) {
+                startRoom[i][j] = "eel_poison";
+            } */ //for tests
+            for (const entry of entries) {
+                if (i === entry.y && j === entry.x) {
+                    room[i][j] = "entry";
+                }
+            }
+        }
+    }
+    return room;
 }
