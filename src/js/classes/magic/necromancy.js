@@ -14,7 +14,7 @@ export class Necromancy {
     }
 
     cast(wielder) {
-        if (this.removeIfExhausted()) return false;
+        if (this.removeIfExhausted(wielder)) return false;
         let otherPlayer;
         if (wielder === Game.player2) otherPlayer = Game.player;
         else otherPlayer = Game.player2;
@@ -28,7 +28,7 @@ export class Necromancy {
             centerCamera();
             this.uses--;
             //maybe should shift all magic to left? who knows...
-            this.removeIfExhausted()
+            this.removeIfExhausted(wielder)
         } else return false
     }
 

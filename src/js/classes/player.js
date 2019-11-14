@@ -2,7 +2,7 @@ import {Game} from "../game"
 import * as PIXI from "pixi.js"
 import {AnimatedTileElement} from "./animated_tile_element";
 import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE, TOOL_TYPE} from "../enums";
-import {centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
+import {centerCamera, centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
 import {redrawHealthForPlayer, redrawSlotsForPlayer} from "../draw";
 import {isAWall, isInanimate, isRelativelyEmpty} from "../mapChecks";
@@ -228,7 +228,7 @@ export class Player extends AnimatedTileElement {
     }
 
     slide(tileDirX, tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
-        super.slide(tileDirX, tileDirY, () => centerCameraX(false), scaleGameMap, SLIDE_ANIMATION_TIME);
+        super.slide(tileDirX, tileDirY, () => centerCamera(), scaleGameMap, SLIDE_ANIMATION_TIME);
         lightPlayerPosition(this);
     }
 
