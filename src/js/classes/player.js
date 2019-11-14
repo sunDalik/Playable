@@ -106,8 +106,6 @@ export class Player extends AnimatedTileElement {
         if (magic) {
             const magicResult = magic.cast(this);
             if (magicResult === false) return false;
-
-            redrawSlotsForPlayer(this);
         }
     }
 
@@ -216,7 +214,6 @@ export class Player extends AnimatedTileElement {
             if (this.health > this.maxHealth) {
                 this.health = this.maxHealth;
             }
-            redrawHealthForPlayer(this);
         }
     }
 
@@ -243,7 +240,6 @@ export class Player extends AnimatedTileElement {
                 entity.weapon = this.weapon;
                 this.weapon = temp;
                 entity.updateTexture();
-                redrawSlotsForPlayer(this);
                 entity.maraud();
                 break;
             case INANIMATE_TYPE.OBELISK:
@@ -270,7 +266,6 @@ export class Player extends AnimatedTileElement {
         else if (this.magic4 === null) this.magic4 = magic;
         else return;
         this.applyOnMagicReceiveMethods(magic);
-        redrawSlotsForPlayer(this);
     }
 
     applyOnMagicReceiveMethods(magic) {
@@ -296,13 +291,18 @@ export class Player extends AnimatedTileElement {
         return [this.weapon, this.secondHand, this.headwear, this.armor, this.footwear];
     }
 
+    getEquipmentAndMagic() {
+        return [this.weapon, this.secondHand, this.headwear, this.armor, this.footwear, this.magic1, this.magic2, this.magic3, this.magic4];
+    }
+
     afterEnemyTurn() {
         this.shielded = false;
-        for (const eq of this.getEquipment()) {
+        for (const eq of this.getEquipmentAndMagic()) {
             if (eq && eq.onNewTurn) eq.onNewTurn();
         }
         if (this.secondHand && this.secondHand.exhausted) this.secondHand = null;
         redrawSlotsForPlayer(this);
+        redrawHealthForPlayer(this);
     }
 
     activateShield() {
@@ -310,7 +310,6 @@ export class Player extends AnimatedTileElement {
         if (this.secondHand.activate(this)) {
             this.shielded = true;
             this.spinItem(this.secondHand);
-            redrawSlotsForPlayer(this);
         } else return false;
     }
 

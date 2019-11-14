@@ -1,6 +1,5 @@
 import {Game} from "../../game"
 import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
-import {redrawHealthForPlayer} from "../../draw";
 import {placePlayerOnGameMap} from "../../game_logic";
 import {centerCamera} from "../../camera";
 
@@ -23,7 +22,6 @@ export class Necromancy {
             otherPlayer.dead = false;
             otherPlayer.visible = true;
             otherPlayer.health = otherPlayer.maxHealth;
-            redrawHealthForPlayer(otherPlayer);
             otherPlayer.tilePosition.set(wielder.tilePosition.x, wielder.tilePosition.y);
             placePlayerOnGameMap(otherPlayer);
             otherPlayer.place();

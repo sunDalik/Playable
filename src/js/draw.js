@@ -246,7 +246,7 @@ export function redrawSlotsForPlayer(player) {
     }
 
     function drawUses(rightPosX, topPosY, container, item) {
-        if (!(item.uses && item.maxUses)) return false;
+        if (item.uses == null || item.maxUses == null) return false;
         const fontSize = 16;
         const text = new PIXI.Text(item.uses + "/" + item.maxUses, {
             fontSize: fontSize,

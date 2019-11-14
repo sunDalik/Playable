@@ -19,7 +19,6 @@ export class WizardRobe {
                 if (magic.atk) magic.atk += this.magAtk;
             }
         }
-        redrawSlotsForPlayer(player);
     }
 
     onTakeOff(player) {
@@ -31,7 +30,6 @@ export class WizardRobe {
                 if (magic.atk) magic.atk -= this.magAtk;
             }
         }
-        redrawSlotsForPlayer(player);
     }
 
     onMagicReceive(magic) {

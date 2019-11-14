@@ -3,7 +3,6 @@ import {FullTileElement} from "./full_tile_element";
 import {ROLE, INANIMATE_TYPE} from "../enums";
 import {Grail} from "./grail";
 import {createFadingText, longShakeScreen} from "../animations";
-import {redrawHealthForPlayer} from "../draw";
 
 export class Obelisk extends FullTileElement {
     constructor(tilePositionX, tilePositionY, magic) {
@@ -59,7 +58,6 @@ export class Obelisk extends FullTileElement {
             if (this.timesDonated < 2) {
                 if (player.health > 1) {
                     player.health -= 1;
-                    redrawHealthForPlayer(player);
                     this.timesDonated++;
                     if (this.timesDonated === 1) this.grail3.setMagic(this.magic3);
                     else this.grail4.setMagic(this.magic4);

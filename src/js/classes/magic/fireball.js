@@ -11,20 +11,24 @@ export class Fireball {
         this.alignment = MAGIC_ALIGNMENT.GRAY;
         this.atk = 1.5;
         this.multiplier = 0;
+        this.castedThisTurn = true;
+        this.multiplierDecreaseDelay = 2;
         this.maxUses = 3;
         this.uses = this.maxUses;
     }
 
     cast() {
+        if (this.uses <= 0) return false;
+        if (Game.player.dead || Game.player2.dead) return false;
         if (this.multiplier < 3) {
             this.multiplier++;
+            this.updateTexture();
+            this.castedThisTurn = true;
+            this.multiplierDecreaseDelay = 2;
         } else this.release();
     }
 
-    //don't know yet bro
     release() {
-        if (this.uses <= 0) return false;
-        if (Game.player.dead || Game.player2.dead) return false;
         let fire = new PIXI.Sprite(Game.resources["src/images/fire.png"].texture);
         const fireHeight = Game.TILESIZE * this.multiplier;
         fire.anchor.set(0, 0.5);
@@ -60,6 +64,36 @@ export class Fireball {
             }
         }
         this.multiplier = 0;
+        this.updateTexture();
         this.uses--;
+    }
+
+    onNewTurn() {
+        if (!this.castedThisTurn && this.multiplier > 0) {
+            this.multiplierDecreaseDelay--;
+            if (this.multiplierDecreaseDelay <= 0) {
+                this.multiplier--;
+                this.updateTexture();
+                this.multiplierDecreaseDelay = 2;
+            }
+        }
+        this.castedThisTurn = false;
+    }
+
+    updateTexture() {
+        switch (this.multiplier) {
+            case 0:
+                this.texture = Game.resources["src/images/magic/fireball.png"].texture;
+                break;
+            case 1:
+                this.texture = Game.resources["src/images/magic/fireball_1.png"].texture;
+                break;
+            case 2:
+                this.texture = Game.resources["src/images/magic/fireball_2.png"].texture;
+                break;
+            case 3:
+                this.texture = Game.resources["src/images/magic/fireball_3.png"].texture;
+                break;
+        }
     }
 }

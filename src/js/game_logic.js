@@ -3,7 +3,7 @@ import {incrementStage, setVariablesForStage} from "./game_changer";
 import {initializeLevel} from "./setup"
 import {ROLE, EQUIPMENT_TYPE, FOOTWEAR_TYPE} from "./enums"
 import {removeObjectFromArray} from "./utils";
-import {redrawSlotsForPlayer} from "./draw";
+import {drawHealth, drawSlots} from "./draw";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -56,6 +56,9 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
         const moveResult = playerMove();
         if (moveResult !== false) {
             damagePlayersWithHazards();
+            //dunno how to optimize it yet
+            drawHealth();
+            drawSlots();
             /*if (Game.playerMoved !== null) {
                 Game.playerMoved.setUnmovedTexture();
                 Game.playerMoved = null;*/
@@ -151,7 +154,6 @@ export function swapEquipmentWithPlayer(player, equipment) {
     const swappedEquipment = player[slot];
     player[slot] = equipment;
     if (player[slot].onWear) player[slot].onWear(player);
-    redrawSlotsForPlayer(player);
     return swappedEquipment
 }
 
@@ -179,7 +181,6 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
     if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);
     const removedEquipment = player[slot];
     player[slot] = null;
-    redrawSlotsForPlayer(player);
     return removedEquipment;
 }
 
