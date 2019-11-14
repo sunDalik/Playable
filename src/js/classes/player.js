@@ -4,12 +4,7 @@ import {AnimatedTileElement} from "./tile_elements/animated_tile_element";
 import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE, TOOL_TYPE} from "../enums";
 import {centerCamera, centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
-import {
-    drawSlotsContents,
-    redrawHealthForPlayer,
-    redrawSlotContentsForPlayer,
-    redrawSlotsForPlayer
-} from "../drawing/draw_hud";
+import {redrawHealthForPlayer, redrawSlotContents, redrawSlotContentsForPlayer} from "../drawing/draw_hud";
 import {isAWall, isInanimate, isRelativelyEmpty} from "../map_checks";
 import {calculateDetectionGraph} from "../map_generation"
 import {gotoNextLevel, placePlayerOnGameMap, removePlayerFromGameMap, removeTileFromWorld} from "../game_logic";
@@ -219,6 +214,7 @@ export class Player extends AnimatedTileElement {
             if (this.health > this.maxHealth) {
                 this.health = this.maxHealth;
             }
+            redrawHealthForPlayer(this);
         }
     }
 
@@ -276,7 +272,7 @@ export class Player extends AnimatedTileElement {
     applyOnMagicReceiveMethods(magic) {
         for (const eq of this.getEquipment()) {
             if (eq && eq.onMagicReceive) {
-                eq.onMagicReceive(magic);
+                eq.onMagicReceive(magic, this);
             }
         }
     }
@@ -306,7 +302,6 @@ export class Player extends AnimatedTileElement {
             if (eq && eq.onNewTurn) eq.onNewTurn();
         }
         if (this.secondHand && this.secondHand.exhausted) this.secondHand = null;
-        redrawHealthForPlayer(this);
         redrawSlotContentsForPlayer(this);
     }
 
@@ -339,5 +334,34 @@ export class Player extends AnimatedTileElement {
             }
         };
         Game.APP.ticker.add(this.animation);
+    }
+
+
+    ////dont want to use it
+    redrawSlot(slotName) {
+        redrawSlotContents(this, slotName);
+    }
+
+    getPropertyNameOfItem(item) {
+        switch (item) {
+            case this.magic1:
+                return "magic1";
+            case this.magic2:
+                return "magic2";
+            case this.magic3:
+                return "magic3";
+            case this.magic4:
+                return "magic4";
+            case this.weapon:
+                return "weapon";
+            case this.secondHand:
+                return "secondHand";
+            case this.headwear:
+                return "headwear";
+            case this.armor:
+                return "armor";
+            case this.footwear:
+                return "footwear";
+        }
     }
 }

@@ -153,8 +153,7 @@ export class AnimatedTileElement extends TileElement {
             this.animationCounter++;
             if (onFrame) onFrame();
             if (this.animationCounter >= animationTime) {
-                Game.APP.ticker.remove(this.animation);
-                this.place();
+                this.cancelAnimation();
                 if (onEnd) onEnd();
             }
         };
@@ -165,6 +164,8 @@ export class AnimatedTileElement extends TileElement {
         this.animationCounter = 0;
         const stepX = Game.TILESIZE * tileStepX / animationTime;
         const stepY = Game.TILESIZE * tileStepY / animationTime;
+
+        Game.APP.ticker.remove(this.animation);
         this.animation = () => {
             if (this.animationCounter < animationTime / 2) {
                 this.position.x += stepX;
@@ -176,8 +177,7 @@ export class AnimatedTileElement extends TileElement {
             this.animationCounter++;
             if (onFrame) onFrame();
             if (this.animationCounter >= animationTime) {
-                Game.APP.ticker.remove(this.animation);
-                this.place();
+                this.cancelAnimation();
                 if (onEnd) onEnd();
             }
         };
@@ -187,12 +187,13 @@ export class AnimatedTileElement extends TileElement {
     rotateByAngle(angle, rotateTime = this.ROTATE_TIME, cancellable = true) {
         this.animationCounter = 0;
         if (cancellable) this.cancelAnimation();
+
+        Game.APP.ticker.remove(this.animation);
         this.animation = () => {
             this.angle += angle / rotateTime;
             this.animationCounter++;
             if (this.animationCounter >= rotateTime) {
-                Game.APP.ticker.remove(this.animation);
-                this.place();
+                this.cancelAnimation();
             }
         };
         Game.APP.ticker.add(this.animation);
@@ -201,6 +202,8 @@ export class AnimatedTileElement extends TileElement {
     shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
         this.animationCounter = 0;
         let step = Game.TILESIZE / 20 / (animationTime / 4);
+
+        Game.APP.ticker.remove(this.animation);
         this.animation = () => {
             if (this.animationCounter < animationTime / 4) {
                 this.position.x += step * dirX;

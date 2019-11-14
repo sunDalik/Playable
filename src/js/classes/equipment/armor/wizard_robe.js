@@ -31,7 +31,7 @@ export class WizardRobe {
         }
     }
 
-    onMagicReceive(magic) {
+    onMagicReceive(magic, player) {
         magic.maxUses += this.magUses;
         magic.uses += this.magUses;
         if (magic.atk) magic.atk += this.magAtk;

@@ -28,7 +28,7 @@ export class WizardHat {
         }
     }
 
-    onMagicReceive(magic) {
+    onMagicReceive(magic, player) {
         magic.maxUses += this.magUses;
         magic.uses += this.magUses;
     }

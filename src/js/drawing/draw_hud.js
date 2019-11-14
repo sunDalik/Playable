@@ -10,7 +10,6 @@ import {
     slotsRowOffset,
     HUDTextStyle,
     slotContentSizeMargin,
-    HUDFontSize,
     slotBorderOffsetX,
     statsOffsetX,
     HUDKeyBindFontsize, HUDKeyBindTextStyle
