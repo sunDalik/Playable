@@ -1,7 +1,6 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, SHIELD_TYPE} from "../../../enums";
 import {Shield} from "./shield";
-import {redrawSlotsForPlayer} from "../../../draw";
 
 export class PassiveShield extends Shield {
     constructor() {

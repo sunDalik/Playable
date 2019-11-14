@@ -1,5 +1,5 @@
-import {Game} from "./game";
-import {STAGE, TILE_TYPE} from "./enums";
+import {Game} from "../game";
+import {STAGE, TILE_TYPE} from "../enums";
 
 let litAreas = [];
 let litDTAreas = [];

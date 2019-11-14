@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {Star} from "./star"
 import {ENEMY_TYPE} from "../../enums";
-import {getPlayerOnTile} from "../../mapChecks";
+import {getPlayerOnTile} from "../../map_checks";
 
 export class StarB extends Star {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/star_b.png"].texture) {

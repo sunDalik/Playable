@@ -1,9 +1,9 @@
-import {Game} from "../game"
-import {FullTileElement} from "./full_tile_element";
-import {ROLE, INANIMATE_TYPE, MAGIC_ALIGNMENT} from "../enums";
-import {createFloatingItemAnimation} from "../animations";
-import {removeObjectFromArray} from "../utils";
-import {TileElement} from "./tile_element";
+import {Game} from "../../game"
+import {FullTileElement} from "../tile_elements/full_tile_element";
+import {ROLE, INANIMATE_TYPE, MAGIC_ALIGNMENT} from "../../enums";
+import {createFloatingItemAnimation} from "../../animations";
+import {removeObjectFromArray} from "../../utils/basic_utils";
+import {TileElement} from "../tile_elements/tile_element";
 
 export class Grail extends FullTileElement {
     constructor(tilePositionX, tilePositionY, obelisk) {

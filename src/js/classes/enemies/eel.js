@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
-import {getPlayerOnTile, isRelativelyEmpty} from "../../mapChecks";
+import {getPlayerOnTile, isRelativelyEmpty} from "../../map_checks";
 
 export class Eel extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/eel.png"].texture) {

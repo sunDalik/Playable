@@ -2,8 +2,8 @@ import {Game} from "./game"
 import {incrementStage, setVariablesForStage} from "./game_changer";
 import {initializeLevel} from "./setup"
 import {ROLE, EQUIPMENT_TYPE, FOOTWEAR_TYPE} from "./enums"
-import {removeObjectFromArray} from "./utils";
-import {drawHealth, drawSlots} from "./draw";
+import {removeObjectFromArray} from "./utils/basic_utils";
+import {drawHealth, drawSlots} from "./drawing/draw_hud";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {

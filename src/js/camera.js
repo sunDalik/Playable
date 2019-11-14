@@ -1,5 +1,5 @@
 import {Game} from "./game"
-import {drawGrid, drawOther} from "./draw";
+import {drawGrid, drawOther} from "./drawing/draw_init";
 
 export function centerCamera() {
     if (Game.player2.dead) centerCameraOnPlayer(Game.player);

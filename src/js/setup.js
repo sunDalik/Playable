@@ -4,15 +4,15 @@ import {loadAll} from "./loader"
 import {Player} from "./classes/player"
 import {Knife} from "./classes/equipment/weapons/knife"
 import {BasicArmor} from "./classes/equipment/armor/basic_armor"
-import * as draw from "./draw"
 import * as camera from "./camera"
 import {STAGE} from "./enums"
 import {generateLevel, getLevelPlayerGraph} from "./level_generation"
-import {keyboard} from "./keyboard_handler"
-import {playerTurn, switchPlayers} from "./game_logic"
 import {calculateDetectionGraph, generateMap} from "./map_generation"
-import {lightPlayerPosition} from "./lighting";
+import {lightPlayerPosition} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
+import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
+import {drawHUD} from "./drawing/draw_hud";
+import {bindKeys} from "./keyboard/keyboard_binds";
 
 PIXI.utils.skipHello();
 const app = initApplication();
@@ -63,10 +63,10 @@ function setup() {
     Game.player2.weapon = new Knife();
     Game.player.armor = new BasicArmor();
 
-    draw.drawHUD();
+    drawHUD();
     bindKeys();
     window.addEventListener("resize", () => {
-        draw.drawHUD();
+        drawHUD();
         camera.centerCamera();
     });
 
@@ -93,84 +93,13 @@ export function initializeLevel() {
     Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
     Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
 
-    Game.grid = draw.drawGrid();
-    draw.drawTiles();
-    draw.drawEntities();
-    draw.drawHUD();
-    draw.drawOther();
-    draw.createDarkness();
+    Game.grid = drawGrid();
+    drawTiles();
+    drawEntities();
+    drawHUD();
+    drawOther();
+    createDarkness();
     lightPlayerPosition(Game.player);
     lightPlayerPosition(Game.player2);
     camera.centerCamera();
-}
-
-function bindKeys() {
-    bindMovement(Game.player, {upCode: "KeyW", leftCode: "KeyA", downCode: "KeyS", rightCode: "KeyD"});
-    /*bindMovement(Game.player2, {
-        upCode: "ArrowUp",
-        leftCode: "ArrowLeft",
-        downCode: "ArrowDown",
-        rightCode: "ArrowRight"
-    }); */
-    //experimental
-    bindMovement(Game.player2, {upCode: "KeyI", leftCode: "KeyJ", downCode: "KeyK", rightCode: "KeyL"});
-    bindMagic(Game.player, {oneCode: "Digit1", twoCode: "Digit2", threeCode: "Digit3", fourCode: "Digit4"});
-    bindMagic(Game.player2, {oneCode: "Digit7", twoCode: "Digit8", threeCode: "Digit9", fourCode: "Digit0"});
-
-    const switchKey = keyboard("KeyZ");
-    switchKey.press = () => {
-        playerTurn(null, switchPlayers, true)
-    };
-
-    const shieldKeyP1 = keyboard("KeyE");
-    shieldKeyP1.press = () => {
-        playerTurn(Game.player, () => Game.player.activateShield())
-    };
-
-    const shieldKeyP2 = keyboard("KeyO");
-    shieldKeyP2.press = () => {
-        playerTurn(Game.player2, () => Game.player2.activateShield())
-    };
-}
-
-function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
-    const upKey = keyboard(upCode);
-    const leftKey = keyboard(leftCode);
-    const downKey = keyboard(downCode);
-    const rightKey = keyboard(rightCode);
-    upKey.press = (e) => {
-        playerTurn(player, () => player.move(0, -1, e));
-    };
-    leftKey.press = (e) => {
-        playerTurn(player, () => player.move(-1, 0, e));
-    };
-    downKey.press = (e) => {
-        playerTurn(player, () => player.move(0, 1, e));
-
-    };
-    rightKey.press = (e) => {
-        playerTurn(player, () => player.move(1, 0, e));
-    };
-    return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
-}
-
-function bindMagic(player, {oneCode, twoCode, threeCode, fourCode}) {
-    const oneKey = keyboard(oneCode);
-    const twoKey = keyboard(twoCode);
-    const threeKey = keyboard(threeCode);
-    const fourKey = keyboard(fourCode);
-    oneKey.press = () => {
-        if (player.magic1) playerTurn(player, () => player.castMagic(player.magic1));
-    };
-    twoKey.press = () => {
-        if (player.magic2) playerTurn(player, () => player.castMagic(player.magic2));
-    };
-    threeKey.press = () => {
-        if (player.magic3) playerTurn(player, () => player.castMagic(player.magic3));
-    };
-    fourKey.press = () => {
-        if (player.magic4) playerTurn(player, () => player.castMagic(player.magic4));
-    };
-
-    return {oneKey: oneKey, twoKey: twoKey, threeKey: threeKey, fourKey: fourKey}
 }

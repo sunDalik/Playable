@@ -1,9 +1,10 @@
 import {Game} from "./game"
 import {TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
-import {FullTileElement} from "./classes/full_tile_element"
+import {FullTileElement} from "./classes/tile_elements/full_tile_element"
 
-import {copy2dArray, getRandomSpell, getRandomChestDrop, getRandomWeapon} from "./utils"
+import {copy2dArray} from "./utils/basic_utils";
+import {getRandomSpell, getRandomChestDrop, getRandomWeapon} from "./utils/random_utils"
 import {Roller} from "./classes/enemies/roller"
 import {RollerB} from "./classes/enemies/roller_b"
 import {Snail} from "./classes/enemies/snail"
@@ -15,9 +16,9 @@ import {SpiderB} from "./classes/enemies/spider_b"
 import {Eel} from "./classes/enemies/eel"
 import {DarkEel} from "./classes/enemies/dark_eel"
 import {PoisonEel} from "./classes/enemies/poison_eel"
-import {Statue} from "./classes/statue"
-import {Chest} from "./classes/chest"
-import {Obelisk} from "./classes/obelisk"
+import {Statue} from "./classes/inanimate_objects/statue"
+import {Chest} from "./classes/inanimate_objects/chest"
+import {Obelisk} from "./classes/inanimate_objects/obelisk"
 
 export function generateMap(level) {
     let map = copy2dArray(level);

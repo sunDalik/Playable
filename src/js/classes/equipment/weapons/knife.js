@@ -1,6 +1,6 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
-import {isEnemy} from "../../../mapChecks";
+import {isEnemy} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 
 export class Knife {

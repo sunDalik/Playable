@@ -1,6 +1,6 @@
-import {Game} from "../game"
-import {FullTileElement} from "./full_tile_element";
-import {removeObjectFromArray} from "../utils";
+import {Game} from "../../game"
+import {FullTileElement} from "../tile_elements/full_tile_element";
+import {removeObjectFromArray} from "../../utils/basic_utils";
 
 export class Hazard extends FullTileElement {
     constructor(texture, tilePositionX, tilePositionY) {

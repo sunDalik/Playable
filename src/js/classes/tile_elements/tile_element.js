@@ -1,5 +1,5 @@
 import {Sprite} from "pixi.js"
-import {Game} from "../game"
+import {Game} from "../../game"
 
 export class TileElement extends Sprite {
     constructor(texture, tilePositionX, tilePositionY) {

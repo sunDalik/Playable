@@ -1,4 +1,4 @@
-import {getCrossProduct} from "./math";
+import {getCrossProduct} from "./utils/math_utils";
 
 export function collisionCheck(vertexData1, vertexData2) {
     const lines1 = getLinesByVertexData(vertexData1);

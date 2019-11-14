@@ -1,4 +1,4 @@
-import {Game} from "../game"
+import {Game} from "../../game"
 import {Hazard} from "./hazard";
 
 export class PoisonHazard extends Hazard {

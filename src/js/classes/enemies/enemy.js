@@ -1,9 +1,8 @@
 import {Game} from "../../game"
 import * as PIXI from "pixi.js"
-import {AnimatedTileElement} from "../animated_tile_element"
+import {AnimatedTileElement} from "../tile_elements/animated_tile_element"
 import {ROLE} from "../../enums";
-import {getHealthArray, getHeartTexture} from "../../draw";
-import {removeAllChildrenFromContainer} from "../../utils";
+import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {

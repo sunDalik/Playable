@@ -1,5 +1,5 @@
 import {Game} from "./game"
-import {removeObjectFromArray} from "./utils"
+import {removeObjectFromArray} from "./utils/basic_utils"
 import * as PIXI from "pixi.js"
 
 export function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2, thin = false) {

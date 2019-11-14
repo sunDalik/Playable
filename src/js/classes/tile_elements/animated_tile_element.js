@@ -1,6 +1,6 @@
-import {Game} from "../game"
+import {Game} from "../../game"
 import {TileElement} from "./tile_element"
-import {cubicBezier} from "../math";
+import {cubicBezier} from "../../utils/math_utils";
 
 export class AnimatedTileElement extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {

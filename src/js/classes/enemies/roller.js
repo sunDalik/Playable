@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
-import {isRelativelyEmpty, getPlayerOnTile} from "../../mapChecks";
+import {isRelativelyEmpty, getPlayerOnTile} from "../../map_checks";
 
 export class Roller extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/roller.png"].texture) {

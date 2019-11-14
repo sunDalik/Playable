@@ -1,6 +1,5 @@
 import {Game} from "../../../game"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, MAGIC_TYPE} from "../../../enums";
-import {redrawSlotsForPlayer} from "../../../draw";
 
 export class WizardRobe {
     constructor() {

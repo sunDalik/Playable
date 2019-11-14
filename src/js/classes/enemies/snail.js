@@ -1,9 +1,9 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
-import {PoisonHazard} from "../poison_hazard";
-import {isRelativelyEmpty, getPlayerOnTile} from "../../mapChecks";
-import {getRandomInt} from "../../utils";
+import {PoisonHazard} from "../hazards/poison_hazard";
+import {isRelativelyEmpty, getPlayerOnTile} from "../../map_checks";
+import {getRandomInt} from "../../utils/random_utils";
 
 export class Snail extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/snail.png"].texture) {

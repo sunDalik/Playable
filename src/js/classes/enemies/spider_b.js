@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {Spider} from "./spider"
 import {ENEMY_TYPE} from "../../enums";
-import {isEmpty, isNotAWall} from "../../mapChecks";
+import {isEmpty, isNotAWall} from "../../map_checks";
 
 export class SpiderB extends Spider {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/spider_b.png"].texture) {

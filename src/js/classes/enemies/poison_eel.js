@@ -1,8 +1,8 @@
 import {Game} from "../../game"
 import {Eel} from "./eel"
 import {ENEMY_TYPE} from "../../enums";
-import {PoisonHazard} from "../poison_hazard";
-import {getPlayerOnTile} from "../../mapChecks";
+import {PoisonHazard} from "../hazards/poison_hazard";
+import {getPlayerOnTile} from "../../map_checks";
 
 export class PoisonEel extends Eel {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/eel_poison.png"].texture) {

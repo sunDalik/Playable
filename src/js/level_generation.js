@@ -1,18 +1,10 @@
 import {Game} from "./game"
-
 //https://github.com/qiao/PathFinding.js
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 
-import {
-    randomChoice,
-    getRandomInt,
-    copy2dArray,
-    randomArrayIndex,
-    getMaxOfArray,
-    arraySum,
-    randomShuffle
-} from "./utils";
+import {arraySum, copy2dArray} from "./utils/basic_utils";
 import {STAGE} from "./enums";
+import {getRandomInt, randomArrayIndex, randomChoice, randomShuffle} from "./utils/random_utils";
 
 export function generateLevel() {
     let level = [[]];
@@ -235,7 +227,7 @@ export function generateLevel() {
     const minRandRoomOffset = 2;
     const maxRandRoomOffset = 3;
 
-    const levelTileWidth = getMaxOfArray(levelTileWidths) + maxRandRoomOffset * levelRoomWidth + 2;
+    const levelTileWidth = Math.max(...levelTileWidths) + maxRandRoomOffset * levelRoomWidth + 2;
     const levelTileHeight = arraySum(levelTileHeights) + maxRandRoomOffset * levelRoomHeight + 2;
 
     //initialize level array

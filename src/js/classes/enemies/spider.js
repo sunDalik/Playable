@@ -1,8 +1,8 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
-import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../mapChecks";
-import {getRandomInt} from "../../utils";
+import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../map_checks";
+import {getRandomInt} from "../../utils/random_utils";
 
 export class Spider extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/spider.png"].texture) {

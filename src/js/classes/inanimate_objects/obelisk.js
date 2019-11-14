@@ -1,8 +1,8 @@
-import {Game} from "../game"
-import {FullTileElement} from "./full_tile_element";
-import {ROLE, INANIMATE_TYPE} from "../enums";
+import {Game} from "../../game"
+import {FullTileElement} from "../tile_elements/full_tile_element";
+import {ROLE, INANIMATE_TYPE} from "../../enums";
 import {Grail} from "./grail";
-import {createFadingText, longShakeScreen} from "../animations";
+import {createFadingText, longShakeScreen} from "../../animations";
 
 export class Obelisk extends FullTileElement {
     constructor(tilePositionX, tilePositionY, magic) {

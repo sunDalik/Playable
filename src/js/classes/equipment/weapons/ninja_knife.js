@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import * as PIXI from "pixi.js"
 import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
-import {isEnemy, isRelativelyEmpty} from "../../../mapChecks";
+import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 import {removePlayerFromGameMap, placePlayerOnGameMap} from "../../../game_logic";
 

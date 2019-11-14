@@ -1,8 +1,8 @@
-import {Game} from "../game"
-import {FullTileElement} from "./full_tile_element"
-import {ROLE, INANIMATE_TYPE} from "../enums";
-import {createFloatingItemAnimation} from "../animations";
-import {swapEquipmentWithPlayer, removeEquipmentFromPlayer} from "../game_logic";
+import {Game} from "../../game"
+import {FullTileElement} from "../tile_elements/full_tile_element"
+import {ROLE, INANIMATE_TYPE} from "../../enums";
+import {createFloatingItemAnimation} from "../../animations";
+import {swapEquipmentWithPlayer, removeEquipmentFromPlayer} from "../../game_logic";
 
 export class Chest extends FullTileElement {
     constructor(tilePositionX, tilePositionY, contents) {

@@ -1,8 +1,8 @@
 import {Game} from "../../game"
 import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
-import {isNotAWall, getPlayerOnTile, isEnemy} from "../../mapChecks";
+import {isNotAWall, getPlayerOnTile, isEnemy} from "../../map_checks";
 import {createFadingAttack, rotate} from "../../animations";
-import {FullTileElement} from "../full_tile_element";
+import {FullTileElement} from "../tile_elements/full_tile_element";
 
 export class Spikes {
     constructor() {

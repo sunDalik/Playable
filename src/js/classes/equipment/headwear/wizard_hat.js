@@ -1,6 +1,5 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE} from "../../../enums";
-import {redrawSlotsForPlayer} from "../../../draw";
 
 export class WizardHat {
     constructor() {
@@ -17,7 +16,6 @@ export class WizardHat {
                 magic.uses += this.magUses;
             }
         }
-        redrawSlotsForPlayer(player);
     }
 
     onTakeOff(player) {
@@ -28,7 +26,6 @@ export class WizardHat {
                 if (magic.type === MAGIC_TYPE.NECROMANCY) magic.removeIfExhausted(player);
             }
         }
-        redrawSlotsForPlayer(player);
     }
 
     onMagicReceive(magic) {

@@ -1,4 +1,4 @@
-import {Game} from "../game"
+import {Game} from "../../game"
 import {TileElement} from "./tile_element"
 
 export class FullTileElement extends TileElement {

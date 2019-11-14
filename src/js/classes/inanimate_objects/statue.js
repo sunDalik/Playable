@@ -1,7 +1,7 @@
-import {Game} from "../game"
-import {TallTileElement} from "./tall_tile_element"
-import {ROLE, INANIMATE_TYPE, WEAPON_TYPE} from "../enums";
-import {createFadingText, longShakeScreen} from "../animations";
+import {Game} from "../../game"
+import {TallTileElement} from "../tile_elements/tall_tile_element"
+import {ROLE, INANIMATE_TYPE, WEAPON_TYPE} from "../../enums";
+import {createFadingText, longShakeScreen} from "../../animations";
 
 export class Statue extends TallTileElement {
     constructor(tilePositionX, tilePositionY, weapon) {
