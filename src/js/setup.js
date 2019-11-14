@@ -13,8 +13,6 @@ import {playerTurn, switchPlayers} from "./game_logic"
 import {calculateDetectionGraph, generateMap} from "./map_generation"
 import {lightPlayerPosition} from "./lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
-import {Aura} from "./classes/magic/aura";
-
 
 PIXI.utils.skipHello();
 const app = initApplication();

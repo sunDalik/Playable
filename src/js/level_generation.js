@@ -10,6 +10,7 @@ import {
     randomShuffle
 } from "./utils";
 
+//TODO: Find a better A* library
 export function generateLevel() {
     let level = [[]];
     //set different parameters for dark tunnel

@@ -80,6 +80,9 @@ export class Enemy extends AnimatedTileElement {
         return astar.astar.search(Game.levelGraph, start, end);
     }
 
+    /* ASTAR WARNING:
+    * https://github.com/bgrins/javascript-astar/issues/52
+    * this fix was applied to the module */
     canSeePlayers() {
         const start = Game.playerDetectionGraph.grid[this.tilePosition.y][this.tilePosition.x];
         let end = Game.playerDetectionGraph.grid[Game.player.tilePosition.y][Game.player.tilePosition.x];
