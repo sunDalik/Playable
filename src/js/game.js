@@ -9,11 +9,6 @@ Game.resources = null;
 
 Game.world = null;
 Game.grid = null;
-Game.HUD = null;
-Game.hearts1 = null;
-Game.hearts2 = null;
-Game.slots1 = null;
-Game.slots2 = null;
 
 Game.TILESIZE = 65;
 Game.REFERENCE_TILESIZE = Game.TILESIZE;

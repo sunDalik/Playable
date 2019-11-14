@@ -13,6 +13,7 @@ import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
 import {drawHUD} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
+import {HUD} from "./drawing/hud_object";
 
 PIXI.utils.skipHello();
 const app = initApplication();
@@ -40,21 +41,10 @@ function setup() {
     Game.world = new PIXI.Container();
     Game.APP.stage.addChild(Game.world);
 
-    Game.HUD = new PIXI.Container();
-    Game.hearts1 = new PIXI.Container();
-    Game.hearts2 = new PIXI.Container();
-    Game.slots1 = new PIXI.Container();
-    Game.slots2 = new PIXI.Container();
-    Game.HUD.addChild(Game.hearts1);
-    Game.HUD.addChild(Game.hearts2);
-    Game.HUD.addChild(Game.slots1);
-    Game.HUD.addChild(Game.slots2);
+    Game.HUD = HUD;
     Game.APP.stage.addChild(Game.HUD);
-
     Game.world.sortableChildren = true;
     Game.APP.stage.sortableChildren = true;
-    Game.slots1.sortableChildren = true;
-    Game.slots2.sortableChildren = true;
 
     Game.player = new Player(Game.resources["src/images/player.png"].texture, 0, 0);
     Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, 0, 0);

@@ -94,7 +94,8 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
 
 function lightWorldDTSpecial(tileX, tileY, distance = 3, sourceDirX = 0, sourceDirY = 0) {
     if (distance > -1) {
-        if (Game.map[tileY][tileX].lit) {
+        if (Game.map[tileY][tileX].lit && Game.map[tileY][tileX].tileType !== TILE_TYPE.WALL
+            && Game.map[tileY][tileX].tileType !== TILE_TYPE.SUPER_WALL) {
             Game.semiDarkTiles[tileY][tileX].visible = false;
             litDTAreas.push({x: tileX, y: tileY});
             if (sourceDirX === 0 && sourceDirY === 0) {
@@ -114,7 +115,7 @@ function lightWorldDTSpecial(tileX, tileY, distance = 3, sourceDirX = 0, sourceD
                 }
                 if (!litDTAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorldDTSpecial(tileX - sourceDirX, tileY, distance - 1, sourceDirX, sourceDirY);
             }
-        } else if (Game.map[tileY][tileX].tileType === TILE_TYPE.WALL || Game.map[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
+        } else {
             Game.semiDarkTiles[tileY][tileX].visible = false;
             litDTAreas.push({x: tileX, y: tileY});
         }

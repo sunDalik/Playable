@@ -3,7 +3,7 @@ import {incrementStage, setVariablesForStage} from "./game_changer";
 import {initializeLevel} from "./setup"
 import {ROLE, EQUIPMENT_TYPE, FOOTWEAR_TYPE} from "./enums"
 import {removeObjectFromArray} from "./utils/basic_utils";
-import {drawHealth, drawSlots} from "./drawing/draw_hud";
+import {drawHealth, drawSlots, drawSlotsContents} from "./drawing/draw_hud";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -35,9 +35,8 @@ export function moveEnemies() {
 }
 
 export function updateHazards() {
-    for (let i = 0; i < Game.hazards.length; ++i) {
-        const lives = Game.hazards[i].updateLifetime();
-        if (!lives) i--; //dead hazards are removed from array, so we don't increment i
+    for (let i = Game.hazards.length - 1; i >= 0; i--) {
+        Game.hazards[i].updateLifetime();
     }
 }
 
@@ -58,7 +57,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
             damagePlayersWithHazards();
             //dunno how to optimize it yet
             drawHealth();
-            drawSlots();
+            drawSlotsContents();
             /*if (Game.playerMoved !== null) {
                 Game.playerMoved.setUnmovedTexture();
                 Game.playerMoved = null;*/

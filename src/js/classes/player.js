@@ -4,7 +4,12 @@ import {AnimatedTileElement} from "./tile_elements/animated_tile_element";
 import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE, TOOL_TYPE} from "../enums";
 import {centerCamera, centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
-import {redrawHealthForPlayer, redrawSlotsForPlayer} from "../drawing/draw_hud";
+import {
+    drawSlotsContents,
+    redrawHealthForPlayer,
+    redrawSlotContentsForPlayer,
+    redrawSlotsForPlayer
+} from "../drawing/draw_hud";
 import {isAWall, isInanimate, isRelativelyEmpty} from "../map_checks";
 import {calculateDetectionGraph} from "../map_generation"
 import {gotoNextLevel, placePlayerOnGameMap, removePlayerFromGameMap, removeTileFromWorld} from "../game_logic";
@@ -301,8 +306,8 @@ export class Player extends AnimatedTileElement {
             if (eq && eq.onNewTurn) eq.onNewTurn();
         }
         if (this.secondHand && this.secondHand.exhausted) this.secondHand = null;
-        redrawSlotsForPlayer(this);
         redrawHealthForPlayer(this);
+        redrawSlotContentsForPlayer(this);
     }
 
     activateShield() {

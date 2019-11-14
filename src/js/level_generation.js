@@ -22,11 +22,10 @@ export function generateLevel() {
             levelRoomWidth = roomNumber / 2;
             break;
         default:
-            roomNumber = randomChoice(15);
+            roomNumber = randomChoice([15]);
             levelRoomWidth = 5;
             break;
     }
-
     levelRoomHeight = roomNumber / levelRoomWidth;
 
     let levelRooms = [];
@@ -251,20 +250,7 @@ export function generateLevel() {
 
     entryPoints = randomShuffle(entryPoints);
 
-    //0 is walkable, 1 is not
-    let levelWithPathWeights = [];
-    for (let i = 0; i < level.length; ++i) {
-        levelWithPathWeights[i] = [];
-        for (let j = 0; j < level[0].length; ++j) {
-            if (level[i][j] === "v" || level[i][j] === "entry") {
-                levelWithPathWeights[i][j] = 0;
-            } else {
-                levelWithPathWeights[i][j] = 1;
-            }
-        }
-    }
-    let levelGraph = new PF.Grid(levelWithPathWeights);
-
+    const levelGraph = getLevelPathGraph(level);
 
     //this array contains all room connections to ensure that a room is not connected to the same other room twice through different entries
     let roomConnections = [];
@@ -392,6 +378,7 @@ function connectEntries(entry1, entry2, connection, roomConnections, level) {
     drawConnection(level, connection);
 }
 
+//0 is walkable, 1 is not
 export function getLevelPlayerGraph(level) {
     //graph where weights correspond to player's movement ability
     let levelWithPlayerWeights = [];
@@ -406,6 +393,21 @@ export function getLevelPlayerGraph(level) {
         }
     }
     return new PF.Grid(levelWithPlayerWeights);
+}
+
+function getLevelPathGraph(level) {
+    let levelWithPathWeights = [];
+    for (let i = 0; i < level.length; ++i) {
+        levelWithPathWeights[i] = [];
+        for (let j = 0; j < level[0].length; ++j) {
+            if (level[i][j] === "v" || level[i][j] === "entry") {
+                levelWithPathWeights[i][j] = 0;
+            } else {
+                levelWithPathWeights[i][j] = 1;
+            }
+        }
+    }
+    return new PF.Grid(levelWithPathWeights);
 }
 
 function flipHorizontally(room) {
