@@ -25,13 +25,20 @@ export function moveEnemies() {
     for (const enemy of Game.enemies) {
         if (!enemy.dead) {
             if (enemy.stun <= 0) {
-                if (enemy.cancellable) {
-                    enemy.cancelAnimation();
+                if (arePlayersInDetectionRadius(enemy)) {
+                    if (enemy.cancellable) {
+                        enemy.cancelAnimation();
+                    }
+                    enemy.move();
                 }
-                enemy.move();
             } else enemy.stun--;
         }
     }
+}
+
+function arePlayersInDetectionRadius(enemy) {
+    return Math.abs(enemy.tilePosition.x - Game.player.tilePosition.x) + Math.abs(enemy.tilePosition.y - Game.player.tilePosition.y) <= enemy.detectionRadius
+        || Math.abs(enemy.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(enemy.tilePosition.y - Game.player2.tilePosition.y) <= enemy.detectionRadius;
 }
 
 export function updateHazards() {

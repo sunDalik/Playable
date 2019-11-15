@@ -11,6 +11,7 @@ export class Enemy extends AnimatedTileElement {
         this.role = ROLE.ENEMY;
         this.cancellable = true;
         this.stun = 0;
+        this.detectionRadius = 15;
         this.healthContainer = new PIXI.Container();
         Game.world.addChild(this.healthContainer);
         this.healthContainer.visible = false;
