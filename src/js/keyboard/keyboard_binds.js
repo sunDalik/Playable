@@ -29,6 +29,14 @@ export function bindKeys() {
     shieldKeyP2.press = () => {
         playerTurn(Game.player2, () => Game.player2.activateShield())
     };
+
+    const releaseKey = keyboard("Space");
+    releaseKey.press = () => {
+        playerTurn(null, () => {
+            if (Game.player.releaseMagic()) return true;
+            else return Game.player2.releaseMagic();
+        }, true);
+    };
 }
 
 function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {

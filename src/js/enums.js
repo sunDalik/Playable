@@ -27,7 +27,7 @@ export const TILE_TYPE = Object.freeze({VOID: 0, NONE: 1, WALL: 2, PATH: 3, ENTR
 export const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1, INANIMATE: 2});
 export const INANIMATE_TYPE = Object.freeze({STATUE: 0, OBELISK: 1, GRAIL: 2, CHEST: 3, ACCUMULATOR: 4});
 
-export const EQUIPMENT_TYPE = Object.freeze({WEAPON: 0, HEAD: 1, ARMOR: 2, FOOT: 3, SHIELD: 5, TOOL: 6});
+export const EQUIPMENT_TYPE = Object.freeze({WEAPON: 0, HEAD: 1, ARMOR: 2, FOOT: 3, SHIELD: 5, TOOL: 6, MAGIC: 7});
 export const WEAPON_TYPE = Object.freeze({KNIFE: 0, SWORD: 1, NINJA_KNIFE: 2, BOW: 3});
 export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1});
 export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1});

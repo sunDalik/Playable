@@ -1,5 +1,5 @@
 import {Game} from "../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE,} from "../../enums";
 import {isNotAWall, getPlayerOnTile, isEnemy} from "../../map_checks";
 import {createFadingAttack, rotate} from "../../animations";
 import {FullTileElement} from "../tile_elements/full_tile_element";
@@ -8,6 +8,7 @@ export class Spikes {
     constructor() {
         this.texture = Game.resources["src/images/magic/spikes.png"].texture;
         this.type = MAGIC_TYPE.SPIKES;
+        this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 2;
         this.friendlyFire = 1;

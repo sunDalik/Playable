@@ -297,7 +297,7 @@ export class Player extends AnimatedTileElement {
                 eq.onNextLevel();
             }
         }
-        for (const mg of [this.magic1, this.magic2, this.magic3, this.magic4]) {
+        for (const mg of this.getMagic()) {
             if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) mg.uses = mg.maxUses;
         }
     }
@@ -306,8 +306,26 @@ export class Player extends AnimatedTileElement {
         return [this.weapon, this.secondHand, this.headwear, this.armor, this.footwear];
     }
 
+    getMagic() {
+        return [this.magic1, this.magic2, this.magic3, this.magic4];
+    }
+
     getEquipmentAndMagic() {
-        return [this.weapon, this.secondHand, this.headwear, this.armor, this.footwear, this.magic1, this.magic2, this.magic3, this.magic4];
+        return this.getEquipment().concat(this.getMagic());
+    }
+
+    releaseMagic() {
+        for (const mg of this.getMagic()) {
+            if (mg && mg.release) {
+                const magicResult = mg.release();
+                if (magicResult === true) {
+                    const pn = this.getPropertyNameOfItem(mg);
+                    if (pn) redrawSlotContents(this, pn);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     afterEnemyTurn() {

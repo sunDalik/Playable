@@ -17,7 +17,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, SHIELD_TYPE} from "../enums";
+import {EQUIPMENT_TYPE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
 
 export function drawHUD() {
     drawHealth();
@@ -184,14 +184,17 @@ export function redrawSlotContents(player, slot) {
 
     function drawKey(keyBind) {
         const key = new PIXI.Container();
+        const text = new PIXI.Text(keyBind, HUDKeyBindTextStyle);
         const rect = new PIXI.Graphics();
         rect.beginFill(0xffffff);
         rect.lineStyle(1, 0x000000);
-        const rectSize = HUDKeyBindFontsize * 1.4;
-        rect.drawRoundedRect(0, 0, rectSize, rectSize, 5);
+        const newLines = (keyBind.match(/\n/g) || '').length + 1;
+        const rectHeight = HUDKeyBindFontsize * 1.4 * newLines;
+        let rectWidth = rectHeight;
+        if (keyBind.length > 1) rectWidth = text.width + 10;
+        rect.drawRoundedRect(0, -(newLines - 1) * rectHeight / 2, rectWidth, rectHeight, 5);
         rect.endFill();
-        const text = new PIXI.Text(keyBind, HUDKeyBindTextStyle);
-        text.position.set((rectSize - text.width) / 2, (rectSize - text.height) / 2);
+        text.position.set((rectWidth - text.width) / 2, (rectHeight - text.height) / 2 - ((newLines - 1) * rectHeight / 2));
         key.addChild(rect);
         key.addChild(text);
         container.meta.addChild(key);
@@ -199,21 +202,23 @@ export function redrawSlotContents(player, slot) {
 
     function getKeyBind(player, slot) {
         const item = player[slot];
+        let release = "";
+        if (item.equipmentType === EQUIPMENT_TYPE.MAGIC && item.type === MAGIC_TYPE.FIREBALL && item.multiplier > 0) release = "\nspace";
         if (item.uses > 0) {
             if (item.equipmentType === EQUIPMENT_TYPE.SHIELD && item.type !== SHIELD_TYPE.PASSIVE) {
                 if (player === Game.player) return "E";
                 else return "O"; // bruh should do some keyBindings file with all the values
             } else if (player === Game.player) {
-                if (item === player.magic1) return "1";
-                else if (item === player.magic2) return "2";
-                else if (item === player.magic3) return "3";
-                else if (item === player.magic4) return "4";
+                if (item === player.magic1) return "1" + release;
+                else if (item === player.magic2) return "2" + release;
+                else if (item === player.magic3) return "3" + release;
+                else if (item === player.magic4) return "4" + release;
                 else return false;
             } else {
-                if (item === player.magic1) return "7";
-                else if (item === player.magic2) return "8";
-                else if (item === player.magic3) return "9";
-                else if (item === player.magic4) return "0";
+                if (item === player.magic1) return "7" + release;
+                else if (item === player.magic2) return "8" + release;
+                else if (item === player.magic3) return "9" + release;
+                else if (item === player.magic4) return "0" + release;
                 else return false;
             }
         } else return false;

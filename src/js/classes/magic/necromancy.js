@@ -1,5 +1,5 @@
 import {Game} from "../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE,} from "../../enums";
 import {placePlayerOnGameMap} from "../../game_logic";
 import {centerCamera} from "../../camera";
 import {redrawHealthForPlayer} from "../../drawing/draw_hud";
@@ -8,6 +8,7 @@ export class Necromancy {
     constructor() {
         this.texture = Game.resources["src/images/magic/necromancy.png"].texture;
         this.type = MAGIC_TYPE.NECROMANCY;
+        this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.GRAY;
         this.atk = 0;
         this.maxUses = 1;

@@ -1,5 +1,5 @@
 import {Game} from "../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE,} from "../../enums";
 import {removePlayerFromGameMap, placePlayerOnGameMap} from "../../game_logic";
 import {centerCamera} from "../../camera";
 
@@ -7,6 +7,7 @@ export class Teleport {
     constructor() {
         this.texture = Game.resources["src/images/magic/teleport.png"].texture;
         this.type = MAGIC_TYPE.TELEPORT;
+        this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 0;
         this.maxUses = 6;
