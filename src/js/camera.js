@@ -29,12 +29,12 @@ export function centerCameraY(scale = true) {
     }
 }
 
-export function centerCameraOnPlayer(player = Game.player) {
+export function centerCameraOnPlayer(player) {
     centerCameraXOnPlayer(player);
     centerCameraYOnPlayer(player);
 }
 
-export function centerCameraXOnPlayer(player = Game.player) {
+export function centerCameraXOnPlayer(player) {
     Game.world.position.x = Game.APP.renderer.screen.width / 2 - player.position.x;
 }
 

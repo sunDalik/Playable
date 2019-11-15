@@ -12,7 +12,13 @@ import {
     slotContentSizeMargin,
     slotBorderOffsetX,
     statsOffsetX,
-    HUDKeyBindFontsize, HUDKeyBindTextStyle
+    HUDKeyBindFontsize,
+    HUDKeyBindTextStyle,
+    HUDKeyBindSize,
+    HUDGuideOffsetX,
+    HUDGuideKeyOffsetX,
+    HUDGuideKeyOffsetY,
+    HUDGuideOffsetY
 } from "./draw_constants";
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
@@ -33,6 +39,7 @@ export function drawHealth() {
 export function drawSlots() {
     redrawSlotsForPlayer(Game.player);
     redrawSlotsForPlayer(Game.player2);
+    drawMovementKeyBindings();
 }
 
 export function drawSlotsContents() {
@@ -187,12 +194,12 @@ export function redrawSlotContents(player, slot) {
         const text = new PIXI.Text(keyBind, HUDKeyBindTextStyle);
         const rect = new PIXI.Graphics();
         rect.beginFill(0xffffff);
-        rect.lineStyle(1, 0x000000);
+        rect.lineStyle(2, 0x666666, 0.5);
         const newLines = (keyBind.match(/\n/g) || '').length + 1;
-        const rectHeight = HUDKeyBindFontsize * 1.4 * newLines;
+        const rectHeight = HUDKeyBindSize * newLines;
         let rectWidth = rectHeight;
         if (keyBind.length > 1) rectWidth = text.width + 10;
-        rect.drawRoundedRect(0, -(newLines - 1) * rectHeight / 2, rectWidth, rectHeight, 5);
+        rect.drawRect(0, -(newLines - 1) * rectHeight / 2, rectWidth, rectHeight);
         rect.endFill();
         text.position.set((rectWidth - text.width) / 2, (rectHeight - text.height) / 2 - ((newLines - 1) * rectHeight / 2));
         key.addChild(rect);
@@ -203,7 +210,7 @@ export function redrawSlotContents(player, slot) {
     function getKeyBind(player, slot) {
         const item = player[slot];
         let release = "";
-        if (item.equipmentType === EQUIPMENT_TYPE.MAGIC && item.type === MAGIC_TYPE.FIREBALL && item.multiplier > 0) release = "\nspace";
+        if (item.equipmentType === EQUIPMENT_TYPE.MAGIC && item.type === MAGIC_TYPE.FIREBALL && item.multiplier > 0) release = " or\nspace";
         if (item.uses > 0) {
             if (item.equipmentType === EQUIPMENT_TYPE.SHIELD && item.type !== SHIELD_TYPE.PASSIVE) {
                 if (player === Game.player) return "E";
@@ -255,4 +262,40 @@ export function redrawArmor(player) {
 
 export function redrawFootwear(player) {
     redrawSlotContents(player, "footwear");
+}
+
+export function drawMovementKeyBindings() {
+    const container = HUD.guide;
+    removeAllChildrenFromContainer(container);
+    let heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
+    drawKey("W", heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+    const bottomRowKeys = ["A", "S", "D"];
+    for (let i = 0; i < bottomRowKeys.length; i++) {
+        drawKey(bottomRowKeys[i], heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
+            heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
+    }
+
+    heartXOffset = Game.APP.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset - HUDGuideOffsetX;
+    drawKey("I", heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+    const bottomRowKeys2 = ["L", "K", "J"];
+    for (let i = 0; i < bottomRowKeys2.length; i++) {
+        drawKey(bottomRowKeys2[i], heartXOffset - HUDKeyBindSize * (i + 1) - i * HUDGuideKeyOffsetX,
+            heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
+    }
+
+    function drawKey(keyText, posX, posY) {
+        const key = new PIXI.Container();
+        const text = new PIXI.Text(keyText, HUDKeyBindTextStyle);
+        const rect = new PIXI.Graphics();
+        rect.beginFill(0xffffff);
+        rect.lineStyle(2, 0x666666, 0.5);
+        const rectSize = HUDKeyBindSize;
+        rect.drawRect(posX, posY, rectSize, rectSize);
+        rect.endFill();
+        text.position.set(posX + (rectSize - text.width) / 2, posY + (rectSize - text.height) / 2);
+        key.addChild(rect);
+        key.addChild(text);
+        container.addChild(key);
+    }
+
 }

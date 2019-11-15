@@ -15,8 +15,8 @@ export const HUDTextStyle = {
     fontSize: HUDFontSize,
     fill: 0xffffff,
     fontWeight: "bold",
-    stroke: 0x000000,
-    strokeThickness: 2
+    stroke: 0x333333,
+    strokeThickness: 2,
 };
 
 export const HUDKeyBindFontsize = 13;
@@ -24,6 +24,12 @@ export const HUDKeyBindTextStyle = {
     fontSize: HUDKeyBindFontsize,
     fill: 0xffffff,
     fontWeight: "bold",
-    stroke: 0x000000,
-    strokeThickness: 2
+    stroke: 0x333333,
+    strokeThickness: 2,
 };
+
+export const HUDKeyBindSize = HUDKeyBindFontsize * 1.4;
+export const HUDGuideOffsetX = 20;
+export const HUDGuideOffsetY = 5;
+export const HUDGuideKeyOffsetX = 7;
+export const HUDGuideKeyOffsetY = 7;

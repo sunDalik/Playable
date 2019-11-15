@@ -6,6 +6,7 @@ HUD.hearts1 = new PIXI.Container();
 HUD.hearts2 = new PIXI.Container();
 HUD.slots1 = new PIXI.Container();
 HUD.slots2 = new PIXI.Container();
+HUD.guide = new PIXI.Container();
 HUD.stats1 = new PIXI.Container();
 HUD.stats2 = new PIXI.Container();
 HUD.slots1Contents = generateSlotsContentsContainer();
@@ -15,6 +16,7 @@ HUD.addChild(HUD.hearts1);
 HUD.addChild(HUD.hearts2);
 HUD.addChild(HUD.slots1);
 HUD.addChild(HUD.slots2);
+HUD.addChild(HUD.guide);
 HUD.addChild(HUD.stats1);
 HUD.addChild(HUD.stats2);
 
