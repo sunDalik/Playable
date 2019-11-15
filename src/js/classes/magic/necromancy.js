@@ -2,6 +2,7 @@ import {Game} from "../../game"
 import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
 import {placePlayerOnGameMap} from "../../game_logic";
 import {centerCamera} from "../../camera";
+import {redrawHealthForPlayer} from "../../drawing/draw_hud";
 
 export class Necromancy {
     constructor() {
@@ -22,6 +23,7 @@ export class Necromancy {
             otherPlayer.dead = false;
             otherPlayer.visible = true;
             otherPlayer.health = otherPlayer.maxHealth;
+            redrawHealthForPlayer(otherPlayer);
             otherPlayer.tilePosition.set(wielder.tilePosition.x, wielder.tilePosition.y);
             placePlayerOnGameMap(otherPlayer);
             otherPlayer.place();
@@ -29,7 +31,8 @@ export class Necromancy {
             this.uses--;
             //maybe should shift all magic to left? who knows...
             this.removeIfExhausted(wielder)
-        } else return false
+        } else return false;
+        return true;
     }
 
     removeIfExhausted(wielder) {

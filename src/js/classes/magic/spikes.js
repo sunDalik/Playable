@@ -33,5 +33,6 @@ export class Spikes {
         }
         rotate(wielder, false);
         this.uses--;
+        return true;
     }
 }

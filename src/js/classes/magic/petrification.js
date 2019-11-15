@@ -17,5 +17,6 @@ export class Petrification {
             if (!enemy.dead) enemy.stun += 5;
         }
         this.uses--;
+        return true;
     }
 }

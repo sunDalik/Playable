@@ -1,3 +1,5 @@
+import {redrawSecondHand} from "../../../drawing/draw_hud";
+
 export class Shield {
     constructor() {
         this.maxUses = undefined;
@@ -9,6 +11,7 @@ export class Shield {
         if (this.uses <= 0) return false;
         this.uses--;
         if (this.uses <= 0) this.exhausted = true;
+        redrawSecondHand(wielder);
         return true;
     }
 

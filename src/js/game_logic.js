@@ -1,9 +1,9 @@
 import {Game} from "./game"
 import {incrementStage, setVariablesForStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {ROLE, EQUIPMENT_TYPE, FOOTWEAR_TYPE} from "./enums"
+import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, ROLE} from "./enums"
 import {removeObjectFromArray} from "./utils/basic_utils";
-import {drawHealth} from "./drawing/draw_hud";
+import {redrawSlotContents} from "./drawing/draw_hud";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -37,8 +37,8 @@ export function moveEnemies() {
 }
 
 function arePlayersInDetectionRadius(enemy) {
-    return Math.abs(enemy.tilePosition.x - Game.player.tilePosition.x) + Math.abs(enemy.tilePosition.y - Game.player.tilePosition.y) <= enemy.detectionRadius
-        || Math.abs(enemy.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(enemy.tilePosition.y - Game.player2.tilePosition.y) <= enemy.detectionRadius;
+    return ((Math.abs(enemy.tilePosition.x - Game.player.tilePosition.x) + Math.abs(enemy.tilePosition.y - Game.player.tilePosition.y) <= enemy.detectionRadius && !Game.player.dead)
+        || (Math.abs(enemy.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(enemy.tilePosition.y - Game.player2.tilePosition.y) <= enemy.detectionRadius && !Game.player2.dead));
 }
 
 export function updateHazards() {
@@ -157,6 +157,7 @@ export function swapEquipmentWithPlayer(player, equipment) {
     const swappedEquipment = player[slot];
     player[slot] = equipment;
     if (player[slot].onWear) player[slot].onWear(player);
+    redrawSlotContents(player, slot);
     return swappedEquipment;
 }
 
@@ -184,6 +185,7 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
     if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);
     const removedEquipment = player[slot];
     player[slot] = null;
+    redrawSlotContents(player, slot);
     return removedEquipment;
 }
 

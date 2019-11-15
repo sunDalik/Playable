@@ -1,5 +1,6 @@
 import {Game} from "../../../game"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, MAGIC_TYPE} from "../../../enums";
+import {redrawAllMagicSlots, redrawSlotContents} from "../../../drawing/draw_hud";
 
 export class WizardRobe {
     constructor() {
@@ -18,6 +19,7 @@ export class WizardRobe {
                 if (magic.atk) magic.atk += this.magAtk;
             }
         }
+        redrawAllMagicSlots(player);
     }
 
     onTakeOff(player) {
@@ -29,6 +31,7 @@ export class WizardRobe {
                 if (magic.atk) magic.atk -= this.magAtk;
             }
         }
+        redrawAllMagicSlots(player);
     }
 
     onMagicReceive(magic, player) {

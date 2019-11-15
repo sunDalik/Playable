@@ -1,6 +1,7 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, SHIELD_TYPE} from "../../../enums";
 import {Shield} from "./shield";
+import {redrawSecondHand} from "../../../drawing/draw_hud";
 
 export class PassiveShield extends Shield {
     constructor() {
@@ -23,6 +24,7 @@ export class PassiveShield extends Shield {
             this.usedOnThisTurn = true;
             wielder.spinItem(this);
             if (this.uses <= 0) this.exhausted = true;
+            redrawSecondHand(wielder);
         }
         return true;
     }

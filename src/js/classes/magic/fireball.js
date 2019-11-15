@@ -3,6 +3,7 @@ import * as PIXI from "pixi.js"
 import {MAGIC_TYPE, MAGIC_ALIGNMENT,} from "../../enums";
 import {collisionCheck} from "../../collision_check";
 import {createFadingAttack} from "../../animations";
+import {redrawSlotContents} from "../../drawing/draw_hud";
 
 export class Fireball {
     constructor() {
@@ -26,6 +27,7 @@ export class Fireball {
             this.castedThisTurn = true;
             this.multiplierDecreaseDelay = 2;
         } else this.release();
+        return true;
     }
 
     release() {
@@ -68,13 +70,14 @@ export class Fireball {
         this.uses--;
     }
 
-    onNewTurn() {
+    onNewTurn(player) {
         if (!this.castedThisTurn && this.multiplier > 0) {
             this.multiplierDecreaseDelay--;
             if (this.multiplierDecreaseDelay <= 0) {
                 this.multiplier--;
                 this.updateTexture();
                 this.multiplierDecreaseDelay = 2;
+                redrawSlotContents(player, player.getPropertyNameOfItem(this));
             }
         }
         this.castedThisTurn = false;

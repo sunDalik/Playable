@@ -33,5 +33,6 @@ export class Aura {
         }
         rotate(wielder, true);
         this.uses--;
+        return true;
     }
 }

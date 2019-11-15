@@ -4,10 +4,21 @@ import {AnimatedTileElement} from "./tile_elements/animated_tile_element";
 import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE, TOOL_TYPE} from "../enums";
 import {centerCamera, centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
-import {redrawHealthForPlayer, redrawSlotContents, redrawSlotContentsForPlayer} from "../drawing/draw_hud";
+import {
+    redrawHealthForPlayer,
+    redrawSecondHand,
+    redrawSlotContents,
+    redrawSlotContentsForPlayer
+} from "../drawing/draw_hud";
 import {isAWall, isInanimate, isRelativelyEmpty} from "../map_checks";
 import {calculateDetectionGraph} from "../map_generation"
-import {gotoNextLevel, placePlayerOnGameMap, removePlayerFromGameMap, removeTileFromWorld} from "../game_logic";
+import {
+    gotoNextLevel,
+    placePlayerOnGameMap, removeEquipmentFromPlayer,
+    removePlayerFromGameMap,
+    removeTileFromWorld,
+    swapEquipmentWithPlayer
+} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 
 export class Player extends AnimatedTileElement {
@@ -106,6 +117,8 @@ export class Player extends AnimatedTileElement {
         if (magic) {
             const magicResult = magic.cast(this);
             if (magicResult === false) return false;
+            const pn = this.getPropertyNameOfItem(magic);
+            if (pn) redrawSlotContents(this, pn);
         }
     }
 
@@ -123,6 +136,7 @@ export class Player extends AnimatedTileElement {
         else if (i === 2) this.magic2 = magic;
         else if (i === 3) this.magic3 = magic;
         else if (i === 4) this.magic4 = magic;
+        redrawSlotContents(this, "magic" + i);
     }
 
     setStats(atkBase, atkMul, defBase, defMul) {
@@ -237,9 +251,8 @@ export class Player extends AnimatedTileElement {
         switch (entity.type) {
             case INANIMATE_TYPE.STATUE:
                 if (!entity.marauded) Game.maraudedStatues.push(entity.weapon);
-                const temp = entity.weapon;
-                entity.weapon = this.weapon;
-                this.weapon = temp;
+                if (entity.weapon === null) entity.weapon = removeEquipmentFromPlayer(this, EQUIPMENT_TYPE.WEAPON);
+                else entity.weapon = swapEquipmentWithPlayer(this, entity.weapon);
                 entity.updateTexture();
                 entity.maraud();
                 break;
@@ -267,6 +280,7 @@ export class Player extends AnimatedTileElement {
         else if (this.magic4 === null) this.magic4 = magic;
         else return;
         this.applyOnMagicReceiveMethods(magic);
+        redrawSlotContents(this, this.getPropertyNameOfItem(magic));
     }
 
     applyOnMagicReceiveMethods(magic) {
@@ -299,10 +313,13 @@ export class Player extends AnimatedTileElement {
     afterEnemyTurn() {
         this.shielded = false;
         for (const eq of this.getEquipmentAndMagic()) {
-            if (eq && eq.onNewTurn) eq.onNewTurn();
+            if (eq && eq.onNewTurn) eq.onNewTurn(this);
         }
-        if (this.secondHand && this.secondHand.exhausted) this.secondHand = null;
-        redrawSlotContentsForPlayer(this);
+        if (this.secondHand && this.secondHand.exhausted) {
+            this.secondHand = null;
+            redrawSecondHand(this);
+        }
+        //redrawSlotContentsForPlayer(this);
     }
 
     activateShield() {
@@ -334,12 +351,6 @@ export class Player extends AnimatedTileElement {
             }
         };
         Game.APP.ticker.add(this.animation);
-    }
-
-
-    ////dont want to use it
-    redrawSlot(slotName) {
-        redrawSlotContents(this, slotName);
     }
 
     getPropertyNameOfItem(item) {

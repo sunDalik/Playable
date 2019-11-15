@@ -25,5 +25,6 @@ export class Teleport {
         wielder.place();
         centerCamera();
         this.uses--;
+        return true;
     }
 }

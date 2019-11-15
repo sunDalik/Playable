@@ -178,7 +178,7 @@ export function redrawSlotContents(player, slot) {
     function drawUses() {
         if (item.uses == null || item.maxUses == null) return false;
         const text = new PIXI.Text(item.uses + "/" + item.maxUses, HUDTextStyle);
-        text.position.set(slotSize - text.width / 2, 0);
+        text.position.set(slotSize - text.width / 2 - 6, 0);//6 arbitrary
         container.meta.addChild(text);
     }
 
@@ -186,7 +186,7 @@ export function redrawSlotContents(player, slot) {
         const key = new PIXI.Container();
         const rect = new PIXI.Graphics();
         rect.beginFill(0xffffff);
-        rect.lineStyle(2, 0x000000);
+        rect.lineStyle(1, 0x000000);
         const rectSize = HUDKeyBindFontsize * 1.4;
         rect.drawRoundedRect(0, 0, rectSize, rectSize, 5);
         rect.endFill();
@@ -218,4 +218,36 @@ export function redrawSlotContents(player, slot) {
             }
         } else return false;
     }
+}
+
+export function redrawAllMagicSlots(player) {
+    redrawSlotContents(player, "magic1");
+    redrawSlotContents(player, "magic2");
+    redrawSlotContents(player, "magic3");
+    redrawSlotContents(player, "magic4");
+}
+
+export function redrawWeapon(player) {
+    redrawSlotContents(player, "weapon");
+}
+
+export function redrawSecondHand(player) {
+    redrawSlotContents(player, "secondHand");
+}
+
+export function redrawWeaponAndSecondHand(player) {
+    redrawSlotContents(player, "weapon");
+    redrawSlotContents(player, "secondHand");
+}
+
+export function redrawHeadwear(player) {
+    redrawSlotContents(player, "headwear");
+}
+
+export function redrawArmor(player) {
+    redrawSlotContents(player, "armor");
+}
+
+export function redrawFootwear(player) {
+    redrawSlotContents(player, "footwear");
 }
