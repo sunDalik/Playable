@@ -87,6 +87,7 @@ export function damagePlayerWithHazards(player) {
             player.damage(hazard.atk, hazard);
         }
     }
+    //todo: if is dark tunnel and player is 3 tiles away from the torch bearer damage him
 }
 
 export function removePlayerFromGameMap(player) {
