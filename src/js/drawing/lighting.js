@@ -121,6 +121,20 @@ function lightWorldDTSpecial(tileX, tileY, distance = 3, sourceDirX = 0, sourceD
                 }
                 if (!litDTAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorldDTSpecial(tileX - sourceDirX, tileY, distance - 1, sourceDirX, sourceDirY);
             }
+
+            //light diagonal walls
+            if (Game.map[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL || Game.map[tileY + 1][tileX + 1].tileType === TILE_TYPE.SUPER_WALL) {
+                lightWorldDTSpecial(tileX + 1, tileY + 1, distance - 2);
+            }
+            if (Game.map[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL || Game.map[tileY - 1][tileX - 1].tileType === TILE_TYPE.SUPER_WALL) {
+                lightWorldDTSpecial(tileX - 1, tileY - 1, distance - 2);
+            }
+            if (Game.map[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL || Game.map[tileY + 1][tileX - 1].tileType === TILE_TYPE.SUPER_WALL) {
+                lightWorldDTSpecial(tileX - 1, tileY + 1, distance - 2);
+            }
+            if (Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL || Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.SUPER_WALL) {
+                lightWorldDTSpecial(tileX + 1, tileY - 1, distance - 2);
+            }
         } else {
             Game.semiDarkTiles[tileY][tileX].visible = false;
             litDTAreas.push({x: tileX, y: tileY});
