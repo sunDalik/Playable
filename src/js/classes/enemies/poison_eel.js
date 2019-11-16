@@ -35,7 +35,6 @@ export class PoisonEel extends Eel {
         super.damage(dmg, inputX, inputY, magical);
         if (this.turnDelay === 0) {
             this.cancellable = false;
-            Game.APP.ticker.remove(this.animation);
         }
         this.triggered = true;
     }

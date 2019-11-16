@@ -186,7 +186,7 @@ export class AnimatedTileElement extends TileElement {
 
     rotateByAngle(angle, rotateTime = this.ROTATE_TIME, cancellable = true) {
         this.animationCounter = 0;
-        if (cancellable) this.cancelAnimation();
+        if (cancellable) this.cancelAnimation(); //to not reset angle
 
         Game.APP.ticker.remove(this.animation);
         this.animation = () => {
