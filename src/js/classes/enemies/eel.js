@@ -85,6 +85,9 @@ export class Eel extends Enemy {
                 this.rotateByAngle(90);
                 this.increaseAngle(90);
             }
+            if (this.turnDelay !== 0) {
+                this.cancellable = false;
+            }
         }
     }
 

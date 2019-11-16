@@ -25,14 +25,18 @@ export class PoisonEel extends Eel {
             this.turnDelay = 0;
         } else if (this.triggered) {
             this.turnDelay--;
+            this.cancelAnimation();
             if (this.inMemoryAngle === 0 || this.inMemoryAngle === 180) this.shake(1, 0);
             else this.shake(0, 1);
         } else super.move();
     }
 
     damage(dmg, inputX = 0, inputY = 0, magical = false) {
+        const savedAngle = this.angle;
         super.damage(dmg, inputX, inputY, magical);
         if (this.turnDelay === 0) {
+            this.cancelAnimation();
+            this.angle = savedAngle;
             this.cancellable = false;
         }
         this.triggered = true;
