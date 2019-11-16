@@ -21,7 +21,6 @@ export class PoisonEel extends Eel {
     move() {
         if (this.triggered && this.turnDelay === 0) {
             this.attack();
-            this.cancellable = true;
             this.triggered = false;
             this.turnDelay = 0;
         } else if (this.triggered) {

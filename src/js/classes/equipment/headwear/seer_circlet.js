@@ -13,6 +13,7 @@ export class SeerCirclet {
             for (let j = 0; j < Game.darkTiles[0].length; j++) {
                 if (Game.map[i][j].tileType === TILE_TYPE.NONE) {
                     Game.darkTiles[i][j].visible = false;
+                    if (Game.map[i][j].entity) Game.map[i][j].entity.visible = true;
                 }
             }
         }
@@ -23,6 +24,7 @@ export class SeerCirclet {
             for (let j = 0; j < Game.darkTiles[0].length; j++) {
                 if (!Game.map[i][j].lit) {
                     Game.darkTiles[i][j].visible = true;
+                    if (Game.map[i][j].entity) Game.map[i][j].entity.visible = false;
                 }
             }
         }

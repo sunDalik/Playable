@@ -23,11 +23,10 @@ Game.resources = app.loader.resources;
 loadAll(setup);
 
 function initApplication() {
-    let app = new PIXI.Application({resolution: window.devicePixelRatio});
+    let app = new PIXI.Application({resolution: 2});
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
     app.renderer.autoDensity = true;
-    app.renderer.resolution = 2;
     app.renderer.resize(window.innerWidth, window.innerHeight);
     document.body.appendChild(app.view);
     return app

@@ -30,6 +30,7 @@ export function moveEnemies() {
                         enemy.cancelAnimation();
                     }
                     enemy.move();
+                    enemy.cancellable = true;
                 }
             } else enemy.stun--;
         }
