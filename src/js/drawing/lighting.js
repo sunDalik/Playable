@@ -48,6 +48,9 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
             if (!Game.map[tileY][tileX].lit) {
                 Game.darkTiles[tileY][tileX].visible = false;
                 Game.map[tileY][tileX].lit = true;
+                if (Game.map[tileY][tileX].entity) {
+                    Game.map[tileY][tileX].entity.visible = true;
+                }
             }
 
             litAreas.push({x: tileX, y: tileY});
@@ -87,6 +90,9 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
             if (!Game.map[tileY][tileX].lit) {
                 Game.darkTiles[tileY][tileX].visible = false;
                 Game.map[tileY][tileX].lit = true;
+                if (Game.map[tileY][tileX].entity) {
+                    Game.map[tileY][tileX].entity.visible = true;
+                }
             }
         }
     }

@@ -23,7 +23,7 @@ function enemyTurn() {
 
 export function moveEnemies() {
     for (const enemy of Game.enemies) {
-        if (!enemy.dead) {
+        if (!enemy.dead && enemy.visible) {
             if (enemy.stun <= 0) {
                 if (arePlayersInDetectionRadius(enemy)) {
                     if (enemy.cancellable) {

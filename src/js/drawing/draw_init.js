@@ -66,6 +66,9 @@ export function drawEntities() {
                 if (entity.role === ROLE.ENEMY) {
                     Game.enemies.push(entity);
                 }
+                if (entity.role !== ROLE.PLAYER) {
+                    entity.visible = false;
+                }
             }
         }
     }
