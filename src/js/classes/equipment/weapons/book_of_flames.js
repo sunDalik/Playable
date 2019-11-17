@@ -53,6 +53,7 @@ export class BookOfFlames {
                 }
             }
             this.uses--;
+            this.updateTexture();
             redrawSlotContents(wielder, "weapon");
             return true;
         } else return false;
@@ -61,21 +62,35 @@ export class BookOfFlames {
     concentrate(wielder) {
         if (this.uses < this.maxUses) {
             this.concentration++;
+            this.concentratedThisTurn = true;
             if (this.concentration >= this.concentrationLimit) {
                 this.concentration = 0;
                 this.uses = this.maxUses;
+                this.updateTexture();
                 createFadingText("Clear mind!", wielder.position.x, wielder.position.y);
-                redrawSlotContents(wielder, "weapon");
             } else {
                 this.updateTexture();
                 createFadingText("Concentrating", wielder.position.x, wielder.position.y);
-                redrawSlotContents(wielder, "weapon");
             }
+            redrawSlotContents(wielder, "weapon");
             return true;
         } else return false;
     }
 
     updateTexture() {
+        if (this.uses === 0) {
+            this.texture = Game.resources[`src/images/weapons/book_of_flames_exhausted_${this.concentration}.png`].texture;
+        } else if (this.uses < this.maxUses) {
+            this.texture = Game.resources[`src/images/weapons/book_of_flames_used_${this.concentration}.png`].texture;
+        } else this.texture = Game.resources["src/images/weapons/book_of_flames.png"].texture;
+    }
 
+    onNewTurn(wielder) {
+        if (!this.concentratedThisTurn) {
+            this.concentration = 0;
+            this.updateTexture(wielder);
+            redrawSlotContents(wielder, "weapon");
+        }
+        this.concentratedThisTurn = false;
     }
 }

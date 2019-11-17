@@ -49,6 +49,12 @@ export function loadAll(afterLoad) {
         .add("src/images/weapons/sword.png")
         .add("src/images/weapons/bow.png")
         .add("src/images/weapons/book_of_flames.png")
+        .add("src/images/weapons/book_of_flames_used_0.png")
+        .add("src/images/weapons/book_of_flames_used_1.png")
+        .add("src/images/weapons/book_of_flames_used_2.png")
+        .add("src/images/weapons/book_of_flames_exhausted_0.png")
+        .add("src/images/weapons/book_of_flames_exhausted_1.png")
+        .add("src/images/weapons/book_of_flames_exhausted_2.png")
         .add("src/images/weapons/scythe.png")
         .add("src/images/weapons/maiden_dagger.png")
 
