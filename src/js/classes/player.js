@@ -340,12 +340,18 @@ export class Player extends AnimatedTileElement {
         //redrawSlotContentsForPlayer(this);
     }
 
-    activateShield() {
+    useSecondHand() {
         if (!this.secondHand || this.secondHand.equipmentType !== EQUIPMENT_TYPE.SHIELD) return false;
         if (this.secondHand.activate(this)) {
             this.shielded = true;
             this.spinItem(this.secondHand);
+            return true;
         } else return false;
+    }
+
+    concentrateWeapon() {
+        if (!this.weapon || !this.weapon.concentrate) return false;
+        return this.weapon.concentrate(this);
     }
 
     spinItem(item, animationTime = 20, fullSpinTimes = 1) {

@@ -20,14 +20,24 @@ export function bindKeys() {
         playerTurn(null, switchPlayers, true)
     };
 
-    const shieldKeyP1 = keyboard("KeyE");
-    shieldKeyP1.press = () => {
-        playerTurn(Game.player, () => Game.player.activateShield())
+    const secondHandKeyP1 = keyboard("KeyE");
+    secondHandKeyP1.press = () => {
+        playerTurn(Game.player, () => Game.player.useSecondHand())
     };
 
-    const shieldKeyP2 = keyboard("KeyO");
-    shieldKeyP2.press = () => {
-        playerTurn(Game.player2, () => Game.player2.activateShield())
+    const secondHandKeyP2 = keyboard("KeyO");
+    secondHandKeyP2.press = () => {
+        playerTurn(Game.player2, () => Game.player2.useSecondHand())
+    };
+
+    const weaponKeyP1 = keyboard("KeyQ");
+    weaponKeyP1.press = () => {
+        playerTurn(Game.player, () => Game.player.concentrateWeapon())
+    };
+
+    const weaponKeyP2 = keyboard("KeyU");
+    weaponKeyP2.press = () => {
+        playerTurn(Game.player2, () => Game.player2.concentrateWeapon())
     };
 
     const releaseKey = keyboard("Space");

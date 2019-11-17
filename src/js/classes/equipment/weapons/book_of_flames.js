@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isNotAWall} from "../../../map_checks";
-import {createFadingAttack} from "../../../animations";
+import {createFadingAttack, createFadingText} from "../../../animations";
 import {FullTileElement} from "../../tile_elements/full_tile_element";
 import * as PIXI from "pixi.js";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
@@ -58,13 +58,24 @@ export class BookOfFlames {
         } else return false;
     }
 
-    concentrate() {
+    concentrate(wielder) {
         if (this.uses < this.maxUses) {
             this.concentration++;
             if (this.concentration >= this.concentrationLimit) {
                 this.concentration = 0;
                 this.uses = this.maxUses;
+                createFadingText("Clear mind!", wielder.position.x, wielder.position.y);
+                redrawSlotContents(wielder, "weapon");
+            } else {
+                this.updateTexture();
+                createFadingText("Concentrating", wielder.position.x, wielder.position.y);
+                redrawSlotContents(wielder, "weapon");
             }
+            return true;
         } else return false;
+    }
+
+    updateTexture() {
+
     }
 }
