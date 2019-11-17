@@ -139,7 +139,8 @@ export function swapEquipmentWithPlayer(player, equipment) {
     let slot;
     switch (equipment.equipmentType) {
         case EQUIPMENT_TYPE.WEAPON:
-            slot = "weapon";
+            if (player["weapon"]) slot = "secondHand";
+            else slot = "weapon";
             break;
         case EQUIPMENT_TYPE.TOOL:
         case EQUIPMENT_TYPE.SHIELD:
@@ -174,7 +175,8 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
     let slot;
     switch (equipmentType) {
         case EQUIPMENT_TYPE.WEAPON:
-            slot = "weapon";
+            if (player["weapon"]) slot = "secondHand";
+            else slot = "weapon";
             break;
         case EQUIPMENT_TYPE.TOOL:
         case EQUIPMENT_TYPE.SHIELD:

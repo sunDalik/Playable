@@ -8,7 +8,7 @@ import {
     redrawHealthForPlayer,
     redrawSecondHand,
     redrawSlotContents,
-    redrawSlotContentsForPlayer
+    redrawSlotContentsForPlayer, redrawWeapon
 } from "../drawing/draw_hud";
 import {isAWall, isInanimate, isRelativelyEmpty} from "../map_checks";
 import {calculateDetectionGraph} from "../map_generation"
@@ -155,11 +155,14 @@ export class Player extends AnimatedTileElement {
         let weaponAtk = 0;
         if (weapon) weaponAtk = weapon.atk;
         let atkBase = this.atkBase + weaponAtk;
-        const atkEquipment = [this.headwear, this.armor, this.footwear, this.secondHand];
+        const atkEquipment = [this.headwear, this.armor, this.footwear];
         for (const equipment of atkEquipment) {
-            if (equipment && equipment.atk) {
+            if (equipment && equipment.atk && !(equipment)) {
                 atkBase += equipment.atk;
             }
+        }
+        if (this.secondHand && this.secondHand.equipmentType !== EQUIPMENT_TYPE.WEAPON && this.secondHand.atk) {
+            atkBase += this.secondHand.atk;
         }
         return atkBase;
 
@@ -211,6 +214,15 @@ export class Player extends AnimatedTileElement {
                     this.die();
                 }
             }
+        }
+    }
+
+    voluntaryDamage(damage, toShake = false) {
+        if (!this.dead) {
+            this.health -= damage;
+            if (this.health <= 0) this.health = 0.25;
+            if (toShake) shakeScreen();
+            redrawHealthForPlayer(this);
         }
     }
 
@@ -337,10 +349,17 @@ export class Player extends AnimatedTileElement {
     }
 
     useSecondHand() {
-        if (!this.secondHand || this.secondHand.equipmentType !== EQUIPMENT_TYPE.SHIELD) return false;
-        if (this.secondHand.activate(this)) {
-            this.shielded = true;
-            this.spinItem(this.secondHand);
+        if (!this.secondHand) return false;
+        if (this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD) {
+            if (this.secondHand.activate(this)) {
+                this.shielded = true;
+                this.spinItem(this.secondHand);
+                return true;
+            } else return false;
+        } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type !== this.weapon.type) {
+            [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
+            redrawWeapon(this);
+            redrawSecondHand(this);
             return true;
         } else return false;
     }

@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import {TallTileElement} from "../tile_elements/tall_tile_element"
-import {ROLE, INANIMATE_TYPE, WEAPON_TYPE} from "../../enums";
+import {ROLE, INANIMATE_TYPE, WEAPON_TYPE, EQUIPMENT_TYPE} from "../../enums";
 import {createFadingText, longShakeScreen} from "../../animations";
 import {randomChoice} from "../../utils/random_utils";
 
@@ -16,7 +16,11 @@ export class Statue extends TallTileElement {
 
     updateTexture() {
         if (this.weapon === null) this.texture = Game.resources["src/images/other/statue.png"].texture;
-        else switch (this.weapon.type) {
+        else if (this.weapon.equipmentType === EQUIPMENT_TYPE.SHIELD) {
+            this.texture = Game.resources["src/images/other/statue_shield.png"].texture;
+        } else if (this.weapon.equipmentType === EQUIPMENT_TYPE.TOOL) {
+            this.texture = Game.resources["src/images/other/statue_tool.png"].texture;
+        } else switch (this.weapon.type) {
             case WEAPON_TYPE.KNIFE:
                 this.texture = Game.resources["src/images/other/statue_knife.png"].texture;
                 break;

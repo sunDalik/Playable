@@ -211,7 +211,10 @@ export function redrawSlotContents(player, slot) {
         const item = player[slot];
         let release = "";
         if (item.equipmentType === EQUIPMENT_TYPE.MAGIC && item.type === MAGIC_TYPE.FIREBALL && item.multiplier > 0) release = " or\nspace";
-        if (item.equipmentType === EQUIPMENT_TYPE.WEAPON && item.concentrate && item.uses < item.maxUses) {
+        if (slot === "secondHand" && item.equipmentType === EQUIPMENT_TYPE.WEAPON && player["weapon"].type !== player["secondHand"].type) {
+            if (player === Game.player) return "E";
+            else return "O";
+        } else if (slot === "weapon" && item.concentrate && item.uses < item.maxUses) {
             if (player === Game.player) return "Q";
             else return "U";
         } else if (item.uses > 0) {

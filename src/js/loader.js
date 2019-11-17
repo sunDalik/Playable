@@ -82,6 +82,8 @@ export function loadAll(afterLoad) {
         .add("src/images/other/statue_maiden_dagger.png")
         .add("src/images/other/statue_maiden_dagger_2.png")
         .add("src/images/other/statue_scythe.png")
+        .add("src/images/other/statue_shield.png")
+        .add("src/images/other/statue_tool.png")
 
         .add("src/images/other/chest.png")
         .add("src/images/other/chest_opened.png")
