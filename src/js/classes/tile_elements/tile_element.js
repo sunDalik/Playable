@@ -24,6 +24,7 @@ export class TileElement extends Sprite {
         this.place();
     }
 
+    //needs to be revised...
     fitToTile() {
         const scaleX = Game.TILESIZE / this.getUnscaledWidth() * this.scaleModifier;
         const scaleY = Math.abs(scaleX);

@@ -211,9 +211,12 @@ export function redrawSlotContents(player, slot) {
         const item = player[slot];
         let release = "";
         if (item.equipmentType === EQUIPMENT_TYPE.MAGIC && item.type === MAGIC_TYPE.FIREBALL && item.multiplier > 0) release = " or\nspace";
-        if (slot === "secondHand" && item.equipmentType === EQUIPMENT_TYPE.WEAPON && (player["weapon"] === null || player["weapon"].type !== player["secondHand"].type)) {
+        if (slot === "secondHand" && player["secondHand"].equipmentType === EQUIPMENT_TYPE.WEAPON
+            && ((player["weapon"] === null || player["weapon"].type !== player["secondHand"].type)
+                || player["weapon"] && player["weapon"].type === player["secondHand"].type && player["secondHand"].uses < player["weapon"].uses)) {
             if (player === Game.player) return "E";
             else return "O";
+
         } else if (slot === "weapon" && item.concentrate && item.uses < item.maxUses) {
             if (player === Game.player) return "Q";
             else return "U";

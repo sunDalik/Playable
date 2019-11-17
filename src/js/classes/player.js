@@ -72,7 +72,10 @@ export class Player extends AnimatedTileElement {
 
     move(tileStepX, tileStepY, event) {
         if (event.shiftKey || this.weapon === null || this.weapon.attack(this, tileStepX, tileStepY) === false) {
-            if (tileStepX !== 0) {
+            if (this.secondHand && this.weapon && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type
+                && this.weapon.uses !== undefined && this.weapon.uses === 0 && this.secondHand.uses !== 0 && this.secondHand.attack(this, tileStepX, tileStepY) === true) {
+
+            } else if (tileStepX !== 0) {
                 if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
                     this.interactWithInanimateEntity(Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].entity);
                     this.bumpX(tileStepX);
@@ -397,11 +400,17 @@ export class Player extends AnimatedTileElement {
                 this.spinItem(this.secondHand);
                 return true;
             } else return false;
-        } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && (this.weapon === null || this.secondHand.type !== this.weapon.type)) {
-            [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
-            redrawWeapon(this);
-            redrawSecondHand(this);
-            return true;
+        } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) {
+            if (this.weapon === null || this.secondHand.type !== this.weapon.type) {
+                [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
+                redrawWeapon(this);
+                redrawSecondHand(this);
+                return true;
+            } else if (this.weapon && this.weapon.type === this.secondHand.type && this.secondHand.concentrate && this.secondHand.uses < this.weapon.uses) {
+                this.secondHand.concentrate(this);
+                redrawSecondHand(this);
+                return true;
+            } else return false;
         } else return false;
     }
 

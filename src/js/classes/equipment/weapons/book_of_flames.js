@@ -95,7 +95,7 @@ export class BookOfFlames {
     }
 
     onNewTurn(wielder) {
-        if (!this.concentratedThisTurn) {
+        if (!this.concentratedThisTurn && this.uses < this.maxUses) {
             this.concentration = 0;
             this.updateTexture(wielder);
             redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
