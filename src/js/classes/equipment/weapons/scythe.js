@@ -38,7 +38,7 @@ export class Scythe {
             const atk = wielder.getAtkWithWeapon(this);
             for (const attackTile of attackTiles) {
                 if (isNotAWall(attackTile.x, attackTile.y)) {
-                    createFadingAttack(new FullTileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y, 3));
+                    createFadingAttack(new FullTileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y), 10);
                 }
                 if (isEnemy(attackTile.x, attackTile.y)) {
                     Game.map[attackTile.y][attackTile.x].entity.damage(atk, tileDirX, tileDirY, false);
