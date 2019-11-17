@@ -44,7 +44,6 @@ export class Spider extends Enemy {
             }
         } else {
             this.thrown = false;
-            this.cancellable = true;
         }
     }
 

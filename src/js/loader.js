@@ -17,12 +17,15 @@ export function loadAll(afterLoad) {
         .add("src/images/hazards/poison.png")
 
         .add("src/images/enemy_attack.png")
+        //make different folders for enemies? based on what? on their stage maybe? dunno...
         .add("src/images/enemies/roller.png")
         .add("src/images/enemies/roller_b.png")
         .add("src/images/enemies/star.png")
         .add("src/images/enemies/star_b.png")
         .add("src/images/enemies/spider.png")
         .add("src/images/enemies/spider_b.png")
+        .add("src/images/enemies/spider_green.png")
+        .add("src/images/enemies/spider_red.png")
         .add("src/images/enemies/snail.png")
         .add("src/images/enemies/snail_b.png")
         .add("src/images/enemies/eel.png")
@@ -45,6 +48,9 @@ export function loadAll(afterLoad) {
         .add("src/images/weapons/ninja_knife.png")
         .add("src/images/weapons/sword.png")
         .add("src/images/weapons/bow.png")
+        .add("src/images/weapons/book_of_flames.png")
+        .add("src/images/weapons/scythe.png")
+        .add("src/images/weapons/maiden_dagger.png")
 
         .add("src/images/tools/pickaxe.png")
 
@@ -66,6 +72,10 @@ export function loadAll(afterLoad) {
         .add("src/images/other/statue_ninja_knife.png")
         .add("src/images/other/statue_sword.png")
         .add("src/images/other/statue_bow.png")
+        .add("src/images/other/statue_book_of_flames.png")
+        .add("src/images/other/statue_maiden_dagger.png")
+        .add("src/images/other/statue_maiden_dagger_2.png")
+        .add("src/images/other/statue_scythe.png")
 
         .add("src/images/other/chest.png")
         .add("src/images/other/chest_opened.png")

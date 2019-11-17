@@ -21,9 +21,12 @@ import {Bow} from "./classes/equipment/weapons/bow";
 import {PassiveShield} from "./classes/equipment/shields/passive";
 import {SpikyShield} from "./classes/equipment/shields/spiky";
 import {StunningShield} from "./classes/equipment/shields/stunning";
+import {Scythe} from "./classes/equipment/weapons/scythe";
+import {MaidenDagger} from "./classes/equipment/weapons/maiden_dagger";
+import {BookOfFlames} from "./classes/equipment/weapons/book_of_flames";
 
 export function initPools() {
-    Game.weaponPool = [new Knife(), new NinjaKnife(), new Sword(), new Bow()];
+    Game.weaponPool = [new Knife(), new NinjaKnife(), new Sword(), new Bow(), new Scythe(), new MaidenDagger(), new BookOfFlames()];
     Game.magicPool = [new Aura(), new Spikes(), new Fireball(), new Necromancy(), new Petrification(), new Teleport()];
     Game.chestItemPool = [new Pickaxe(), new BasicArmor(), new WizardRobe(), new SeerCirclet(), new WizardHat(),
         new AntiHazardBoots(), new DamagingBoots(), new PassiveShield(), new SpikyShield(), new StunningShield()];
