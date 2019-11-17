@@ -1,20 +1,25 @@
 import {Game} from "../game"
 import * as PIXI from "pixi.js"
 import {AnimatedTileElement} from "./tile_elements/animated_tile_element";
-import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE, TOOL_TYPE} from "../enums";
+import {
+    EQUIPMENT_TYPE,
+    INANIMATE_TYPE,
+    MAGIC_TYPE,
+    ROLE,
+    SHIELD_TYPE,
+    TILE_TYPE,
+    TOOL_TYPE,
+    WEAPON_TYPE
+} from "../enums";
 import {centerCamera, centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
-import {
-    redrawHealthForPlayer,
-    redrawSecondHand,
-    redrawSlotContents,
-    redrawSlotContentsForPlayer, redrawWeapon
-} from "../drawing/draw_hud";
+import {redrawHealthForPlayer, redrawSecondHand, redrawSlotContents, redrawWeapon} from "../drawing/draw_hud";
 import {isAWall, isInanimate, isRelativelyEmpty} from "../map_checks";
 import {calculateDetectionGraph} from "../map_generation"
 import {
     gotoNextLevel,
-    placePlayerOnGameMap, removeEquipmentFromPlayer,
+    placePlayerOnGameMap,
+    removeEquipmentFromPlayer,
     removePlayerFromGameMap,
     removeTileFromWorld,
     swapEquipmentWithPlayer
@@ -44,6 +49,10 @@ export class Player extends AnimatedTileElement {
         this.magic3 = null;
         this.magic4 = null;
         this.shielded = false;
+        this.attackedThisTurn = false;
+        this.attackTimeout = null;
+        this.savedTileStepX = 0;
+        this.savedTileStepY = 0;
         this.animationSubSprites = [];
     }
 
@@ -51,6 +60,10 @@ export class Player extends AnimatedTileElement {
         super.cancelAnimation();
         for (const subSprite of this.animationSubSprites) {
             Game.world.removeChild(subSprite);
+        }
+        if (this.attackTimeout) {
+            clearTimeout(this.attackTimeout);
+            this.doubleAttack();
         }
         this.animationSubSprites = [];
         this.rotation = 0;
@@ -109,7 +122,9 @@ export class Player extends AnimatedTileElement {
                 } else
                     this.bumpY(tileStepY);
             }
-        }
+        } else this.attackedThisTurn = true;
+        this.savedTileStepX = tileStepX;
+        this.savedTileStepY = tileStepY;
     }
 
 
@@ -341,11 +356,32 @@ export class Player extends AnimatedTileElement {
         for (const eq of this.getEquipmentAndMagic()) {
             if (eq && eq.onNewTurn) eq.onNewTurn(this);
         }
-        if (this.secondHand && this.secondHand.exhausted) {
-            this.secondHand = null;
-            redrawSecondHand(this);
+        if (this.secondHand) {
+            if (this.secondHand.exhausted) {
+                this.secondHand = null;
+                redrawSecondHand(this);
+            } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type) {
+                if (this.attackedThisTurn === true) {
+                    this.attackTimeout = setTimeout(() => {
+                        for (const subSprite of this.animationSubSprites) {
+                            Game.world.removeChild(subSprite);
+                        }
+                        this.doubleAttack();
+                    }, Game.doubleAttackDelay);
+                }
+            }
         }
-        //redrawSlotContentsForPlayer(this);
+        this.attackedThisTurn = false;
+    }
+
+    doubleAttack() {
+        if (this.weapon.type === WEAPON_TYPE.NINJA_KNIFE) {
+            this.savedTileStepX *= -1;
+            this.savedTileStepY *= -1;
+        }
+        this.secondHand.attack(this, this.savedTileStepX, this.savedTileStepY);
+        redrawSecondHand(this);
+        this.attackTimeout = null;
     }
 
     useSecondHand() {
@@ -356,7 +392,7 @@ export class Player extends AnimatedTileElement {
                 this.spinItem(this.secondHand);
                 return true;
             } else return false;
-        } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type !== this.weapon.type) {
+        } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && (this.weapon === null || this.secondHand.type !== this.weapon.type)) {
             [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
             redrawWeapon(this);
             redrawSecondHand(this);
@@ -366,7 +402,12 @@ export class Player extends AnimatedTileElement {
 
     concentrateWeapon() {
         if (!this.weapon || !this.weapon.concentrate) return false;
-        return this.weapon.concentrate(this);
+        if (this.weapon.concentrate(this)) {
+            if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type) {
+                this.secondHand.concentrate(this, false);
+            }
+            return true;
+        } else return false;
     }
 
     spinItem(item, animationTime = 20, fullSpinTimes = 1) {

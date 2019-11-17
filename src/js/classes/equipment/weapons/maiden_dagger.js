@@ -16,7 +16,7 @@ export class MaidenDagger {
         const attackTileY = wielder.tilePosition.y + tileDirY;
         const atk = wielder.getAtkWithWeapon(this);
         if (isEnemy(attackTileX, attackTileY)) {
-            createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
+            createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
             Game.map[attackTileY][attackTileX].entity.damage(atk, tileDirX, tileDirY, false);
             return true;
         } else return false;

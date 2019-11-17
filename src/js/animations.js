@@ -2,8 +2,11 @@ import {Game} from "./game"
 import {removeObjectFromArray} from "./utils/basic_utils"
 import * as PIXI from "pixi.js"
 
-export function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2, thin = false) {
+export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false) {
+    const tileX1 = player.tilePosition.x;
+    const tileY1 = player.tilePosition.y;
     let attackParticle = new PIXI.Sprite(PIXI.Texture.WHITE);
+    player.animationSubSprites.push(attackParticle);
     if (thin) {
         attackParticle.width = Game.TILESIZE / 5;
         attackParticle.height = Game.TILESIZE / 5;
@@ -23,7 +26,10 @@ export function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2, thin
     if (stepY === 0) attackParticle.width = 0;
 
     let counter = 0;
-    let animation = function () {
+
+    Game.APP.ticker.remove(player.animation); // I HAVE NO IDEA WHY I NEED THIS HERE BUT IT FAILS WITHOUT IT
+    // ^(double attack crashes the game without this line)
+    player.animation = function () {
         if (counter < Game.WEAPON_ATTACK_TIME / 2) {
             attackParticle.width += stepX;
             attackParticle.height += stepY;
@@ -36,10 +42,10 @@ export function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2, thin
         counter++;
         if (counter >= Game.WEAPON_ATTACK_TIME) {
             Game.world.removeChild(attackParticle);
-            Game.APP.ticker.remove(animation);
+            Game.APP.ticker.remove(player.animation);
         }
     };
-    Game.APP.ticker.add(animation);
+    Game.APP.ticker.add(player.animation);
 
     function centerAttackParticleToPlayer() {
         attackParticle.position.x = Game.TILESIZE * tileX1 + (Game.TILESIZE - Game.player.width) / 2 + Game.player.width / 2;

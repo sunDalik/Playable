@@ -27,7 +27,7 @@ export class NinjaKnife {
                 placePlayerOnGameMap(wielder);
                 if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun = 1;
             } else {
-                createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
+                createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
             }
             Game.map[attackTileY][attackTileX].entity.damage(atk, tileDirX, tileDirY, false);
             return true;

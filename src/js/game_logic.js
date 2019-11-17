@@ -17,6 +17,7 @@ function enemyTurn() {
     moveEnemies();
     updateHazards();
     Game.enemiesTimeout = null;
+    Game.afterTurn = true;
     Game.player.afterEnemyTurn();
     Game.player2.afterEnemyTurn();
 }
@@ -56,6 +57,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
             enemyTurn();
         }
 
+        Game.afterTurn = false;
         if (bothPlayers) {
             Game.player.cancelAnimation();
             Game.player2.cancelAnimation();

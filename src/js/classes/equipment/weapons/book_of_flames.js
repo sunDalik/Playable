@@ -63,12 +63,12 @@ export class BookOfFlames {
             }
             this.uses--;
             this.updateTexture();
-            redrawSlotContents(wielder, "weapon");
+            redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
             return true;
         } else return false;
     }
 
-    concentrate(wielder) {
+    concentrate(wielder, createText = true) {
         if (this.uses < this.maxUses) {
             this.concentration++;
             this.concentratedThisTurn = true;
@@ -76,12 +76,12 @@ export class BookOfFlames {
                 this.concentration = 0;
                 this.uses = this.maxUses;
                 this.updateTexture();
-                createFadingText("Clear mind!", wielder.position.x, wielder.position.y);
+                if (createText) createFadingText("Clear mind!", wielder.position.x, wielder.position.y);
             } else {
                 this.updateTexture();
-                createFadingText("Concentrating", wielder.position.x, wielder.position.y);
+                if (createText) createFadingText("Concentrating", wielder.position.x, wielder.position.y);
             }
-            redrawSlotContents(wielder, "weapon");
+            redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
             return true;
         } else return false;
     }
@@ -98,7 +98,7 @@ export class BookOfFlames {
         if (!this.concentratedThisTurn) {
             this.concentration = 0;
             this.updateTexture(wielder);
-            redrawSlotContents(wielder, "weapon");
+            redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
         }
         this.concentratedThisTurn = false;
     }
