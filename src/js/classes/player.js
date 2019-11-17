@@ -279,16 +279,12 @@ export class Player extends AnimatedTileElement {
         else if (this.magic3 === null) this.magic3 = magic;
         else if (this.magic4 === null) this.magic4 = magic;
         else return;
-        this.applyOnMagicReceiveMethods(magic);
-        redrawSlotContents(this, this.getPropertyNameOfItem(magic));
-    }
-
-    applyOnMagicReceiveMethods(magic) {
         for (const eq of this.getEquipment()) {
-            if (eq && eq.onMagicReceive) {
-                eq.onMagicReceive(magic, this);
+            if (eq && eq.onEquipmentReceive) {
+                eq.onEquipmentReceive(this, magic);
             }
         }
+        redrawSlotContents(this, this.getPropertyNameOfItem(magic));
     }
 
     applyNextLevelMethods() {

@@ -1,6 +1,6 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE, WEAPON_TYPE} from "../../../enums";
-import {redrawAllMagicSlots, redrawSecondHand, redrawSlotContents, redrawWeapon} from "../../../drawing/draw_hud";
+import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE} from "../../../enums";
+import {redrawSlotContents} from "../../../drawing/draw_hud";
 
 export class WizardHat {
     constructor() {
@@ -11,62 +11,53 @@ export class WizardHat {
     }
 
     onWear(player) {
-        for (const magic of [player.magic1, player.magic2, player.magic3, player.magic4]) {
-            if (magic) {
-                magic.maxUses += this.magUses;
-                magic.uses += this.magUses;
+        for (const eq of [player.magic1, player.magic2, player.magic3, player.magic4, player.weapon, player.secondHand]) {
+            if (this.upgradeMagicEquipment(eq)) {
+                redrawSlotContents(player, player.getPropertyNameOfItem(eq));
             }
-        }
-        redrawAllMagicSlots(player);
-        if (player.weapon && player.weapon.magical === true) {
-            player.weapon.maxUses += this.magUses;
-            player.weapon.uses += this.magUses;
-            redrawWeapon(player);
-        }
-        if (player.secondHand && player.secondHand.magical === true) {
-            player.secondHand.maxUses += this.magUses;
-            player.secondHand.uses += this.magUses;
-            redrawSecondHand(player);
         }
     }
 
     onTakeOff(player) {
-        for (const magic of [player.magic1, player.magic2, player.magic3, player.magic4]) {
-            if (magic) {
-                magic.maxUses -= this.magUses;
-                magic.uses -= this.magUses;
-                if (magic.type === MAGIC_TYPE.NECROMANCY) magic.removeIfExhausted(player);
+        for (const eq of [player.magic1, player.magic2, player.magic3, player.magic4, player.weapon, player.secondHand]) {
+            if (eq) {
+                let preserveUses = false;
+                if (eq.equipmentType === EQUIPMENT_TYPE.WEAPON) preserveUses = true;
+                if (this.degradeMagicEquipment(eq, preserveUses)) {
+                    if (eq.equipmentType === EQUIPMENT_TYPE.MAGIC && eq.type === MAGIC_TYPE.NECROMANCY) {
+                        eq.removeIfExhausted(player);
+                    }
+                    redrawSlotContents(player, player.getPropertyNameOfItem(eq));
+                }
             }
         }
-        redrawAllMagicSlots(player);
-        if (player.weapon && player.weapon.magical === true) {
-            player.weapon.maxUses -= this.magUses;
-            if (player.weapon.uses > 0) player.weapon.uses -= this.magUses;
-            redrawWeapon(player);
-        }
-        if (player.secondHand && player.secondHand.magical === true) {
-            player.secondHand.maxUses -= this.magUses;
-            if (player.secondHand.uses > 0) player.secondHand.uses -= this.magUses;
-            redrawSecondHand(player);
-        }
-    }
-
-    onMagicReceive(magic, player) {
-        magic.maxUses += this.magUses;
-        magic.uses += this.magUses;
     }
 
     onEquipmentReceive(player, equipment) {
-        if (equipment && equipment.magical === true) {
-            equipment.maxUses += this.magUses;
-            equipment.uses += this.magUses;
-        }
+        this.upgradeMagicEquipment(equipment)
     }
 
     onEquipmentDrop(player, equipment) {
-        if (equipment && equipment.magical === true) {
-            equipment.maxUses -= this.magUses;
-            if (equipment.uses > 0) equipment.uses -= this.magUses;
-        }
+        this.degradeMagicEquipment(equipment);
+    }
+
+    upgradeMagicEquipment(equipment) {
+        if (equipment && (equipment.equipmentType === EQUIPMENT_TYPE.MAGIC || equipment.magical === true)) {
+            if (equipment.uses !== undefined) {
+                equipment.maxUses += this.magUses;
+                equipment.uses += this.magUses;
+            }
+            return true;
+        } else return false;
+    }
+
+    degradeMagicEquipment(equipment, preserveUses = false) {
+        if (equipment && (equipment.equipmentType === EQUIPMENT_TYPE.MAGIC || equipment.magical === true)) {
+            if (equipment.uses !== undefined) {
+                equipment.maxUses -= this.magUses;
+                if (!preserveUses || equipment.uses > 0) equipment.uses -= this.magUses;
+            }
+            return true;
+        } else return false;
     }
 }
