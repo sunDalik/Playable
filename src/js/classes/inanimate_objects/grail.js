@@ -12,13 +12,13 @@ export class Grail extends FullTileElement {
         this.type = INANIMATE_TYPE.GRAIL;
         this.obelisk = obelisk;
         this.magic = null;
+        this.magicSet = false;
         //just some default texture
         this.magicSprite = new TileElement(Game.resources["src/images/magic/aura.png"].texture, 0, 0);
         this.magicSprite.visible = false;
         this.magicSprite.zIndex = 2;
         Game.world.addChild(this.magicSprite);
         Game.tiles.push(this.magicSprite);
-        createFloatingItemAnimation(this.magicSprite);
     }
 
     placeGrail() {
@@ -41,9 +41,16 @@ export class Grail extends FullTileElement {
                     this.texture = Game.resources["src/images/other/grail_gray.png"].texture;
                     break;
             }
+            if (!this.magicSet) {
+                this.magicSet = true;
+                createFloatingItemAnimation(this.magicSprite);
+            }
+            Game.APP.ticker.remove(this.magicSprite.animation);
+            Game.APP.ticker.add(this.magicSprite.animation);
             this.magicSprite.texture = this.magic.texture;
             this.magicSprite.visible = true;
         } else {
+            Game.APP.ticker.remove(this.magicSprite.animation);
             this.magicSprite.visible = false;
             this.texture = Game.resources["src/images/other/grail.png"].texture;
         }

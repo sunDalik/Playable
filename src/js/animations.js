@@ -114,7 +114,7 @@ export function createFloatingItemAnimation(item) {
     let counter = 0;
     const step = item.height / 4 / Game.ITEM_FLOAT_ANIMATION_TIME;
 
-    function animate() {
+    item.animation = function () {
         if (counter < Game.ITEM_FLOAT_ANIMATION_TIME / 4) {
             item.position.y -= step;
         } else if (counter < Game.ITEM_FLOAT_ANIMATION_TIME * 3 / 4) {
@@ -126,10 +126,10 @@ export function createFloatingItemAnimation(item) {
         if (counter >= Game.ITEM_FLOAT_ANIMATION_TIME) {
             counter = 0;
         }
-    }
+    };
 
-    Game.APP.ticker.add(animate);
-    Game.infiniteAnimations.push(animate);
+    Game.APP.ticker.add(item.animation);
+    Game.infiniteAnimations.push(item.animation);
 }
 
 export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1, shakeAmplitude = Game.SHAKE_AMPLITUDE) {

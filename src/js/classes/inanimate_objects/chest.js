@@ -3,6 +3,7 @@ import {FullTileElement} from "../tile_elements/full_tile_element"
 import {ROLE, INANIMATE_TYPE} from "../../enums";
 import {createFloatingItemAnimation} from "../../animations";
 import {swapEquipmentWithPlayer, removeEquipmentFromPlayer} from "../../game_logic";
+import {TileElement} from "../tile_elements/tile_element";
 
 export class Chest extends FullTileElement {
     constructor(tilePositionX, tilePositionY, contents) {
@@ -12,12 +13,11 @@ export class Chest extends FullTileElement {
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.CHEST;
         this.opened = false;
-        this.contentsSprite = new FullTileElement(this.contents.texture, this.tilePosition.x, this.tilePosition.y - 0.5);
+        this.contentsSprite = new TileElement(this.contents.texture, this.tilePosition.x, this.tilePosition.y - 0.5);
         this.contentsSprite.visible = false;
         this.contentsSprite.zIndex = 2;
         Game.world.addChild(this.contentsSprite);
         Game.tiles.push(this.contentsSprite);
-        createFloatingItemAnimation(this.contentsSprite);
     }
 
     interact(player) {
@@ -25,11 +25,18 @@ export class Chest extends FullTileElement {
         if (this.opened) {
             if (this.contents) this.contents = swapEquipmentWithPlayer(player, this.contents);
             else this.contents = removeEquipmentFromPlayer(player, this.contentsType);
+        } else {
+            this.opened = true;
+            createFloatingItemAnimation(this.contentsSprite);
         }
         if (this.contents) {
+            Game.APP.ticker.remove(this.contentsSprite.animation);
+            Game.APP.ticker.add(this.contentsSprite.animation);
             this.contentsSprite.texture = this.contents.texture;
             this.contentsSprite.visible = true;
-        } else this.contentsSprite.visible = false;
-        this.opened = true;
+        } else {
+            Game.APP.ticker.remove(this.contentsSprite.animation);
+            this.contentsSprite.visible = false;
+        }
     }
 }
