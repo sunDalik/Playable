@@ -1,6 +1,6 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
-import {isEnemy, isNotAWall} from "../../../map_checks";
+import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createFadingAttack, createFadingText} from "../../../animations";
 import {FullTileElement} from "../../tile_elements/full_tile_element";
 import * as PIXI from "pixi.js";
@@ -36,10 +36,10 @@ export class BookOfFlames {
         }
         if (attackTiles.length !== 5) return false;
         if (isEnemy(attackTiles[0].x, attackTiles[0].y)
-            || isEnemy(attackTiles[1].x, attackTiles[1].y)
-            || isEnemy(attackTiles[2].x, attackTiles[2].y)
-            || isEnemy(attackTiles[3].x, attackTiles[3].y)
-            || isEnemy(attackTiles[4].x, attackTiles[4].y)) {
+            || isEnemy(attackTiles[1].x, attackTiles[1].y) && isNotAWall(attackTiles[0].x, attackTiles[0].y)
+            || isEnemy(attackTiles[2].x, attackTiles[2].y) && isNotAWall(attackTiles[0].x, attackTiles[0].y)
+            || isEnemy(attackTiles[3].x, attackTiles[3].y) && isNotAWall(attackTiles[0].x, attackTiles[0].y) && isLit(attackTiles[3].x, attackTiles[3].y)
+            || isEnemy(attackTiles[4].x, attackTiles[4].y) && isNotAWall(attackTiles[0].x, attackTiles[0].y) && isNotAWall(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[4].x, attackTiles[4].y)) {
 
             const atk = wielder.getAtkWithWeapon(this);
             for (const attackTile of attackTiles) {
