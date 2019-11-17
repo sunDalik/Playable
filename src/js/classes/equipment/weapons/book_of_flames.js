@@ -35,14 +35,22 @@ export class BookOfFlames {
                 {x: wielder.tilePosition.x, y: wielder.tilePosition.y + tileDirY * 3}];
         }
         if (attackTiles.length !== 5) return false;
-        if (isEnemy(attackTiles[0].x, attackTiles[0].y)
-            || isEnemy(attackTiles[1].x, attackTiles[1].y) && isNotAWall(attackTiles[0].x, attackTiles[0].y)
-            || isEnemy(attackTiles[2].x, attackTiles[2].y) && isNotAWall(attackTiles[0].x, attackTiles[0].y)
-            || isEnemy(attackTiles[3].x, attackTiles[3].y) && isNotAWall(attackTiles[0].x, attackTiles[0].y) && isLit(attackTiles[3].x, attackTiles[3].y)
-            || isEnemy(attackTiles[4].x, attackTiles[4].y) && isNotAWall(attackTiles[0].x, attackTiles[0].y) && isNotAWall(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[4].x, attackTiles[4].y)) {
+        //maybe ranged attacks should be blocked by chests and statues? who knows...
+        if (isNotAWall(attackTiles[0].x, attackTiles[0].y) &&
+            (isEnemy(attackTiles[0].x, attackTiles[0].y)
+                || isEnemy(attackTiles[1].x, attackTiles[1].y)
+                || isEnemy(attackTiles[2].x, attackTiles[2].y)
+                || isEnemy(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[3].x, attackTiles[3].y)
+                || isEnemy(attackTiles[4].x, attackTiles[4].y) && isNotAWall(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[4].x, attackTiles[4].y))) {
 
             const atk = wielder.getAtkWithWeapon(this);
-            for (const attackTile of attackTiles) {
+            for (let i = 0; i < attackTiles.length; i++) {
+                if (i === 3) {
+                    if (!isLit(attackTiles[3].x, attackTiles[3].y)) continue;
+                } else if (i === 4) {
+                    if (!(isNotAWall(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[4].x, attackTiles[4].y))) continue;
+                }
+                const attackTile = attackTiles[i];
                 if (isNotAWall(attackTile.x, attackTile.y)) {
                     const attackSprite = new FullTileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y);
                     attackSprite.tint = 0x10afa6;
