@@ -157,9 +157,15 @@ export function swapEquipmentWithPlayer(player, equipment) {
     }
     if (!slot) return null;
     if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);
+    for (const eq of player.getEquipment()) {
+        if (eq && eq.onEquipmentDrop) eq.onEquipmentDrop(player, player[slot]);
+    }
     const swappedEquipment = player[slot];
     player[slot] = equipment;
     if (player[slot].onWear) player[slot].onWear(player);
+    for (const eq of player.getEquipment()) {
+        if (eq && eq.onEquipmentReceive) eq.onEquipmentReceive(player, equipment);
+    }
     redrawSlotContents(player, slot);
     return swappedEquipment;
 }
@@ -186,6 +192,9 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
     }
     if (!slot) return null;
     if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);
+    for (const eq of player.getEquipment()) {
+        if (eq && eq.onEquipmentDrop) eq.onEquipmentDrop(player, player[slot]);
+    }
     const removedEquipment = player[slot];
     player[slot] = null;
     redrawSlotContents(player, slot);

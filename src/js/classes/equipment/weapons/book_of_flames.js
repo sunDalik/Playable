@@ -11,6 +11,7 @@ export class BookOfFlames {
         this.texture = Game.resources["src/images/weapons/book_of_flames.png"].texture;
         this.type = WEAPON_TYPE.BOOK_OF_FLAMES;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
+        this.magical = true;
         this.atk = 2;
         this.maxUses = 2;
         this.uses = this.maxUses;
@@ -57,7 +58,7 @@ export class BookOfFlames {
                     createFadingAttack(attackSprite);
                 }
                 if (isEnemy(attackTile.x, attackTile.y)) {
-                    Game.map[attackTile.y][attackTile.x].entity.damage(atk, 0, 0, true);
+                    Game.map[attackTile.y][attackTile.x].entity.damage(atk, 0, 0, this.magical);
                 }
             }
             this.uses--;

@@ -1,6 +1,6 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE} from "../../../enums";
-import {redrawAllMagicSlots} from "../../../drawing/draw_hud";
+import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE, WEAPON_TYPE} from "../../../enums";
+import {redrawAllMagicSlots, redrawSecondHand, redrawSlotContents, redrawWeapon} from "../../../drawing/draw_hud";
 
 export class WizardHat {
     constructor() {
@@ -18,6 +18,16 @@ export class WizardHat {
             }
         }
         redrawAllMagicSlots(player);
+        if (player.weapon && player.weapon.magical === true) {
+            player.weapon.maxUses += this.magUses;
+            player.weapon.uses += this.magUses;
+            redrawWeapon(player);
+        }
+        if (player.secondHand && player.secondHand.magical === true) {
+            player.secondHand.maxUses += this.magUses;
+            player.secondHand.uses += this.magUses;
+            redrawSecondHand(player);
+        }
     }
 
     onTakeOff(player) {
@@ -29,10 +39,34 @@ export class WizardHat {
             }
         }
         redrawAllMagicSlots(player);
+        if (player.weapon && player.weapon.magical === true) {
+            player.weapon.maxUses -= this.magUses;
+            if (player.weapon.uses > 0) player.weapon.uses -= this.magUses;
+            redrawWeapon(player);
+        }
+        if (player.secondHand && player.secondHand.magical === true) {
+            player.secondHand.maxUses -= this.magUses;
+            if (player.secondHand.uses > 0) player.secondHand.uses -= this.magUses;
+            redrawSecondHand(player);
+        }
     }
 
     onMagicReceive(magic, player) {
         magic.maxUses += this.magUses;
         magic.uses += this.magUses;
+    }
+
+    onEquipmentReceive(player, equipment) {
+        if (equipment && equipment.magical === true) {
+            equipment.maxUses += this.magUses;
+            equipment.uses += this.magUses;
+        }
+    }
+
+    onEquipmentDrop(player, equipment) {
+        if (equipment && equipment.magical === true) {
+            equipment.maxUses -= this.magUses;
+            if (equipment.uses > 0) equipment.uses -= this.magUses;
+        }
     }
 }

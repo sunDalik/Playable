@@ -1,6 +1,6 @@
 import {Game} from "../../../game"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, MAGIC_TYPE} from "../../../enums";
-import {redrawAllMagicSlots, redrawSlotContents} from "../../../drawing/draw_hud";
+import {redrawAllMagicSlots, redrawSecondHand, redrawSlotContents, redrawWeapon} from "../../../drawing/draw_hud";
 
 export class WizardRobe {
     constructor() {
@@ -20,6 +20,19 @@ export class WizardRobe {
             }
         }
         redrawAllMagicSlots(player);
+
+        if (player.weapon && player.weapon.magical === true) {
+            player.weapon.maxUses += this.magUses;
+            player.weapon.uses += this.magUses;
+            player.weapon.atk += this.magAtk;
+            redrawWeapon(player);
+        }
+        if (player.secondHand && player.secondHand.magical === true) {
+            player.secondHand.maxUses += this.magUses;
+            player.secondHand.uses += this.magUses;
+            player.secondHand.atk += this.magAtk;
+            redrawSecondHand(player);
+        }
     }
 
     onTakeOff(player) {
@@ -32,11 +45,40 @@ export class WizardRobe {
             }
         }
         redrawAllMagicSlots(player);
+
+        if (player.weapon && player.weapon.magical === true) {
+            player.weapon.maxUses -= this.magUses;
+            if (player.weapon.uses > 0) player.weapon.uses -= this.magUses;
+            player.weapon.atk -= this.magAtk;
+            redrawWeapon(player);
+        }
+        if (player.secondHand && player.secondHand.magical === true) {
+            player.secondHand.maxUses -= this.magUses;
+            if (player.secondHand.uses > 0) player.secondHand.uses -= this.magUses;
+            player.secondHand.atk -= this.magAtk;
+            redrawSecondHand(player);
+        }
     }
 
     onMagicReceive(magic, player) {
         magic.maxUses += this.magUses;
         magic.uses += this.magUses;
         if (magic.atk) magic.atk += this.magAtk;
+    }
+
+    onEquipmentReceive(player, equipment) {
+        if (equipment && equipment.magical === true) {
+            equipment.maxUses += this.magUses;
+            equipment.uses += this.magUses;
+            equipment.atk += this.magAtk;
+        }
+    }
+
+    onEquipmentDrop(player, equipment) {
+        if (equipment && equipment.magical === true) {
+            equipment.maxUses -= this.magUses;
+            if (equipment.uses > 0) equipment.uses -= this.magUses;
+            equipment.atk -= this.magAtk;
+        }
     }
 }
