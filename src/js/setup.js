@@ -1,13 +1,13 @@
-import * as PIXI from "pixi.js"
-import {Game} from "./game"
-import {loadAll} from "./loader"
-import {Player} from "./classes/player"
-import {Knife} from "./classes/equipment/weapons/knife"
-import {BasicArmor} from "./classes/equipment/armor/basic_armor"
-import * as camera from "./camera"
-import {STAGE} from "./enums"
-import {generateLevel, getLevelPlayerGraph} from "./level_generation"
-import {calculateDetectionGraph, generateMap} from "./map_generation"
+import * as PIXI from "pixi.js";
+import {Game} from "./game";
+import {loadAll} from "./loader";
+import {Player} from "./classes/player";
+import {Knife} from "./classes/equipment/weapons/knife";
+import {BasicArmor} from "./classes/equipment/armor/basic_armor";
+import * as camera from "./camera";
+import {STAGE} from "./enums";
+import {generateLevel, getLevelPlayerGraph} from "./level_generation";
+import {calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";

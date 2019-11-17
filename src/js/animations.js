@@ -47,19 +47,19 @@ export function createPlayerWeaponAnimation(tileX1, tileY1, tileX2, tileY2, thin
     }
 }
 
-export function createFadingAttack(attack, tileAttack = true) {
+export function createFadingAttack(attack, tileAttack = true, animationTime = Game.TURNTIME) {
     if (tileAttack) attack.place();
     Game.world.addChild(attack);
     Game.tiles.push(attack);
-    const delay = Game.TURNTIME / 2;
+    const delay = animationTime / 2;
     let counter = 0;
 
     let animation = function () {
         if (counter >= delay) {
-            attack.alpha -= 1 / Game.TURNTIME;
+            attack.alpha -= 1 / animationTime;
         }
         counter++;
-        if (counter >= Game.TURNTIME) {
+        if (counter >= animationTime) {
             Game.APP.ticker.remove(animation);
             Game.world.removeChild(attack);
             removeObjectFromArray(attack, Game.tiles);

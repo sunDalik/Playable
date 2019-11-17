@@ -1,5 +1,9 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {isEnemy, isNotAWall} from "../../../map_checks";
+import {createFadingAttack} from "../../../animations";
+import {FullTileElement} from "../../tile_elements/full_tile_element";
+import * as PIXI from "pixi.js";
 
 export class Scythe {
     constructor() {
@@ -10,6 +14,37 @@ export class Scythe {
     }
 
     attack(wielder, tileDirX, tileDirY) {
-        return false;
+        let attackTiles = [];
+        if (tileDirX !== 0) {
+            attackTiles = [{x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y},
+                {x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y - 1},
+                {x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y + 1},
+                {x: wielder.tilePosition.x, y: wielder.tilePosition.y - 1},
+                {x: wielder.tilePosition.x, y: wielder.tilePosition.y + 1}];
+        } else if (tileDirY !== 0) {
+            attackTiles = [{x: wielder.tilePosition.x, y: wielder.tilePosition.y + tileDirY},
+                {x: wielder.tilePosition.x - 1, y: wielder.tilePosition.y + tileDirY},
+                {x: wielder.tilePosition.x + 1, y: wielder.tilePosition.y + tileDirY},
+                {x: wielder.tilePosition.x - 1, y: wielder.tilePosition.y},
+                {x: wielder.tilePosition.x + 1, y: wielder.tilePosition.y}];
+        }
+        if (attackTiles.length !== 5) return false;
+        if (isEnemy(attackTiles[0].x, attackTiles[0].y)
+            || isEnemy(attackTiles[1].x, attackTiles[1].y)
+            || isEnemy(attackTiles[2].x, attackTiles[2].y)
+            || isEnemy(attackTiles[3].x, attackTiles[3].y)
+            || isEnemy(attackTiles[4].x, attackTiles[4].y)) {
+
+            const atk = wielder.getAtkWithWeapon(this);
+            for (const attackTile of attackTiles) {
+                if (isNotAWall(attackTile.x, attackTile.y)) {
+                    createFadingAttack(new FullTileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y, 3));
+                }
+                if (isEnemy(attackTile.x, attackTile.y)) {
+                    Game.map[attackTile.y][attackTile.x].entity.damage(atk, tileDirX, tileDirY, false);
+                }
+            }
+            return true;
+        } else return false;
     }
 }

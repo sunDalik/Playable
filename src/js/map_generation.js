@@ -1,24 +1,24 @@
-import {Game} from "./game"
+import {Game} from "./game";
 import {TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
-import {FullTileElement} from "./classes/tile_elements/full_tile_element"
+import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 
 import {copy2dArray} from "./utils/basic_utils";
-import {getRandomSpell, getRandomChestDrop, getRandomWeapon} from "./utils/random_utils"
-import {Roller} from "./classes/enemies/roller"
-import {RollerB} from "./classes/enemies/roller_b"
-import {Snail} from "./classes/enemies/snail"
-import {SnailB} from "./classes/enemies/snail_b"
-import {Star} from "./classes/enemies/star"
-import {StarB} from "./classes/enemies/star_b"
-import {Spider} from "./classes/enemies/spider"
-import {SpiderB} from "./classes/enemies/spider_b"
-import {Eel} from "./classes/enemies/eel"
-import {DarkEel} from "./classes/enemies/dark_eel"
-import {PoisonEel} from "./classes/enemies/poison_eel"
-import {Statue} from "./classes/inanimate_objects/statue"
-import {Chest} from "./classes/inanimate_objects/chest"
-import {Obelisk} from "./classes/inanimate_objects/obelisk"
+import {getRandomSpell, getRandomChestDrop, getRandomWeapon} from "./utils/random_utils";
+import {Roller} from "./classes/enemies/roller";
+import {RollerB} from "./classes/enemies/roller_b";
+import {Snail} from "./classes/enemies/snail";
+import {SnailB} from "./classes/enemies/snail_b";
+import {Star} from "./classes/enemies/star";
+import {StarB} from "./classes/enemies/star_b";
+import {Spider} from "./classes/enemies/spider";
+import {SpiderB} from "./classes/enemies/spider_b";
+import {Eel} from "./classes/enemies/eel";
+import {DarkEel} from "./classes/enemies/dark_eel";
+import {PoisonEel} from "./classes/enemies/poison_eel";
+import {Statue} from "./classes/inanimate_objects/statue";
+import {Chest} from "./classes/inanimate_objects/chest";
+import {Obelisk} from "./classes/inanimate_objects/obelisk";
 
 export function generateMap(level) {
     let map = copy2dArray(level);

@@ -1,5 +1,7 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {isEnemy} from "../../../map_checks";
+import {createPlayerWeaponAnimation} from "../../../animations";
 
 export class MaidenDagger {
     constructor() {
@@ -10,6 +12,13 @@ export class MaidenDagger {
     }
 
     attack(wielder, tileDirX, tileDirY) {
-        return false;
+        const attackTileX = wielder.tilePosition.x + tileDirX;
+        const attackTileY = wielder.tilePosition.y + tileDirY;
+        const atk = wielder.getAtkWithWeapon(this);
+        if (isEnemy(attackTileX, attackTileY)) {
+            createPlayerWeaponAnimation(wielder.tilePosition.x, wielder.tilePosition.y, attackTileX, attackTileY);
+            Game.map[attackTileY][attackTileX].entity.damage(atk, tileDirX, tileDirY, false);
+            return true;
+        } else return false;
     }
 }
