@@ -30,6 +30,14 @@ export class SeerCirclet {
         }
     }
 
+    onDeath(player) {
+        if (player.headwear && player.headwear.type === this.type) this.onTakeOff();
+    }
+
+    onRevive(player) {
+        if (player.headwear && player.headwear.type === this.type) this.onWear();
+    }
+
     onNextLevel() {
         this.onWear()
     }

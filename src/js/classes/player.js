@@ -247,6 +247,11 @@ export class Player extends AnimatedTileElement {
         removePlayerFromGameMap(this);
         Game.TILESIZE = Game.REFERENCE_TILESIZE;
         redrawTiles();
+        for (const eq of this.getEquipment()) {
+            if (eq && eq.onDeath) {
+                eq.onDeath(this);
+            }
+        }
     }
 
     heal(healHP) {

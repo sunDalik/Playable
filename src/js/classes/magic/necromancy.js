@@ -29,6 +29,11 @@ export class Necromancy {
             placePlayerOnGameMap(otherPlayer);
             otherPlayer.place();
             centerCamera();
+            for (const eq of otherPlayer.getEquipment()) {
+                if (eq && eq.onRevive) {
+                    eq.onRevive(otherPlayer);
+                }
+            }
             this.uses--;
             //maybe should shift all magic to left? who knows...
             this.removeIfExhausted(wielder)
