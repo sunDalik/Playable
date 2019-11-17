@@ -406,7 +406,7 @@ export class Player extends AnimatedTileElement {
                 redrawWeapon(this);
                 redrawSecondHand(this);
                 return true;
-            } else if (this.weapon && this.weapon.type === this.secondHand.type && this.secondHand.concentrate && this.secondHand.uses < this.weapon.uses) {
+            } else if (this.weapon && this.weapon.type === this.secondHand.type && this.secondHand.concentrate && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {
                 this.secondHand.concentrate(this);
                 redrawSecondHand(this);
                 return true;
