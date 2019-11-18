@@ -1,24 +1,23 @@
 import {Game} from "../game";
 import {
-    heartColOffset,
     heartBorderOffsetX,
+    heartColOffset,
     heartRowOffset,
     heartSize,
     heartYOffset,
+    HUDGuideKeyOffsetX,
+    HUDGuideKeyOffsetY,
+    HUDGuideOffsetX,
+    HUDGuideOffsetY,
+    HUDKeyBindSize,
+    HUDKeyBindTextStyle,
+    HUDTextStyle,
+    slotBorderOffsetX,
+    slotContentSizeMargin,
     slotsColOffset,
     slotSize,
     slotsRowOffset,
-    HUDTextStyle,
-    slotContentSizeMargin,
-    slotBorderOffsetX,
-    statsOffsetX,
-    HUDKeyBindFontsize,
-    HUDKeyBindTextStyle,
-    HUDKeyBindSize,
-    HUDGuideOffsetX,
-    HUDGuideKeyOffsetX,
-    HUDGuideKeyOffsetY,
-    HUDGuideOffsetY
+    statsOffsetX
 } from "./draw_constants";
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";

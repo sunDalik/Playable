@@ -1,27 +1,16 @@
 import {Game} from "../game"
 import * as PIXI from "pixi.js"
 import {AnimatedTileElement} from "./tile_elements/animated_tile_element";
-import {
-    EQUIPMENT_TYPE,
-    INANIMATE_TYPE,
-    MAGIC_TYPE,
-    ROLE,
-    SHIELD_TYPE,
-    TILE_TYPE,
-    TOOL_TYPE,
-    WEAPON_TYPE
-} from "../enums";
+import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE, WEAPON_TYPE} from "../enums";
 import {centerCamera, centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
 import {redrawHealthForPlayer, redrawSecondHand, redrawSlotContents, redrawWeapon} from "../drawing/draw_hud";
-import {isAWall, isInanimate, isRelativelyEmpty} from "../map_checks";
-import {calculateDetectionGraph} from "../map_generation"
+import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {
     gotoNextLevel,
     placePlayerOnGameMap,
     removeEquipmentFromPlayer,
     removePlayerFromGameMap,
-    removeTileFromWorld,
     swapEquipmentWithPlayer
 } from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
@@ -71,63 +60,34 @@ export class Player extends AnimatedTileElement {
     }
 
     move(tileStepX, tileStepY, event) {
-        if (event.shiftKey || this.weapon === null || this.weapon.attack(this, tileStepX, tileStepY) === false) {
-            if (this.secondHand && this.weapon && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type
-                && this.weapon.uses !== undefined && this.weapon.uses === 0 && this.secondHand.uses !== 0 && this.secondHand.attack(this, tileStepX, tileStepY) === true) {
-
-            } else if (tileStepX !== 0) {
-                if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
-                    this.interactWithInanimateEntity(Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].entity);
-                    this.bumpX(tileStepX);
-                } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
-                    removePlayerFromGameMap(this);
-                    this.stepX(tileStepX);
-                    placePlayerOnGameMap(this);
-                    if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.EXIT) gotoNextLevel();
-                } else if (isAWall(this.tilePosition.x + tileStepX, this.tilePosition.y)
-                    && this.secondHand !== null && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.PICKAXE) {
-                    removeTileFromWorld(Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].tile);
-                    if (Game.map[this.tilePosition.y + 1][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.ENTRY
-                        || Game.map[this.tilePosition.y - 1][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.ENTRY
-                        || Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX + 1].tileType === TILE_TYPE.ENTRY
-                        || Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX - 1].tileType === TILE_TYPE.ENTRY) {
-                        Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].tileType = TILE_TYPE.ENTRY;
-                    } else {
-                        Game.map[this.tilePosition.y][this.tilePosition.x + tileStepX].tileType = Game.map[this.tilePosition.y][this.tilePosition.x].tileType;
-                    }
-                    lightPlayerPosition(this);
-                    calculateDetectionGraph(Game.map);
-                    this.bumpX(tileStepX);
-                } else this.bumpX(tileStepX);
-            } else if (tileStepY !== 0) {
-                if (isInanimate(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
-                    this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].entity);
-                    this.bumpY(tileStepY);
-                } else if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
-                    removePlayerFromGameMap(this);
-                    this.stepY(tileStepY);
-                    placePlayerOnGameMap(this);
-                    if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.EXIT) gotoNextLevel();
-                } else if (isAWall(this.tilePosition.x, this.tilePosition.y + tileStepY)
-                    && this.secondHand !== null && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.PICKAXE) {
-                    removeTileFromWorld(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].tile);
-                    if (Game.map[this.tilePosition.y + tileStepY + 1][this.tilePosition.x].tileType === TILE_TYPE.ENTRY
-                        || Game.map[this.tilePosition.y + tileStepY - 1][this.tilePosition.x].tileType === TILE_TYPE.ENTRY
-                        || Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + 1].tileType === TILE_TYPE.ENTRY
-                        || Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x - 1].tileType === TILE_TYPE.ENTRY) {
-                        Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].tileType = TILE_TYPE.ENTRY;
-                    } else {
-                        Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x].tileType = Game.map[this.tilePosition.y][this.tilePosition.x].tileType;
-                    }
-                    lightPlayerPosition(this);
-                    calculateDetectionGraph(Game.map);
-                    this.bumpY(tileStepY);
-                } else
-                    this.bumpY(tileStepY);
+        let attackResult = false;
+        if (!event.shiftKey && this.weapon !== null) {
+            attackResult = this.weapon.attack(this, tileStepX, tileStepY);
+            if (attackResult) {
+                this.attackedThisTurn = true;
+                this.savedTileStepX = tileStepX;
+                this.savedTileStepY = tileStepY;
+            } else if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type
+                && this.weapon.uses !== undefined && this.weapon.uses === 0 && this.secondHand.uses !== 0) {
+                attackResult = this.secondHand.attack(this, tileStepX, tileStepY);
             }
-        } else this.attackedThisTurn = true;
-        this.savedTileStepX = tileStepX;
-        this.savedTileStepY = tileStepY;
+        }
+        if (!attackResult) {
+            if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
+                this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity);
+                if (tileStepX !== 0) this.bumpX(tileStepX);
+                else this.bumpY(tileStepY);
+            } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
+                removePlayerFromGameMap(this);
+                if (tileStepX !== 0) this.stepX(tileStepX);
+                else this.stepY(tileStepY);
+                placePlayerOnGameMap(this);
+                if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.EXIT) gotoNextLevel();
+            } else if (!this.secondHand || this.secondHand.equipmentType !== EQUIPMENT_TYPE.TOOL || this.secondHand.use(this, tileStepX, tileStepY) === false) {
+                if (tileStepX !== 0) this.bumpX(tileStepX);
+                else this.bumpY(tileStepY);
+            }
+        }
     }
 
 
@@ -148,7 +108,7 @@ export class Player extends AnimatedTileElement {
         else return null;
     }
 
-    //only used by necromancy. should revise it
+//only used by necromancy. should revise it
     setMagicById(i, magic) {
         if (i === 1) this.magic1 = magic;
         else if (i === 2) this.magic2 = magic;
