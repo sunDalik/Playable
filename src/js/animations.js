@@ -49,7 +49,8 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
 
 export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
     Game.world.addChild(attack);
-    Game.tiles.push(attack);
+    const ifTile = !!attack.fitToTile;
+    if (ifTile) Game.tiles.push(attack);
     const delay = animationTime / 2;
     let counter = 0;
 
@@ -61,7 +62,7 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
         if (counter >= animationTime) {
             Game.APP.ticker.remove(animation);
             Game.world.removeChild(attack);
-            removeObjectFromArray(attack, Game.tiles);
+            if (ifTile) removeObjectFromArray(attack, Game.tiles);
         }
     };
     Game.APP.ticker.add(animation);

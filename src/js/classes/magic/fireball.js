@@ -37,7 +37,7 @@ export class Fireball {
             fire.height = fireHeight;
             fire.rotation = Math.atan((Game.player2.y - Game.player.y) / (Game.player2.x - Game.player.x));
             if ((Game.player2.x - Game.player.x) < 0) fire.rotation += Math.PI;
-            if (fire.width !== 0) createFadingAttack(fire, false);
+            if (fire.width !== 0) createFadingAttack(fire);
 
         } else this.release();
         return true;
@@ -54,9 +54,10 @@ export class Fireball {
         fire.width = Math.sqrt((Game.player2.x - Game.player.x) ** 2 + (Game.player.y - Game.player2.y) ** 2);
         fire.height = fireHeight;
         fire.rotation = Math.atan((Game.player2.y - Game.player.y) / (Game.player2.x - Game.player.x));
-        if ((Game.player2.x - Game.player.x) < 0) {
+        if (Game.player2.x < Game.player.x) {
             fire.rotation += Math.PI;
         }
+        createFadingAttack(fire);
         fire.getBounds();
         let fireCorrectVertexData;
         const fv = fire.vertexData;
@@ -71,9 +72,8 @@ export class Fireball {
             fireCorrectVertexData = [fv[0], fv[1], fv[2], fv[3], fv[4], fv[5], fv[6], fv[7]]
         }
         if (fire.width !== 0) {
-            createFadingAttack(fire, false);
             for (const enemy of Game.enemies) {
-                if (!enemy.dead) {
+                if (enemy.visible) {
                     if (collisionCheck(fireCorrectVertexData, enemy.vertexData)) {
                         enemy.damage(this.atk * this.multiplier, 0, 0, true);
                     }
