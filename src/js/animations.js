@@ -18,7 +18,8 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
     else if (tileX2 < tileX1) attackParticle.anchor.set(1, 0.5);
     else if (tileY2 > tileY1) attackParticle.anchor.set(0.5, 0);
     else if (tileY2 < tileY1) attackParticle.anchor.set(0.5, 1);
-    centerAttackParticleToPlayer();
+    attackParticle.position.x = Game.TILESIZE * tileX1 + (Game.TILESIZE - Game.player.width) / 2 + Game.player.width / 2;
+    attackParticle.position.y = Game.TILESIZE * tileY1 + (Game.TILESIZE - Game.player.height) / 2 + Game.player.height / 2;
     Game.world.addChild(attackParticle);
     const stepX = Math.abs(tileX2 - tileX1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
     const stepY = Math.abs(tileY2 - tileY1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
@@ -33,11 +34,9 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
         if (counter < Game.WEAPON_ATTACK_TIME / 2) {
             attackParticle.width += stepX;
             attackParticle.height += stepY;
-            centerAttackParticleToPlayer()
         } else {
             attackParticle.width -= stepX;
             attackParticle.height -= stepY;
-            centerAttackParticleToPlayer()
         }
         counter++;
         if (counter >= Game.WEAPON_ATTACK_TIME) {
@@ -46,11 +45,6 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
         }
     };
     Game.APP.ticker.add(player.animation);
-
-    function centerAttackParticleToPlayer() {
-        attackParticle.position.x = Game.TILESIZE * tileX1 + (Game.TILESIZE - Game.player.width) / 2 + Game.player.width / 2;
-        attackParticle.position.y = Game.TILESIZE * tileY1 + (Game.TILESIZE - Game.player.height) / 2 + Game.player.height / 2;
-    }
 }
 
 export function createFadingAttack(attack, animationTime = Game.TURNTIME) {

@@ -15,6 +15,7 @@ export class Star extends Enemy {
         this.triggeredDirections = null;
         this.type = ENEMY_TYPE.STAR;
         this.turnDelay = 0;
+        this.movable = false;
     }
 
     move() {

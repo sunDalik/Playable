@@ -124,14 +124,15 @@ export class Player extends AnimatedTileElement {
         this.defMul = defMul;
     }
 
-    getAtkWithWeapon(weapon) {
-        const atkBase = this.getAtkBaseWithWeapon(weapon);
+    getAtkWithWeapon(weapon, atk = 0) {
+        const atkBase = this.getAtkBaseWithWeapon(weapon, atk);
         return (Math.round(atkBase * this.atkMul * 4) / 4)
     }
 
-    getAtkBaseWithWeapon(weapon) {
+    getAtkBaseWithWeapon(weapon, atk = 0) {
         let weaponAtk = 0;
         if (weapon) weaponAtk = weapon.atk;
+        if (atk) weaponAtk = atk;
         let atkBase = this.atkBase + weaponAtk;
         const atkEquipment = [this.headwear, this.armor, this.footwear];
         for (const equipment of atkEquipment) {
@@ -291,6 +292,7 @@ export class Player extends AnimatedTileElement {
         for (const mg of this.getMagic()) {
             if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) mg.uses = mg.maxUses;
         }
+        //todo: recover shields
     }
 
     getEquipment() {
@@ -328,7 +330,7 @@ export class Player extends AnimatedTileElement {
             if (this.secondHand.exhausted) {
                 this.secondHand = null;
                 redrawSecondHand(this);
-            } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type) {
+            } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type && this.weapon.type !== WEAPON_TYPE.MAIDEN_DAGGER) {
                 if (this.attackedThisTurn === true) {
                     this.attackTimeout = setTimeout(() => {
                         for (const subSprite of this.animationSubSprites) {

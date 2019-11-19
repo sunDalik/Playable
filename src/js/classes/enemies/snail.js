@@ -12,13 +12,14 @@ export class Snail extends Enemy {
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.SNAIL;
         this.atk = 1;
-        this.turnDelay = 0;
+        this.turnDelay = 1;
+        this.currentTurnDelay = 0;
         this.chase = false;
         this.SLIDE_ANIMATION_TIME = 12;
     }
 
     move() {
-        if (this.turnDelay === 0) {
+        if (this.currentTurnDelay === 0) {
             if (this.chase) {
                 /*
                     let path;
@@ -47,7 +48,7 @@ export class Snail extends Enemy {
                 } else {
                     this.chasePlayer(Game.player2);
                 }
-                this.turnDelay = 1;
+                this.currentTurnDelay = this.turnDelay;
                 this.updateMapPosition();
             } else {
                 if (this.canSeePlayers()) {
@@ -55,7 +56,7 @@ export class Snail extends Enemy {
                     this.move();
                 }
             }
-        } else this.turnDelay--;
+        } else this.currentTurnDelay--;
         if (Game.map[this.tilePosition.y][this.tilePosition.x].hazard === null) {
             new PoisonHazard(this.tilePosition.x, this.tilePosition.y).addToWorld();
         } else Game.map[this.tilePosition.y][this.tilePosition.x].hazard.refreshLifetime();

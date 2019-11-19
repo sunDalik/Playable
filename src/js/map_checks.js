@@ -10,6 +10,15 @@ export function isAWall(tilePositionX, tilePositionY) {
     return false;
 }
 
+export function isAnyWall(tilePositionX, tilePositionY) {
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        if (Game.map[tilePositionY][tilePositionX].tileType === TILE_TYPE.WALL || Game.map[tilePositionY][tilePositionX].tileType === TILE_TYPE.SUPER_WALL) {
+            return true
+        }
+    }
+    return false;
+}
+
 export function isNotAWall(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         if (Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL && Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.SUPER_WALL) {
