@@ -4,17 +4,25 @@ export class Shield {
     constructor() {
         this.maxUses = undefined;
         this.uses = this.maxUses;
-        this.exhausted = false;
     }
 
     activate(wielder) {
         if (this.uses <= 0) return false;
         this.uses--;
-        if (this.uses <= 0) this.exhausted = true;
         redrawSecondHand(wielder);
         return true;
     }
 
     onBlock(source, wielder) {
+    }
+
+    onNextLevel(player) {
+        this.recover(player);
+    }
+
+    recover(player) {
+        this.uses += Math.ceil(this.maxUses / 2);
+        if (this.uses > this.maxUses) this.uses = this.maxUses;
+        redrawSecondHand(player)
     }
 }

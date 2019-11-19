@@ -4,7 +4,13 @@ import {AnimatedTileElement} from "./tile_elements/animated_tile_element";
 import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE, WEAPON_TYPE} from "../enums";
 import {centerCamera, centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
-import {redrawHealthForPlayer, redrawSecondHand, redrawSlotContents, redrawWeapon} from "../drawing/draw_hud";
+import {
+    redrawHealthForPlayer,
+    redrawSecondHand,
+    redrawSlotContents,
+    redrawSlotContentsForPlayer,
+    redrawWeapon
+} from "../drawing/draw_hud";
 import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {
     gotoNextLevel,
@@ -286,13 +292,14 @@ export class Player extends AnimatedTileElement {
     applyNextLevelMethods() {
         for (const eq of this.getEquipment()) {
             if (eq && eq.onNextLevel) {
-                eq.onNextLevel();
+                eq.onNextLevel(this);
             }
         }
         for (const mg of this.getMagic()) {
             if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) mg.uses = mg.maxUses;
         }
         //todo: recover shields
+        redrawSlotContentsForPlayer(this);
     }
 
     getEquipment() {
@@ -327,10 +334,7 @@ export class Player extends AnimatedTileElement {
             if (eq && eq.onNewTurn) eq.onNewTurn(this);
         }
         if (this.secondHand) {
-            if (this.secondHand.exhausted) {
-                this.secondHand = null;
-                redrawSecondHand(this);
-            } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type && this.weapon.type !== WEAPON_TYPE.MAIDEN_DAGGER) {
+            if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type && this.weapon.type !== WEAPON_TYPE.MAIDEN_DAGGER) {
                 if (this.attackedThisTurn === true) {
                     this.attackTimeout = setTimeout(() => {
                         for (const subSprite of this.animationSubSprites) {

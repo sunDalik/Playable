@@ -23,7 +23,6 @@ export class PassiveShield extends Shield {
             this.uses--;
             this.usedOnThisTurn = true;
             wielder.spinItem(this);
-            if (this.uses <= 0) this.exhausted = true;
             redrawSecondHand(wielder);
         }
         return true;
