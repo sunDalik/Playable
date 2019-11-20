@@ -113,18 +113,10 @@ export class Spider extends Enemy {
 
     throwAway(throwX, throwY) {
         if (this.stun === 0) {
-            if (throwX !== 0) {
-                if (isEmpty(this.tilePosition.x + throwX, this.tilePosition.y)) {
+            if (throwX !== 0 && throwY !== 0) {
+                if (isEmpty(this.tilePosition.x + throwX, this.tilePosition.y + throwY)) {
                     Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                    this.stepX(throwX);
-                    this.thrown = true;
-                    this.cancellable = false;
-                    this.updateMapPosition();
-                }
-            } else if (throwY !== 0) {
-                if (isEmpty(this.tilePosition.x, this.tilePosition.y + throwY)) {
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                    this.stepY(throwY);
+                    this.step(throwX, throwY);
                     this.thrown = true;
                     this.cancellable = false;
                     this.updateMapPosition();

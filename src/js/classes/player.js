@@ -81,17 +81,14 @@ export class Player extends AnimatedTileElement {
         if (!attackResult) {
             if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
                 this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity);
-                if (tileStepX !== 0) this.bumpX(tileStepX);
-                else this.bumpY(tileStepY);
+                this.bump(tileStepX, tileStepY);
             } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
                 removePlayerFromGameMap(this);
-                if (tileStepX !== 0) this.stepX(tileStepX);
-                else this.stepY(tileStepY);
+                this.step(tileStepX, tileStepY);
                 placePlayerOnGameMap(this);
                 if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.EXIT) gotoNextLevel();
             } else if (!this.secondHand || this.secondHand.equipmentType !== EQUIPMENT_TYPE.TOOL || this.secondHand.use(this, tileStepX, tileStepY) === false) {
-                if (tileStepX !== 0) this.bumpX(tileStepX);
-                else this.bumpY(tileStepY);
+                this.bump(tileStepX, tileStepY);
             }
         }
     }

@@ -37,8 +37,7 @@ export class MaidenDagger {
                         entity.cancelAnimation();
                         if (isEmpty(atkPos.x + tileDirX, atkPos.y + tileDirY)) {
                             Game.map[atkPos.y][atkPos.x].entity = null;
-                            if (tileDirX) entity.stepX(tileDirX);
-                            else if (tileDirY) entity.stepY(tileDirY);
+                            entity.step(tileDirX, tileDirY);
                             entity.updateMapPosition();
                         } else {
                             if (tileDirX) entity.bumpX(tileDirX);
@@ -54,12 +53,10 @@ export class MaidenDagger {
             if (!foundEnemy) return false;
             if (isRelativelyEmpty(playerStepPosition.x, playerStepPosition.y)) {
                 removePlayerFromGameMap(wielder);
-                if (tileDirX) wielder.stepX(tileDirX);
-                else if (tileDirY) wielder.stepY(tileDirY);
+                wielder.step(tileDirX, tileDirY);
                 placePlayerOnGameMap(wielder);
             } else {
-                if (tileDirX) wielder.bumpX(tileDirX);
-                else if (tileDirY) wielder.bumpY(tileDirY);
+                wielder.bump(tileDirX, tileDirY);
             }
             this.createMaidenDaggersAnimation(wielder, tileDirX, tileDirY);
             return true;

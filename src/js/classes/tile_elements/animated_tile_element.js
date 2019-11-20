@@ -73,6 +73,11 @@ export class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(this.animation);
     }
 
+    step(tileStepX, tileStepY) {
+        if (tileStepX !== 0) this.stepX(tileStepX);
+        else if (tileStepY !== 0) this.stepY(tileStepY);
+    }
+
     bumpX(tileStepX, onFrame = null, onEnd = null) {
         const jumpHeight = Game.TILESIZE * 25 / 75;
         const a = jumpHeight / ((tileStepX * Game.TILESIZE / 2) ** 2);
@@ -137,6 +142,11 @@ export class AnimatedTileElement extends TileElement {
             }
         };
         Game.APP.ticker.add(this.animation);
+    }
+
+    bump(tileStepX, tileStepY) {
+        if (tileStepX !== 0) this.bumpX(tileStepX);
+        else if (tileStepY !== 0) this.bumpY(tileStepY);
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
