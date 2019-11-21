@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import {TileElement} from "./tile_element"
-import {cubicBezier} from "../../utils/math_utils";
+import {cubicBezier, quadraticBezier} from "../../utils/math_utils";
 
 export class AnimatedTileElement extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -12,6 +12,37 @@ export class AnimatedTileElement extends TileElement {
         this.SHAKE_ANIMATION_TIME = 9;
         this.animationCounter = 0;
         this.animation = null;
+    }
+
+    stepXY(tileStepX, tileStepY, onFrame = null, onEnd = null) {
+        this.tilePosition.x += tileStepX;
+        this.tilePosition.y += tileStepY;
+
+        let jumpHeight = Game.TILESIZE * 30 * (Math.abs(tileStepY) + Math.abs(tileStepX)) / 2 / 75;
+        if (tileStepY < 0) jumpHeight += Math.abs(tileStepY) * Game.TILESIZE;
+        const oldPosX = this.position.x;
+        const oldPosY = this.position.y;
+        let counter = 0;
+        let t = 0;
+        const animationTime = this.STEP_ANIMATION_TIME - 1 + Math.abs(tileStepX) + Math.abs(tileStepY);
+        const step = 1 / animationTime;
+
+        const animation = () => {
+            t = counter * step;
+            const stepX = quadraticBezier(t, 0, tileStepX * Game.TILESIZE / 2, tileStepX * Game.TILESIZE);
+            const stepY = quadraticBezier(t, 0, -jumpHeight, tileStepY * Game.TILESIZE);
+            this.position.x = oldPosX + stepX;
+            this.position.y = oldPosY + stepY;
+            counter++;
+            if (onFrame) onFrame();
+            if (counter >= animationTime) {
+                Game.APP.ticker.remove(animation);
+                this.place();
+                if (onEnd) onEnd();
+            }
+        };
+        this.animation = animation;
+        Game.APP.ticker.add(animation);
     }
 
     stepX(tileStepX, onFrame = null, onEnd = null) {
