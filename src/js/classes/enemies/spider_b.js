@@ -13,35 +13,12 @@ export class SpiderB extends Spider {
 
     throwAway(throwX, throwY) {
         if (this.stun === 0) {
-            if (throwX !== 0) {
-                if (isEmpty(this.tilePosition.x + throwX + Math.sign(throwX), this.tilePosition.y)
-                    && isNotAWall(this.tilePosition.x + throwX, this.tilePosition.y)) {
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                    this.stepX(throwX + Math.sign(throwX));
-                    this.thrown = true;
-                    this.cancellable = false;
-                    this.updateMapPosition();
-                } else if (isEmpty(this.tilePosition.x + throwX, this.tilePosition.y)) {
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                    this.stepX(throwX);
-                    this.thrown = true;
-                    this.cancellable = false;
-                    this.updateMapPosition();
-                }
-            } else if (throwY !== 0) {
-                if (isEmpty(this.tilePosition.x, this.tilePosition.y + throwY + Math.sign(throwY))
-                    && isNotAWall(this.tilePosition.x, this.tilePosition.y + throwY)) {
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                    this.stepY(throwY + Math.sign(throwY));
-                    this.thrown = true;
-                    this.cancellable = false;
-                    this.updateMapPosition();
-                } else if (isEmpty(this.tilePosition.x, this.tilePosition.y + throwY)) {
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                    this.stepY(throwY);
-                    this.thrown = true;
-                    this.cancellable = false;
-                    this.updateMapPosition();
+            if (throwX !== 0 || throwY !== 0) {
+                if (isEmpty(this.tilePosition.x + throwX * 2, this.tilePosition.y + throwY * 2)
+                    && isNotAWall(this.tilePosition.x + throwX, this.tilePosition.y + throwY)) {
+                    this.throwStep(throwX * 2, throwY * 2);
+                } else if (isEmpty(this.tilePosition.x + throwX, this.tilePosition.y + throwY)) {
+                    this.throwStep(throwX, throwY);
                 }
             }
         }

@@ -11,5 +11,7 @@ export class SpiderRed extends Spider {
         this.type = ENEMY_TYPE.SPIDER_RED;
     }
 
-
+    throwAway(throwX, throwY) {
+        super.throwAway(throwX, throwY);
+    }
 }
