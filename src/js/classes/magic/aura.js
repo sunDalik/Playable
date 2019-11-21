@@ -25,7 +25,7 @@ export class Aura {
                 if (!(x === 0 && y === 0) && isNotAWall(attackPositionX, attackPositionY)) {
                     createFadingAttack(new FullTileElement(Game.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
                     if (isEnemy(attackPositionX, attackPositionY)) {
-                        Game.map[attackPositionY][attackPositionX].entity.damage(this.atk, 0, 0, true);
+                        Game.map[attackPositionY][attackPositionX].entity.damage(wielder, this.atk, 0, 0, true);
                     }
                     const player = getPlayerOnTile(attackPositionX, attackPositionY);
                     if (player) player.heal(this.healAmount);

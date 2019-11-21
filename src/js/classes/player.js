@@ -127,19 +127,19 @@ export class Player extends AnimatedTileElement {
         this.defMul = defMul;
     }
 
-    getAtkWithWeapon(weapon, atk = 0) {
-        const atkBase = this.getAtkBaseWithWeapon(weapon, atk);
+    getAtkWithWeapon(weapon, presetAtk = 0) {
+        const atkBase = this.getAtkBaseWithWeapon(weapon, presetAtk);
         return (Math.round(atkBase * this.atkMul * 4) / 4)
     }
 
-    getAtkBaseWithWeapon(weapon, atk = 0) {
+    getAtkBaseWithWeapon(weapon, presetAtk = 0) {
         let weaponAtk = 0;
         if (weapon) weaponAtk = weapon.atk;
-        if (atk) weaponAtk = atk;
+        if (presetAtk) weaponAtk = presetAtk;
         let atkBase = this.atkBase + weaponAtk;
         const atkEquipment = [this.headwear, this.armor, this.footwear];
         for (const equipment of atkEquipment) {
-            if (equipment && equipment.atk && !(equipment)) {
+            if (equipment && equipment.atk) {
                 atkBase += equipment.atk;
             }
         }
@@ -295,7 +295,6 @@ export class Player extends AnimatedTileElement {
         for (const mg of this.getMagic()) {
             if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) mg.uses = mg.maxUses;
         }
-        //todo: recover shields
         redrawSlotContentsForPlayer(this);
     }
 
@@ -314,7 +313,7 @@ export class Player extends AnimatedTileElement {
     releaseMagic() {
         for (const mg of this.getMagic()) {
             if (mg && mg.release) {
-                const magicResult = mg.release();
+                const magicResult = mg.release(this);
                 if (magicResult === true) {
                     const pn = this.getPropertyNameOfItem(mg);
                     if (pn) redrawSlotContents(this, pn);

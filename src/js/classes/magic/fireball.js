@@ -75,7 +75,7 @@ export class Fireball {
             for (const enemy of Game.enemies) {
                 if (enemy.visible) {
                     if (collisionCheck(fireCorrectVertexData, enemy.vertexData)) {
-                        enemy.damage(this.atk * this.multiplier, 0, 0, true);
+                        enemy.damage(Game.BOTH_PLAYERS, this.atk * this.multiplier, 0, 0, true);
                     }
                 }
             }

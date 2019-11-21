@@ -39,6 +39,7 @@ export function drawSlots() {
     redrawSlotsForPlayer(Game.player);
     redrawSlotsForPlayer(Game.player2);
     drawMovementKeyBindings();
+    redrawEnergy();
 }
 
 export function drawSlotsContents() {
@@ -139,6 +140,8 @@ export function redrawSlotsForPlayer(player) {
         contentsContainer[slotContentsName].meta.position.x = x;
         contentsContainer[slotContentsName].meta.position.y = y;
     }
+
+    HUD.energy.position.set(slotBorderOffsetX, slotsYOffset + (slotSize + slotsRowOffset) * 5);
 
     function drawSlot(x, y, slot) {
         slot.position.x = x;
@@ -305,5 +308,11 @@ export function drawMovementKeyBindings() {
         key.addChild(text);
         container.addChild(key);
     }
+}
 
+export function redrawEnergy() {
+    const container = HUD.energy;
+    removeAllChildrenFromContainer(container);
+    const text = new PIXI.Text(`LE = ${Game.lightEnergy}\nDE = ${Game.darkEnergy}`, HUDTextStyle);
+    container.addChild(text);
 }

@@ -41,7 +41,7 @@ export class Scythe {
                     createFadingAttack(new FullTileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y), 10);
                 }
                 if (isEnemy(attackTile.x, attackTile.y)) {
-                    Game.map[attackTile.y][attackTile.x].entity.damage(atk, tileDirX, tileDirY, false);
+                    Game.map[attackTile.y][attackTile.x].entity.damage(wielder,atk, tileDirX, tileDirY, false);
                 }
             }
             return true;

@@ -75,6 +75,7 @@ export function initializeLevel() {
     calculateDetectionGraph(Game.map);
     Game.levelGraph = getLevelPlayerGraph(level);
 
+    //dead player visible??? why??
     Game.player.tilePosition.set(Game.startX, Game.startY);
     Game.player2.tilePosition.set(Game.startX + 1, Game.startY + 1);
     Game.player.place();

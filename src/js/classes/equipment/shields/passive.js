@@ -19,6 +19,7 @@ export class PassiveShield extends Shield {
     }
 
     onBlock(source, wielder) {
+        if (this.uses <= 0) return false;
         if (!this.usedOnThisTurn) {
             this.uses--;
             this.usedOnThisTurn = true;

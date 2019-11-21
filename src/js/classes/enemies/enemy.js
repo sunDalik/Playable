@@ -3,6 +3,7 @@ import * as PIXI from "pixi.js"
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element"
 import {ROLE} from "../../enums";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
+import {redrawEnergy} from "../../drawing/draw_hud";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -13,6 +14,7 @@ export class Enemy extends AnimatedTileElement {
         this.stun = 0;
         this.movable = true;
         this.detectionRadius = 15;
+        this.energyDrop = undefined;
         this.healthContainer = new PIXI.Container();
         Game.world.addChild(this.healthContainer);
         this.healthContainer.visible = false;
@@ -27,11 +29,11 @@ export class Enemy extends AnimatedTileElement {
         }
     }
 
-    damage(dmg, inputX = 0, inputY = 0, magical = false) {
+    damage(source, dmg, inputX = 0, inputY = 0, magical = false) {
         if (!this.dead) {
             this.health -= dmg;
             if (this.health <= 0) {
-                this.die();
+                this.die(source);
             } else {
                 this.healthContainer.visible = true;
                 this.redrawHealth();
@@ -60,7 +62,17 @@ export class Enemy extends AnimatedTileElement {
         }
     }
 
-    die() {
+    die(source) {
+        let energyDrop;
+        if (this.energyDrop === undefined) energyDrop = Math.floor(this.atk + this.health / 2);
+        else energyDrop = this.energyDrop;
+        if (source === Game.player) Game.lightEnergy += energyDrop;
+        else if (source === Game.player2) Game.darkEnergy += energyDrop;
+        if (source === Game.BOTH_PLAYERS) {
+            Game.lightEnergy += Math.floor(energyDrop * 1.5);
+            Game.darkEnergy += Math.floor(energyDrop * 1.5);
+        }
+        redrawEnergy();
         this.dead = true;
         Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
         this.cancelAnimation();

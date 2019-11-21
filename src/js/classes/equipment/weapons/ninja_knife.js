@@ -29,7 +29,7 @@ export class NinjaKnife {
             } else {
                 createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
             }
-            Game.map[attackTileY][attackTileX].entity.damage(atk, tileDirX, tileDirY, false);
+            Game.map[attackTileY][attackTileX].entity.damage(wielder,atk, tileDirX, tileDirY, false);
             return true;
         } else return false;
 

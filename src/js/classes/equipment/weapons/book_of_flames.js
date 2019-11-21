@@ -58,7 +58,7 @@ export class BookOfFlames {
                     createFadingAttack(attackSprite);
                 }
                 if (isEnemy(attackTile.x, attackTile.y)) {
-                    Game.map[attackTile.y][attackTile.x].entity.damage(atk, 0, 0, this.magical);
+                    Game.map[attackTile.y][attackTile.x].entity.damage(wielder, atk, 0, 0, this.magical);
                 }
             }
             this.uses--;

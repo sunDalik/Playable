@@ -47,7 +47,7 @@ export class MaidenDagger {
                             }
                         }
                     }
-                    entity.damage(wielder.getAtkWithWeapon(null, enemyDmgValues[i]), tileDirX, tileDirY, false);
+                    entity.damage(wielder, wielder.getAtkWithWeapon(null, enemyDmgValues[i]), tileDirX, tileDirY, false);
                 }
             }
             if (!foundEnemy) return false;
@@ -66,7 +66,7 @@ export class MaidenDagger {
             const atk = wielder.getAtkWithWeapon(this);
             if (isEnemy(attackTileX, attackTileY)) {
                 createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
-                Game.map[attackTileY][attackTileX].entity.damage(atk, tileDirX, tileDirY, false);
+                Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);
                 return true;
             } else return false;
         }

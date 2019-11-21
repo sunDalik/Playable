@@ -103,8 +103,8 @@ export class Spider extends Enemy {
         return false;
     }
 
-    damage(dmg, inputX, inputY, magical) {
-        super.damage(dmg, inputX, inputY, magical);
+    damage(source, dmg, inputX, inputY, magical) {
+        super.damage(source, dmg, inputX, inputY, magical);
         if (!this.dead && this.stun === 0) this.throwAway(inputX, inputY);
         if (Game.afterTurn) {
             this.thrown = false;
@@ -113,7 +113,7 @@ export class Spider extends Enemy {
 
     throwAway(throwX, throwY) {
         if (this.stun === 0) {
-            if (throwX !== 0 && throwY !== 0) {
+            if (throwX !== 0 || throwY !== 0) {
                 if (isEmpty(this.tilePosition.x + throwX, this.tilePosition.y + throwY)) {
                     Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                     this.step(throwX, throwY);

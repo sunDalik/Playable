@@ -11,6 +11,7 @@ HUD.stats1 = new PIXI.Container();
 HUD.stats2 = new PIXI.Container();
 HUD.slots1Contents = generateSlotsContentsContainer();
 HUD.slots2Contents = generateSlotsContentsContainer();
+HUD.energy = new PIXI.Container();
 
 HUD.addChild(HUD.hearts1);
 HUD.addChild(HUD.hearts2);
@@ -19,6 +20,7 @@ HUD.addChild(HUD.slots2);
 HUD.addChild(HUD.guide);
 HUD.addChild(HUD.stats1);
 HUD.addChild(HUD.stats2);
+HUD.addChild(HUD.energy);
 
 const keys = Object.keys(HUD.slots1Contents);
 for (let i = 0; i < keys.length; i++) {

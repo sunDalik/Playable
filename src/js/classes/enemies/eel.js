@@ -62,8 +62,8 @@ export class Eel extends Enemy {
         } else this.turnAround();
     }
 
-    damage(dmg, inputX = 0, inputY = 0, magical = false) {
-        super.damage(dmg, inputX, inputY, magical);
+    damage(source, dmg, inputX = 0, inputY = 0, magical = false) {
+        super.damage(source, dmg, inputX, inputY, magical);
         if (!this.dead) {
             if (inputX !== 0) {
                 if (inputX > 0) {

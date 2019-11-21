@@ -14,10 +14,10 @@ export class Knife {
     attack(wielder, tileDirX, tileDirY) {
         const attackTileX = wielder.tilePosition.x + tileDirX;
         const attackTileY = wielder.tilePosition.y + tileDirY;
-        const atk = wielder.getAtkWithWeapon(this);
         if (isEnemy(attackTileX, attackTileY)) {
+            const atk = wielder.getAtkWithWeapon(this);
             createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
-            Game.map[attackTileY][attackTileX].entity.damage(atk, tileDirX, tileDirY, false);
+            Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);
             return true;
         } else return false;
     }

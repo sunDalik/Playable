@@ -128,7 +128,7 @@ export class RollerB extends Roller {
         Game.APP.ticker.add(this.animation);
     }
 
-    damage(dmg, inputX, inputY, magical = false) {
+    damage(source, dmg, inputX, inputY, magical = false) {
         if (inputX === 0 && this.stun === 0 && !magical) {
             this.cancelAnimation();
             if (isEmpty(this.tilePosition.x, this.tilePosition.y + inputY)) {
@@ -138,7 +138,7 @@ export class RollerB extends Roller {
             } else this.bumpY(inputY);
             this.cancellable = false;
         } else {
-            super.damage(dmg, inputX, inputY, magical);
+            super.damage(source, dmg, inputX, inputY, magical);
         }
     }
 }

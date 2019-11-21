@@ -34,6 +34,7 @@ Game.BGColor = 0xffffff;
 
 Game.player = null;
 Game.player2 = null;
+Game.BOTH_PLAYERS = {};
 Game.startX = 0;
 Game.startY = 0;
 Game.primaryPlayer = null;
@@ -60,3 +61,6 @@ Game.levelGraph = null;
 Game.finder = new PF.AStarFinder();
 
 Game.afterTurn = false;
+
+Game.lightEnergy = 0;
+Game.darkEnergy = 0;
