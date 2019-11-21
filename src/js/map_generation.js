@@ -19,6 +19,8 @@ import {PoisonEel} from "./classes/enemies/poison_eel";
 import {Statue} from "./classes/inanimate_objects/statue";
 import {Chest} from "./classes/inanimate_objects/chest";
 import {Obelisk} from "./classes/inanimate_objects/obelisk";
+import {SpiderRed} from "./classes/enemies/spider_red";
+import {SpiderGreen} from "./classes/enemies/spider_green";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -56,6 +58,8 @@ export function generateMap(level) {
             else if (map[i][j] === "sb") mapCell.entity = new StarB(j, i);
             else if (map[i][j] === "spi") mapCell.entity = new Spider(j, i);
             else if (map[i][j] === "spib") mapCell.entity = new SpiderB(j, i);
+            else if (map[i][j] === "spider_red") mapCell.entity = new SpiderRed(j, i);
+            else if (map[i][j] === "spider_green") mapCell.entity = new SpiderGreen(j, i);
             else if (map[i][j] === "sna") mapCell.entity = new Snail(j, i);
             else if (map[i][j] === "snab") mapCell.entity = new SnailB(j, i);
             else if (map[i][j] === "eel") mapCell.entity = new Eel(j, i);

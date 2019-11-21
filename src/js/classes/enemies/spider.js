@@ -7,7 +7,7 @@ import {getRandomInt} from "../../utils/random_utils";
 export class Spider extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/spider.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 2;
+        this.maxHealth = 1.5;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.SPIDER;
         this.atk = 0.5;
