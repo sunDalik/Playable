@@ -69,8 +69,9 @@ export class Enemy extends AnimatedTileElement {
         if (source === Game.player) Game.lightEnergy += energyDrop;
         else if (source === Game.player2) Game.darkEnergy += energyDrop;
         if (source === Game.BOTH_PLAYERS) {
-            Game.lightEnergy += Math.floor(energyDrop * 1.5);
-            Game.darkEnergy += Math.floor(energyDrop * 1.5);
+            //not yet sure about the exact formula...
+            Game.lightEnergy += energyDrop;
+            Game.darkEnergy += energyDrop;
         }
         redrawEnergy();
         this.dead = true;

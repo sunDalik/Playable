@@ -349,6 +349,7 @@ export class Player extends AnimatedTileElement {
             this.savedTileStepX *= -1;
             this.savedTileStepY *= -1;
         }
+        Game.APP.ticker.remove(this.animation);
         this.secondHand.attack(this, this.savedTileStepX, this.savedTileStepY);
         redrawSecondHand(this);
         this.attackTimeout = null;

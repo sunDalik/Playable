@@ -28,9 +28,7 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
 
     let counter = 0;
 
-    Game.APP.ticker.remove(player.animation); // I HAVE NO IDEA WHY I NEED THIS HERE BUT IT FAILS WITHOUT IT
-    // ^(double attack crashes the game without this line)
-    player.animation = function () {
+    const animation = function () {
         if (counter < Game.WEAPON_ATTACK_TIME / 2) {
             attackParticle.width += stepX;
             attackParticle.height += stepY;
@@ -41,10 +39,11 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
         counter++;
         if (counter >= Game.WEAPON_ATTACK_TIME) {
             Game.world.removeChild(attackParticle);
-            Game.APP.ticker.remove(player.animation);
+            Game.APP.ticker.remove(animation);
         }
     };
-    Game.APP.ticker.add(player.animation);
+    player.animation = animation;
+    Game.APP.ticker.add(animation);
 }
 
 export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
@@ -54,7 +53,7 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
     const delay = animationTime / 2;
     let counter = 0;
 
-    let animation = function () {
+    const animation = function () {
         if (counter >= delay) {
             attack.alpha -= 1 / animationTime;
         }
@@ -102,13 +101,15 @@ export function createFadingText(caption, positionX, positionY) {
 //maybe need to move it to AnimatedTileElement class?
 export function rotate(object, clockwise = true) {
     let counter = 0;
-    object.animation = function () {
+
+    const animation = function () {
         if (clockwise) object.rotation += 2 * Math.PI / Game.TURNTIME;
         else object.rotation -= 2 * Math.PI / Game.TURNTIME;
         counter++;
-        if (counter >= Game.TURNTIME) Game.APP.ticker.remove(object.animation);
+        if (counter >= Game.TURNTIME) Game.APP.ticker.remove(animation);
     };
-    Game.APP.ticker.add(object.animation);
+    object.animation = animation;
+    Game.APP.ticker.add(animation);
 }
 
 export function createFloatingItemAnimation(item) {
