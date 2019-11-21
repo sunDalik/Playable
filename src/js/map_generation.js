@@ -65,22 +65,29 @@ export function generateMap(level) {
             else if (map[i][j] === "eel") mapCell.entity = new Eel(j, i);
             else if (map[i][j] === "eel_dark") mapCell.entity = new DarkEel(j, i);
             else if (map[i][j] === "eel_poison") mapCell.entity = new PoisonEel(j, i);
-            else if (map[i][j] === "statue") mapCell.entity = new Statue(j, i, getRandomWeapon());
-            else if (map[i][j] === "chest") mapCell.entity = new Chest(j, i, getRandomChestDrop());
-            else if (map[i][j] === "obelisk") {
-                let magicPool = [];
-                for (let i = 0; i < 4; ++i) {
-                    while (true) {
-                        const randomSpell = getRandomSpell();
-                        if (!magicPool.some(magic => magic.type === randomSpell.type)) {
-                            magicPool.push(randomSpell);
-                            break;
-                        }
-                        if (magicPool.length === Game.magicPool.length) break;
-                    }
+            else if (map[i][j] === "statue") {
+                if (Game.weaponPool.length > 0) {
+                    mapCell.entity = new Statue(j, i, getRandomWeapon());
                 }
-                obeliskTiles.push({x: j, y: i});
-                mapCell.entity = new Obelisk(j, i, magicPool);
+            } else if (map[i][j] === "chest") {
+                if (Game.chestItemPool.length > 0) {
+                    mapCell.entity = new Chest(j, i, getRandomChestDrop());
+                }
+            } else if (map[i][j] === "obelisk") {
+                if (Game.magicPool.length >= 4) {
+                    let magicPool = [];
+                    for (let i = 0; i < 4; ++i) {
+                        while (true) {
+                            const randomSpell = getRandomSpell();
+                            if (!magicPool.some(magic => magic.type === randomSpell.type)) {
+                                magicPool.push(randomSpell);
+                                break;
+                            }
+                        }
+                    }
+                    obeliskTiles.push({x: j, y: i});
+                    mapCell.entity = new Obelisk(j, i, magicPool);
+                }
             }
 
             map[i][j] = mapCell;

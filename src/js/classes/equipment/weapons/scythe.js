@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
-import {isEnemy, isNotAWall} from "../../../map_checks";
+import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createFadingAttack} from "../../../animations";
 import {FullTileElement} from "../../tile_elements/full_tile_element";
 import * as PIXI from "pixi.js";
@@ -30,8 +30,8 @@ export class Scythe {
         }
         if (attackTiles.length !== 5) return false;
         if (isEnemy(attackTiles[0].x, attackTiles[0].y)
-            || isEnemy(attackTiles[1].x, attackTiles[1].y)
-            || isEnemy(attackTiles[2].x, attackTiles[2].y)
+            || isEnemy(attackTiles[1].x, attackTiles[1].y) && isLit(attackTiles[1].x, attackTiles[1].y)
+            || isEnemy(attackTiles[2].x, attackTiles[2].y) && isLit(attackTiles[2].x, attackTiles[2].y)
             || isEnemy(attackTiles[3].x, attackTiles[3].y)
             || isEnemy(attackTiles[4].x, attackTiles[4].y)) {
 
@@ -40,8 +40,8 @@ export class Scythe {
                 if (isNotAWall(attackTile.x, attackTile.y)) {
                     createFadingAttack(new FullTileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y), 10);
                 }
-                if (isEnemy(attackTile.x, attackTile.y)) {
-                    Game.map[attackTile.y][attackTile.x].entity.damage(wielder,atk, tileDirX, tileDirY, false);
+                if (isEnemy(attackTile.x, attackTile.y) && isLit(attackTile.x, attackTile.y)) {
+                    Game.map[attackTile.y][attackTile.x].entity.damage(wielder, atk, tileDirX, tileDirY, false);
                 }
             }
             return true;
