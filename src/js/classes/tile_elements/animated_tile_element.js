@@ -23,12 +23,11 @@ export class AnimatedTileElement extends TileElement {
         const oldPosX = this.position.x;
         const oldPosY = this.position.y;
         let counter = 0;
-        let t = 0;
         const animationTime = this.STEP_ANIMATION_TIME - 1 + Math.abs(tileStepX) + Math.abs(tileStepY);
         const step = 1 / animationTime;
 
         const animation = () => {
-            t = counter * step;
+            const t = (counter + 1) * step;
             const stepX = quadraticBezier(t, 0, tileStepX * Game.TILESIZE / 2, tileStepX * Game.TILESIZE);
             const stepY = quadraticBezier(t, 0, -jumpHeight, tileStepY * Game.TILESIZE);
             this.position.x = oldPosX + stepX;
@@ -69,13 +68,12 @@ export class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(animation);
     }
 
-    //apparently incorrect
-    //todo: revise this
+    //are we happy with this??
+    //I'm not sure...
+    //todo...
     stepY(tileStepY, onFrame = null, onEnd = null) {
         this.tilePosition.y += tileStepY;
-        let counter = 0;
-        const oldPosition = this.position.y;
-        let x = 0;
+        const oldPosY = this.position.y;
         let P0, P1, P2, P3;
         if (tileStepY < 0) {
             P0 = 0.17;
@@ -89,9 +87,13 @@ export class AnimatedTileElement extends TileElement {
             P3 = 0.75;
         }
 
+        const animationTime = this.STEP_ANIMATION_TIME;
+        const step = 1 / animationTime;
+        let counter = 0;
+
         const animation = () => {
-            x += 1 / this.STEP_ANIMATION_TIME;
-            this.position.y = oldPosition + cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE * tileStepY;
+            const t = (counter + 1) * step;
+            this.position.y = oldPosY + cubicBezier(t, P0, P1, P2, P3) * Game.TILESIZE * tileStepY;
             counter++;
             if (onFrame) onFrame();
             if (counter >= this.STEP_ANIMATION_TIME) {
@@ -104,9 +106,10 @@ export class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(animation);
     }
 
-    step(tileStepX, tileStepY) {
-        if (tileStepX !== 0) this.stepX(tileStepX);
-        else if (tileStepY !== 0) this.stepY(tileStepY);
+    step(tileStepX, tileStepY, onFrame = null, onEnd = null) {
+        if (tileStepX !== 0 && tileStepY !== 0) this.stepXY(tileStepX, tileStepY, onFrame, onEnd);
+        else if (tileStepX !== 0) this.stepX(tileStepX, onFrame, onEnd);
+        else if (tileStepY !== 0) this.stepY(tileStepY, onFrame, onEnd);
     }
 
     bumpX(tileStepX, onFrame = null, onEnd = null) {

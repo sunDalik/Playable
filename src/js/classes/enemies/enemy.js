@@ -64,7 +64,7 @@ export class Enemy extends AnimatedTileElement {
 
     die(source) {
         let energyDrop;
-        if (this.energyDrop === undefined) energyDrop = Math.floor(this.atk + this.health / 2);
+        if (this.energyDrop === undefined) energyDrop = Math.floor(this.atk + this.maxHealth / 2);
         else energyDrop = this.energyDrop;
         if (source === Game.player) Game.lightEnergy += energyDrop;
         else if (source === Game.player2) Game.darkEnergy += energyDrop;
