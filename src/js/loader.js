@@ -31,6 +31,10 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/eel.png")
         .add("src/images/enemies/eel_poison.png")
         .add("src/images/enemies/eel_dark.png")
+        .add("src/images/enemies/frog.png")
+        .add("src/images/enemies/frog_fire.png")
+        .add("src/images/enemies/frog_king.png")
+        .add("src/images/enemies/frog_king_fire.png")
 
         .add("src/images/HUD/heart_full.png")
         .add("src/images/HUD/heart_75.png")

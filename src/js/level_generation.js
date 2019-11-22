@@ -512,8 +512,8 @@ function createRoom(width, height, entries) {
                 room[i][j] = "w";
             } else room[i][j] = "";
             /*if (j === width - 2 && i === height - 2) {
-                room[i][j] = "eel_poison";
-            }*/  //for tests
+                room[i][j] = "frog";
+            } */ //for tests
             for (const entry of entries) {
                 if (i === entry.y && j === entry.x) {
                     room[i][j] = "entry";

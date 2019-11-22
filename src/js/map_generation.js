@@ -21,6 +21,10 @@ import {Chest} from "./classes/inanimate_objects/chest";
 import {Obelisk} from "./classes/inanimate_objects/obelisk";
 import {SpiderRed} from "./classes/enemies/spider_red";
 import {SpiderGreen} from "./classes/enemies/spider_green";
+import {KingFireFrog} from "./classes/enemies/frog_king_fire";
+import {KingFrog} from "./classes/enemies/frog_king";
+import {FireFrog} from "./classes/enemies/frog_fire";
+import {Frog} from "./classes/enemies/frog";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -65,6 +69,10 @@ export function generateMap(level) {
             else if (map[i][j] === "eel") mapCell.entity = new Eel(j, i);
             else if (map[i][j] === "eel_dark") mapCell.entity = new DarkEel(j, i);
             else if (map[i][j] === "eel_poison") mapCell.entity = new PoisonEel(j, i);
+            else if (map[i][j] === "frog") mapCell.entity = new Frog(j, i);
+            else if (map[i][j] === "frog_fire") mapCell.entity = new FireFrog(j, i);
+            else if (map[i][j] === "frog_king") mapCell.entity = new KingFrog(j, i);
+            else if (map[i][j] === "frog_king_fire") mapCell.entity = new KingFireFrog(j, i);
             else if (map[i][j] === "statue") {
                 if (Game.weaponPool.length > 0) {
                     mapCell.entity = new Statue(j, i, getRandomWeapon());

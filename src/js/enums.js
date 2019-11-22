@@ -11,7 +11,11 @@ export const ENEMY_TYPE = Object.freeze({
     POISON_EEL: 9,
     DARK_EEL: 10,
     SPIDER_RED: 11,
-    SPIDER_GREEN: 12
+    SPIDER_GREEN: 12,
+    FROG: 13,
+    FROG_FIRE: 14,
+    FROG_KING: 15,
+    FROG_KING_FIRE: 16
 });
 
 export const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});
@@ -46,3 +50,5 @@ export const SHIELD_TYPE = Object.freeze({PARRY: 0, PASSIVE: 1, STUNNING: 2, SPI
 export const TOOL_TYPE = Object.freeze({PICKAXE: 0});
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
+
+export const HAZARD_TYPE = Object.freeze({POISON: 0, FIRE: 1, DARK_POISON: 2, DARK_FIRE: 3});

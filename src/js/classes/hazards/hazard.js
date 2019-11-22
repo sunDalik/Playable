@@ -25,13 +25,13 @@ export class Hazard extends FullTileElement {
 
     //returns true if hazard still lives
     updateLifetime() {
-        if (this.turnsLeft === 0) {
+        if (this.turnsLeft > 0) {
+            this.turnsLeft--;
+            return true;
+        } else {
             this.removeFromWorld();
             this.turnsLeft = -99;
             return false;
-        } else {
-            this.turnsLeft--;
-            return true;
         }
     }
 
