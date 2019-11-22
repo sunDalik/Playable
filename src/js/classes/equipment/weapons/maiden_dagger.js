@@ -28,6 +28,7 @@ export class MaidenDagger {
                 {x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y + tileDirY},
                 {x: wielder.tilePosition.x + tileDirX + ATStepX, y: wielder.tilePosition.y + tileDirY + ATStepY}];
             let foundEnemy = false;
+            const enemiesToAttack = [];
             for (let i = 0; i < atkPositions.length; i++) {
                 const atkPos = atkPositions[i];
                 if (isEnemy(atkPos.x, atkPos.y)) {
@@ -47,9 +48,10 @@ export class MaidenDagger {
                             }
                         }
                     }
-                    entity.damage(wielder, wielder.getAtkWithWeapon(null, enemyDmgValues[i]), tileDirX, tileDirY, false);
-                }
+                    enemiesToAttack.push(entity);
+                } else enemiesToAttack.push(null);
             }
+
             if (!foundEnemy) return false;
             if (isRelativelyEmpty(playerStepPosition.x, playerStepPosition.y)) {
                 removePlayerFromGameMap(wielder);
@@ -59,6 +61,10 @@ export class MaidenDagger {
                 wielder.bump(tileDirX, tileDirY);
             }
             this.createMaidenDaggersAnimation(wielder, tileDirX, tileDirY);
+            for (let i = 0; i < enemiesToAttack.length; i++) {
+                if (enemiesToAttack[i] === null) continue;
+                enemiesToAttack[i].damage(wielder, wielder.getAtkWithWeapon(null, enemyDmgValues[i]), tileDirX, tileDirY, false);
+            }
             return true;
         } else {
             const attackTileX = wielder.tilePosition.x + tileDirX;

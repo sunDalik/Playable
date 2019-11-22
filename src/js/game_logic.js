@@ -15,6 +15,7 @@ export function setEnemyTurnTimeout() {
 
 function enemyTurn() {
     moveEnemies();
+    //damage enemies with dark hazards
     updateHazards();
     Game.enemiesTimeout = null;
     Game.afterTurn = true;

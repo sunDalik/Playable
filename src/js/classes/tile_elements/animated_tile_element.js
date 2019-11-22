@@ -10,6 +10,7 @@ export class AnimatedTileElement extends TileElement {
         this.SLIDE_ANIMATION_TIME = 12;
         this.ROTATE_TIME = 6;
         this.SHAKE_ANIMATION_TIME = 9;
+        this.MICRO_JUMP_ANIMATION_TIME = 8;
         this.animationCounter = 0;
         this.animation = null;
     }
@@ -269,6 +270,26 @@ export class AnimatedTileElement extends TileElement {
             }
         };
         Game.APP.ticker.remove(this.animation);
+        this.animation = animation;
+        Game.APP.ticker.add(animation);
+    }
+
+    microJump() {
+        let counter = 0;
+        const stepY = Game.TILESIZE * 0.4 / (this.MICRO_JUMP_ANIMATION_TIME / 2);
+
+        const animation = () => {
+            if (counter < this.MICRO_JUMP_ANIMATION_TIME / 2) {
+                this.position.y -= stepY;
+            } else {
+                this.position.y += stepY;
+            }
+            counter++;
+            if (counter >= this.MICRO_JUMP_ANIMATION_TIME) {
+                Game.APP.ticker.remove(animation);
+                this.place();
+            }
+        };
         this.animation = animation;
         Game.APP.ticker.add(animation);
     }

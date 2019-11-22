@@ -12,13 +12,11 @@ export class SpiderGreen extends Spider {
     }
 
     throwAway(throwX, throwY) {
-        if (this.stun === 0) {
-            if (throwX !== 0 || throwY !== 0) {
-                if (isEmpty(this.tilePosition.x + throwY, this.tilePosition.y + throwX)) {
-                    this.throwStep(throwY, throwX);
-                } else if (isEmpty(this.tilePosition.x - throwY, this.tilePosition.y - throwX)) {
-                    this.throwStep(-throwY, -throwX);
-                }
+        if (throwX !== 0 || throwY !== 0) {
+            if (isEmpty(this.tilePosition.x + throwY, this.tilePosition.y + throwX)) {
+                this.throwStep(throwY, throwX);
+            } else if (isEmpty(this.tilePosition.x - throwY, this.tilePosition.y - throwX)) {
+                this.throwStep(-throwY, -throwX);
             }
         }
     }
