@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {randomChoice} from "../../utils/random_utils";
-import {getNonWallCardinalDirections} from "../../utils/map_utils";
+import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 
 export class Frog extends Enemy {
@@ -26,7 +26,7 @@ export class Frog extends Enemy {
 
     move() {
         if (this.currentTurnDelay <= 0) {
-            const movementOptions = getNonWallCardinalDirections(this);
+            const movementOptions = getRelativelyEmptyCardinalDirections(this);
             if (movementOptions.length !== 0) {
                 const moveDir = randomChoice(movementOptions);
                 if (moveDir.x !== 0 && Math.sign(moveDir.x) !== Math.sign(this.scale.x)) {
