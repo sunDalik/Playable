@@ -4,6 +4,7 @@ import {ENEMY_TYPE} from "../../enums";
 import {PoisonHazard} from "../hazards/poison_hazard";
 import {isRelativelyEmpty, getPlayerOnTile} from "../../map_checks";
 import {getRandomInt} from "../../utils/random_utils";
+import {addHazardOrRefresh} from "../../utils/map_utils";
 
 export class Snail extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/snail.png"].texture) {
@@ -56,9 +57,7 @@ export class Snail extends Enemy {
                 }
             }
         } else this.currentTurnDelay--;
-        if (Game.map[this.tilePosition.y][this.tilePosition.x].hazard === null) {
-            new PoisonHazard(this.tilePosition.x, this.tilePosition.y).addToWorld();
-        } else Game.map[this.tilePosition.y][this.tilePosition.x].hazard.refreshLifetime();
+        addHazardOrRefresh(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
     }
 
     slide(tileStepX, tileStepY) {

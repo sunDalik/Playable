@@ -1,4 +1,5 @@
 import {isRelativelyEmpty} from "../map_checks";
+import {Game} from "../game";
 
 export function get8Directions() {
     return [{x: -1, y: -1}, {x: 0, y: -1}, {x: 1, y: -1},
@@ -18,4 +19,10 @@ export function getRelativelyEmptyCardinalDirections(tileElement) {
         }
     }
     return directions;
+}
+
+export function addHazardOrRefresh(hazard) {
+    if (Game.map[hazard.tilePosition.y][hazard.tilePosition.x].hazard === null) {
+        hazard.addToWorld();
+    } else Game.map[hazard.tilePosition.y][hazard.tilePosition.x].hazard.refreshLifetime();
 }

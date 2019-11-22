@@ -2,8 +2,9 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {randomChoice} from "../../utils/random_utils";
-import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
+import {addHazardOrRefresh, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
+import {PoisonHazard} from "../hazards/poison_hazard";
 
 export class Frog extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/frog.png"].texture) {
@@ -25,7 +26,23 @@ export class Frog extends Enemy {
     }
 
     move() {
-        if (this.currentTurnDelay <= 0) {
+        if (this.triggered) {
+            this.triggered = false;
+            this.bump(Math.sign(this.scale.x), 0);
+            const player = getPlayerOnTile(this.triggeredTile.x, this.triggeredTile.y);
+            if (player) player.damage(this.atk, this, false);
+            addHazardOrRefresh(new PoisonHazard(this.triggeredTile.x, this.triggeredTile.y));
+            this.currentTurnDelay = 0;
+        } else if (getPlayerOnTile(this.tilePosition.x + 2 * Math.sign(this.scale.x), this.tilePosition.y) !== null) {
+            this.triggered = true;
+            this.triggeredTile = {x: this.tilePosition.x + 2 * Math.sign(this.scale.x), y: this.tilePosition.y};
+            this.shake(0, 1);
+        } else if (getPlayerOnTile(this.tilePosition.x - 2 * Math.sign(this.scale.x), this.tilePosition.y) !== null) {
+            this.triggered = true;
+            this.triggeredTile = {x: this.tilePosition.x - 2 * Math.sign(this.scale.x), y: this.tilePosition.y};
+            this.shake(0, 1);
+            this.scale.x *= -1;
+        } else if (this.currentTurnDelay <= 0) {
             const movementOptions = getRelativelyEmptyCardinalDirections(this);
             if (movementOptions.length !== 0) {
                 const moveDir = randomChoice(movementOptions);
