@@ -28,20 +28,13 @@ export class Frog extends Enemy {
     move() {
         if (this.triggered) {
             this.triggered = false;
-            this.bump(Math.sign(this.scale.x), 0);
+            this.bump(Math.sign(this.triggeredTile.x - this.tilePosition.x), Math.sign(this.triggeredTile.y - this.tilePosition.y));
             const player = getPlayerOnTile(this.triggeredTile.x, this.triggeredTile.y);
             if (player) player.damage(this.atk, this, false);
-            addHazardOrRefresh(new PoisonHazard(this.triggeredTile.x, this.triggeredTile.y));
+            this.spitHazard(this.triggeredTile.x, this.triggeredTile.y);
             this.currentTurnDelay = 0;
-        } else if (getPlayerOnTile(this.tilePosition.x + 2 * Math.sign(this.scale.x), this.tilePosition.y) !== null) {
+        } else if (this.arePlayersInAttackRange()) {
             this.triggered = true;
-            this.triggeredTile = {x: this.tilePosition.x + 2 * Math.sign(this.scale.x), y: this.tilePosition.y};
-            this.shake(0, 1);
-        } else if (getPlayerOnTile(this.tilePosition.x - 2 * Math.sign(this.scale.x), this.tilePosition.y) !== null) {
-            this.triggered = true;
-            this.triggeredTile = {x: this.tilePosition.x - 2 * Math.sign(this.scale.x), y: this.tilePosition.y};
-            this.shake(0, 1);
-            this.scale.x *= -1;
         } else if (this.currentTurnDelay <= 0) {
             const movementOptions = getRelativelyEmptyCardinalDirections(this);
             if (movementOptions.length !== 0) {
@@ -61,5 +54,21 @@ export class Frog extends Enemy {
                 }
             }
         } else this.currentTurnDelay--;
+    }
+
+    arePlayersInAttackRange() {
+        if (getPlayerOnTile(this.tilePosition.x + 2 * Math.sign(this.scale.x), this.tilePosition.y) !== null) {
+            this.triggeredTile = {x: this.tilePosition.x + 2 * Math.sign(this.scale.x), y: this.tilePosition.y};
+            this.shake(0, 1);
+        } else if (getPlayerOnTile(this.tilePosition.x - 2 * Math.sign(this.scale.x), this.tilePosition.y) !== null) {
+            this.triggeredTile = {x: this.tilePosition.x - 2 * Math.sign(this.scale.x), y: this.tilePosition.y};
+            this.shake(0, 1);
+            this.scale.x *= -1;
+        } else return false;
+        return true;
+    }
+
+    spitHazard(tileX, tileY) {
+        addHazardOrRefresh(new PoisonHazard(tileX, tileY));
     }
 }

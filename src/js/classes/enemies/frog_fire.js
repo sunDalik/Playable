@@ -10,7 +10,4 @@ export class FireFrog extends Frog {
         this.type = ENEMY_TYPE.FROG_FIRE;
         this.atk = 1;
     }
-
-    move() {
-    }
 }
