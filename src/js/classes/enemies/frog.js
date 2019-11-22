@@ -3,7 +3,7 @@ import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {randomChoice} from "../../utils/random_utils";
 import {addHazardOrRefresh, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
-import {getPlayerOnTile} from "../../map_checks";
+import {getPlayerOnTile, isNotAWall} from "../../map_checks";
 import {PoisonHazard} from "../hazards/poison_hazard";
 
 export class Frog extends Enemy {
@@ -57,10 +57,10 @@ export class Frog extends Enemy {
     }
 
     arePlayersInAttackRange() {
-        if (getPlayerOnTile(this.tilePosition.x + 2 * Math.sign(this.scale.x), this.tilePosition.y) !== null) {
+        if (isNotAWall(this.tilePosition.x + Math.sign(this.scale.x), this.tilePosition.y) && getPlayerOnTile(this.tilePosition.x + 2 * Math.sign(this.scale.x), this.tilePosition.y) !== null) {
             this.triggeredTile = {x: this.tilePosition.x + 2 * Math.sign(this.scale.x), y: this.tilePosition.y};
             this.shake(0, 1);
-        } else if (getPlayerOnTile(this.tilePosition.x - 2 * Math.sign(this.scale.x), this.tilePosition.y) !== null) {
+        } else if (isNotAWall(this.tilePosition.x - Math.sign(this.scale.x), this.tilePosition.y) && getPlayerOnTile(this.tilePosition.x - 2 * Math.sign(this.scale.x), this.tilePosition.y) !== null) {
             this.triggeredTile = {x: this.tilePosition.x - 2 * Math.sign(this.scale.x), y: this.tilePosition.y};
             this.shake(0, 1);
             this.scale.x *= -1;

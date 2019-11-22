@@ -15,6 +15,8 @@ export function loadAll(afterLoad) {
         .add("src/images/player2_attack.png")
 
         .add("src/images/hazards/poison.png")
+        .add("src/images/hazards/fire.png")
+        .add("src/images/hazards/fire_small.png")
 
         .add("src/images/enemy_attack.png")
         //make different folders for enemies? based on what? on their stage maybe? dunno...

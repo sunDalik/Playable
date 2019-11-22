@@ -177,6 +177,7 @@ export class Player extends AnimatedTileElement {
     }
 
     damage(atk, source, directHit = true) {
+        if (atk === 0) return;
         if (!this.dead) {
             const otherPlayer = this === Game.player ? Game.player2 : Game.player;
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
