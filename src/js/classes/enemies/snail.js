@@ -53,7 +53,6 @@ export class Snail extends Enemy {
             } else {
                 if (this.canSeePlayers()) {
                     this.chase = true;
-                    this.move();
                 }
             }
         } else this.currentTurnDelay--;

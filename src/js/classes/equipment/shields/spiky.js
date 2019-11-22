@@ -15,7 +15,7 @@ export class SpikyShield extends Shield {
 
     onBlock(source, wielder, directHit) {
         if (directHit) {
-            source.damage(this.shieldAtk, 0, 0, false);
+            source.damage(wielder, this.shieldAtk, 0, 0, false);
         }
     }
 }

@@ -39,7 +39,6 @@ export class Spider extends Enemy {
             } else {
                 if (this.canSeePlayers()) {
                     this.chase = true;
-                    this.move();
                 }
             }
         } else {

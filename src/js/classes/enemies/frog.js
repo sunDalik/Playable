@@ -1,6 +1,9 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
+import {randomChoice} from "../../utils/random_utils";
+import {getNonWallCardinalDirections} from "../../utils/map_utils";
+import {getPlayerOnTile} from "../../map_checks";
 
 export class Frog extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/frog.png"].texture) {
@@ -22,5 +25,24 @@ export class Frog extends Enemy {
     }
 
     move() {
+        if (this.currentTurnDelay <= 0) {
+            const movementOptions = getNonWallCardinalDirections(this);
+            if (movementOptions.length !== 0) {
+                const moveDir = randomChoice(movementOptions);
+                if (moveDir.x !== 0 && Math.sign(moveDir.x) !== Math.sign(this.scale.x)) {
+                    this.scale.x *= -1;
+                }
+                const player = getPlayerOnTile(this.tilePosition.x + moveDir.x, this.tilePosition.y + moveDir.y);
+                if (player !== null) {
+                    this.bump(moveDir.x, moveDir.y);
+                    player.damage(this.atk, this, true);
+                } else {
+                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+                    this.step(moveDir.x, moveDir.y);
+                    this.updateMapPosition();
+                    this.currentTurnDelay = this.turnDelay;
+                }
+            }
+        } else this.currentTurnDelay--;
     }
 }
