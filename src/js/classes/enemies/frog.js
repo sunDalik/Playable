@@ -29,8 +29,7 @@ export class Frog extends Enemy {
         if (this.triggered) {
             this.triggered = false;
             this.bump(Math.sign(this.triggeredTile.x - this.tilePosition.x), Math.sign(this.triggeredTile.y - this.tilePosition.y));
-            const player = getPlayerOnTile(this.triggeredTile.x, this.triggeredTile.y);
-            if (player) player.damage(this.atk, this, false);
+            this.attackPlayer(this.triggeredTile.x, this.triggeredTile.y);
             this.spitHazard(this.triggeredTile.x, this.triggeredTile.y);
             this.currentTurnDelay = 0;
         } else if (this.arePlayersInAttackRange()) {
@@ -68,7 +67,17 @@ export class Frog extends Enemy {
         return true;
     }
 
+    attackPlayer(tileX, tileY) {
+        let player = getPlayerOnTile(tileX, tileY);
+        if (player) player.damage(this.atk, this, false);
+        player = getPlayerOnTile(this.tilePosition.x + Math.floor((tileX - this.tilePosition.x) / 2),
+            this.tilePosition.y + Math.floor((tileY - this.tilePosition.y) / 2));
+        if (player) player.damage(this.atk, this, false);
+    }
+
     spitHazard(tileX, tileY) {
         addHazardOrRefresh(new PoisonHazard(tileX, tileY));
+        addHazardOrRefresh(new PoisonHazard(this.tilePosition.x + Math.floor((tileX - this.tilePosition.x) / 2),
+            this.tilePosition.y + Math.floor((tileY - this.tilePosition.y) / 2)));
     }
 }
