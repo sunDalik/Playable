@@ -81,6 +81,18 @@ export class Enemy extends AnimatedTileElement {
         this.healthContainer.visible = false;
     }
 
+    revive() {
+        if (Game.map[this.tilePosition.y][this.tilePosition.x].entity === null) {
+            this.energyDrop = 0;
+            this.dead = false;
+            this.visible = true;
+            this.health = this.maxHealth;
+            this.redrawHealth();
+            this.healthContainer.visible = false;
+            Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+        }
+    }
+
     getPathToPlayer1() {
         return Game.finder.findPath(this.tilePosition.x, this.tilePosition.y,
             Game.player.tilePosition.x, Game.player.tilePosition.y, Game.levelGraph.clone());

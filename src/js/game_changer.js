@@ -36,7 +36,6 @@ export function removeItemFromPool(item, pool) {
     for (let i = 0; i < pool.length; i++) {
         if (item.constructor === pool[i]) {
             pool.splice(i, 1);
-            console.log("removed: " + item.constructor + "at index " + i);
             break;
         }
     }

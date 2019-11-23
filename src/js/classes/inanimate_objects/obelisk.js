@@ -87,6 +87,14 @@ export class Obelisk extends FullTileElement {
             this.grail2.setMagic(this.onDestroyMagic[1]);
             this.grail3.setMagic(null);
             this.grail4.setMagic(null);
+            for (const enemy of Game.enemies) {
+                if (enemy.dead) {
+                    if (Game.map[enemy.tilePosition.y][enemy.tilePosition.x].entity === null) {
+                        enemy.revive();
+                        enemy.stun = 2;
+                    }
+                } else enemy.atk += 0.25;
+            }
             createFadingText("Live with it... you will not...", this.position.x, this.position.y);
             longShakeScreen();
         }
