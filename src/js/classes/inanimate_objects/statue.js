@@ -45,6 +45,9 @@ export class Statue extends TallTileElement {
                     this.texture = Game.resources["src/images/other/statue_maiden_dagger.png"].texture;
                 } else this.texture = Game.resources["src/images/other/statue_maiden_dagger_2.png"].texture;
                 break;
+            case WEAPON_TYPE.HAMMER:
+                this.texture = Game.resources["src/images/other/statue_hammer.png"].texture;
+                break;
         }
     }
 

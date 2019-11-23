@@ -41,10 +41,11 @@ export const WEAPON_TYPE = Object.freeze({
     BOW: 3,
     BOOK_OF_FLAMES: 4,
     SCYTHE: 5,
-    MAIDEN_DAGGER: 6
+    MAIDEN_DAGGER: 6,
+    HAMMER: 7
 });
 export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1, VAMPIRE_CROWN: 2});
-export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2});
+export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4});
 export const FOOTWEAR_TYPE = Object.freeze({DIAGONAL: 0, ANTI_HAZARD: 1, DAMAGING: 2});
 export const SHIELD_TYPE = Object.freeze({PARRY: 0, PASSIVE: 1, STUNNING: 2, SPIKY: 3, ARMORING: 4});
 export const TOOL_TYPE = Object.freeze({PICKAXE: 0});

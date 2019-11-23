@@ -24,12 +24,17 @@ import {StunningShield} from "./classes/equipment/shields/stunning";
 import {Scythe} from "./classes/equipment/weapons/scythe";
 import {MaidenDagger} from "./classes/equipment/weapons/maiden_dagger";
 import {BookOfFlames} from "./classes/equipment/weapons/book_of_flames";
+import {Hammer} from "./classes/equipment/weapons/hammer";
+import {Wings} from "./classes/equipment/armor/wings";
+import {HeavyArmor} from "./classes/equipment/armor/heavy";
+import {ElectricArmor} from "./classes/equipment/armor/electric";
+import {VampireCrown} from "./classes/equipment/headwear/vampire_crown";
 
 export function initPools() {
-    Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames];
+    Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport];
     Game.chestItemPool = [Pickaxe, BasicArmor, WizardRobe, SeerCirclet, WizardHat, AntiHazardBoots,
-        DamagingBoots, PassiveShield, SpikyShield, StunningShield];
+        DamagingBoots, PassiveShield, SpikyShield, StunningShield, Wings, HeavyArmor, ElectricArmor, VampireCrown];
 }
 
 export function removeItemFromPool(item, pool) {

@@ -63,6 +63,7 @@ export function loadAll(afterLoad) {
         .add("src/images/weapons/book_of_flames_exhausted_2.png")
         .add("src/images/weapons/scythe.png")
         .add("src/images/weapons/maiden_dagger.png")
+        .add("src/images/weapons/hammer.png")
 
         .add("src/images/tools/pickaxe.png")
 
@@ -72,12 +73,16 @@ export function loadAll(afterLoad) {
 
         .add("src/images/armor/basic.png")
         .add("src/images/armor/wizard_robe.png")
+        .add("src/images/armor/wings.png")
+        .add("src/images/armor/heavy.png")
+        .add("src/images/armor/electric.png")
 
         .add("src/images/footwear/anti_hazard.png")
         .add("src/images/footwear/damaging.png")
 
         .add("src/images/headwear/seer_circlet.png")
         .add("src/images/headwear/wizard_hat.png")
+        .add("src/images/headwear/vampire_crown.png")
 
         .add("src/images/other/statue.png")
         .add("src/images/other/statue_knife.png")
@@ -88,6 +93,7 @@ export function loadAll(afterLoad) {
         .add("src/images/other/statue_maiden_dagger.png")
         .add("src/images/other/statue_maiden_dagger_2.png")
         .add("src/images/other/statue_scythe.png")
+        .add("src/images/other/statue_hammer.png")
         .add("src/images/other/statue_shield.png")
         .add("src/images/other/statue_tool.png")
 
