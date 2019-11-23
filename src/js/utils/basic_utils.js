@@ -1,3 +1,5 @@
+import {Game} from "../game"
+
 export function arraySum(array) {
     return array.reduce((a, b) => a + b, 0)
 }

@@ -11,7 +11,7 @@ import {
     TILE_TYPE,
     WEAPON_TYPE
 } from "../enums";
-import {centerCamera, centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
+import {centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
 import {
     redrawHealthForPlayer,
@@ -29,6 +29,7 @@ import {
     swapEquipmentWithPlayer
 } from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
+import {otherPlayer} from "../utils/basic_utils";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -113,6 +114,11 @@ export class Player extends AnimatedTileElement {
         if (magic) {
             const magicResult = magic.cast(this);
             if (magicResult === false) return false;
+            for (const eq of this.getEquipment()) {
+                if (eq && eq.onMagicCast) {
+                    eq.onMagicCast(this);
+                }
+            }
             const pn = this.getPropertyNameOfItem(magic);
             if (pn) redrawSlotContents(this, pn);
         }
@@ -209,18 +215,24 @@ export class Player extends AnimatedTileElement {
         lightPlayerPosition(this);
     }
 
-    damage(atk, source, directHit = true) {
+    damage(atk, source, directHit = true, canBeShielded = true) {
         if (atk === 0) return;
         if (!this.dead) {
-            const otherPlayer = this === Game.player ? Game.player2 : Game.player;
-            if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
-                && (this.shielded || this.secondHand.type === SHIELD_TYPE.PASSIVE)) {
-                this.secondHand.onBlock(source, this, directHit);
-            } else if (otherPlayer.tilePosition.x === this.tilePosition.x && otherPlayer.tilePosition.y === this.tilePosition.y
-                && otherPlayer.secondHand && otherPlayer.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
-                && (otherPlayer.shielded || otherPlayer.secondHand.type === SHIELD_TYPE.PASSIVE)) {
-                otherPlayer.secondHand.onBlock(source, otherPlayer);
-            } else {
+            let blocked = false;
+            if (canBeShielded) {
+                const ally = otherPlayer(this);
+                if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
+                    && (this.shielded || this.secondHand.type === SHIELD_TYPE.PASSIVE)) {
+                    this.secondHand.onBlock(source, this, directHit);
+                    blocked = true;
+                } else if (ally.tilePosition.x === this.tilePosition.x && ally.tilePosition.y === this.tilePosition.y
+                    && ally.secondHand && ally.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
+                    && (ally.shielded || ally.secondHand.type === SHIELD_TYPE.PASSIVE)) {
+                    ally.secondHand.onBlock(source, ally);
+                    blocked = true;
+                }
+            }
+            if (!blocked) {
                 let dmg = atk - this.getDef();
                 if (dmg < 0.25) dmg = 0.25;
                 this.health -= dmg;

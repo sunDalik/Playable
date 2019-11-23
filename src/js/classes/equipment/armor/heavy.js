@@ -7,5 +7,10 @@ export class HeavyArmor {
         this.type = ARMOR_TYPE.HEAVY;
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.def = 2;
+        this.magicPunishment = 0.25
+    }
+
+    onMagicCast(player) {
+        player.damage(this.magicPunishment, this, false, false);
     }
 }

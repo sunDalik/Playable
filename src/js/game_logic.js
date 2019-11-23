@@ -76,7 +76,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
                     }
                 }
                 if (!canMoveFurther) {
-                    otherPlayer(Game.playerMoving).setUnmovedTexture();
+                    if (Game.playerMoving) otherPlayer(Game.playerMoving).setUnmovedTexture();
                     Game.playerMoving = null;
                     damagePlayersWithHazards();
                     setEnemyTurnTimeout();
@@ -91,7 +91,6 @@ export function damagePlayersWithHazards() {
     damagePlayerWithHazards(Game.player2);
 }
 
-//should change later when there will be more hazards
 export function damagePlayerWithHazards(player) {
     const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
     if (hazard !== null && !player.dead) {
