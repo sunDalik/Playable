@@ -1,8 +1,8 @@
 import {Game} from "./game"
 import {incrementStage, setVariablesForStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, ROLE} from "./enums"
-import {removeObjectFromArray} from "./utils/basic_utils";
+import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, ROLE} from "./enums"
+import {otherPlayer, removeObjectFromArray} from "./utils/basic_utils";
 import {redrawSlotContents} from "./drawing/draw_hud";
 
 export function setEnemyTurnTimeout() {
@@ -51,29 +51,37 @@ export function updateHazards() {
 }
 
 export function playerTurn(player, playerMove, bothPlayers = false) {
-    if (/*Game.playerMoved !== player
-        &&*/ ((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead))) {
-        if (Game.enemiesTimeout !== null) {
-            clearTimeout(Game.enemiesTimeout);
-            enemyTurn();
-        }
+    if (Game.playerMoving === null || player === Game.playerMoving) {
+        if (((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead))) {
+            if (Game.enemiesTimeout !== null) {
+                clearTimeout(Game.enemiesTimeout);
+                enemyTurn();
+            }
 
-        Game.afterTurn = false;
-        if (bothPlayers) {
-            Game.player.cancelAnimation();
-            Game.player2.cancelAnimation();
-        } else player.cancelAnimation();
-        const moveResult = playerMove();
-        if (moveResult !== false) {
-            damagePlayersWithHazards();
-            /*if (Game.playerMoved !== null) {
-                Game.playerMoved.setUnmovedTexture();
-                Game.playerMoved = null;*/
-            setEnemyTurnTimeout();
-            /*} else {
-                Game.playerMoved = player;
-                Game.playerMoved.setMovedTexture();
-            }*/
+            Game.afterTurn = false;
+            if (bothPlayers) {
+                Game.player.cancelAnimation();
+                Game.player2.cancelAnimation();
+            } else player.cancelAnimation();
+            const moveResult = playerMove();
+            if (moveResult !== false) {
+                let canMoveFurther = false;
+                if (player.moved) {
+                    player.moved = false;
+                    player.currentMovement--;
+                    if (player.currentMovement > 0) {
+                        canMoveFurther = true;
+                        Game.playerMoving = player;
+                        otherPlayer(Game.playerMoving).setMovedTexture();
+                    }
+                }
+                if (!canMoveFurther) {
+                    otherPlayer(Game.playerMoving).setUnmovedTexture();
+                    Game.playerMoving = null;
+                    damagePlayersWithHazards();
+                    setEnemyTurnTimeout();
+                }
+            }
         }
     }
 }
@@ -87,7 +95,8 @@ export function damagePlayersWithHazards() {
 export function damagePlayerWithHazards(player) {
     const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
     if (hazard !== null && !player.dead) {
-        if (!(player.footwear && player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD)) {
+        if (!(player.footwear && player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD)
+            && !(player.armor && player.armor.type === ARMOR_TYPE.WINGS)) {
             player.damage(hazard.atk, hazard);
         }
     }

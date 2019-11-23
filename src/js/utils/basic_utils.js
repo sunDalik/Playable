@@ -26,3 +26,8 @@ export function decrementEachDigitInHex(hex) {
     }
     return parseInt(newHex, 16);
 }
+
+export function otherPlayer(player) {
+    if (player === Game.player) return Game.player2;
+    else if (player === Game.player2) return Game.player;
+}

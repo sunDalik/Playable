@@ -1,7 +1,16 @@
 import {Game} from "../game"
 import * as PIXI from "pixi.js"
 import {AnimatedTileElement} from "./tile_elements/animated_tile_element";
-import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE, WEAPON_TYPE} from "../enums";
+import {
+    ARMOR_TYPE,
+    EQUIPMENT_TYPE,
+    INANIMATE_TYPE,
+    MAGIC_TYPE,
+    ROLE,
+    SHIELD_TYPE,
+    TILE_TYPE,
+    WEAPON_TYPE
+} from "../enums";
 import {centerCamera, centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
 import {
@@ -32,6 +41,7 @@ export class Player extends AnimatedTileElement {
         this.defMul = 1;
         this.STEP_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 12;
+        this.SLIDE_ANIMATION_TIME = 8;
         this.role = ROLE.PLAYER;
         this.dead = false;
         this.weapon = null;
@@ -44,11 +54,14 @@ export class Player extends AnimatedTileElement {
         this.magic3 = null;
         this.magic4 = null;
         this.shielded = false;
-        this.attackedThisTurn = false;
+        this.canDoubleAttack = false;
         this.attackTimeout = null;
         this.savedTileStepX = 0;
         this.savedTileStepY = 0;
         this.animationSubSprites = [];
+        this.movement = 1;
+        this.currentMovement = this.movement;
+        this.moved = false;
     }
 
     cancelAnimation() {
@@ -70,7 +83,7 @@ export class Player extends AnimatedTileElement {
         if (!event.shiftKey && this.weapon !== null) {
             attackResult = this.weapon.attack(this, tileStepX, tileStepY);
             if (attackResult) {
-                this.attackedThisTurn = true;
+                this.canDoubleAttack = true;
                 this.savedTileStepX = tileStepX;
                 this.savedTileStepY = tileStepY;
             } else if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type
@@ -86,9 +99,11 @@ export class Player extends AnimatedTileElement {
                 removePlayerFromGameMap(this);
                 this.step(tileStepX, tileStepY);
                 placePlayerOnGameMap(this);
+                this.moved = true;
                 if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.EXIT) gotoNextLevel();
             } else if (!this.secondHand || this.secondHand.equipmentType !== EQUIPMENT_TYPE.TOOL || this.secondHand.use(this, tileStepX, tileStepY) === false) {
                 this.bump(tileStepX, tileStepY);
+                this.moved = true;
             }
         }
     }
@@ -166,6 +181,18 @@ export class Player extends AnimatedTileElement {
         return defBase;
     }
 
+    step(tileStepX, tileStepY) {
+        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
+            this.slide(tileStepX, tileStepY);
+        } else super.step(tileStepX, tileStepY);
+    }
+
+    bump(tileStepX, tileStepY) {
+        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
+            this.slideBump(tileStepX, tileStepY);
+        } else super.bump(tileStepX, tileStepY);
+    }
+
     stepX(tileStepX) {
         super.stepX(tileStepX, () => centerCameraX(false), scaleGameMap);
         lightPlayerPosition(this);
@@ -173,6 +200,12 @@ export class Player extends AnimatedTileElement {
 
     stepY(tileStepY) {
         super.stepY(tileStepY, () => centerCameraY(false), scaleGameMap);
+        lightPlayerPosition(this);
+    }
+
+    slide(tileDirX, tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
+        const cameraCentering = tileDirX !== 0 ? () => centerCameraX(false) : () => centerCameraY(false);
+        super.slide(tileDirX, tileDirY, cameraCentering, scaleGameMap, SLIDE_ANIMATION_TIME);
         lightPlayerPosition(this);
     }
 
@@ -240,11 +273,6 @@ export class Player extends AnimatedTileElement {
     setUnmovedTexture() {
         if (this === Game.player) this.texture = Game.resources["src/images/player.png"].texture;
         else this.texture = Game.resources["src/images/player2.png"].texture;
-    }
-
-    slide(tileDirX, tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
-        super.slide(tileDirX, tileDirY, () => centerCamera(), scaleGameMap, SLIDE_ANIMATION_TIME);
-        lightPlayerPosition(this);
     }
 
     interactWithInanimateEntity(entity) {
@@ -327,12 +355,13 @@ export class Player extends AnimatedTileElement {
 
     afterEnemyTurn() {
         this.shielded = false;
+        this.currentMovement = this.movement;
         for (const eq of this.getEquipmentAndMagic()) {
             if (eq && eq.onNewTurn) eq.onNewTurn(this);
         }
         if (this.secondHand) {
             if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type && this.weapon.type !== WEAPON_TYPE.MAIDEN_DAGGER) {
-                if (this.attackedThisTurn === true) {
+                if (this.canDoubleAttack === true) {
                     this.attackTimeout = setTimeout(() => {
                         for (const subSprite of this.animationSubSprites) {
                             Game.world.removeChild(subSprite);
@@ -342,7 +371,7 @@ export class Player extends AnimatedTileElement {
                 }
             }
         }
-        this.attackedThisTurn = false;
+        this.canDoubleAttack = false;
     }
 
     doubleAttack() {

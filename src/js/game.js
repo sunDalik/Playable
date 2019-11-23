@@ -38,7 +38,8 @@ Game.BOTH_PLAYERS = {};
 Game.startX = 0;
 Game.startY = 0;
 Game.primaryPlayer = null;
-Game.playerMoved = null;
+Game.playerMoving = null;
+//Game.playerMoved = null;
 
 Game.enemiesTimeout = null;
 Game.maraudedStatues = [];
