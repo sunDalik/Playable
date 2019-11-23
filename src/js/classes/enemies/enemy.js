@@ -68,11 +68,23 @@ export class Enemy extends AnimatedTileElement {
         else energyDrop = this.energyDrop;
         if (source === Game.player) Game.lightEnergy += energyDrop;
         else if (source === Game.player2) Game.darkEnergy += energyDrop;
-        if (source === Game.BOTH_PLAYERS) {
+        else if (source === Game.BOTH_PLAYERS) {
             //not yet sure about the exact formula...
             Game.lightEnergy += energyDrop;
             Game.darkEnergy += energyDrop;
         }
+
+        if (source === Game.player || source === Game.BOTH_PLAYERS) {
+            for (const eq of Game.player.getEquipment()) {
+                if (eq && eq.onKill) eq.onKill(Game.player);
+            }
+        }
+        if (source === Game.player2 || source === Game.BOTH_PLAYERS) {
+            for (const eq of Game.player2.getEquipment()) {
+                if (eq && eq.onKill) eq.onKill(Game.player2);
+            }
+        }
+
         redrawEnergy();
         this.dead = true;
         Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
