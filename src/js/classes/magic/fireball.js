@@ -79,6 +79,13 @@ export class Fireball {
                     }
                 }
             }
+            for (const obelisk of Game.obelisks) {
+                if (obelisk.visible) {
+                    if (collisionCheck(fireCorrectVertexData, obelisk.vertexData)) {
+                        obelisk.damage();
+                    }
+                }
+            }
         }
         this.multiplier = 0;
         this.updateTexture();

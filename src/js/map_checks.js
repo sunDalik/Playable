@@ -1,5 +1,5 @@
 import {Game} from "./game"
-import {TILE_TYPE, ROLE} from "./enums";
+import {TILE_TYPE, ROLE, INANIMATE_TYPE} from "./enums";
 
 export function isAWall(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
@@ -93,4 +93,14 @@ export function getPlayerOnTile(tilePositionX, tilePositionY) {
         if (tileEntity != null && tileEntity.role === ROLE.PLAYER) return tileEntity;
     }
     return null;
+}
+
+export function isObelisk(tilePositionX, tilePositionY) {
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
+        if (tileEntity != null && tileEntity.role === ROLE.INANIMATE && tileEntity.type === INANIMATE_TYPE.OBELISK) {
+            return true
+        }
+    }
+    return false;
 }

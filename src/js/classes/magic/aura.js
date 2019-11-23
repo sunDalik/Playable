@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE,} from "../../enums";
-import {isNotAWall, getPlayerOnTile, isEnemy} from "../../map_checks";
+import {isNotAWall, getPlayerOnTile, isEnemy, isObelisk} from "../../map_checks";
 import {createFadingAttack, rotate} from "../../animations";
 import {FullTileElement} from "../tile_elements/full_tile_element";
 
@@ -26,6 +26,8 @@ export class Aura {
                     createFadingAttack(new FullTileElement(Game.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY));
                     if (isEnemy(attackPositionX, attackPositionY)) {
                         Game.map[attackPositionY][attackPositionX].entity.damage(wielder, this.atk, 0, 0, true);
+                    } else if (isObelisk(attackPositionX, attackPositionY)) {
+                        Game.map[attackPositionY][attackPositionX].entity.damage();
                     }
                     const player = getPlayerOnTile(attackPositionX, attackPositionY);
                     if (player) player.heal(this.healAmount);

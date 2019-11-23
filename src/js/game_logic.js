@@ -215,6 +215,7 @@ export function gotoNextLevel() {
     Game.hazards = [];
     Game.otherGraphics = [];
     Game.infiniteAnimations = [];
+    Game.obelisks = [];
     incrementStage();
     setVariablesForStage();
     initializeLevel();

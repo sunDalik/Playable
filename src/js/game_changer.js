@@ -26,10 +26,20 @@ import {MaidenDagger} from "./classes/equipment/weapons/maiden_dagger";
 import {BookOfFlames} from "./classes/equipment/weapons/book_of_flames";
 
 export function initPools() {
-    Game.weaponPool = [new Knife(), new NinjaKnife(), new Sword(), new Bow(), new Scythe(), new MaidenDagger(), new BookOfFlames()];
-    Game.magicPool = [new Aura(), new Spikes(), new Fireball(), new Necromancy(), new Petrification(), new Teleport()];
-    Game.chestItemPool = [new Pickaxe(), new BasicArmor(), new WizardRobe(), new SeerCirclet(), new WizardHat(),
-        new AntiHazardBoots(), new DamagingBoots(), new PassiveShield(), new SpikyShield(), new StunningShield()];
+    Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames];
+    Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport];
+    Game.chestItemPool = [Pickaxe, BasicArmor, WizardRobe, SeerCirclet, WizardHat, AntiHazardBoots,
+        DamagingBoots, PassiveShield, SpikyShield, StunningShield];
+}
+
+export function removeItemFromPool(item, pool) {
+    for (let i = 0; i < pool.length; i++) {
+        if (item.constructor === pool[i]) {
+            pool.splice(i, 1);
+            console.log("removed: " + item.constructor + "at index " + i);
+            break;
+        }
+    }
 }
 
 export function incrementStage() {
@@ -41,9 +51,9 @@ export function incrementStage() {
             Game.stage = STAGE.RUINS;
             break;
         case STAGE.RUINS:
-            Game.stage = STAGE.DUNNO;
+            Game.stage = STAGE.LABYRINTH;
             break;
-        case STAGE.DUNNO:
+        case STAGE.LABYRINTH:
             Game.stage = STAGE.FINALE;
             break;
     }
@@ -68,7 +78,7 @@ export function setVariablesForStage() {
         case STAGE.RUINS:
             Game.BGColor = 0xd8d9d7;
             break;
-        case STAGE.DUNNO:
+        case STAGE.LABYRINTH:
             Game.BGColor = 0x75c978;
             break;
         case STAGE.FINALE:

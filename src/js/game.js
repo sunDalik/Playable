@@ -64,3 +64,5 @@ Game.afterTurn = false;
 
 Game.lightEnergy = 0;
 Game.darkEnergy = 0;
+
+Game.obelisks = [];

@@ -6,18 +6,20 @@ import {createFadingText, longShakeScreen} from "../../animations";
 import {redrawHealthForPlayer} from "../../drawing/draw_hud";
 
 export class Obelisk extends FullTileElement {
-    constructor(tilePositionX, tilePositionY, magic) {
+    constructor(tilePositionX, tilePositionY, magic, onDestroyMagic) {
         super(Game.resources["src/images/other/obelisk.png"].texture, tilePositionX, tilePositionY);
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.OBELISK;
         this.activated = false;
         this.working = true;
+        this.destroyed = false;
         this.timesDamaged = 0;
         this.timesDonated = 0;
         this.magic1 = magic[0];
         this.magic2 = magic[1];
         this.magic3 = magic[2];
         this.magic4 = magic[3];
+        this.onDestroyMagic = onDestroyMagic;
         this.grail1 = new Grail(0, 0, this);
         this.grail2 = new Grail(0, 0, this);
         this.grail3 = new Grail(0, 0, this);
@@ -40,7 +42,7 @@ export class Obelisk extends FullTileElement {
         }
     }
 
-    deactivate() {
+    deactivate(grail) {
         if (this.working && this.activated) {
             this.working = false;
             if (this.timesDamaged > 0) this.texture = Game.resources["src/images/other/obelisk_used_damaged.png"].texture;
@@ -51,6 +53,8 @@ export class Obelisk extends FullTileElement {
             this.grail4.setMagic(null);
             createFadingText("Goodbye...", this.position.x, this.position.y);
             longShakeScreen();
+        } else if (this.destroyed) {
+            grail.setMagic(null);
         }
     }
 
@@ -77,8 +81,14 @@ export class Obelisk extends FullTileElement {
     destroy() {
         if (this.working) {
             this.working = false;
+            this.destroyed = true;
             this.texture = Game.resources["src/images/other/obelisk_broken.png"].texture;
+            this.grail1.setMagic(this.onDestroyMagic[0]);
+            this.grail2.setMagic(this.onDestroyMagic[1]);
+            this.grail3.setMagic(null);
+            this.grail4.setMagic(null);
             createFadingText("Live with it... you will not...", this.position.x, this.position.y);
+            longShakeScreen();
         }
     }
 
@@ -89,6 +99,7 @@ export class Obelisk extends FullTileElement {
                 this.timesDamaged++;
                 this.texture = Game.resources["src/images/other/obelisk_damaged.png"].texture;
                 createFadingText("Don't", this.position.x, this.position.y);
+                longShakeScreen();
             }
         }
     }

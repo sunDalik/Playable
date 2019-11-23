@@ -28,7 +28,7 @@ export const MAGIC_TYPE = Object.freeze({
     PETRIFICATION: 5
 });
 
-export const STAGE = Object.freeze({FLOODED_CAVE: 0, DARK_TUNNEL: 1, RUINS: 2, DUNNO: 3, FINALE: 4});
+export const STAGE = Object.freeze({FLOODED_CAVE: 0, DARK_TUNNEL: 1, RUINS: 2, LABYRINTH: 3, FINALE: 4});
 export const TILE_TYPE = Object.freeze({VOID: 0, NONE: 1, WALL: 2, PATH: 3, ENTRY: 4, SUPER_WALL: 5, EXIT: 6});
 export const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1, INANIMATE: 2});
 export const INANIMATE_TYPE = Object.freeze({STATUE: 0, OBELISK: 1, GRAIL: 2, CHEST: 3, ACCUMULATOR: 4});
@@ -43,8 +43,8 @@ export const WEAPON_TYPE = Object.freeze({
     SCYTHE: 5,
     MAIDEN_DAGGER: 6
 });
-export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1});
-export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1});
+export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1, VAMPIRE_CROWN: 2});
+export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2});
 export const FOOTWEAR_TYPE = Object.freeze({DIAGONAL: 0, ANTI_HAZARD: 1, DAMAGING: 2});
 export const SHIELD_TYPE = Object.freeze({PARRY: 0, PASSIVE: 1, STUNNING: 2, SPIKY: 3, ARMORING: 4});
 export const TOOL_TYPE = Object.freeze({PICKAXE: 0});

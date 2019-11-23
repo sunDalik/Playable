@@ -93,8 +93,18 @@ export function generateMap(level) {
                             }
                         }
                     }
+                    let onDestroyMagicPool = [];
+                    for (let i = 0; i < 2; ++i) {
+                        while (true) {
+                            const randomSpell = getRandomSpell();
+                            if (!onDestroyMagicPool.some(magic => magic.type === randomSpell.type)) {
+                                onDestroyMagicPool.push(randomSpell);
+                                break;
+                            }
+                        }
+                    }
                     obeliskTiles.push({x: j, y: i});
-                    mapCell.entity = new Obelisk(j, i, magicPool);
+                    mapCell.entity = new Obelisk(j, i, magicPool, onDestroyMagicPool);
                 }
             }
 
@@ -104,6 +114,7 @@ export function generateMap(level) {
 
     for (const obelisk of obeliskTiles) {
         const obeliskEntity = map[obelisk.y][obelisk.x].entity;
+        Game.obelisks.push(obeliskEntity);
         if (map[obelisk.y][obelisk.x - 2].tileType === TILE_TYPE.WALL || map[obelisk.y][obelisk.x + 2].tileType === TILE_TYPE.WALL) {
             map[obelisk.y + 1][obelisk.x - 1].entity = obeliskEntity.grail1;
             obeliskEntity.grail1.tilePosition.set(obelisk.x - 1, obelisk.y + 1);

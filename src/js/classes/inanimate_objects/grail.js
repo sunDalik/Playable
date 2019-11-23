@@ -4,6 +4,7 @@ import {ROLE, INANIMATE_TYPE, MAGIC_ALIGNMENT} from "../../enums";
 import {createFloatingItemAnimation} from "../../animations";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import {TileElement} from "../tile_elements/tile_element";
+import {removeItemFromPool} from "../../game_changer";
 
 export class Grail extends FullTileElement {
     constructor(tilePositionX, tilePositionY, obelisk) {
@@ -63,8 +64,8 @@ export class Grail extends FullTileElement {
                 || this.magic.alignment === MAGIC_ALIGNMENT.GRAY)
             && (player.magic4 === null || player.magic3 === null || player.magic2 === null || player.magic1 === null)) { //not sure about the last part yet. What to do when the player has no free magic slots?...
             player.giveNewMagic(this.magic);
-            removeObjectFromArray(this.magic, Game.magicPool);
-            this.obelisk.deactivate();
+            removeItemFromPool(this.magic, Game.magicPool);
+            this.obelisk.deactivate(this);
         }
     }
 }

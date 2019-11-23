@@ -14,6 +14,7 @@ import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./dr
 import {drawHUD} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
+import {Aura} from "./classes/magic/aura";
 
 PIXI.utils.skipHello();
 const app = initApplication();
@@ -51,6 +52,7 @@ function setup() {
     Game.player2.setStats(0, 1.00, 0, 0.5);
     Game.player2.weapon = new Knife();
     Game.player.armor = new BasicArmor();
+    Game.player.magic1 = new Aura();
 
     drawHUD();
     bindKeys();
