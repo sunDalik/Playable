@@ -410,10 +410,12 @@ export class Player extends AnimatedTileElement {
                 [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
                 redrawWeapon(this);
                 redrawSecondHand(this);
+                if (this.armor && this.armor.type === ARMOR_TYPE.ELECTRIC) return false;
                 return true;
             } else if (this.weapon && this.weapon.type === this.secondHand.type && this.secondHand.concentrate && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {
                 this.secondHand.concentrate(this);
                 redrawSecondHand(this);
+                if (this.armor && this.armor.type === ARMOR_TYPE.ELECTRIC && this.secondHand.concentration === 1) return false;
                 return true;
             } else return false;
         } else return false;
@@ -425,6 +427,7 @@ export class Player extends AnimatedTileElement {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type) {
                 this.secondHand.concentrate(this, false);
             }
+            if (this.armor && this.armor.type === ARMOR_TYPE.ELECTRIC && this.weapon.concentration === 1) return false;
             return true;
         } else return false;
     }

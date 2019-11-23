@@ -136,6 +136,8 @@ export function switchPlayers() {
         temp = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity;
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;
+        if ((Game.player.armor && Game.player.armor.type === ARMOR_TYPE.ELECTRIC)
+            || (Game.player2.armor && Game.player2.armor.type === ARMOR_TYPE.ELECTRIC)) return false;
         return true;
     } else return false;
 }
