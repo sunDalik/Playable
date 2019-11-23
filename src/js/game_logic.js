@@ -73,6 +73,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
                         canMoveFurther = true;
                         Game.playerMoving = player;
                         otherPlayer(Game.playerMoving).setMovedTexture();
+                        damagePlayerWithHazards(Game.playerMoving);
                     }
                 }
                 if (!canMoveFurther) {
@@ -92,11 +93,13 @@ export function damagePlayersWithHazards() {
 }
 
 export function damagePlayerWithHazards(player) {
-    const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
-    if (hazard !== null && !player.dead) {
-        if (!(player.footwear && player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD)
-            && !(player.armor && player.armor.type === ARMOR_TYPE.WINGS)) {
-            player.damage(hazard.atk, hazard);
+    if (!player.dead) {
+        const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
+        if (hazard !== null) {
+            if (!(player.footwear && player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD)
+                && !(player.armor && player.armor.type === ARMOR_TYPE.WINGS)) {
+                player.damage(hazard.atk, hazard);
+            }
         }
     }
     //todo: if is dark tunnel and player is 3 tiles away from the torch bearer damage him

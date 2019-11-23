@@ -37,6 +37,7 @@ export class AnimatedTileElement extends TileElement {
             if (onFrame) onFrame();
             if (counter >= animationTime) {
                 Game.APP.ticker.remove(animation);
+                this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
@@ -61,6 +62,7 @@ export class AnimatedTileElement extends TileElement {
             if (onFrame) onFrame();
             if (counter >= this.STEP_ANIMATION_TIME) {
                 Game.APP.ticker.remove(animation);
+                this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
@@ -99,6 +101,7 @@ export class AnimatedTileElement extends TileElement {
             if (onFrame) onFrame();
             if (counter >= this.STEP_ANIMATION_TIME) {
                 Game.APP.ticker.remove(animation);
+                this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
@@ -133,6 +136,7 @@ export class AnimatedTileElement extends TileElement {
             if (onFrame) onFrame();
             if (counter >= this.BUMP_ANIMATION_TIME) {
                 Game.APP.ticker.remove(animation);
+                this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
@@ -171,6 +175,7 @@ export class AnimatedTileElement extends TileElement {
             if (onFrame) onFrame();
             if (counter >= this.BUMP_ANIMATION_TIME) {
                 Game.APP.ticker.remove(animation);
+                this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
@@ -198,6 +203,7 @@ export class AnimatedTileElement extends TileElement {
             if (onFrame) onFrame();
             if (this.animationCounter >= animationTime) {
                 Game.APP.ticker.remove(animation);
+                this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
@@ -223,6 +229,7 @@ export class AnimatedTileElement extends TileElement {
             if (onFrame) onFrame();
             if (this.animationCounter >= animationTime) {
                 Game.APP.ticker.remove(animation);
+                this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
@@ -287,6 +294,7 @@ export class AnimatedTileElement extends TileElement {
             counter++;
             if (counter >= this.MICRO_JUMP_ANIMATION_TIME) {
                 Game.APP.ticker.remove(animation);
+                this.animation = null;
                 this.place();
             }
         };

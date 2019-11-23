@@ -76,21 +76,25 @@ export function initializeLevel() {
     calculateDetectionGraph(Game.map);
     Game.levelGraph = getLevelPlayerGraph(level);
 
-    //dead player visible??? why??
-    Game.player.tilePosition.set(Game.startX, Game.startY);
-    Game.player2.tilePosition.set(Game.startX + 1, Game.startY + 1);
-    Game.player.place();
-    Game.player2.place();
-    Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
-    Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+    if (!Game.player.dead) {
+        Game.player.tilePosition.set(Game.startX, Game.startY);
+        Game.player.place();
+        Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
+    }
+    if (!Game.player2.dead) {
+        Game.player2.tilePosition.set(Game.startX + 1, Game.startY + 1);
+        Game.player2.place();
+        Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+    }
 
     Game.grid = drawGrid();
     drawTiles();
     drawEntities();
     drawHUD();
     drawOther();
+
     createDarkness();
-    lightPlayerPosition(Game.player);
-    lightPlayerPosition(Game.player2);
+    if (!Game.player.dead) lightPlayerPosition(Game.player);
+    if (!Game.player2.dead) lightPlayerPosition(Game.player2);
     camera.centerCamera();
 }

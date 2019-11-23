@@ -21,6 +21,7 @@ export class TileElement extends Sprite {
 
     cancelAnimation() {
         Game.APP.ticker.remove(this.animation);
+        this.animation = null;
         this.place();
     }
 

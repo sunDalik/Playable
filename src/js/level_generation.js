@@ -311,8 +311,8 @@ export function generateLevel() {
     }
     outlinePathsWithWalls(level);
     level = expandLevel(level, 1, 1);
-    outlineWallsWithSuperWalls(level);
     connectDiagonalPaths(level);
+    outlineWallsWithSuperWalls(level);
     return level;
 }
 
@@ -400,7 +400,7 @@ function getLevelPathGraph(level) {
     for (let i = 0; i < level.length; ++i) {
         levelWithPathWeights[i] = [];
         for (let j = 0; j < level[0].length; ++j) {
-            if (level[i][j] === "v" || level[i][j] === "entry") {
+            if (level[i][j] === "v" || level[i][j] === "entry" || level[i][j] === "path") {
                 levelWithPathWeights[i][j] = 0;
             } else {
                 levelWithPathWeights[i][j] = 1;
