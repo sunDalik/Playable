@@ -13,7 +13,7 @@ export class Mushroom extends Enemy {
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.MUSHROOM;
         this.poisonDelay = 6; //half of poison hazard lifetime
-        this.currentPoisonDelay = 0;
+        this.currentPoisonDelay = this.poisonDelay;
         this.walkDelay = this.getWalkDelay();
         this.walking = false;
         this.standing = false;
@@ -21,8 +21,12 @@ export class Mushroom extends Enemy {
         this.direction = 1;
         this.zIndex = 1;
         this.scaleModifier = 0.9;
-
         this.spillAreas = [];
+    }
+
+    //should I keep this or check for "immediate reactions" in lightPlayerPosition instead?
+    afterMapGen() {
+        this.spillPoison(true);
     }
 
     move() {
@@ -66,33 +70,36 @@ export class Mushroom extends Enemy {
         }
     }
 
-    spillPoison() {
+    spillPoison(invisiblePoison = false) {
         this.spillAreas = [];
-        this.spillPoisonR(this.tilePosition.x, this.tilePosition.y, 2);
+        this.spillPoisonR(this.tilePosition.x, this.tilePosition.y, 2, invisiblePoison);
     }
 
     //probably will use it for some other enemies later too....
-    spillPoisonR(tileX, tileY, distance = 8, sourceDirX = 0, sourceDirY = 0) {
+    spillPoisonR(tileX, tileY, distance = 8, invisiblePoison = false, sourceDirX = 0, sourceDirY = 0) {
         if (distance > -1 && isNotAWall(tileX, tileY)) {
-            if (sourceDirX !== 0 || sourceDirY !== 0)
-                addHazardOrRefresh(new PoisonHazard(tileX, tileY));
+            if (sourceDirX !== 0 || sourceDirY !== 0) {
+                const hazard = new PoisonHazard(tileX, tileY);
+                if (invisiblePoison) hazard.visible = false;
+                addHazardOrRefresh(hazard);
+            }
             this.spillAreas.push({x: tileX, y: tileY});
             if (sourceDirX === 0 && sourceDirY === 0) {
-                this.spillPoisonR(tileX + 1, tileY, distance - 1, -1, 0);
-                this.spillPoisonR(tileX - 1, tileY, distance - 1, 1, 0);
-                this.spillPoisonR(tileX, tileY + 1, distance - 1, 0, -1);
-                this.spillPoisonR(tileX, tileY - 1, distance - 1, 0, 1);
+                this.spillPoisonR(tileX + 1, tileY, distance - 1, invisiblePoison, -1, 0);
+                this.spillPoisonR(tileX - 1, tileY, distance - 1, invisiblePoison, 1, 0);
+                this.spillPoisonR(tileX, tileY + 1, distance - 1, invisiblePoison, 0, -1);
+                this.spillPoisonR(tileX, tileY - 1, distance - 1, invisiblePoison, 0, 1);
             } else {
                 if (sourceDirY === 0) {
-                    if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) this.spillPoisonR(tileX, tileY - 1, distance - 1, sourceDirX, 1);
-                    if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) this.spillPoisonR(tileX, tileY + 1, distance - 1, sourceDirX, -1);
+                    if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) this.spillPoisonR(tileX, tileY - 1, distance - 1, invisiblePoison, sourceDirX, 1);
+                    if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) this.spillPoisonR(tileX, tileY + 1, distance - 1, invisiblePoison, sourceDirX, -1);
                 }
-                if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) this.spillPoisonR(tileX, tileY - sourceDirY, distance - 1, sourceDirX, sourceDirY);
+                if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) this.spillPoisonR(tileX, tileY - sourceDirY, distance - 1, invisiblePoison, sourceDirX, sourceDirY);
                 if (sourceDirX === 0) {
-                    if (!this.spillAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) this.spillPoisonR(tileX - 1, tileY, distance - 1, 1, sourceDirY);
-                    if (!this.spillAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) this.spillPoisonR(tileX + 1, tileY, distance - 1, -1, sourceDirY);
+                    if (!this.spillAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) this.spillPoisonR(tileX - 1, tileY, distance - 1, invisiblePoison, 1, sourceDirY);
+                    if (!this.spillAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) this.spillPoisonR(tileX + 1, tileY, distance - 1, invisiblePoison, -1, sourceDirY);
                 }
-                if (!this.spillAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) this.spillPoisonR(tileX - sourceDirX, tileY, distance - 1, sourceDirX, sourceDirY);
+                if (!this.spillAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) this.spillPoisonR(tileX - sourceDirX, tileY, distance - 1, invisiblePoison, sourceDirX, sourceDirY);
             }
         }
     }

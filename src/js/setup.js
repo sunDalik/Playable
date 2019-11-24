@@ -90,6 +90,9 @@ export function initializeLevel() {
     Game.grid = drawGrid();
     drawTiles();
     drawEntities();
+    for (const enemy of Game.enemies) {
+        if (enemy.afterMapGen) enemy.afterMapGen();
+    }
     drawHUD();
     drawOther();
 

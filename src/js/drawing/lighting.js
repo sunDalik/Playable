@@ -100,6 +100,9 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
         if (Game.map[tileY][tileX].entity) {
             Game.map[tileY][tileX].entity.visible = true;
         }
+        if (Game.map[tileY][tileX].hazard) {
+            Game.map[tileY][tileX].hazard.visible = true;
+        }
     }
 }
 

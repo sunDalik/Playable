@@ -46,7 +46,8 @@ function arePlayersInDetectionRadius(enemy) {
 
 export function updateHazards() {
     for (let i = Game.hazards.length - 1; i >= 0; i--) {
-        Game.hazards[i].updateLifetime();
+        if (Game.hazards[i].visible)
+            Game.hazards[i].updateLifetime();
     }
 }
 
