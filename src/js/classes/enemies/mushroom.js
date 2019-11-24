@@ -65,9 +65,10 @@ export class Mushroom extends Enemy {
     }
 
     spillPoison() {
-        for (let x = -3; x <= 3; x++) {
-            for (let y = -3; y <= 3; y++) {
-                if (Math.abs(x) + Math.abs(y) <= 3 && !(x === 0 && y === 0)) {
+        const spread = 2;
+        for (let x = -spread; x <= spread; x++) {
+            for (let y = -spread; y <= spread; y++) {
+                if (Math.abs(x) + Math.abs(y) <= spread && !(x === 0 && y === 0)) {
                     addHazardOrRefresh(new PoisonHazard(this.tilePosition.x + x, this.tilePosition.y + y));
                 }
             }
