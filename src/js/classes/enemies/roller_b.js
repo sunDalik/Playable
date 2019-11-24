@@ -129,7 +129,7 @@ export class RollerB extends Roller {
     }
 
     damage(source, dmg, inputX, inputY, magical = false) {
-        if (inputX === 0 && this.stun === 0 && !magical) {
+        if (inputY !== 0 && this.stun === 0 && !magical) {
             this.cancelAnimation();
             if (isEmpty(this.tilePosition.x, this.tilePosition.y + inputY)) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;

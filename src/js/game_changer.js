@@ -34,7 +34,8 @@ export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport];
     Game.chestItemPool = [Pickaxe, BasicArmor, WizardRobe, SeerCirclet, WizardHat, AntiHazardBoots,
-        DamagingBoots, PassiveShield, SpikyShield, StunningShield, Wings, HeavyArmor, ElectricArmor, VampireCrown];
+        DamagingBoots, PassiveShield, SpikyShield, StunningShield, HeavyArmor, ElectricArmor, VampireCrown];
+    //Wings were temporarily removed from the pool because they are not fun...
 }
 
 export function removeItemFromPool(item, pool) {

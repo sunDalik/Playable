@@ -73,6 +73,8 @@ export class Player extends AnimatedTileElement {
         if (this.attackTimeout) {
             clearTimeout(this.attackTimeout);
             this.doubleAttack();
+            Game.APP.ticker.remove(this.animation);
+            this.place();
         }
         this.animationSubSprites = [];
         this.rotation = 0;
