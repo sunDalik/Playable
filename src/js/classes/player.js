@@ -440,7 +440,7 @@ export class Player extends AnimatedTileElement {
         itemSprite.position.set(this.tilePosition.x * Game.TILESIZE + Game.TILESIZE / 2, this.tilePosition.y * Game.TILESIZE + Game.TILESIZE / 2);
         itemSprite.width = Game.TILESIZE * 0.9;
         itemSprite.height = Game.TILESIZE * 0.9;
-        itemSprite.zIndex = 1;
+        itemSprite.zIndex = 2;
         Game.world.addChild(itemSprite);
 
         this.cancelAnimation();

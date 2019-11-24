@@ -15,7 +15,8 @@ export const ENEMY_TYPE = Object.freeze({
     FROG: 13,
     FROG_FIRE: 14,
     FROG_KING: 15,
-    FROG_KING_FIRE: 16
+    FROG_KING_FIRE: 16,
+    MUSHROOM: 17
 });
 
 export const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});

@@ -21,7 +21,7 @@ export class TallTileElement extends TileElement {
     fitToTile() {
         //yeah its kinda... full tall tile element...
         const scaleX = Game.TILESIZE / this.getUnscaledWidth();
-        const scaleY = scaleX;
+        const scaleY = Math.abs(scaleX);
         this.scale.set(scaleX, scaleY);
     }
 }
