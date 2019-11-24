@@ -1,10 +1,10 @@
 import {Game} from "../../game"
-import {ENEMY_TYPE} from "../../enums";
+import {ENEMY_TYPE, TILE_TYPE} from "../../enums";
 import {Enemy} from "./enemy";
 import {PoisonHazard} from "../hazards/poison_hazard";
 import {getRandomInt, randomChoice} from "../../utils/random_utils";
 import {addHazardOrRefresh, getRelativelyEmptyHorizontalDirections} from "../../utils/map_utils";
-import {getPlayerOnTile, isEmpty} from "../../map_checks";
+import {getPlayerOnTile, isEmpty, isNotAWall} from "../../map_checks";
 
 export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/mushroom.png"].texture) {
@@ -21,6 +21,8 @@ export class Mushroom extends Enemy {
         this.direction = 1;
         this.zIndex = 1;
         this.scaleModifier = 0.9;
+
+        this.spillAreas = [];
     }
 
     move() {
@@ -65,15 +67,36 @@ export class Mushroom extends Enemy {
     }
 
     spillPoison() {
-        const spread = 2;
-        for (let x = -spread; x <= spread; x++) {
-            for (let y = -spread; y <= spread; y++) {
-                if (Math.abs(x) + Math.abs(y) <= spread && !(x === 0 && y === 0)) {
-                    addHazardOrRefresh(new PoisonHazard(this.tilePosition.x + x, this.tilePosition.y + y));
+        this.spillAreas = [];
+        this.spillPoisonR(this.tilePosition.x, this.tilePosition.y, 2);
+    }
+
+    //probably will use it for some other enemies later too....
+    spillPoisonR(tileX, tileY, distance = 8, sourceDirX = 0, sourceDirY = 0) {
+        if (distance > -1 && isNotAWall(tileX, tileY)) {
+            if (sourceDirX !== 0 || sourceDirY !== 0)
+                addHazardOrRefresh(new PoisonHazard(tileX, tileY));
+            this.spillAreas.push({x: tileX, y: tileY});
+            if (sourceDirX === 0 && sourceDirY === 0) {
+                this.spillPoisonR(tileX + 1, tileY, distance - 1, -1, 0);
+                this.spillPoisonR(tileX - 1, tileY, distance - 1, 1, 0);
+                this.spillPoisonR(tileX, tileY + 1, distance - 1, 0, -1);
+                this.spillPoisonR(tileX, tileY - 1, distance - 1, 0, 1);
+            } else {
+                if (sourceDirY === 0) {
+                    if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) this.spillPoisonR(tileX, tileY - 1, distance - 1, sourceDirX, 1);
+                    if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) this.spillPoisonR(tileX, tileY + 1, distance - 1, sourceDirX, -1);
                 }
+                if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) this.spillPoisonR(tileX, tileY - sourceDirY, distance - 1, sourceDirX, sourceDirY);
+                if (sourceDirX === 0) {
+                    if (!this.spillAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) this.spillPoisonR(tileX - 1, tileY, distance - 1, 1, sourceDirY);
+                    if (!this.spillAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) this.spillPoisonR(tileX + 1, tileY, distance - 1, -1, sourceDirY);
+                }
+                if (!this.spillAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) this.spillPoisonR(tileX - sourceDirX, tileY, distance - 1, sourceDirX, sourceDirY);
             }
         }
     }
+
 
     getWalkDelay() {
         return getRandomInt(8, 15);
