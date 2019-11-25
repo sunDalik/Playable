@@ -26,6 +26,9 @@ import {KingFrog} from "./classes/enemies/frog_king";
 import {FireFrog} from "./classes/enemies/frog_fire";
 import {Frog} from "./classes/enemies/frog";
 import {Mushroom} from "./classes/enemies/mushroom";
+import {SmallMushroom} from "./classes/enemies/small_mushroom";
+import {Alligator} from "./classes/enemies/alligator";
+import {Rabbit} from "./classes/enemies/rabbit";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -75,7 +78,12 @@ export function generateMap(level) {
             else if (map[i][j] === "frog_king") mapCell.entity = new KingFrog(j, i);
             else if (map[i][j] === "frog_king_fire") mapCell.entity = new KingFireFrog(j, i);
             else if (map[i][j] === "mushroom") mapCell.entity = new Mushroom(j, i);
-            else if (map[i][j] === "statue") {
+            else if (map[i][j] === "mushroom_small") mapCell.entity = new SmallMushroom(j, i);
+            else if (map[i][j] === "alligator") {
+                //Pairs for paired enemies are generated in the map generation phase. That is how I've decided it to be...
+                const prey = new Rabbit(j, i);
+                mapCell.entity = new Alligator(j, i, prey);
+            } else if (map[i][j] === "statue") {
                 if (Game.weaponPool.length > 0) {
                     mapCell.entity = new Statue(j, i, getRandomWeapon());
                 }

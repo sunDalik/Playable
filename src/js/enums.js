@@ -1,3 +1,4 @@
+//is not used yet. Will it ever be though?
 export const ENEMY_TYPE = Object.freeze({
     ROLLER: 0,
     ROLLER_B: 1,
@@ -16,7 +17,10 @@ export const ENEMY_TYPE = Object.freeze({
     FROG_FIRE: 14,
     FROG_KING: 15,
     FROG_KING_FIRE: 16,
-    MUSHROOM: 17
+    MUSHROOM: 17,
+    SMALL_MUSHROOM: 18,
+    ALLIGATOR: 19,
+    RABBIT: 20
 });
 
 export const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});

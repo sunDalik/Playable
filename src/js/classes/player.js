@@ -11,7 +11,7 @@ import {
     TILE_TYPE,
     WEAPON_TYPE
 } from "../enums";
-import {centerCamera, centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
+import {centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
 import {
     redrawHealthForPlayer,

@@ -9,16 +9,19 @@ import {getPlayerOnTile, isEmpty, isNotAWall} from "../../map_checks";
 export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/mushroom.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 1;
+        this.maxHealth = 2;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.MUSHROOM;
+        this.atk = 1;
         this.poisonDelay = 6; //half of poison hazard lifetime
         this.currentPoisonDelay = this.poisonDelay;
+        this.poisonSpread = 2;
         this.walkDelay = this.getWalkDelay();
         this.walking = false;
+        this.walkingTexture = Game.resources["src/images/enemies/mushroom_walking.png"].texture;
+        this.normalTexture = Game.resources["src/images/enemies/mushroom.png"].texture;
         this.standing = false;
-        this.atk = 0.5;
-        this.direction = 1;
+        this.direction = 1; //just a default value
         this.zIndex = 1;
         this.scaleModifier = 0.9;
         this.spillAreas = [];
@@ -31,7 +34,7 @@ export class Mushroom extends Enemy {
 
     move() {
         if (this.standing) {
-            this.texture = Game.resources["src/images/enemies/mushroom.png"].texture;
+            this.texture = this.normalTexture;
             this.walkDelay = this.getWalkDelay();
             this.currentPoisonDelay = 0;
             this.standing = false;
@@ -50,11 +53,11 @@ export class Mushroom extends Enemy {
             this.walking = false;
         } else if (this.walkDelay <= 0) {
             const directions = getRelativelyEmptyHorizontalDirections(this);
-            if (directions.length === 0)
+            if (directions.length === 0) {
                 this.walkDelay += 4;
-            else {
+            } else {
                 this.direction = randomChoice(directions).x;
-                this.texture = Game.resources["src/images/enemies/mushroom_walking.png"].texture;
+                this.texture = this.walkingTexture;
                 this.walking = true;
                 this.correctScale();
                 this.place();
@@ -72,7 +75,7 @@ export class Mushroom extends Enemy {
 
     spillPoison(invisiblePoison = false) {
         this.spillAreas = [];
-        this.spillPoisonR(this.tilePosition.x, this.tilePosition.y, 2, invisiblePoison);
+        this.spillPoisonR(this.tilePosition.x, this.tilePosition.y, this.poisonSpread, invisiblePoison);
     }
 
     //probably will use it for some other enemies later too....
@@ -121,6 +124,7 @@ export class Mushroom extends Enemy {
     }
 
     //this guy is drawn facing left...
+    //todo: make him face right
     correctScale() {
         if ((this.direction === 1 && this.scale.x > 0) || (this.direction === -1 && this.scale.x < 0)) {
             this.scale.x *= -1
