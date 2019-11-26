@@ -42,15 +42,15 @@ export class Frog extends Enemy {
                     this.scale.x *= -1;
                 }
                 const player = getPlayerOnTile(this.tilePosition.x + moveDir.x, this.tilePosition.y + moveDir.y);
-                if (player !== null) {
+                if (player) {
                     this.bump(moveDir.x, moveDir.y);
                     player.damage(this.atk, this, true);
                 } else {
                     Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                     this.step(moveDir.x, moveDir.y);
                     this.updateMapPosition();
-                    this.currentTurnDelay = this.turnDelay;
                 }
+                this.currentTurnDelay = this.turnDelay;
             }
         } else this.currentTurnDelay--;
     }
