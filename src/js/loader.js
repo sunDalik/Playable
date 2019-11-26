@@ -17,6 +17,7 @@ export function loadAll(afterLoad) {
         .add("src/images/swap_icon_2.png")
         .add("src/images/chain_icon.png")
         .add("src/images/unchain_icon.png")
+        .add("src/images/together_icon.png")
 
         .add("src/images/hazards/poison.png")
         .add("src/images/hazards/fire.png")

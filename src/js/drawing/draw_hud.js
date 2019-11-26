@@ -337,6 +337,7 @@ function drawKey(container, keyText, posX, posY) {
 export function drawInteractionKeys() {
     const container = HUD.interactionGuide;
     removeAllChildrenFromContainer(container);
+    if (Game.player.dead || Game.player2.dead) return;
     const playerSize = 50;
     const offsetY = 18;
     const iconSize = 30;
@@ -360,7 +361,7 @@ export function drawInteractionKeys() {
             playerSprite.width = playerSize;
             playerSprite.height = playerSize;
             playerSprite.zIndex = player.zIndex;
-            playerSprite.position.x = Game.APP.renderer.screen.width / 2 - playerSprite.width / 2;
+            playerSprite.position.x = Game.APP.renderer.screen.width / 2 - playerSize / 2;
             playerSprite.position.y = offsetY;
             container.addChild(playerSprite);
         }
@@ -374,7 +375,16 @@ export function drawInteractionKeys() {
             drawKey(container, keyText, posX - HUDKeyBindSize / 2, posY + iconSize + 5);
         }
     } else if (Math.abs(Game.player.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(Game.player.tilePosition.y - Game.player2.tilePosition.y) === 1) {
-        
+        const togetherSprite = new PIXI.Sprite(Game.resources["src/images/together_icon.png"].texture);
+        togetherSprite.width = playerSize * 2;
+        togetherSprite.height = playerSize;
+        togetherSprite.position.x = Game.APP.renderer.screen.width / 2 - togetherSprite.width / 2;
+        togetherSprite.position.y = offsetY;
+        container.addChild(togetherSprite);
+        if (!Game.player2.pushPullMode)
+            drawKey(container, "R", Game.APP.renderer.screen.width / 2 - togetherSprite.width / 2 - HUDKeyBindSize, offsetY + playerSize / 2 - HUDKeyBindSize);
+        if (!Game.player.pushPullMode)
+            drawKey(container, "P", Game.APP.renderer.screen.width / 2 + togetherSprite.width / 2, offsetY + playerSize / 2 - HUDKeyBindSize);
     }
 }
 

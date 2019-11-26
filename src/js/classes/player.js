@@ -88,24 +88,23 @@ export class Player extends AnimatedTileElement {
         if (this.pushPullMode) {
             if (this.tilePosition.x === otherPlayer(this).tilePosition.x && tileStepY !== 0
                 || this.tilePosition.y === otherPlayer(this).tilePosition.y && tileStepX !== 0) {
+                let result = false;
                 if (isRelativelyEmpty(otherPlayer(this).tilePosition.x + tileStepX, otherPlayer(this).tilePosition.y + tileStepY)) {
                     if (isRelativelyEmpty(otherPlayer(this).tilePosition.x + tileStepX * 2, otherPlayer(this).tilePosition.y + tileStepY * 2)) {
                         otherPlayer(this).slide(tileStepX * 2, tileStepY * 2, this.PUSH_PULL_ANIMATION_TIME);
-                        this.pushPullMode = false;
-                        drawMovementKeyBindings();
-                        return true;
+                        result = true;
                     } else {
                         otherPlayer(this).slide(tileStepX, tileStepY, this.PUSH_PULL_ANIMATION_TIME);
-                        this.pushPullMode = false;
-                        drawMovementKeyBindings();
-                        return true;
+                        result = true;
                     }
                 } else {
-                    this.pushPullMode = false;
                     otherPlayer(this).microSlide(0, 0);
-                    drawMovementKeyBindings();
-                    return false;
+                    result = false;
                 }
+                this.pushPullMode = false;
+                drawMovementKeyBindings();
+                drawInteractionKeys();
+                return result;
             } else return false;
         }
 
