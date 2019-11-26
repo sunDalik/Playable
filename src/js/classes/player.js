@@ -32,8 +32,10 @@ export class Player extends AnimatedTileElement {
         this.health = this.maxHealth;
         this.atkBase = 0;
         this.atkMul = 1;
+        this.extraAtkMul = 1;
         this.defBase = 0;
         this.defMul = 1;
+        this.extraDefMul = 1;
         this.STEP_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 12;
         this.SLIDE_ANIMATION_TIME = 8;
@@ -171,7 +173,7 @@ export class Player extends AnimatedTileElement {
 
     getAtkWithWeapon(weapon, presetAtk = 0) {
         const atkBase = this.getAtkBaseWithWeapon(weapon, presetAtk);
-        return (Math.round(atkBase * this.atkMul * 4) / 4)
+        return (Math.round(atkBase * this.getAtkMul() * 4) / 4)
     }
 
     getAtkBaseWithWeapon(weapon, presetAtk = 0) {
@@ -192,9 +194,13 @@ export class Player extends AnimatedTileElement {
 
     }
 
+    getAtkMul() {
+        return this.atkMul * this.extraAtkMul;
+    }
+
     getDef() {
         const defBase = this.getDefBase();
-        return (Math.round(defBase * this.defMul * 4) / 4)
+        return (Math.round(defBase * this.getDefMul() * 4) / 4)
     }
 
     getDefBase() {
@@ -206,6 +212,10 @@ export class Player extends AnimatedTileElement {
             }
         }
         return defBase;
+    }
+
+    getDefMul() {
+        return this.defMul * this.extraDefMul;
     }
 
     step(tileStepX, tileStepY) {

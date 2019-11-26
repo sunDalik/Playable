@@ -152,10 +152,10 @@ export function redrawSlotsForPlayer(player) {
     }
 }
 
-function drawStatsForPlayer(player) {
+export function drawStatsForPlayer(player) {
     const container = player === Game.player ? HUD.stats1 : HUD.stats2;
     removeAllChildrenFromContainer(container);
-    const text = new PIXI.Text(`ATK = ${player.getAtkBaseWithWeapon(player.weapon)} * ${player.atkMul} = ${player.getAtkWithWeapon(player.weapon)}\nDEF = ${player.getDefBase()} * ${player.defMul} = ${player.getDef()}`, HUDTextStyle);
+    const text = new PIXI.Text(`ATK = ${player.getAtkBaseWithWeapon(player.weapon)} * ${player.getAtkMul()} = ${player.getAtkWithWeapon(player.weapon)}\nDEF = ${player.getDefBase()} * ${player.getDefMul()} = ${player.getDef()}`, HUDTextStyle);
 
     if (player === Game.player) text.position.x = slotBorderOffsetX + slotSize * 2 + slotsColOffset + statsOffsetX;
     else text.position.x = Game.APP.renderer.screen.width - slotBorderOffsetX - slotSize * 2 - slotsColOffset - text.width - statsOffsetX;
