@@ -281,21 +281,39 @@ export function drawMovementKeyBindings() {
     removeAllChildrenFromContainer(container);
     if (!Game.player.carried && !Game.player2.pushPullMode) {
         const heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
-        drawKey("W", heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+        const topKey = "W";
         const bottomRowKeys = ["A", "S", "D"];
+        if (!Game.player.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {
+            drawKey(topKey, heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+        } else bottomRowKeys[1] = "";
+        if (Game.player.pushPullMode && Game.player.tilePosition.y !== Game.player2.tilePosition.y) {
+            bottomRowKeys[0] = "";
+            bottomRowKeys[2] = "";
+        }
         for (let i = 0; i < bottomRowKeys.length; i++) {
-            drawKey(bottomRowKeys[i], heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
-                heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
+            if (bottomRowKeys[i] !== "") {
+                drawKey(bottomRowKeys[i], heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
+                    heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
+            }
         }
     }
 
     if (!Game.player2.carried && !Game.player.pushPullMode) {
         const heartXOffset = Game.APP.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset - HUDGuideOffsetX;
-        drawKey("I", heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
-        const bottomRowKeys2 = ["L", "K", "J"];
-        for (let i = 0; i < bottomRowKeys2.length; i++) {
-            drawKey(bottomRowKeys2[i], heartXOffset - HUDKeyBindSize * (i + 1) - i * HUDGuideKeyOffsetX,
-                heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
+        let topKey = "I";
+        const bottomRowKeys = ["L", "K", "J"];
+        if (!Game.player2.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {
+            drawKey(topKey, heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+        } else bottomRowKeys[1] = "";
+        if (Game.player2.pushPullMode && Game.player.tilePosition.y !== Game.player2.tilePosition.y) {
+            bottomRowKeys[0] = "";
+            bottomRowKeys[2] = "";
+        }
+        for (let i = 0; i < bottomRowKeys.length; i++) {
+            if (bottomRowKeys[i] !== "") {
+                drawKey(bottomRowKeys[i], heartXOffset - HUDKeyBindSize * (i + 1) - i * HUDGuideKeyOffsetX,
+                    heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
+            }
         }
     }
 
