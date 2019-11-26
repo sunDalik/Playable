@@ -14,6 +14,7 @@ import {
 import {centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
 import {
+    drawStatsForPlayer,
     redrawHealthForPlayer,
     redrawSecondHand,
     redrawSlotContents,
@@ -294,7 +295,11 @@ export class Player extends AnimatedTileElement {
     }
 
     die() {
+        this.carried = false;
         otherPlayer(this).carried = false;
+        this.extraAtkMul = 1;
+        this.extraDefMul = 1;
+        drawStatsForPlayer(this);
         this.dead = true;
         this.visible = false;
         this.removeFromMap(this);
