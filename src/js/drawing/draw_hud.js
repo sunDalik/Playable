@@ -27,6 +27,9 @@ import {EQUIPMENT_TYPE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
 export function drawHUD() {
     drawHealth();
     drawSlots();
+    drawMovementKeyBindings();
+    drawInteractionKeys();
+    redrawEnergy();
     drawSlotsContents();
 }
 
@@ -38,8 +41,6 @@ export function drawHealth() {
 export function drawSlots() {
     redrawSlotsForPlayer(Game.player);
     redrawSlotsForPlayer(Game.player2);
-    drawMovementKeyBindings();
-    redrawEnergy();
 }
 
 export function drawSlotsContents() {
@@ -276,22 +277,26 @@ export function redrawFootwear(player) {
 }
 
 export function drawMovementKeyBindings() {
-    const container = HUD.guide;
+    const container = HUD.movementGuide;
     removeAllChildrenFromContainer(container);
-    let heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
-    drawKey("W", heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
-    const bottomRowKeys = ["A", "S", "D"];
-    for (let i = 0; i < bottomRowKeys.length; i++) {
-        drawKey(bottomRowKeys[i], heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
-            heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
+    if (!Game.player.carried && !Game.player2.pushPullMode) {
+        const heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
+        drawKey("W", heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+        const bottomRowKeys = ["A", "S", "D"];
+        for (let i = 0; i < bottomRowKeys.length; i++) {
+            drawKey(bottomRowKeys[i], heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
+                heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
+        }
     }
 
-    heartXOffset = Game.APP.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset - HUDGuideOffsetX;
-    drawKey("I", heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
-    const bottomRowKeys2 = ["L", "K", "J"];
-    for (let i = 0; i < bottomRowKeys2.length; i++) {
-        drawKey(bottomRowKeys2[i], heartXOffset - HUDKeyBindSize * (i + 1) - i * HUDGuideKeyOffsetX,
-            heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
+    if (!Game.player2.carried && !Game.player.pushPullMode) {
+        const heartXOffset = Game.APP.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset - HUDGuideOffsetX;
+        drawKey("I", heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+        const bottomRowKeys2 = ["L", "K", "J"];
+        for (let i = 0; i < bottomRowKeys2.length; i++) {
+            drawKey(bottomRowKeys2[i], heartXOffset - HUDKeyBindSize * (i + 1) - i * HUDGuideKeyOffsetX,
+                heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
+        }
     }
 
     function drawKey(keyText, posX, posY) {
@@ -308,6 +313,11 @@ export function drawMovementKeyBindings() {
         key.addChild(text);
         container.addChild(key);
     }
+}
+
+export function drawInteractionKeys() {
+    const container = HUD.interactionGuide;
+    removeAllChildrenFromContainer(container);
 }
 
 export function redrawEnergy() {

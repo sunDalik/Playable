@@ -25,8 +25,7 @@ export class Pickaxe {
             }
             lightPlayerPosition(player);
             calculateDetectionGraph(Game.map);
-            if (tileDirX !== 0) player.bumpX(tileDirX);
-            else player.bumpY(tileDirY);
+            player.bump(tileDirX, tileDirY);
             return true;
         } else return false;
     }

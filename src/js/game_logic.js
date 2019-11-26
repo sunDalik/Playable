@@ -3,7 +3,7 @@ import {incrementStage, setVariablesForStage} from "./game_changer";
 import {initializeLevel} from "./setup"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, ROLE} from "./enums"
 import {otherPlayer, removeObjectFromArray} from "./utils/basic_utils";
-import {drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
+import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -127,6 +127,7 @@ export function switchPlayers() {
         temp = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity;
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;
+        drawInteractionKeys();
         if ((Game.player.armor && Game.player.armor.type === ARMOR_TYPE.ELECTRIC)
             || (Game.player2.armor && Game.player2.armor.type === ARMOR_TYPE.ELECTRIC)) return false;
         return true;
@@ -139,23 +140,23 @@ export function carryPlayer() {
         Game.player2.extraAtkMul = 1;
         Game.player2.extraDefMul = 1;
         drawStatsForPlayer(Game.player2);
-        return true;
     } else if (Game.player2.carried === true) {
         Game.player2.carried = false;
         Game.player.extraAtkMul = 1;
         Game.player.extraDefMul = 1;
         drawStatsForPlayer(Game.player);
-        return true;
     } else if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y
         && !Game.player.dead && !Game.player2.dead) {
         otherPlayer(Game.primaryPlayer).carried = true;
         Game.primaryPlayer.extraAtkMul = 0.5;
         Game.primaryPlayer.extraDefMul = 0.5;
         drawStatsForPlayer(Game.primaryPlayer);
-        if ((Game.player.armor && Game.player.armor.type === ARMOR_TYPE.ELECTRIC)
-            || (Game.player2.armor && Game.player2.armor.type === ARMOR_TYPE.ELECTRIC)) return false;
-        return true;
     } else return false;
+    drawMovementKeyBindings();
+    drawInteractionKeys();
+    if ((Game.player.armor && Game.player.armor.type === ARMOR_TYPE.ELECTRIC)
+        || (Game.player2.armor && Game.player2.armor.type === ARMOR_TYPE.ELECTRIC)) return false;
+    else return true;
 }
 
 export function removeTileFromWorld(tile) {

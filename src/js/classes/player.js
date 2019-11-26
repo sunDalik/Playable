@@ -14,6 +14,7 @@ import {
 import {centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
 import {shakeScreen} from "../animations";
 import {
+    drawInteractionKeys, drawMovementKeyBindings,
     drawStatsForPlayer,
     redrawHealthForPlayer,
     redrawSecondHand,
@@ -91,15 +92,18 @@ export class Player extends AnimatedTileElement {
                     if (isRelativelyEmpty(otherPlayer(this).tilePosition.x + tileStepX * 2, otherPlayer(this).tilePosition.y + tileStepY * 2)) {
                         otherPlayer(this).slide(tileStepX * 2, tileStepY * 2, this.PUSH_PULL_ANIMATION_TIME);
                         this.pushPullMode = false;
+                        drawMovementKeyBindings();
                         return true;
                     } else {
                         otherPlayer(this).slide(tileStepX, tileStepY, this.PUSH_PULL_ANIMATION_TIME);
                         this.pushPullMode = false;
+                        drawMovementKeyBindings();
                         return true;
                     }
                 } else {
                     this.pushPullMode = false;
                     otherPlayer(this).microSlide(0, 0);
+                    drawMovementKeyBindings();
                     return false;
                 }
             } else return false;
@@ -222,11 +226,11 @@ export class Player extends AnimatedTileElement {
     step(tileStepX, tileStepY) {
         if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
             this.slide(tileStepX, tileStepY);
-            if (otherPlayer(this).carried) otherPlayer(this).slide(tileStepX, tileStepY);
         } else {
             super.step(tileStepX, tileStepY);
             if (otherPlayer(this).carried) otherPlayer(this).step(tileStepX, tileStepY);
         }
+        if (!this.carried) drawInteractionKeys();
     }
 
     bump(tileStepX, tileStepY) {
@@ -254,6 +258,8 @@ export class Player extends AnimatedTileElement {
         const cameraCenteringAfter = tileDirX !== 0 ? () => centerCameraX(true) : () => centerCameraY(true);
         super.slide(tileDirX, tileDirY, cameraCentering, cameraCenteringAfter, SLIDE_ANIMATION_TIME);
         lightPlayerPosition(this);
+        if (otherPlayer(this).carried) otherPlayer(this).slide(tileDirX, tileDirY);
+        if (!this.carried) drawInteractionKeys();
     }
 
     damage(atk, source, directHit = true, canBeShielded = true) {
@@ -493,6 +499,8 @@ export class Player extends AnimatedTileElement {
                 otherPlayer(this).cancellable = false;
             }
         }
+        drawMovementKeyBindings();
+        drawInteractionKeys();
         return false;
     }
 
