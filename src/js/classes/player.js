@@ -20,7 +20,7 @@ import {
     redrawSlotContentsForPlayer,
     redrawWeapon
 } from "../drawing/draw_hud";
-import {isInanimate, isRelativelyEmpty} from "../map_checks";
+import {isEmpty, isInanimate, isRelativelyEmpty} from "../map_checks";
 import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {otherPlayer} from "../utils/basic_utils";
@@ -84,9 +84,21 @@ export class Player extends AnimatedTileElement {
         if (this.pushPullMode) {
             if (this.tilePosition.x === otherPlayer(this).tilePosition.x && tileStepY !== 0
                 || this.tilePosition.y === otherPlayer(this).tilePosition.y && tileStepX !== 0) {
-                otherPlayer(this).slide(tileStepX * 2, tileStepY * 2, this.PUSH_PULL_ANIMATION_TIME);
-                this.pushPullMode = false;
-                return true;
+                if (isRelativelyEmpty(otherPlayer(this).tilePosition.x + tileStepX, otherPlayer(this).tilePosition.y + tileStepY)) {
+                    if (isRelativelyEmpty(otherPlayer(this).tilePosition.x + tileStepX * 2, otherPlayer(this).tilePosition.y + tileStepY * 2)) {
+                        otherPlayer(this).slide(tileStepX * 2, tileStepY * 2, this.PUSH_PULL_ANIMATION_TIME);
+                        this.pushPullMode = false;
+                        return true;
+                    } else {
+                        otherPlayer(this).slide(tileStepX, tileStepY, this.PUSH_PULL_ANIMATION_TIME);
+                        this.pushPullMode = false;
+                        return true;
+                    }
+                } else {
+                    this.pushPullMode = false;
+                    otherPlayer(this).microSlide(0, 0);
+                    return false;
+                }
             } else return false;
         }
 
