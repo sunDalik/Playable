@@ -34,7 +34,6 @@ export class Snail extends Enemy {
                     }
                  */
 
-                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 const player1DistX = Game.player.tilePosition.x - this.tilePosition.x;
                 const player1DistY = Game.player.tilePosition.y - this.tilePosition.y;
                 const player1Dist = Math.abs(player1DistX) + Math.abs(player1DistY);
@@ -50,7 +49,6 @@ export class Snail extends Enemy {
                     this.chasePlayer(Game.player2);
                 }
                 this.currentTurnDelay = this.turnDelay;
-                this.updateMapPosition();
             } else {
                 if (this.canSeePlayers()) {
                     this.chase = true;

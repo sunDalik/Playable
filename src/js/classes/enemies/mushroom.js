@@ -41,9 +41,7 @@ export class Mushroom extends Enemy {
             this.place();
         } else if (this.walking) {
             if (isEmpty(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y)) {
-                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.step(this.direction.x, this.direction.y);
-                this.updateMapPosition();
             } else {
                 const player = getPlayerOnTile(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
                 if (player) player.damage(this.atk, this, true);

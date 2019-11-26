@@ -39,6 +39,7 @@ export function moveEnemies() {
     }
 }
 
+//or maybe maybe should instead just check onscreen position? and if they are off screen then they dont move? dunno
 function arePlayersInDetectionRadius(enemy) {
     return ((Math.abs(enemy.tilePosition.x - Game.player.tilePosition.x) + Math.abs(enemy.tilePosition.y - Game.player.tilePosition.y) <= enemy.detectionRadius && !Game.player.dead)
         || (Math.abs(enemy.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(enemy.tilePosition.y - Game.player2.tilePosition.y) <= enemy.detectionRadius && !Game.player2.dead));
@@ -53,7 +54,7 @@ export function updateHazards() {
 
 export function playerTurn(player, playerMove, bothPlayers = false) {
     if (Game.playerMoving === null || player === Game.playerMoving) {
-        if (((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead))) {
+        if (((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead && !player.carried))) {
             if (Game.enemiesTimeout !== null) {
                 clearTimeout(Game.enemiesTimeout);
                 enemyTurn();
@@ -63,11 +64,16 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
             if (bothPlayers) {
                 Game.player.cancelAnimation();
                 Game.player2.cancelAnimation();
-            } else player.cancelAnimation();
+            } else {
+                player.cancelAnimation();
+                if (otherPlayer(player).carried) {
+                    otherPlayer(player).cancelAnimation();
+                }
+            }
             const moveResult = playerMove();
             if (moveResult !== false) {
                 let canMoveFurther = false;
-                if (player.moved) {
+                if (player && player.moved) {
                     player.moved = false;
                     player.currentMovement--;
                     if (player.currentMovement > 0) {
@@ -94,7 +100,7 @@ export function damagePlayersWithHazards() {
 }
 
 export function damagePlayerWithHazards(player) {
-    if (!player.dead) {
+    if (!player.dead && !player.carried) {
         const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
         if (hazard !== null) {
             if (!(player.footwear && player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD)
@@ -106,31 +112,9 @@ export function damagePlayerWithHazards(player) {
     //todo: if is dark tunnel and player is 3 tiles away from the torch bearer damage him
 }
 
-export function removePlayerFromGameMap(player) {
-    if (player === Game.map[player.tilePosition.y][player.tilePosition.x].entity) {
-        Game.map[player.tilePosition.y][player.tilePosition.x].entity = Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity;
-        Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
-    } else if (player === Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity) {
-        Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity = null;
-    }
-}
-
-export function placePlayerOnGameMap(player) {
-    if (Game.map[player.tilePosition.y][player.tilePosition.x].entity !== null && Game.map[player.tilePosition.y][player.tilePosition.x].entity.role === ROLE.PLAYER) {
-        if (player === Game.primaryPlayer) {
-            Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity = Game.map[player.tilePosition.y][player.tilePosition.x].entity;
-            Game.map[player.tilePosition.y][player.tilePosition.x].entity = player;
-        } else {
-            Game.map[player.tilePosition.y][player.tilePosition.x].secondaryEntity = player;
-        }
-    } else {
-        Game.map[player.tilePosition.y][player.tilePosition.x].entity = player;
-    }
-}
-
 export function switchPlayers() {
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y
-        && !Game.player.dead && !Game.player2.dead) {
+        && !Game.player.dead && !Game.player2.dead && !Game.player.carried && !Game.player2.carried) {
         let temp = Game.player2.zIndex;
         Game.player2.zIndex = Game.player.zIndex;
         Game.player.zIndex = temp;
@@ -140,6 +124,22 @@ export function switchPlayers() {
         temp = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity;
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;
+        if ((Game.player.armor && Game.player.armor.type === ARMOR_TYPE.ELECTRIC)
+            || (Game.player2.armor && Game.player2.armor.type === ARMOR_TYPE.ELECTRIC)) return false;
+        return true;
+    } else return false;
+}
+
+export function carryPlayer() {
+    if (Game.player.carried === true) {
+        Game.player.carried = false;
+        return true;
+    } else if (Game.player2.carried === true) {
+        Game.player2.carried = false;
+        return true;
+    } else if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y
+        && !Game.player.dead && !Game.player2.dead) {
+        otherPlayer(Game.primaryPlayer).carried = true;
         if ((Game.player.armor && Game.player.armor.type === ARMOR_TYPE.ELECTRIC)
             || (Game.player2.armor && Game.player2.armor.type === ARMOR_TYPE.ELECTRIC)) return false;
         return true;

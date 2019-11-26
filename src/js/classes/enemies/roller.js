@@ -28,9 +28,7 @@ export class Roller extends Enemy {
                 player.damage(this.atk, this);
                 this.rollBump();
             } else {
-                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.slide(this.direction, 0);
-                this.updateMapPosition();
             }
         } else this.rollBump();
     }

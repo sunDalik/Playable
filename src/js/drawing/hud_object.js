@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js"
-import {redrawSlotContents} from "./draw_hud";
 
 export const HUD = new PIXI.Container();
 HUD.hearts1 = new PIXI.Container();

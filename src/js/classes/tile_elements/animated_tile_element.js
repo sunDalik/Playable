@@ -16,8 +16,10 @@ export class AnimatedTileElement extends TileElement {
     }
 
     stepXY(tileStepX, tileStepY, onFrame = null, onEnd = null) {
+        this.removeFromMap();
         this.tilePosition.x += tileStepX;
         this.tilePosition.y += tileStepY;
+        this.placeOnMap();
 
         let jumpHeight = Game.TILESIZE * 30 * (Math.abs(tileStepY) + Math.abs(tileStepX)) / 2 / 75;
         if (tileStepY < 0) jumpHeight += Math.abs(tileStepY) * Game.TILESIZE;
@@ -47,7 +49,9 @@ export class AnimatedTileElement extends TileElement {
     }
 
     stepX(tileStepX, onFrame = null, onEnd = null) {
+        this.removeFromMap();
         this.tilePosition.x += tileStepX;
+        this.placeOnMap();
         const jumpHeight = Game.TILESIZE * 25 / 75;
         const a = jumpHeight / ((tileStepX * Game.TILESIZE / 2) ** 2);
         const b = -(this.position.x + (tileStepX * Game.TILESIZE) / 2) * 2 * a;
@@ -75,7 +79,9 @@ export class AnimatedTileElement extends TileElement {
     //I'm not sure...
     //todo...
     stepY(tileStepY, onFrame = null, onEnd = null) {
+        this.removeFromMap();
         this.tilePosition.y += tileStepY;
+        this.placeOnMap();
         const oldPosY = this.position.y;
         let P0, P1, P2, P3;
         if (tileStepY < 0) {
@@ -193,8 +199,10 @@ export class AnimatedTileElement extends TileElement {
         this.animationCounter = 0;
         const stepX = Game.TILESIZE * tileStepX / animationTime;
         const stepY = Game.TILESIZE * tileStepY / animationTime;
+        this.removeFromMap();
         this.tilePosition.x += tileStepX;
         this.tilePosition.y += tileStepY;
+        this.placeOnMap();
 
         const animation = () => {
             this.position.x += stepX;

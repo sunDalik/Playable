@@ -87,7 +87,7 @@ export class Enemy extends AnimatedTileElement {
 
         redrawEnergy();
         this.dead = true;
-        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+        this.removeFromMap();
         this.cancelAnimation();
         this.visible = false;
         this.healthContainer.visible = false;
@@ -123,7 +123,11 @@ export class Enemy extends AnimatedTileElement {
         return distanceToPlayer1.length !== 0 || distanceToPlayer2.length !== 0;
     }
 
-    updateMapPosition() {
+    removeFromMap() {
+        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+    }
+
+    placeOnMap() {
         if (!this.dead) {
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
         }

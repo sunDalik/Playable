@@ -31,9 +31,7 @@ export class RollerB extends Roller {
                             player.damage(this.atk, this);
                             this.rollThenBump();
                         } else if (x >= 3) {
-                            Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                             this.slide(this.direction * 2, 0);
-                            this.updateMapPosition();
                         }
                         break;
                     }
@@ -55,9 +53,7 @@ export class RollerB extends Roller {
                             player.damage(this.atk, this);
                             this.rollThenBump();
                         } else if (x >= 3) {
-                            Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                             this.slide(2 * this.direction, 0);
-                            this.updateMapPosition();
                         }
                         break;
                     }
@@ -72,14 +68,15 @@ export class RollerB extends Roller {
     }
 
     rollThenBump() {
-        let counter = 0;
-        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+        this.removeFromMap();
+        this.tilePosition.x += this.direction;
+        this.placeOnMap();
         let step = this.direction * Game.TILESIZE / (this.SLIDE_ANIMATION_TIME / 2);
         const jumpHeight = Game.TILESIZE * 40 / 75;
         const a = jumpHeight / ((Game.TILESIZE / 2 / 3) ** 2);
         const b = -(this.position.x + (4 / 3) * this.direction * Game.TILESIZE + (-this.direction * Game.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
-        this.tilePosition.x += this.direction;
+        let counter = 0;
 
         this.animation = () => {
             if (counter < this.SLIDE_ANIMATION_TIME / 2) {
@@ -100,7 +97,6 @@ export class RollerB extends Roller {
             this.moveHealthContainer();
         };
         Game.APP.ticker.add(this.animation);
-        this.updateMapPosition();
     }
 
     rollBump() {
@@ -132,9 +128,7 @@ export class RollerB extends Roller {
         if (inputY !== 0 && this.stun === 0 && !magical) {
             this.cancelAnimation();
             if (isEmpty(this.tilePosition.x, this.tilePosition.y + inputY)) {
-                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 this.stepY(inputY);
-                this.updateMapPosition();
             } else this.bumpY(inputY);
             this.cancellable = false;
         } else {

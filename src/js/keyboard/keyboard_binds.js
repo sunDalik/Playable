@@ -1,6 +1,6 @@
 import {Game} from "../game";
 import {keyboard} from "./keyboard_handler";
-import {playerTurn, switchPlayers} from "../game_logic";
+import {carryPlayer, playerTurn, switchPlayers} from "../game_logic";
 
 export function bindKeys() {
     bindMovement(Game.player, {upCode: "KeyW", leftCode: "KeyA", downCode: "KeyS", rightCode: "KeyD"});
@@ -46,6 +46,11 @@ export function bindKeys() {
             if (Game.player.releaseMagic()) return true;
             else return Game.player2.releaseMagic();
         }, true);
+    };
+
+    const carryKey = keyboard("KeyX");
+    carryKey.press = () => {
+        playerTurn(null, carryPlayer, true)
     };
 }
 

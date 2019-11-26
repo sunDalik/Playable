@@ -1,9 +1,8 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
-import {isAnyWall, isAWall, isEmpty, isEnemy, isNotAWall, isRelativelyEmpty} from "../../../map_checks";
+import {isAnyWall, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 import * as PIXI from "pixi.js";
-import {placePlayerOnGameMap, removePlayerFromGameMap} from "../../../game_logic";
 
 export class MaidenDagger {
     constructor() {
@@ -37,9 +36,7 @@ export class MaidenDagger {
                     if (entity.movable) {
                         entity.cancelAnimation();
                         if (isEmpty(atkPos.x + tileDirX, atkPos.y + tileDirY)) {
-                            Game.map[atkPos.y][atkPos.x].entity = null;
                             entity.step(tileDirX, tileDirY);
-                            entity.updateMapPosition();
                         } else {
                             if (tileDirX) entity.bumpX(tileDirX);
                             else if (tileDirY) entity.bumpY(tileDirY);
@@ -54,9 +51,7 @@ export class MaidenDagger {
 
             if (!foundEnemy) return false;
             if (isRelativelyEmpty(playerStepPosition.x, playerStepPosition.y)) {
-                removePlayerFromGameMap(wielder);
                 wielder.step(tileDirX, tileDirY);
-                placePlayerOnGameMap(wielder);
             } else {
                 wielder.bump(tileDirX, tileDirY);
             }

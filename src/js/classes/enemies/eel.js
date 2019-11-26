@@ -26,7 +26,6 @@ export class Eel extends Enemy {
 
     move() {
         if (this.turnDelay === 0) {
-            Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
             if (this.inMemoryAngle === 0) {
                 this.swimToTile(0, -1);
             } else if (this.inMemoryAngle === 90) {
@@ -36,7 +35,6 @@ export class Eel extends Enemy {
             } else if (this.inMemoryAngle === 270) {
                 this.swimToTile(-1, 0);
             }
-            this.updateMapPosition();
             this.turnDelay = 1;
         } else this.turnDelay--;
     }

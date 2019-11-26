@@ -1,6 +1,5 @@
 import {Game} from "../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE,} from "../../enums";
-import {removePlayerFromGameMap, placePlayerOnGameMap} from "../../game_logic";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
 import {centerCamera} from "../../camera";
 
 export class Teleport {
@@ -20,9 +19,9 @@ export class Teleport {
         let otherPlayer;
         if (wielder === Game.player2) otherPlayer = Game.player;
         else otherPlayer = Game.player2;
-        removePlayerFromGameMap(wielder);
+        wielder.removeFromMap();
         wielder.tilePosition.set(otherPlayer.tilePosition.x, otherPlayer.tilePosition.y);
-        placePlayerOnGameMap(wielder);
+        wielder.placeOnMap();
         wielder.place();
         centerCamera();
         this.uses--;

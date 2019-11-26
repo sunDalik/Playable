@@ -20,7 +20,6 @@ export class Spider extends Enemy {
     move() {
         if (!this.thrown) {
             if (this.chase) {
-                Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                 const player1DistX = Game.player.tilePosition.x - this.tilePosition.x;
                 const player1DistY = Game.player.tilePosition.y - this.tilePosition.y;
                 const player1Dist = Math.abs(player1DistX) + Math.abs(player1DistY);
@@ -35,7 +34,6 @@ export class Spider extends Enemy {
                 } else {
                     this.chasePlayer(Game.player2);
                 }
-                this.updateMapPosition();
             } else {
                 if (this.canSeePlayers()) {
                     this.chase = true;
@@ -122,10 +120,8 @@ export class Spider extends Enemy {
     }
 
     throwStep(throwX, throwY) {
-        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
         this.step(throwX, throwY);
         this.thrown = true;
         this.cancellable = false;
-        this.updateMapPosition();
     }
 }

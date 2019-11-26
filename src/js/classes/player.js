@@ -21,13 +21,7 @@ import {
     redrawWeapon
 } from "../drawing/draw_hud";
 import {isInanimate, isRelativelyEmpty} from "../map_checks";
-import {
-    gotoNextLevel,
-    placePlayerOnGameMap,
-    removeEquipmentFromPlayer,
-    removePlayerFromGameMap,
-    swapEquipmentWithPlayer
-} from "../game_logic";
+import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {otherPlayer} from "../utils/basic_utils";
 
@@ -63,6 +57,7 @@ export class Player extends AnimatedTileElement {
         this.movement = 1;
         this.currentMovement = this.movement;
         this.moved = false;
+        this.carried = false;
     }
 
     cancelAnimation() {
@@ -99,9 +94,7 @@ export class Player extends AnimatedTileElement {
                 this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity);
                 this.bump(tileStepX, tileStepY);
             } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
-                removePlayerFromGameMap(this);
                 this.step(tileStepX, tileStepY);
-                placePlayerOnGameMap(this);
                 this.moved = true;
                 if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.EXIT) gotoNextLevel();
             } else if (!this.secondHand || this.secondHand.equipmentType !== EQUIPMENT_TYPE.TOOL || this.secondHand.use(this, tileStepX, tileStepY) === false) {
@@ -192,13 +185,21 @@ export class Player extends AnimatedTileElement {
     step(tileStepX, tileStepY) {
         if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
             this.slide(tileStepX, tileStepY);
-        } else super.step(tileStepX, tileStepY);
+            if (otherPlayer(this).carried) otherPlayer(this).slide(tileStepX, tileStepY);
+        } else {
+            super.step(tileStepX, tileStepY);
+            if (otherPlayer(this).carried) otherPlayer(this).step(tileStepX, tileStepY);
+        }
     }
 
     bump(tileStepX, tileStepY) {
         if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
             this.slideBump(tileStepX, tileStepY);
-        } else super.bump(tileStepX, tileStepY);
+            if (otherPlayer(this).carried) otherPlayer(this).slideBump(tileStepX, tileStepY);
+        } else {
+            super.bump(tileStepX, tileStepY);
+            if (otherPlayer(this).carried) otherPlayer(this).bump(tileStepX, tileStepY);
+        }
     }
 
     stepX(tileStepX) {
@@ -257,9 +258,10 @@ export class Player extends AnimatedTileElement {
     }
 
     die() {
+        otherPlayer(this).carried = false;
         this.dead = true;
         this.visible = false;
-        removePlayerFromGameMap(this);
+        this.removeFromMap(this);
         Game.TILESIZE = Game.REFERENCE_TILESIZE;
         redrawTiles();
         for (const eq of this.getEquipment()) {
@@ -477,6 +479,28 @@ export class Player extends AnimatedTileElement {
                 return "armor";
             case this.footwear:
                 return "footwear";
+        }
+    }
+
+    removeFromMap() {
+        if (this === Game.map[this.tilePosition.y][this.tilePosition.x].entity) {
+            Game.map[this.tilePosition.y][this.tilePosition.x].entity = Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
+            Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
+        } else if (this === Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity) {
+            Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
+        }
+    }
+
+    placeOnMap() {
+        if (Game.map[this.tilePosition.y][this.tilePosition.x].entity !== null && Game.map[this.tilePosition.y][this.tilePosition.x].entity.role === ROLE.PLAYER) {
+            if (this === Game.primaryPlayer) {
+                Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = Game.map[this.tilePosition.y][this.tilePosition.x].entity;
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+            } else {
+                Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = this;
+            }
+        } else {
+            Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
         }
     }
 }

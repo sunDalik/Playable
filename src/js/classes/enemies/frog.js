@@ -46,9 +46,7 @@ export class Frog extends Enemy {
                     this.bump(moveDir.x, moveDir.y);
                     player.damage(this.atk, this, true);
                 } else {
-                    Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
                     this.step(moveDir.x, moveDir.y);
-                    this.updateMapPosition();
                 }
                 this.currentTurnDelay = this.turnDelay;
             }
