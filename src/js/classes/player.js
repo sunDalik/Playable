@@ -21,7 +21,7 @@ import {
     redrawSlotContentsForPlayer,
     redrawWeapon
 } from "../drawing/draw_hud";
-import {isEmpty, isInanimate, isRelativelyEmpty} from "../map_checks";
+import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {otherPlayer} from "../utils/basic_utils";
@@ -240,18 +240,19 @@ export class Player extends AnimatedTileElement {
     }
 
     stepX(tileStepX) {
-        super.stepX(tileStepX, () => centerCameraX(false), scaleGameMap);
+        super.stepX(tileStepX, () => centerCameraX(false), () => centerCameraX(true));
         lightPlayerPosition(this);
     }
 
     stepY(tileStepY) {
-        super.stepY(tileStepY, () => centerCameraY(false), scaleGameMap);
+        super.stepY(tileStepY, () => centerCameraY(false), () => centerCameraX(true));
         lightPlayerPosition(this);
     }
 
     slide(tileDirX, tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
         const cameraCentering = tileDirX !== 0 ? () => centerCameraX(false) : () => centerCameraY(false);
-        super.slide(tileDirX, tileDirY, cameraCentering, scaleGameMap, SLIDE_ANIMATION_TIME);
+        const cameraCenteringAfter = tileDirX !== 0 ? () => centerCameraX(true) : () => centerCameraY(true);
+        super.slide(tileDirX, tileDirY, cameraCentering, cameraCenteringAfter, SLIDE_ANIMATION_TIME);
         lightPlayerPosition(this);
     }
 
