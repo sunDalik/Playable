@@ -40,6 +40,16 @@ export function bindKeys() {
         playerTurn(Game.player2, () => Game.player2.concentrateWeapon())
     };
 
+    const pushKeyP1 = keyboard("KeyR");
+    pushKeyP1.press = () => {
+        playerTurn(Game.player, () => Game.player.pushOrPull())
+    };
+
+    const pushKeyP2 = keyboard("KeyP");
+    pushKeyP2.press = () => {
+        playerTurn(Game.player2, () => Game.player2.pushOrPull())
+    };
+
     const releaseKey = keyboard("Space");
     releaseKey.press = () => {
         playerTurn(null, () => {

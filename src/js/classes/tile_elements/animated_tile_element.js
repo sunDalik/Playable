@@ -11,6 +11,7 @@ export class AnimatedTileElement extends TileElement {
         this.ROTATE_TIME = 6;
         this.SHAKE_ANIMATION_TIME = 9;
         this.MICRO_JUMP_ANIMATION_TIME = 8;
+        this.MICRO_SLIDE_ANIMATION_TIME = 4;
         this.animationCounter = 0;
         this.animation = null;
     }
@@ -304,6 +305,34 @@ export class AnimatedTileElement extends TileElement {
                 Game.APP.ticker.remove(animation);
                 this.animation = null;
                 this.place();
+            }
+        };
+        this.animation = animation;
+        Game.APP.ticker.add(animation);
+    }
+
+    microSlide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.MICRO_SLIDE_ANIMATION_TIME) {
+        this.animationCounter = 0;
+        let stepX;
+        let stepY;
+        if (tileStepX === 0 && tileStepY === 0) {
+            //slide back
+            stepX = (this.getTilePositionX() - this.position.x) / animationTime;
+            stepY = (this.getTilePositionY() - this.position.y) / animationTime;
+        } else {
+            stepX = Game.TILESIZE * 0.4 * tileStepX / animationTime;
+            stepY = Game.TILESIZE * 0.4 * tileStepY / animationTime;
+        }
+
+        const animation = () => {
+            this.position.x += stepX;
+            this.position.y += stepY;
+            this.animationCounter++;
+            if (onFrame) onFrame();
+            if (this.animationCounter >= animationTime) {
+                Game.APP.ticker.remove(animation);
+                this.animation = null;
+                if (onEnd) onEnd();
             }
         };
         this.animation = animation;

@@ -81,7 +81,11 @@ export function generateMap(level) {
             else if (map[i][j] === "mushroom_small") mapCell.entity = new SmallMushroom(j, i);
             else if (map[i][j] === "alligator") {
                 //Pairs for paired enemies are generated in the map generation phase. That is how I've decided it to be...
-                const type = getRandomValue(RABBIT_TYPE);
+                let type = getRandomValue(RABBIT_TYPE);
+                if (type === RABBIT_TYPE.ENERGY) {
+                    //energy type is rarer than others so if we get it we reroll it once again
+                    type = getRandomValue(RABBIT_TYPE)
+                }
                 const prey = new Rabbit(j, i, type);
                 mapCell.entity = new Alligator(j, i, prey);
             } else if (map[i][j] === "statue") {

@@ -62,12 +62,12 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
 
             Game.afterTurn = false;
             if (bothPlayers) {
-                Game.player.cancelAnimation();
-                Game.player2.cancelAnimation();
+                if (Game.player.cancellable) Game.player.cancelAnimation();
+                if (Game.player2.cancellable) Game.player2.cancelAnimation();
             } else {
-                player.cancelAnimation();
+                if (player.cancellable) player.cancelAnimation();
                 if (otherPlayer(player).carried) {
-                    otherPlayer(player).cancelAnimation();
+                    if (otherPlayer(player).cancellable) otherPlayer(player).cancelAnimation();
                 }
             }
             const moveResult = playerMove();
@@ -89,6 +89,9 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
                     damagePlayersWithHazards();
                     setEnemyTurnTimeout();
                 }
+
+                Game.player.cancellable = true;
+                Game.player2.cancellable = true;
             }
         }
     }

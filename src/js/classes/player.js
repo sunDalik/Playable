@@ -37,6 +37,7 @@ export class Player extends AnimatedTileElement {
         this.STEP_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 12;
         this.SLIDE_ANIMATION_TIME = 8;
+        this.PUSH_PULL_ANIMATION_TIME = 6;
         this.role = ROLE.PLAYER;
         this.dead = false;
         this.weapon = null;
@@ -58,6 +59,8 @@ export class Player extends AnimatedTileElement {
         this.currentMovement = this.movement;
         this.moved = false;
         this.carried = false;
+        this.pushPullMode = false;
+        this.cancellable = true;
     }
 
     cancelAnimation() {
@@ -77,6 +80,16 @@ export class Player extends AnimatedTileElement {
     }
 
     move(tileStepX, tileStepY, event) {
+        if (otherPlayer(this).pushPullMode) return false;
+        if (this.pushPullMode) {
+            if (this.tilePosition.x === otherPlayer(this).tilePosition.x && tileStepY !== 0
+                || this.tilePosition.y === otherPlayer(this).tilePosition.y && tileStepX !== 0) {
+                otherPlayer(this).slide(tileStepX * 2, tileStepY * 2, this.PUSH_PULL_ANIMATION_TIME);
+                this.pushPullMode = false;
+                return true;
+            } else return false;
+        }
+
         let attackResult = false;
         if (!event.shiftKey && this.weapon !== null) {
             attackResult = this.weapon.attack(this, tileStepX, tileStepY);
@@ -106,6 +119,7 @@ export class Player extends AnimatedTileElement {
 
 
     castMagic(magic) {
+        if (this.pushPullMode || otherPlayer(this).pushPullMode) return false;
         if (magic) {
             const magicResult = magic.cast(this);
             if (magicResult === false) return false;
@@ -356,6 +370,7 @@ export class Player extends AnimatedTileElement {
     }
 
     releaseMagic() {
+        if (this.pushPullMode || otherPlayer(this).pushPullMode) return false;
         for (const mg of this.getMagic()) {
             if (mg && mg.release) {
                 const magicResult = mg.release(this);
@@ -402,6 +417,7 @@ export class Player extends AnimatedTileElement {
     }
 
     useSecondHand() {
+        if (this.pushPullMode || otherPlayer(this).pushPullMode) return false;
         if (!this.secondHand) return false;
         if (this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD) {
             if (this.secondHand.activate(this)) {
@@ -426,6 +442,7 @@ export class Player extends AnimatedTileElement {
     }
 
     concentrateWeapon() {
+        if (this.pushPullMode || otherPlayer(this).pushPullMode) return false;
         if (!this.weapon || !this.weapon.concentrate) return false;
         if (this.weapon.concentrate(this)) {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type) {
@@ -434,6 +451,21 @@ export class Player extends AnimatedTileElement {
             if (this.armor && this.armor.type === ARMOR_TYPE.ELECTRIC && this.weapon.concentration === 1) return false;
             return true;
         } else return false;
+    }
+
+    pushOrPull() {
+        if (otherPlayer(this).pushPullMode) return false;
+        if (this.pushPullMode) {
+            this.pushPullMode = false;
+            otherPlayer(this).microSlide(0, 0);
+        } else {
+            if (Math.abs(otherPlayer(this).tilePosition.x - this.tilePosition.x) + Math.abs(otherPlayer(this).tilePosition.y - this.tilePosition.y) === 1) {
+                this.pushPullMode = true;
+                otherPlayer(this).microSlide(this.tilePosition.x - otherPlayer(this).tilePosition.x, this.tilePosition.y - otherPlayer(this).tilePosition.y);
+                otherPlayer(this).cancellable = false;
+            }
+        }
+        return false;
     }
 
     spinItem(item, animationTime = 20, fullSpinTimes = 1) {
