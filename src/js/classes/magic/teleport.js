@@ -1,6 +1,7 @@
 import {Game} from "../../game"
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
 import {centerCamera} from "../../camera";
+import {drawInteractionKeys, drawMovementKeyBindings} from "../../drawing/draw_hud";
 
 export class Teleport {
     constructor() {
@@ -23,6 +24,8 @@ export class Teleport {
         wielder.tilePosition.set(otherPlayer.tilePosition.x, otherPlayer.tilePosition.y);
         wielder.placeOnMap();
         wielder.place();
+        drawMovementKeyBindings();
+        drawInteractionKeys();
         centerCamera();
         this.uses--;
         return true;

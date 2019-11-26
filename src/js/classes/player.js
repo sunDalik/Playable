@@ -230,7 +230,7 @@ export class Player extends AnimatedTileElement {
             super.step(tileStepX, tileStepY);
             if (otherPlayer(this).carried) otherPlayer(this).step(tileStepX, tileStepY);
         }
-        if (!this.carried) drawInteractionKeys();
+        if (!Game.player.carried && !Game.player2.carried) drawInteractionKeys();
     }
 
     bump(tileStepX, tileStepY) {
@@ -249,7 +249,7 @@ export class Player extends AnimatedTileElement {
     }
 
     stepY(tileStepY) {
-        super.stepY(tileStepY, () => centerCameraY(false), () => centerCameraX(true));
+        super.stepY(tileStepY, () => centerCameraY(false), () => centerCameraY(true));
         lightPlayerPosition(this);
     }
 
@@ -259,7 +259,7 @@ export class Player extends AnimatedTileElement {
         super.slide(tileDirX, tileDirY, cameraCentering, cameraCenteringAfter, SLIDE_ANIMATION_TIME);
         lightPlayerPosition(this);
         if (otherPlayer(this).carried) otherPlayer(this).slide(tileDirX, tileDirY);
-        if (!this.carried) drawInteractionKeys();
+        if (!Game.player.carried && !Game.player2.carried) drawInteractionKeys();
     }
 
     damage(atk, source, directHit = true, canBeShielded = true) {
@@ -309,6 +309,8 @@ export class Player extends AnimatedTileElement {
         drawStatsForPlayer(this);
         this.dead = true;
         this.visible = false;
+        drawMovementKeyBindings(this);
+        drawInteractionKeys(this);
         this.removeFromMap(this);
         Game.TILESIZE = Game.REFERENCE_TILESIZE;
         redrawTiles();

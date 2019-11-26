@@ -23,6 +23,7 @@ import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
 import {EQUIPMENT_TYPE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
+import {otherPlayer} from "../utils/basic_utils";
 
 export function drawHUD() {
     drawHealth();
@@ -279,12 +280,12 @@ export function redrawFootwear(player) {
 export function drawMovementKeyBindings() {
     const container = HUD.movementGuide;
     removeAllChildrenFromContainer(container);
-    if (!Game.player.carried && !Game.player2.pushPullMode) {
+    if (!Game.player.dead && !Game.player.carried && !Game.player2.pushPullMode) {
         const heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
         const topKey = "W";
         const bottomRowKeys = ["A", "S", "D"];
         if (!Game.player.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {
-            drawKey(topKey, heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+            drawKey(container, topKey, heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         } else bottomRowKeys[1] = "";
         if (Game.player.pushPullMode && Game.player.tilePosition.y !== Game.player2.tilePosition.y) {
             bottomRowKeys[0] = "";
@@ -292,18 +293,18 @@ export function drawMovementKeyBindings() {
         }
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
-                drawKey(bottomRowKeys[i], heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
+                drawKey(container, bottomRowKeys[i], heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
                     heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
             }
         }
     }
 
-    if (!Game.player2.carried && !Game.player.pushPullMode) {
+    if (!Game.player2.dead && !Game.player2.carried && !Game.player.pushPullMode) {
         const heartXOffset = Game.APP.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset - HUDGuideOffsetX;
         let topKey = "I";
         const bottomRowKeys = ["L", "K", "J"];
         if (!Game.player2.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {
-            drawKey(topKey, heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+            drawKey(container, topKey, heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         } else bottomRowKeys[1] = "";
         if (Game.player2.pushPullMode && Game.player.tilePosition.y !== Game.player2.tilePosition.y) {
             bottomRowKeys[0] = "";
@@ -311,31 +312,70 @@ export function drawMovementKeyBindings() {
         }
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
-                drawKey(bottomRowKeys[i], heartXOffset - HUDKeyBindSize * (i + 1) - i * HUDGuideKeyOffsetX,
+                drawKey(container, bottomRowKeys[i], heartXOffset - HUDKeyBindSize * (i + 1) - i * HUDGuideKeyOffsetX,
                     heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
             }
         }
     }
+}
 
-    function drawKey(keyText, posX, posY) {
-        const key = new PIXI.Container();
-        const text = new PIXI.Text(keyText, HUDKeyBindTextStyle);
-        const rect = new PIXI.Graphics();
-        rect.beginFill(0xffffff);
-        rect.lineStyle(2, 0x666666, 0.5);
-        const rectSize = HUDKeyBindSize;
-        rect.drawRect(posX, posY, rectSize, rectSize);
-        rect.endFill();
-        text.position.set(posX + (rectSize - text.width) / 2, posY + (rectSize - text.height) / 2);
-        key.addChild(rect);
-        key.addChild(text);
-        container.addChild(key);
-    }
+function drawKey(container, keyText, posX, posY) {
+    const key = new PIXI.Container();
+    const text = new PIXI.Text(keyText, HUDKeyBindTextStyle);
+    const rect = new PIXI.Graphics();
+    rect.beginFill(0xffffff);
+    rect.lineStyle(2, 0x666666, 0.5);
+    const rectSize = HUDKeyBindSize;
+    rect.drawRect(posX, posY, rectSize, rectSize);
+    rect.endFill();
+    text.position.set(posX + (rectSize - text.width) / 2, posY + (rectSize - text.height) / 2);
+    key.addChild(rect);
+    key.addChild(text);
+    container.addChild(key);
 }
 
 export function drawInteractionKeys() {
     const container = HUD.interactionGuide;
     removeAllChildrenFromContainer(container);
+    const playerSize = 50;
+    const offsetY = 18;
+    const iconSize = 30;
+    if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
+        drawPlayer(Game.player);
+        drawPlayer(Game.player2);
+        if (Game.player.carried || Game.player2.carried) {
+            drawIconAndKey("src/images/unchain_icon.png", "X",
+                Game.APP.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
+        } else {
+            drawIconAndKey("src/images/chain_icon.png", "X",
+                Game.APP.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
+            const swapTexture = Game.player === Game.primaryPlayer ? "src/images/swap_icon_1.png" : "src/images/swap_icon_2.png";
+            drawIconAndKey(swapTexture, "Z",
+                Game.APP.renderer.screen.width / 2 - playerSize - HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
+        }
+
+        function drawPlayer(player) {
+            const texture = player === Game.player ? "src/images/player.png" : "src/images/player2.png";
+            const playerSprite = new PIXI.Sprite(Game.resources[texture].texture);
+            playerSprite.width = playerSize;
+            playerSprite.height = playerSize;
+            playerSprite.zIndex = player.zIndex;
+            playerSprite.position.x = Game.APP.renderer.screen.width / 2 - playerSprite.width / 2;
+            playerSprite.position.y = offsetY;
+            container.addChild(playerSprite);
+        }
+
+        function drawIconAndKey(iconTexture, keyText, posX, posY) {
+            const icon = new PIXI.Sprite(Game.resources[iconTexture].texture);
+            icon.width = iconSize;
+            icon.height = iconSize;
+            icon.position.set(posX - iconSize / 2, posY);
+            container.addChild(icon);
+            drawKey(container, keyText, posX - HUDKeyBindSize / 2, posY + iconSize + 5);
+        }
+    } else if (Math.abs(Game.player.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(Game.player.tilePosition.y - Game.player2.tilePosition.y) === 1) {
+        
+    }
 }
 
 export function redrawEnergy() {

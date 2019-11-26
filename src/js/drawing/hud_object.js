@@ -32,18 +32,19 @@ for (let i = 0; i < keys.length; i++) {
 }
 
 HUD.sortableChildren = true;
+HUD.interactionGuide.sortableChildren = true;
 
 function generateSlotsContentsContainer() {
     const container = {
-        weapon: new PIXI.Container(),
-        secondHand: new PIXI.Container(),
-        headwear: new PIXI.Container(),
-        armor: new PIXI.Container(),
-        footwear: new PIXI.Container(),
-        magic1: new PIXI.Container(),
-        magic2: new PIXI.Container(),
-        magic3: new PIXI.Container(),
-        magic4: new PIXI.Container()
+        weapon: {},
+        secondHand: {},
+        headwear: {},
+        armor: {},
+        footwear: {},
+        magic1: {},
+        magic2: {},
+        magic3: {},
+        magic4: {}
     };
     const keys = Object.keys(container);
     for (let i = 0; i < keys.length; i++) {

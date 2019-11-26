@@ -52,16 +52,16 @@ function setup() {
     Game.player2.weapon = new Knife();
     Game.player.armor = new BasicArmor();
 
+    Game.player2.zIndex = 1;
+    Game.player.zIndex = Game.player2.zIndex + 1;
+    Game.primaryPlayer = Game.player;
+
     drawHUD();
     bindKeys();
     window.addEventListener("resize", () => {
         drawHUD();
         camera.centerCamera();
     });
-
-    Game.player2.zIndex = 1;
-    Game.player.zIndex = Game.player2.zIndex + 1;
-    Game.primaryPlayer = Game.player;
 
     Game.stage = STAGE.FLOODED_CAVE;
     initPools();

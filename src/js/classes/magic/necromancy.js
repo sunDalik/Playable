@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
 import {centerCamera} from "../../camera";
-import {redrawHealthForPlayer} from "../../drawing/draw_hud";
+import {drawInteractionKeys, drawMovementKeyBindings, redrawHealthForPlayer} from "../../drawing/draw_hud";
 
 export class Necromancy {
     constructor() {
@@ -27,6 +27,8 @@ export class Necromancy {
             otherPlayer.tilePosition.set(wielder.tilePosition.x, wielder.tilePosition.y);
             otherPlayer.placeOnMap();
             otherPlayer.place();
+            drawMovementKeyBindings();
+            drawInteractionKeys();
             centerCamera();
             for (const eq of otherPlayer.getEquipment()) {
                 if (eq && eq.onRevive) {
