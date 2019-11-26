@@ -1,10 +1,10 @@
 import {Game} from "./game";
-import {TILE_TYPE} from "./enums";
+import {RABBIT_TYPE, TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 
 import {copy2dArray} from "./utils/basic_utils";
-import {getRandomSpell, getRandomChestDrop, getRandomWeapon} from "./utils/random_utils";
+import {getRandomSpell, getRandomChestDrop, getRandomWeapon, randomChoice, getRandomValue} from "./utils/random_utils";
 import {Roller} from "./classes/enemies/roller";
 import {RollerB} from "./classes/enemies/roller_b";
 import {Snail} from "./classes/enemies/snail";
@@ -26,7 +26,7 @@ import {KingFrog} from "./classes/enemies/frog_king";
 import {FireFrog} from "./classes/enemies/frog_fire";
 import {Frog} from "./classes/enemies/frog";
 import {Mushroom} from "./classes/enemies/mushroom";
-import {SmallMushroom} from "./classes/enemies/small_mushroom";
+import {SmallMushroom} from "./classes/enemies/mushroom_small";
 import {Alligator} from "./classes/enemies/alligator";
 import {Rabbit} from "./classes/enemies/rabbit";
 
@@ -81,7 +81,8 @@ export function generateMap(level) {
             else if (map[i][j] === "mushroom_small") mapCell.entity = new SmallMushroom(j, i);
             else if (map[i][j] === "alligator") {
                 //Pairs for paired enemies are generated in the map generation phase. That is how I've decided it to be...
-                const prey = new Rabbit(j, i);
+                const type = getRandomValue(RABBIT_TYPE);
+                const prey = new Rabbit(j, i, type);
                 mapCell.entity = new Alligator(j, i, prey);
             } else if (map[i][j] === "statue") {
                 if (Game.weaponPool.length > 0) {

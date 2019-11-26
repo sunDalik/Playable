@@ -39,6 +39,8 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/frog_king_fire.png")
         .add("src/images/enemies/mushroom.png")
         .add("src/images/enemies/mushroom_walking.png")
+        .add("src/images/enemies/mushroom_small.png")
+        .add("src/images/enemies/mushroom_small_walking.png")
 
         .add("src/images/HUD/heart_full.png")
         .add("src/images/HUD/heart_75.png")

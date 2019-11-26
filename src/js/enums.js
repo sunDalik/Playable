@@ -22,6 +22,12 @@ export const ENEMY_TYPE = Object.freeze({
     ALLIGATOR: 19,
     RABBIT: 20
 });
+export const RABBIT_TYPE = Object.freeze({
+    ENERGY: 0,
+    ELECTRIC: 1,
+    FIRE: 2,
+    POISON: 3,
+});
 
 export const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});
 export const MAGIC_TYPE = Object.freeze({
@@ -53,7 +59,7 @@ export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1, VAMPIRE_
 export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4});
 export const FOOTWEAR_TYPE = Object.freeze({DIAGONAL: 0, ANTI_HAZARD: 1, DAMAGING: 2});
 export const SHIELD_TYPE = Object.freeze({PARRY: 0, PASSIVE: 1, STUNNING: 2, SPIKY: 3, ARMORING: 4});
-export const TOOL_TYPE = Object.freeze({PICKAXE: 0});
+export const TOOL_TYPE = Object.freeze({PICKAXE: 0, TORCH: 1});
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
 

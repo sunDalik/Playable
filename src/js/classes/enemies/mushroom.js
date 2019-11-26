@@ -21,7 +21,7 @@ export class Mushroom extends Enemy {
         this.walkingTexture = Game.resources["src/images/enemies/mushroom_walking.png"].texture;
         this.normalTexture = Game.resources["src/images/enemies/mushroom.png"].texture;
         this.standing = false;
-        this.direction = 1; //just a default value
+        this.direction = {x: 1, y: 0}; //just a default value
         this.zIndex = 1;
         this.scaleModifier = 0.9;
         this.spillAreas = [];
@@ -40,23 +40,23 @@ export class Mushroom extends Enemy {
             this.standing = false;
             this.place();
         } else if (this.walking) {
-            if (isEmpty(this.tilePosition.x + this.direction, this.tilePosition.y)) {
+            if (isEmpty(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y)) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-                this.stepX(this.direction);
+                this.step(this.direction.x, this.direction.y);
                 this.updateMapPosition();
             } else {
-                const player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
+                const player = getPlayerOnTile(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
                 if (player) player.damage(this.atk, this, true);
-                this.bumpX(this.direction);
+                this.bump(this.direction.x, this.direction.y);
             }
             this.standing = true;
             this.walking = false;
         } else if (this.walkDelay <= 0) {
-            const directions = getRelativelyEmptyHorizontalDirections(this);
+            const directions = this.getDirections();
             if (directions.length === 0) {
                 this.walkDelay += 4;
             } else {
-                this.direction = randomChoice(directions).x;
+                this.direction = randomChoice(directions);
                 this.texture = this.walkingTexture;
                 this.walking = true;
                 this.correctScale();
@@ -123,11 +123,15 @@ export class Mushroom extends Enemy {
         }
     }
 
-    //this guy is drawn facing left...
-    //todo: make him face right
     correctScale() {
-        if ((this.direction === 1 && this.scale.x > 0) || (this.direction === -1 && this.scale.x < 0)) {
+        if ((this.direction.x === 1 && this.scale.x < 0) || (this.direction.x === -1 && this.scale.x > 0)) {
             this.scale.x *= -1
+        } else if (this.direction.x === 0) {
+            this.scale.x *= randomChoice([-1, 1]);
         }
+    }
+
+    getDirections() {
+        return getRelativelyEmptyHorizontalDirections(this);
     }
 }

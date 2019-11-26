@@ -2,6 +2,7 @@ import {Game} from "../../game"
 import {ENEMY_TYPE} from "../../enums";
 import {getRandomInt} from "../../utils/random_utils";
 import {Mushroom} from "./mushroom";
+import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 
 export class SmallMushroom extends Mushroom {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/mushroom_small.png"].texture) {
@@ -16,6 +17,10 @@ export class SmallMushroom extends Mushroom {
     }
 
     getWalkDelay() {
-        return getRandomInt(5, 11);
+        return getRandomInt(4, 9);
+    }
+
+    getDirections() {
+        return getRelativelyEmptyCardinalDirections(this);
     }
 }

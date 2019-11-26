@@ -1,5 +1,4 @@
 import {Game} from "../game";
-import {removeObjectFromArray} from "./basic_utils";
 import {removeItemFromPool} from "../game_changer";
 
 export function randomShuffle(array) {
@@ -28,8 +27,7 @@ export function getRandomInt(min, max) {
 }
 
 export function getRandomValue(obj) {
-    const keys = Object.keys(obj);
-    return obj[keys[keys.length * Math.random() << 0]];
+    return obj[randomChoice(Object.keys(obj))];
 }
 
 export function getRandomWeapon() {
