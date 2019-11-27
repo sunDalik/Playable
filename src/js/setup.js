@@ -77,14 +77,28 @@ export function initializeLevel() {
     Game.levelGraph = getLevelPlayerGraph(level);
 
     if (!Game.player.dead) {
-        Game.player.tilePosition.set(Game.startX, Game.startY);
-        Game.player.place();
-        Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
+        if (!Game.player.carried) {
+            Game.player.tilePosition.set(Game.startX, Game.startY);
+            Game.player.place();
+            Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
+        }
+        if (Game.player2.carried) {
+            Game.player2.tilePosition.set(Game.player.tilePosition.x, Game.player.tilePosition.y);
+            Game.player2.place();
+            Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = Game.player2;
+        }
     }
     if (!Game.player2.dead) {
-        Game.player2.tilePosition.set(Game.startX + 1, Game.startY + 1);
-        Game.player2.place();
-        Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+        if (!Game.player2.carried) {
+            Game.player2.tilePosition.set(Game.startX + 1, Game.startY + 1);
+            Game.player2.place();
+            Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+        }
+        if (Game.player.carried) {
+            Game.player.tilePosition.set(Game.player2.tilePosition.x, Game.player2.tilePosition.y);
+            Game.player.place();
+            Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].secondaryEntity = Game.player;
+        }
     }
 
     Game.grid = drawGrid();

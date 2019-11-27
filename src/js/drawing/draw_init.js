@@ -59,15 +59,16 @@ export function createDarkness() {
 export function drawEntities() {
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
-            const entity = Game.map[i][j].entity;
-            if (entity !== null) {
-                Game.world.addChild(entity);
-                Game.tiles.push(entity);
-                if (entity.role === ROLE.ENEMY) {
-                    Game.enemies.push(entity);
-                }
-                if (entity.role !== ROLE.PLAYER) {
-                    entity.visible = false;
+            for (const entity of [Game.map[i][j].entity, Game.map[i][j].secondaryEntity]) {
+                if (entity !== null) {
+                    Game.world.addChild(entity);
+                    Game.tiles.push(entity);
+                    if (entity.role === ROLE.ENEMY) {
+                        Game.enemies.push(entity);
+                    }
+                    if (entity.role !== ROLE.PLAYER) {
+                        entity.visible = false;
+                    }
                 }
             }
         }
