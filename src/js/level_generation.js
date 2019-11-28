@@ -144,12 +144,14 @@ export function generateLevel() {
         }
     }
 
-    const startRoomWidth = getRandomInt(6, 9);
-    const startRoomHeight = getRandomInt(6, 9);
+    let startRoomWidth;
+    let startRoomHeight;
 
     let startRoomEntriesCount;
     const startRoomEntries = [];
     if (Game.stage === STAGE.DARK_TUNNEL) {
+        startRoomWidth = getRandomInt(5, 7);
+        startRoomHeight = getRandomInt(5, 7);
         if (entryCount % 2 === 0) startRoomEntriesCount = 2;
         else startRoomEntriesCount = 1;
         if (startRoomEntriesCount === 2) {
@@ -165,11 +167,13 @@ export function generateLevel() {
                 if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};
                 else startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: startRoomHeight - 1};
             } else {
-                if (endingRoomX === 0) startRoomEntries[1] = {x: 0, y: getRandomInt(1, startRoomHeight - 1)};
+                if (endingRoomX === 0) startRoomEntries[0] = {x: 0, y: getRandomInt(1, startRoomHeight - 1)};
                 else startRoomEntries[0] = {x: startRoomWidth - 1, y: getRandomInt(1, startRoomHeight - 1)};
             }
         }
     } else {
+        startRoomWidth = getRandomInt(6, 9);
+        startRoomHeight = getRandomInt(6, 9);
         if (entryCount % 2 === 0) startRoomEntriesCount = 2;
         else startRoomEntriesCount = 3;
         if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};
@@ -246,8 +250,8 @@ export function generateLevel() {
         const startX = previousX + randomOffsetX;
         const startY = previousY + randomOffsetY;
         if (r === startRoomI) {
-            Game.startX = startX + Math.floor(startRoomWidth / 2) - 1;
-            Game.startY = startY + Math.floor(startRoomHeight / 2) - 1;
+            Game.startX = startX + Math.floor((startRoomWidth - 2) / 2) + 1;
+            Game.startY = startY + Math.floor((startRoomHeight - 2) / 2) + 1;
             if (Game.stage === STAGE.DARK_TUNNEL) {
                 let torchX = 1;
                 let torchY = 2;
@@ -343,6 +347,8 @@ export function generateLevel() {
     }
     outlinePathsWithWalls(level);
     level = expandLevel(level, 1, 1);
+    Game.startX++;
+    Game.startY++;
     connectDiagonalPaths(level);
     outlineWallsWithSuperWalls(level);
     return level;

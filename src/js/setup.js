@@ -14,6 +14,8 @@ import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./dr
 import {drawHUD} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
+import {randomChoice} from "./utils/random_utils";
+import {get8Directions, get8DirectionsWithoutItems} from "./utils/map_utils";
 
 PIXI.utils.skipHello();
 const app = initApplication();
@@ -90,7 +92,12 @@ export function initializeLevel() {
     }
     if (!Game.player2.dead) {
         if (!Game.player2.carried) {
-            Game.player2.tilePosition.set(Game.startX + 1, Game.startY + 1);
+            if (Game.player.carried)
+                Game.player2.tilePosition.set(Game.startX, Game.startY);
+            else {
+                const startPlace = randomChoice(get8DirectionsWithoutItems(Game.player));
+                Game.player2.tilePosition.set(Game.player.tilePosition.x + startPlace.x, Game.player.tilePosition.y + startPlace.y);
+            }
             Game.player2.place();
             Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
         }
@@ -113,5 +120,8 @@ export function initializeLevel() {
     createDarkness();
     if (!Game.player.dead) lightPlayerPosition(Game.player);
     if (!Game.player2.dead) lightPlayerPosition(Game.player2);
+    if (Game.stage === STAGE.DARK_TUNNEL) {
+
+    }
     camera.centerCamera();
 }
