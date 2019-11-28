@@ -256,7 +256,7 @@ export function generateLevel() {
                 let torchX = 1;
                 let torchY = 2;
                 for (const entry of startRoomEntries) {
-                    if (torchY === entry.y && torchX === entry.x) {
+                    if (torchY === entry.y && torchX === entry.x + 1) {
                         torchX = startRoomWidth - 2;
                         break;
                     }

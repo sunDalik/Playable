@@ -8,6 +8,8 @@ export class LyingItem extends TileElement {
         super(item.texture, tilePositionX, tilePositionY);
         this.item = item;
         this.animation = createFloatingItemAnimation(this);
+        this.width = Game.TILESIZE * 0.9;
+        this.height = Game.TILESIZE * 0.9;
         this.zIndex = -1;
     }
 
@@ -17,6 +19,10 @@ export class LyingItem extends TileElement {
             Game.world.removeChild(this);
             Game.map[this.tilePosition.y][this.tilePosition.x].item = null;
             Game.APP.ticker.remove(this.animation);
+        } else {
+            this.texture = this.item.texture;
+            this.width = Game.TILESIZE * 0.9;
+            this.height = Game.TILESIZE * 0.9;
         }
     }
 }
