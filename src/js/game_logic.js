@@ -1,7 +1,7 @@
 import {Game} from "./game"
 import {incrementStage, setVariablesForStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, ROLE} from "./enums"
+import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, ROLE, STAGE} from "./enums"
 import {otherPlayer, removeObjectFromArray} from "./utils/basic_utils";
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 
@@ -111,8 +111,14 @@ export function damagePlayerWithHazards(player) {
                 player.damage(hazard.atk, hazard);
             }
         }
+        if (Game.stage === STAGE.DARK_TUNNEL) {
+            if (Game.semiDarkTiles[player.tilePosition.y + 1][player.tilePosition.x].visible
+                && Game.semiDarkTiles[player.tilePosition.y - 1][player.tilePosition.x].visible
+                && Game.semiDarkTiles[player.tilePosition.y][player.tilePosition.x + 1].visible
+                && Game.semiDarkTiles[player.tilePosition.y][player.tilePosition.x - 1].visible)
+                player.damage(0.25, null, false, false);
+        }
     }
-    //todo: if is dark tunnel and player is 3 tiles away from the torch bearer damage him
 }
 
 export function switchPlayers() {
