@@ -8,7 +8,7 @@ import * as camera from "./camera";
 import {STAGE} from "./enums";
 import {generateLevel, getLevelPlayerGraph} from "./level_generation";
 import {calculateDetectionGraph, generateMap} from "./map_generation";
-import {lightPlayerPosition} from "./drawing/lighting";
+import {lightPlayerPosition, lightPosition} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
 import {drawHUD} from "./drawing/draw_hud";
@@ -54,9 +54,9 @@ function setup() {
     Game.player2.weapon = new Knife();
     Game.player.armor = new BasicArmor();
 
-    Game.player2.zIndex = 1;
-    Game.player.zIndex = Game.player2.zIndex + 1;
-    Game.primaryPlayer = Game.player;
+    Game.player.zIndex = 1;
+    Game.player2.zIndex = Game.player.zIndex + 1;
+    Game.primaryPlayer = Game.player2;
 
     drawHUD();
     bindKeys();
@@ -121,7 +121,7 @@ export function initializeLevel() {
     if (!Game.player.dead) lightPlayerPosition(Game.player);
     if (!Game.player2.dead) lightPlayerPosition(Game.player2);
     if (Game.stage === STAGE.DARK_TUNNEL) {
-
+        lightPosition(Game.torchTile, 2, true);
     }
     camera.centerCamera();
 }

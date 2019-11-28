@@ -126,6 +126,7 @@ export function generateMap(level) {
                 }
             } else if (map[i][j] === "torch") {
                 mapCell.item = new LyingItem(j, i, new Torch());
+                Game.torchTile = {x: j, y: i};
             }
 
             map[i][j] = mapCell;

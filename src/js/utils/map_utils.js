@@ -58,7 +58,7 @@ export function addHazardOrRefresh(hazard) {
 export function get8DirectionsWithoutItems(tileElement) {
     let directions = [];
     for (const dir of get8Directions()) {
-        if (Game.map[tileElement.tilePosition.y + dir.y][tileElement.tilePosition.x + dir.x]) {
+        if (Game.map[tileElement.tilePosition.y + dir.y][tileElement.tilePosition.x + dir.x].item === null) {
             directions.push(dir);
         }
     }

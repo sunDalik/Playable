@@ -1,8 +1,17 @@
 import {Game} from "../game";
-import {STAGE, TILE_TYPE} from "../enums";
+import {EQUIPMENT_TYPE, STAGE, TILE_TYPE, TOOL_TYPE} from "../enums";
 
 let litAreas = [];
 let litDTAreas = [];
+
+export function lightPosition(pos, distance = 3, bright = false) {
+    litAreas = [];
+    lightWorld(pos.x, pos.y, undefined, distance);
+    if (Game.stage === STAGE.DARK_TUNNEL && bright) {
+        litDTAreas = [];
+        lightWorldDTTorch(pos.x, pos.y, distance);
+    }
+}
 
 export function lightPlayerPosition(player) {
     litAreas = [];
@@ -14,8 +23,8 @@ export function lightPlayerPosition(player) {
         const duskDist = 3;
         lightWorld(px, py, undefined, duskDist);
 
-        //later you will change that if so it checks if player has torch
-        if (Game.stage === STAGE.DARK_TUNNEL && player === Game.player) {
+        if (Game.stage === STAGE.DARK_TUNNEL && player.secondHand
+            && player.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && player.secondHand.type === TOOL_TYPE.TORCH) {
             for (const tile of litDTAreas) {
                 Game.semiDarkTiles[tile.y][tile.x].visible = true;
             }
