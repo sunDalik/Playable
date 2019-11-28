@@ -63,10 +63,6 @@ export function drawEntities() {
                 if (entity !== null) {
                     Game.world.addChild(entity);
                     Game.tiles.push(entity);
-                    if (entity.role === ROLE.INANIMATE && entity.type === INANIMATE_TYPE.CHEST
-                        && entity.contents && entity.contents.equipmentType === EQUIPMENT_TYPE.TOOL && entity.contents.type === TOOL_TYPE.TORCH) {
-                        Game.world.removeChild(entity);
-                    }
                     if (entity.role === ROLE.ENEMY) {
                         Game.enemies.push(entity);
                     }
@@ -74,6 +70,11 @@ export function drawEntities() {
                         entity.visible = false;
                     }
                 }
+            }
+            const entity = Game.map[i][j].item;
+            if (entity !== null) {
+                Game.world.addChild(entity);
+                Game.tiles.push(entity);
             }
         }
     }

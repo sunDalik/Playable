@@ -245,11 +245,13 @@ export class Player extends AnimatedTileElement {
     stepX(tileStepX) {
         super.stepX(tileStepX, () => centerCameraX(false), () => centerCameraX(true));
         lightPlayerPosition(this);
+        this.pickUpItems();
     }
 
     stepY(tileStepY) {
         super.stepY(tileStepY, () => centerCameraY(false), () => centerCameraY(true));
         lightPlayerPosition(this);
+        this.pickUpItems();
     }
 
     slide(tileDirX, tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
@@ -257,8 +259,15 @@ export class Player extends AnimatedTileElement {
         const cameraCenteringAfter = tileDirX !== 0 ? () => centerCameraX(true) : () => centerCameraY(true);
         super.slide(tileDirX, tileDirY, cameraCentering, cameraCenteringAfter, SLIDE_ANIMATION_TIME);
         lightPlayerPosition(this);
+        this.pickUpItems();
         if (otherPlayer(this).carried) otherPlayer(this).slide(tileDirX, tileDirY);
         if (!Game.player.carried && !Game.player2.carried) drawInteractionKeys();
+    }
+
+    pickUpItems() {
+        if (Game.map[this.tilePosition.y][this.tilePosition.x].item) {
+            Game.map[this.tilePosition.y][this.tilePosition.x].item.pickUp(this);
+        }
     }
 
     damage(atk, source, directHit = true, canBeShielded = true) {

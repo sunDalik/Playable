@@ -249,10 +249,18 @@ export function generateLevel() {
             Game.startX = startX + Math.floor(startRoomWidth / 2) - 1;
             Game.startY = startY + Math.floor(startRoomHeight / 2) - 1;
             if (Game.stage === STAGE.DARK_TUNNEL) {
-                //currentRoom[Math.floor(startRoomHeight / 2) - 1][1] = "torch";
+                let torchX = 1;
+                let torchY = 2;
+                for (const entry of startRoomEntries) {
+                    if (torchY === entry.y && torchX === entry.x) {
+                        torchX = startRoomWidth - 2;
+                        break;
+                    }
+                }
+                currentRoom[torchY][torchX] = "torch";
             }
         } else if (r === endingRoomI) {
-            level[startY + Math.floor(endingRoomHeight / 2)][startX + Math.floor(endingRoomWidth / 2)] = "exit";
+            currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = "exit";
             //Game.startX = startX + Math.floor(endingRoomWidth / 2) - 2; //for tests
             //Game.startY = startY + Math.floor(endingRoomHeight / 2) - 2;
         }

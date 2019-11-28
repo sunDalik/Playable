@@ -30,6 +30,7 @@ import {SmallMushroom} from "./classes/enemies/mushroom_small";
 import {Alligator} from "./classes/enemies/alligator";
 import {Rabbit} from "./classes/enemies/rabbit";
 import {Torch} from "./classes/equipment/tools/torch";
+import {LyingItem} from "./classes/equipment/lying_item";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -42,6 +43,7 @@ export function generateMap(level) {
                 hazard: null,
                 entity: null,
                 secondaryEntity: null,
+                item: null,
                 lit: false
             };
             if (map[i][j] === "w") {
@@ -123,9 +125,7 @@ export function generateMap(level) {
                     mapCell.entity = new Obelisk(j, i, magicPool, onDestroyMagicPool);
                 }
             } else if (map[i][j] === "torch") {
-                const chest = new Chest(j, i, new Torch());
-                chest.interact(null);
-                mapCell.entity = chest;
+                mapCell.item = new LyingItem(j, i, new Torch());
             }
 
             map[i][j] = mapCell;
