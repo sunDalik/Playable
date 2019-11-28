@@ -4,7 +4,7 @@ import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 
 import {copy2dArray} from "./utils/basic_utils";
-import {getRandomSpell, getRandomChestDrop, getRandomWeapon, randomChoice, getRandomValue} from "./utils/random_utils";
+import {getRandomChestDrop, getRandomSpell, getRandomValue, getRandomWeapon} from "./utils/random_utils";
 import {Roller} from "./classes/enemies/roller";
 import {RollerB} from "./classes/enemies/roller_b";
 import {Snail} from "./classes/enemies/snail";
@@ -29,6 +29,7 @@ import {Mushroom} from "./classes/enemies/mushroom";
 import {SmallMushroom} from "./classes/enemies/mushroom_small";
 import {Alligator} from "./classes/enemies/alligator";
 import {Rabbit} from "./classes/enemies/rabbit";
+import {Torch} from "./classes/equipment/tools/torch";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -121,6 +122,10 @@ export function generateMap(level) {
                     obeliskTiles.push({x: j, y: i});
                     mapCell.entity = new Obelisk(j, i, magicPool, onDestroyMagicPool);
                 }
+            } else if (map[i][j] === "torch") {
+                const chest = new Chest(j, i, new Torch());
+                chest.interact(null);
+                mapCell.entity = chest;
             }
 
             map[i][j] = mapCell;

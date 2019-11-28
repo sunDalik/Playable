@@ -25,6 +25,7 @@ export class Mushroom extends Enemy {
         this.zIndex = 1;
         this.scaleModifier = 0.9;
         this.spillAreas = [];
+        this.healOnHit = 0;
     }
 
     //should I keep this or check for "immediate reactions" in lightPlayerPosition instead?
@@ -44,7 +45,10 @@ export class Mushroom extends Enemy {
                 this.step(this.direction.x, this.direction.y);
             } else {
                 const player = getPlayerOnTile(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
-                if (player) player.damage(this.atk, this, true);
+                if (player) {
+                    player.damage(this.atk, this, true);
+                    if (this.healOnHit) this.heal(this.healOnHit);
+                }
                 this.bump(this.direction.x, this.direction.y);
             }
             this.standing = true;

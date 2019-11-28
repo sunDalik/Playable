@@ -93,6 +93,16 @@ export class Enemy extends AnimatedTileElement {
         this.healthContainer.visible = false;
     }
 
+    heal(healHP) {
+        if (!this.dead) {
+            this.health += healHP;
+            if (this.health > this.maxHealth) {
+                this.health = this.maxHealth;
+            }
+            this.redrawHealth();
+        }
+    }
+
     revive() {
         if (Game.map[this.tilePosition.y][this.tilePosition.x].entity === null) {
             this.energyDrop = 0;

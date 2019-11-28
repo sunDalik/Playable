@@ -1,6 +1,6 @@
 import {Game} from "../game"
 import * as PIXI from "pixi.js"
-import {ROLE, STAGE} from "../enums";
+import {EQUIPMENT_TYPE, INANIMATE_TYPE, ROLE, STAGE, TOOL_TYPE} from "../enums";
 import {FullTileElement} from "../classes/tile_elements/full_tile_element";
 import {decrementEachDigitInHex} from "../utils/basic_utils";
 
@@ -63,6 +63,10 @@ export function drawEntities() {
                 if (entity !== null) {
                     Game.world.addChild(entity);
                     Game.tiles.push(entity);
+                    if (entity.role === ROLE.INANIMATE && entity.type === INANIMATE_TYPE.CHEST
+                        && entity.contents && entity.contents.equipmentType === EQUIPMENT_TYPE.TOOL && entity.contents.type === TOOL_TYPE.TORCH) {
+                        Game.world.removeChild(entity);
+                    }
                     if (entity.role === ROLE.ENEMY) {
                         Game.enemies.push(entity);
                     }

@@ -14,6 +14,7 @@ export class SmallMushroom extends Mushroom {
         this.poisonSpread = 1;
         this.walkingTexture = Game.resources["src/images/enemies/mushroom_small_walking.png"].texture;
         this.normalTexture = Game.resources["src/images/enemies/mushroom_small.png"].texture;
+        this.healOnHit = 0.5;
     }
 
     getWalkDelay() {

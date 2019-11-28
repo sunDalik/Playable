@@ -144,34 +144,55 @@ export function generateLevel() {
         }
     }
 
-    let startRoomEntriesCount;
-    if (entryCount % 2 === 0) startRoomEntriesCount = 2;
-    else startRoomEntriesCount = 3;
-
     const startRoomWidth = getRandomInt(6, 9);
     const startRoomHeight = getRandomInt(6, 9);
 
+    let startRoomEntriesCount;
     const startRoomEntries = [];
-    if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};
-    else startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: startRoomHeight - 1};
+    if (Game.stage === STAGE.DARK_TUNNEL) {
+        if (entryCount % 2 === 0) startRoomEntriesCount = 2;
+        else startRoomEntriesCount = 1;
+        if (startRoomEntriesCount === 2) {
+            if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};
+            else startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: startRoomHeight - 1};
 
-    if (endingRoomX === 0) startRoomEntries[1] = {x: 0, y: getRandomInt(1, startRoomHeight - 1)};
-    else startRoomEntries[1] = {x: startRoomWidth - 1, y: getRandomInt(1, startRoomHeight - 1)};
+            if (endingRoomX === 0) startRoomEntries[1] = {x: 0, y: getRandomInt(1, startRoomHeight - 1)};
+            else startRoomEntries[1] = {x: startRoomWidth - 1, y: getRandomInt(1, startRoomHeight - 1)};
 
-    if (startRoomEntriesCount === 3) {
-        const option = getRandomInt(0, 2);
-        if (option === 0) {
-            if (endingRoomY === 0) startRoomEntries[2] = {
-                x: getRandomInt(1, startRoomWidth - 1),
-                y: startRoomHeight - 1
-            };
-            else startRoomEntries[2] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};
-        } else {
-            if (endingRoomX === 0) startRoomEntries[2] = {
-                x: startRoomWidth - 1,
-                y: getRandomInt(1, startRoomHeight - 1)
-            };
-            else startRoomEntries[2] = {x: 0, y: getRandomInt(1, startRoomHeight - 1)};
+        } else if (startRoomEntriesCount === 1) {
+            const option = getRandomInt(0, 2);
+            if (option === 0) {
+                if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};
+                else startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: startRoomHeight - 1};
+            } else {
+                if (endingRoomX === 0) startRoomEntries[1] = {x: 0, y: getRandomInt(1, startRoomHeight - 1)};
+                else startRoomEntries[0] = {x: startRoomWidth - 1, y: getRandomInt(1, startRoomHeight - 1)};
+            }
+        }
+    } else {
+        if (entryCount % 2 === 0) startRoomEntriesCount = 2;
+        else startRoomEntriesCount = 3;
+        if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};
+        else startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: startRoomHeight - 1};
+
+        if (endingRoomX === 0) startRoomEntries[1] = {x: 0, y: getRandomInt(1, startRoomHeight - 1)};
+        else startRoomEntries[1] = {x: startRoomWidth - 1, y: getRandomInt(1, startRoomHeight - 1)};
+
+        if (startRoomEntriesCount === 3) {
+            const option = getRandomInt(0, 2);
+            if (option === 0) {
+                if (endingRoomY === 0) startRoomEntries[2] = {
+                    x: getRandomInt(1, startRoomWidth - 1),
+                    y: startRoomHeight - 1
+                };
+                else startRoomEntries[2] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};
+            } else {
+                if (endingRoomX === 0) startRoomEntries[2] = {
+                    x: startRoomWidth - 1,
+                    y: getRandomInt(1, startRoomHeight - 1)
+                };
+                else startRoomEntries[2] = {x: 0, y: getRandomInt(1, startRoomHeight - 1)};
+            }
         }
     }
 
@@ -224,15 +245,18 @@ export function generateLevel() {
         const randomOffsetY = getRandomInt(minRandRoomOffset, maxRandRoomOffset + 1);
         const startX = previousX + randomOffsetX;
         const startY = previousY + randomOffsetY;
-        mergeRoomIntoLevel(level, currentRoom, startX, startY);
         if (r === startRoomI) {
             Game.startX = startX + Math.floor(startRoomWidth / 2) - 1;
             Game.startY = startY + Math.floor(startRoomHeight / 2) - 1;
+            if (Game.stage === STAGE.DARK_TUNNEL) {
+                //currentRoom[Math.floor(startRoomHeight / 2) - 1][1] = "torch";
+            }
         } else if (r === endingRoomI) {
             level[startY + Math.floor(endingRoomHeight / 2)][startX + Math.floor(endingRoomWidth / 2)] = "exit";
             //Game.startX = startX + Math.floor(endingRoomWidth / 2) - 2; //for tests
             //Game.startY = startY + Math.floor(endingRoomHeight / 2) - 2;
         }
+        mergeRoomIntoLevel(level, currentRoom, startX, startY);
 
         previousX = startX + currentRoom[0].length;
         if (currentRoom.length + randomOffsetY > previousYMaxAddition) previousYMaxAddition = currentRoom.length + randomOffsetY;
@@ -513,7 +537,7 @@ function createRoom(width, height, entries) {
             } else room[i][j] = "";
             /*if (j === width - 2 && i === height - 2) {
                 room[i][j] = "frog";
-            } */ //for tests
+            } */  //for tests
             for (const entry of entries) {
                 if (i === entry.y && j === entry.x) {
                     room[i][j] = "entry";
