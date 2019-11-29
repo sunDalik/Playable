@@ -4,6 +4,7 @@ import {initializeLevel} from "./setup"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, ROLE, STAGE} from "./enums"
 import {otherPlayer, removeObjectFromArray} from "./utils/basic_utils";
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
+import {createKissHeartAnimation} from "./animations";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -163,6 +164,13 @@ export function carryPlayer() {
     if ((Game.player.armor && Game.player.armor.type === ARMOR_TYPE.ELECTRIC)
         || (Game.player2.armor && Game.player2.armor.type === ARMOR_TYPE.ELECTRIC)) return false;
     else return true;
+}
+
+export function kiss(healAmount = 1) {
+    Game.player.heal(healAmount, false);
+    Game.player2.heal(healAmount, false);
+    createKissHeartAnimation(Game.player.position.x + (Game.player2.position.x - Game.player.position.x) / 2,
+        Game.player.position.y + (Game.player2.position.y - Game.player.position.y) / 2);
 }
 
 export function removeTileFromWorld(tile) {

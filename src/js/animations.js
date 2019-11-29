@@ -166,8 +166,7 @@ export function longShakeScreen() {
     shakeScreen(Game.LONG_SHAKE_TIME, 2, Game.SHORT_SHAKE_AMPLITUDE);
 }
 
-export function createHeartAnimation(positionX, positionY, heartSize = Game.TILESIZE / 3, angleStep = 0) {
-    const animationTime = 30;
+export function createHeartAnimation(positionX, positionY, heartSize = Game.TILESIZE / 3, angleStep = 0, animationTime = 30) {
     const heart = new PIXI.Sprite(Game.resources["src/images/HUD/heart_full.png"].texture);
     heart.width = heartSize;
     heart.height = heartSize;
@@ -175,7 +174,7 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
     heart.position.set(positionX, positionY - heart.height / 4);
     heart.zIndex = 99;
     Game.world.addChild(heart);
-    const stepY = Game.TILESIZE / 65 * 30 / animationTime;
+    const stepY = Game.TILESIZE / 2.5 / animationTime;
     const alphaStep = 1 / animationTime;
     let counter = 0;
 
@@ -204,5 +203,5 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
 }
 
 export function createKissHeartAnimation(positionX, positionY) {
-    createHeartAnimation(positionX, positionY, Game.TILESIZE / 2, 2)
+    createHeartAnimation(positionX, positionY, Game.TILESIZE / 2.5, 1.5, 60)
 }

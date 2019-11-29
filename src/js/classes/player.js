@@ -126,9 +126,11 @@ export class Player extends AnimatedTileElement {
                 this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity);
                 this.bump(tileStepX, tileStepY);
             } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
-                this.step(tileStepX, tileStepY);
-                this.moved = true;
-                if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.EXIT) gotoNextLevel();
+                if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) gotoNextLevel();
+                else {
+                    this.step(tileStepX, tileStepY);
+                    this.moved = true;
+                }
             } else if (!this.secondHand || this.secondHand.equipmentType !== EQUIPMENT_TYPE.TOOL || this.secondHand.use(this, tileStepX, tileStepY) === false) {
                 this.bump(tileStepX, tileStepY);
                 this.moved = true;

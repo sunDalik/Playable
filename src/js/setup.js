@@ -11,11 +11,12 @@ import {calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
-import {drawHUD} from "./drawing/draw_hud";
+import {drawHUD, drawInteractionKeys, drawMovementKeyBindings} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
-import {get8Directions, get8DirectionsWithoutItems} from "./utils/map_utils";
+import {get8DirectionsWithoutItems} from "./utils/map_utils";
+import {kiss} from "./game_logic";
 
 PIXI.utils.skipHello();
 const app = initApplication();
@@ -107,6 +108,8 @@ export function initializeLevel() {
             Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].secondaryEntity = Game.player;
         }
     }
+    drawInteractionKeys();
+    drawMovementKeyBindings();
 
     Game.grid = drawGrid();
     drawTiles();
@@ -114,9 +117,7 @@ export function initializeLevel() {
     for (const enemy of Game.enemies) {
         if (enemy.afterMapGen) enemy.afterMapGen();
     }
-    drawHUD();
     drawOther();
-
     createDarkness();
     if (!Game.player.dead) lightPlayerPosition(Game.player);
     if (!Game.player2.dead) lightPlayerPosition(Game.player2);
@@ -125,4 +126,17 @@ export function initializeLevel() {
     }
     camera.centerCamera();
 
+    setTimeout(() => {
+        if (Math.random() < 0.5 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {
+            Game.player.microSlide(Game.player2.tilePosition.x - Game.player.tilePosition.x,
+                Game.player2.tilePosition.y - Game.player.tilePosition.y,
+                null, () => setTimeout(() => Game.player.microSlide(0, 0), 150),
+                8);
+            Game.player2.microSlide(Game.player.tilePosition.x - Game.player2.tilePosition.x,
+                Game.player.tilePosition.y - Game.player2.tilePosition.y,
+                null, () => setTimeout(() => Game.player2.microSlide(0, 0), 150),
+                8);
+            kiss();
+        }
+    }, 100);
 }
