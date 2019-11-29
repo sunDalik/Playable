@@ -305,7 +305,7 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    voluntaryDamage(damage, toShake = false) {
+    voluntaryDamage(damage, toShake = true) {
         if (!this.dead) {
             this.health -= damage;
             if (this.health <= 0) this.health = 0.25;

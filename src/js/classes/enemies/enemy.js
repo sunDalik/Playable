@@ -163,6 +163,13 @@ export class Enemy extends AnimatedTileElement {
         }, onEnd);
     }
 
+    bump(tileStepX, tileStepY, onFrame = null, onEnd = null) {
+        super.bump(tileStepX, tileStepY, () => {
+            if (onFrame) onFrame();
+            this.moveHealthContainer()
+        }, onEnd);
+    }
+
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         super.slide(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();

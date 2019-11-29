@@ -191,9 +191,9 @@ export class AnimatedTileElement extends TileElement {
         Game.APP.ticker.add(animation);
     }
 
-    bump(tileStepX, tileStepY) {
-        if (tileStepX !== 0) this.bumpX(tileStepX);
-        else if (tileStepY !== 0) this.bumpY(tileStepY);
+    bump(tileStepX, tileStepY, onFrame = null, onEnd = null) {
+        if (tileStepX !== 0) this.bumpX(tileStepX, onFrame, onEnd);
+        else if (tileStepY !== 0) this.bumpY(tileStepY, onFrame, onEnd);
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {

@@ -53,9 +53,6 @@ export class SpiderRed extends Spider {
                 && isNotAWall(this.tilePosition.x + throwX, this.tilePosition.y + throwY)) {
                 this.throwStep(throwX * 2, throwY * 2);
                 return true;
-            } else if (isEmpty(this.tilePosition.x + throwX, this.tilePosition.y + throwY)) {
-                this.throwStep(throwX, throwY);
-                return true;
             }
         }
         return false;

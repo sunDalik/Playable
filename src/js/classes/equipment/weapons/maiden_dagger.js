@@ -13,7 +13,7 @@ export class MaidenDagger {
     }
 
     onWear(player) {
-        //player.voluntaryDamage(0.25)?
+        player.voluntaryDamage(0.25);
     }
 
     attack(wielder, tileDirX, tileDirY) {
@@ -38,8 +38,7 @@ export class MaidenDagger {
                         if (isEmpty(atkPos.x + tileDirX, atkPos.y + tileDirY)) {
                             entity.step(tileDirX, tileDirY);
                         } else {
-                            if (tileDirX) entity.bumpX(tileDirX);
-                            else if (tileDirY) entity.bumpY(tileDirY);
+                            entity.bump(tileDirX, tileDirY);
                             if (isAnyWall(atkPos.x + tileDirX, atkPos.y + tileDirY)) {
                                 enemyDmgValues[i]++;
                             }
