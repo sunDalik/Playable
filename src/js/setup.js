@@ -124,4 +124,5 @@ export function initializeLevel() {
         lightPosition(Game.torchTile, 2, true);
     }
     camera.centerCamera();
+
 }

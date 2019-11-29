@@ -12,7 +12,7 @@ import {
     WEAPON_TYPE
 } from "../enums";
 import {centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
-import {shakeScreen} from "../animations";
+import {createHeartAnimation, shakeScreen} from "../animations";
 import {
     drawInteractionKeys, drawMovementKeyBindings,
     drawStatsForPlayer,
@@ -340,13 +340,14 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    heal(healHP) {
+    heal(healHP, showHeart = true) {
         if (!this.dead) {
             this.health += healHP;
             if (this.health > this.maxHealth) {
                 this.health = this.maxHealth;
             }
             redrawHealthForPlayer(this);
+            if (showHeart) createHeartAnimation(this.position.x, this.position.y);
         }
     }
 
