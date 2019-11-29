@@ -7,8 +7,8 @@ import {
     INANIMATE_TYPE,
     MAGIC_TYPE,
     ROLE,
-    SHIELD_TYPE,
-    TILE_TYPE,
+    SHIELD_TYPE, STAGE,
+    TILE_TYPE, TOOL_TYPE,
     WEAPON_TYPE
 } from "../enums";
 import {centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
@@ -26,6 +26,7 @@ import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {otherPlayer} from "../utils/basic_utils";
+import {LyingItem} from "./equipment/lying_item";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -320,6 +321,16 @@ export class Player extends AnimatedTileElement {
         drawMovementKeyBindings(this);
         drawInteractionKeys(this);
         this.removeFromMap(this);
+        if (Game.stage === STAGE.DARK_TUNNEL) {
+            if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.TORCH) {
+                const item = new LyingItem(this.tilePosition.x, this.tilePosition.y, this.secondHand);
+                Game.world.addChild(item);
+                Game.tiles.push(item);
+                Game.map[this.tilePosition.y][this.tilePosition.x].item = item;
+                this.secondHand = null;
+                redrawSecondHand(this);
+            }
+        }
         Game.TILESIZE = Game.REFERENCE_TILESIZE;
         redrawTiles();
         for (const eq of this.getEquipment()) {

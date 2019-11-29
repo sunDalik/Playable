@@ -2,6 +2,7 @@ import {Game} from "../../game"
 import {createFloatingItemAnimation} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
 import {swapEquipmentWithPlayer} from "../../game_logic";
+import {removeObjectFromArray} from "../../utils/basic_utils";
 
 export class LyingItem extends TileElement {
     constructor(tilePositionX, tilePositionY, item) {
@@ -17,6 +18,7 @@ export class LyingItem extends TileElement {
         this.item = swapEquipmentWithPlayer(player, this.item);
         if (this.item === null) {
             Game.world.removeChild(this);
+            removeObjectFromArray(this, Game.tiles);
             Game.map[this.tilePosition.y][this.tilePosition.x].item = null;
             Game.APP.ticker.remove(this.animation);
         } else {
