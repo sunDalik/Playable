@@ -126,8 +126,10 @@ export class Player extends AnimatedTileElement {
                 this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity);
                 this.bump(tileStepX, tileStepY);
             } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
-                if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) gotoNextLevel();
-                else {
+                if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
+                    gotoNextLevel();
+                    return false;
+                } else {
                     this.step(tileStepX, tileStepY);
                     this.moved = true;
                 }
