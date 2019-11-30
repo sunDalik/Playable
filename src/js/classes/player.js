@@ -12,7 +12,7 @@ import {
     WEAPON_TYPE
 } from "../enums";
 import {centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
-import {createHeartAnimation, shakeScreen} from "../animations";
+import {createHeartAnimation, rotate, shakeScreen} from "../animations";
 import {
     drawInteractionKeys, drawMovementKeyBindings,
     drawStatsForPlayer,
@@ -27,6 +27,7 @@ import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from 
 import {lightPlayerPosition} from "../drawing/lighting";
 import {otherPlayer, setTickTimeout} from "../utils/basic_utils";
 import {LyingItem} from "./equipment/lying_item";
+import {randomChoice} from "../utils/random_utils";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -42,6 +43,7 @@ export class Player extends AnimatedTileElement {
         this.STEP_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 12;
         this.SLIDE_ANIMATION_TIME = 8;
+        this.SLIDE_BUMP_ANIMATION_TIME = 10;
         this.PUSH_PULL_ANIMATION_TIME = 6;
         this.role = ROLE.PLAYER;
         this.dead = false;
@@ -60,9 +62,6 @@ export class Player extends AnimatedTileElement {
         this.savedTileStepX = 0;
         this.savedTileStepY = 0;
         this.animationSubSprites = [];
-        this.movement = 1;
-        this.currentMovement = this.movement;
-        this.moved = false;
         this.carried = false;
         this.pushPullMode = false;
         this.cancellable = true;
@@ -131,11 +130,9 @@ export class Player extends AnimatedTileElement {
                     return false;
                 } else {
                     this.step(tileStepX, tileStepY);
-                    this.moved = true;
                 }
             } else if (!this.secondHand || this.secondHand.equipmentType !== EQUIPMENT_TYPE.TOOL || this.secondHand.use(this, tileStepX, tileStepY) === false) {
                 this.bump(tileStepX, tileStepY);
-                this.moved = true;
             }
         }
     }
@@ -228,7 +225,7 @@ export class Player extends AnimatedTileElement {
     }
 
     step(tileStepX, tileStepY) {
-        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
+        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS && !this.carried) {
             this.slide(tileStepX, tileStepY);
         } else {
             super.step(tileStepX, tileStepY);
@@ -238,9 +235,9 @@ export class Player extends AnimatedTileElement {
     }
 
     bump(tileStepX, tileStepY) {
-        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
-            this.slideBump(tileStepX, tileStepY);
-            if (otherPlayer(this).carried) otherPlayer(this).slideBump(tileStepX, tileStepY);
+        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS && !this.carried) {
+            this.slideBump(tileStepX, tileStepY, null, null, this.SLIDE_BUMP_ANIMATION_TIME);
+            if (otherPlayer(this).carried) otherPlayer(this).slideBump(tileStepX, tileStepY, null, null, this.SLIDE_BUMP_ANIMATION_TIME);
         } else {
             super.bump(tileStepX, tileStepY);
             if (otherPlayer(this).carried) otherPlayer(this).bump(tileStepX, tileStepY);
@@ -282,13 +279,16 @@ export class Player extends AnimatedTileElement {
             if (canBeShielded) {
                 const ally = otherPlayer(this);
                 if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
-                    && (this.shielded || this.secondHand.type === SHIELD_TYPE.PASSIVE)) {
-                    this.secondHand.onBlock(source, this, directHit);
+                    && (this.shielded || this.secondHand.type === SHIELD_TYPE.PASSIVE) && this.secondHand.onBlock(source, this, directHit)) {
                     blocked = true;
                 } else if (ally.tilePosition.x === this.tilePosition.x && ally.tilePosition.y === this.tilePosition.y
                     && ally.secondHand && ally.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
-                    && (ally.shielded || ally.secondHand.type === SHIELD_TYPE.PASSIVE)) {
-                    ally.secondHand.onBlock(source, ally);
+                    && (ally.shielded || ally.secondHand.type === SHIELD_TYPE.PASSIVE) && ally.secondHand.onBlock(source, ally, directHit)) {
+                    blocked = true;
+                } else if (this.armor && this.armor.type === ARMOR_TYPE.WINGS && Math.random() < this.armor.dodgeChance) {
+                    const rotateClockwise = randomChoice([true, false]);
+                    rotate(this, rotateClockwise);
+                    if (otherPlayer(this).carried) rotate(otherPlayer(this), rotateClockwise);
                     blocked = true;
                 }
             }

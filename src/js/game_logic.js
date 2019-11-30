@@ -1,7 +1,7 @@
 import {Game} from "./game"
 import {incrementStage, setVariablesForStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, STAGE} from "./enums"
+import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, HAZARD_TYPE, STAGE} from "./enums"
 import {otherPlayer, removeObjectFromArray, setTickTimeout} from "./utils/basic_utils";
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation} from "./animations";
@@ -54,46 +54,28 @@ export function updateHazards() {
 }
 
 export function playerTurn(player, playerMove, bothPlayers = false) {
-    if (Game.playerMoving === null || player === Game.playerMoving) {
-        if (((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead && !player.carried))) {
-            if (Game.enemiesTimeout !== null) {
-                Game.APP.ticker.remove(Game.enemiesTimeout);
-                enemyTurn();
-            }
+    if (((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead && !player.carried))) {
+        if (Game.enemiesTimeout !== null) {
+            Game.APP.ticker.remove(Game.enemiesTimeout);
+            enemyTurn();
+        }
 
-            Game.afterTurn = false;
-            if (bothPlayers) {
-                if (Game.player.cancellable) Game.player.cancelAnimation();
-                if (Game.player2.cancellable) Game.player2.cancelAnimation();
-            } else {
-                if (player.cancellable) player.cancelAnimation();
-                if (otherPlayer(player).carried) {
-                    if (otherPlayer(player).cancellable) otherPlayer(player).cancelAnimation();
-                }
+        Game.afterTurn = false;
+        if (bothPlayers) {
+            if (Game.player.cancellable) Game.player.cancelAnimation();
+            if (Game.player2.cancellable) Game.player2.cancelAnimation();
+        } else {
+            if (player.cancellable) player.cancelAnimation();
+            if (otherPlayer(player).carried) {
+                if (otherPlayer(player).cancellable) otherPlayer(player).cancelAnimation();
             }
-            const moveResult = playerMove();
-            if (moveResult !== false) {
-                let canMoveFurther = false;
-                if (player && player.moved) {
-                    player.moved = false;
-                    player.currentMovement--;
-                    if (player.currentMovement > 0) {
-                        canMoveFurther = true;
-                        Game.playerMoving = player;
-                        otherPlayer(Game.playerMoving).setMovedTexture();
-                        damagePlayerWithHazards(Game.playerMoving);
-                    }
-                }
-                if (!canMoveFurther) {
-                    if (Game.playerMoving) otherPlayer(Game.playerMoving).setUnmovedTexture();
-                    Game.playerMoving = null;
-                    damagePlayersWithHazards();
-                    setEnemyTurnTimeout();
-                }
-
-                Game.player.cancellable = true;
-                Game.player2.cancellable = true;
-            }
+        }
+        const moveResult = playerMove();
+        if (moveResult !== false) {
+            damagePlayersWithHazards();
+            setEnemyTurnTimeout();
+            Game.player.cancellable = true;
+            Game.player2.cancellable = true;
         }
     }
 }
@@ -106,12 +88,18 @@ export function damagePlayersWithHazards() {
 export function damagePlayerWithHazards(player) {
     if (!player.dead && !player.carried) {
         const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
-        if (hazard !== null) {
-            if (!(player.footwear && player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD)
+        if (hazard) {
+            if (hazard.type === HAZARD_TYPE.POISON
+                && !(player.footwear && (player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD || player.footwear.type === FOOTWEAR_TYPE.DARK_FLAMING))
+                && !(player.armor && player.armor.type === ARMOR_TYPE.WINGS)) {
+                player.damage(hazard.atk, hazard);
+            } else if (hazard.type === HAZARD_TYPE.FIRE
+                && !(player.footwear && player.footwear.type === FOOTWEAR_TYPE.DARK_FLAMING)
                 && !(player.armor && player.armor.type === ARMOR_TYPE.WINGS)) {
                 player.damage(hazard.atk, hazard);
             }
         }
+
         if (Game.stage === STAGE.DARK_TUNNEL) {
             if (Game.semiDarkTiles[player.tilePosition.y + 1][player.tilePosition.x].visible
                 && Game.semiDarkTiles[player.tilePosition.y - 1][player.tilePosition.x].visible

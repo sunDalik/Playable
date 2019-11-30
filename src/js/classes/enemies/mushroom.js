@@ -123,6 +123,9 @@ export class Mushroom extends Enemy {
             this.bottomOffset = (Game.TILESIZE - this.height) / 2;
             this.position.y = Game.TILESIZE * this.tilePosition.y + this.bottomOffset + this.height * this.anchor.y;
         }
+        if (this.healthContainer) {
+            this.moveHealthContainer();
+        }
     }
 
     correctScale() {
