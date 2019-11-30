@@ -57,18 +57,18 @@ export class Snail extends Enemy {
         addHazardOrRefresh(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
     }
 
-    slide(tileStepX, tileStepY) {
+    slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         if (tileStepX !== 0 && Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
             this.scale.x *= -1;
         }
-        super.slide(tileStepX, tileStepY);
+        super.slide(tileStepX, tileStepY, onFrame, onEnd, animationTime);
     }
 
-    slideBump(tileStepX, tileStepY) {
+    slideBump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         if (tileStepX !== 0 && Math.sign(tileStepX) !== Math.sign(this.scale.x)) {
             this.scale.x *= -1;
         }
-        super.slideBump(tileStepX, tileStepY);
+        super.slideBump(tileStepX, tileStepY, onFrame, onEnd, animationTime);
     }
 
     chasePlayer(player) {

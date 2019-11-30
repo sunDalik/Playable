@@ -203,5 +203,5 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
 }
 
 export function createKissHeartAnimation(positionX, positionY) {
-    createHeartAnimation(positionX, positionY, Game.TILESIZE / 2.5, 1.5, 60)
+    createHeartAnimation(positionX, positionY, Game.TILESIZE / 2.5, 1.5, 50)
 }

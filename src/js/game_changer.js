@@ -29,10 +29,11 @@ import {Wings} from "./classes/equipment/armor/wings";
 import {HeavyArmor} from "./classes/equipment/armor/heavy";
 import {ElectricArmor} from "./classes/equipment/armor/electric";
 import {VampireCrown} from "./classes/equipment/headwear/vampire_crown";
+import {Wind} from "./classes/magic/wind";
 
 export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer];
-    Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport];
+    Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind];
     Game.chestItemPool = [Pickaxe, BasicArmor, WizardRobe, SeerCirclet, WizardHat, AntiHazardBoots,
         DamagingBoots, PassiveShield, SpikyShield, StunningShield, HeavyArmor, ElectricArmor, VampireCrown, Wings];
 }

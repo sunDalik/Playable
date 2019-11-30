@@ -22,6 +22,9 @@ export function loadAll(afterLoad) {
         .add("src/images/hazards/poison.png")
         .add("src/images/hazards/fire.png")
         .add("src/images/hazards/fire_small.png")
+        .add("src/images/hazards/dark_poison.png")
+        .add("src/images/hazards/dark_fire.png")
+        .add("src/images/hazards/dark_fire_small.png")
 
         .add("src/images/enemy_attack.png")
         //make different folders for enemies? based on what? on their stage maybe? dunno...
@@ -129,6 +132,7 @@ export function loadAll(afterLoad) {
         .add("src/images/magic/teleport.png")
         .add("src/images/magic/necromancy.png")
         .add("src/images/magic/petrification.png")
+        .add("src/images/magic/wind.png")
 
         .add("src/images/grid.png")
         .load(afterLoad);
