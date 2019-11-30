@@ -10,7 +10,7 @@ export class Spikes {
         this.type = MAGIC_TYPE.SPIKES;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
-        this.atk = 2;
+        this.atk = 3;
         this.friendlyFire = 1;
         this.maxUses = 5;
         this.uses = this.maxUses;

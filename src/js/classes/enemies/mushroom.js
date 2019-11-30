@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {ENEMY_TYPE, TILE_TYPE} from "../../enums";
 import {Enemy} from "./enemy";
-import {PoisonHazard} from "../hazards/poison_hazard";
+import {PoisonHazard} from "../hazards/poison";
 import {getRandomInt, randomChoice} from "../../utils/random_utils";
 import {addHazardOrRefresh, getRelativelyEmptyHorizontalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile, isEmpty, isNotAWall} from "../../map_checks";

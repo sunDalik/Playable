@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {Eel} from "./eel"
 import {ENEMY_TYPE} from "../../enums";
-import {PoisonHazard} from "../hazards/poison_hazard";
+import {PoisonHazard} from "../hazards/poison";
 import {getPlayerOnTile} from "../../map_checks";
 
 export class PoisonEel extends Eel {

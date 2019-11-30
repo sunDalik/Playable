@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
-import {PoisonHazard} from "../hazards/poison_hazard";
+import {PoisonHazard} from "../hazards/poison";
 import {isRelativelyEmpty, getPlayerOnTile} from "../../map_checks";
 import {getRandomInt} from "../../utils/random_utils";
 import {addHazardOrRefresh} from "../../utils/map_utils";
@@ -16,7 +16,6 @@ export class Snail extends Enemy {
         this.turnDelay = 1;
         this.currentTurnDelay = 0;
         this.chase = false;
-        this.SLIDE_ANIMATION_TIME = 12;
     }
 
     move() {

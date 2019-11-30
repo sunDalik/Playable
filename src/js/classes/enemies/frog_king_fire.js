@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {ENEMY_TYPE} from "../../enums";
 import {KingFrog} from "./frog_king";
 import {addHazardOrRefresh} from "../../utils/map_utils";
-import {FireHazard} from "../hazards/fire_hazard";
+import {FireHazard} from "../hazards/fire";
 import {getPlayerOnTile} from "../../map_checks";
 
 export class KingFireFrog extends KingFrog {

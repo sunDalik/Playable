@@ -4,7 +4,7 @@ import {ENEMY_TYPE} from "../../enums";
 import {randomChoice} from "../../utils/random_utils";
 import {addHazardOrRefresh, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile, isNotAWall} from "../../map_checks";
-import {PoisonHazard} from "../hazards/poison_hazard";
+import {PoisonHazard} from "../hazards/poison";
 
 export class Frog extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/frog.png"].texture) {

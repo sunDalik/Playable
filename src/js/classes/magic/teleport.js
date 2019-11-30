@@ -10,7 +10,7 @@ export class Teleport {
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 0;
-        this.maxUses = 6;
+        this.maxUses = 10;
         this.uses = this.maxUses;
     }
 

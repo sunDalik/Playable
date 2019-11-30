@@ -36,7 +36,9 @@ export const MAGIC_TYPE = Object.freeze({
     SPIKES: 2,
     TELEPORT: 3,
     NECROMANCY: 4,
-    PETRIFICATION: 5
+    PETRIFICATION: 5,
+    WIND: 6,
+    ABYSSAL_SPIT: 7
 });
 
 export const STAGE = Object.freeze({FLOODED_CAVE: 0, DARK_TUNNEL: 1, RUINS: 2, LABYRINTH: 3, FINALE: 4});

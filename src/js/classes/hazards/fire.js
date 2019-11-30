@@ -12,12 +12,14 @@ import {randomChoice, randomShuffle} from "../../utils/random_utils";
 export class FireHazard extends Hazard {
     constructor(tilePositionX, tilePositionY, subFire = false, texture = Game.resources["src/images/hazards/fire.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
+        this.normalTexture = Game.resources["src/images/hazards/fire.png"].texture;
+        this.smallTexture = Game.resources["src/images/hazards/fire_small.png"].texture;
         this.LIFETIME = 14;
         this.subFire = subFire;
         this.actualAtk = 0.5;
         if (subFire) {
             this.small = true;
-            this.texture = Game.resources["src/images/hazards/fire_small.png"].texture;
+            this.texture = this.smallTexture;
             this.atk = 0;
         } else {
             this.small = false;
@@ -36,7 +38,7 @@ export class FireHazard extends Hazard {
     updateLifetime() {
         if (super.updateLifetime()) {
             if (this.small) {
-                this.texture = Game.resources["src/images/hazards/fire.png"].texture;
+                this.texture = this.normalTexture;
                 this.small = false;
                 this.atk = this.actualAtk;
             }
