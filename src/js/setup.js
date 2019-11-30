@@ -17,6 +17,7 @@ import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8DirectionsWithoutItems} from "./utils/map_utils";
 import {kiss} from "./game_logic";
+import {setTickTimeout} from "./utils/basic_utils";
 
 PIXI.utils.skipHello();
 const app = initApplication();
@@ -126,17 +127,17 @@ export function initializeLevel() {
     }
     camera.centerCamera();
 
-    setTimeout(() => {
+    setTickTimeout(() => {
         if (Math.random() < 0.5 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {
             Game.player.microSlide(Game.player2.tilePosition.x - Game.player.tilePosition.x,
                 Game.player2.tilePosition.y - Game.player.tilePosition.y,
-                null, () => setTimeout(() => Game.player.microSlide(0, 0), 150),
+                null, () => setTickTimeout(() => Game.player.microSlide(0, 0), 9),
                 8);
             Game.player2.microSlide(Game.player.tilePosition.x - Game.player2.tilePosition.x,
                 Game.player.tilePosition.y - Game.player2.tilePosition.y,
-                null, () => setTimeout(() => Game.player2.microSlide(0, 0), 150),
+                null, () => setTickTimeout(() => Game.player2.microSlide(0, 0), 9),
                 8);
             kiss();
         }
-    }, 100);
+    }, 6);
 }

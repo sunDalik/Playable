@@ -81,8 +81,8 @@ export function drawEntities() {
 }
 
 export function drawGrid() {
-    let gridTexture = Game.resources["src/images/grid.png"].texture;
-    let grid = new PIXI.TilingSprite(gridTexture, Game.map[0].length * gridTexture.width, Game.map.length * gridTexture.height);
+    const gridTexture = Game.resources["src/images/grid.png"].texture;
+    const grid = new PIXI.TilingSprite(gridTexture, Game.map[0].length * gridTexture.width, Game.map.length * gridTexture.height);
     grid.scale.set(Game.TILESIZE / gridTexture.width, Game.TILESIZE / gridTexture.height);
     //2 is half-width of a tile's border... Don't ask me I don't understand why it works either
     grid.position.x -= 2 * Game.TILESIZE / gridTexture.width;
@@ -94,13 +94,13 @@ export function drawGrid() {
 }
 
 export function drawOther() {
-    let gameWorldBG = new PIXI.Graphics();
+    const gameWorldBG = new PIXI.Graphics();
     gameWorldBG.beginFill(Game.BGColor);
     gameWorldBG.drawRect(10, 10, Game.world.width - 20, Game.world.height - 20);
     gameWorldBG.zIndex = -4;
     //to hide grid on world borders
     const gridBorderWidth = -2 * Game.TILESIZE / Game.resources["src/images/grid.png"].texture.width;
-    let blackOutline = new PIXI.Graphics();
+    const blackOutline = new PIXI.Graphics();
     blackOutline.lineStyle(3, 0x000000);
     blackOutline.drawRect(gridBorderWidth, gridBorderWidth, Game.world.width, Game.world.height);
     blackOutline.endFill();

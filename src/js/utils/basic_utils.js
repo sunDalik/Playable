@@ -33,3 +33,16 @@ export function otherPlayer(player) {
     if (player === Game.player) return Game.player2;
     else if (player === Game.player2) return Game.player;
 }
+
+export function setTickTimeout(callback, tickTimeout) {
+    let counter = 0;
+    const timeout = () => {
+        counter++;
+        if (counter >= tickTimeout) {
+            callback();
+            Game.APP.ticker.remove(timeout);
+        }
+    };
+    Game.APP.ticker.add(timeout);
+    return timeout;
+}

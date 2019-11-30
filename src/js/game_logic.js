@@ -1,16 +1,16 @@
 import {Game} from "./game"
 import {incrementStage, setVariablesForStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, ROLE, STAGE} from "./enums"
-import {otherPlayer, removeObjectFromArray} from "./utils/basic_utils";
+import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, STAGE} from "./enums"
+import {otherPlayer, removeObjectFromArray, setTickTimeout} from "./utils/basic_utils";
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation} from "./animations";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
-        Game.enemiesTimeout = setTimeout(() => {
+        Game.enemiesTimeout = setTickTimeout(() => {
             enemyTurn();
-        }, 60);
+        }, 4);
     }
 }
 
@@ -57,7 +57,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
     if (Game.playerMoving === null || player === Game.playerMoving) {
         if (((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead && !player.carried))) {
             if (Game.enemiesTimeout !== null) {
-                clearTimeout(Game.enemiesTimeout);
+                Game.APP.ticker.remove(Game.enemiesTimeout);
                 enemyTurn();
             }
 

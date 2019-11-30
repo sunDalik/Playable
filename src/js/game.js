@@ -50,7 +50,6 @@ Game.chestItemPool = [];
 Game.TURNTIME = 15;
 Game.WEAPON_ATTACK_TIME = 6;
 Game.ITEM_FLOAT_ANIMATION_TIME = 100;
-Game.doubleAttackDelay = 100;
 Game.SHAKE_TIME = 6;
 Game.LONG_SHAKE_TIME = 12;
 Game.SHAKE_AMPLITUDE = 50;

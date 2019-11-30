@@ -25,7 +25,7 @@ import {
 import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
-import {otherPlayer} from "../utils/basic_utils";
+import {otherPlayer, setTickTimeout} from "../utils/basic_utils";
 import {LyingItem} from "./equipment/lying_item";
 
 export class Player extends AnimatedTileElement {
@@ -74,7 +74,7 @@ export class Player extends AnimatedTileElement {
             Game.world.removeChild(subSprite);
         }
         if (this.attackTimeout) {
-            clearTimeout(this.attackTimeout);
+            Game.APP.ticker.remove(this.attackTimeout);
             this.doubleAttack();
             Game.APP.ticker.remove(this.animation);
             this.place();
@@ -453,12 +453,12 @@ export class Player extends AnimatedTileElement {
         if (this.secondHand) {
             if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type && this.weapon.type !== WEAPON_TYPE.MAIDEN_DAGGER) {
                 if (this.canDoubleAttack === true) {
-                    this.attackTimeout = setTimeout(() => {
+                    this.attackTimeout = setTickTimeout(() => {
                         for (const subSprite of this.animationSubSprites) {
                             Game.world.removeChild(subSprite);
                         }
                         this.doubleAttack();
-                    }, Game.doubleAttackDelay);
+                    }, 6);
                 }
             }
         }
