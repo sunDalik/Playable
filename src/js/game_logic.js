@@ -92,11 +92,11 @@ export function damagePlayerWithHazards(player) {
             if (hazard.type === HAZARD_TYPE.POISON
                 && !(player.footwear && (player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD || player.footwear.type === FOOTWEAR_TYPE.DARK_FLAMING))
                 && !(player.armor && player.armor.type === ARMOR_TYPE.WINGS)) {
-                player.damage(hazard.atk, hazard);
+                player.damage(hazard.atk, hazard, false, false);
             } else if (hazard.type === HAZARD_TYPE.FIRE
                 && !(player.footwear && player.footwear.type === FOOTWEAR_TYPE.DARK_FLAMING)
                 && !(player.armor && player.armor.type === ARMOR_TYPE.WINGS)) {
-                player.damage(hazard.atk, hazard);
+                player.damage(hazard.atk, hazard, false, false);
             }
         }
 
