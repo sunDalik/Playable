@@ -89,10 +89,6 @@ export class FireHazard extends Hazard {
         if (this.spreadTimes > this.maxSpreadTimes) this.spreadTimes = this.maxSpreadTimes;
     }
 
-    refreshLifetime() {
-        super.refreshLifetime();
-    }
-
     getCardinalDirectionsWithNoHazardsOfType(tileElement) {
         let directions = [];
         for (const dir of getCardinalDirections()) {

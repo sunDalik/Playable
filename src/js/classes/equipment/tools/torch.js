@@ -9,7 +9,7 @@ export class Torch {
         this.lightSpread = 2;
     }
 
-    use(player, tileDirX, tileDirY) {
+    use() {
         return false;
     }
 }

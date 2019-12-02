@@ -9,7 +9,7 @@ export function lightPosition(pos, distance = 3, bright = false) {
     lightWorld(pos.x, pos.y, undefined, distance);
     if (Game.stage === STAGE.DARK_TUNNEL && bright) {
         litDTAreas = [];
-        lightWorldDTTorch(pos.x, pos.y, distance);
+        lightWorldDTTorch(pos.x, pos.y, distance - 1);
     }
 }
 
@@ -19,17 +19,15 @@ export function lightPlayerPosition(player) {
     const py = player.tilePosition.y;
 
     if (Game.stage === STAGE.DARK_TUNNEL) {
-        const torchDist = 2;
-        const duskDist = 3;
-        lightWorld(px, py, undefined, duskDist);
-
-        if (Game.stage === STAGE.DARK_TUNNEL && player.secondHand
-            && player.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && player.secondHand.type === TOOL_TYPE.TORCH) {
+        if (player.secondHand && player.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && player.secondHand.type === TOOL_TYPE.TORCH) {
             for (const tile of litDTAreas) {
                 Game.semiDarkTiles[tile.y][tile.x].visible = true;
             }
             litDTAreas = [];
-            lightWorldDTTorch(px, py, torchDist);
+            lightWorldDTTorch(px, py, player.secondHand.lightSpread);
+            lightWorld(px, py, undefined, player.secondHand.lightSpread + 1);
+        } else {
+            lightWorld(px, py, undefined, 1);
         }
     } else {
         const pathDist = 5;

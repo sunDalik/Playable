@@ -453,7 +453,7 @@ export class Player extends AnimatedTileElement {
         }
         if (this.secondHand) {
             if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type && this.weapon.type !== WEAPON_TYPE.MAIDEN_DAGGER) {
-                if (this.canDoubleAttack === true) {
+                if (this.canDoubleAttack) {
                     this.attackTimeout = setTickTimeout(() => {
                         for (const subSprite of this.animationSubSprites) {
                             Game.world.removeChild(subSprite);
@@ -544,14 +544,16 @@ export class Player extends AnimatedTileElement {
 
         this.cancelAnimation();
         this.animationSubSprites.push(itemSprite);
-        this.animation = () => {
+        const animation = () => {
             itemSprite.angle += step;
             this.animationCounter++;
             if (this.animationCounter >= animationTime) {
+                Game.APP.ticker.remove(animation);
                 this.cancelAnimation();
             }
         };
-        Game.APP.ticker.add(this.animation);
+        this.animation = animation;
+        Game.APP.ticker.add(animation);
     }
 
     getPropertyNameOfItem(item) {
