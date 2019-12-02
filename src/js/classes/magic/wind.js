@@ -1,5 +1,5 @@
 import {Game} from "../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE,} from "../../enums";
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, HAZARD_TYPE,} from "../../enums";
 import {isEmpty, isEnemy} from "../../map_checks";
 
 export class Wind {
@@ -17,10 +17,14 @@ export class Wind {
 
     cast(wielder) {
         if (this.uses <= 0) return false;
-        for (let r = this.radius; r > 0; r--) {
+        for (let r = this.radius; r >= 0; r--) {
             for (let x = -this.radius; x <= this.radius; x++) {
                 for (let y = -this.radius; y <= this.radius; y++) {
                     if (Math.abs(x) + Math.abs(y) === r) {
+                        const hazard = Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].hazard;
+                        if (hazard && (hazard.type === HAZARD_TYPE.FIRE || hazard.type === HAZARD_TYPE.DARK_FIRE)) {
+                            hazard.extinguish();
+                        }
                         if (isEnemy(wielder.tilePosition.x + x, wielder.tilePosition.y + y)) {
                             Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.stun++;
                             if (isEmpty(wielder.tilePosition.x + x + Math.sign(x), wielder.tilePosition.y + y + Math.sign(y))) {

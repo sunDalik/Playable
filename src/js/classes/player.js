@@ -65,6 +65,8 @@ export class Player extends AnimatedTileElement {
         this.carried = false;
         this.pushPullMode = false;
         this.cancellable = true;
+        this.fireImmunity = 0;
+        this.poisonImmunity = 0;
     }
 
     cancelAnimation() {

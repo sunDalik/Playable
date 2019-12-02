@@ -9,4 +9,14 @@ export class Wings {
         this.def = 0;
         this.dodgeChance = 0.5;
     }
+
+    onWear(wielder) {
+        wielder.poisonImmunity++;
+        wielder.fireImmunity++;
+    }
+
+    onTakeOff(wielder) {
+        wielder.poisonImmunity--;
+        wielder.fireImmunity--;
+    }
 }

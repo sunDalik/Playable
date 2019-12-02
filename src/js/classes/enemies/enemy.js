@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import * as PIXI from "pixi.js"
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element"
-import {ROLE} from "../../enums";
+import {HAZARD_TYPE, ROLE} from "../../enums";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {redrawEnergy} from "../../drawing/draw_hud";
 
@@ -12,6 +12,8 @@ export class Enemy extends AnimatedTileElement {
         this.role = ROLE.ENEMY;
         this.cancellable = true;
         this.stun = 0;
+        this.fireImmunity = 1;
+        this.poisonImmunity = 1;
         this.movable = true;
         this.detectionRadius = 15;
         this.energyDrop = undefined;
@@ -30,6 +32,7 @@ export class Enemy extends AnimatedTileElement {
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, magical = false) {
+        if (dmg === 0) return;
         if (!this.dead) {
             this.health -= dmg;
             if (this.health <= 0) {
@@ -37,6 +40,19 @@ export class Enemy extends AnimatedTileElement {
             } else {
                 this.healthContainer.visible = true;
                 this.redrawHealth();
+            }
+        }
+    }
+
+    damageWithHazards() {
+        const hazard = Game.map[this.tilePosition.y][this.tilePosition.y].hazard;
+        if (hazard) {
+            if (hazard.type === HAZARD_TYPE.POISON && this.poisonImmunity <= 0) {
+                this.damage(hazard, hazard.atk);
+            } else if (hazard.type === HAZARD_TYPE.FIRE && this.fireImmunity <= 0) {
+                this.damage(hazard, hazard.atk);
+            } else if (hazard.type === HAZARD_TYPE.DARK_FIRE || hazard.type === HAZARD_TYPE.DARK_POISON) {
+                this.damage(hazard, hazard.atk);
             }
         }
     }

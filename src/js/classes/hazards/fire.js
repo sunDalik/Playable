@@ -37,7 +37,7 @@ export class FireHazard extends Hazard {
 
     updateLifetime() {
         if (super.updateLifetime()) {
-            if (this.small) {
+            if (this.small && this.turnsLeft > 0) {
                 this.texture = this.normalTexture;
                 this.small = false;
                 this.atk = this.actualAtk;
@@ -72,6 +72,14 @@ export class FireHazard extends Hazard {
                 this.currentSpreadDelay--;
             }
         }
+    }
+
+    extinguish() {
+        this.small = true;
+        this.texture = this.smallTexture;
+        this.atk = 0;
+        this.spreadTimes = 0;
+        this.turnsLeft = 1;
     }
 
     refreshLifetime() {

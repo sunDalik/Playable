@@ -36,6 +36,7 @@ export function moveEnemies() {
                     enemy.cancellable = true;
                 }
             } else enemy.stun--;
+            enemy.damageWithHazards();
         }
     }
 }
@@ -89,13 +90,9 @@ export function damagePlayerWithHazards(player) {
     if (!player.dead && !player.carried) {
         const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
         if (hazard) {
-            if (hazard.type === HAZARD_TYPE.POISON
-                && !(player.footwear && (player.footwear.type === FOOTWEAR_TYPE.ANTI_HAZARD || player.footwear.type === FOOTWEAR_TYPE.DARK_FLAMING))
-                && !(player.armor && player.armor.type === ARMOR_TYPE.WINGS)) {
+            if ((hazard.type === HAZARD_TYPE.POISON || hazard.type === HAZARD_TYPE.DARK_POISON) && player.poisonImmunity <= 0) {
                 player.damage(hazard.atk, hazard, false, false);
-            } else if (hazard.type === HAZARD_TYPE.FIRE
-                && !(player.footwear && player.footwear.type === FOOTWEAR_TYPE.DARK_FLAMING)
-                && !(player.armor && player.armor.type === ARMOR_TYPE.WINGS)) {
+            } else if ((hazard.type === HAZARD_TYPE.FIRE || hazard.type === HAZARD_TYPE.DARK_FIRE) && player.fireImmunity <= 0) {
                 player.damage(hazard.atk, hazard, false, false);
             }
         }
