@@ -187,7 +187,10 @@ export function addHazardToWorld(hazard) {
         } else if (competingHazard.type === HAZARD_TYPE.FIRE) {
             competingHazard.removeFromWorld();
             const newDarkFire = new DarkFireHazard(hazard.tilePosition.x, hazard.tilePosition.y);
+            newDarkFire.spreadTimes = competingHazard.spreadTimes;
+            newDarkFire.turnsLeft = competingHazard.turnsLeft;
             newDarkFire.addToWorld();
+            newDarkFire.ignite();
         }
     } else if (hazard.type === HAZARD_TYPE.DARK_FIRE) {
         if (competingHazard.type === HAZARD_TYPE.FIRE

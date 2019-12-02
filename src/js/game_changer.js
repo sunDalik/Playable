@@ -4,38 +4,39 @@ import {Fireball} from "./classes/magic/fireball";
 import {Necromancy} from "./classes/magic/necromancy";
 import {Petrification} from "./classes/magic/petrification";
 import {Teleport} from "./classes/magic/teleport";
-import {Pickaxe} from "./classes/equipment/tools/pickaxe";
+import {Wind} from "./classes/magic/wind";
 import {BasicArmor} from "./classes/equipment/armor/basic_armor";
 import {WizardRobe} from "./classes/equipment/armor/wizard_robe";
+import {HeavyArmor} from "./classes/equipment/armor/heavy";
+import {ElectricArmor} from "./classes/equipment/armor/electric";
+import {Wings} from "./classes/equipment/armor/wings";
 import {SeerCirclet} from "./classes/equipment/headwear/seer_circlet";
 import {WizardHat} from "./classes/equipment/headwear/wizard_hat";
-import {AntiHazardBoots} from "./classes/equipment/footwear/anti_hazard";
+import {VampireCrown} from "./classes/equipment/headwear/vampire_crown";
+import {AdventurerBoots} from "./classes/equipment/footwear/adventurer";
 import {DamagingBoots} from "./classes/equipment/footwear/damaging";
-import {Game} from "./game";
-import {STAGE} from "./enums";
-import * as rooms from "./rooms";
+import {DarkBoots} from "./classes/equipment/footwear/dark";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {NinjaKnife} from "./classes/equipment/weapons/ninja_knife";
 import {Sword} from "./classes/equipment/weapons/sword";
 import {Bow} from "./classes/equipment/weapons/bow";
-import {PassiveShield} from "./classes/equipment/shields/passive";
-import {SpikyShield} from "./classes/equipment/shields/spiky";
-import {StunningShield} from "./classes/equipment/shields/stunning";
 import {Scythe} from "./classes/equipment/weapons/scythe";
 import {MaidenDagger} from "./classes/equipment/weapons/maiden_dagger";
 import {BookOfFlames} from "./classes/equipment/weapons/book_of_flames";
 import {Hammer} from "./classes/equipment/weapons/hammer";
-import {Wings} from "./classes/equipment/armor/wings";
-import {HeavyArmor} from "./classes/equipment/armor/heavy";
-import {ElectricArmor} from "./classes/equipment/armor/electric";
-import {VampireCrown} from "./classes/equipment/headwear/vampire_crown";
-import {Wind} from "./classes/magic/wind";
+import {Pickaxe} from "./classes/equipment/tools/pickaxe";
+import {PassiveShield} from "./classes/equipment/shields/passive";
+import {SpikyShield} from "./classes/equipment/shields/spiky";
+import {StunningShield} from "./classes/equipment/shields/stunning";
+import {Game} from "./game";
+import {STAGE} from "./enums";
+import * as rooms from "./rooms";
 
 export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind];
-    Game.chestItemPool = [Pickaxe, BasicArmor, WizardRobe, SeerCirclet, WizardHat, AntiHazardBoots,
-        DamagingBoots, PassiveShield, SpikyShield, StunningShield, HeavyArmor, ElectricArmor, VampireCrown, Wings];
+    Game.chestItemPool = [Pickaxe, BasicArmor, WizardRobe, SeerCirclet, WizardHat, AdventurerBoots,
+        DamagingBoots, DarkBoots, PassiveShield, SpikyShield, StunningShield, HeavyArmor, ElectricArmor, VampireCrown, Wings];
 }
 
 export function removeItemFromPool(item, pool) {

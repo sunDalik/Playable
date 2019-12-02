@@ -90,8 +90,9 @@ export function loadAll(afterLoad) {
         .add("src/images/armor/heavy.png")
         .add("src/images/armor/electric.png")
 
-        .add("src/images/footwear/anti_hazard.png")
+        .add("src/images/footwear/adventurer.png")
         .add("src/images/footwear/damaging.png")
+        .add("src/images/footwear/dark.png")
 
         .add("src/images/headwear/seer_circlet.png")
         .add("src/images/headwear/wizard_hat.png")

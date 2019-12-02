@@ -448,7 +448,6 @@ export class Player extends AnimatedTileElement {
 
     afterEnemyTurn() {
         this.shielded = false;
-        this.currentMovement = this.movement;
         for (const eq of this.getEquipmentAndMagic()) {
             if (eq && eq.onNewTurn) eq.onNewTurn(this);
         }

@@ -45,7 +45,7 @@ export class Enemy extends AnimatedTileElement {
     }
 
     damageWithHazards() {
-        const hazard = Game.map[this.tilePosition.y][this.tilePosition.y].hazard;
+        const hazard = Game.map[this.tilePosition.y][this.tilePosition.x].hazard;
         if (hazard) {
             if (hazard.type === HAZARD_TYPE.POISON && this.poisonImmunity <= 0) {
                 this.damage(hazard, hazard.atk);

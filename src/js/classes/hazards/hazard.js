@@ -35,12 +35,15 @@ export class Hazard extends FullTileElement {
         }
     }
 
+    //returns true if hazard was spoiled
     spoil(competingHazard) {
         this.turnsLeft -= Math.floor(this.LIFETIME / 4);
         if (this.turnsLeft <= 0) {
             this.removeFromWorld();
             competingHazard.addToWorld();
+            return true;
         }
+        return false;
     }
 
     refreshLifetime() {
