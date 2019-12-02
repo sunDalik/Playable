@@ -4,7 +4,7 @@ import {ENEMY_TYPE} from "../../enums";
 import {PoisonHazard} from "../hazards/poison";
 import {isRelativelyEmpty, getPlayerOnTile} from "../../map_checks";
 import {getRandomInt} from "../../utils/random_utils";
-import {addHazardOrRefresh} from "../../utils/map_utils";
+import {addHazardToWorld} from "../../game_logic";
 
 export class Snail extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/snail.png"].texture) {
@@ -54,7 +54,7 @@ export class Snail extends Enemy {
                 }
             }
         } else this.currentTurnDelay--;
-        addHazardOrRefresh(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
+        addHazardToWorld(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {

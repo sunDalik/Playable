@@ -5,6 +5,7 @@ import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, HAZARD_TYPE, STAGE} from "./e
 import {otherPlayer, removeObjectFromArray, setTickTimeout} from "./utils/basic_utils";
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation} from "./animations";
+import {DarkFireHazard} from "./classes/hazards/dark_fire";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -156,6 +157,46 @@ export function kiss(healAmount = 1) {
     Game.player2.heal(healAmount, false);
     createKissHeartAnimation(Game.player.position.x + (Game.player2.position.x - Game.player.position.x) / 2,
         Game.player.position.y + (Game.player2.position.y - Game.player.position.y) / 2);
+}
+
+export function addHazardToWorld(hazard) {
+    const competingHazard = Game.map[hazard.tilePosition.y][hazard.tilePosition.x].hazard;
+    if (competingHazard === null) {
+        hazard.addToWorld();
+    } else if (competingHazard.type === hazard.type) {
+        competingHazard.refreshLifetime();
+    } else if (hazard.type === HAZARD_TYPE.POISON) {
+        if (competingHazard.type === HAZARD_TYPE.DARK_POISON || competingHazard.type === HAZARD_TYPE.DARK_FIRE) {
+            competingHazard.spoil(hazard);
+        } else if (competingHazard.type === HAZARD_TYPE.FIRE) {
+            competingHazard.ignite();
+        }
+    } else if (hazard.type === HAZARD_TYPE.FIRE) {
+        if (competingHazard.type === HAZARD_TYPE.DARK_FIRE || competingHazard.type === HAZARD_TYPE.DARK_POISON) {
+            competingHazard.spoil(hazard);
+        } else if (competingHazard.type === HAZARD_TYPE.POISON) {
+            competingHazard.removeFromWorld();
+            hazard.addToWorld();
+        }
+    } else if (hazard.type === HAZARD_TYPE.DARK_POISON) {
+        if (competingHazard.type === HAZARD_TYPE.POISON) {
+            competingHazard.removeFromWorld();
+            hazard.addToWorld();
+        } else if (competingHazard.type === HAZARD_TYPE.DARK_FIRE) {
+            competingHazard.ignite();
+        } else if (competingHazard.type === HAZARD_TYPE.FIRE) {
+            competingHazard.removeFromWorld();
+            const newDarkFire = new DarkFireHazard(hazard.tilePosition.x, hazard.tilePosition.y);
+            newDarkFire.addToWorld();
+        }
+    } else if (hazard.type === HAZARD_TYPE.DARK_FIRE) {
+        if (competingHazard.type === HAZARD_TYPE.FIRE
+            || competingHazard.type === HAZARD_TYPE.DARK_POISON
+            || competingHazard.type === HAZARD_TYPE.POISON) {
+            competingHazard.removeFromWorld();
+            hazard.addToWorld();
+        }
+    }
 }
 
 export function removeTileFromWorld(tile) {

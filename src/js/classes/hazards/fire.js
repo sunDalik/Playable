@@ -1,13 +1,10 @@
 import {Game} from "../../game"
 import {Hazard} from "./hazard";
 import {HAZARD_TYPE} from "../../enums";
-import {
-    addHazardOrRefresh,
-    get8Directions,
-    getCardinalDirectionsWithNoHazards,
-} from "../../utils/map_utils";
+import {get8Directions, getCardinalDirections} from "../../utils/map_utils";
 import {isNotAWall} from "../../map_checks";
 import {randomChoice, randomShuffle} from "../../utils/random_utils";
+import {addHazardToWorld} from "../../game_logic";
 
 export class FireHazard extends Hazard {
     constructor(tilePositionX, tilePositionY, subFire = false, texture = Game.resources["src/images/hazards/fire.png"].texture) {
@@ -48,19 +45,23 @@ export class FireHazard extends Hazard {
                     for (const dir of randomShuffle(get8Directions())) {
                         if (spreadCounter <= 0) break;
                         if (isNotAWall(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
-                            const newFire = addHazardOrRefresh(new FireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true))
-                            this.currentFires.push(newFire);
+                            addHazardToWorld(new this.constructor(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true));
+                            const newHazard = Game.map[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].hazard;
+                            if (newHazard && newHazard.type === this.type)
+                                this.currentFires.push(newHazard);
                         }
                         spreadCounter--;
                     }
                 } else {
                     let newFires = [];
                     for (const fire of this.currentFires) {
-                        const spreadDir = randomChoice(getCardinalDirectionsWithNoHazards(fire));
-                        if (spreadDir !== undefined) {
+                        const spreadDir = randomChoice(this.getCardinalDirectionsWithNoHazardsOfType(fire));
+                        if (spreadDir !== undefined && fire.turnsLeft > 0) {
                             if (isNotAWall(fire.tilePosition.x + spreadDir.x, fire.tilePosition.y + spreadDir.y)) {
-                                const newFire = addHazardOrRefresh(new FireHazard(fire.tilePosition.x + spreadDir.x, fire.tilePosition.y + spreadDir.y, true))
-                                newFires.push(newFire);
+                                addHazardToWorld(new this.constructor(fire.tilePosition.x + spreadDir.x, fire.tilePosition.y + spreadDir.y, true))
+                                const newHazard = Game.map[fire.tilePosition.y + spreadDir.y][fire.tilePosition.x + spreadDir.x].hazard;
+                                if (newHazard && newHazard.type === this.type)
+                                    newFires.push(newHazard);
                             }
                         }
                     }
@@ -82,7 +83,24 @@ export class FireHazard extends Hazard {
         this.turnsLeft = 1;
     }
 
+    ignite() {
+        this.spreadTimes++;
+        this.turnsLeft += 2;
+        if (this.spreadTimes > this.maxSpreadTimes) this.spreadTimes = this.maxSpreadTimes;
+    }
+
     refreshLifetime() {
         super.refreshLifetime();
+    }
+
+    getCardinalDirectionsWithNoHazardsOfType(tileElement) {
+        let directions = [];
+        for (const dir of getCardinalDirections()) {
+            if (Game.map[tileElement.tilePosition.y + dir.y][tileElement.tilePosition.x + dir.x].hazard === null
+                || Game.map[tileElement.tilePosition.y + dir.y][tileElement.tilePosition.x + dir.x].hazard.type !== tileElement.type) {
+                directions.push(dir);
+            }
+        }
+        return directions;
     }
 }

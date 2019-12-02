@@ -3,8 +3,9 @@ import {ENEMY_TYPE, TILE_TYPE} from "../../enums";
 import {Enemy} from "./enemy";
 import {PoisonHazard} from "../hazards/poison";
 import {getRandomInt, randomChoice} from "../../utils/random_utils";
-import {addHazardOrRefresh, getRelativelyEmptyHorizontalDirections} from "../../utils/map_utils";
+import {getRelativelyEmptyHorizontalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile, isEmpty, isNotAWall} from "../../map_checks";
+import {addHazardToWorld} from "../../game_logic";
 
 export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/mushroom.png"].texture) {
@@ -86,7 +87,7 @@ export class Mushroom extends Enemy {
             if (sourceDirX !== 0 || sourceDirY !== 0) {
                 const hazard = new PoisonHazard(tileX, tileY);
                 if (invisiblePoison) hazard.visible = false;
-                addHazardOrRefresh(hazard);
+                addHazardToWorld(hazard);
             }
             this.spillAreas.push({x: tileX, y: tileY});
             if (sourceDirX === 0 && sourceDirY === 0) {

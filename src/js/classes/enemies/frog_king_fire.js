@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {ENEMY_TYPE} from "../../enums";
 import {KingFrog} from "./frog_king";
-import {addHazardOrRefresh} from "../../utils/map_utils";
+import {addHazardToWorld} from "../../game_logic";
 import {FireHazard} from "../hazards/fire";
 import {getPlayerOnTile} from "../../map_checks";
 
@@ -20,6 +20,6 @@ export class KingFireFrog extends KingFrog {
     }
 
     spitHazard(tileX, tileY) {
-        addHazardOrRefresh(new FireHazard(tileX, tileY));
+        addHazardToWorld(new FireHazard(tileX, tileY));
     }
 }
