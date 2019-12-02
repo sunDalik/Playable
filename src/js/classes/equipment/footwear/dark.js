@@ -22,6 +22,7 @@ export class DarkBoots {
     }
 
     onNewTurn(wielder) {
+        if (wielder.carried) return false;
         const hazard = Game.map[wielder.tilePosition.y][wielder.tilePosition.x].hazard;
         if (hazard) {
             if (hazard.type === HAZARD_TYPE.POISON) {
