@@ -1,11 +1,10 @@
 import {Game} from "./game"
 import {incrementStage, setVariablesForStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {ARMOR_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, HAZARD_TYPE, STAGE} from "./enums"
+import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE} from "./enums"
 import {otherPlayer, removeObjectFromArray, setTickTimeout} from "./utils/basic_utils";
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation} from "./animations";
-import {DarkFireHazard} from "./classes/hazards/dark_fire";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -186,12 +185,7 @@ export function addHazardToWorld(hazard) {
         } else if (competingHazard.type === HAZARD_TYPE.DARK_FIRE) {
             competingHazard.ignite();
         } else if (competingHazard.type === HAZARD_TYPE.FIRE) {
-            competingHazard.removeFromWorld();
-            const newDarkFire = new DarkFireHazard(hazard.tilePosition.x, hazard.tilePosition.y);
-            newDarkFire.spreadTimes = competingHazard.spreadTimes;
-            newDarkFire.turnsLeft = competingHazard.turnsLeft;
-            newDarkFire.addToWorld();
-            newDarkFire.ignite();
+            competingHazard.turnToDark();
         }
     } else if (hazard.type === HAZARD_TYPE.DARK_FIRE) {
         if (competingHazard.type === HAZARD_TYPE.FIRE

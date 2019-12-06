@@ -1,8 +1,5 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, HAZARD_TYPE} from "../../../enums";
-import {addHazardToWorld} from "../../../game_logic";
-import {DarkFireHazard} from "../../hazards/dark_fire";
-import {DarkPoisonHazard} from "../../hazards/dark_poison";
 
 export class DarkBoots {
     constructor() {
@@ -25,10 +22,8 @@ export class DarkBoots {
         if (wielder.carried) return false;
         const hazard = Game.map[wielder.tilePosition.y][wielder.tilePosition.x].hazard;
         if (hazard) {
-            if (hazard.type === HAZARD_TYPE.POISON) {
-                addHazardToWorld(new DarkPoisonHazard(wielder.tilePosition.x, wielder.tilePosition.y))
-            } else if (hazard.type === HAZARD_TYPE.FIRE) {
-                addHazardToWorld(new DarkFireHazard(wielder.tilePosition.x, wielder.tilePosition.y))
+            if (hazard.type === HAZARD_TYPE.POISON || hazard.type === HAZARD_TYPE.FIRE) {
+                hazard.turnToDark();
             }
         }
     }
