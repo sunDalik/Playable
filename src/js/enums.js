@@ -66,3 +66,37 @@ export const TOOL_TYPE = Object.freeze({PICKAXE: 0, TORCH: 1});
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
 
 export const HAZARD_TYPE = Object.freeze({POISON: 0, FIRE: 1, DARK_POISON: 2, DARK_FIRE: 3});
+
+export const MAP_SYMBOLS = Object.freeze({
+    NONE: "",
+    WALL: "w",
+    SUPER_WALL: "sw",
+    VOID: "v",
+    ENTRY: "entry",
+    PATH: "path",
+    EXIT: "exit",
+    ROLLER: "r",
+    ROLLER_RED: "rb",
+    STAR: "s",
+    STAR_RED: "sb",
+    SPIDER: "spi",
+    SPIDER_GRAY: "spib",
+    SPIDER_RED: "spider_red",
+    SPIDER_GREEN: "spider_green",
+    SNAIL: "sna",
+    SNAIL_SPIKY: "snab",
+    EEL: "eel",
+    EEL_DARK: "eel_dark",
+    EEL_POISON: "eel_poison",
+    FROG: "fire",
+    FROG_FIRE: "frog_fire",
+    FROG_KING: "frog_king",
+    FROG_KING_FIRE: "frog_king_fire",
+    MUSHROOM: "mushroom",
+    MUSHROOM_SMALL: "mushroom_small",
+    ALLIGATOR: "alligator",
+    STATUE: "statue",
+    CHEST: "chest",
+    OBELISK: "obelisk",
+    TORCH: "torch"
+});

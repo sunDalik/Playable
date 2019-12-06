@@ -1,8 +1,7 @@
 import {Game} from "./game";
-import {RABBIT_TYPE, TILE_TYPE} from "./enums";
+import {MAP_SYMBOLS, RABBIT_TYPE, TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {FullTileElement} from "./classes/tile_elements/full_tile_element";
-
 import {copy2dArray} from "./utils/basic_utils";
 import {getRandomChestDrop, getRandomSpell, getRandomValue, getRandomWeapon} from "./utils/random_utils";
 import {Roller} from "./classes/enemies/roller";
@@ -46,43 +45,43 @@ export function generateMap(level) {
                 item: null,
                 lit: false
             };
-            if (map[i][j] === "w") {
+            if (map[i][j] === MAP_SYMBOLS.WALL) {
                 mapCell.tileType = TILE_TYPE.WALL;
                 mapCell.tile = new FullTileElement(Game.resources["src/images/wall.png"].texture, j, i);
-            } else if (map[i][j] === "sw") {
+            } else if (map[i][j] === MAP_SYMBOLS.SUPER_WALL) {
                 mapCell.tileType = TILE_TYPE.SUPER_WALL;
                 mapCell.tile = new FullTileElement(Game.resources["src/images/super_wall.png"].texture, j, i);
-            } else if (map[i][j] === "v") {
+            } else if (map[i][j] === MAP_SYMBOLS.VOID) {
                 mapCell.tileType = TILE_TYPE.VOID;
-            } else if (map[i][j] === "entry") {
+            } else if (map[i][j] === MAP_SYMBOLS.ENTRY) {
                 mapCell.tileType = TILE_TYPE.ENTRY;
-            } else if (map[i][j] === "path") {
+            } else if (map[i][j] === MAP_SYMBOLS.PATH) {
                 mapCell.tileType = TILE_TYPE.PATH;
-            } else if (map[i][j] === "exit") {
+            } else if (map[i][j] === MAP_SYMBOLS.EXIT) {
                 mapCell.tileType = TILE_TYPE.EXIT;
                 mapCell.tile = new FullTileElement(Game.resources["src/images/exit.png"].texture, j, i);
             }
 
-            if (map[i][j] === "r") mapCell.entity = new Roller(j, i);
-            else if (map[i][j] === "rb") mapCell.entity = new RollerB(j, i);
-            else if (map[i][j] === "s") mapCell.entity = new Star(j, i);
-            else if (map[i][j] === "sb") mapCell.entity = new StarB(j, i);
-            else if (map[i][j] === "spi") mapCell.entity = new Spider(j, i);
-            else if (map[i][j] === "spib") mapCell.entity = new SpiderB(j, i);
-            else if (map[i][j] === "spider_red") mapCell.entity = new SpiderRed(j, i);
-            else if (map[i][j] === "spider_green") mapCell.entity = new SpiderGreen(j, i);
-            else if (map[i][j] === "sna") mapCell.entity = new Snail(j, i);
-            else if (map[i][j] === "snab") mapCell.entity = new SnailB(j, i);
-            else if (map[i][j] === "eel") mapCell.entity = new Eel(j, i);
-            else if (map[i][j] === "eel_dark") mapCell.entity = new DarkEel(j, i);
-            else if (map[i][j] === "eel_poison") mapCell.entity = new PoisonEel(j, i);
-            else if (map[i][j] === "frog") mapCell.entity = new Frog(j, i);
-            else if (map[i][j] === "frog_fire") mapCell.entity = new FireFrog(j, i);
-            else if (map[i][j] === "frog_king") mapCell.entity = new KingFrog(j, i);
-            else if (map[i][j] === "frog_king_fire") mapCell.entity = new KingFireFrog(j, i);
-            else if (map[i][j] === "mushroom") mapCell.entity = new Mushroom(j, i);
-            else if (map[i][j] === "mushroom_small") mapCell.entity = new SmallMushroom(j, i);
-            else if (map[i][j] === "alligator") {
+            if (map[i][j] === MAP_SYMBOLS.ROLLER) mapCell.entity = new Roller(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.ROLLER_RED) mapCell.entity = new RollerB(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.STAR) mapCell.entity = new Star(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.STAR_RED) mapCell.entity = new StarB(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.SPIDER) mapCell.entity = new Spider(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.SPIDER_GRAY) mapCell.entity = new SpiderB(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.SPIDER_RED) mapCell.entity = new SpiderRed(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.SPIDER_GREEN) mapCell.entity = new SpiderGreen(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.SNAIL) mapCell.entity = new Snail(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.SNAIL_SPIKY) mapCell.entity = new SnailB(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.EEL) mapCell.entity = new Eel(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.EEL_DARK) mapCell.entity = new DarkEel(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.EEL_POISON) mapCell.entity = new PoisonEel(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.FROG) mapCell.entity = new Frog(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.FROG_FIRE) mapCell.entity = new FireFrog(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.FROG_KING) mapCell.entity = new KingFrog(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.FROG_KING_FIRE) mapCell.entity = new KingFireFrog(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.MUSHROOM) mapCell.entity = new Mushroom(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.MUSHROOM_SMALL) mapCell.entity = new SmallMushroom(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR) {
                 //Pairs for paired enemies are generated in the map generation phase. That is how I've decided it to be...
                 let type = getRandomValue(RABBIT_TYPE);
                 if (type === RABBIT_TYPE.ENERGY) {
@@ -91,15 +90,15 @@ export function generateMap(level) {
                 }
                 const prey = new Rabbit(j, i, type);
                 mapCell.entity = new Alligator(j, i, prey);
-            } else if (map[i][j] === "statue") {
+            } else if (map[i][j] === MAP_SYMBOLS.STATUE) {
                 if (Game.weaponPool.length > 0) {
                     mapCell.entity = new Statue(j, i, getRandomWeapon());
                 }
-            } else if (map[i][j] === "chest") {
+            } else if (map[i][j] === MAP_SYMBOLS.CHEST) {
                 if (Game.chestItemPool.length > 0) {
                     mapCell.entity = new Chest(j, i, getRandomChestDrop());
                 }
-            } else if (map[i][j] === "obelisk") {
+            } else if (map[i][j] === MAP_SYMBOLS.OBELISK) {
                 if (Game.magicPool.length >= 4) {
                     let magicPool = [];
                     for (let i = 0; i < 4; ++i) {
@@ -124,7 +123,7 @@ export function generateMap(level) {
                     obeliskTiles.push({x: j, y: i});
                     mapCell.entity = new Obelisk(j, i, magicPool, onDestroyMagicPool);
                 }
-            } else if (map[i][j] === "torch") {
+            } else if (map[i][j] === MAP_SYMBOLS.TORCH) {
                 mapCell.item = new LyingItem(j, i, new Torch());
                 Game.torchTile = {x: j, y: i};
             }

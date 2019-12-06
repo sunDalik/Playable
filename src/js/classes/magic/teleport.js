@@ -2,6 +2,7 @@ import {Game} from "../../game"
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
 import {centerCamera} from "../../camera";
 import {drawInteractionKeys, drawMovementKeyBindings} from "../../drawing/draw_hud";
+import {otherPlayer} from "../../utils/basic_utils";
 
 export class Teleport {
     constructor() {
@@ -17,11 +18,10 @@ export class Teleport {
     cast(wielder) {
         if (this.uses <= 0) return false;
         if (Game.player.dead || Game.player2.dead) return false;
-        let otherPlayer;
-        if (wielder === Game.player2) otherPlayer = Game.player;
-        else otherPlayer = Game.player2;
+        if (wielder.tilePosition.x === otherPlayer(wielder).tilePosition.x
+            && wielder.tilePosition.y === otherPlayer(wielder).tilePosition.y) return false;
         wielder.removeFromMap();
-        wielder.tilePosition.set(otherPlayer.tilePosition.x, otherPlayer.tilePosition.y);
+        wielder.tilePosition.set(otherPlayer(wielder).tilePosition.x, otherPlayer(wielder).tilePosition.y);
         wielder.placeOnMap();
         wielder.place();
         drawMovementKeyBindings();
