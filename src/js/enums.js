@@ -88,7 +88,7 @@ export const MAP_SYMBOLS = Object.freeze({
     EEL: "eel",
     EEL_DARK: "eel_dark",
     EEL_POISON: "eel_poison",
-    FROG: "fire",
+    FROG: "frog",
     FROG_FIRE: "frog_fire",
     FROG_KING: "frog_king",
     FROG_KING_FIRE: "frog_king_fire",

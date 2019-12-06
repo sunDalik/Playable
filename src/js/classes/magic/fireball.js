@@ -19,11 +19,12 @@ export class Fireball {
         this.uses = this.maxUses;
     }
 
-    cast() {
+    cast(wielder) {
         if (this.uses <= 0) return false;
         if (Game.player.dead || Game.player2.dead) return false;
         if (this.multiplier < 3) {
             this.multiplier++;
+            wielder.chargingMagic = this;
             this.updateTexture();
             this.castedThisTurn = true;
             this.multiplierDecreaseDelay = 2;

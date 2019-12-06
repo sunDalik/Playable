@@ -55,7 +55,8 @@ export function updateHazards() {
 }
 
 export function playerTurn(player, playerMove, bothPlayers = false) {
-    if (((bothPlayers && !Game.player.dead && !Game.player2.dead) || (!bothPlayers && !player.dead && !player.carried))) {
+    if (((bothPlayers && !Game.player.dead && !Game.player2.dead)
+        || (!bothPlayers && !player.dead && !player.carried))) {
         if (Game.enemiesTimeout !== null) {
             Game.APP.ticker.remove(Game.enemiesTimeout);
             enemyTurn();

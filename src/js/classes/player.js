@@ -67,6 +67,8 @@ export class Player extends AnimatedTileElement {
         this.cancellable = true;
         this.fireImmunity = 0;
         this.poisonImmunity = 0;
+        this.charging = false;
+        this.chargingMagic = null;
     }
 
     cancelAnimation() {
@@ -86,7 +88,7 @@ export class Player extends AnimatedTileElement {
     }
 
     move(tileStepX, tileStepY, event) {
-        if (otherPlayer(this).pushPullMode) return false;
+        if (otherPlayer(this).pushPullMode || otherPlayer(this).charging) return false;
         if (this.pushPullMode) {
             if (this.tilePosition.x === otherPlayer(this).tilePosition.x && tileStepY !== 0
                 || this.tilePosition.y === otherPlayer(this).tilePosition.y && tileStepX !== 0) {
@@ -108,6 +110,10 @@ export class Player extends AnimatedTileElement {
                 drawInteractionKeys();
                 return result;
             } else return false;
+        }
+
+        if (this.charging) {
+            return this.releaseMagic(tileStepX, tileStepY);
         }
 
         let attackResult = false;
@@ -141,7 +147,7 @@ export class Player extends AnimatedTileElement {
 
 
     castMagic(magic) {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode) return false;
+        if (this.pushPullMode || otherPlayer(this).pushPullMode || otherPlayer(this).charging || this.charging) return false;
         if (magic) {
             const magicResult = magic.cast(this);
             if (magicResult === false) return false;
@@ -431,15 +437,27 @@ export class Player extends AnimatedTileElement {
         return this.getEquipment().concat(this.getMagic());
     }
 
-    releaseMagic() {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode) return false;
-        for (const mg of this.getMagic()) {
-            if (mg && mg.release) {
-                const magicResult = mg.release(this);
-                if (magicResult === true) {
-                    const pn = this.getPropertyNameOfItem(mg);
-                    if (pn) redrawSlotContents(this, pn);
-                    return true;
+    releaseMagic(stepX = 0, stepY = 0) {
+        if (this.pushPullMode || otherPlayer(this).pushPullMode || otherPlayer(this).charging) return false;
+        if (this.chargingMagic) {
+            const magicResult = this.chargingMagic.release(this, stepX, stepY);
+            if (magicResult === true) {
+                const pn = this.getPropertyNameOfItem(this.chargingMagic);
+                if (pn) redrawSlotContents(this, pn);
+                this.charging = false;
+                this.chargingMagic = null;
+                return true;
+            }
+        } else {
+            for (const mg of this.getMagic()) {
+                if (mg && mg.release) {
+                    const magicResult = mg.release(this, stepX, stepY);
+                    if (magicResult === true) {
+                        const pn = this.getPropertyNameOfItem(mg);
+                        if (pn) redrawSlotContents(this, pn);
+                        this.charging = false;
+                        return true;
+                    }
                 }
             }
         }
@@ -479,7 +497,7 @@ export class Player extends AnimatedTileElement {
     }
 
     useSecondHand() {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode) return false;
+        if (this.pushPullMode || otherPlayer(this).pushPullMode || otherPlayer(this).charging || this.charging) return false;
         if (!this.secondHand) return false;
         if (this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD) {
             if (this.secondHand.activate(this)) {
@@ -504,7 +522,7 @@ export class Player extends AnimatedTileElement {
     }
 
     concentrateWeapon() {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode) return false;
+        if (this.pushPullMode || otherPlayer(this).pushPullMode || otherPlayer(this).charging || this.charging) return false;
         if (!this.weapon || !this.weapon.concentrate) return false;
         if (this.weapon.concentrate(this)) {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type) {
@@ -516,7 +534,7 @@ export class Player extends AnimatedTileElement {
     }
 
     pushOrPull() {
-        if (otherPlayer(this).pushPullMode) return false;
+        if (otherPlayer(this).pushPullMode || otherPlayer(this).charging || this.charging) return false;
         if (this.pushPullMode) {
             this.pushPullMode = false;
             otherPlayer(this).microSlide(0, 0);
