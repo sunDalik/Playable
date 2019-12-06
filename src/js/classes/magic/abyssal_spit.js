@@ -3,6 +3,7 @@ import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE,} from "../../enums";
 import {isNotAWall} from "../../map_checks";
 import {addHazardToWorld} from "../../game_logic";
 import {DarkPoisonHazard} from "../hazards/dark_poison";
+import {otherPlayer} from "../../utils/basic_utils";
 
 export class AbyssalSpit {
     constructor() {
@@ -11,7 +12,7 @@ export class AbyssalSpit {
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 0;
-        this.maxUses = 4;
+        this.maxUses = 5;
         this.uses = this.maxUses;
     }
 
@@ -29,6 +30,7 @@ export class AbyssalSpit {
     release(wielder, stepX, stepY) {
         if (stepX === 0 && stepY === 0) return false;
         wielder.cancelAnimation();
+        if (otherPlayer(wielder).carried) otherPlayer(wielder).cancelAnimation();
         wielder.bump(stepX, stepY);
         this.uses--;
         for (let i = 1; ; i++) {

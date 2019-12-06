@@ -21,9 +21,9 @@ export class SpiderRed extends Spider {
         super.move();
     }
 
-    damage(source, dmg, inputX, inputY, magical) {
-        if (this.damageable || magical) {
-            super.damage(source, dmg, inputX, inputY, magical);
+    damage(source, dmg, inputX, inputY, magical, hazardDamage = false) {
+        if (this.damageable || magical || hazardDamage) {
+            super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         } else {
             if (this.devilJump(source, inputX, inputY)) {
                 this.devilJumped = true;

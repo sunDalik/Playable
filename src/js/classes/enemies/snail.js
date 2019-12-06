@@ -53,8 +53,8 @@ export class Snail extends Enemy {
                     this.chase = true;
                 }
             }
+            addHazardToWorld(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
         } else this.currentTurnDelay--;
-        addHazardToWorld(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {

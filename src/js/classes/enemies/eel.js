@@ -60,9 +60,9 @@ export class Eel extends Enemy {
         } else this.turnAround();
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, magical = false) {
-        super.damage(source, dmg, inputX, inputY, magical);
-        if (!this.dead) {
+    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
+        super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
+        if (!this.dead && !hazardDamage) {
             if (inputX !== 0) {
                 if (inputX > 0) {
                     this.rotateByAngleMinimal(270 - this.inMemoryAngle);

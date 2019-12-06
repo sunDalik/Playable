@@ -31,15 +31,17 @@ export class PoisonEel extends Eel {
         } else super.move();
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, magical = false) {
+    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         const savedAngle = this.angle;
-        super.damage(source, dmg, inputX, inputY, magical);
-        if (this.turnDelay === 0) {
-            this.cancelAnimation();
-            this.angle = savedAngle;
-            this.cancellable = false;
+        super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
+        if (!hazardDamage) {
+            if (this.turnDelay === 0) {
+                this.cancelAnimation();
+                this.angle = savedAngle;
+                this.cancellable = false;
+            }
+            this.triggered = true;
         }
-        this.triggered = true;
     }
 
     attack() {

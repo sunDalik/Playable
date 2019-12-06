@@ -31,7 +31,7 @@ export class Enemy extends AnimatedTileElement {
         }
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, magical = false) {
+    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         if (dmg === 0) return;
         if (!this.dead) {
             this.health -= dmg;
@@ -48,11 +48,11 @@ export class Enemy extends AnimatedTileElement {
         const hazard = Game.map[this.tilePosition.y][this.tilePosition.x].hazard;
         if (hazard) {
             if (hazard.type === HAZARD_TYPE.POISON && this.poisonImmunity <= 0) {
-                this.damage(hazard, hazard.atk);
+                this.damage(hazard, hazard.atk, 0, 0, false, true);
             } else if (hazard.type === HAZARD_TYPE.FIRE && this.fireImmunity <= 0) {
-                this.damage(hazard, hazard.atk);
+                this.damage(hazard, hazard.atk, 0, 0, false, true);
             } else if (hazard.type === HAZARD_TYPE.DARK_FIRE || hazard.type === HAZARD_TYPE.DARK_POISON) {
-                this.damage(hazard, hazard.atk);
+                this.damage(hazard, hazard.atk, 0, 0, false, true);
             }
         }
     }

@@ -274,6 +274,11 @@ export class Player extends AnimatedTileElement {
         if (!Game.player.carried && !Game.player2.carried) drawInteractionKeys();
     }
 
+    shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
+        super.shake(dirX, dirY, animationTime);
+        if (otherPlayer(this).carried) otherPlayer(this).shake(dirX, dirY, animationTime);
+    }
+
     pickUpItems() {
         if (Game.map[this.tilePosition.y][this.tilePosition.x].item) {
             Game.map[this.tilePosition.y][this.tilePosition.x].item.pickUp(this);
