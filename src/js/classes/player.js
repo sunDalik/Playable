@@ -472,6 +472,7 @@ export class Player extends AnimatedTileElement {
             this.savedTileStepY *= -1;
         }
         Game.APP.ticker.remove(this.animation);
+        this.rotation = 0; //added because of wings. But what if we want the player to rotate when he is attacking with some weapon?...
         this.secondHand.attack(this, this.savedTileStepX, this.savedTileStepY);
         redrawSecondHand(this);
         this.attackTimeout = null;

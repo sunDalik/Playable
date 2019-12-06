@@ -1,8 +1,10 @@
 import {Game} from "../game";
 import {EQUIPMENT_TYPE, STAGE, TILE_TYPE, TOOL_TYPE} from "../enums";
+import * as PIXI from "pixi.js"
 
 let litAreas = [];
 let litDTAreas = [];
+let torchLightSources = [];
 
 export function lightPosition(pos, distance = 3, bright = false) {
     litAreas = [];
@@ -20,9 +22,10 @@ export function lightPlayerPosition(player) {
 
     if (Game.stage === STAGE.DARK_TUNNEL) {
         if (player.secondHand && player.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && player.secondHand.type === TOOL_TYPE.TORCH) {
-            for (const tile of litDTAreas) {
-                Game.semiDarkTiles[tile.y][tile.x].visible = true;
+            for (const lightSource of litDTAreas) {
+                Game.semiDarkTiles[lightSource.y][lightSource.x].removeLightSource(lightTileElement);
             }
+            torchLightSources = [];
             litDTAreas = [];
             lightWorldDTTorch(px, py, player.secondHand.lightSpread);
             lightWorld(px, py, undefined, player.secondHand.lightSpread + 1);
@@ -119,12 +122,13 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
     }
 }
 
+const lightTileElement = new PIXI.Sprite(PIXI.Texture.WHITE);
+
 function lightWorldDTTorch(tileX, tileY, distance = 2, sourceDirX = 0, sourceDirY = 0) {
     if (distance > -1) {
         if (Game.map[tileY][tileX].lit && Game.map[tileY][tileX].tileType !== TILE_TYPE.WALL
             && Game.map[tileY][tileX].tileType !== TILE_TYPE.SUPER_WALL) {
-            Game.semiDarkTiles[tileY][tileX].visible = false;
-            litDTAreas.push({x: tileX, y: tileY});
+            lightTile();
             if (sourceDirX === 0 && sourceDirY === 0) {
                 lightWorldDTTorch(tileX + 1, tileY, distance - 1, -1, 0);
                 lightWorldDTTorch(tileX - 1, tileY, distance - 1, 1, 0);
@@ -145,20 +149,23 @@ function lightWorldDTTorch(tileX, tileY, distance = 2, sourceDirX = 0, sourceDir
 
             //light diagonal walls
             if (Game.map[tileY + 1][tileX + 1].tileType === TILE_TYPE.WALL || Game.map[tileY + 1][tileX + 1].tileType === TILE_TYPE.SUPER_WALL) {
-                lightWorldDTTorch(tileX + 1, tileY + 1, distance - 2);
+                if (!litDTAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY + 1)) lightWorldDTTorch(tileX + 1, tileY + 1, distance - 2);
             }
             if (Game.map[tileY - 1][tileX - 1].tileType === TILE_TYPE.WALL || Game.map[tileY - 1][tileX - 1].tileType === TILE_TYPE.SUPER_WALL) {
-                lightWorldDTTorch(tileX - 1, tileY - 1, distance - 2);
+                if (!litDTAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY - 1)) lightWorldDTTorch(tileX - 1, tileY - 1, distance - 2);
             }
             if (Game.map[tileY + 1][tileX - 1].tileType === TILE_TYPE.WALL || Game.map[tileY + 1][tileX - 1].tileType === TILE_TYPE.SUPER_WALL) {
-                lightWorldDTTorch(tileX - 1, tileY + 1, distance - 2);
+                if (!litDTAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY + 1)) lightWorldDTTorch(tileX - 1, tileY + 1, distance - 2);
             }
             if (Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL || Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.SUPER_WALL) {
-                lightWorldDTTorch(tileX + 1, tileY - 1, distance - 2);
+                if (!litDTAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY - 1)) lightWorldDTTorch(tileX + 1, tileY - 1, distance - 2);
             }
-        } else {
-            Game.semiDarkTiles[tileY][tileX].visible = false;
+        } else lightTile();
+
+        function lightTile() {
             litDTAreas.push({x: tileX, y: tileY});
+            Game.semiDarkTiles[tileY][tileX].addLightSource(lightTileElement);
+            torchLightSources.push(lightTileElement);
         }
     }
 }

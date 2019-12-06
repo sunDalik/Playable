@@ -1,6 +1,7 @@
+import * as PIXI from "pixi.js"
 import {Game} from "../../game"
 import {Hazard} from "./hazard";
-import {HAZARD_TYPE} from "../../enums";
+import {HAZARD_TYPE, STAGE} from "../../enums";
 import {get8Directions, getCardinalDirections} from "../../utils/map_utils";
 import {isNotAWall} from "../../map_checks";
 import {randomChoice, randomShuffle} from "../../utils/random_utils";
@@ -30,6 +31,10 @@ export class FireHazard extends Hazard {
         }
         this.turnsLeft = this.LIFETIME;
         this.type = HAZARD_TYPE.FIRE;
+        if (Game.stage === STAGE.DARK_TUNNEL) {
+            this.maskLayer = new PIXI.Sprite(PIXI.Texture.WHITE);
+            Game.semiDarkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
+        }
     }
 
     updateLifetime() {
@@ -72,6 +77,10 @@ export class FireHazard extends Hazard {
             } else if (this.currentSpreadDelay > 0) {
                 this.currentSpreadDelay--;
             }
+        } else {
+            if (Game.stage === STAGE.DARK_TUNNEL) {
+                Game.semiDarkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
+            }
         }
     }
 
@@ -85,7 +94,7 @@ export class FireHazard extends Hazard {
 
     ignite() {
         this.spreadTimes++;
-        this.turnsLeft += 2;
+        this.turnsLeft += 3;
         if (this.spreadTimes > this.maxSpreadTimes) this.spreadTimes = this.maxSpreadTimes;
     }
 

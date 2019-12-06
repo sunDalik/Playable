@@ -1,8 +1,9 @@
 import {Game} from "../game"
 import * as PIXI from "pixi.js"
-import {EQUIPMENT_TYPE, INANIMATE_TYPE, ROLE, STAGE, TOOL_TYPE} from "../enums";
+import {ROLE, STAGE, TILE_TYPE} from "../enums";
 import {FullTileElement} from "../classes/tile_elements/full_tile_element";
 import {decrementEachDigitInHex} from "../utils/basic_utils";
+import {DarkTunnelTile} from "../classes/tile_elements/dark_tunnel_tile";
 
 export function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {
@@ -19,12 +20,6 @@ export function createDarkness() {
     for (let i = 0; i < Game.map.length; ++i) {
         Game.darkTiles[i] = [];
         for (let j = 0; j < Game.map[0].length; ++j) {
-            Game.darkTiles[i][j] = null;
-        }
-    }
-
-    for (let i = 0; i < Game.map.length; ++i) {
-        for (let j = 0; j < Game.map[0].length; ++j) {
             const voidTile = new FullTileElement(PIXI.Texture.WHITE, j, i);
             voidTile.tint = 0x000000;
             voidTile.zIndex = 10;
@@ -38,19 +33,14 @@ export function createDarkness() {
         for (let i = 0; i < Game.map.length; ++i) {
             Game.semiDarkTiles[i] = [];
             for (let j = 0; j < Game.map[0].length; ++j) {
-                Game.semiDarkTiles[i][j] = null;
-            }
-        }
-
-        for (let i = 0; i < Game.map.length; ++i) {
-            for (let j = 0; j < Game.map[0].length; ++j) {
-                const voidTile = new FullTileElement(PIXI.Texture.WHITE, j, i);
-                voidTile.tint = 0x000000;
-                voidTile.zIndex = 9;
-                voidTile.alpha = 0.85;
-                Game.world.addChild(voidTile);
-                Game.tiles.push(voidTile);
-                Game.semiDarkTiles[i][j] = voidTile;
+                if (Game.map[i][j].tileType === TILE_TYPE.VOID) {
+                    Game.semiDarkTiles[i][j] = null;
+                } else {
+                    const voidTile = new DarkTunnelTile(j, i);
+                    Game.world.addChild(voidTile);
+                    Game.tiles.push(voidTile);
+                    Game.semiDarkTiles[i][j] = voidTile;
+                }
             }
         }
     }
