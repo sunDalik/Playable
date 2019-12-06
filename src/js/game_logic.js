@@ -99,11 +99,11 @@ export function damagePlayerWithHazards(player) {
         }
 
         if (Game.stage === STAGE.DARK_TUNNEL) {
-            if (Game.semiDarkTiles[player.tilePosition.y][player.tilePosition.x].dark
-                && Game.semiDarkTiles[player.tilePosition.y + 1][player.tilePosition.x].dark
-                && Game.semiDarkTiles[player.tilePosition.y - 1][player.tilePosition.x].dark
-                && Game.semiDarkTiles[player.tilePosition.y][player.tilePosition.x + 1].dark
-                && Game.semiDarkTiles[player.tilePosition.y][player.tilePosition.x - 1].dark)
+            if (Game.darkTiles[player.tilePosition.y][player.tilePosition.x].dark
+                && Game.darkTiles[player.tilePosition.y + 1][player.tilePosition.x].dark
+                && Game.darkTiles[player.tilePosition.y - 1][player.tilePosition.x].dark
+                && Game.darkTiles[player.tilePosition.y][player.tilePosition.x + 1].dark
+                && Game.darkTiles[player.tilePosition.y][player.tilePosition.x - 1].dark)
                 player.damage(0.25, null, false, false);
         }
     }
@@ -281,7 +281,6 @@ export function gotoNextLevel() {
     cleanGameWorld();
     Game.tiles = [];
     Game.enemies = [];
-    Game.semiDarkTiles = [];
     Game.darkTiles = [];
     Game.hazards = [];
     Game.otherGraphics = [];
@@ -299,9 +298,6 @@ export function cleanGameWorld() {
         Game.world.removeChild(tile);
     }
     for (const tile of Game.darkTiles) {
-        Game.world.removeChild(tile);
-    }
-    for (const tile of Game.semiDarkTiles) {
         Game.world.removeChild(tile);
     }
     for (const graphic of Game.otherGraphics) {

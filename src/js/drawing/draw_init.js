@@ -20,30 +20,20 @@ export function createDarkness() {
     for (let i = 0; i < Game.map.length; ++i) {
         Game.darkTiles[i] = [];
         for (let j = 0; j < Game.map[0].length; ++j) {
-            const voidTile = new FullTileElement(PIXI.Texture.WHITE, j, i);
-            voidTile.tint = 0x000000;
-            voidTile.zIndex = 10;
+            let voidTile;
+            if (Game.stage === STAGE.DARK_TUNNEL) {
+                voidTile = new DarkTunnelTile(j, i);
+            } else {
+                voidTile = new FullTileElement(PIXI.Texture.WHITE, j, i);
+                voidTile.tint = 0x000000;
+                voidTile.zIndex = 10;
+            }
             Game.world.addChild(voidTile);
             Game.tiles.push(voidTile);
             Game.darkTiles[i][j] = voidTile;
         }
     }
 
-    if (Game.stage === STAGE.DARK_TUNNEL) {
-        for (let i = 0; i < Game.map.length; ++i) {
-            Game.semiDarkTiles[i] = [];
-            for (let j = 0; j < Game.map[0].length; ++j) {
-                if (Game.map[i][j].tileType === TILE_TYPE.VOID) {
-                    Game.semiDarkTiles[i][j] = null;
-                } else {
-                    const voidTile = new DarkTunnelTile(j, i);
-                    Game.world.addChild(voidTile);
-                    Game.tiles.push(voidTile);
-                    Game.semiDarkTiles[i][j] = voidTile;
-                }
-            }
-        }
-    }
 }
 
 export function drawEntities() {

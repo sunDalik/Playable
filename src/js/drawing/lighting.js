@@ -23,7 +23,7 @@ export function lightPlayerPosition(player) {
     if (Game.stage === STAGE.DARK_TUNNEL) {
         if (player.secondHand && player.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && player.secondHand.type === TOOL_TYPE.TORCH) {
             for (const lightSource of litDTAreas) {
-                Game.semiDarkTiles[lightSource.y][lightSource.x].removeLightSource(lightTileElement);
+                Game.darkTiles[lightSource.y][lightSource.x].removeLightSource(lightTileElement);
             }
             torchLightSources = [];
             litDTAreas = [];
@@ -60,10 +60,7 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
             || (Game.map[tileY][tileX].tileType === TILE_TYPE.PATH && (lightPaths === true || lightPaths === undefined))
             || ((Game.map[tileY][tileX].tileType === TILE_TYPE.NONE && (lightPaths === false || lightPaths === undefined))
                 || Game.map[tileY][tileX].tileType === TILE_TYPE.EXIT)) {
-            if (!Game.map[tileY][tileX].lit) {
-                lightTile();
-            }
-
+            if (!Game.map[tileY][tileX].lit) lightTile();
             litAreas.push({x: tileX, y: tileY});
             if (sourceDirX === 0 && sourceDirY === 0) {
                 lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, 0);
@@ -105,7 +102,11 @@ function lightWorld(tileX, tileY, lightPaths, distance = 8, sourceDirX = 0, sour
     }
 
     function lightTile() {
-        Game.darkTiles[tileY][tileX].visible = false;
+        if (Game.stage === STAGE.DARK_TUNNEL) {
+            Game.darkTiles[tileY][tileX].alpha = 0.85;
+        } else {
+            Game.darkTiles[tileY][tileX].visible = false;
+        }
         Game.map[tileY][tileX].lit = true;
         if (Game.map[tileY][tileX].entity) {
             Game.map[tileY][tileX].entity.visible = true;
@@ -164,7 +165,7 @@ function lightWorldDTTorch(tileX, tileY, distance = 2, sourceDirX = 0, sourceDir
 
         function lightTile() {
             litDTAreas.push({x: tileX, y: tileY});
-            Game.semiDarkTiles[tileY][tileX].addLightSource(lightTileElement);
+            Game.darkTiles[tileY][tileX].addLightSource(lightTileElement);
             torchLightSources.push(lightTileElement);
         }
     }

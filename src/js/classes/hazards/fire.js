@@ -33,7 +33,7 @@ export class FireHazard extends Hazard {
         this.type = HAZARD_TYPE.FIRE;
         if (Game.stage === STAGE.DARK_TUNNEL) {
             this.maskLayer = new PIXI.Sprite(PIXI.Texture.WHITE);
-            Game.semiDarkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
+            Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
         }
     }
 
@@ -79,7 +79,7 @@ export class FireHazard extends Hazard {
             }
         } else {
             if (Game.stage === STAGE.DARK_TUNNEL) {
-                Game.semiDarkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
+                Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
             }
         }
     }

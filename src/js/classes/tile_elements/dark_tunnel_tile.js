@@ -8,8 +8,7 @@ export class DarkTunnelTile extends FullTileElement {
     constructor(tilePositionX, tilePositionY, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
         this.tint = 0x000000;
-        this.zIndex = 9;
-        this.alpha = 0.85;
+        this.zIndex = 10;
         this.dark = true;
         this.lightSources = [];
         this.maskContainer = new PIXI.Container();
