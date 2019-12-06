@@ -123,7 +123,7 @@ export function initializeLevel() {
     if (!Game.player.dead) lightPlayerPosition(Game.player);
     if (!Game.player2.dead) lightPlayerPosition(Game.player2);
     if (Game.stage === STAGE.DARK_TUNNEL) {
-        lightPosition(Game.torchTile, Game.map[Game.torchTile.y][Game.torchTile.x].item.item.lightSpread + 1, true);
+        lightPosition(Game.torchTile, Game.map[Game.torchTile.y][Game.torchTile.x].item.item.lightSpread, true);
     }
     camera.centerCamera();
 
