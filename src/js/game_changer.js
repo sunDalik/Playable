@@ -31,10 +31,12 @@ import {StunningShield} from "./classes/equipment/shields/stunning";
 import {Game} from "./game";
 import {STAGE} from "./enums";
 import * as rooms from "./rooms";
+import {AbyssalSpit} from "./classes/magic/abyssal_spit";
 
 export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer];
-    Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind];
+    Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit];
+    //Abyssal spit is temporary in the pool. It will be removed later;
     Game.chestItemPool = [Pickaxe, BasicArmor, WizardRobe, SeerCirclet, WizardHat, AdventurerBoots,
         DamagingBoots, DarkBoots, PassiveShield, SpikyShield, StunningShield, HeavyArmor, ElectricArmor, VampireCrown, Wings];
 }
