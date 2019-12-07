@@ -46,8 +46,8 @@ export function linesIntersect(a, b, c, d, p, q, r, s) {
 //returns true if the point (a,b) is inside parallelogram (p0,p1,p2,p3)
 // (p0 is the upper left corner, p1 is the upper right etc.)
 export function pointInsideParallelogram(a, b, p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y) {
-    let skewedLeft = p0x < p3x;
-    let notSkewed = p0x === p3x;
+    const skewedLeft = p0x < p3x;
+    const notSkewed = p0x === p3x;
     let x1, x2, y1, y2, k, xp;
     if (skewedLeft) {
         x1 = p0x;

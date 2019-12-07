@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE,} from "../../enums";
 import {isNotAWall} from "../../map_checks";
 import {addHazardToWorld} from "../../game_logic";
-import {DarkPoisonHazard} from "../hazards/dark_poison";
+import {DarkPoisonHazard} from "../hazards/poison";
 import {otherPlayer} from "../../utils/basic_utils";
 
 export class AbyssalSpit {

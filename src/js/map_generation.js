@@ -5,21 +5,21 @@ import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 import {copy2dArray} from "./utils/basic_utils";
 import {getRandomChestDrop, getRandomSpell, getRandomValue, getRandomWeapon} from "./utils/random_utils";
 import {Roller} from "./classes/enemies/roller";
-import {RollerB} from "./classes/enemies/roller_b";
+import {RedRoller} from "./classes/enemies/roller_red";
 import {Snail} from "./classes/enemies/snail";
-import {SnailB} from "./classes/enemies/snail_b";
+import {SpikySnail} from "./classes/enemies/snail_spiky";
 import {Star} from "./classes/enemies/star";
-import {StarB} from "./classes/enemies/star_b";
+import {RedStar} from "./classes/enemies/star_red";
 import {Spider} from "./classes/enemies/spider";
-import {SpiderB} from "./classes/enemies/spider_b";
+import {GraySpider} from "./classes/enemies/spider_gray";
 import {Eel} from "./classes/enemies/eel";
-import {DarkEel} from "./classes/enemies/dark_eel";
-import {PoisonEel} from "./classes/enemies/poison_eel";
+import {DarkEel} from "./classes/enemies/eel_dark";
+import {PoisonEel} from "./classes/enemies/eel_poison";
 import {Statue} from "./classes/inanimate_objects/statue";
 import {Chest} from "./classes/inanimate_objects/chest";
 import {Obelisk} from "./classes/inanimate_objects/obelisk";
-import {SpiderRed} from "./classes/enemies/spider_red";
-import {SpiderGreen} from "./classes/enemies/spider_green";
+import {RedSpider} from "./classes/enemies/spider_red";
+import {GreenSpider} from "./classes/enemies/spider_green";
 import {KingFireFrog} from "./classes/enemies/frog_king_fire";
 import {KingFrog} from "./classes/enemies/frog_king";
 import {FireFrog} from "./classes/enemies/frog_fire";
@@ -63,15 +63,15 @@ export function generateMap(level) {
             }
 
             if (map[i][j] === MAP_SYMBOLS.ROLLER) mapCell.entity = new Roller(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.ROLLER_RED) mapCell.entity = new RollerB(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.ROLLER_RED) mapCell.entity = new RedRoller(j, i);
             else if (map[i][j] === MAP_SYMBOLS.STAR) mapCell.entity = new Star(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.STAR_RED) mapCell.entity = new StarB(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.STAR_RED) mapCell.entity = new RedStar(j, i);
             else if (map[i][j] === MAP_SYMBOLS.SPIDER) mapCell.entity = new Spider(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SPIDER_GRAY) mapCell.entity = new SpiderB(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SPIDER_RED) mapCell.entity = new SpiderRed(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SPIDER_GREEN) mapCell.entity = new SpiderGreen(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.SPIDER_GRAY) mapCell.entity = new GraySpider(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.SPIDER_RED) mapCell.entity = new RedSpider(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.SPIDER_GREEN) mapCell.entity = new GreenSpider(j, i);
             else if (map[i][j] === MAP_SYMBOLS.SNAIL) mapCell.entity = new Snail(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SNAIL_SPIKY) mapCell.entity = new SnailB(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.SNAIL_SPIKY) mapCell.entity = new SpikySnail(j, i);
             else if (map[i][j] === MAP_SYMBOLS.EEL) mapCell.entity = new Eel(j, i);
             else if (map[i][j] === MAP_SYMBOLS.EEL_DARK) mapCell.entity = new DarkEel(j, i);
             else if (map[i][j] === MAP_SYMBOLS.EEL_POISON) mapCell.entity = new PoisonEel(j, i);
@@ -162,7 +162,7 @@ export function generateMap(level) {
 
 //0 is walkable, 1 is not
 export function calculateDetectionGraph(map) {
-    let mapWithWeights = [];
+    const mapWithWeights = [];
     for (let i = 0; i < map.length; ++i) {
         mapWithWeights[i] = [];
         for (let j = 0; j < map[0].length; ++j) {

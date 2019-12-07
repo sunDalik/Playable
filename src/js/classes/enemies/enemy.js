@@ -172,6 +172,13 @@ export class Enemy extends AnimatedTileElement {
         super.stepY(tileStepY, () => this.moveHealthContainer())
     }
 
+    stepXY(tileStepX, tileStepY, onFrame = null, onEnd = null) {
+        super.stepXY(tileStepX, tileStepY, () => {
+            if (onFrame) onFrame();
+            this.moveHealthContainer();
+        }, onEnd);
+    }
+
     bumpY(tileStepY, onFrame = null, onEnd = null) {
         super.bumpY(tileStepY, () => {
             if (onFrame) onFrame();

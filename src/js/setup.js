@@ -3,7 +3,7 @@ import {Game} from "./game";
 import {loadAll} from "./loader";
 import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
-import {BasicArmor} from "./classes/equipment/armor/basic_armor";
+import {BasicArmor} from "./classes/equipment/armor/basic";
 import * as camera from "./camera";
 import {STAGE} from "./enums";
 import {generateLevel, getLevelPlayerGraph} from "./level_generation";
@@ -20,14 +20,13 @@ import {kiss} from "./game_logic";
 import {setTickTimeout} from "./utils/basic_utils";
 
 PIXI.utils.skipHello();
-const app = initApplication();
-Game.app = app;
-Game.loader = app.loader;
-Game.resources = app.loader.resources;
+Game.app = initApplication();
+Game.loader = Game.app.loader;
+Game.resources = Game.app.loader.resources;
 loadAll(setup);
 
 function initApplication() {
-    let app = new PIXI.Application({resolution: 2});
+    const app = new PIXI.Application({resolution: 2});
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
     app.renderer.autoDensity = true;
@@ -74,7 +73,7 @@ function setup() {
 }
 
 export function initializeLevel() {
-    let level = generateLevel();
+    const level = generateLevel();
     Game.map = generateMap(level);
     Game.level = level;
     calculateDetectionGraph(Game.map);

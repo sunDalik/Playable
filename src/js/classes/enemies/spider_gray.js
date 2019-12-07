@@ -3,7 +3,7 @@ import {Spider} from "./spider"
 import {ENEMY_TYPE} from "../../enums";
 import {isEmpty, isNotAWall} from "../../map_checks";
 
-export class SpiderB extends Spider {
+export class GraySpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/spider_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 3;

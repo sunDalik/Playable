@@ -1,7 +1,7 @@
 import {Game} from "../game";
 
 export function getHealthArray(entity) {
-    let health = [];
+    const health = [];
     for (let i = 0; i < entity.maxHealth; ++i) {
         if (i === Math.trunc(entity.health) && entity.health > 0) {
             health[i] = Number((entity.health - Math.trunc(entity.health)).toFixed(2));

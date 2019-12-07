@@ -265,7 +265,7 @@ export class AnimatedTileElement extends TileElement {
 
     shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
         this.animationCounter = 0;
-        let step = Game.TILESIZE / 20 / (animationTime / 4);
+        const step = Game.TILESIZE / 20 / (animationTime / 4);
 
         const animation = () => {
             if (this.animationCounter < animationTime / 4) {

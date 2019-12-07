@@ -5,7 +5,7 @@ import {Necromancy} from "./classes/magic/necromancy";
 import {Petrification} from "./classes/magic/petrification";
 import {Teleport} from "./classes/magic/teleport";
 import {Wind} from "./classes/magic/wind";
-import {BasicArmor} from "./classes/equipment/armor/basic_armor";
+import {BasicArmor} from "./classes/equipment/armor/basic";
 import {WizardRobe} from "./classes/equipment/armor/wizard_robe";
 import {HeavyArmor} from "./classes/equipment/armor/heavy";
 import {ElectricArmor} from "./classes/equipment/armor/electric";

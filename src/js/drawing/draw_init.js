@@ -33,7 +33,6 @@ export function createDarkness() {
             Game.darkTiles[i][j] = voidTile;
         }
     }
-
 }
 
 export function drawEntities() {

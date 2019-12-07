@@ -3,7 +3,7 @@ import {Star} from "./star"
 import {ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile} from "../../map_checks";
 
-export class StarB extends Star {
+export class RedStar extends Star {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/star_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.type = ENEMY_TYPE.STAR_B;

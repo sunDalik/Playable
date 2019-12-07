@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {Snail} from "./snail"
 import {ENEMY_TYPE} from "../../enums";
 
-export class SnailB extends Snail {
+export class SpikySnail extends Snail {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/snail_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 5;
