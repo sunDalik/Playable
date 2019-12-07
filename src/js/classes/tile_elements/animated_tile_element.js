@@ -125,7 +125,8 @@ export class AnimatedTileElement extends TileElement {
     }
 
     bumpX(tileStepX, onFrame = null, onEnd = null) {
-        const jumpHeight = Game.TILESIZE * 25 / 75;
+        let jumpHeight = Game.TILESIZE * 25 / 75;
+        if (this.stepXjumpHeight) jumpHeight = this.stepXjumpHeight;
         const a = jumpHeight / ((tileStepX * Game.TILESIZE / 2) ** 2);
         const b = -(this.position.x + (tileStepX * Game.TILESIZE / 2) / 2) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
