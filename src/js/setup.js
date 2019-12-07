@@ -58,6 +58,7 @@ function setup() {
     Game.player.zIndex = 1;
     Game.player2.zIndex = Game.player.zIndex + 1;
     Game.primaryPlayer = Game.player2;
+    Game.lastPlayerMoved = Game.player;
 
     drawHUD();
     bindKeys();

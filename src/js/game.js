@@ -36,6 +36,7 @@ Game.BOTH_PLAYERS = {};
 Game.startX = 0;
 Game.startY = 0;
 Game.primaryPlayer = null;
+Game.lastPlayerMoved = Game.player;
 //Game.playerMoved = null;
 
 Game.enemiesTimeout = null;

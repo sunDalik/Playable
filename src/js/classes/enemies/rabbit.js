@@ -11,7 +11,6 @@ export class Rabbit extends Enemy {
         this.rabbitType = type;
         this.atk = 0.25;
         this.predator = null;
-        this.direction = {x: 1, y: 0};
 
         switch (this.rabbitType) {
             case RABBIT_TYPE.ENERGY:
@@ -32,7 +31,7 @@ export class Rabbit extends Enemy {
     move() {
         if (this.predator && !this.predator.dead) {
             return false;
-            
+
         } else {
             this.predator = null;
         }

@@ -104,12 +104,23 @@ export function lightTile(tileX, tileY) {
         Game.darkTiles[tileY][tileX].visible = false;
     }
     Game.map[tileY][tileX].lit = true;
-    if (Game.map[tileY][tileX].entity) {
-        Game.map[tileY][tileX].entity.visible = true;
+
+    const entity = Game.map[tileY][tileX].entity;
+    if (entity) {
+        if (!entity.visible && !entity.dead && entity.immediateReaction) {
+            entity.immediateReaction();
+        }
+        entity.visible = true;
     }
-    if (Game.map[tileY][tileX].secondaryEntity) {
-        Game.map[tileY][tileX].secondaryEntity.visible = true;
+
+    const secondaryEntity = Game.map[tileY][tileX].secondaryEntity;
+    if (secondaryEntity) {
+        if (!entity.visible && !entity.dead && entity.immediateReaction) {
+            entity.immediateReaction();
+        }
+        entity.visible = true;
     }
+
     if (Game.map[tileY][tileX].hazard) {
         Game.map[tileY][tileX].hazard.visible = true;
     }

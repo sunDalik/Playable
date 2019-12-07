@@ -68,6 +68,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
         }
         const moveResult = playerMove();
         if (moveResult !== false) {
+            if (player) Game.lastPlayerMoved = player;
             damagePlayersWithHazards();
             setEnemyTurnTimeout();
             Game.player.cancellable = true;

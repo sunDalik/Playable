@@ -1,6 +1,8 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE, RABBIT_TYPE} from "../../enums";
+import {isEmpty} from "../../map_checks";
+import {randomChoice} from "../../utils/random_utils";
 
 export class Alligator extends Enemy {
     constructor(tilePositionX, tilePositionY, type = undefined, texture = Game.resources["src/images/enemies/alligator_x.png"].texture) {
@@ -14,15 +16,59 @@ export class Alligator extends Enemy {
         this.currentTurnDelay = 0;
         this.prey = null;
         this.direction = {x: 1, y: 0};
-        this.seen = false;
         this.correctScale();
     }
 
-    move() {
-        if (!this.seen) {
-            this.seen = true;
-            //initialize
+    immediateReaction() {
+        if (this.prey) {
+            const shiftNegX = () => {
+                const direction = {x: -Math.sign(Game.lastPlayerMoved.tilePosition.x - this.tilePosition.x), y: 0};
+                return placePredator();
+            };
+
+            const shiftNegY = () => {
+                const direction = {x: 0, y: -Math.sign(Game.lastPlayerMoved.tilePosition.y - this.tilePosition.y)};
+                return placePredator();
+            };
+
+            const shiftPosX = () => {
+                const direction = {x: Math.sign(Game.lastPlayerMoved.tilePosition.x - this.tilePosition.x), y: 0};
+                return placePredator();
+            };
+
+            const shiftPosY = () => {
+                const direction = {x: 0, y: Math.sign(Game.lastPlayerMoved.tilePosition.y - this.tilePosition.y)};
+                return placePredator();
+            };
+
+            const eat = () => {
+                if (this.prey.rabbitType) {
+                    this.alligatorType = this.prey.rabbitType;
+                    this.updateTexture();
+                }
+                this.prey = null;
+            };
+
+            const placePredator = (direction) => {
+                if (isEmpty(this.tilePosition.x + direction.x, this.tilePosition.y + direction.y)) {
+                    this.removeFromMap();
+                    this.tilePosition.x += direction.x;
+                    this.tilePosition.y += direction.y;
+                    this.placeOnMap();
+                    this.direction = direction;
+                    return true;
+                } else return false;
+            };
+
+            if (Math.random() < 0.5) {
+                shiftNegX() || shiftNegY() || shiftPosX() || shiftNegY() || eat();
+            } else {
+                shiftNegY() || shiftNegX() || shiftPosY() || shiftNegX() || eat();
+            }
         }
+    }
+
+    move() {
         if (this.prey && !this.prey.dead) {
 
             if (true) {
@@ -35,8 +81,12 @@ export class Alligator extends Enemy {
     }
 
     correctScale() {
-        if ((this.direction === 1 && this.scale.x < 0) || (this.direction === -1 && this.scale.x > .0)) {
+        if ((this.direction === 1 && this.scale.x < 0) || (this.direction === -1 && this.scale.x > 0)) {
             this.scale.x *= -1
         }
+    }
+
+    updateTexture() {
+
     }
 }
