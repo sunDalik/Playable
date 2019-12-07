@@ -91,12 +91,12 @@ export class RollerB extends Roller {
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;
             } else if (counter >= this.SLIDE_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
-                Game.APP.ticker.remove(this.animation);
+                Game.app.ticker.remove(this.animation);
                 this.place();
             }
             this.moveHealthContainer();
         };
-        Game.APP.ticker.add(this.animation);
+        Game.app.ticker.add(this.animation);
     }
 
     rollBump() {
@@ -116,12 +116,12 @@ export class RollerB extends Roller {
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;
             } else if (counter >= this.BUMP_ANIMATION_TIME) {
-                Game.APP.ticker.remove(this.animation);
+                Game.app.ticker.remove(this.animation);
                 this.place();
             }
             this.moveHealthContainer();
         };
-        Game.APP.ticker.add(this.animation);
+        Game.app.ticker.add(this.animation);
     }
 
     damage(source, dmg, inputX, inputY, magical = false, hazardDamage = false) {

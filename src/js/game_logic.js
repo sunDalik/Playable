@@ -58,7 +58,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
     if (((bothPlayers && !Game.player.dead && !Game.player2.dead)
         || (!bothPlayers && !player.dead && !player.carried))) {
         if (Game.enemiesTimeout !== null) {
-            Game.APP.ticker.remove(Game.enemiesTimeout);
+            Game.app.ticker.remove(Game.enemiesTimeout);
             enemyTurn();
         }
 
@@ -302,7 +302,7 @@ export function cleanGameWorld() {
         Game.world.removeChild(hazard);
     }
     for (const animation of Game.infiniteAnimations) {
-        Game.APP.ticker.remove(animation);
+        Game.app.ticker.remove(animation);
     }
     Game.world.removeChild(Game.grid);
 }

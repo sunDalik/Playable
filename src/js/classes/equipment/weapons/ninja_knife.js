@@ -74,10 +74,10 @@ export class NinjaKnife {
                 counter++;
                 if (counter >= context.SLIDE_ANIMATION_TIME + context.FINISH_SLIDE_TIME) {
                     Game.world.removeChild(attackParticle);
-                    Game.APP.ticker.remove(animation);
+                    Game.app.ticker.remove(animation);
                 }
             };
-            Game.APP.ticker.add(animation);
+            Game.app.ticker.add(animation);
 
             function centerAttackParticleToOldPlayer() {
                 attackParticle.position.x = playerPositionXOld + (Game.TILESIZE - wielder.width) / 2 + wielder.width / 2;

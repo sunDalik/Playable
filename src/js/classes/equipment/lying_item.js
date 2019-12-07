@@ -20,7 +20,7 @@ export class LyingItem extends TileElement {
             Game.world.removeChild(this);
             removeObjectFromArray(this, Game.tiles);
             Game.map[this.tilePosition.y][this.tilePosition.x].item = null;
-            Game.APP.ticker.remove(this.animation);
+            Game.app.ticker.remove(this.animation);
         } else {
             this.texture = this.item.texture;
             this.width = Game.TILESIZE * 0.9;

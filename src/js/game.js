@@ -2,8 +2,7 @@ import {STAGE} from "./enums"
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 
 export const Game = {};
-
-Game.APP = null;
+Game.app = null;
 Game.loader = null;
 Game.resources = null;
 

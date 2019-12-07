@@ -35,7 +35,7 @@ export class DarkTunnelTile extends FullTileElement {
         else {
             removeAllChildrenFromContainer(this.maskContainer);
             for (const lightSource of this.lightSources) this.maskContainer.addChild(lightSource);
-            this.mask = new PIXI.Sprite(Game.APP.renderer.generateTexture(this.maskContainer));
+            this.mask = new PIXI.Sprite(Game.app.renderer.generateTexture(this.maskContainer));
         }
     }
 }

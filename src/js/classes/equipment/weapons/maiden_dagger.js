@@ -147,9 +147,9 @@ export class MaidenDagger {
             if (counter >= animationTime) {
                 Game.world.removeChild(attackSprite);
                 Game.world.removeChild(attackSprite2);
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
             }
         };
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 }

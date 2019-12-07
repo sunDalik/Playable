@@ -63,7 +63,7 @@ export function redrawHealthForPlayer(player) {
     removeAllChildrenFromContainer(container);
     const heartXOffset = player === Game.player ?
         heartBorderOffsetX :
-        Game.APP.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset;
+        Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset;
     const healthArray = getHealthArray(player);
     for (let i = 0; i < healthArray.length; ++i) {
         const heart = new PIXI.Sprite(getHeartTexture(healthArray[i]));
@@ -94,15 +94,15 @@ export function redrawSlotsForPlayer(player) {
     const slotsYOffset = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5) + 15;
     const slotsXOffset = player === Game.player ?
         slotBorderOffsetX :
-        Game.APP.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * 4 + slotsColOffset;
+        Game.app.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * 4 + slotsColOffset;
 
     const slotsEquipmentOffset = player === Game.player ?
         slotsXOffset :
-        Game.APP.renderer.screen.width - slotBorderOffsetX - slotSize;
+        Game.app.renderer.screen.width - slotBorderOffsetX - slotSize;
 
     const slotsSecondRowXOffset = player === Game.player ?
         slotsXOffset :
-        Game.APP.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * 2 + slotsColOffset;
+        Game.app.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * 2 + slotsColOffset;
 
     const contentsContainer = player === Game.player ? HUD.slots1Contents : HUD.slots2Contents;
     for (let i = 0; i < topRowSlots.length; ++i) {
@@ -160,7 +160,7 @@ export function drawStatsForPlayer(player) {
     const text = new PIXI.Text(`ATK = ${player.getAtkBaseWithWeapon(player.weapon)} * ${player.getAtkMul()} = ${player.getAtkWithWeapon(player.weapon)}\nDEF = ${player.getDefBase()} * ${player.getDefMul()} = ${player.getDef()}`, HUDTextStyle);
 
     if (player === Game.player) text.position.x = slotBorderOffsetX + slotSize * 2 + slotsColOffset + statsOffsetX;
-    else text.position.x = Game.APP.renderer.screen.width - slotBorderOffsetX - slotSize * 2 - slotsColOffset - text.width - statsOffsetX;
+    else text.position.x = Game.app.renderer.screen.width - slotBorderOffsetX - slotSize * 2 - slotsColOffset - text.width - statsOffsetX;
     text.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5) + 15 + slotSize + slotsRowOffset + slotSize / 2 - text.height / 2;
     container.addChild(text);
 }
@@ -300,7 +300,7 @@ export function drawMovementKeyBindings() {
     }
 
     if (!Game.player2.dead && !Game.player2.carried && !Game.player.pushPullMode) {
-        const heartXOffset = Game.APP.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset - HUDGuideOffsetX;
+        const heartXOffset = Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset - HUDGuideOffsetX;
         let topKey = "I";
         const bottomRowKeys = ["L", "K", "J"];
         if (!Game.player2.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {
@@ -346,13 +346,13 @@ export function drawInteractionKeys() {
         drawPlayer(Game.player2);
         if (Game.player.carried || Game.player2.carried) {
             drawIconAndKey("src/images/unchain_icon.png", "X",
-                Game.APP.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
+                Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
         } else {
             drawIconAndKey("src/images/chain_icon.png", "X",
-                Game.APP.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
+                Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
             const swapTexture = Game.player === Game.primaryPlayer ? "src/images/swap_icon_1.png" : "src/images/swap_icon_2.png";
             drawIconAndKey(swapTexture, "Z",
-                Game.APP.renderer.screen.width / 2 - playerSize - HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
+                Game.app.renderer.screen.width / 2 - playerSize - HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
         }
 
         function drawPlayer(player) {
@@ -361,7 +361,7 @@ export function drawInteractionKeys() {
             playerSprite.width = playerSize;
             playerSprite.height = playerSize;
             playerSprite.zIndex = player.zIndex;
-            playerSprite.position.x = Game.APP.renderer.screen.width / 2 - playerSize / 2;
+            playerSprite.position.x = Game.app.renderer.screen.width / 2 - playerSize / 2;
             playerSprite.position.y = offsetY;
             container.addChild(playerSprite);
         }
@@ -378,13 +378,13 @@ export function drawInteractionKeys() {
         const togetherSprite = new PIXI.Sprite(Game.resources["src/images/together_icon.png"].texture);
         togetherSprite.width = playerSize * 2;
         togetherSprite.height = playerSize;
-        togetherSprite.position.x = Game.APP.renderer.screen.width / 2 - togetherSprite.width / 2;
+        togetherSprite.position.x = Game.app.renderer.screen.width / 2 - togetherSprite.width / 2;
         togetherSprite.position.y = offsetY;
         container.addChild(togetherSprite);
         if (!Game.player2.pushPullMode)
-            drawKey(container, "R", Game.APP.renderer.screen.width / 2 - togetherSprite.width / 2 - HUDKeyBindSize, offsetY + playerSize / 2 - HUDKeyBindSize);
+            drawKey(container, "R", Game.app.renderer.screen.width / 2 - togetherSprite.width / 2 - HUDKeyBindSize, offsetY + playerSize / 2 - HUDKeyBindSize);
         if (!Game.player.pushPullMode)
-            drawKey(container, "P", Game.APP.renderer.screen.width / 2 + togetherSprite.width / 2, offsetY + playerSize / 2 - HUDKeyBindSize);
+            drawKey(container, "P", Game.app.renderer.screen.width / 2 + togetherSprite.width / 2, offsetY + playerSize / 2 - HUDKeyBindSize);
     }
 }
 

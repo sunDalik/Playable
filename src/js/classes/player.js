@@ -77,9 +77,9 @@ export class Player extends AnimatedTileElement {
             Game.world.removeChild(subSprite);
         }
         if (this.attackTimeout) {
-            Game.APP.ticker.remove(this.attackTimeout);
+            Game.app.ticker.remove(this.attackTimeout);
             this.doubleAttack();
-            Game.APP.ticker.remove(this.animation);
+            Game.app.ticker.remove(this.animation);
             this.place();
         }
         this.animationSubSprites = [];
@@ -494,7 +494,7 @@ export class Player extends AnimatedTileElement {
             this.savedTileStepX *= -1;
             this.savedTileStepY *= -1;
         }
-        Game.APP.ticker.remove(this.animation);
+        Game.app.ticker.remove(this.animation);
         this.rotation = 0; //added because of wings. But what if we want the player to rotate when he is attacking with some weapon?...
         this.secondHand.attack(this, this.savedTileStepX, this.savedTileStepY);
         redrawSecondHand(this);
@@ -572,12 +572,12 @@ export class Player extends AnimatedTileElement {
             itemSprite.angle += step;
             this.animationCounter++;
             if (this.animationCounter >= animationTime) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.cancelAnimation();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     getPropertyNameOfItem(item) {

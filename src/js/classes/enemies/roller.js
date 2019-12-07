@@ -16,7 +16,7 @@ export class Roller extends Enemy {
     }
 
     cancelAnimation() {
-        Game.APP.ticker.remove(this.animation);
+        Game.app.ticker.remove(this.animation);
         this.place();
         this.correctScale();
     }
@@ -60,11 +60,11 @@ export class Roller extends Enemy {
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;
             } else if (counter >= this.BUMP_ANIMATION_TIME) {
-                Game.APP.ticker.remove(this.animation);
+                Game.app.ticker.remove(this.animation);
                 this.place();
             }
             this.moveHealthContainer();
         };
-        Game.APP.ticker.add(this.animation);
+        Game.app.ticker.add(this.animation);
     }
 }

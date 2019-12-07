@@ -46,12 +46,12 @@ export class Grail extends FullTileElement {
                 this.magicSet = true;
                 createFloatingItemAnimation(this.magicSprite);
             }
-            Game.APP.ticker.remove(this.magicSprite.animation);
-            Game.APP.ticker.add(this.magicSprite.animation);
+            Game.app.ticker.remove(this.magicSprite.animation);
+            Game.app.ticker.add(this.magicSprite.animation);
             this.magicSprite.texture = this.magic.texture;
             this.magicSprite.visible = true;
         } else {
-            Game.APP.ticker.remove(this.magicSprite.animation);
+            Game.app.ticker.remove(this.magicSprite.animation);
             this.magicSprite.visible = false;
             this.texture = Game.resources["src/images/other/grail.png"].texture;
         }

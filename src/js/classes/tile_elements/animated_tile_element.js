@@ -39,14 +39,14 @@ export class AnimatedTileElement extends TileElement {
             counter++;
             if (onFrame) onFrame();
             if (counter >= animationTime) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     stepX(tileStepX, onFrame = null, onEnd = null) {
@@ -66,14 +66,14 @@ export class AnimatedTileElement extends TileElement {
             counter++;
             if (onFrame) onFrame();
             if (counter >= this.STEP_ANIMATION_TIME) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     //are we happy with this??
@@ -107,14 +107,14 @@ export class AnimatedTileElement extends TileElement {
             counter++;
             if (onFrame) onFrame();
             if (counter >= this.STEP_ANIMATION_TIME) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     step(tileStepX, tileStepY, onFrame = null, onEnd = null) {
@@ -142,14 +142,14 @@ export class AnimatedTileElement extends TileElement {
 
             if (onFrame) onFrame();
             if (counter >= this.BUMP_ANIMATION_TIME) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     bumpY(tileStepY, onFrame = null, onEnd = null) {
@@ -181,14 +181,14 @@ export class AnimatedTileElement extends TileElement {
             counter++;
             if (onFrame) onFrame();
             if (counter >= this.BUMP_ANIMATION_TIME) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     bump(tileStepX, tileStepY, onFrame = null, onEnd = null) {
@@ -211,14 +211,14 @@ export class AnimatedTileElement extends TileElement {
             this.animationCounter++;
             if (onFrame) onFrame();
             if (this.animationCounter >= animationTime) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     slideBump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
@@ -237,14 +237,14 @@ export class AnimatedTileElement extends TileElement {
             this.animationCounter++;
             if (onFrame) onFrame();
             if (this.animationCounter >= animationTime) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
                 if (onEnd) onEnd();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     rotateByAngle(angle, rotateTime = this.ROTATE_TIME, cancellable = true) {
@@ -255,12 +255,12 @@ export class AnimatedTileElement extends TileElement {
             this.angle += angle / rotateTime;
             this.animationCounter++;
             if (this.animationCounter >= rotateTime) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.cancelAnimation();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
@@ -282,12 +282,12 @@ export class AnimatedTileElement extends TileElement {
             if (this.animationCounter >= animationTime) {
                 this.animationCounter = 0;
                 this.place();
-                if (this.animation !== animation) Game.APP.ticker.remove(animation);
+                if (this.animation !== animation) Game.app.ticker.remove(animation);
             }
         };
-        Game.APP.ticker.remove(this.animation);
+        Game.app.ticker.remove(this.animation);
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     microJump() {
@@ -302,13 +302,13 @@ export class AnimatedTileElement extends TileElement {
             }
             counter++;
             if (counter >= this.MICRO_JUMP_ANIMATION_TIME) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 
     microSlide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.MICRO_SLIDE_ANIMATION_TIME) {
@@ -330,12 +330,12 @@ export class AnimatedTileElement extends TileElement {
             this.animationCounter++;
             if (onFrame) onFrame();
             if (this.animationCounter >= animationTime) {
-                Game.APP.ticker.remove(animation);
+                Game.app.ticker.remove(animation);
                 this.animation = null;
                 if (onEnd) onEnd();
             }
         };
         this.animation = animation;
-        Game.APP.ticker.add(animation);
+        Game.app.ticker.add(animation);
     }
 }

@@ -40,9 +40,9 @@ export function setTickTimeout(callback, tickTimeout) {
         counter++;
         if (counter >= tickTimeout) {
             callback();
-            Game.APP.ticker.remove(timeout);
+            Game.app.ticker.remove(timeout);
         }
     };
-    Game.APP.ticker.add(timeout);
+    Game.app.ticker.add(timeout);
     return timeout;
 }

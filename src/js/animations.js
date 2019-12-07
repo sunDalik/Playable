@@ -39,11 +39,11 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
         counter++;
         if (counter >= Game.WEAPON_ATTACK_TIME) {
             Game.world.removeChild(attackParticle);
-            Game.APP.ticker.remove(animation);
+            Game.app.ticker.remove(animation);
         }
     };
     player.animation = animation;
-    Game.APP.ticker.add(animation);
+    Game.app.ticker.add(animation);
 }
 
 export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
@@ -59,12 +59,12 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
         }
         counter++;
         if (counter >= animationTime) {
-            Game.APP.ticker.remove(animation);
+            Game.app.ticker.remove(animation);
             Game.world.removeChild(attack);
             if (ifTile) removeObjectFromArray(attack, Game.tiles);
         }
     };
-    Game.APP.ticker.add(animation);
+    Game.app.ticker.add(animation);
 }
 
 export function createFadingText(caption, positionX, positionY) {
@@ -91,11 +91,11 @@ export function createFadingText(caption, positionX, positionY) {
         counter++;
         if (counter >= TEXT_ANIMATION_TIME) {
             Game.world.removeChild(text);
-            Game.APP.ticker.remove(animation);
+            Game.app.ticker.remove(animation);
         }
     };
 
-    Game.APP.ticker.add(animation);
+    Game.app.ticker.add(animation);
 }
 
 //maybe need to move it to AnimatedTileElement class?
@@ -106,10 +106,10 @@ export function rotate(object, clockwise = true) {
         if (clockwise) object.rotation += 2 * Math.PI / Game.TURNTIME;
         else object.rotation -= 2 * Math.PI / Game.TURNTIME;
         counter++;
-        if (counter >= Game.TURNTIME) Game.APP.ticker.remove(animation);
+        if (counter >= Game.TURNTIME) Game.app.ticker.remove(animation);
     };
     object.animation = animation;
-    Game.APP.ticker.add(animation);
+    Game.app.ticker.add(animation);
 }
 
 export function createFloatingItemAnimation(item) {
@@ -130,7 +130,7 @@ export function createFloatingItemAnimation(item) {
         }
     };
 
-    Game.APP.ticker.add(item.animation);
+    Game.app.ticker.add(item.animation);
     Game.infiniteAnimations.push(item.animation);
 }
 
@@ -138,7 +138,7 @@ export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1
     let counter = 0;
     let shakeCounter = 0;
     const step = shakeAmplitude / shakeAnimationTime;
-    if (Game.shakeAnimation) Game.APP.ticker.remove(Game.shakeAnimation);
+    if (Game.shakeAnimation) Game.app.ticker.remove(Game.shakeAnimation);
 
     function animate() {
         if (counter < shakeAnimationTime / 4) {
@@ -154,12 +154,12 @@ export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1
             shakeCounter++;
         }
         if (shakeCounter >= shakeCount) {
-            Game.APP.ticker.remove(Game.shakeAnimation);
+            Game.app.ticker.remove(Game.shakeAnimation);
         }
     }
 
     Game.shakeAnimation = animate;
-    Game.APP.ticker.add(animate);
+    Game.app.ticker.add(animate);
 }
 
 export function longShakeScreen() {
@@ -195,11 +195,11 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
         counter++;
         if (counter >= animationTime) {
             Game.world.removeChild(heart);
-            Game.APP.ticker.remove(animation);
+            Game.app.ticker.remove(animation);
         }
     };
 
-    Game.APP.ticker.add(animation);
+    Game.app.ticker.add(animation);
 }
 
 export function createKissHeartAnimation(positionX, positionY) {

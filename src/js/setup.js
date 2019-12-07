@@ -21,7 +21,7 @@ import {setTickTimeout} from "./utils/basic_utils";
 
 PIXI.utils.skipHello();
 const app = initApplication();
-Game.APP = app;
+Game.app = app;
 Game.loader = app.loader;
 Game.resources = app.loader.resources;
 loadAll(setup);
@@ -37,17 +37,17 @@ function initApplication() {
 }
 
 window.addEventListener("resize", () => {
-    Game.APP.renderer.resize(window.innerWidth, window.innerHeight);
+    Game.app.renderer.resize(window.innerWidth, window.innerHeight);
 });
 
 function setup() {
     Game.world = new PIXI.Container();
-    Game.APP.stage.addChild(Game.world);
+    Game.app.stage.addChild(Game.world);
 
     Game.HUD = HUD;
-    Game.APP.stage.addChild(Game.HUD);
+    Game.app.stage.addChild(Game.HUD);
     Game.world.sortableChildren = true;
-    Game.APP.stage.sortableChildren = true;
+    Game.app.stage.sortableChildren = true;
 
     Game.player = new Player(Game.resources["src/images/player.png"].texture, 0, 0);
     Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, 0, 0);

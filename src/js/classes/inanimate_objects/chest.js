@@ -32,14 +32,14 @@ export class Chest extends FullTileElement {
             createFloatingItemAnimation(this.contentsSprite);
         }
         if (this.contents) {
-            Game.APP.ticker.remove(this.contentsSprite.animation);
-            Game.APP.ticker.add(this.contentsSprite.animation);
+            Game.app.ticker.remove(this.contentsSprite.animation);
+            Game.app.ticker.add(this.contentsSprite.animation);
             this.contentsSprite.texture = this.contents.texture;
             this.contentsSprite.width = Game.TILESIZE * 0.9;
             this.contentsSprite.height = Game.TILESIZE * 0.9;
             this.contentsSprite.visible = true;
         } else {
-            Game.APP.ticker.remove(this.contentsSprite.animation);
+            Game.app.ticker.remove(this.contentsSprite.animation);
             this.contentsSprite.visible = false;
         }
     }
