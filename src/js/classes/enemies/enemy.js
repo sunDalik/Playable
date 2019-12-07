@@ -163,6 +163,9 @@ export class Enemy extends AnimatedTileElement {
     }
 
     removeFromMap() {
+        if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
+            Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
+        }
         if (this === Game.map[this.tilePosition.y][this.tilePosition.x].entity) {
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
             Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
@@ -173,6 +176,9 @@ export class Enemy extends AnimatedTileElement {
 
     placeOnMap() {
         if (!this.dead) {
+            if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
+                Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
+            }
             if (Game.map[this.tilePosition.y][this.tilePosition.x].entity === null) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             } else if (Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity === null) {

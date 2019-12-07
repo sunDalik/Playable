@@ -22,4 +22,10 @@ export class FireBullet extends Bullet {
         super.die();
         addHazardToWorld(new FireHazard(this.tilePosition.x, this.tilePosition.y));
     }
+
+    fly(tileStepX, tileStepY, animationTime = this.ANIMATION_TIME) {
+        Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
+        super.fly(tileStepX, tileStepY, animationTime);
+        Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
+    }
 }

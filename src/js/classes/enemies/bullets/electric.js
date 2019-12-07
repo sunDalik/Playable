@@ -15,4 +15,10 @@ export class ElectricBullet extends Bullet {
         if (entity.electricityImmunity > 0) this.die();
         else super.attack(entity);
     }
+
+    fly(tileStepX, tileStepY, animationTime = this.ANIMATION_TIME) {
+        Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
+        super.fly(tileStepX, tileStepY, animationTime);
+        Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
+    }
 }
