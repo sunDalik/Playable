@@ -16,7 +16,6 @@ export function setEnemyTurnTimeout() {
 
 function enemyTurn() {
     moveEnemies();
-    //damage enemies with dark hazards
     updateHazards();
     Game.enemiesTimeout = null;
     Game.afterTurn = true;
@@ -28,7 +27,8 @@ export function moveEnemies() {
     for (const enemy of Game.enemies) {
         if (!enemy.dead && enemy.visible) {
             if (enemy.stun <= 0) {
-                if (arePlayersInDetectionRadius(enemy)) {
+                const egp = enemy.getGlobalPosition();
+                if (egp.x > -100 && egp.y > -100 && egp.x < Game.app.renderer.screen.width + 100 && egp.y < Game.app.renderer.screen.height + 100) {
                     if (enemy.cancellable) {
                         enemy.cancelAnimation();
                     }
@@ -39,12 +39,6 @@ export function moveEnemies() {
             enemy.damageWithHazards();
         }
     }
-}
-
-//or maybe maybe should instead just check onscreen position? and if they are off screen then they dont move? dunno
-function arePlayersInDetectionRadius(enemy) {
-    return ((Math.abs(enemy.tilePosition.x - Game.player.tilePosition.x) + Math.abs(enemy.tilePosition.y - Game.player.tilePosition.y) <= enemy.detectionRadius && !Game.player.dead)
-        || (Math.abs(enemy.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(enemy.tilePosition.y - Game.player2.tilePosition.y) <= enemy.detectionRadius && !Game.player2.dead));
 }
 
 export function updateHazards() {

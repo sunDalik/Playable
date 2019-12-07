@@ -15,7 +15,6 @@ export class Enemy extends AnimatedTileElement {
         this.fireImmunity = 1;
         this.poisonImmunity = 1;
         this.movable = true;
-        this.detectionRadius = 15;
         this.energyDrop = undefined;
         this.healthContainer = new PIXI.Container();
         Game.world.addChild(this.healthContainer);
