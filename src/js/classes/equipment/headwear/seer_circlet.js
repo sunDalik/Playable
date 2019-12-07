@@ -1,5 +1,6 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HEAD_TYPE, TILE_TYPE} from "../../../enums";
+import {darkenTile, lightTile} from "../../../drawing/lighting";
 
 export class SeerCirclet {
     constructor() {
@@ -11,9 +12,9 @@ export class SeerCirclet {
     onWear() {
         for (let i = 0; i < Game.darkTiles.length; i++) {
             for (let j = 0; j < Game.darkTiles[0].length; j++) {
-                if (Game.map[i][j].tileType === TILE_TYPE.NONE) {
-                    Game.darkTiles[i][j].visible = false;
-                    if (Game.map[i][j].entity) Game.map[i][j].entity.visible = true;
+                if (Game.map[i][j].tileType === TILE_TYPE.NONE && !Game.map[i][j].lit) {
+                    lightTile(j, i);
+                    Game.map[i][j].lit = false;
                 }
             }
         }
@@ -23,8 +24,7 @@ export class SeerCirclet {
         for (let i = 0; i < Game.darkTiles.length; i++) {
             for (let j = 0; j < Game.darkTiles[0].length; j++) {
                 if (!Game.map[i][j].lit) {
-                    Game.darkTiles[i][j].visible = true;
-                    if (Game.map[i][j].entity) Game.map[i][j].entity.visible = false;
+                    darkenTile(j, i);
                 }
             }
         }

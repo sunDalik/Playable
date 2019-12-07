@@ -97,7 +97,7 @@ function lightWorld(tileX, tileY, lightPaths, distance, sourceDirX = 0, sourceDi
     }
 }
 
-function lightTile(tileX, tileY) {
+export function lightTile(tileX, tileY) {
     if (Game.stage === STAGE.DARK_TUNNEL) {
         Game.darkTiles[tileY][tileX].alpha = 0.85;
     } else {
@@ -115,6 +115,27 @@ function lightTile(tileX, tileY) {
     }
     if (Game.map[tileY][tileX].item) {
         Game.map[tileY][tileX].item.visible = true;
+    }
+}
+
+export function darkenTile(tileX, tileY) {
+    if (Game.stage === STAGE.DARK_TUNNEL) {
+        Game.darkTiles[tileY][tileX].alpha = 1;
+    } else {
+        Game.darkTiles[tileY][tileX].visible = true;
+    }
+    Game.map[tileY][tileX].lit = false;
+    if (Game.map[tileY][tileX].entity) {
+        Game.map[tileY][tileX].entity.visible = false;
+    }
+    if (Game.map[tileY][tileX].secondaryEntity) {
+        Game.map[tileY][tileX].secondaryEntity.visible = false;
+    }
+    if (Game.map[tileY][tileX].hazard) {
+        Game.map[tileY][tileX].hazard.visible = false;
+    }
+    if (Game.map[tileY][tileX].item) {
+        Game.map[tileY][tileX].item.visible = false;
     }
 }
 
