@@ -34,6 +34,17 @@ export function otherPlayer(player) {
     else if (player === Game.player2) return Game.player;
 }
 
+export function closestPlayer(entity) {
+    if (Game.player.dead) return Game.player2;
+    else if (Game.player2.dead) return Game.player;
+    else {
+        if ((Math.abs(Game.player.tilePosition.x - entity.tilePosition.x) + Math.abs(Game.player.tilePosition.y - entity.tilePosition.y))
+            < (Math.abs(Game.player2.tilePosition.x - entity.tilePosition.x) + Math.abs(Game.player2.tilePosition.y - entity.tilePosition.y))) {
+            return Game.player;
+        } else return Game.player2;
+    }
+}
+
 export function setTickTimeout(callback, tickTimeout) {
     let counter = 0;
     const timeout = () => {

@@ -15,8 +15,18 @@ export function getHorizontalDirections() {
     return [{x: -1, y: 0}, {x: 1, y: 0}]
 }
 
+export function getRelativelyEmptyDirections(tileElement, givenDirections) {
+    const directions = [];
+    for (const dir of givenDirections) {
+        if (isRelativelyEmpty(tileElement.tilePosition.x + dir.x, tileElement.tilePosition.y + dir.y)) {
+            directions.push(dir);
+        }
+    }
+    return directions;
+}
+
 export function getRelativelyEmptyCardinalDirections(tileElement, range = 1) {
-    let directions = [];
+    const directions = [];
     for (const dir of getCardinalDirections()) {
         if (isRelativelyEmpty(tileElement.tilePosition.x + dir.x * range, tileElement.tilePosition.y + dir.y * range)) {
             directions.push({x: dir.x * range, y: dir.y * range});
@@ -26,7 +36,7 @@ export function getRelativelyEmptyCardinalDirections(tileElement, range = 1) {
 }
 
 export function getRelativelyEmptyHorizontalDirections(tileElement) {
-    let directions = [];
+    const directions = [];
     for (const dir of getHorizontalDirections()) {
         if (isRelativelyEmpty(tileElement.tilePosition.x + dir.x, tileElement.tilePosition.y + dir.y)) {
             directions.push(dir);
@@ -36,7 +46,7 @@ export function getRelativelyEmptyHorizontalDirections(tileElement) {
 }
 
 export function get8DirectionsWithoutItems(tileElement) {
-    let directions = [];
+    const directions = [];
     for (const dir of get8Directions()) {
         if (Game.map[tileElement.tilePosition.y + dir.y][tileElement.tilePosition.x + dir.x].item === null) {
             directions.push(dir);
