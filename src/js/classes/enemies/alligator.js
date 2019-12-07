@@ -89,6 +89,7 @@ export class Alligator extends Enemy {
                     this.alligatorType = this.prey.rabbitType;
                     this.lightItself();
                     if (this.alligatorType === RABBIT_TYPE.ENERGY) {
+                        this.stepXjumpHeight = Game.TILESIZE * 30 / 75;
                         this.energyDrop = 40;
                         this.step(this.direction.x, this.direction.y);
                         this.updateTexture();
@@ -142,10 +143,15 @@ export class Alligator extends Enemy {
                     this.updateTexture();
                 }
             }
-        } else if (this.currentTurnDelay === 0) {
+        } else if (this.currentTurnDelay <= 0) {
             let movementOptions;
             if (this.triggeredDirection) movementOptions = [this.triggeredDirection];
-            else movementOptions = getRelativelyEmptyCardinalDirections(this);
+            else {
+                if (this.alligatorType === RABBIT_TYPE.ENERGY) {
+                    movementOptions = getRelativelyEmptyCardinalDirections(this, 2);
+                    if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
+                } else movementOptions = getRelativelyEmptyCardinalDirections(this);
+            }
             this.triggeredDirection = null;
             if (movementOptions.length !== 0) {
                 this.direction = randomChoice(movementOptions);
@@ -170,6 +176,9 @@ export class Alligator extends Enemy {
                 this.triggeredDirection = {x: -inputX, y: -inputY};
                 this.direction = this.triggeredDirection;
                 this.updateTexture();
+                if (this.alligatorType === RABBIT_TYPE.ENERGY) {
+                    this.currentTurnDelay--;
+                }
             }
         }
     }

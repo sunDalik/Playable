@@ -15,11 +15,11 @@ export function getHorizontalDirections() {
     return [{x: -1, y: 0}, {x: 1, y: 0}]
 }
 
-export function getRelativelyEmptyCardinalDirections(tileElement) {
+export function getRelativelyEmptyCardinalDirections(tileElement, range = 1) {
     let directions = [];
     for (const dir of getCardinalDirections()) {
-        if (isRelativelyEmpty(tileElement.tilePosition.x + dir.x, tileElement.tilePosition.y + dir.y)) {
-            directions.push(dir);
+        if (isRelativelyEmpty(tileElement.tilePosition.x + dir.x * range, tileElement.tilePosition.y + dir.y * range)) {
+            directions.push({x: dir.x * range, y: dir.y * range});
         }
     }
     return directions;

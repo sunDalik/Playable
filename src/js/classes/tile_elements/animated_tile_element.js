@@ -56,12 +56,13 @@ export class AnimatedTileElement extends TileElement {
         this.removeFromMap();
         this.tilePosition.x += tileStepX;
         this.placeOnMap();
+        const animationTime = this.STEP_ANIMATION_TIME + (Math.abs(tileStepX) - 1) * 2;
         let jumpHeight = Game.TILESIZE * 25 / 75;
         if (this.stepXjumpHeight) jumpHeight = this.stepXjumpHeight;
         const a = jumpHeight / ((tileStepX * Game.TILESIZE / 2) ** 2);
         const b = -(this.position.x + (tileStepX * Game.TILESIZE) / 2) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
-        const stepX = tileStepX * Game.TILESIZE / this.STEP_ANIMATION_TIME;
+        const stepX = tileStepX * Game.TILESIZE / animationTime;
         let counter = 0;
 
         const animation = () => {
@@ -69,7 +70,7 @@ export class AnimatedTileElement extends TileElement {
             this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
             counter++;
             if (onFrame) onFrame();
-            if (counter >= this.STEP_ANIMATION_TIME) {
+            if (counter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
@@ -103,7 +104,7 @@ export class AnimatedTileElement extends TileElement {
             P3 = 0.75;
         }
 
-        const animationTime = this.STEP_ANIMATION_TIME;
+        const animationTime = this.STEP_ANIMATION_TIME + (Math.abs(tileStepY) - 1) * 2;
         const step = 1 / animationTime;
         let counter = 0;
 
@@ -112,7 +113,7 @@ export class AnimatedTileElement extends TileElement {
             this.position.y = oldPosY + cubicBezier(t, P0, P1, P2, P3) * Game.TILESIZE * tileStepY;
             counter++;
             if (onFrame) onFrame();
-            if (counter >= this.STEP_ANIMATION_TIME) {
+            if (counter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
