@@ -1,8 +1,7 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
-import {ENEMY_TYPE, RABBIT_TYPE} from "../../enums";
+import {ENEMY_TYPE} from "../../enums";
 import {isEmpty} from "../../map_checks";
-import {randomChoice} from "../../utils/random_utils";
 
 export class Alligator extends Enemy {
     constructor(tilePositionX, tilePositionY, type = undefined, texture = Game.resources["src/images/enemies/alligator_x.png"].texture) {
@@ -11,12 +10,20 @@ export class Alligator extends Enemy {
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.ALLIGATOR;
         this.alligatorType = type;
+        this.shooting = false;
         this.atk = 1;
         this.turnDelay = 2;
         this.currentTurnDelay = 0;
         this.prey = null;
         this.direction = {x: 1, y: 0};
-        this.correctScale();
+        this.stepXjumpHeight = Game.TILESIZE * 15 / 75;
+        this.scaleModifier = 1.1
+    }
+
+    fitToTile() {
+        const scaleY = Game.TILESIZE / this.getUnscaledHeight() * this.scaleModifier;
+        const scaleX = Math.abs(scaleY);
+        this.scale.set(scaleX, scaleY);
     }
 
     immediateReaction() {
@@ -70,12 +77,19 @@ export class Alligator extends Enemy {
 
     move() {
         if (this.prey && !this.prey.dead) {
-
-            if (true) {
+            if (isEmpty(this.prey.tilePosition.x + this.direction.x, this.prey.tilePosition.y + this.direction.y)) {
+                this.prey.step(this.direction.x, this.direction.y);
+            } else {
+                this.prey.die(this);
+                if (this.prey.rabbitType) {
+                    this.type = this.prey.rabbitType;
+                    this.updateTexture();
+                }
                 this.prey = null;
             }
+            this.step(this.direction.x, this.direction.y);
         } else if (this.currentTurnDelay === 0) {
-
+            
             this.currentTurnDelay = this.turnDelay
         } else this.currentTurnDelay--;
     }
