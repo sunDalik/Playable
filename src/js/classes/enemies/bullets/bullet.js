@@ -15,6 +15,7 @@ export class Bullet extends TileElement {
         this.delay = 1;
         this.atk = 0.5;
         Game.tiles.push(this);
+        Game.bullets.push(this);
     }
 
     move() {
@@ -23,14 +24,12 @@ export class Bullet extends TileElement {
             const newX = this.tilePosition.x + this.pattern[this.patternIndex].x;
             const newY = this.tilePosition.y + this.pattern[this.patternIndex].y;
             if (isEnemy(newX, newY) || getPlayerOnTile(newX, newY) !== null) {
-                this.attack(newX, newY);
-                this.die();
+                this.attack(Game.map[newY][newX].entity);
             } else if (isRelativelyEmpty(newX, newY)) {
-                if (this)
-                    this.fly(newX, newY);
+                this.fly(newX, newY);
+                this.patternIndex++;
+                if (this.patternIndex >= this.pattern.length) this.patternIndex = 0;
             } else this.die();
-            this.patternIndex++;
-            if (this.patternIndex >= this.pattern.length) this.patternIndex = 0;
         } else this.delay--;
     }
 
@@ -39,20 +38,19 @@ export class Bullet extends TileElement {
         this.removeFromMap();
         this.visible = false;
         removeObjectFromArray(this, Game.tiles);
+        removeObjectFromArray(this, Game.bullets);
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
         }
     }
 
-    attack(x, y) {
-        const entity = Game.map[y][x].entity;
-        if (entity) {
-            if (entity.role === ROLE.ENEMY) {
-                entity.damage(this, this.atk, 0, 0, false, true);
-            } else if (entity.role === ROLE.PLAYER) {
-                entity.damage(this.atk, this, false, false);
-            }
+    attack(entity) {
+        if (entity.role === ROLE.ENEMY) {
+            entity.damage(this, this.atk, 0, 0, false, true);
+        } else if (entity.role === ROLE.PLAYER) {
+            entity.damage(this.atk, this, false, false);
         }
+        this.die();
     }
 
     removeFromMap() {
@@ -70,7 +68,7 @@ export class Bullet extends TileElement {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             } else if (Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity === null) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = this;
-            } else this.die();
+            }
         }
     }
 

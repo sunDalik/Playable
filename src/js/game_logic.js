@@ -16,6 +16,7 @@ export function setEnemyTurnTimeout() {
 
 function enemyTurn() {
     moveEnemies();
+    moveBullets();
     updateHazards();
     Game.enemiesTimeout = null;
     Game.afterTurn = true;
@@ -38,6 +39,12 @@ export function moveEnemies() {
             } else enemy.stun--;
             enemy.damageWithHazards();
         }
+    }
+}
+
+function moveBullets() {
+    for (let i = Game.bullets.length - 1; i >= 0; i--) {
+        Game.bullets[i].move();
     }
 }
 
@@ -273,6 +280,7 @@ export function gotoNextLevel() {
     Game.enemies = [];
     Game.darkTiles = [];
     Game.hazards = [];
+    Game.bullets = [];
     Game.otherGraphics = [];
     Game.infiniteAnimations = [];
     Game.obelisks = [];

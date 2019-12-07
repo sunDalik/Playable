@@ -7,6 +7,11 @@ export class FireBullet extends Bullet {
         super(texture, tilePositionX, tilePositionY, pattern);
     }
 
+    attack(entity) {
+        if (entity.fireImmunity > 0) this.die();
+        else super.attack(entity);
+    }
+
     die() {
         super.die();
         addHazardToWorld(new FireHazard(this.tilePosition.x, this.tilePosition.y));

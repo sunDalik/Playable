@@ -176,7 +176,25 @@ export class Enemy extends AnimatedTileElement {
             if (Game.map[this.tilePosition.y][this.tilePosition.x].entity === null) {
                 Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             } else if (Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity === null) {
-                Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = this;
+                const entity = Game.map[this.tilePosition.y][this.tilePosition.x].entity;
+                if (entity.role === ROLE.BULLET) {
+                    entity.attack(this);
+                    if (!this.dead) Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+                } else Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = this;
+            } else {
+                const entity = Game.map[this.tilePosition.y][this.tilePosition.x].entity;
+                const secondaryEntity = Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
+                if (secondaryEntity.role === ROLE.BULLET) {
+                    secondaryEntity.attack(this);
+                    if (!this.dead) {
+                        if (entity.role === ROLE.BULLET) {
+                            entity.attack(this);
+                            if (!this.dead) {
+                                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+                            }
+                        } else Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = this;
+                    }
+                }
             }
         }
     }
