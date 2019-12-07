@@ -1,5 +1,5 @@
 import {Game} from "./game"
-import {incrementStage, setVariablesForStage} from "./game_changer";
+import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE} from "./enums"
 import {otherPlayer, removeObjectFromArray, setTickTimeout} from "./utils/basic_utils";
@@ -282,7 +282,6 @@ export function gotoNextLevel() {
     Game.infiniteAnimations = [];
     Game.obelisks = [];
     incrementStage();
-    setVariablesForStage();
     initializeLevel();
     Game.player.applyNextLevelMethods();
     Game.player2.applyNextLevelMethods();

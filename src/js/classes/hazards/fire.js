@@ -36,7 +36,8 @@ export class FireHazard extends Hazard {
     addToWorld() {
         super.addToWorld();
         if (Game.stage === STAGE.DARK_TUNNEL) {
-            this.maskLayer = new PIXI.Sprite(PIXI.Texture.WHITE);
+            //this.maskLayer = new PIXI.Sprite(PIXI.Texture.WHITE);
+            this.maskLayer = {};
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
         }
     }

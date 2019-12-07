@@ -11,7 +11,7 @@ export class DarkTunnelTile extends FullTileElement {
         this.zIndex = 10;
         this.dark = true;
         this.lightSources = [];
-        this.maskContainer = new PIXI.Container();
+        //this.maskContainer = new PIXI.Container();
     }
 
     //lightSources are TileElements!
@@ -30,6 +30,10 @@ export class DarkTunnelTile extends FullTileElement {
     }
 
     recalculateLight() {
+        if (this.lightSources.length === 0) this.visible = true;
+        else this.visible = false;
+        //For some reason using masks DESTROYS game's FPS. I have no idea why
+        /*
         if (this.lightSources.length === 0) this.mask = null;
         else if (this.lightSources.length === 1) this.mask = this.lightSources[0];
         else {
@@ -37,5 +41,6 @@ export class DarkTunnelTile extends FullTileElement {
             for (const lightSource of this.lightSources) this.maskContainer.addChild(lightSource);
             this.mask = new PIXI.Sprite(Game.app.renderer.generateTexture(this.maskContainer));
         }
+        */
     }
 }

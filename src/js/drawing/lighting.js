@@ -139,7 +139,8 @@ export function darkenTile(tileX, tileY) {
     }
 }
 
-const torchLightSprite = new PIXI.Sprite(PIXI.Texture.WHITE);
+//const torchLightSprite = new PIXI.Sprite(PIXI.Texture.WHITE);
+const torchLightSprite = {};
 
 function lightWorldDT(tileX, tileY, distance, sourceDirX = 0, sourceDirY = 0) {
     if (distance > -1) {

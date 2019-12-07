@@ -68,11 +68,11 @@ function setup() {
 
     Game.stage = STAGE.FLOODED_CAVE;
     initPools();
-    setVariablesForStage();
     initializeLevel();
 }
 
 export function initializeLevel() {
+    setVariablesForStage();
     const level = generateLevel();
     Game.map = generateMap(level);
     Game.level = level;
