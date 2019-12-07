@@ -63,7 +63,7 @@ export function isRelativelyEmpty(tilePositionX, tilePositionY) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
         if (Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.WALL
             && Game.map[tilePositionY][tilePositionX].tileType !== TILE_TYPE.SUPER_WALL
-            && (tileEntity === null || tileEntity.role === ROLE.PLAYER)) {
+            && (tileEntity === null || tileEntity.role === ROLE.PLAYER || tileEntity.role === ROLE.BULLET)) {
             return true
         }
     }

@@ -73,6 +73,9 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/rabbit_x_fire.png")
         .add("src/images/enemies/rabbit_x_poison.png")
 
+        .add("src/images/bullets/electric_bullet.png")
+        .add("src/images/bullets/fire_bullet.png")
+
         .add("src/images/HUD/heart_full.png")
         .add("src/images/HUD/heart_75.png")
         .add("src/images/HUD/heart_half.png")

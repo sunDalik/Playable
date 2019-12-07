@@ -106,7 +106,7 @@ export class Alligator extends Enemy {
                 this.prey = null;
             }
         } else if (this.shooting) {
-            if (this.currentShootingTimes <= this.maxShootingTimes) {
+            if (this.currentShootingTimes < this.maxShootingTimes) {
                 switch (this.alligatorType) {
                     case undefined:
                         this.currentShootingTimes = this.maxShootingTimes;
@@ -136,7 +136,7 @@ export class Alligator extends Enemy {
                 }
 
                 this.currentShootingTimes++;
-                if (this.currentShootingTimes <= this.maxShootingTimes) {
+                if (this.currentShootingTimes < this.maxShootingTimes) {
                     this.shake(this.direction.y, this.direction.x);
                 } else {
                     this.shooting = false;

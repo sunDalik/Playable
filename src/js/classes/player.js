@@ -7,14 +7,17 @@ import {
     INANIMATE_TYPE,
     MAGIC_TYPE,
     ROLE,
-    SHIELD_TYPE, STAGE,
-    TILE_TYPE, TOOL_TYPE,
+    SHIELD_TYPE,
+    STAGE,
+    TILE_TYPE,
+    TOOL_TYPE,
     WEAPON_TYPE
 } from "../enums";
-import {centerCameraX, centerCameraY, redrawTiles, scaleGameMap} from "../camera";
+import {centerCameraX, centerCameraY, redrawTiles} from "../camera";
 import {createHeartAnimation, rotate, shakeScreen} from "../animations";
 import {
-    drawInteractionKeys, drawMovementKeyBindings,
+    drawInteractionKeys,
+    drawMovementKeyBindings,
     drawStatsForPlayer,
     redrawHealthForPlayer,
     redrawSecondHand,
@@ -67,6 +70,7 @@ export class Player extends AnimatedTileElement {
         this.cancellable = true;
         this.fireImmunity = 0;
         this.poisonImmunity = 0;
+        this.electricityImmunity = 0;
         this.charging = false;
         this.chargingMagic = null;
     }
