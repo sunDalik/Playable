@@ -340,4 +340,13 @@ export class AnimatedTileElement extends TileElement {
         this.animation = animation;
         Game.app.ticker.add(animation);
     }
+
+    shiftTilePosition(tileStepX, tileStepY) {
+        this.removeFromMap();
+        this.tilePosition.x += tileStepX;
+        this.tilePosition.y += tileStepY;
+        this.placeOnMap();
+        this.position.x += Game.TILESIZE * tileStepX;
+        this.position.y += Game.TILESIZE * tileStepY;
+    }
 }

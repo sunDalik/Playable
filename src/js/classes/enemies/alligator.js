@@ -14,12 +14,13 @@ export class Alligator extends Enemy {
         this.alligatorType = type;
         this.shooting = false;
         this.atk = 1;
-        this.turnDelay = 2;
+        this.turnDelay = 1;
         this.currentTurnDelay = 0;
         this.prey = null;
         this.direction = {x: 1, y: 0};
-        this.stepXjumpHeight = Game.TILESIZE * 15 / 75;
-        this.scaleModifier = 1.1
+        this.stepXjumpHeight = Game.TILESIZE * 12 / 75;
+        this.scaleModifier = 1.1;
+        this.fitToTile();
     }
 
     fitToTile() {
@@ -30,24 +31,15 @@ export class Alligator extends Enemy {
 
     immediateReaction() {
         if (this.prey) {
+            this.prey.visible = true;
             const shiftNegX = () => {
                 const direction = {x: -Math.sign(Game.lastPlayerMoved.tilePosition.x - this.tilePosition.x), y: 0};
-                return placePredator();
+                return placePredator(direction);
             };
 
             const shiftNegY = () => {
                 const direction = {x: 0, y: -Math.sign(Game.lastPlayerMoved.tilePosition.y - this.tilePosition.y)};
-                return placePredator();
-            };
-
-            const shiftPosX = () => {
-                const direction = {x: Math.sign(Game.lastPlayerMoved.tilePosition.x - this.tilePosition.x), y: 0};
-                return placePredator();
-            };
-
-            const shiftPosY = () => {
-                const direction = {x: 0, y: Math.sign(Game.lastPlayerMoved.tilePosition.y - this.tilePosition.y)};
-                return placePredator();
+                return placePredator(direction);
             };
 
             const eat = () => {
@@ -60,20 +52,17 @@ export class Alligator extends Enemy {
 
             const placePredator = (direction) => {
                 if (isEmpty(this.tilePosition.x + direction.x, this.tilePosition.y + direction.y)) {
-                    this.removeFromMap();
-                    this.tilePosition.x += direction.x;
-                    this.tilePosition.y += direction.y;
-                    this.placeOnMap();
-                    this.direction = direction;
+                    this.shiftTilePosition(direction.x, direction.y);
+                    this.direction = {x: -direction.x, y: -direction.y};
                     this.updateTexture();
                     return true;
                 } else return false;
             };
 
-            if (Math.random() < 0.5) {
-                shiftNegX() || shiftNegY() || shiftPosX() || shiftNegY() || eat();
+            if (Math.random() < 0.75) {
+                shiftNegX() || shiftNegY() || eat();
             } else {
-                shiftNegY() || shiftNegX() || shiftPosY() || shiftNegX() || eat();
+                shiftNegY() || shiftNegX() || eat();
             }
         }
     }
@@ -82,6 +71,7 @@ export class Alligator extends Enemy {
         if (this.prey && !this.prey.dead) {
             if (isEmpty(this.prey.tilePosition.x + this.direction.x, this.prey.tilePosition.y + this.direction.y)) {
                 this.prey.step(this.direction.x, this.direction.y);
+                this.prey.cancellable = false;
             } else {
                 this.prey.die(this);
                 if (this.prey.rabbitType) {
@@ -110,23 +100,28 @@ export class Alligator extends Enemy {
 
     updateTexture() {
         if (this.direction.x !== 0) {
+            this.scale.y = Math.abs(this.scale.y);
             if (this.direction.x > 0) this.scale.x = Math.abs(this.scale.x);
             else if (this.direction.x < 0) this.scale.x = -Math.abs(this.scale.x);
-            if (this.alligatorType === undefined && this.prey && !this.prey.dead) this.texture = Game.resources["src/images/enemies/alligator_x_hungry.png"];
-            else if (this.alligatorType === undefined) this.texture = Game.resources["src/images/enemies/alligator_x.png"];
-            else if (this.alligatorType === RABBIT_TYPE.ELECTRIC) this.texture = Game.resources["src/images/enemies/alligator_x_electric.png"];
-            else if (this.alligatorType === RABBIT_TYPE.FIRE) this.texture = Game.resources["src/images/enemies/alligator_x_fire.png"];
-            else if (this.alligatorType === RABBIT_TYPE.ENERGY) this.texture = Game.resources["src/images/enemies/alligator_x_energy.png"];
-            else if (this.alligatorType === RABBIT_TYPE.POISON) this.texture = Game.resources["src/images/enemies/alligator_x_poison.png"];
+            if (this.alligatorType === undefined && this.prey && !this.prey.dead) {
+                this.texture = Game.resources["src/images/enemies/alligator_x_hungry.png"].texture;
+                if (this.direction.x > 0) this.prey.scale.x = Math.abs(this.prey.scale.x);
+                else if (this.direction.x < 0) this.prey.scale.x = -Math.abs(this.prey.scale.x);
+            } else if (this.alligatorType === undefined) this.texture = Game.resources["src/images/enemies/alligator_x.png"].texture;
+            else if (this.alligatorType === RABBIT_TYPE.ELECTRIC) this.texture = Game.resources["src/images/enemies/alligator_x_electric.png"].texture;
+            else if (this.alligatorType === RABBIT_TYPE.FIRE) this.texture = Game.resources["src/images/enemies/alligator_x_fire.png"].texture;
+            else if (this.alligatorType === RABBIT_TYPE.ENERGY) this.texture = Game.resources["src/images/enemies/alligator_x_energy.png"].texture;
+            else if (this.alligatorType === RABBIT_TYPE.POISON) this.texture = Game.resources["src/images/enemies/alligator_x_poison.png"].texture;
         } else if (this.direction.y !== 0) {
+            this.scale.x = randomChoice([-1, 1]) * Math.abs(this.scale.x);
             if (this.direction.y > 0) this.scale.y = Math.abs(this.scale.y);
             else if (this.direction.y < 0) this.scale.y = -Math.abs(this.scale.y);
-            if (this.alligatorType === undefined && this.prey && !this.prey.dead) this.texture = Game.resources["src/images/enemies/alligator_y_hungry.png"];
-            else if (this.alligatorType === undefined) this.texture = Game.resources["src/images/enemies/alligator_y.png"];
-            else if (this.alligatorType === RABBIT_TYPE.ELECTRIC) this.texture = Game.resources["src/images/enemies/alligator_y_electric.png"];
-            else if (this.alligatorType === RABBIT_TYPE.FIRE) this.texture = Game.resources["src/images/enemies/alligator_y_fire.png"];
-            else if (this.alligatorType === RABBIT_TYPE.ENERGY) this.texture = Game.resources["src/images/enemies/alligator_y_energy.png"];
-            else if (this.alligatorType === RABBIT_TYPE.POISON) this.texture = Game.resources["src/images/enemies/alligator_y_poison.png"];
+            if (this.alligatorType === undefined && this.prey && !this.prey.dead) this.texture = Game.resources["src/images/enemies/alligator_y_hungry.png"].texture;
+            else if (this.alligatorType === undefined) this.texture = Game.resources["src/images/enemies/alligator_y.png"].texture;
+            else if (this.alligatorType === RABBIT_TYPE.ELECTRIC) this.texture = Game.resources["src/images/enemies/alligator_y_electric.png"].texture;
+            else if (this.alligatorType === RABBIT_TYPE.FIRE) this.texture = Game.resources["src/images/enemies/alligator_y_fire.png"].texture;
+            else if (this.alligatorType === RABBIT_TYPE.ENERGY) this.texture = Game.resources["src/images/enemies/alligator_y_energy.png"].texture;
+            else if (this.alligatorType === RABBIT_TYPE.POISON) this.texture = Game.resources["src/images/enemies/alligator_y_poison.png"].texture;
         }
     }
 }

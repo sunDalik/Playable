@@ -544,9 +544,12 @@ function createRoom(width, height, entries) {
             if (j === 0 || j === width - 1 || i === 0 || i === height - 1) {
                 room[i][j] = MAP_SYMBOLS.WALL;
             } else room[i][j] = MAP_SYMBOLS.NONE;
-            /*if (j === width - 2 && i === height - 2) {
-                room[i][j] = MAP_SYMBOLS.FROG;
-            } */  //for tests
+
+            //for tests
+            /*if (j === width - 3 && i === height - 3) {
+                room[i][j] = MAP_SYMBOLS.ALLIGATOR;
+            }*/
+
             for (const entry of entries) {
                 if (i === entry.y && j === entry.x) {
                     room[i][j] = MAP_SYMBOLS.ENTRY;

@@ -11,7 +11,7 @@ export class Rabbit extends Enemy {
         this.rabbitType = type;
         this.atk = 0.25;
         this.predator = null;
-        this.stepXjumpHeight = Game.TILESIZE * 30 / 75;
+        this.stepXjumpHeight = Game.TILESIZE * 35 / 75;
 
         switch (this.rabbitType) {
             case RABBIT_TYPE.ENERGY:
