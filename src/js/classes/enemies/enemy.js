@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import * as PIXI from "pixi.js"
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element"
-import {HAZARD_TYPE, ROLE} from "../../enums";
+import {HAZARD_TYPE, ROLE, STAGE} from "../../enums";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {redrawEnergy} from "../../drawing/draw_hud";
 
@@ -117,6 +117,9 @@ export class Enemy extends AnimatedTileElement {
         this.cancelAnimation();
         this.visible = false;
         this.healthContainer.visible = false;
+        if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
+            Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
+        }
     }
 
     heal(healHP) {
