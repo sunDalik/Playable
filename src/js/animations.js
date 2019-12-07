@@ -1,6 +1,7 @@
 import {Game} from "./game"
 import {removeObjectFromArray} from "./utils/basic_utils"
 import * as PIXI from "pixi.js"
+import {randomChoice} from "./utils/random_utils";
 
 export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false) {
     const tileX1 = player.tilePosition.x;
@@ -134,19 +135,23 @@ export function createFloatingItemAnimation(item) {
     Game.infiniteAnimations.push(item.animation);
 }
 
-export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1, shakeAmplitude = Game.SHAKE_AMPLITUDE) {
+export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1, shakeAmplitude = Game.SHAKE_AMPLITUDE, xOnly = false) {
     let counter = 0;
     let shakeCounter = 0;
     const step = shakeAmplitude / shakeAnimationTime;
+    const stepY = xOnly ? 0 : randomChoice([-1, 1]) * step / 2;
     if (Game.shakeAnimation) Game.app.ticker.remove(Game.shakeAnimation);
 
     function animate() {
         if (counter < shakeAnimationTime / 4) {
             Game.world.position.x -= step;
+            Game.world.position.y -= stepY;
         } else if (counter < shakeAnimationTime * 3 / 4) {
             Game.world.position.x += step;
+            Game.world.position.y += stepY;
         } else if (counter < shakeAnimationTime) {
             Game.world.position.x -= step;
+            Game.world.position.y -= stepY;
         }
         counter++;
         if (counter >= shakeAnimationTime) {
@@ -154,7 +159,7 @@ export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1
             shakeCounter++;
         }
         if (shakeCounter >= shakeCount) {
-            Game.app.ticker.remove(Game.shakeAnimation);
+            Game.app.ticker.remove(animate);
         }
     }
 
@@ -163,7 +168,7 @@ export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1
 }
 
 export function longShakeScreen() {
-    shakeScreen(Game.LONG_SHAKE_TIME, 2, Game.SHORT_SHAKE_AMPLITUDE);
+    shakeScreen(Game.LONG_SHAKE_TIME, 2, Game.SHORT_SHAKE_AMPLITUDE, true);
 }
 
 export function createHeartAnimation(positionX, positionY, heartSize = Game.TILESIZE / 3, angleStep = 0, animationTime = 30) {

@@ -54,7 +54,8 @@ export class Alligator extends Enemy {
             };
 
             const eat = () => {
-                if (this.prey.rabbitType) {
+                this.prey.die(this, true);
+                if (this.prey.rabbitType !== undefined) {
                     this.alligatorType = this.prey.rabbitType;
                     this.updateTexture();
                     this.lightItself();
@@ -86,7 +87,7 @@ export class Alligator extends Enemy {
                 this.prey.cancellable = false;
                 this.step(this.direction.x, this.direction.y);
             } else {
-                this.prey.die(this);
+                this.prey.die(this, true);
                 if (this.prey.rabbitType !== undefined) {
                     this.alligatorType = this.prey.rabbitType;
                     this.lightItself();
