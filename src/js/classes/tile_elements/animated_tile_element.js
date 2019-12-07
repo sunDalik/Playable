@@ -17,6 +17,7 @@ export class AnimatedTileElement extends TileElement {
     }
 
     stepXY(tileStepX, tileStepY, onFrame = null, onEnd = null) {
+        this.onAnimationEnd = onEnd;
         this.removeFromMap();
         this.tilePosition.x += tileStepX;
         this.tilePosition.y += tileStepY;
@@ -42,6 +43,7 @@ export class AnimatedTileElement extends TileElement {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
+                this.onAnimationEnd = null;
                 if (onEnd) onEnd();
             }
         };
@@ -50,6 +52,7 @@ export class AnimatedTileElement extends TileElement {
     }
 
     stepX(tileStepX, onFrame = null, onEnd = null) {
+        this.onAnimationEnd = onEnd;
         this.removeFromMap();
         this.tilePosition.x += tileStepX;
         this.placeOnMap();
@@ -70,6 +73,7 @@ export class AnimatedTileElement extends TileElement {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
+                this.onAnimationEnd = null;
                 if (onEnd) onEnd();
             }
         };
@@ -81,6 +85,7 @@ export class AnimatedTileElement extends TileElement {
     //I'm not sure...
     //todo...
     stepY(tileStepY, onFrame = null, onEnd = null) {
+        this.onAnimationEnd = onEnd;
         this.removeFromMap();
         this.tilePosition.y += tileStepY;
         this.placeOnMap();
@@ -111,6 +116,7 @@ export class AnimatedTileElement extends TileElement {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
+                this.onAnimationEnd = null;
                 if (onEnd) onEnd();
             }
         };
@@ -125,6 +131,7 @@ export class AnimatedTileElement extends TileElement {
     }
 
     bumpX(tileStepX, onFrame = null, onEnd = null) {
+        this.onAnimationEnd = onEnd;
         let jumpHeight = Game.TILESIZE * 25 / 75;
         if (this.stepXjumpHeight) jumpHeight = this.stepXjumpHeight;
         const a = jumpHeight / ((tileStepX * Game.TILESIZE / 2) ** 2);
@@ -147,6 +154,7 @@ export class AnimatedTileElement extends TileElement {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
+                this.onAnimationEnd = null;
                 if (onEnd) onEnd();
             }
         };
@@ -155,6 +163,7 @@ export class AnimatedTileElement extends TileElement {
     }
 
     bumpY(tileStepY, onFrame = null, onEnd = null) {
+        this.onAnimationEnd = onEnd;
         let counter = 0;
         const oldPosition = this.position.y;
         let newPosition = null;
@@ -186,6 +195,7 @@ export class AnimatedTileElement extends TileElement {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
+                this.onAnimationEnd = null;
                 if (onEnd) onEnd();
             }
         };
@@ -199,6 +209,7 @@ export class AnimatedTileElement extends TileElement {
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        this.onAnimationEnd = onEnd;
         this.animationCounter = 0;
         const stepX = Game.TILESIZE * tileStepX / animationTime;
         const stepY = Game.TILESIZE * tileStepY / animationTime;
@@ -216,6 +227,7 @@ export class AnimatedTileElement extends TileElement {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
+                this.onAnimationEnd = null;
                 if (onEnd) onEnd();
             }
         };
@@ -224,6 +236,7 @@ export class AnimatedTileElement extends TileElement {
     }
 
     slideBump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        this.onAnimationEnd = onEnd;
         this.animationCounter = 0;
         const stepX = Game.TILESIZE * tileStepX / animationTime;
         const stepY = Game.TILESIZE * tileStepY / animationTime;
@@ -242,6 +255,7 @@ export class AnimatedTileElement extends TileElement {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
+                this.onAnimationEnd = null;
                 if (onEnd) onEnd();
             }
         };

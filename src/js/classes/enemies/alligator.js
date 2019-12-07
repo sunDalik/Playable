@@ -20,6 +20,8 @@ export class Alligator extends Enemy {
         this.direction = {x: 1, y: 0};
         this.stepXjumpHeight = Game.TILESIZE * 12 / 75;
         this.scaleModifier = 1.1;
+        this.maxShootingTimes = 5;
+        this.currentShootingTimes = this.maxShootingTimes;
         this.fitToTile();
     }
 
@@ -72,15 +74,45 @@ export class Alligator extends Enemy {
             if (isEmpty(this.prey.tilePosition.x + this.direction.x, this.prey.tilePosition.y + this.direction.y)) {
                 this.prey.step(this.direction.x, this.direction.y);
                 this.prey.cancellable = false;
+                this.step(this.direction.x, this.direction.y);
             } else {
                 this.prey.die(this);
                 if (this.prey.rabbitType) {
                     this.alligatorType = this.prey.rabbitType;
-                    this.updateTexture();
+                    this.shooting = true;
+                    this.step(this.direction.x, this.direction.y, null, () => {
+                        this.direction = {x: -this.direction.x, y: -this.direction.y};
+                        this.updateTexture();
+                        this.shake(this.direction.y, this.direction.x);
+                    });
                 }
                 this.prey = null;
             }
-            this.step(this.direction.x, this.direction.y);
+        } else if (this.shooting) {
+            if (this.currentShootingTimes > 0) {
+                switch (this.alligatorType) {
+                    case undefined:
+                        this.currentShootingTimes = 0;
+                        break;
+                    case RABBIT_TYPE.ELECTRIC:
+
+                        break;
+                    case RABBIT_TYPE.FIRE:
+
+                        break;
+                    case RABBIT_TYPE.POISON:
+
+                        break;
+                }
+
+                this.currentShootingTimes--;
+                if (this.currentShootingTimes <= 0) {
+                    this.shooting = false;
+                    this.updateTexture();
+                } else {
+                    this.shake(this.direction.y, this.direction.x);
+                }
+            }
         } else if (this.currentTurnDelay === 0) {
             const movementOptions = getRelativelyEmptyCardinalDirections(this);
             if (movementOptions.length !== 0) {
@@ -95,7 +127,8 @@ export class Alligator extends Enemy {
                 }
                 this.currentTurnDelay = this.turnDelay;
             }
-        } else this.currentTurnDelay--;
+        } else
+            this.currentTurnDelay--;
     }
 
     updateTexture() {

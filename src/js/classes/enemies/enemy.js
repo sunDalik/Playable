@@ -14,6 +14,8 @@ export class Enemy extends AnimatedTileElement {
         this.stun = 0;
         this.fireImmunity = 1;
         this.poisonImmunity = 1;
+        this.electricityImmunity = 1;
+        this.onAnimationEnd = null;
         this.movable = true;
         this.energyDrop = undefined;
         this.healthContainer = new PIXI.Container();
@@ -21,6 +23,15 @@ export class Enemy extends AnimatedTileElement {
         this.healthContainer.visible = false;
         this.healthContainer.zIndex = 1;
         this.place();
+    }
+
+    cancelAnimation() {
+        if (this.onAnimationEnd) {
+            const toCall = this.onAnimationEnd;
+            this.onAnimationEnd = null;
+            toCall();
+        }
+        super.cancelAnimation();
     }
 
     place() {
@@ -167,17 +178,22 @@ export class Enemy extends AnimatedTileElement {
         }
     }
 
-    //probably will need to change those so it accepts more parameters and sends them?
-    stepX(tileStepX) {
-        super.stepX(tileStepX, () => this.moveHealthContainer())
+    stepX(tileStepX, onFrame = null, onEnd = null) {
+        super.stepX(tileStepX, () => {
+            if (onFrame) onFrame();
+            this.moveHealthContainer();
+        }, onEnd);
     }
 
     bumpX(tileStepX) {
         super.bumpX(tileStepX, () => this.moveHealthContainer())
     }
 
-    stepY(tileStepY) {
-        super.stepY(tileStepY, () => this.moveHealthContainer())
+    stepY(tileStepY, onFrame = null, onEnd = null) {
+        super.stepY(tileStepY, () => {
+            if (onFrame) onFrame();
+            this.moveHealthContainer();
+        }, onEnd);
     }
 
     stepXY(tileStepX, tileStepY, onFrame = null, onEnd = null) {

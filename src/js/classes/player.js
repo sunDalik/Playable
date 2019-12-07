@@ -72,6 +72,11 @@ export class Player extends AnimatedTileElement {
     }
 
     cancelAnimation() {
+        if (this.onAnimationEnd) {
+            const toCall = this.onAnimationEnd;
+            this.onAnimationEnd = null;
+            toCall();
+        }
         super.cancelAnimation();
         for (const subSprite of this.animationSubSprites) {
             Game.world.removeChild(subSprite);
@@ -84,7 +89,6 @@ export class Player extends AnimatedTileElement {
         }
         this.animationSubSprites = [];
         this.rotation = 0;
-        scaleGameMap();
     }
 
     move(tileStepX, tileStepY, event) {
