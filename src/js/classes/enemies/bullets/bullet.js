@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {ROLE, STAGE} from "../../../enums";
 import {TileElement} from "../../tile_elements/tile_element";
-import {getPlayerOnTile, isEnemy, isRelativelyEmpty} from "../../../map_checks";
+import {getPlayerOnTile, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 
 export class Bullet extends TileElement {
@@ -11,11 +11,9 @@ export class Bullet extends TileElement {
         this.patternIndex = 0;
         this.dead = false;
         this.role = ROLE.BULLET;
-        this.ANIMATION_TIME = 6;
+        this.ANIMATION_TIME = 8;
         this.delay = 1;
         this.atk = 0.5;
-        Game.tiles.push(this);
-        Game.bullets.push(this);
     }
 
     move() {
@@ -26,7 +24,7 @@ export class Bullet extends TileElement {
             if (isEnemy(newX, newY) || getPlayerOnTile(newX, newY) !== null) {
                 this.attack(Game.map[newY][newX].entity);
             } else if (isRelativelyEmpty(newX, newY)) {
-                this.fly(newX, newY);
+                this.fly(this.pattern[this.patternIndex].x, this.pattern[this.patternIndex].y);
                 this.patternIndex++;
                 if (this.patternIndex >= this.pattern.length) this.patternIndex = 0;
             } else this.die();
@@ -39,6 +37,7 @@ export class Bullet extends TileElement {
         this.visible = false;
         removeObjectFromArray(this, Game.tiles);
         removeObjectFromArray(this, Game.bullets);
+        Game.world.removeChild(this);
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
         }

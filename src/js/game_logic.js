@@ -1,10 +1,11 @@
 import {Game} from "./game"
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE} from "./enums"
+import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, ROLE, STAGE} from "./enums"
 import {otherPlayer, removeObjectFromArray, setTickTimeout} from "./utils/basic_utils";
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation} from "./animations";
+import {isEmpty} from "./map_checks";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -197,6 +198,24 @@ export function addHazardToWorld(hazard) {
             competingHazard.removeFromWorld();
             hazard.addToWorld();
         }
+    }
+}
+
+export function addBulletToWorld(bullet) {
+    Game.tiles.push(bullet);
+    Game.bullets.push(bullet);
+    Game.world.addChild(bullet);
+    if (isEmpty(bullet.tilePosition.x, bullet.tilePosition.y)) {
+        bullet.placeOnMap();
+    } else {
+        const entity = Game.map[bullet.tilePosition.y][bullet.tilePosition.x].entity;
+        if (entity) {
+            if (entity.role === ROLE.ENEMY || entity.role === ROLE.PLAYER) {
+                bullet.attack(Game.map[bullet.tilePosition.y][bullet.tilePosition.x].entity);
+            } else if (entity.role === ROLE.BULLET) {
+                bullet.placeOnMap();
+            } else bullet.die();
+        } else bullet.die();
     }
 }
 

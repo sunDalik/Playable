@@ -4,8 +4,10 @@ import {ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../enums";
 import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall} from "../../map_checks";
 import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
-import {addHazardToWorld} from "../../game_logic";
+import {addBulletToWorld, addHazardToWorld} from "../../game_logic";
 import {PoisonHazard} from "../hazards/poison";
+import {ElectricBullet} from "./bullets/electric";
+import {FireBullet} from "./bullets/fire";
 
 export class Alligator extends Enemy {
     constructor(tilePositionX, tilePositionY, type = undefined, texture = Game.resources["src/images/enemies/alligator_x.png"].texture) {
@@ -107,15 +109,37 @@ export class Alligator extends Enemy {
             }
         } else if (this.shooting) {
             if (this.currentShootingTimes < this.maxShootingTimes) {
+                const dirX = this.direction.x;
+                const dirY = this.direction.y;
                 switch (this.alligatorType) {
                     case undefined:
                         this.currentShootingTimes = this.maxShootingTimes;
                         break;
                     case RABBIT_TYPE.ELECTRIC:
-
+                        if (dirX !== 0) {
+                            addBulletToWorld(new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
+                                [{x: dirX, y: 1}, {x: dirX, y: -1}]));
+                            addBulletToWorld(new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
+                                [{x: dirX, y: -1}, {x: dirX, y: 1}]));
+                        } else if (dirY !== 0) {
+                            addBulletToWorld(new ElectricBullet(this.tilePosition.x, this.tilePosition.y + dirY,
+                                [{x: 1, y: dirY}, {x: -1, y: dirY}]));
+                            addBulletToWorld(new ElectricBullet(this.tilePosition.x, this.tilePosition.y + dirY,
+                                [{x: -1, y: dirY}, {x: 1, y: dirY}]));
+                        }
                         break;
                     case RABBIT_TYPE.FIRE:
-
+                        if (dirX !== 0) {
+                            addBulletToWorld(new FireBullet(this.tilePosition.x + dirX, this.tilePosition.y - 1,
+                                [{x: dirX, y: -1}]));
+                            addBulletToWorld(new FireBullet(this.tilePosition.x + dirX, this.tilePosition.y + 1,
+                                [{x: dirX, y: 1}]));
+                        } else if (dirY !== 0) {
+                            addBulletToWorld(new FireBullet(this.tilePosition.x - 1, this.tilePosition.y + dirY,
+                                [{x: -1, y: dirY}]));
+                            addBulletToWorld(new FireBullet(this.tilePosition.x + 1, this.tilePosition.y + dirY,
+                                [{x: 1, y: dirY}]));
+                        }
                         break;
                     case RABBIT_TYPE.POISON:
                         if (isNotAWall(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 1),
