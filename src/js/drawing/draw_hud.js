@@ -345,12 +345,12 @@ export function drawInteractionKeys() {
         drawPlayer(Game.player);
         drawPlayer(Game.player2);
         if (Game.player.carried || Game.player2.carried) {
-            drawIconAndKey("src/images/unchain_icon.png", "X",
+            drawIconAndKey("src/images/icons/unchain_icon.png", "X",
                 Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
         } else {
-            drawIconAndKey("src/images/chain_icon.png", "X",
+            drawIconAndKey("src/images/icons/chain_icon.png", "X",
                 Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
-            const swapTexture = Game.player === Game.primaryPlayer ? "src/images/swap_icon_1.png" : "src/images/swap_icon_2.png";
+            const swapTexture = Game.player === Game.primaryPlayer ? "src/images/icons/swap_icon_1.png" : "src/images/icons/swap_icon_2.png";
             drawIconAndKey(swapTexture, "Z",
                 Game.app.renderer.screen.width / 2 - playerSize - HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
         }
@@ -375,7 +375,7 @@ export function drawInteractionKeys() {
             drawKey(container, keyText, posX - HUDKeyBindSize / 2, posY + iconSize + 5);
         }
     } else if (Math.abs(Game.player.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(Game.player.tilePosition.y - Game.player2.tilePosition.y) === 1) {
-        const togetherSprite = new PIXI.Sprite(Game.resources["src/images/together_icon.png"].texture);
+        const togetherSprite = new PIXI.Sprite(Game.resources["src/images/icons/together_icon.png"].texture);
         togetherSprite.width = playerSize * 2;
         togetherSprite.height = playerSize;
         togetherSprite.position.x = Game.app.renderer.screen.width / 2 - togetherSprite.width / 2;

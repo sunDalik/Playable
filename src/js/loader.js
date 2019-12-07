@@ -13,11 +13,12 @@ export function loadAll(afterLoad) {
         .add("src/images/exit.png")
         .add("src/images/player_attack.png")
         .add("src/images/player2_attack.png")
-        .add("src/images/swap_icon_1.png")
-        .add("src/images/swap_icon_2.png")
-        .add("src/images/chain_icon.png")
-        .add("src/images/unchain_icon.png")
-        .add("src/images/together_icon.png")
+
+        .add("src/images/icons/swap_icon_1.png")
+        .add("src/images/icons/swap_icon_2.png")
+        .add("src/images/icons/chain_icon.png")
+        .add("src/images/icons/unchain_icon.png")
+        .add("src/images/icons/together_icon.png")
 
         .add("src/images/hazards/poison.png")
         .add("src/images/hazards/fire.png")
@@ -67,6 +68,10 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/alligator_y_poison.png")
         .add("src/images/enemies/alligator_y_poison_shooting.png")
         .add("src/images/enemies/alligator_y_energy.png")
+        .add("src/images/enemies/rabbit_x_energy.png")
+        .add("src/images/enemies/rabbit_x_electric.png")
+        .add("src/images/enemies/rabbit_x_fire.png")
+        .add("src/images/enemies/rabbit_x_poison.png")
 
         .add("src/images/HUD/heart_full.png")
         .add("src/images/HUD/heart_75.png")
