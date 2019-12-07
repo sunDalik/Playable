@@ -149,12 +149,21 @@ export class Enemy extends AnimatedTileElement {
     }
 
     removeFromMap() {
-        Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+        if (this === Game.map[this.tilePosition.y][this.tilePosition.x].entity) {
+            Game.map[this.tilePosition.y][this.tilePosition.x].entity = Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity;
+            Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
+        } else if (this === Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity) {
+            Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
+        }
     }
 
     placeOnMap() {
         if (!this.dead) {
-            Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+            if (Game.map[this.tilePosition.y][this.tilePosition.x].entity === null) {
+                Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+            } else if (Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity === null) {
+                Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = this;
+            }
         }
     }
 

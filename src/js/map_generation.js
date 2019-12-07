@@ -88,9 +88,21 @@ export function generateMap(level) {
                     //energy type is rarer than others so if we get it we reroll it once again
                     type = getRandomValue(RABBIT_TYPE)
                 }
-                const prey = new Rabbit(j, i, type);
-                mapCell.entity = new Alligator(j, i, prey);
-            } else if (map[i][j] === MAP_SYMBOLS.STATUE) {
+                const rabbit = new Rabbit(j, i, type);
+                const alligator = new Alligator(j, i, undefined);
+                rabbit.predator = alligator;
+                alligator.prey = rabbit;
+                mapCell.entity = alligator;
+                mapCell.secondaryEntity = rabbit;
+            } else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR_ELECTRIC) mapCell.entity = new Alligator(j, i, RABBIT_TYPE.ELECTRIC);
+            else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR_FIRE) mapCell.entity = new Alligator(j, i, RABBIT_TYPE.FIRE);
+            else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR_ENERGY) mapCell.entity = new Alligator(j, i, RABBIT_TYPE.ENERGY);
+            else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR_POISON) mapCell.entity = new Alligator(j, i, RABBIT_TYPE.POISON);
+            else if (map[i][j] === MAP_SYMBOLS.RABBIT_ELECTRIC) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.ELECTRIC);
+            else if (map[i][j] === MAP_SYMBOLS.RABBIT_FIRE) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.FIRE);
+            else if (map[i][j] === MAP_SYMBOLS.RABBIT_ENERGY) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.ENERGY);
+            else if (map[i][j] === MAP_SYMBOLS.RABBIT_POISON) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.POISON);
+            else if (map[i][j] === MAP_SYMBOLS.STATUE) {
                 if (Game.weaponPool.length > 0) {
                     mapCell.entity = new Statue(j, i, getRandomWeapon());
                 }

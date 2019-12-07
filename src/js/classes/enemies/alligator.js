@@ -1,24 +1,19 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
+import {ENEMY_TYPE, RABBIT_TYPE} from "../../enums";
 
 export class Alligator extends Enemy {
-    constructor(tilePositionX, tilePositionY, prey, texture = Game.resources["src/images/enemies/alligator.png"].texture) {
+    constructor(tilePositionX, tilePositionY, type = undefined, texture = Game.resources["src/images/enemies/alligator_x.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 2;
+        this.maxHealth = 3;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.ALLIGATOR;
+        this.alligatorType = type;
         this.atk = 1;
         this.turnDelay = 2;
         this.currentTurnDelay = 0;
-        this.prey = prey;
-        if (this.prey) {
-            this.hunting = true;
-            this.direction = prey.direction;
-        } else {
-            this.hunting = false;
-            this.direction = 1;
-        }
+        this.prey = null;
+        this.direction = {x: 1, y: 0};
         this.seen = false;
         this.correctScale();
     }
@@ -28,8 +23,11 @@ export class Alligator extends Enemy {
             this.seen = true;
             //initialize
         }
-        if (this.hunting) {
+        if (this.prey && !this.prey.dead) {
 
+            if (true) {
+                this.prey = null;
+            }
         } else if (this.currentTurnDelay === 0) {
 
             this.currentTurnDelay = this.turnDelay

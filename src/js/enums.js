@@ -26,7 +26,7 @@ export const RABBIT_TYPE = Object.freeze({
     ENERGY: 0,
     ELECTRIC: 1,
     FIRE: 2,
-    POISON: 3,
+    POISON: 3
 });
 
 export const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});
@@ -95,6 +95,14 @@ export const MAP_SYMBOLS = Object.freeze({
     MUSHROOM: "mushroom",
     MUSHROOM_SMALL: "mushroom_small",
     ALLIGATOR: "alligator",
+    ALLIGATOR_ENERGY: "alligator_energy",
+    ALLIGATOR_ELECTRIC: "alligator_electric",
+    ALLIGATOR_FIRE: "alligator_fire",
+    ALLIGATOR_POISON: "alligator_poison",
+    RABBIT_ENERGY: "rabbit_energy",
+    RABBIT_ELECTRIC: "rabbit_electric",
+    RABBIT_FIRE: "rabbit_fire",
+    RABBIT_POISON: "rabbit_poison",
     STATUE: "statue",
     CHEST: "chest",
     OBELISK: "obelisk",
