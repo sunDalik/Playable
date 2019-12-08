@@ -20,6 +20,7 @@ import {get8DirectionsWithoutItems} from "./utils/map_utils";
 import {kiss} from "./game_logic";
 import {setTickTimeout} from "./utils/basic_utils";
 import {World} from "./classes/game/world";
+import {centerCamera} from "./camera";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();
@@ -72,6 +73,8 @@ function setup() {
     Game.stage = STAGE.FLOODED_CAVE;
     initPools();
     initializeLevel();
+    //Game.world.scale.set(0.5, 0.5); //it works!
+    //centerCamera();
 }
 
 export function initializeLevel() {
@@ -151,7 +154,7 @@ export function initializeLevel() {
 function mapSetFullView() {
     //for testing purposes ONLY
     Game.TILESIZE = 15;
-    redrawTiles(false);
+    redrawTiles();
     for (let i = 0; i < Game.darkTiles.length; i++) {
         for (let j = 0; j < Game.darkTiles[0].length; j++) {
             lightTile(j, i);

@@ -13,7 +13,7 @@ import {
     TOOL_TYPE,
     WEAPON_TYPE
 } from "../enums";
-import {centerCameraX, centerCameraY, redrawTiles} from "../camera";
+import {centerCamera, centerCameraX, centerCameraY, redrawTiles} from "../camera";
 import {createHeartAnimation, rotate, shakeScreen} from "../animations";
 import {
     drawInteractionKeys,
@@ -355,8 +355,9 @@ export class Player extends AnimatedTileElement {
                 redrawSecondHand(this);
             }
         }
-        Game.TILESIZE = Game.REFERENCE_TILESIZE;
-        redrawTiles();
+        //Game.TILESIZE = Game.REFERENCE_TILESIZE;
+        //redrawTiles();
+        centerCamera();
         for (const eq of this.getEquipment()) {
             if (eq && eq.onDeath) {
                 eq.onDeath(this);
