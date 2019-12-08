@@ -1,6 +1,7 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HEAD_TYPE, TILE_TYPE} from "../../../enums";
 import {darkenTile, lightTile} from "../../../drawing/lighting";
+import {otherPlayer} from "../../../utils/basic_utils";
 
 export class SeerCirclet {
     constructor() {
@@ -20,25 +21,31 @@ export class SeerCirclet {
         }
     }
 
-    onTakeOff() {
-        for (let i = 0; i < Game.darkTiles.length; i++) {
-            for (let j = 0; j < Game.darkTiles[0].length; j++) {
-                if (!Game.map[i][j].lit) {
-                    darkenTile(j, i);
+    onTakeOff(wielder) {
+        if (otherPlayer(wielder).headwear && otherPlayer(wielder).headwear.type === this.type && !otherPlayer(wielder).dead) {
+            return false;
+        } else {
+            for (let i = 0; i < Game.darkTiles.length; i++) {
+                for (let j = 0; j < Game.darkTiles[0].length; j++) {
+                    if (!Game.map[i][j].lit) {
+                        darkenTile(j, i);
+                    }
                 }
             }
         }
     }
 
-    onDeath(player) {
-        if (player.headwear && player.headwear.type === this.type) this.onTakeOff();
+    onDeath(wielder) {
+        this.onTakeOff(wielder);
     }
 
-    onRevive(player) {
-        if (player.headwear && player.headwear.type === this.type) this.onWear();
+    onRevive(wielder) {
+        this.onWear();
     }
 
-    onNextLevel() {
-        this.onWear()
+    onNextLevel(wielder) {
+        if (!wielder.dead) {
+            this.onWear()
+        }
     }
 }

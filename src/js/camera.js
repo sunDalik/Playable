@@ -1,31 +1,28 @@
 import {Game} from "./game"
 import {drawGrid, drawOther} from "./drawing/draw_init";
 
-export function centerCamera(scale = true) {
+export function centerCamera() {
     if (Game.player2.dead) centerCameraOnPlayer(Game.player);
     else if (Game.player.dead) centerCameraOnPlayer(Game.player2);
     else {
-        centerCameraX(false);
-        centerCameraY(false);
-        if (scale) scaleGameMap();
+        centerCameraX();
+        centerCameraY();
     }
 }
 
-export function centerCameraX(scale = true) {
+export function centerCameraX() {
     if (Game.player2.dead) centerCameraXOnPlayer(Game.player);
     else if (Game.player.dead) centerCameraXOnPlayer(Game.player2);
     else {
         Game.world.position.x = Game.app.renderer.screen.width / 2 - (Game.player.position.x + (Game.player2.position.x - Game.player.position.x) / 2);
-        if (scale) scaleGameMap();
     }
 }
 
-export function centerCameraY(scale = true) {
+export function centerCameraY() {
     if (Game.player2.dead) centerCameraYOnPlayer(Game.player);
     else if (Game.player.dead) centerCameraYOnPlayer(Game.player2);
     else {
         Game.world.position.y = Game.app.renderer.screen.height / 2 - (Game.player.position.y + (Game.player2.position.y - Game.player.position.y) / 2);
-        if (scale) scaleGameMap()
     }
 }
 
@@ -43,6 +40,7 @@ export function centerCameraYOnPlayer(player = Game.player) {
 }
 
 export function scaleGameMap() {
+    return;
     //const limit = Game.TILESIZE * 2;
     if (!Game.player2.dead && !Game.player.dead) {
         const limit = 100;
@@ -53,20 +51,20 @@ export function scaleGameMap() {
             || Game.app.renderer.screen.width - gp2.x < limit || gp2.x < limit
             || Game.app.renderer.screen.height - gp.y < limit || gp.y < limit
             || Game.app.renderer.screen.height - gp2.y < limit || gp2.y < limit) {
-            Game.TILESIZE--;
+            Game.TILESIZE -= 5;
             redrawTiles();
         } else if (Game.TILESIZE < Game.REFERENCE_TILESIZE &&
             ((Game.app.renderer.screen.width - gp.x > canZoom && gp.x > canZoom
                 && Game.app.renderer.screen.height - gp.y > canZoom && gp.y > canZoom) ||
                 (Game.app.renderer.screen.width - gp2.x > canZoom && gp2.x > canZoom
                     && Game.app.renderer.screen.height - gp2.y > canZoom && gp2.y > canZoom))) {
-            Game.TILESIZE++;
+            Game.TILESIZE += 5;
             redrawTiles();
         }
     }
 }
 
-export function redrawTiles(scale = true) {
+export function redrawTiles() {
     Game.world.removeChild(Game.grid);
     Game.grid = drawGrid();
     for (const graphic of Game.otherGraphics) {
@@ -89,5 +87,5 @@ export function redrawTiles(scale = true) {
     }
 
     drawOther();
-    centerCamera(scale)
+    centerCamera()
 }
