@@ -22,7 +22,7 @@ export class RedRoller extends Roller {
                     if (!isRelativelyEmpty(this.tilePosition.x + x * this.direction, this.tilePosition.y)) {
                         lastDirTileEmpty = false;
                     }
-                    let player = getPlayerOnTile(this.tilePosition.x + x * this.direction, this.tilePosition.y);
+                    const player = getPlayerOnTile(this.tilePosition.x + x * this.direction, this.tilePosition.y);
                     if (player !== null) {
                         if (x === 1) {
                             player.damage(this.atk, this);
@@ -78,7 +78,7 @@ export class RedRoller extends Roller {
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
         let counter = 0;
 
-        this.animation = () => {
+        const animation = () => {
             if (counter < this.SLIDE_ANIMATION_TIME / 2) {
                 this.position.x += step;
                 counter++;
@@ -91,12 +91,13 @@ export class RedRoller extends Roller {
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;
             } else if (counter >= this.SLIDE_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
-                Game.app.ticker.remove(this.animation);
+                Game.app.ticker.remove(animation);
                 this.place();
             }
             this.moveHealthContainer();
         };
-        Game.app.ticker.add(this.animation);
+        this.animation = animation;
+        Game.app.ticker.add(animation);
     }
 
     rollBump() {
@@ -107,7 +108,7 @@ export class RedRoller extends Roller {
         const b = -(this.position.x + (1 / 3) * this.direction * Game.TILESIZE + (-this.direction * Game.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
 
-        this.animation = () => {
+        const animation = () => {
             if (counter < this.BUMP_ANIMATION_TIME / 3) {
                 this.position.x += step;
                 counter++;
@@ -116,12 +117,13 @@ export class RedRoller extends Roller {
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
                 counter++;
             } else if (counter >= this.BUMP_ANIMATION_TIME) {
-                Game.app.ticker.remove(this.animation);
+                Game.app.ticker.remove(animation);
                 this.place();
             }
             this.moveHealthContainer();
         };
-        Game.app.ticker.add(this.animation);
+        this.animation = animation;
+        Game.app.ticker.add(animation);
     }
 
     damage(source, dmg, inputX, inputY, magical = false, hazardDamage = false) {

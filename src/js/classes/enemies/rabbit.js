@@ -4,7 +4,6 @@ import {ENEMY_TYPE, RABBIT_TYPE} from "../../enums";
 import {getRelativelyEmptyDirections, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 import {getPlayerOnTile} from "../../map_checks";
-import {addBulletToWorld, addHazardToWorld} from "../../game_logic";
 import {FireHazard} from "../hazards/fire";
 import {PoisonHazard} from "../hazards/poison";
 import {ElectricBullet} from "./bullets/electric";
@@ -80,21 +79,21 @@ export class Rabbit extends Enemy {
         super.die(source);
         if (!eaten) {
             if (this.rabbitType === RABBIT_TYPE.FIRE) {
-                addHazardToWorld(new FireHazard(this.tilePosition.x, this.tilePosition.y));
+                Game.world.addHazard(new FireHazard(this.tilePosition.x, this.tilePosition.y));
             } else if (this.rabbitType === RABBIT_TYPE.POISON) {
-                addHazardToWorld(new PoisonHazard(this.tilePosition.x, this.tilePosition.y, true));
-                addHazardToWorld(new PoisonHazard(this.tilePosition.x + 1, this.tilePosition.y, true));
-                addHazardToWorld(new PoisonHazard(this.tilePosition.x - 1, this.tilePosition.y, true));
-                addHazardToWorld(new PoisonHazard(this.tilePosition.x, this.tilePosition.y + 1, true));
-                addHazardToWorld(new PoisonHazard(this.tilePosition.x, this.tilePosition.y - 1, true));
+                Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y, true));
+                Game.world.addHazard(new PoisonHazard(this.tilePosition.x + 1, this.tilePosition.y, true));
+                Game.world.addHazard(new PoisonHazard(this.tilePosition.x - 1, this.tilePosition.y, true));
+                Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y + 1, true));
+                Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y - 1, true));
             } else if (this.rabbitType === RABBIT_TYPE.ELECTRIC) {
-                addBulletToWorld(new ElectricBullet(this.tilePosition.x + 1, this.tilePosition.y + 1,
+                Game.world.addBullet(new ElectricBullet(this.tilePosition.x + 1, this.tilePosition.y + 1,
                     [{x: 1, y: 1}]));
-                addBulletToWorld(new ElectricBullet(this.tilePosition.x - 1, this.tilePosition.y + 1,
+                Game.world.addBullet(new ElectricBullet(this.tilePosition.x - 1, this.tilePosition.y + 1,
                     [{x: -1, y: 1}]));
-                addBulletToWorld(new ElectricBullet(this.tilePosition.x + 1, this.tilePosition.y - 1,
+                Game.world.addBullet(new ElectricBullet(this.tilePosition.x + 1, this.tilePosition.y - 1,
                     [{x: 1, y: -1}]));
-                addBulletToWorld(new ElectricBullet(this.tilePosition.x - 1, this.tilePosition.y - 1,
+                Game.world.addBullet(new ElectricBullet(this.tilePosition.x - 1, this.tilePosition.y - 1,
                     [{x: -1, y: -1}]));
             }
         }

@@ -1,7 +1,5 @@
-import {Game} from "../../game"
 import {FullTileElement} from "./full_tile_element";
 import {removeObjectFromArray} from "../../utils/basic_utils";
-import {removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import * as PIXI from "pixi.js";
 
 export class DarkTunnelTile extends FullTileElement {

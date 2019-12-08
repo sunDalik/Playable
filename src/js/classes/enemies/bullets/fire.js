@@ -1,5 +1,4 @@
 import {Bullet} from "./bullet";
-import {addHazardToWorld} from "../../../game_logic";
 import {FireHazard} from "../../hazards/fire";
 import {Game} from "../../../game";
 import {STAGE} from "../../../enums";
@@ -13,12 +12,13 @@ export class FireBullet extends Bullet {
     }
 
     attack(entity) {
+        //should fireImmunity affect taking damage from bullets? I am not sure
         if (entity.fireImmunity > 0) this.die();
         else super.attack(entity);
     }
 
     die() {
         super.die();
-        addHazardToWorld(new FireHazard(this.tilePosition.x, this.tilePosition.y));
+        Game.world.addHazard(new FireHazard(this.tilePosition.x, this.tilePosition.y));
     }
 }

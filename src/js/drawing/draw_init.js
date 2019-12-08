@@ -1,6 +1,6 @@
 import {Game} from "../game"
 import * as PIXI from "pixi.js"
-import {ROLE, STAGE, TILE_TYPE} from "../enums";
+import {ROLE, STAGE} from "../enums";
 import {FullTileElement} from "../classes/tile_elements/full_tile_element";
 import {decrementEachDigitInHex} from "../utils/basic_utils";
 import {DarkTunnelTile} from "../classes/tile_elements/dark_tunnel_tile";

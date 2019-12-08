@@ -5,7 +5,6 @@ import {PoisonHazard} from "../hazards/poison";
 import {getRandomInt, randomChoice} from "../../utils/random_utils";
 import {getRelativelyEmptyHorizontalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile, isEmpty, isNotAWall} from "../../map_checks";
-import {addHazardToWorld} from "../../game_logic";
 
 export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/mushroom.png"].texture) {
@@ -30,7 +29,6 @@ export class Mushroom extends Enemy {
         this.healOnHit = 0;
     }
 
-    //should I keep this or check for "immediate reactions" in lightPlayerPosition instead?
     afterMapGen() {
         this.spillPoison(true);
     }
@@ -88,7 +86,7 @@ export class Mushroom extends Enemy {
             if (sourceDirX !== 0 || sourceDirY !== 0) {
                 const hazard = new PoisonHazard(tileX, tileY);
                 if (invisiblePoison) hazard.visible = false;
-                addHazardToWorld(hazard);
+                Game.world.addHazard(hazard);
             }
             this.spillAreas.push({x: tileX, y: tileY});
             if (sourceDirX === 0 && sourceDirY === 0) {

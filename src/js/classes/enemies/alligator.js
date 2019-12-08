@@ -4,7 +4,6 @@ import {ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../enums";
 import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall} from "../../map_checks";
 import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
-import {addBulletToWorld, addHazardToWorld} from "../../game_logic";
 import {PoisonHazard} from "../hazards/poison";
 import {ElectricBullet} from "./bullets/electric";
 import {FireBullet} from "./bullets/fire";
@@ -128,39 +127,39 @@ export class Alligator extends Enemy {
                         break;
                     case RABBIT_TYPE.ELECTRIC:
                         if (dirX !== 0) {
-                            addBulletToWorld(new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
+                            Game.world.addBullet(new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
                                 [{x: dirX, y: 1}, {x: dirX, y: -1}]));
-                            addBulletToWorld(new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
+                            Game.world.addBullet(new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
                                 [{x: dirX, y: -1}, {x: dirX, y: 1}]));
                         } else if (dirY !== 0) {
-                            addBulletToWorld(new ElectricBullet(this.tilePosition.x, this.tilePosition.y + dirY,
+                            Game.world.addBullet(new ElectricBullet(this.tilePosition.x, this.tilePosition.y + dirY,
                                 [{x: 1, y: dirY}, {x: -1, y: dirY}]));
-                            addBulletToWorld(new ElectricBullet(this.tilePosition.x, this.tilePosition.y + dirY,
+                            Game.world.addBullet(new ElectricBullet(this.tilePosition.x, this.tilePosition.y + dirY,
                                 [{x: -1, y: dirY}, {x: 1, y: dirY}]));
                         }
                         break;
                     case RABBIT_TYPE.FIRE:
                         if (dirX !== 0) {
-                            addBulletToWorld(new FireBullet(this.tilePosition.x + dirX, this.tilePosition.y,
+                            Game.world.addBullet(new FireBullet(this.tilePosition.x + dirX, this.tilePosition.y,
                                 [{x: dirX, y: -1}]));
-                            addBulletToWorld(new FireBullet(this.tilePosition.x + dirX, this.tilePosition.y,
+                            Game.world.addBullet(new FireBullet(this.tilePosition.x + dirX, this.tilePosition.y,
                                 [{x: dirX, y: 1}]));
                         } else if (dirY !== 0) {
-                            addBulletToWorld(new FireBullet(this.tilePosition.x, this.tilePosition.y + dirY,
+                            Game.world.addBullet(new FireBullet(this.tilePosition.x, this.tilePosition.y + dirY,
                                 [{x: -1, y: dirY}]));
-                            addBulletToWorld(new FireBullet(this.tilePosition.x, this.tilePosition.y + dirY,
+                            Game.world.addBullet(new FireBullet(this.tilePosition.x, this.tilePosition.y + dirY,
                                 [{x: 1, y: dirY}]));
                         }
                         break;
                     case RABBIT_TYPE.POISON:
                         if (isNotAWall(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 1),
                             this.tilePosition.y + this.direction.y * (this.currentShootingTimes * 2 + 1))) {
-                            addHazardToWorld(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 1),
+                            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 1),
                                 this.tilePosition.y + this.direction.y * (this.currentShootingTimes * 2 + 1)));
                         }
                         if (isNotAWall(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 2),
                             this.tilePosition.y + this.direction.y * (this.currentShootingTimes * 2 + 2))) {
-                            addHazardToWorld(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 2),
+                            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 2),
                                 this.tilePosition.y + this.direction.y * (this.currentShootingTimes * 2 + 2)));
                         }
                         if (isAnyWall(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 3),

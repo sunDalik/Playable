@@ -1,6 +1,5 @@
 import {Game} from "../game";
 import {EQUIPMENT_TYPE, STAGE, TILE_TYPE, TOOL_TYPE} from "../enums";
-import * as PIXI from "pixi.js"
 
 let litAreas = [];
 let torchedAreas = [];

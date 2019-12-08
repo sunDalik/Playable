@@ -1,13 +1,13 @@
 import {Game} from "./game"
 import {drawGrid, drawOther} from "./drawing/draw_init";
 
-export function centerCamera() {
+export function centerCamera(scale = true) {
     if (Game.player2.dead) centerCameraOnPlayer(Game.player);
     else if (Game.player.dead) centerCameraOnPlayer(Game.player2);
     else {
         centerCameraX(false);
         centerCameraY(false);
-        scaleGameMap();
+        if (scale) scaleGameMap();
     }
 }
 
@@ -66,7 +66,7 @@ export function scaleGameMap() {
     }
 }
 
-export function redrawTiles() {
+export function redrawTiles(scale = true) {
     Game.world.removeChild(Game.grid);
     Game.grid = drawGrid();
     for (const graphic of Game.otherGraphics) {
@@ -89,5 +89,5 @@ export function redrawTiles() {
     }
 
     drawOther();
-    centerCamera();
+    centerCamera(scale)
 }

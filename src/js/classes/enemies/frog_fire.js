@@ -1,7 +1,6 @@
 import {Game} from "../../game"
 import {ENEMY_TYPE} from "../../enums";
 import {Frog} from "./frog";
-import {addHazardToWorld} from "../../game_logic";
 import {FireHazard} from "../hazards/fire";
 import {getPlayerOnTile} from "../../map_checks";
 
@@ -20,6 +19,6 @@ export class FireFrog extends Frog {
     }
 
     spitHazard(tileX, tileY) {
-        addHazardToWorld(new FireHazard(tileX, tileY));
+        Game.world.addHazard(new FireHazard(tileX, tileY));
     }
 }

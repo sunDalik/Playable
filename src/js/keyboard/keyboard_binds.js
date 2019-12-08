@@ -4,13 +4,6 @@ import {carryPlayer, playerTurn, switchPlayers} from "../game_logic";
 
 export function bindKeys() {
     bindMovement(Game.player, {upCode: "KeyW", leftCode: "KeyA", downCode: "KeyS", rightCode: "KeyD"});
-    /*bindMovement(Game.player2, {
-        upCode: "ArrowUp",
-        leftCode: "ArrowLeft",
-        downCode: "ArrowDown",
-        rightCode: "ArrowRight"
-    }); */
-    //experimental
     bindMovement(Game.player2, {upCode: "KeyI", leftCode: "KeyJ", downCode: "KeyK", rightCode: "KeyL"});
     bindMagic(Game.player, {oneCode: "Digit1", twoCode: "Digit2", threeCode: "Digit3", fourCode: "Digit4"});
     bindMagic(Game.player2, {oneCode: "Digit7", twoCode: "Digit8", threeCode: "Digit9", fourCode: "Digit0"});

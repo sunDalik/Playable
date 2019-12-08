@@ -5,7 +5,6 @@ import {randomChoice} from "../../utils/random_utils";
 import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile, isNotAWall} from "../../map_checks";
 import {PoisonHazard} from "../hazards/poison";
-import {addHazardToWorld} from "../../game_logic";
 
 export class Frog extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/frog.png"].texture) {
@@ -75,8 +74,8 @@ export class Frog extends Enemy {
     }
 
     spitHazard(tileX, tileY) {
-        addHazardToWorld(new PoisonHazard(tileX, tileY));
-        addHazardToWorld(new PoisonHazard(this.tilePosition.x + Math.floor((tileX - this.tilePosition.x) / 2),
+        Game.world.addHazard(new PoisonHazard(tileX, tileY));
+        Game.world.addHazard(new PoisonHazard(this.tilePosition.x + Math.floor((tileX - this.tilePosition.x) / 2),
             this.tilePosition.y + Math.floor((tileY - this.tilePosition.y) / 2)));
     }
 }

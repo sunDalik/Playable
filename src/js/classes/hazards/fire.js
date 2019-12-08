@@ -5,7 +5,6 @@ import {HAZARD_TYPE, STAGE} from "../../enums";
 import {get8Directions, getCardinalDirections} from "../../utils/map_utils";
 import {isNotAWall} from "../../map_checks";
 import {randomShuffle} from "../../utils/random_utils";
-import {addHazardToWorld} from "../../game_logic";
 
 export class FireHazard extends Hazard {
     constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = Game.resources["src/images/hazards/fire.png"].texture) {
@@ -67,9 +66,9 @@ export class FireHazard extends Hazard {
                     if (spreadCounter <= 0) break;
                     if (isNotAWall(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
                         if (this.type === HAZARD_TYPE.FIRE) {
-                            addHazardToWorld(new FireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1));
+                            Game.world.addHazard(new FireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1));
                         } else if (this.type === HAZARD_TYPE.DARK_FIRE) {
-                            addHazardToWorld(new DarkFireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1));
+                            Game.world.addHazard(new DarkFireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1));
                         }
                     }
                     spreadCounter--;

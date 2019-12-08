@@ -10,7 +10,6 @@ export class PoisonEel extends Eel {
         this.maxHealth = 4;
         this.health = this.maxHealth;
         this.atk = 1.25;
-        this.damaged = false;
         this.triggered = false;
         this.FULL_ROTATE_TIME = 15;
         this.type = ENEMY_TYPE.POISON_EEL;
@@ -51,9 +50,7 @@ export class PoisonEel extends Eel {
                 if (!(x === 0 && y === 0)) {
                     const attackPositionX = this.tilePosition.x + x;
                     const attackPositionY = this.tilePosition.y + y;
-                    if (Game.map[attackPositionY][attackPositionX].hazard === null) {
-                        new PoisonHazard(attackPositionX, attackPositionY).addToWorld();
-                    } else Game.map[attackPositionY][attackPositionX].hazard.refreshLifetime();
+                    Game.world.addHazard(new PoisonHazard(attackPositionX, attackPositionY));
                     const player = getPlayerOnTile(attackPositionX, attackPositionY);
                     if (player) player.damage(this.atk, this);
                 }

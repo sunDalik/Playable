@@ -1,11 +1,10 @@
 import {Game} from "./game"
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, ROLE, STAGE} from "./enums"
-import {otherPlayer, removeObjectFromArray, setTickTimeout} from "./utils/basic_utils";
+import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE} from "./enums"
+import {otherPlayer, setTickTimeout} from "./utils/basic_utils";
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation} from "./animations";
-import {isEmpty} from "./map_checks";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -167,67 +166,6 @@ export function kiss(healAmount = 1) {
         Game.player.position.y + (Game.player2.position.y - Game.player.position.y) / 2);
 }
 
-export function addHazardToWorld(hazard) {
-    const competingHazard = Game.map[hazard.tilePosition.y][hazard.tilePosition.x].hazard;
-    if (competingHazard === null) {
-        hazard.addToWorld();
-    } else if (competingHazard.type === hazard.type) {
-        competingHazard.refreshLifetime();
-    } else if (hazard.type === HAZARD_TYPE.POISON) {
-        if (competingHazard.type === HAZARD_TYPE.DARK_POISON || competingHazard.type === HAZARD_TYPE.DARK_FIRE) {
-            competingHazard.spoil(hazard);
-        } else if (competingHazard.type === HAZARD_TYPE.FIRE) {
-            competingHazard.ignite();
-        }
-    } else if (hazard.type === HAZARD_TYPE.FIRE) {
-        if (competingHazard.type === HAZARD_TYPE.DARK_FIRE || competingHazard.type === HAZARD_TYPE.DARK_POISON) {
-            competingHazard.spoil(hazard);
-        } else if (competingHazard.type === HAZARD_TYPE.POISON) {
-            competingHazard.removeFromWorld();
-            hazard.addToWorld();
-        }
-    } else if (hazard.type === HAZARD_TYPE.DARK_POISON) {
-        if (competingHazard.type === HAZARD_TYPE.POISON) {
-            competingHazard.removeFromWorld();
-            hazard.addToWorld();
-        } else if (competingHazard.type === HAZARD_TYPE.DARK_FIRE) {
-            competingHazard.ignite();
-        } else if (competingHazard.type === HAZARD_TYPE.FIRE) {
-            competingHazard.turnToDark();
-        }
-    } else if (hazard.type === HAZARD_TYPE.DARK_FIRE) {
-        if (competingHazard.type === HAZARD_TYPE.FIRE
-            || competingHazard.type === HAZARD_TYPE.DARK_POISON
-            || competingHazard.type === HAZARD_TYPE.POISON) {
-            competingHazard.removeFromWorld();
-            hazard.addToWorld();
-        }
-    }
-}
-
-export function addBulletToWorld(bullet) {
-    Game.tiles.push(bullet);
-    Game.bullets.push(bullet);
-    Game.world.addChild(bullet);
-    if (isEmpty(bullet.tilePosition.x, bullet.tilePosition.y)) {
-        bullet.placeOnMap();
-    } else {
-        const entity = Game.map[bullet.tilePosition.y][bullet.tilePosition.x].entity;
-        if (entity) {
-            if (entity.role === ROLE.ENEMY || entity.role === ROLE.PLAYER) {
-                bullet.attack(Game.map[bullet.tilePosition.y][bullet.tilePosition.x].entity);
-            } else if (entity.role === ROLE.BULLET) {
-                bullet.placeOnMap();
-            } else bullet.die();
-        } else bullet.die();
-    }
-}
-
-export function removeTileFromWorld(tile) {
-    removeObjectFromArray(tile, Game.tiles);
-    Game.world.removeChild(tile);
-}
-
 export function swapEquipmentWithPlayer(player, equipment) {
     if (!equipment) return null;
     let slot;
@@ -298,7 +236,7 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
 }
 
 export function gotoNextLevel() {
-    cleanGameWorld();
+    Game.world.clean();
     Game.tiles = [];
     Game.enemies = [];
     Game.darkTiles = [];
@@ -311,23 +249,4 @@ export function gotoNextLevel() {
     initializeLevel();
     Game.player.applyNextLevelMethods();
     Game.player2.applyNextLevelMethods();
-}
-
-export function cleanGameWorld() {
-    for (const tile of Game.tiles) {
-        Game.world.removeChild(tile);
-    }
-    for (const tile of Game.darkTiles) {
-        Game.world.removeChild(tile);
-    }
-    for (const graphic of Game.otherGraphics) {
-        Game.world.removeChild(graphic);
-    }
-    for (const hazard of Game.hazards) {
-        Game.world.removeChild(hazard);
-    }
-    for (const animation of Game.infiniteAnimations) {
-        Game.app.ticker.remove(animation);
-    }
-    Game.world.removeChild(Game.grid);
 }

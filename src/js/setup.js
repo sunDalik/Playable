@@ -5,10 +5,11 @@ import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
 import * as camera from "./camera";
+import {redrawTiles} from "./camera";
 import {STAGE} from "./enums";
 import {generateLevel, getLevelPlayerGraph} from "./level_generation";
 import {calculateDetectionGraph, generateMap} from "./map_generation";
-import {lightPlayerPosition, lightPosition} from "./drawing/lighting";
+import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
 import {drawHUD, drawInteractionKeys, drawMovementKeyBindings} from "./drawing/draw_hud";
@@ -18,6 +19,7 @@ import {randomChoice} from "./utils/random_utils";
 import {get8DirectionsWithoutItems} from "./utils/map_utils";
 import {kiss} from "./game_logic";
 import {setTickTimeout} from "./utils/basic_utils";
+import {World} from "./classes/game/world";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();
@@ -40,7 +42,7 @@ window.addEventListener("resize", () => {
 });
 
 function setup() {
-    Game.world = new PIXI.Container();
+    Game.world = new World();
     Game.app.stage.addChild(Game.world);
 
     Game.HUD = HUD;
@@ -140,4 +142,16 @@ export function initializeLevel() {
             kiss();
         }
     }, 6);
+}
+
+function mapSetFullView() {
+    //for testing purposes ONLY
+    Game.TILESIZE = 15;
+    redrawTiles(false);
+    for (let i = 0; i < Game.darkTiles.length; i++) {
+        for (let j = 0; j < Game.darkTiles[0].length; j++) {
+            lightTile(j, i);
+            Game.darkTiles[i][j].visible = false;
+        }
+    }
 }
