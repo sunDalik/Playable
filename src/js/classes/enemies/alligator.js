@@ -19,7 +19,9 @@ export class Alligator extends Enemy {
         this.shooting = false;
         this.shootingDelay = false;
         this.atk = 1;
-        this.turnDelay = 2;
+        if (this.alligatorType === RABBIT_TYPE.ELECTRIC || this.alligatorType === RABBIT_TYPE.FIRE || this.alligatorType === RABBIT_TYPE.POISON) {
+            this.turnDelay = 1;
+        } else this.turnDelay = 2;
         this.currentTurnDelay = 0;
         this.prey = null;
         this.triggeredDirection = null;

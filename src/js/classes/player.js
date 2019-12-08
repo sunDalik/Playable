@@ -35,7 +35,7 @@ import {randomChoice} from "../utils/random_utils";
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 4;
+        this.maxHealth = 3;
         this.health = this.maxHealth;
         this.atkBase = 0;
         this.atkMul = 1;

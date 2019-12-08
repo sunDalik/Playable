@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {ROLE, STAGE} from "../../../enums";
 import {TileElement} from "../../tile_elements/tile_element";
-import {getPlayerOnTile, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
+import {getPlayerOnTile, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 
 export class Bullet extends TileElement {
