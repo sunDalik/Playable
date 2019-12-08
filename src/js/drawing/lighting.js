@@ -1,5 +1,6 @@
 import {Game} from "../game";
 import {EQUIPMENT_TYPE, STAGE, TILE_TYPE, TOOL_TYPE} from "../enums";
+import {getCardinalDirections} from "../utils/map_utils";
 
 let litAreas = [];
 let torchedAreas = [];
@@ -36,13 +37,16 @@ export function lightPlayerPosition(player) {
         } else if (Game.map[py][px].tileType === TILE_TYPE.NONE) {
             lightWorld(px, py, false, roomDist);
         } else if (Game.map[py][px].tileType === TILE_TYPE.ENTRY) {
-            if ((Game.map[py + 1][px].tileType === TILE_TYPE.PATH && !Game.map[py + 1][px].lit)
-                || (Game.map[py - 1][px].tileType === TILE_TYPE.PATH && !Game.map[py - 1][px].lit)
-                || (Game.map[py][px + 1].tileType === TILE_TYPE.PATH && !Game.map[py][px + 1].lit)
-                || (Game.map[py][px - 1].tileType === TILE_TYPE.PATH && !Game.map[py][px - 1].lit)) {
+            let found = false;
+            for (const dir of getCardinalDirections()) {
+                if (Game.map[py + dir.y][px + dir.x].tileType === TILE_TYPE.NONE && !Game.map[py + dir.y][px + dir.x].lit) {
+                    found = true;
+                    lightWorld(px, py, false, roomDist);
+                    break;
+                }
+            }
+            if (!found) {
                 lightWorld(px, py, true, pathDist);
-            } else {
-                lightWorld(px, py, false, roomDist);
             }
         }
     }
@@ -50,30 +54,31 @@ export function lightPlayerPosition(player) {
 
 //lightPaths == true -> light paths until we encounter none else light nones until we encounter path
 //lightPaths == undefined -> light anything but walls
-function lightWorld(tileX, tileY, lightPaths, distance, sourceDirX = 0, sourceDirY = 0) {
+function lightWorld(tileX, tileY, lightPaths, distance, sourceDirX = 0, sourceDirY = 0, sourceTileType = undefined) {
+    const tileType = Game.map[tileY][tileX].tileType;
     if (distance > -1) {
-        if (Game.map[tileY][tileX].tileType === TILE_TYPE.ENTRY
-            || (Game.map[tileY][tileX].tileType === TILE_TYPE.PATH && (lightPaths === true || lightPaths === undefined))
-            || ((Game.map[tileY][tileX].tileType === TILE_TYPE.NONE && (lightPaths === false || lightPaths === undefined))
-                || Game.map[tileY][tileX].tileType === TILE_TYPE.EXIT)) {
+        if ((tileType === TILE_TYPE.ENTRY && lightPaths === undefined)
+            || (tileType === TILE_TYPE.PATH && (lightPaths === true || lightPaths === undefined || sourceTileType !== TILE_TYPE.ENTRY))
+            || (tileType === TILE_TYPE.NONE && (lightPaths === undefined || sourceTileType !== TILE_TYPE.ENTRY))
+            || tileType === TILE_TYPE.EXIT) {
             if (!Game.map[tileY][tileX].lit) lightTile(tileX, tileY);
             litAreas.push({x: tileX, y: tileY});
             if (sourceDirX === 0 && sourceDirY === 0) {
-                lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, 0);
-                lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, 0);
-                lightWorld(tileX, tileY + 1, lightPaths, distance - 1, 0, -1);
-                lightWorld(tileX, tileY - 1, lightPaths, distance - 1, 0, 1);
+                lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, 0, tileType);
+                lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, 0, tileType);
+                lightWorld(tileX, tileY + 1, lightPaths, distance - 1, 0, -1, tileType);
+                lightWorld(tileX, tileY - 1, lightPaths, distance - 1, 0, 1, tileType);
             } else {
                 if (sourceDirY === 0) {
-                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) lightWorld(tileX, tileY - 1, lightPaths, distance - 1, sourceDirX, 1);
-                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) lightWorld(tileX, tileY + 1, lightPaths, distance - 1, sourceDirX, -1);
+                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) lightWorld(tileX, tileY - 1, lightPaths, distance - 1, sourceDirX, 1, tileType);
+                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) lightWorld(tileX, tileY + 1, lightPaths, distance - 1, sourceDirX, -1, tileType);
                 }
-                if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorld(tileX, tileY - sourceDirY, lightPaths, distance - 1, sourceDirX, sourceDirY);
+                if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorld(tileX, tileY - sourceDirY, lightPaths, distance - 1, sourceDirX, sourceDirY, tileType);
                 if (sourceDirX === 0) {
-                    if (!litAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, sourceDirY);
-                    if (!litAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, sourceDirY);
+                    if (!litAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) lightWorld(tileX - 1, tileY, lightPaths, distance - 1, 1, sourceDirY, tileType);
+                    if (!litAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) lightWorld(tileX + 1, tileY, lightPaths, distance - 1, -1, sourceDirY, tileType);
                 }
-                if (!litAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorld(tileX - sourceDirX, tileY, lightPaths, distance - 1, sourceDirX, sourceDirY);
+                if (!litAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorld(tileX - sourceDirX, tileY, lightPaths, distance - 1, sourceDirX, sourceDirY, tileType);
             }
 
             //light diagonal walls
@@ -89,9 +94,27 @@ function lightWorld(tileX, tileY, lightPaths, distance, sourceDirX = 0, sourceDi
             if (!Game.map[tileY - 1][tileX + 1].lit && (Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.WALL || Game.map[tileY - 1][tileX + 1].tileType === TILE_TYPE.SUPER_WALL)) {
                 lightWorld(tileX + 1, tileY - 1, lightPaths, distance - 1);
             }
-
-        } else if (Game.map[tileY][tileX].tileType === TILE_TYPE.WALL || Game.map[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
+        } else if (tileType === TILE_TYPE.WALL || tileType === TILE_TYPE.SUPER_WALL) {
             if (!Game.map[tileY][tileX].lit) lightTile(tileX, tileY);
+        } else if (tileType === TILE_TYPE.ENTRY) {
+            if (!Game.map[tileY][tileX].lit) lightTile(tileX, tileY);
+            if (sourceTileType === undefined) {
+                if (lightPaths === true) {
+                    for (const dir of getCardinalDirections()) {
+                        if (Game.map[tileY + dir.y][tileX + dir.x].tileType === TILE_TYPE.PATH && !Game.map[tileY + dir.y][tileX + dir.x].lit) {
+                            lightWorld(tileX + dir.x, tileY + dir.y, true, distance - 1);
+                            break;
+                        }
+                    }
+                } else if (lightPaths === false) {
+                    for (const dir of getCardinalDirections()) {
+                        if (Game.map[tileY + dir.y][tileX + dir.x].tileType === TILE_TYPE.NONE && !Game.map[tileY + dir.y][tileX + dir.x].lit) {
+                            lightWorld(tileX + dir.x, tileY + dir.y, false, distance - 1);
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -12,6 +12,17 @@ export function copy2dArray(array) {
     return newArray;
 }
 
+export function init2dArray(lengthY, lengthX, value = 0) {
+    const array = [];
+    for (let i = 0; i < lengthY; i++) {
+        array[i] = [];
+        for (let j = 0; j < lengthX; j++) {
+            array[i][j] = value;
+        }
+    }
+    return array;
+}
+
 export function removeObjectFromArray(object, array) {
     const index = array.indexOf(object);
     if (index !== -1) {

@@ -174,9 +174,11 @@ export function generateMap(level) {
     return map;
 }
 
+let mapWithWeights;
+
 //0 is walkable, 1 is not
 export function calculateDetectionGraph(map) {
-    const mapWithWeights = [];
+    mapWithWeights = [];
     for (let i = 0; i < map.length; ++i) {
         mapWithWeights[i] = [];
         for (let j = 0; j < map[0].length; ++j) {
@@ -187,6 +189,16 @@ export function calculateDetectionGraph(map) {
                 mapWithWeights[i][j] = 0;
             }
         }
+    }
+    Game.playerDetectionGraph = new PF.Grid(mapWithWeights);
+}
+
+export function recalculateTileInDetectionGraph(tileX, tileY) {
+    if (mapWithWeights[tileY][tileX].tileType === TILE_TYPE.VOID || mapWithWeights[tileY][tileX].tileType === TILE_TYPE.PATH
+        || mapWithWeights[tileY][tileX].tileType === TILE_TYPE.WALL || mapWithWeights[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
+        mapWithWeights[tileY][tileX] = 1;
+    } else {
+        mapWithWeights[tileY][tileX] = 0;
     }
     Game.playerDetectionGraph = new PF.Grid(mapWithWeights);
 }

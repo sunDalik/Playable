@@ -20,7 +20,6 @@ import {get8DirectionsWithoutItems} from "./utils/map_utils";
 import {kiss} from "./game_logic";
 import {setTickTimeout} from "./utils/basic_utils";
 import {World} from "./classes/game/world";
-import {centerCamera} from "./camera";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();

@@ -2,7 +2,7 @@ import {Game} from "./game"
 //https://github.com/qiao/PathFinding.js
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 
-import {arraySum, copy2dArray} from "./utils/basic_utils";
+import {arraySum, copy2dArray, init2dArray} from "./utils/basic_utils";
 import {MAP_SYMBOLS, STAGE} from "./enums";
 import {getRandomInt, randomArrayIndex, randomChoice, randomShuffle} from "./utils/random_utils";
 import {get8Directions} from "./utils/map_utils";
@@ -347,10 +347,11 @@ export function generateLevel() {
         }
     }
     outlinePathsWithWalls(level);
-    level = expandLevel(level, 1, 1);
-    Game.startX++;
-    Game.startY++;
+    level = expandLevel(level, 2, 2);
+    Game.startX += 2;
+    Game.startY += 2;
     connectDiagonalPaths(level);
+    outlineWallsWithWalls(level);
     outlineWallsWithSuperWalls(level);
     return level;
 }
@@ -491,6 +492,22 @@ function outlinePathsWithWalls(level) {
                 for (const dir of get8Directions()) {
                     if (level[i + dir.y][j + dir.x] === MAP_SYMBOLS.VOID) {
                         level[i + dir.y][j + dir.x] = MAP_SYMBOLS.WALL
+                    }
+                }
+            }
+        }
+    }
+}
+
+function outlineWallsWithWalls(level) {
+    const placedWalls = init2dArray(level.length, level[0].length, false);
+    for (let i = 1; i < level.length - 1; ++i) {
+        for (let j = 1; j < level[0].length - 1; ++j) {
+            if (level[i][j] === MAP_SYMBOLS.WALL && placedWalls[i][j] === false) {
+                for (const dir of get8Directions()) {
+                    if (level[i + dir.y][j + dir.x] === MAP_SYMBOLS.VOID) {
+                        level[i + dir.y][j + dir.x] = MAP_SYMBOLS.WALL;
+                        placedWalls[i + dir.y][j + dir.x] = true;
                     }
                 }
             }
