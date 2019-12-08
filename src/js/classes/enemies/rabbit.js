@@ -87,14 +87,10 @@ export class Rabbit extends Enemy {
                 Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y + 1, true));
                 Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y - 1, true));
             } else if (this.rabbitType === RABBIT_TYPE.ELECTRIC) {
-                Game.world.addBullet(new ElectricBullet(this.tilePosition.x + 1, this.tilePosition.y + 1,
-                    [{x: 1, y: 1}]));
-                Game.world.addBullet(new ElectricBullet(this.tilePosition.x - 1, this.tilePosition.y + 1,
-                    [{x: -1, y: 1}]));
-                Game.world.addBullet(new ElectricBullet(this.tilePosition.x + 1, this.tilePosition.y - 1,
-                    [{x: 1, y: -1}]));
-                Game.world.addBullet(new ElectricBullet(this.tilePosition.x - 1, this.tilePosition.y - 1,
-                    [{x: -1, y: -1}]));
+                Game.world.addBullet(new ElectricBullet(this.tilePosition.x, this.tilePosition.y, [{x: 1, y: 1}]));
+                Game.world.addBullet(new ElectricBullet(this.tilePosition.x, this.tilePosition.y, [{x: -1, y: 1}]));
+                Game.world.addBullet(new ElectricBullet(this.tilePosition.x, this.tilePosition.y, [{x: 1, y: -1}]));
+                Game.world.addBullet(new ElectricBullet(this.tilePosition.x, this.tilePosition.y, [{x: -1, y: -1}]));
             }
         }
     }
