@@ -83,6 +83,8 @@ export function generateMap(level) {
             else if (map[i][j] === MAP_SYMBOLS.MUSHROOM_SMALL) mapCell.entity = new SmallMushroom(j, i);
             else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR) {
                 //Pairs for paired enemies are generated in the map generation phase. That is how I've decided it to be...
+                //Paired enemies have one main enemy and one sub enemy. The main enemy controls both itself and the sub enemy.
+                //The sub enemy can move independently only when the main enemy is dead
                 let type = getRandomValue(RABBIT_TYPE);
                 if (type === RABBIT_TYPE.ENERGY) {
                     //energy type is rarer than others so if we get it we reroll it once again

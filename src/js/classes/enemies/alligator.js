@@ -58,6 +58,10 @@ export class Alligator extends Enemy {
                 this.prey.die(this, true);
                 if (this.prey.rabbitType !== undefined) {
                     this.alligatorType = this.prey.rabbitType;
+                    if (this.alligatorType === RABBIT_TYPE.ENERGY) {
+                        this.stepXjumpHeight = Game.TILESIZE * 30 / 75;
+                        this.energyDrop = 40;
+                    }
                     this.updateTexture();
                     this.lightItself();
                 }
@@ -135,14 +139,14 @@ export class Alligator extends Enemy {
                         break;
                     case RABBIT_TYPE.FIRE:
                         if (dirX !== 0) {
-                            addBulletToWorld(new FireBullet(this.tilePosition.x + dirX, this.tilePosition.y - 1,
+                            addBulletToWorld(new FireBullet(this.tilePosition.x + dirX, this.tilePosition.y,
                                 [{x: dirX, y: -1}]));
-                            addBulletToWorld(new FireBullet(this.tilePosition.x + dirX, this.tilePosition.y + 1,
+                            addBulletToWorld(new FireBullet(this.tilePosition.x + dirX, this.tilePosition.y,
                                 [{x: dirX, y: 1}]));
                         } else if (dirY !== 0) {
-                            addBulletToWorld(new FireBullet(this.tilePosition.x - 1, this.tilePosition.y + dirY,
+                            addBulletToWorld(new FireBullet(this.tilePosition.x, this.tilePosition.y + dirY,
                                 [{x: -1, y: dirY}]));
-                            addBulletToWorld(new FireBullet(this.tilePosition.x + 1, this.tilePosition.y + dirY,
+                            addBulletToWorld(new FireBullet(this.tilePosition.x, this.tilePosition.y + dirY,
                                 [{x: 1, y: dirY}]));
                         }
                         break;
@@ -210,11 +214,13 @@ export class Alligator extends Enemy {
                 }
             }
             if (Math.random() < 0.3 && (this.alligatorType === RABBIT_TYPE.ELECTRIC || this.alligatorType === RABBIT_TYPE.FIRE || this.alligatorType === RABBIT_TYPE.POISON)) {
-                this.shooting = true;
-                this.shootingDelay = true;
-                this.currentShootingTimes = 0;
-                this.updateTexture();
-                this.shake(this.direction.y, this.direction.x);
+                if (!this.shooting) {
+                    this.shooting = true;
+                    this.shootingDelay = true;
+                    this.currentShootingTimes = 0;
+                    this.updateTexture();
+                    this.shake(this.direction.y, this.direction.x);
+                }
             }
         }
     }

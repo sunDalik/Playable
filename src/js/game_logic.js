@@ -27,18 +27,22 @@ function enemyTurn() {
 
 export function moveEnemies() {
     for (const enemy of Game.enemies) {
-        if (!enemy.dead && enemy.visible) {
+        if (!enemy.dead && (enemy.visible || enemy.canMoveInvisible)) {
             if (enemy.stun <= 0) {
                 const egp = enemy.getGlobalPosition();
-                if (egp.x > -100 && egp.y > -100 && egp.x < Game.app.renderer.screen.width + 100 && egp.y < Game.app.renderer.screen.height + 100) {
+                const limit = Game.TILESIZE * 2;
+                if (egp.x > -limit && egp.y > -limit && egp.x < Game.app.renderer.screen.width + limit && egp.y < Game.app.renderer.screen.height + limit) {
                     if (enemy.cancellable) {
                         enemy.cancelAnimation();
                     }
                     enemy.move();
                     enemy.cancellable = true;
+                    enemy.damageWithHazards();
                 }
-            } else enemy.stun--;
-            enemy.damageWithHazards();
+            } else {
+                enemy.stun--;
+                enemy.damageWithHazards();
+            }
         }
     }
 }

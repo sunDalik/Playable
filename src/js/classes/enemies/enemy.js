@@ -11,6 +11,7 @@ export class Enemy extends AnimatedTileElement {
         this.dead = false;
         this.role = ROLE.ENEMY;
         this.cancellable = true;
+        this.canMoveInvisible = false;
         this.stun = 0;
         this.fireImmunity = 1;
         this.poisonImmunity = 1;

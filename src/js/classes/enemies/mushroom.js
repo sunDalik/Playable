@@ -18,6 +18,7 @@ export class Mushroom extends Enemy {
         this.currentPoisonDelay = this.poisonDelay;
         this.poisonSpread = 2;
         this.walkDelay = this.getWalkDelay();
+        this.canMoveInvisible = true;
         this.walking = false;
         this.walkingTexture = Game.resources["src/images/enemies/mushroom_walking.png"].texture;
         this.normalTexture = Game.resources["src/images/enemies/mushroom.png"].texture;
@@ -66,7 +67,7 @@ export class Mushroom extends Enemy {
                 this.place();
             }
         } else {
-            this.walkDelay--;
+            if (this.visible) this.walkDelay--;
             if (this.currentPoisonDelay <= 0) {
                 this.spillPoison();
                 this.currentPoisonDelay = this.poisonDelay;
