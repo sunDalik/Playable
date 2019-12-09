@@ -55,13 +55,14 @@ export const WEAPON_TYPE = Object.freeze({
     BOOK_OF_FLAMES: 4,
     SCYTHE: 5,
     MAIDEN_DAGGER: 6,
-    HAMMER: 7
+    HAMMER: 7,
+    PICKAXE: 8
 });
 export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1, VAMPIRE_CROWN: 2});
 export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4});
 export const FOOTWEAR_TYPE = Object.freeze({ADVENTURER: 0, DAMAGING: 1, DARK: 2});
 export const SHIELD_TYPE = Object.freeze({PASSIVE: 0, STUNNING: 1, SPIKY: 2, ARMORING: 3});
-export const TOOL_TYPE = Object.freeze({PICKAXE: 0, TORCH: 1});
+export const TOOL_TYPE = Object.freeze({TORCH: 0});
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
 

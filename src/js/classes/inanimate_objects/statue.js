@@ -48,6 +48,9 @@ export class Statue extends TallTileElement {
             case WEAPON_TYPE.HAMMER:
                 this.texture = Game.resources["src/images/other/statue_hammer.png"].texture;
                 break;
+            case WEAPON_TYPE.PICKAXE:
+                this.texture = Game.resources["src/images/other/statue_tool.png"].texture;
+                break;
         }
     }
 
