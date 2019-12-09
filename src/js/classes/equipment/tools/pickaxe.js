@@ -12,16 +12,19 @@ export class Pickaxe {
         this.equipmentType = EQUIPMENT_TYPE.TOOL;
     }
 
-    use(player, tileDirX, tileDirY) {
-        if (isAWall(player.tilePosition.x + tileDirX, player.tilePosition.y + tileDirY)) {
-            Game.world.removeTile(Game.map[player.tilePosition.y + tileDirY][player.tilePosition.x + tileDirX].tile);
-            Game.map[player.tilePosition.y + tileDirY][player.tilePosition.x + tileDirX].tileType = TILE_TYPE.NONE;
+    use(wielder, tileDirX, tileDirY) {
+        if (isAWall(wielder.tilePosition.x + tileDirX, wielder.tilePosition.y + tileDirY)) {
+            Game.world.removeTile(Game.map[wielder.tilePosition.y + tileDirY][wielder.tilePosition.x + tileDirX].tile);
+            Game.map[wielder.tilePosition.y + tileDirY][wielder.tilePosition.x + tileDirX].tileType = TILE_TYPE.NONE;
             if (Game.stage === STAGE.DARK_TUNNEL) {
-                lightPlayerPosition(player);
-                lightPlayerPosition(otherPlayer(player));
-            } else lightPlayerPosition(player);
-            recalculateTileInDetectionGraph(player.tilePosition.x + tileDirX, player.tilePosition.y + tileDirY);
-            player.bump(tileDirX, tileDirY);
+                if (wielder.secondHand && wielder.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && wielder.secondHand.type === TOOL_TYPE.TORCH) {
+                    lightPlayerPosition(wielder);
+                } else if (!otherPlayer(wielder).dead && otherPlayer(wielder).secondHand && otherPlayer(wielder).secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && otherPlayer(wielder).secondHand.type === TOOL_TYPE.TORCH) {
+                    lightPlayerPosition(otherPlayer(wielder));
+                } else lightPlayerPosition(wielder)
+            } else lightPlayerPosition(wielder);
+            recalculateTileInDetectionGraph(wielder.tilePosition.x + tileDirX, wielder.tilePosition.y + tileDirY);
+            wielder.bump(tileDirX, tileDirY);
             return true;
         } else return false;
     }
