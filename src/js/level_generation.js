@@ -70,6 +70,9 @@ export function generateLevel() {
 
     //this will generate 2-3 chests.
     let chestRoomNumber = 4 - statueRoomsNumber;
+    if (Game.stage === STAGE.DARK_TUNNEL) {
+        chestRoomNumber = 3 - statueRoomsNumber
+    }
     //let chestRoomNumber = 7; //for tests
     let chestRoomIs = [];
     for (let i = 0; i < chestRoomNumber; ++i) {

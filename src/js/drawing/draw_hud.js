@@ -23,7 +23,6 @@ import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
 import {EQUIPMENT_TYPE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
-import {otherPlayer} from "../utils/basic_utils";
 
 export function drawHUD() {
     drawHealth();

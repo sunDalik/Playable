@@ -3,7 +3,7 @@ import {Enemy} from "./enemy"
 import {ENEMY_TYPE, RABBIT_TYPE} from "../../enums";
 import {getRelativelyEmptyDirections, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
-import {getPlayerOnTile, isAnyWall} from "../../map_checks";
+import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {FireHazard} from "../hazards/fire";
 import {PoisonHazard} from "../hazards/poison";
 import {ElectricBullet} from "./bullets/electric";
@@ -28,7 +28,8 @@ export class Rabbit extends Enemy {
     }
 
     afterMapGen() {
-        if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)) {
+        if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)
+            || isInanimate(this.tilePosition.x + 1, this.tilePosition.y)) {
             this.scale.x *= -1;
         }
     }

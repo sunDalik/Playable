@@ -40,7 +40,7 @@ export function isNotOutOfMap(tilePositionX, tilePositionY) {
 export function isEnemy(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
-        if (tileEntity != null && tileEntity.role === ROLE.ENEMY) {
+        if (tileEntity && tileEntity.role === ROLE.ENEMY) {
             return true
         }
     }
@@ -50,7 +50,7 @@ export function isEnemy(tilePositionX, tilePositionY) {
 export function isInanimate(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
-        if (tileEntity != null && tileEntity.role === ROLE.INANIMATE) {
+        if (tileEntity && tileEntity.role === ROLE.INANIMATE) {
             return true
         }
     }
@@ -90,7 +90,7 @@ export function isLit(tilePositionX, tilePositionY) {
 export function getPlayerOnTile(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
-        if (tileEntity != null && tileEntity.role === ROLE.PLAYER) return tileEntity;
+        if (tileEntity && tileEntity.role === ROLE.PLAYER) return tileEntity;
     }
     return null;
 }
@@ -98,7 +98,7 @@ export function getPlayerOnTile(tilePositionX, tilePositionY) {
 export function isObelisk(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
-        if (tileEntity != null && tileEntity.role === ROLE.INANIMATE && tileEntity.type === INANIMATE_TYPE.OBELISK) {
+        if (tileEntity && tileEntity.role === ROLE.INANIMATE && tileEntity.type === INANIMATE_TYPE.OBELISK) {
             return true
         }
     }

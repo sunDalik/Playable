@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
-import {isRelativelyEmpty, getPlayerOnTile, isAnyWall} from "../../map_checks";
+import {isRelativelyEmpty, getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 
 export class Roller extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/roller.png"].texture) {
@@ -22,7 +22,8 @@ export class Roller extends Enemy {
     }
 
     afterMapGen() {
-        if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)) {
+        if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)
+            || isInanimate(this.tilePosition.x + 1, this.tilePosition.y)) {
             this.direction = -1;
         }
     }

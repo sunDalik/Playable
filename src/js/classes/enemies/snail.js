@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {PoisonHazard} from "../hazards/poison";
-import {isRelativelyEmpty, getPlayerOnTile, isAnyWall} from "../../map_checks";
+import {isRelativelyEmpty, getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {getRandomInt} from "../../utils/random_utils";
 
 export class Snail extends Enemy {
@@ -18,7 +18,8 @@ export class Snail extends Enemy {
     }
 
     afterMapGen() {
-        if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)) {
+        if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)
+            || isInanimate(this.tilePosition.x + 1, this.tilePosition.y)) {
             this.scale.x *= -1;
         }
     }
