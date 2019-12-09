@@ -13,7 +13,7 @@ import {
     TOOL_TYPE,
     WEAPON_TYPE
 } from "../enums";
-import {centerCamera, centerCameraX, centerCameraY, redrawTiles} from "../camera";
+import {centerCamera, centerCameraX, centerCameraY} from "../camera";
 import {createHeartAnimation, rotate, shakeScreen} from "../animations";
 import {
     drawInteractionKeys,

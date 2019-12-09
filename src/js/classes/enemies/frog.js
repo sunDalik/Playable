@@ -3,7 +3,7 @@ import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {randomChoice} from "../../utils/random_utils";
 import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
-import {getPlayerOnTile, isNotAWall} from "../../map_checks";
+import {getPlayerOnTile, isAnyWall, isNotAWall} from "../../map_checks";
 import {PoisonHazard} from "../hazards/poison";
 
 export class Frog extends Enemy {
@@ -17,6 +17,12 @@ export class Frog extends Enemy {
         this.currentTurnDelay = 0;
         this.triggered = false;
         this.triggeredTile = null;
+    }
+
+    afterMapGen() {
+        if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)) {
+            this.scale.x *= -1;
+        }
     }
 
     fitToTile() {
