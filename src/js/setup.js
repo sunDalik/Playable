@@ -28,7 +28,8 @@ Game.resources = Game.app.loader.resources;
 loadAll(setup);
 
 function initApplication() {
-    const app = new PIXI.Application({resolution: 2});
+    PIXI.settings.RESOLUTION = 2;
+    const app = new PIXI.Application();
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
     app.renderer.autoDensity = true;

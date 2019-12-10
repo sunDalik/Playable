@@ -19,12 +19,12 @@
   },
   "homepage": "https://github.com/sunDalik/Playable#readme",
   "devDependencies": {
+    "pixi-filters": "^3.0.3",
     "rollup": "^1.26.5",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^5.1.2",
-    "typescript": "^3.7.2"
+    "rollup-plugin-terser": "^5.1.2"
   },
   "dependencies": {
     "pixi.js": "^5.1.5"

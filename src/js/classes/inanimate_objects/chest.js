@@ -1,9 +1,10 @@
 import {Game} from "../../game"
 import {FullTileElement} from "../tile_elements/full_tile_element"
-import {ROLE, INANIMATE_TYPE} from "../../enums";
+import {INANIMATE_TYPE, ROLE} from "../../enums";
 import {createFloatingItemAnimation} from "../../animations";
-import {swapEquipmentWithPlayer, removeEquipmentFromPlayer} from "../../game_logic";
+import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import {TileElement} from "../tile_elements/tile_element";
+import {ITEM_OUTLINE_FILTER} from "../../filters";
 
 export class Chest extends FullTileElement {
     constructor(tilePositionX, tilePositionY, contents) {
@@ -18,6 +19,8 @@ export class Chest extends FullTileElement {
         this.contentsSprite.height = Game.TILESIZE * 0.9;
         this.contentsSprite.visible = false;
         this.contentsSprite.zIndex = 3;
+        //this.contentsSprite.filters = [ITEM_OUTLINE_FILTER];
+        //this.contentsSprite.filters[0].resolution = 2;
         Game.world.addChild(this.contentsSprite);
         Game.tiles.push(this.contentsSprite);
     }

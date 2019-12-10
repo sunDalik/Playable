@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import {FullTileElement} from "../tile_elements/full_tile_element";
-import {ROLE, INANIMATE_TYPE, MAGIC_ALIGNMENT} from "../../enums";
+import {INANIMATE_TYPE, MAGIC_ALIGNMENT, ROLE} from "../../enums";
 import {createFloatingItemAnimation} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
 import {removeItemFromPool} from "../../game_changer";
