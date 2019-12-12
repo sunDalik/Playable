@@ -54,6 +54,8 @@ Game.LONG_SHAKE_TIME = 12;
 Game.SHAKE_AMPLITUDE = 50;
 Game.SHORT_SHAKE_AMPLITUDE = 35;
 Game.shakeAnimation = null;
+Game.itemHelpAnimation = null;
+Game.itemHelp = null;
 
 Game.playerDetectionGraph = null;
 Game.levelGraph = null;

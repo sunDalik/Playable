@@ -2,6 +2,8 @@ import {Game} from "./game"
 import {removeObjectFromArray} from "./utils/basic_utils"
 import * as PIXI from "pixi.js"
 import {randomChoice} from "./utils/random_utils";
+import {ITEM_OUTLINE_FILTER} from "./filters";
+import {HUDTextStyle, HUDTextStyleTitle} from "./drawing/draw_constants";
 
 export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false) {
     const tileX1 = player.tilePosition.x;
@@ -209,4 +211,62 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
 
 export function createKissHeartAnimation(positionX, positionY) {
     createHeartAnimation(positionX, positionY, Game.TILESIZE / 2.5, 1.5, 50)
+}
+
+export function showHelpBox(item) {
+    if (Game.itemHelpAnimation) {
+        Game.app.ticker.remove(Game.itemHelpAnimation);
+        Game.itemHelpAnimation = null;
+    }
+    if (Game.itemHelp) {
+        Game.HUD.removeChild(Game.itemHelp);
+        Game.itemHelp = null;
+    }
+
+    Game.itemHelp = new PIXI.Graphics();
+    Game.itemHelp.beginFill(0x000000);
+    Game.itemHelp.lineStyle(3, 0xFFFFFF, 0.7);
+    Game.itemHelp.drawRoundedRect(0, 0, 600, 100, 6);
+    const itemSprite = new PIXI.Sprite(item.texture);
+    itemSprite.filters = [ITEM_OUTLINE_FILTER];
+    itemSprite.filters[0].resolution = 2;
+    itemSprite.width = itemSprite.height = 60;
+    const itemOffsetX = 40;
+    const itemOffsetY = itemSprite.height / 3.5;
+    itemSprite.position.set(40, itemOffsetY);
+    Game.itemHelp.addChild(itemSprite);
+    const textOffsetX = itemOffsetX + itemSprite.width;
+    const nameText = new PIXI.Text(item.name, HUDTextStyleTitle);
+    nameText.fontSize += 3;
+    nameText.position.set(textOffsetX + (Game.itemHelp.width - textOffsetX) / 2 - nameText.width / 2, itemOffsetY - 4);
+    Game.itemHelp.addChild(nameText);
+    const descriptionText = new PIXI.Text(item.description, HUDTextStyle);
+    descriptionText.position.set(textOffsetX + (Game.itemHelp.width - textOffsetX) / 2 - descriptionText.width / 2,
+        nameText.position.y + nameText.height + 10);
+    Game.itemHelp.addChild(descriptionText);
+
+    Game.HUD.addChild(Game.itemHelp);
+    Game.itemHelp.position.set(Game.app.renderer.screen.width / 2 - Game.itemHelp.width / 2, Game.app.renderer.screen.height);
+    Game.itemHelp.zIndex = 100;
+
+    const slideTime = 14;
+    const slideStep = Game.itemHelp.height / slideTime;
+    const stayTime = 180;
+    let counter = 0;
+
+    const animation = () => {
+        if (counter < slideTime) {
+            Game.itemHelp.position.y -= slideStep;
+        } else if (counter >= slideTime + stayTime && counter < slideTime + stayTime + slideTime) {
+            Game.itemHelp.position.y += slideStep;
+        }
+        counter++;
+        if (counter >= slideTime + stayTime + slideTime) {
+            Game.app.ticker.remove(animation);
+            Game.HUD.removeChild(Game.itemHelp);
+        }
+    };
+
+    Game.itemHelpAnimation = animation;
+    Game.app.ticker.add(animation);
 }

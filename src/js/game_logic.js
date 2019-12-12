@@ -4,7 +4,7 @@ import {initializeLevel} from "./setup"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE} from "./enums"
 import {otherPlayer, setTickTimeout} from "./utils/basic_utils";
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
-import {createKissHeartAnimation} from "./animations";
+import {createKissHeartAnimation, showHelpBox} from "./animations";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -166,7 +166,7 @@ export function kiss(healAmount = 1) {
         Game.player.position.y + (Game.player2.position.y - Game.player.position.y) / 2);
 }
 
-export function swapEquipmentWithPlayer(player, equipment) {
+export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
     if (!equipment) return null;
     let slot;
     switch (equipment.equipmentType) {
@@ -200,6 +200,7 @@ export function swapEquipmentWithPlayer(player, equipment) {
         if (eq && eq.onEquipmentReceive) eq.onEquipmentReceive(player, equipment);
     }
     redrawSlotContents(player, slot);
+    if (showHelp) showHelpBox(player[slot]);
     return swappedEquipment;
 }
 

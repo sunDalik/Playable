@@ -14,7 +14,7 @@ import {
     WEAPON_TYPE
 } from "../enums";
 import {centerCamera, centerCameraX, centerCameraY} from "../camera";
-import {createHeartAnimation, rotate, shakeScreen} from "../animations";
+import {createHeartAnimation, rotate, shakeScreen, showHelpBox} from "../animations";
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
@@ -414,7 +414,7 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    giveNewMagic(magic) {
+    giveNewMagic(magic, showHelp = true) {
         if (this.magic1 === null) this.magic1 = magic;
         else if (this.magic2 === null) this.magic2 = magic;
         else if (this.magic3 === null) this.magic3 = magic;
@@ -426,6 +426,7 @@ export class Player extends AnimatedTileElement {
             }
         }
         redrawSlotContents(this, this.getPropertyNameOfItem(magic));
+        if (showHelp) showHelpBox(magic);
     }
 
     applyNextLevelMethods() {

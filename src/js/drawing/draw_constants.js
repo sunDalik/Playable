@@ -17,6 +17,16 @@ export const HUDTextStyle = {
     fontWeight: "bold",
     stroke: 0x333333,
     strokeThickness: 2,
+    align: "center"
+};
+
+export const HUDTextStyleTitle = {
+    fontSize: HUDFontSize + 4,
+    fill: 0xffffff,
+    fontWeight: "bold",
+    stroke: 0x333333,
+    strokeThickness: 2,
+    align: "center"
 };
 
 export const HUDKeyBindFontsize = 13;
