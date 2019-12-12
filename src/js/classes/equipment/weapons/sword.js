@@ -9,6 +9,8 @@ export class Sword {
         this.type = WEAPON_TYPE.SWORD;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
+        this.name = "Sword";
+        this.description = "Solid choice";
     }
 
     attack(wielder, tileDirX, tileDirY) {

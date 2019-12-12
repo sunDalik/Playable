@@ -10,6 +10,8 @@ export class StunningShield extends Shield {
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
         this.maxUses = 6;
         this.uses = this.maxUses;
+        this.name = "Stunning Shield";
+        this.description = "Activate to block all damage and stun your opponents";
     }
 
     onBlock(source, wielder, directHit) {

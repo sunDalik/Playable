@@ -7,5 +7,7 @@ export class DamagingBoots {
         this.type = FOOTWEAR_TYPE.DAMAGING;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
         this.atk = 0.5;
+        this.name = "Damaging Boots";
+        this.description = "+0.5 attack";
     }
 }

@@ -8,6 +8,8 @@ export class WizardHat {
         this.type = HEAD_TYPE.WIZARD_HAT;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.magUses = 1;
+        this.name = "Wizard Hat";
+        this.description = "+1 magic use";
     }
 
     onWear(player) {

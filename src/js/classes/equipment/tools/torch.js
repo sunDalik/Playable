@@ -7,6 +7,8 @@ export class Torch {
         this.type = TOOL_TYPE.TORCH;
         this.equipmentType = EQUIPMENT_TYPE.TOOL;
         this.lightSpread = 3;
+        this.name = "Torch";
+        this.description = "You are safe now";
     }
 
     use() {

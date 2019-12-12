@@ -6,6 +6,8 @@ export class AdventurerBoots {
         this.texture = Game.resources["src/images/footwear/adventurer.png"].texture;
         this.type = FOOTWEAR_TYPE.ADVENTURER;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
+        this.name = "Adventurer Boots";
+        this.description = "Immunity to poison";
     }
 
     onWear(wielder) {

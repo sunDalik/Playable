@@ -12,6 +12,8 @@ export class Necromancy {
         this.atk = 0;
         this.maxUses = 1;
         this.uses = this.maxUses;
+        this.name = "Necromancy";
+        this.description = "Return your beloved";
     }
 
     cast(wielder) {

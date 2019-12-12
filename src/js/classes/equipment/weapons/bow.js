@@ -9,6 +9,8 @@ export class Bow {
         this.type = WEAPON_TYPE.BOW;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 0.75;
+        this.name = "Bow";
+        this.description = "Long-range weak attacks";
     }
 
     attack(wielder, tileDirX, tileDirY) {

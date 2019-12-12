@@ -17,6 +17,8 @@ export class BookOfFlames {
         this.uses = this.maxUses;
         this.concentrationLimit = 3;
         this.concentration = 0;
+        this.name = "Book of Flames";
+        this.description = "Magical wonder";
     }
 
     attack(wielder, tileDirX, tileDirY) {

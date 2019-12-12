@@ -14,6 +14,8 @@ export class Spikes {
         this.friendlyFire = 1;
         this.maxUses = 5;
         this.uses = this.maxUses;
+        this.name = "Spikes";
+        this.description = "Wield with care";
     }
 
     cast(wielder) {

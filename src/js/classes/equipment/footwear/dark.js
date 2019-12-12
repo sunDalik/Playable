@@ -6,6 +6,8 @@ export class DarkBoots {
         this.texture = Game.resources["src/images/footwear/dark.png"].texture;
         this.type = FOOTWEAR_TYPE.DARK;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
+        this.name = "Dark Boots";
+        this.description = "Turn hazards to your will...";
     }
 
     onWear(wielder) {

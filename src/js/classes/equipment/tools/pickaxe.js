@@ -12,6 +12,8 @@ export class Pickaxe {
         this.type = WEAPON_TYPE.PICKAXE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 0.75;
+        this.name = "Pickaxe";
+        this.description = "Dig walls";
     }
 
     attack(wielder, tileDirX, tileDirY) {

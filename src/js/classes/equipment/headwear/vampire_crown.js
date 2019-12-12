@@ -9,6 +9,8 @@ export class VampireCrown {
         this.killsNeeded = 10;
         this.killsMade = 0;
         this.healAmount = 0.5;
+        this.name = "Vampire Crown";
+        this.description = "Kills heal";
     }
 
     onKill(player) {

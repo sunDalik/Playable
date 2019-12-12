@@ -13,6 +13,8 @@ export class AbyssalSpit {
         this.atk = 0;
         this.maxUses = 5;
         this.uses = this.maxUses;
+        this.name = "Abyssal Spit";
+        this.description = "They get what they deserve";
     }
 
     cast(wielder) {

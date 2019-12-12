@@ -9,6 +9,8 @@ export class WizardRobe {
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.magUses = 1;
         this.magAtk = 1;
+        this.name = "Wizard Robe";
+        this.description = "+1 magic use, +1 magic attack";
     }
 
     onWear(player) {

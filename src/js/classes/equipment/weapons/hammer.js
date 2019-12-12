@@ -9,6 +9,8 @@ export class Hammer {
         this.type = WEAPON_TYPE.HAMMER;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
+        this.name = "Hammer";
+        this.description = "Stuns enemies";
     }
 
     attack(wielder, tileDirX, tileDirY) {

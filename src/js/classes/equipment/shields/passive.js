@@ -12,6 +12,8 @@ export class PassiveShield extends Shield {
         this.maxUses = 5;
         this.uses = this.maxUses;
         this.usedOnThisTurn = false;
+        this.name = "Passive Shield";
+        this.description = "Passively blocks damage";
     }
 
     activate() {

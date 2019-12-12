@@ -11,6 +11,8 @@ export class SpikyShield extends Shield {
         this.shieldAtk = 1;
         this.maxUses = 6;
         this.uses = this.maxUses;
+        this.name = "Spiky Shield";
+        this.description = "Activate to block all damage and hurt your opponents";
     }
 
     onBlock(source, wielder, directHit) {

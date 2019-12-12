@@ -11,7 +11,9 @@ export class NinjaKnife {
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.SLIDE_ANIMATION_TIME = 4;
         this.FINISH_SLIDE_TIME = 2;
-        this.atk = 1.25 //maybe I should actually lower it?
+        this.atk = 1.25; //maybe I should actually lower it?
+        this.name = "Ninja Knife";
+        this.description = "Kill with style";
     }
 
     attack(wielder, tileDirX, tileDirY) {

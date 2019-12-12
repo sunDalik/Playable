@@ -11,6 +11,8 @@ export class Scythe {
         this.type = WEAPON_TYPE.SCYTHE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
+        this.name = "Scythe";
+        this.description = "Death to them all";
     }
 
     attack(wielder, tileDirX, tileDirY) {

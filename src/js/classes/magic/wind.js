@@ -13,6 +13,8 @@ export class Wind {
         this.slideTime = 5;
         this.maxUses = 5;
         this.uses = this.maxUses;
+        this.name = "Wind";
+        this.description = "Push everybody away from you";
     }
 
     cast(wielder) {

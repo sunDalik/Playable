@@ -8,5 +8,7 @@ export class ElectricArmor {
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.def = 0.25;
         this.atk = 0.25;
+        this.name = "Electric Armor";
+        this.description = "+0.25 attack, +0.25 defense\nSome actions now become free";
     }
 }

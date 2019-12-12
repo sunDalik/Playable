@@ -8,6 +8,8 @@ export class Wings {
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.def = 0;
         this.dodgeChance = 0.5;
+        this.name = "Wings";
+        this.description = "50% to dodge any attack.\nImmunity to hazards";
     }
 
     onWear(wielder) {

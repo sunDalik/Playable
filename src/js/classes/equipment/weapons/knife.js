@@ -9,6 +9,8 @@ export class Knife {
         this.type = WEAPON_TYPE.KNIFE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
+        this.name = "Knife";
+        this.description = "Basic weapon";
     }
 
     attack(wielder, tileDirX, tileDirY) {

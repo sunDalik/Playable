@@ -10,6 +10,8 @@ export class MaidenDagger {
         this.type = WEAPON_TYPE.MAIDEN_DAGGER;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
+        this.name = "Maiden's Dagger";
+        this.description = "I hear weeping...";
     }
 
     onWear(player) {

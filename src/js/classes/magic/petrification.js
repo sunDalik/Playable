@@ -10,12 +10,14 @@ export class Petrification {
         this.atk = 0;
         this.maxUses = 4;
         this.uses = this.maxUses;
+        this.name = "Petrification";
+        this.description = "Petrify all enemies";
     }
 
     cast(wielder) {
         if (this.uses <= 0) return false;
         for (const enemy of Game.enemies) {
-            if (enemy.visible) enemy.stun += 5;
+            if (enemy.visible) enemy.stun += 8;
         }
         this.uses--;
         return true;

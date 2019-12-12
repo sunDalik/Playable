@@ -17,6 +17,8 @@ export class Fireball {
         this.multiplierDecreaseDelay = 2;
         this.maxUses = 3;
         this.uses = this.maxUses;
+        this.name = "Fireball";
+        this.description = "It emanates power";
     }
 
     cast(wielder) {

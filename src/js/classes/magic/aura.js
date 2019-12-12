@@ -14,6 +14,8 @@ export class Aura {
         this.healAmount = 1;
         this.maxUses = 3;
         this.uses = this.maxUses;
+        this.name = "Aura";
+        this.description = "Heal and enlighten";
     }
 
     cast(wielder) {

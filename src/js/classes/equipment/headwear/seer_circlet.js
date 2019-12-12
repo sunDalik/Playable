@@ -8,6 +8,8 @@ export class SeerCirclet {
         this.texture = Game.resources["src/images/headwear/seer_circlet.png"].texture;
         this.type = HEAD_TYPE.SEER_CIRCLET;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
+        this.name = "Seer Circlet";
+        this.description = "See your future";
     }
 
     onWear() {
