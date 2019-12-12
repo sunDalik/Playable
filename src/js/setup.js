@@ -6,7 +6,7 @@ import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
 import * as camera from "./camera";
 import {redrawTiles} from "./camera";
-import {STAGE, TILE_TYPE} from "./enums";
+import {STAGE} from "./enums";
 import {generateLevel, getLevelPlayerGraph} from "./level_generation";
 import {calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";

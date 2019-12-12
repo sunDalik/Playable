@@ -5,6 +5,7 @@ import {lightPlayerPosition} from "../../../drawing/lighting";
 import {recalculateTileInDetectionGraph} from "../../../map_generation";
 import {otherPlayer} from "../../../utils/basic_utils";
 import {createPlayerWeaponAnimation} from "../../../animations";
+import {redrawMiniMapPixel} from "../../../drawing/draw_hud";
 
 export class Pickaxe {
     constructor() {
@@ -39,6 +40,7 @@ export class Pickaxe {
                 } else lightPlayerPosition(wielder)
             } else lightPlayerPosition(wielder);
             recalculateTileInDetectionGraph(wielder.tilePosition.x + tileDirX, wielder.tilePosition.y + tileDirY);
+            redrawMiniMapPixel(wielder.tilePosition.x + tileDirX, wielder.tilePosition.y + tileDirY);
             if (wielder.weapon && wielder.weapon.equipmentType === this.equipmentType && wielder.weapon.type === this.type
                 && wielder.secondHand && wielder.secondHand.equipmentType === this.equipmentType && wielder.secondHand.type === this.type) {
                 wielder.step(tileDirX, tileDirY);
