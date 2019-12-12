@@ -13,6 +13,12 @@ HUD.slots1Contents = generateSlotsContentsContainer();
 HUD.slots2Contents = generateSlotsContentsContainer();
 HUD.energy = new PIXI.Container();
 
+HUD.minimap = new PIXI.Container();
+HUD.minimap.bg = new PIXI.Graphics();
+HUD.minimap.bg.beginFill(0x000000, 0.2);
+HUD.minimap.bg.drawRect(0, 0, 1, 1);
+HUD.minimap.addChild(HUD.minimap.bg);
+
 HUD.addChild(HUD.hearts1);
 HUD.addChild(HUD.hearts2);
 HUD.addChild(HUD.slots1);
@@ -22,6 +28,7 @@ HUD.addChild(HUD.interactionGuide);
 HUD.addChild(HUD.stats1);
 HUD.addChild(HUD.stats2);
 HUD.addChild(HUD.energy);
+HUD.addChild(HUD.minimap);
 
 const keys = Object.keys(HUD.slots1Contents);
 for (let i = 0; i < keys.length; i++) {

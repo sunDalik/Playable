@@ -12,6 +12,7 @@ import {
     HUDKeyBindSize,
     HUDKeyBindTextStyle,
     HUDTextStyle,
+    miniMapPixelSize,
     slotBorderOffsetX,
     slotContentSizeMargin,
     slotsColOffset,
@@ -22,7 +23,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
+import {EQUIPMENT_TYPE, MAGIC_TYPE, SHIELD_TYPE, TILE_TYPE} from "../enums";
 
 export function drawHUD() {
     drawHealth();
@@ -392,4 +393,47 @@ export function redrawEnergy() {
     removeAllChildrenFromContainer(container);
     const text = new PIXI.Text(`LE = ${Game.lightEnergy}\nDE = ${Game.darkEnergy}`, HUDTextStyle);
     container.addChild(text);
+}
+
+export function drawMiniMap() {
+    for (let i = 0; i < Game.minimap.length; i++) {
+        for (let j = 0; j < Game.minimap[0].length; j++) {
+            Game.HUD.minimap.removeChild(Game.minimap[i][j]);
+        }
+    }
+
+    Game.minimap = [];
+    for (let i = 0; i < Game.map.length; i++) {
+        Game.minimap[i] = [];
+        for (let j = 0; j < Game.map[0].length; j++) {
+            redrawMiniMapPixel(j, i);
+        }
+    }
+    const miniMapWidth = Game.map[0].length * miniMapPixelSize;
+    const miniMapHeight = Game.map.length * miniMapPixelSize;
+    Game.HUD.minimap.bg.width = miniMapWidth;
+    Game.HUD.minimap.bg.height = miniMapHeight;
+    Game.HUD.minimap.position.set(Game.app.renderer.screen.width - miniMapWidth, Game.app.renderer.screen.height - miniMapHeight)
+}
+
+export function redrawMiniMapPixel(x, y) {
+    if (Game.minimap[y][x]) {
+        Game.HUD.minimap.removeChild(Game.minimap[y][x]);
+    }
+    const pixel = new PIXI.Graphics();
+    if (Game.map[y][x].tileType === TILE_TYPE.WALL) {
+        pixel.beginFill(0x7a5916);
+    } else if (Game.map[y][x].tileType === TILE_TYPE.SUPER_WALL) {
+        pixel.beginFill(0x757167);
+    } else if (Game.map[y][x].tileType === TILE_TYPE.VOID) {
+        pixel.beginFill(0x000000);
+    } else if (Game.map[y][x].entity === Game.player || Game.map[y][x].entity === Game.player2) {
+        pixel.beginFill(0x0000ff);
+    } else pixel.beginFill(0xffffff);
+    pixel.drawRect(miniMapPixelSize * x, miniMapPixelSize * y, miniMapPixelSize, miniMapPixelSize);
+    Game.HUD.minimap.addChild(pixel);
+    Game.minimap[y][x] = pixel;
+    if (!Game.map[y][x].lit) {
+        pixel.visible = false;
+    }
 }

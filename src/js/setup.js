@@ -6,13 +6,13 @@ import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
 import * as camera from "./camera";
 import {redrawTiles} from "./camera";
-import {STAGE} from "./enums";
+import {STAGE, TILE_TYPE} from "./enums";
 import {generateLevel, getLevelPlayerGraph} from "./level_generation";
 import {calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
-import {drawHUD, drawInteractionKeys, drawMovementKeyBindings} from "./drawing/draw_hud";
+import {drawHUD, drawInteractionKeys, drawMiniMap, drawMovementKeyBindings} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
@@ -68,6 +68,7 @@ function setup() {
     window.addEventListener("resize", () => {
         drawHUD();
         camera.centerCamera();
+        drawMiniMap();
     });
 
     Game.stage = STAGE.FLOODED_CAVE;
@@ -84,10 +85,9 @@ export function initializeLevel() {
     Game.level = level;
     calculateDetectionGraph(Game.map);
     Game.levelGraph = getLevelPlayerGraph(level);
-
     if (!Game.player.dead) {
         if (!Game.player.carried) {
-            Game.player.tilePosition.set(Game.startX, Game.startY);
+            Game.player.tilePosition.set(Game.startPos.x, Game.startPos.y);
             Game.player.place();
             Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
         }
@@ -100,10 +100,10 @@ export function initializeLevel() {
     if (!Game.player2.dead) {
         if (!Game.player2.carried) {
             if (Game.player.carried)
-                Game.player2.tilePosition.set(Game.startX, Game.startY);
+                Game.player2.tilePosition.set(Game.startPos.x, Game.startPos.y);
             else {
                 if (Game.player.dead) {
-                    Game.player.tilePosition.set(Game.startX, Game.startY);
+                    Game.player2.tilePosition.set(Game.startPos.x, Game.startPos.y);
                 } else {
                     const startPlace = randomChoice(get8DirectionsWithoutItems(Game.player));
                     Game.player2.tilePosition.set(Game.player.tilePosition.x + startPlace.x, Game.player.tilePosition.y + startPlace.y);
@@ -128,6 +128,7 @@ export function initializeLevel() {
         if (enemy.afterMapGen) enemy.afterMapGen();
     }
     drawOther();
+    drawMiniMap();
     createDarkness();
     if (!Game.player.dead) lightPlayerPosition(Game.player);
     if (!Game.player2.dead) lightPlayerPosition(Game.player2);
@@ -153,7 +154,7 @@ export function initializeLevel() {
 
 function mapSetFullView() {
     //for testing purposes ONLY
-    Game.TILESIZE = 15;
+    Game.TILESIZE = 10;
     redrawTiles();
     for (let i = 0; i < Game.darkTiles.length; i++) {
         for (let j = 0; j < Game.darkTiles[0].length; j++) {

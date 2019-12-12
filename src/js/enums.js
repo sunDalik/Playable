@@ -76,6 +76,7 @@ export const MAP_SYMBOLS = Object.freeze({
     ENTRY: "entry",
     PATH: "path",
     EXIT: "exit",
+    START: "start",
     ROLLER: "r",
     ROLLER_RED: "rb",
     STAR: "s",

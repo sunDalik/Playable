@@ -9,6 +9,7 @@ export const slotsColOffset = 10;
 export const slotContentSizeMargin = 15;
 export const slotBorderOffsetX = 20;
 export const statsOffsetX = 15;
+export const miniMapPixelSize = 5;
 
 export const HUDFontSize = 16;
 export const HUDTextStyle = {

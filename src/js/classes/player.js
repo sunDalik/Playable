@@ -19,7 +19,7 @@ import {
     drawInteractionKeys,
     drawMovementKeyBindings,
     drawStatsForPlayer,
-    redrawHealthForPlayer,
+    redrawHealthForPlayer, redrawMiniMapPixel,
     redrawSecondHand,
     redrawSlotContents,
     redrawSlotContentsForPlayer,
@@ -621,6 +621,7 @@ export class Player extends AnimatedTileElement {
         } else if (this === Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity) {
             Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = null;
         }
+        redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
     }
 
     placeOnMap() {
@@ -656,5 +657,6 @@ export class Player extends AnimatedTileElement {
                 }
             }
         }
+        redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
     }
 }

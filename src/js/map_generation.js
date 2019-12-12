@@ -60,6 +60,8 @@ export function generateMap(level) {
             } else if (map[i][j] === MAP_SYMBOLS.EXIT) {
                 mapCell.tileType = TILE_TYPE.EXIT;
                 mapCell.tile = new FullTileElement(Game.resources["src/images/exit.png"].texture, j, i);
+            } else if (map[i][j] === MAP_SYMBOLS.START) {
+                Game.startPos = {x: j, y: i};
             }
 
             if (map[i][j] === MAP_SYMBOLS.ROLLER) mapCell.entity = new Roller(j, i);

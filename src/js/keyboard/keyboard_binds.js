@@ -1,6 +1,6 @@
 import {Game} from "../game";
 import {keyboard} from "./keyboard_handler";
-import {carryPlayer, playerTurn, switchPlayers} from "../game_logic";
+import {carryPlayer, gotoNextLevel, playerTurn, switchPlayers} from "../game_logic";
 import * as PIXI from "pixi.js"
 
 export function bindKeys() {
@@ -99,8 +99,6 @@ function bindMagic(player, {oneCode, twoCode, threeCode, fourCode}) {
 
     return {oneKey: oneKey, twoKey: twoKey, threeKey: threeKey, fourKey: fourKey}
 }
-
-
 
 
 /*

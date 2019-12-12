@@ -247,7 +247,7 @@ export function showHelpBox(item) {
 
     Game.HUD.addChild(Game.itemHelp);
     Game.itemHelp.position.set(Game.app.renderer.screen.width / 2 - Game.itemHelp.width / 2, Game.app.renderer.screen.height);
-    Game.itemHelp.zIndex = 100;
+    Game.itemHelp.zIndex = 1;
 
     const slideTime = 14;
     const slideStep = Game.itemHelp.height / slideTime;

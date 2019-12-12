@@ -254,8 +254,9 @@ export function generateLevel() {
         const startX = previousX + randomOffsetX;
         const startY = previousY + randomOffsetY;
         if (r === startRoomI) {
-            Game.startX = startX + Math.floor((startRoomWidth - 2) / 2) + 1;
-            Game.startY = startY + Math.floor((startRoomHeight - 2) / 2) + 1;
+            const startPositionX = Math.floor((startRoomWidth - 2) / 2) + 1;
+            const startPositionY = Math.floor((startRoomHeight - 2) / 2) + 1;
+            currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;
             if (Game.stage === STAGE.DARK_TUNNEL) {
                 let torchX = 1;
                 let torchY = 2;
@@ -269,8 +270,9 @@ export function generateLevel() {
             }
         } else if (r === endingRoomI) {
             currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = MAP_SYMBOLS.EXIT;
-            //Game.startX = startX + Math.floor(endingRoomWidth / 2) - 2; //for tests
-            //Game.startY = startY + Math.floor(endingRoomHeight / 2) - 2;
+            /*const startPositionX = startX + Math.floor(endingRoomWidth / 2) - 2; //for tests
+            const startPositionY = startY + Math.floor(endingRoomHeight / 2) - 2;
+            currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;*/
         }
         mergeRoomIntoLevel(level, currentRoom, startX, startY);
 
@@ -351,11 +353,10 @@ export function generateLevel() {
     }
     outlinePathsWithWalls(level);
     level = expandLevel(level, 2, 2);
-    Game.startX += 2;
-    Game.startY += 2;
     connectDiagonalPaths(level);
     outlineWallsWithWalls(level);
     outlineWallsWithSuperWalls(level);
+    removeGarbage(level);
     return level;
 }
 
@@ -578,4 +579,51 @@ function createRoom(width, height, entries) {
         }
     }
     return room;
+}
+
+function removeGarbage(level) {
+    removeRight();
+    removeBottom();
+    removeTop();
+    removeLeft();
+
+    function removeRight() {
+        for (let j = level[0].length - 1; j > 0; j--) {
+            for (let i = 0; i < level.length; i++) {
+                if (level[i][j] !== MAP_SYMBOLS.VOID) return;
+            }
+            for (let i = 0; i < level.length; i++) {
+                level[i].pop();
+            }
+        }
+    }
+
+    function removeBottom() {
+        for (let i = level.length - 1; i > 0; i--) {
+            for (let j = 0; j < level[0].length; j++) {
+                if (level[i][j] !== MAP_SYMBOLS.VOID) return;
+            }
+            level.pop();
+        }
+    }
+
+    function removeTop() {
+        for (let i = 0; i < level.length; i++) {
+            for (let j = 0; j < level[0].length; j++) {
+                if (level[i][j] !== MAP_SYMBOLS.VOID) return;
+            }
+            level.shift();
+        }
+    }
+
+    function removeLeft() {
+        for (let j = 0; j < level[0].length; j++) {
+            for (let i = 0; i < level.length; i++) {
+                if (level[i][j] !== MAP_SYMBOLS.VOID) return;
+            }
+            for (let i = 0; i < level.length; i++) {
+                level[i].shift();
+            }
+        }
+    }
 }

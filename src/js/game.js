@@ -34,8 +34,7 @@ Game.BGColor = 0xffffff;
 Game.player = null;
 Game.player2 = null;
 Game.BOTH_PLAYERS = {};
-Game.startX = 0;
-Game.startY = 0;
+Game.startPos = {x: 0, y: 0};
 Game.primaryPlayer = null;
 Game.lastPlayerMoved = Game.player;
 //Game.playerMoved = null;
@@ -56,6 +55,8 @@ Game.SHORT_SHAKE_AMPLITUDE = 35;
 Game.shakeAnimation = null;
 Game.itemHelpAnimation = null;
 Game.itemHelp = null;
+
+Game.minimap = [];
 
 Game.playerDetectionGraph = null;
 Game.levelGraph = null;

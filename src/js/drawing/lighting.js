@@ -128,6 +128,8 @@ export function lightTile(tileX, tileY) {
     if (Game.map[tileY][tileX].item) {
         Game.map[tileY][tileX].item.visible = true;
     }
+
+    Game.minimap[tileY][tileX].visible = true;
 }
 
 export function darkenTile(tileX, tileY) {
@@ -149,6 +151,8 @@ export function darkenTile(tileX, tileY) {
     if (Game.map[tileY][tileX].item) {
         Game.map[tileY][tileX].item.visible = false;
     }
+
+    Game.minimap[tileY][tileX].visible = false;
 }
 
 //const torchLightSprite = new PIXI.Sprite(PIXI.Texture.WHITE);
