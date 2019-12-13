@@ -4,6 +4,7 @@ import * as PIXI from "pixi.js"
 import {randomChoice} from "./utils/random_utils";
 import {ITEM_OUTLINE_FILTER} from "./filters";
 import {HUDTextStyle, HUDTextStyleTitle} from "./drawing/draw_constants";
+import {HUD} from "./drawing/hud_object";
 
 export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false) {
     const tileX1 = player.tilePosition.x;
@@ -219,7 +220,7 @@ export function showHelpBox(item) {
         Game.itemHelpAnimation = null;
     }
     if (Game.itemHelp) {
-        Game.HUD.removeChild(Game.itemHelp);
+        HUD.removeChild(Game.itemHelp);
         Game.itemHelp = null;
     }
 
@@ -245,7 +246,7 @@ export function showHelpBox(item) {
         nameText.position.y + nameText.height + 10);
     Game.itemHelp.addChild(descriptionText);
 
-    Game.HUD.addChild(Game.itemHelp);
+    HUD.addChild(Game.itemHelp);
     Game.itemHelp.position.set(Game.app.renderer.screen.width / 2 - Game.itemHelp.width / 2, Game.app.renderer.screen.height);
     Game.itemHelp.zIndex = 1;
 
@@ -263,7 +264,7 @@ export function showHelpBox(item) {
         counter++;
         if (counter >= slideTime + stayTime + slideTime) {
             Game.app.ticker.remove(animation);
-            Game.HUD.removeChild(Game.itemHelp);
+            HUD.removeChild(Game.itemHelp);
         }
     };
 

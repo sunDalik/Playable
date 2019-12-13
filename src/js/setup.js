@@ -45,9 +45,7 @@ window.addEventListener("resize", () => {
 function setup() {
     Game.world = new World();
     Game.app.stage.addChild(Game.world);
-
-    Game.HUD = HUD;
-    Game.app.stage.addChild(Game.HUD);
+    Game.app.stage.addChild(HUD);
     Game.world.sortableChildren = true;
     Game.app.stage.sortableChildren = true;
 

@@ -404,7 +404,7 @@ export function redrawEnergy() {
 export function drawMiniMap() {
     for (let i = 0; i < Game.minimap.length; i++) {
         for (let j = 0; j < Game.minimap[0].length; j++) {
-            Game.HUD.minimap.removeChild(Game.minimap[i][j]);
+            HUD.minimap.removeChild(Game.minimap[i][j]);
         }
     }
 
@@ -417,14 +417,18 @@ export function drawMiniMap() {
     }
     const miniMapWidth = Game.map[0].length * miniMapPixelSize;
     const miniMapHeight = Game.map.length * miniMapPixelSize;
-    Game.HUD.minimap.bg.width = miniMapWidth;
-    Game.HUD.minimap.bg.height = miniMapHeight;
-    Game.HUD.minimap.position.set(Game.app.renderer.screen.width - miniMapWidth, Game.app.renderer.screen.height - miniMapHeight)
+    HUD.minimap.bg.width = miniMapWidth;
+    HUD.minimap.bg.height = miniMapHeight;
+    //const outline = new PIXI.Graphics();
+    //outline.lineStyle(3, 0xffffff, 0.8);
+    //outline.drawRect(0, 0, miniMapWidth, miniMapHeight);
+    //HUD.minimap.addChild(outline);
+    HUD.minimap.position.set(Game.app.renderer.screen.width - miniMapWidth - slotBorderOffsetX, Game.app.renderer.screen.height - miniMapHeight)
 }
 
 export function redrawMiniMapPixel(x, y) {
     if (Game.minimap[y][x]) {
-        Game.HUD.minimap.removeChild(Game.minimap[y][x]);
+        HUD.minimap.removeChild(Game.minimap[y][x]);
     }
     const pixel = new PIXI.Graphics();
     if (Game.map[y][x].tileType === TILE_TYPE.WALL) {
@@ -437,7 +441,7 @@ export function redrawMiniMapPixel(x, y) {
         pixel.beginFill(0x0000ff);
     } else pixel.beginFill(0xffffff);
     pixel.drawRect(miniMapPixelSize * x, miniMapPixelSize * y, miniMapPixelSize, miniMapPixelSize);
-    Game.HUD.minimap.addChild(pixel);
+    HUD.minimap.addChild(pixel);
     Game.minimap[y][x] = pixel;
     if (!Game.map[y][x].lit) {
         pixel.visible = false;
