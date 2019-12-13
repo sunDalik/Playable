@@ -11,10 +11,10 @@ import {
     HUDGuideOffsetY,
     HUDKeyBindSize,
     HUDKeyBindTextStyle,
-    HUDTextStyle,
+    HUDTextStyle, HUDTextStyleSlot,
     miniMapPixelSize,
     slotBorderOffsetX,
-    slotContentSizeMargin,
+    slotContentSizeMargin, slotOffsetFromHeartsY,
     slotsColOffset,
     slotSize,
     slotsRowOffset,
@@ -79,19 +79,12 @@ export function redrawSlotsForPlayer(player) {
     const container = player === Game.player ? HUD.slots1 : HUD.slots2;
     removeAllChildrenFromContainer(container);
 
-    const topRowSlots = [new PIXI.Sprite(Game.resources["src/images/HUD/slot_magic.png"].texture),
-        new PIXI.Sprite(Game.resources["src/images/HUD/slot_magic.png"].texture),
-        new PIXI.Sprite(Game.resources["src/images/HUD/slot_magic.png"].texture),
-        new PIXI.Sprite(Game.resources["src/images/HUD/slot_magic.png"].texture)];
+    const topRowSlots = [getSlotWithName("Magic"), getSlotWithName("Magic"),
+        getSlotWithName("Magic"), getSlotWithName("Magic")];
+    const secondRowSlots = [getSlotWithName("Weapon"), getSlotWithName("Extra")];
+    const columnSlots = [getSlotWithName("Head"), getSlotWithName("Armor"), getSlotWithName("Feet")];
 
-    const secondRowSlots = [new PIXI.Sprite(Game.resources["src/images/HUD/slot_weapon.png"].texture),
-        new PIXI.Sprite(Game.resources["src/images/HUD/slot_second_hand.png"].texture)];
-
-    const columnSlots = [new PIXI.Sprite(Game.resources["src/images/HUD/slot_head.png"].texture),
-        new PIXI.Sprite(Game.resources["src/images/HUD/slot_armor.png"].texture),
-        new PIXI.Sprite(Game.resources["src/images/HUD/slot_feet.png"].texture)];
-
-    const slotsYOffset = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5) + 15;
+    const slotsYOffset = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5) + slotOffsetFromHeartsY;
     const slotsXOffset = player === Game.player ?
         slotBorderOffsetX :
         Game.app.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * 4 + slotsColOffset;
@@ -148,13 +141,22 @@ export function redrawSlotsForPlayer(player) {
     function drawSlot(x, y, slot) {
         slot.position.x = x;
         slot.position.y = y;
-        slot.width = slotSize;
-        slot.height = slotSize;
         container.addChild(slot);
     }
 
     function getSlotWithName(name) {
-        //...
+        const container = new PIXI.Container();
+        const slot = new PIXI.Graphics();
+        const lineWidth = 3;
+        slot.lineStyle(lineWidth, 0xffffff, 0.8);
+        slot.drawRect(0, 0, slotSize, slotSize);
+        const text = new PIXI.Text(name, HUDTextStyleSlot);
+        text.alpha = 0.9;
+        container.addChild(slot);
+        slot.addChild(text);
+        text.position.set(slot.width / 2 - text.width / 2 - lineWidth / 2, slot.height - text.height - lineWidth);
+        if (name.match("\n")) text.position.y = slot.height - text.height / 2 - lineWidth - 3;
+        return container;
     }
 }
 
@@ -165,7 +167,7 @@ export function drawStatsForPlayer(player) {
 
     if (player === Game.player) text.position.x = slotBorderOffsetX + slotSize * 2 + slotsColOffset + statsOffsetX;
     else text.position.x = Game.app.renderer.screen.width - slotBorderOffsetX - slotSize * 2 - slotsColOffset - text.width - statsOffsetX;
-    text.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5) + 15 + slotSize + slotsRowOffset + slotSize / 2 - text.height / 2;
+    text.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5) + slotOffsetFromHeartsY + slotSize + slotsRowOffset + slotSize / 2 - text.height / 2;
     container.addChild(text);
 }
 
@@ -289,7 +291,7 @@ export function drawMovementKeyBindings() {
         const topKey = "W";
         const bottomRowKeys = ["A", "S", "D"];
         if (!Game.player.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {
-            drawKey(container, topKey, heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+            drawKey(container, topKey, heartXOffset + 5 * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         } else bottomRowKeys[1] = "";
         if (Game.player.pushPullMode && Game.player.tilePosition.y !== Game.player2.tilePosition.y) {
             bottomRowKeys[0] = "";
@@ -297,14 +299,14 @@ export function drawMovementKeyBindings() {
         }
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
-                drawKey(container, bottomRowKeys[i], heartXOffset + 4 * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
+                drawKey(container, bottomRowKeys[i], heartXOffset + 5 * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
                     heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
             }
         }
     }
 
     if (!Game.player2.dead && !Game.player2.carried && !Game.player.pushPullMode) {
-        const heartXOffset = Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset - HUDGuideOffsetX;
+        const heartXOffset = Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 - HUDGuideOffsetX;
         let topKey = "I";
         const bottomRowKeys = ["L", "K", "J"];
         if (!Game.player2.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {

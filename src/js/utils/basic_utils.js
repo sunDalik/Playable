@@ -37,3 +37,7 @@ export function decrementEachDigitInHex(hex) {
     }
     return parseInt(newHex, 16);
 }
+
+export function regexCount(string, pattern) {
+    return (string.match(pattern + "/g") || []).length
+}
