@@ -27,7 +27,7 @@ export class Star extends Enemy {
                         for (let sign = -1; sign <= 1; sign += 2) {
                             if (offset !== 0) {
                                 const player = getPlayerOnTile(this.tilePosition.x + offset, this.tilePosition.y + offset * sign);
-                                if (player !== null) {
+                                if (player) {
                                     this.triggered = true;
                                     this.triggeredDirections = DIRECTIONS.DIAGONAL;
                                     break loop;
@@ -39,7 +39,7 @@ export class Star extends Enemy {
                         for (let y = -1; y <= 1; y++) {
                             if (Math.abs(x) !== Math.abs(y)) {
                                 const player = getPlayerOnTile(this.tilePosition.x + x, this.tilePosition.y + y);
-                                if (player !== null) {
+                                if (player) {
                                     this.triggered = true;
                                     this.triggeredDirections = DIRECTIONS.CARDINAL;
                                     break loop2;

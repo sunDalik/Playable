@@ -18,8 +18,8 @@ import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8DirectionsWithoutItems} from "./utils/map_utils";
 import {kiss} from "./game_logic";
-import {setTickTimeout} from "./utils/basic_utils";
 import {World} from "./classes/game/world";
+import {setTickTimeout} from "./utils/game_utils";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();

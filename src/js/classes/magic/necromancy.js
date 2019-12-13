@@ -2,6 +2,7 @@ import {Game} from "../../game"
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
 import {centerCamera} from "../../camera";
 import {drawInteractionKeys, drawMovementKeyBindings, redrawHealthForPlayer} from "../../drawing/draw_hud";
+import {otherPlayer} from "../../utils/game_utils";
 
 export class Necromancy {
     constructor() {
@@ -18,23 +19,21 @@ export class Necromancy {
 
     cast(wielder) {
         if (this.removeIfExhausted(wielder)) return false;
-        let otherPlayer;
-        if (wielder === Game.player2) otherPlayer = Game.player;
-        else otherPlayer = Game.player2;
-        if (otherPlayer.dead) {
-            otherPlayer.dead = false;
-            otherPlayer.visible = true;
-            otherPlayer.health = otherPlayer.maxHealth;
-            redrawHealthForPlayer(otherPlayer);
-            otherPlayer.tilePosition.set(wielder.tilePosition.x, wielder.tilePosition.y);
-            otherPlayer.placeOnMap();
-            otherPlayer.place();
+        const revivedPlayer = otherPlayer(wielder);
+        if (revivedPlayer.dead) {
+            revivedPlayer.dead = false;
+            revivedPlayer.visible = true;
+            revivedPlayer.health = revivedPlayer.maxHealth;
+            redrawHealthForPlayer(revivedPlayer);
+            revivedPlayer.tilePosition.set(wielder.tilePosition.x, wielder.tilePosition.y);
+            revivedPlayer.placeOnMap();
+            revivedPlayer.place();
             drawMovementKeyBindings();
             drawInteractionKeys();
             centerCamera();
-            for (const eq of otherPlayer.getEquipment()) {
+            for (const eq of revivedPlayer.getEquipment()) {
                 if (eq && eq.onRevive) {
-                    eq.onRevive(otherPlayer);
+                    eq.onRevive(revivedPlayer);
                 }
             }
             this.uses--;

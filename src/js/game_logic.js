@@ -2,9 +2,9 @@ import {Game} from "./game"
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE} from "./enums"
-import {otherPlayer, setTickTimeout} from "./utils/basic_utils";
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation, showHelpBox} from "./animations";
+import {otherPlayer, setTickTimeout} from "./utils/game_utils";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {

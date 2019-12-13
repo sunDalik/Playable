@@ -152,6 +152,10 @@ export function redrawSlotsForPlayer(player) {
         slot.height = slotSize;
         container.addChild(slot);
     }
+
+    function getSlotWithName(name) {
+        //...
+    }
 }
 
 export function drawStatsForPlayer(player) {

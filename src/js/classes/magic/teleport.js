@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
 import {centerCamera, scaleGameMap} from "../../camera";
 import {drawInteractionKeys, drawMovementKeyBindings} from "../../drawing/draw_hud";
-import {otherPlayer} from "../../utils/basic_utils";
+import {otherPlayer} from "../../utils/game_utils";
 
 export class Teleport {
     constructor() {

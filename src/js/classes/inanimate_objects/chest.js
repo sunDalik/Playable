@@ -4,7 +4,6 @@ import {INANIMATE_TYPE, ROLE} from "../../enums";
 import {createFloatingItemAnimation} from "../../animations";
 import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import {TileElement} from "../tile_elements/tile_element";
-import {ITEM_OUTLINE_FILTER} from "../../filters";
 
 export class Chest extends FullTileElement {
     constructor(tilePositionX, tilePositionY, contents) {

@@ -28,9 +28,9 @@ import {
 import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
-import {otherPlayer, setTickTimeout} from "../utils/basic_utils";
 import {LyingItem} from "./equipment/lying_item";
 import {randomChoice} from "../utils/random_utils";
+import {otherPlayer, setTickTimeout} from "../utils/game_utils";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {

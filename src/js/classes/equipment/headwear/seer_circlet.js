@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HEAD_TYPE, TILE_TYPE} from "../../../enums";
 import {darkenTile, lightTile} from "../../../drawing/lighting";
-import {otherPlayer} from "../../../utils/basic_utils";
+import {otherPlayer} from "../../../utils/game_utils";
 
 export class SeerCirclet {
     constructor() {

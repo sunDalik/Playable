@@ -7,7 +7,7 @@ import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {FireHazard} from "../hazards/fire";
 import {PoisonHazard} from "../hazards/poison";
 import {ElectricBullet} from "./bullets/electric";
-import {closestPlayer} from "../../utils/basic_utils";
+import {closestPlayer} from "../../utils/game_utils";
 
 export class Rabbit extends Enemy {
     constructor(tilePositionX, tilePositionY, type, texture = Game.resources["src/images/enemies/rabbit_x_energy.png"].texture) {

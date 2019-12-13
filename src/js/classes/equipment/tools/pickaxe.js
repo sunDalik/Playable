@@ -3,9 +3,9 @@ import {EQUIPMENT_TYPE, STAGE, TILE_TYPE, TOOL_TYPE, WEAPON_TYPE} from "../../..
 import {isAWall, isEnemy} from "../../../map_checks";
 import {lightPlayerPosition} from "../../../drawing/lighting";
 import {recalculateTileInDetectionGraph} from "../../../map_generation";
-import {otherPlayer} from "../../../utils/basic_utils";
 import {createPlayerWeaponAnimation} from "../../../animations";
 import {redrawMiniMapPixel} from "../../../drawing/draw_hud";
+import {otherPlayer} from "../../../utils/game_utils";
 
 export class Pickaxe {
     constructor() {
