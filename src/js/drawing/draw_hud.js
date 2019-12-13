@@ -417,13 +417,18 @@ export function drawMiniMap() {
     }
     const miniMapWidth = Game.map[0].length * miniMapPixelSize;
     const miniMapHeight = Game.map.length * miniMapPixelSize;
-    HUD.minimap.bg.width = miniMapWidth;
-    HUD.minimap.bg.height = miniMapHeight;
-    //const outline = new PIXI.Graphics();
-    //outline.lineStyle(3, 0xffffff, 0.8);
-    //outline.drawRect(0, 0, miniMapWidth, miniMapHeight);
-    //HUD.minimap.addChild(outline);
-    HUD.minimap.position.set(Game.app.renderer.screen.width - miniMapWidth - slotBorderOffsetX, Game.app.renderer.screen.height - miniMapHeight)
+    HUD.minimap.removeChild(HUD.minimap.bg);
+    HUD.minimap.bg = new PIXI.Graphics();
+    const lineWidth = 3;
+    /*hmmm.... it seems that element's width changes by one line width exactly because half of line width
+    from both sides goes inward and another one goes outward? Dunno, just my hypothesis*/
+    HUD.minimap.bg.lineStyle(lineWidth, 0xffffff, 0.8);
+    HUD.minimap.bg.beginFill(0x000000, 0.2);
+    HUD.minimap.bg.drawRect(0, 0, miniMapWidth + lineWidth, miniMapHeight + lineWidth);
+    HUD.minimap.bg.zIndex = -1;
+    HUD.minimap.addChild(HUD.minimap.bg);
+    HUD.minimap.bg.position.set(-lineWidth / 2, -lineWidth / 2);
+    HUD.minimap.position.set(Game.app.renderer.screen.width - miniMapWidth - slotBorderOffsetX - lineWidth / 2, Game.app.renderer.screen.height - miniMapHeight - 15)
 }
 
 export function redrawMiniMapPixel(x, y) {

@@ -9,7 +9,7 @@ export class Wings {
         this.def = 0;
         this.dodgeChance = 0.5;
         this.name = "Wings";
-        this.description = "50% to dodge any attack.\nImmunity to hazards";
+        this.description = "50% to dodge any attack\nImmunity to hazards";
     }
 
     onWear(wielder) {
