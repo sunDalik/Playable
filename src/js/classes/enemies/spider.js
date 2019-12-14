@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../map_checks";
-import {getRandomInt} from "../../utils/random_utils";
+import {closestPlayer} from "../../utils/game_utils";
 
 export class Spider extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/spider.png"].texture) {
@@ -19,83 +19,46 @@ export class Spider extends Enemy {
 
     move() {
         if (!this.thrown) {
-            if (this.chase) {
-                const player1DistX = Game.player.tilePosition.x - this.tilePosition.x;
-                const player1DistY = Game.player.tilePosition.y - this.tilePosition.y;
-                const player1Dist = Math.abs(player1DistX) + Math.abs(player1DistY);
-
-                const player2DistX = Game.player2.tilePosition.x - this.tilePosition.x;
-                const player2DistY = Game.player2.tilePosition.y - this.tilePosition.y;
-                const player2Dist = Math.abs(player2DistX) + Math.abs(player2DistY);
-                if (Game.player.dead) this.chasePlayer(Game.player2);
-                else if (Game.player2.dead) this.chasePlayer(Game.player);
-                else if (player1Dist < player2Dist) {
-                    this.chasePlayer(Game.player);
-                } else {
-                    this.chasePlayer(Game.player2);
-                }
-            } else {
+            if (this.chase) this.chasePlayer(closestPlayer(this));
+            else {
                 if (this.canSeePlayers()) {
                     this.chase = true;
                     this.move();
                 }
             }
-        } else {
-            this.thrown = false;
-        }
+        } else this.thrown = false;
     }
 
     chasePlayer(player) {
-        const playerDistX = player.tilePosition.x - this.tilePosition.x;
-        const playerDistY = player.tilePosition.y - this.tilePosition.y;
-        const playerDirX = Math.sign(playerDistX);
-        const playerDirY = Math.sign(playerDistY);
+        const playerDistX = Math.abs(player.tilePosition.x - this.tilePosition.x);
+        const playerDistY = Math.abs(player.tilePosition.y - this.tilePosition.y);
+        const playerDirX = Math.sign(player.tilePosition.x - this.tilePosition.x);
+        const playerDirY = Math.sign(player.tilePosition.y - this.tilePosition.y);
 
-        if (Math.abs(playerDistX) > Math.abs(playerDistY)) {
-            if (!this.tryToStepX(playerDirX)) {
-                if (playerDirY === 0) this.bumpX(playerDirX);
-                else if (!this.tryToStepY(playerDirY)) this.bumpY(playerDirY);
-            }
-        } else if (Math.abs(playerDistX) < Math.abs(playerDistY)) {
-            if (!this.tryToStepY(playerDirY)) {
-                if (playerDirX === 0) this.bumpY(playerDirY);
-                else if (!this.tryToStepX(playerDirX)) this.bumpX(playerDirX);
-            }
-        } else {
-            const randomDirection = getRandomInt(0, 2);
-            if (randomDirection === 0) {
-                if (!this.tryToStepX(playerDirX)) {
-                    if (playerDirY === 0) this.bumpX(playerDirX);
-                    else if (!this.tryToStepY(playerDirY)) this.bumpY(playerDirY);
-                }
-            } else {
-                if (!this.tryToStepY(playerDirY)) {
-                    if (playerDirX === 0) this.bumpY(playerDirY);
-                    else if (!this.tryToStepX(playerDirX)) this.bumpX(playerDirX);
-                }
-            }
+        const tryToStepXPrimary = () => {
+            this.tryToStep(playerDirX, 0) || this.tryToStep(0, playerDirY) || this.bump(playerDirX, 0);
+        };
+
+        const tryToStepYPrimary = () => {
+            this.tryToStep(0, playerDirY) || this.tryToStep(playerDirX, 0) || this.bump(0, playerDirY);
+        };
+
+        if (playerDistX > playerDistY) tryToStepXPrimary();
+        else if (playerDistX < playerDistY) tryToStepYPrimary();
+        else {
+            if (Math.random() < 0.5) tryToStepXPrimary();
+            else tryToStepYPrimary();
         }
     }
 
-    tryToStepX(tileStepX) {
-        if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y)) {
-            const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y);
-            if (player !== null) {
+    tryToStep(tileStepX, tileStepY) {
+        if (tileStepX === 0 && tileStepY === 0) return false;
+        if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
+            const player = getPlayerOnTile(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY);
+            if (player) {
                 player.damage(this.atk, this);
-                this.bumpX(tileStepX);
-            } else this.stepX(tileStepX);
-            return true;
-        }
-        return false;
-    }
-
-    tryToStepY(tileStepY) {
-        if (isRelativelyEmpty(this.tilePosition.x, this.tilePosition.y + tileStepY)) {
-            const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y + tileStepY);
-            if (player !== null) {
-                player.damage(this.atk, this);
-                this.bumpY(tileStepY);
-            } else this.stepY(tileStepY);
+                this.bump(tileStepX, tileStepY);
+            } else this.step(tileStepX, tileStepY);
             return true;
         }
         return false;

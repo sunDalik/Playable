@@ -230,7 +230,6 @@ export function showHelpBox(item) {
     Game.itemHelp.drawRoundedRect(0, 0, 600, 100, 6);
     const itemSprite = new PIXI.Sprite(item.texture);
     itemSprite.filters = [ITEM_OUTLINE_FILTER];
-    itemSprite.filters[0].resolution = 2;
     itemSprite.width = itemSprite.height = 60;
     const itemOffsetX = 40;
     const itemOffsetY = itemSprite.height / 3.5;

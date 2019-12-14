@@ -1,6 +1,6 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, STAGE, TILE_TYPE, TOOL_TYPE, WEAPON_TYPE} from "../../../enums";
-import {isAWall, isEnemy} from "../../../map_checks";
+import {isDiggable, isEnemy} from "../../../map_checks";
 import {lightPlayerPosition} from "../../../drawing/lighting";
 import {recalculateTileInDetectionGraph} from "../../../map_generation";
 import {createPlayerWeaponAnimation} from "../../../animations";
@@ -29,7 +29,7 @@ export class Pickaxe {
     }
 
     use(wielder, tileDirX, tileDirY) {
-        if (isAWall(wielder.tilePosition.x + tileDirX, wielder.tilePosition.y + tileDirY)) {
+        if (isDiggable(wielder.tilePosition.x + tileDirX, wielder.tilePosition.y + tileDirY)) {
             Game.world.removeTile(Game.map[wielder.tilePosition.y + tileDirY][wielder.tilePosition.x + tileDirX].tile);
             Game.map[wielder.tilePosition.y + tileDirY][wielder.tilePosition.x + tileDirX].tileType = TILE_TYPE.NONE;
             if (Game.stage === STAGE.DARK_TUNNEL) {

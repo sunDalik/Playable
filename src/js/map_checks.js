@@ -1,7 +1,7 @@
 import {Game} from "./game"
 import {TILE_TYPE, ROLE, INANIMATE_TYPE} from "./enums";
 
-export function isAWall(tilePositionX, tilePositionY) {
+export function isDiggable(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         if (Game.map[tilePositionY][tilePositionX].tileType === TILE_TYPE.WALL) {
             return true
