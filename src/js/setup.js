@@ -1,10 +1,10 @@
 import * as PIXI from "pixi.js";
 import {Game} from "./game";
+import {camera} from "./classes/game/camera";
 import {loadAll} from "./loader";
 import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
-import * as camera from "./camera";
 import {redrawTiles} from "./camera";
 import {STAGE} from "./enums";
 import {generateLevel, getLevelPlayerGraph} from "./level_generation";
@@ -17,7 +17,7 @@ import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8DirectionsWithoutItems} from "./utils/map_utils";
-import {kiss} from "./game_logic";
+import {gotoNextLevel, kiss} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 
@@ -65,7 +65,7 @@ function setup() {
     bindKeys();
     window.addEventListener("resize", () => {
         drawHUD();
-        camera.centerCamera();
+        camera.center();
         drawMiniMap();
     });
 
@@ -73,7 +73,7 @@ function setup() {
     initPools();
     initializeLevel();
     //Game.world.scale.set(0.5, 0.5); //it works!
-    //centerCamera();
+    //camera.center()();
 }
 
 export function initializeLevel() {
@@ -133,21 +133,21 @@ export function initializeLevel() {
     if (Game.stage === STAGE.DARK_TUNNEL) {
         lightPosition(Game.torchTile, Game.map[Game.torchTile.y][Game.torchTile.x].item.item.lightSpread, true);
     }
-    camera.centerCamera();
+    camera.center();
 
     setTickTimeout(() => {
         if (Math.random() < 0.5 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {
             Game.player.microSlide(Game.player2.tilePosition.x - Game.player.tilePosition.x,
                 Game.player2.tilePosition.y - Game.player.tilePosition.y,
-                null, () => setTickTimeout(() => Game.player.microSlide(0, 0), 9),
-                8);
+                null, () => setTickTimeout(() => Game.player.microSlide(0, 0), 12),
+                10);
             Game.player2.microSlide(Game.player.tilePosition.x - Game.player2.tilePosition.x,
                 Game.player.tilePosition.y - Game.player2.tilePosition.y,
-                null, () => setTickTimeout(() => Game.player2.microSlide(0, 0), 9),
-                8);
+                null, () => setTickTimeout(() => Game.player2.microSlide(0, 0), 12),
+                10);
             kiss();
         }
-    }, 6);
+    }, 10);
 }
 
 function mapSetFullView() {

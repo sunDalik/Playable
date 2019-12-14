@@ -331,10 +331,12 @@ export class AnimatedTileElement extends TileElement {
         this.animationCounter = 0;
         let stepX;
         let stepY;
+        let place = false;
         if (tileStepX === 0 && tileStepY === 0) {
             //slide back
             stepX = (this.getTilePositionX() - this.position.x) / animationTime;
             stepY = (this.getTilePositionY() - this.position.y) / animationTime;
+            place = true;
         } else {
             stepX = Game.TILESIZE * 0.4 * tileStepX / animationTime;
             stepY = Game.TILESIZE * 0.4 * tileStepY / animationTime;
@@ -347,6 +349,7 @@ export class AnimatedTileElement extends TileElement {
             if (onFrame) onFrame();
             if (this.animationCounter >= animationTime) {
                 Game.app.ticker.remove(animation);
+                if (place) this.place();
                 this.animation = null;
                 if (onEnd) onEnd();
             }

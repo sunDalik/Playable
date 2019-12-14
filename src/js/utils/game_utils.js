@@ -34,3 +34,12 @@ export function setTickTimeout(callback, tickTimeout) {
     Game.app.ticker.add(timeout);
     return timeout;
 }
+
+export function getEffectivePlayerCenter() {
+    if (Game.player.dead) return {x: Game.player2.getTilePositionX(), y: Game.player2.getTilePositionY()};
+    else if (Game.player2.dead) return {x: Game.player.getTilePositionX(), y: Game.player.getTilePositionY()};
+    else return {
+            x: Game.player.getTilePositionX() + (Game.player2.getTilePositionX() - Game.player.getTilePositionX()) / 2,
+            y: Game.player.getTilePositionY() + (Game.player2.getTilePositionY() - Game.player.getTilePositionY()) / 2
+        };
+}

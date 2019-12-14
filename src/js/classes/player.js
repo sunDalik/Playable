@@ -13,13 +13,13 @@ import {
     TOOL_TYPE,
     WEAPON_TYPE
 } from "../enums";
-import {centerCamera, centerCameraX, centerCameraY} from "../camera";
 import {createHeartAnimation, rotate, shakeScreen, showHelpBox} from "../animations";
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
     drawStatsForPlayer,
-    redrawHealthForPlayer, redrawMiniMapPixel,
+    redrawHealthForPlayer,
+    redrawMiniMapPixel,
     redrawSecondHand,
     redrawSlotContents,
     redrawSlotContentsForPlayer,
@@ -30,7 +30,8 @@ import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from 
 import {lightPlayerPosition} from "../drawing/lighting";
 import {LyingItem} from "./equipment/lying_item";
 import {randomChoice} from "../utils/random_utils";
-import {otherPlayer, setTickTimeout} from "../utils/game_utils";
+import {getEffectivePlayerCenter, otherPlayer, setTickTimeout} from "../utils/game_utils";
+import {camera} from "./game/camera";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -263,24 +264,26 @@ export class Player extends AnimatedTileElement {
     }
 
     stepX(tileStepX) {
-        super.stepX(tileStepX, () => centerCameraX(), () => centerCameraX());
+        super.stepX(tileStepX);
         lightPlayerPosition(this);
         this.pickUpItems();
+        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
     }
 
     stepY(tileStepY) {
-        super.stepY(tileStepY, () => centerCameraY(), () => centerCameraY());
+        super.stepY(tileStepY);
         lightPlayerPosition(this);
         this.pickUpItems();
+        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
     }
 
     slide(tileDirX, tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
-        const cameraCentering = tileDirX !== 0 ? () => centerCameraX() : () => centerCameraY();
-        super.slide(tileDirX, tileDirY, cameraCentering, cameraCentering, SLIDE_ANIMATION_TIME);
+        super.slide(tileDirX, tileDirY, null, null, SLIDE_ANIMATION_TIME);
         lightPlayerPosition(this);
         this.pickUpItems();
         if (otherPlayer(this).carried) otherPlayer(this).slide(tileDirX, tileDirY);
         if (!Game.player.carried && !Game.player2.carried) drawInteractionKeys();
+        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.SLIDE_ANIMATION_TIME);
     }
 
     shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
@@ -357,9 +360,7 @@ export class Player extends AnimatedTileElement {
                 redrawSecondHand(this);
             }
         }
-        //Game.TILESIZE = Game.REFERENCE_TILESIZE;
-        //redrawTiles();
-        centerCamera();
+        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
         for (const eq of this.getEquipment()) {
             if (eq && eq.onDeath) {
                 eq.onDeath(this);
