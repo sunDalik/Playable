@@ -2,7 +2,7 @@ import {redrawSecondHand} from "../../../drawing/draw_hud";
 
 export class Shield {
     constructor() {
-        this.maxUses = undefined;
+        this.maxUses = 0;
         this.uses = this.maxUses;
     }
 

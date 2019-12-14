@@ -57,16 +57,16 @@ export class Roller extends Enemy {
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
         let counter = 0;
 
-        this.animation = () => {
+        this.animation = (delta) => {
             if (counter < this.BUMP_ANIMATION_TIME / 3) {
-                this.position.x += oldStep;
-                counter++;
+                this.position.x += oldStep * delta;
             } else if (counter >= this.BUMP_ANIMATION_TIME / 3 && counter < this.BUMP_ANIMATION_TIME) {
                 this.correctScale();
-                this.position.x += newStep / 2;
+                this.position.x += newStep / 2 * delta;
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
-                counter++;
-            } else if (counter >= this.BUMP_ANIMATION_TIME) {
+            }
+            counter += delta;
+            if (counter >= this.BUMP_ANIMATION_TIME) {
                 Game.app.ticker.remove(this.animation);
                 this.place();
             }

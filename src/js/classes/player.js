@@ -579,9 +579,9 @@ export class Player extends AnimatedTileElement {
 
         this.cancelAnimation();
         this.animationSubSprites.push(itemSprite);
-        const animation = () => {
-            itemSprite.angle += step;
-            this.animationCounter++;
+        const animation = (delta) => {
+            itemSprite.angle += step * delta;
+            this.animationCounter += delta;
             if (this.animationCounter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.cancelAnimation();

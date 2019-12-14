@@ -132,20 +132,19 @@ export class MaidenDagger {
         }
 
         let counter = 0;
-
-        let animation = function () {
+        const animation = (delta) => {
             if (counter < animationTime / 2) {
-                attackSprite.width += stepX;
-                attackSprite.height += stepY;
-                attackSprite2.width += stepX;
-                attackSprite2.height += stepY;
+                attackSprite.width += stepX * delta;
+                attackSprite.height += stepY * delta;
+                attackSprite2.width += stepX * delta;
+                attackSprite2.height += stepY * delta;
             } else {
-                attackSprite.width -= stepX;
-                attackSprite.height -= stepY;
-                attackSprite2.width -= stepX;
-                attackSprite2.height -= stepY;
+                attackSprite.width -= stepX * delta;
+                attackSprite.height -= stepY * delta;
+                attackSprite2.width -= stepX * delta;
+                attackSprite2.height -= stepY * delta;
             }
-            counter++;
+            counter += delta;
             if (counter >= animationTime) {
                 Game.world.removeChild(attackSprite);
                 Game.world.removeChild(attackSprite2);

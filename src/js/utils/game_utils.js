@@ -24,8 +24,8 @@ export function tileDistance(a, b) {
 
 export function setTickTimeout(callback, tickTimeout) {
     let counter = 0;
-    const timeout = () => {
-        counter++;
+    const timeout = (delta) => {
+        counter += delta;
         if (counter >= tickTimeout) {
             callback();
             Game.app.ticker.remove(timeout);

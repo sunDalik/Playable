@@ -86,10 +86,10 @@ export class Bullet extends TileElement {
         this.placeOnMap();
         let animationCounter = 0;
 
-        const animation = () => {
-            this.position.x += stepX;
-            this.position.y += stepY;
-            animationCounter++;
+        const animation = (delta) => {
+            this.position.x += stepX * delta;
+            this.position.y += stepY * delta;
+            animationCounter += delta;
             if (animationCounter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;

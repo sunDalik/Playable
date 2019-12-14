@@ -22,8 +22,7 @@ export class Fireball {
     }
 
     cast(wielder) {
-        if (this.uses <= 0) return false;
-        if (Game.player.dead || Game.player2.dead) return false;
+        if (this.uses <= 0 || Game.player.dead || Game.player2.dead) return false;
         if (this.multiplier < 3) {
             this.multiplier++;
             wielder.chargingMagic = this;
@@ -31,13 +30,12 @@ export class Fireball {
             this.castedThisTurn = true;
             this.multiplierDecreaseDelay = 2;
 
-            let fire = new PIXI.Sprite(Game.resources["src/images/fire.png"].texture);
-            const fireHeight = Game.TILESIZE * this.multiplier;
+            const fire = new PIXI.Sprite(Game.resources["src/images/fire.png"].texture);
             fire.alpha = 0.15;
             fire.anchor.set(0, 0.5);
             fire.position.set(Game.player.x, Game.player.y);
             fire.width = Math.sqrt((Game.player2.x - Game.player.x) ** 2 + (Game.player.y - Game.player2.y) ** 2);
-            fire.height = fireHeight;
+            fire.height = Game.TILESIZE * this.multiplier;
             fire.rotation = Math.atan((Game.player2.y - Game.player.y) / (Game.player2.x - Game.player.x));
             if ((Game.player2.x - Game.player.x) < 0) fire.rotation += Math.PI;
             if (fire.width !== 0) createFadingAttack(fire);
@@ -47,15 +45,12 @@ export class Fireball {
     }
 
     release() {
-        if (this.uses <= 0) return false;
-        if (this.multiplier <= 0) return false;
-        if (Game.player.dead || Game.player2.dead) return false;
-        let fire = new PIXI.Sprite(Game.resources["src/images/fire.png"].texture);
-        const fireHeight = Game.TILESIZE * this.multiplier;
+        if (this.uses <= 0 || this.multiplier <= 0 || Game.player.dead || Game.player2.dead) return false;
+        const fire = new PIXI.Sprite(Game.resources["src/images/fire.png"].texture);
         fire.anchor.set(0, 0.5);
         fire.position.set(Game.player.x, Game.player.y);
         fire.width = Math.sqrt((Game.player2.x - Game.player.x) ** 2 + (Game.player.y - Game.player2.y) ** 2);
-        fire.height = fireHeight;
+        fire.height = Game.TILESIZE * this.multiplier;
         fire.rotation = Math.atan((Game.player2.y - Game.player.y) / (Game.player2.x - Game.player.x));
         if (Game.player2.x < Game.player.x) {
             fire.rotation += Math.PI;

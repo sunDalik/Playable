@@ -28,7 +28,7 @@ export class NinjaKnife {
             } else {
                 createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
             }
-            Game.map[attackTileY][attackTileX].entity.damage(wielder,atk, tileDirX, tileDirY, false);
+            Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);
             return true;
         } else return false;
 
@@ -62,18 +62,18 @@ export class NinjaKnife {
             if (stepY === 0) attackParticle.width = 0;
 
             let counter = 0;
-            let animation = function () {
+            const animation = (delta) => {
                 if (counter < context.SLIDE_ANIMATION_TIME) {
-                    attackParticle.width += stepX;
-                    attackParticle.height += stepY;
+                    attackParticle.width += stepX * delta;
+                    attackParticle.height += stepY * delta;
                     centerAttackParticleToOldPlayer()
                 } else if (counter < context.SLIDE_ANIMATION_TIME + context.FINISH_SLIDE_TIME) {
-                    attackParticle.width -= stepXFinish;
-                    attackParticle.height -= stepYFinish;
+                    attackParticle.width -= stepXFinish * delta;
+                    attackParticle.height -= stepYFinish * delta;
                     attackParticle.anchor.set(newAnchor.x, newAnchor.y);
                     centerAttackParticleToNewPlayer()
                 }
-                counter++;
+                counter += delta;
                 if (counter >= context.SLIDE_ANIMATION_TIME + context.FINISH_SLIDE_TIME) {
                     Game.world.removeChild(attackParticle);
                     Game.app.ticker.remove(animation);

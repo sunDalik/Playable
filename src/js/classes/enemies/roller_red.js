@@ -78,19 +78,18 @@ export class RedRoller extends Roller {
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
         let counter = 0;
 
-        const animation = () => {
+        const animation = (delta) => {
             if (counter < this.SLIDE_ANIMATION_TIME / 2) {
-                this.position.x += step;
-                counter++;
+                this.position.x += step * delta;
             } else if (counter < this.SLIDE_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME / 3) {
                 step = this.direction * Game.TILESIZE / this.BUMP_ANIMATION_TIME;
-                this.position.x += step;
-                counter++;
+                this.position.x += step * delta;
             } else if (counter < this.SLIDE_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
-                this.position.x -= step / 2;
+                this.position.x -= step / 2 * delta;
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
-                counter++;
-            } else if (counter >= this.SLIDE_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
+            }
+            counter += delta;
+            if (counter >= this.SLIDE_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME) {
                 Game.app.ticker.remove(animation);
                 this.place();
             }
@@ -108,15 +107,15 @@ export class RedRoller extends Roller {
         const b = -(this.position.x + (1 / 3) * this.direction * Game.TILESIZE + (-this.direction * Game.TILESIZE) / 2 / 3) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
 
-        const animation = () => {
+        const animation = (delta) => {
             if (counter < this.BUMP_ANIMATION_TIME / 3) {
-                this.position.x += step;
-                counter++;
+                this.position.x += step * delta;
             } else if (counter < this.BUMP_ANIMATION_TIME) {
-                this.position.x -= step / 2;
+                this.position.x -= step / 2 * delta;
                 this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
-                counter++;
-            } else if (counter >= this.BUMP_ANIMATION_TIME) {
+            }
+            counter += delta;
+            if (counter >= this.BUMP_ANIMATION_TIME) {
                 Game.app.ticker.remove(animation);
                 this.place();
             }
