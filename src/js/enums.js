@@ -113,6 +113,7 @@ export const MAP_SYMBOLS = Object.freeze({
     RABBIT_ELECTRIC: "rabbit_electric",
     RABBIT_FIRE: "rabbit_fire",
     RABBIT_POISON: "rabbit_poison",
+    LASER_TURRET: "laser_turret",
     STATUE: "statue",
     CHEST: "chest",
     OBELISK: "obelisk",

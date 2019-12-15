@@ -1,5 +1,6 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
+import * as PIXI from "pixi.js";
+import {Game} from "../../game";
+import {Enemy} from "./enemy";
 import {ENEMY_TYPE, ROLE, STAGE} from "../../enums";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
@@ -21,6 +22,8 @@ export class LaserTurret extends Enemy {
         this.noticeTileDistance = 5;
         this.canMoveInvisible = true;
         this.directionX = 1;
+        this.scaleModifier = 1;
+        this.fitToTile();
     }
 
     afterMapGen() {
@@ -28,7 +31,18 @@ export class LaserTurret extends Enemy {
             || isInanimate(this.tilePosition.x + 1, this.tilePosition.y)) {
             this.scale.x *= -1;
             this.directionX = -1;
+        } else if (isAnyWall(this.tilePosition.x - 1, this.tilePosition.y)
+            || isInanimate(this.tilePosition.x - 1, this.tilePosition.y)) {
+            this.directionX = 1;
+        } else {
+            if (Math.random() < 0.5) {
+                this.scale.x *= -1;
+                this.directionX = -1;
+            } else {
+                this.directionX = 1;
+            }
         }
+
     }
 
     move() {
@@ -54,13 +68,12 @@ export class LaserTurret extends Enemy {
                 if (player) {
                     this.triggered = true;
                     this.updateTexture();
+                    this.shake(1.2, 0);
                 }
             }
         } else {
             this.currentTurnDelay--;
-            if (this.currentTurnDelay === 0) {
-                this.updateTexture();
-            }
+            this.updateTexture();
         }
     }
 
@@ -68,6 +81,7 @@ export class LaserTurret extends Enemy {
         for (let x = this.directionX; ; x += this.directionX) {
             if (isAnyWall(this.tilePosition.x + x, this.tilePosition.y)) break;
             const attackSprite = new FullTileElement(PIXI.Texture.WHITE, this.tilePosition.x + x, this.tilePosition.y);
+            attackSprite.zIndex = 4;
             attackSprite.tint = 0xFF0000;
             attackSprite.width = Game.TILESIZE;
             attackSprite.height = Game.TILESIZE / 3;

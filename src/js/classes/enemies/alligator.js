@@ -26,12 +26,12 @@ export class Alligator extends Enemy {
         this.triggeredDirection = null;
         this.direction = {x: 1, y: 0};
         this.stepXjumpHeight = Game.TILESIZE * 24 / 75;
-        this.scaleModifier = 1.1;
         this.maxShootingTimes = 5;
         this.currentShootingTimes = 0;
         if (this.alligatorType === RABBIT_TYPE.ENERGY) {
             this.energyDrop = 40;
         }
+        this.scaleModifier = 1.1;
         this.fitToTile();
         this.updateTexture();
     }

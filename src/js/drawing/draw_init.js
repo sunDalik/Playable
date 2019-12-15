@@ -42,7 +42,7 @@ export function drawEntities() {
                 if (entity !== null) {
                     Game.world.addChild(entity);
                     Game.tiles.push(entity);
-                    if (entity.role === ROLE.ENEMY) {
+                    if (entity.role === ROLE.ENEMY || entity.role === ROLE.WALL_TRAP) {
                         Game.enemies.push(entity);
                     }
                     if (entity.role !== ROLE.PLAYER) {

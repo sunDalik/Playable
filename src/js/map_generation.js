@@ -30,6 +30,7 @@ import {Alligator} from "./classes/enemies/alligator";
 import {Rabbit} from "./classes/enemies/rabbit";
 import {Torch} from "./classes/equipment/tools/torch";
 import {LyingItem} from "./classes/equipment/lying_item";
+import {LaserTurret} from "./classes/enemies/laser_turret";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -106,6 +107,7 @@ export function generateMap(level) {
             else if (map[i][j] === MAP_SYMBOLS.RABBIT_FIRE) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.FIRE);
             else if (map[i][j] === MAP_SYMBOLS.RABBIT_ENERGY) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.ENERGY);
             else if (map[i][j] === MAP_SYMBOLS.RABBIT_POISON) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.POISON);
+            else if (map[i][j] === MAP_SYMBOLS.LASER_TURRET) mapCell.entity = new LaserTurret(j, i);
             else if (map[i][j] === MAP_SYMBOLS.STATUE) {
                 if (Game.weaponPool.length > 0) {
                     mapCell.entity = new Statue(j, i, getRandomWeapon());
