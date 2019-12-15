@@ -72,6 +72,11 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/rabbit_x_electric.png")
         .add("src/images/enemies/rabbit_x_fire.png")
         .add("src/images/enemies/rabbit_x_poison.png")
+        .add("src/images/enemies/laser_turret_0.png")
+        .add("src/images/enemies/laser_turret_after_attack.png")
+        .add("src/images/enemies/laser_turret_awake.png")
+        .add("src/images/enemies/laser_turret_triggered.png")
+        .add("src/images/enemies/laser_turret_unready.png")
 
         .add("src/images/bullets/electric_bullet.png")
         .add("src/images/bullets/fire_bullet.png")
