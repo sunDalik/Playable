@@ -277,6 +277,13 @@ export class Player extends AnimatedTileElement {
         camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
     }
 
+    stepXY(tileStepX, tileStepY) {
+        super.stepXY(tileStepX, tileStepY);
+        lightPlayerPosition(this);
+        this.pickUpItems();
+        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
+    }
+
     slide(tileDirX, tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
         super.slide(tileDirX, tileDirY, null, null, SLIDE_ANIMATION_TIME);
         lightPlayerPosition(this);

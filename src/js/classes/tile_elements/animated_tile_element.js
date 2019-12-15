@@ -31,7 +31,7 @@ export class AnimatedTileElement extends TileElement {
         const animationTime = this.STEP_ANIMATION_TIME - 1 + Math.abs(tileStepX) + Math.abs(tileStepY);
         const step = 1 / animationTime;
 
-        const animation = () => {
+        const animation = (delta) => {
             const t = (counter + 1) * step;
             const stepX = quadraticBezier(t, 0, tileStepX * Game.TILESIZE / 2, tileStepX * Game.TILESIZE);
             const stepY = quadraticBezier(t, 0, -jumpHeight, tileStepY * Game.TILESIZE);
@@ -82,6 +82,7 @@ export class AnimatedTileElement extends TileElement {
         Game.app.ticker.add(animation);
     }
 
+    //Is not used now and will probably be removed!!
     //are we happy with this??
     //I'm not sure...
     //todo...
@@ -128,7 +129,7 @@ export class AnimatedTileElement extends TileElement {
     step(tileStepX, tileStepY, onFrame = null, onEnd = null) {
         if (tileStepX !== 0 && tileStepY !== 0) this.stepXY(tileStepX, tileStepY, onFrame, onEnd);
         else if (tileStepX !== 0) this.stepX(tileStepX, onFrame, onEnd);
-        else if (tileStepY !== 0) this.stepY(tileStepY, onFrame, onEnd);
+        else if (tileStepY !== 0) this.stepXY(tileStepX, tileStepY, onFrame, onEnd);
     }
 
     bumpX(tileStepX, onFrame = null, onEnd = null) {
