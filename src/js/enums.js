@@ -19,7 +19,8 @@ export const ENEMY_TYPE = Object.freeze({
     MUSHROOM: 17,
     SMALL_MUSHROOM: 18,
     ALLIGATOR: 19,
-    RABBIT: 20
+    RABBIT: 20,
+    LASER_TURRET: 21
 });
 export const RABBIT_TYPE = Object.freeze({
     ENERGY: 0,
@@ -40,9 +41,17 @@ export const MAGIC_TYPE = Object.freeze({
     ABYSSAL_SPIT: 7
 });
 
-export const STAGE = Object.freeze({FLOODED_CAVE: 0, DARK_TUNNEL: 1, RUINS: 2, LABYRINTH: 3, FINALE: 4});
+export const STAGE = Object.freeze({
+    FLOODED_CAVE: 0,
+    DARK_TUNNEL: 1,
+    RUINS: 2,
+    LABYRINTH: 3,
+    FINALE: 4,
+    CANYON: 5,
+    ARENA: 6
+});
 export const TILE_TYPE = Object.freeze({VOID: 0, NONE: 1, WALL: 2, PATH: 3, ENTRY: 4, SUPER_WALL: 5, EXIT: 6});
-export const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1, INANIMATE: 2, BULLET: 3});
+export const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1, INANIMATE: 2, BULLET: 3, WALL_TRAP: 4});
 export const INANIMATE_TYPE = Object.freeze({STATUE: 0, OBELISK: 1, GRAIL: 2, CHEST: 3, ACCUMULATOR: 4});
 
 export const EQUIPMENT_TYPE = Object.freeze({WEAPON: 0, HEAD: 1, ARMOR: 2, FOOT: 3, SHIELD: 5, TOOL: 6, MAGIC: 7});

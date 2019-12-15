@@ -30,9 +30,9 @@ export class AnimatedTileElement extends TileElement {
 
         const oldPosX = this.position.x;
         const oldPosY = this.position.y;
-        let counter = 0;
         const time = animationTime - 1 + Math.abs(tileStepX) + Math.abs(tileStepY);
         const step = 1 / time;
+        let counter = 0;
 
         const animation = (delta) => {
             counter += delta;
@@ -86,7 +86,6 @@ export class AnimatedTileElement extends TileElement {
 
     bumpY(tileStepY, onFrame = null, onEnd = null) {
         this.onAnimationEnd = onEnd;
-        let counter = 0;
         const oldPosition = this.position.y;
         let newPosition = null;
         let P0, P1, P2, P3;
@@ -101,16 +100,17 @@ export class AnimatedTileElement extends TileElement {
             P2 = 0.97;
             P3 = 0.75;
         }
+        let counter = 0;
 
         const animation = (delta) => {
-            const x = (counter + 1) / this.BUMP_ANIMATION_TIME;
-            if (counter < this.BUMP_ANIMATION_TIME / 2) {
+            counter += delta;
+            const x = counter / this.BUMP_ANIMATION_TIME;
+            if (counter <= this.BUMP_ANIMATION_TIME / 2) {
                 this.position.y = oldPosition + cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE / 2 * tileStepY;
                 newPosition = this.position.y;
             } else {
                 this.position.y = newPosition - cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE / 2 * tileStepY;
             }
-            counter += delta;
             if (onFrame) onFrame();
             if (counter >= this.BUMP_ANIMATION_TIME) {
                 Game.app.ticker.remove(animation);
@@ -186,10 +186,11 @@ export class AnimatedTileElement extends TileElement {
 
     rotateByAngle(angle, rotateTime = this.ROTATE_TIME, cancellable = true) {
         this.animationCounter = 0;
+        const step = angle / rotateTime;
         if (cancellable) this.cancelAnimation(); //to not reset angle
 
         const animation = (delta) => {
-            this.angle += angle / rotateTime * delta;
+            this.angle += step * delta;
             this.animationCounter += delta;
             if (this.animationCounter >= rotateTime) {
                 Game.app.ticker.remove(animation);
@@ -228,8 +229,8 @@ export class AnimatedTileElement extends TileElement {
     }
 
     microJump() {
-        let counter = 0;
         const stepY = Game.TILESIZE * 0.4 / (this.MICRO_JUMP_ANIMATION_TIME / 2);
+        let counter = 0;
 
         const animation = (delta) => {
             if (counter < this.MICRO_JUMP_ANIMATION_TIME / 2) {

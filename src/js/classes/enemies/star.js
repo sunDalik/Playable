@@ -87,7 +87,7 @@ export class Star extends Enemy {
         if (isRelativelyEmpty(attackPositionX, attackPositionY)) {
             createFadingAttack(new TileElement(Game.resources["src/images/enemy_attack.png"].texture, attackPositionX, attackPositionY));
             const player = getPlayerOnTile(attackPositionX, attackPositionY);
-            if (player !== null) player.damage(this.atk, this, false);
+            if (player) player.damage(this.atk, this, false, true);
         }
     }
 }
