@@ -17,13 +17,13 @@ import {createHeartAnimation, rotate, shakeScreen, showHelpBox} from "../animati
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
-    drawStatsForPlayer,
+    drawStatsForPlayer, redrawAllMagicSlots,
     redrawHealthForPlayer,
     redrawMiniMapPixel,
     redrawSecondHand,
     redrawSlotContents,
     redrawSlotContentsForPlayer,
-    redrawWeapon
+    redrawWeaponAndSecondHand
 } from "../drawing/draw_hud";
 import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
@@ -349,7 +349,6 @@ export class Player extends AnimatedTileElement {
                 Game.tiles.push(item);
                 Game.map[this.tilePosition.y][this.tilePosition.x].item = item;
                 this.secondHand = null;
-                redrawSecondHand(this);
             }
         }
         camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
@@ -358,6 +357,8 @@ export class Player extends AnimatedTileElement {
                 eq.onDeath(this);
             }
         }
+        redrawWeaponAndSecondHand(this);
+        redrawAllMagicSlots(this);
     }
 
     heal(healHP, showHeart = true) {
@@ -474,6 +475,7 @@ export class Player extends AnimatedTileElement {
     }
 
     afterEnemyTurn() {
+        if (this.dead) return false;
         this.shielded = false;
         for (const eq of this.getEquipmentAndMagic()) {
             if (eq && eq.onNewTurn) eq.onNewTurn(this);
@@ -517,8 +519,7 @@ export class Player extends AnimatedTileElement {
         } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) {
             if (this.weapon === null || this.secondHand.type !== this.weapon.type) {
                 [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
-                redrawWeapon(this);
-                redrawSecondHand(this);
+                redrawWeaponAndSecondHand(this);
                 if (this.armor && this.armor.type === ARMOR_TYPE.ELECTRIC) return false;
                 return true;
             } else if (this.weapon && this.weapon.type === this.secondHand.type && this.secondHand.concentrate && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {

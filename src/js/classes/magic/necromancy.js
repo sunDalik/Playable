@@ -1,7 +1,12 @@
 import {Game} from "../../game"
 import {camera} from "../game/camera"
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
-import {drawInteractionKeys, drawMovementKeyBindings, redrawHealthForPlayer} from "../../drawing/draw_hud";
+import {
+    drawInteractionKeys,
+    drawMovementKeyBindings, redrawAllMagicSlots,
+    redrawHealthForPlayer,
+    redrawWeapon, redrawWeaponAndSecondHand
+} from "../../drawing/draw_hud";
 import {otherPlayer} from "../../utils/game_utils";
 
 export class Necromancy {
@@ -30,6 +35,8 @@ export class Necromancy {
             revivedPlayer.place();
             drawMovementKeyBindings();
             drawInteractionKeys();
+            redrawWeaponAndSecondHand(revivedPlayer);
+            redrawAllMagicSlots(revivedPlayer);
             camera.center();
             for (const eq of revivedPlayer.getEquipment()) {
                 if (eq && eq.onRevive) {

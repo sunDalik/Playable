@@ -179,8 +179,10 @@ export function redrawSlotContents(player, slot) {
     if (item) {
         drawSprite();
         drawUses();
-        const keyBind = getKeyBind(player, slot);
-        if (keyBind !== false) drawKey(keyBind);
+        if (!player.dead) {
+            const keyBind = getKeyBind(player, slot);
+            if (keyBind !== false) drawKey(keyBind);
+        }
     }
     drawStatsForPlayer(player);
 
