@@ -269,13 +269,13 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    slide(tileDirX, tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
-        super.slide(tileDirX, tileDirY, null, null, SLIDE_ANIMATION_TIME);
+    slide(tileDirX, tileDirY, animationTime = this.SLIDE_ANIMATION_TIME) {
+        super.slide(tileDirX, tileDirY, null, null, animationTime);
         lightPlayerPosition(this);
         this.pickUpItems();
         if (otherPlayer(this).carried) otherPlayer(this).slide(tileDirX, tileDirY);
         if (!Game.player.carried && !Game.player2.carried) drawInteractionKeys();
-        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.SLIDE_ANIMATION_TIME);
+        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
     }
 
     shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {

@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import * as PIXI from "pixi.js"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE,} from "../../enums";
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE,} from "../../enums";
 import {collisionCheck} from "../../collision_check";
 import {createFadingAttack} from "../../animations";
 import {redrawSlotContents} from "../../drawing/draw_hud";
@@ -38,6 +38,8 @@ export class Fireball {
             fire.height = Game.TILESIZE * this.multiplier;
             fire.rotation = Math.atan((Game.player2.y - Game.player.y) / (Game.player2.x - Game.player.x));
             if ((Game.player2.x - Game.player.x) < 0) fire.rotation += Math.PI;
+            fire.zIndex = 3;
+            if (Game.stage === STAGE.DARK_TUNNEL) fire.zIndex = Game.darkTiles[0][0].zIndex + 1;
             if (fire.width !== 0) createFadingAttack(fire);
 
         } else this.release();
@@ -55,6 +57,8 @@ export class Fireball {
         if (Game.player2.x < Game.player.x) {
             fire.rotation += Math.PI;
         }
+        fire.zIndex = 3;
+        if (Game.stage === STAGE.DARK_TUNNEL) fire.zIndex = Game.darkTiles[0][0].zIndex + 1;
         createFadingAttack(fire);
         fire.getBounds();
         let fireCorrectVertexData;

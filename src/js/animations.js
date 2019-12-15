@@ -6,6 +6,7 @@ import {ITEM_OUTLINE_FILTER} from "./filters";
 import {HUDTextStyle, HUDTextStyleTitle} from "./drawing/draw_constants";
 import {HUD} from "./drawing/hud_object";
 import {camera} from "./classes/game/camera";
+import {STAGE} from "./enums";
 
 export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false) {
     const tileX1 = player.tilePosition.x;
@@ -54,7 +55,12 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
 export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
     Game.world.addChild(attack);
     const ifTile = !!attack.fitToTile;
-    if (ifTile) Game.tiles.push(attack);
+    if (ifTile) {
+        Game.tiles.push(attack);
+        if (Game.stage === STAGE.DARK_TUNNEL && attack.maskLayer) {
+            Game.darkTiles[attack.tilePosition.y][attack.tilePosition.x].addLightSource(attack.maskLayer);
+        }
+    }
     const delay = animationTime / 2;
     let counter = 0;
 
@@ -66,7 +72,12 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
         if (counter >= animationTime) {
             Game.app.ticker.remove(animation);
             Game.world.removeChild(attack);
-            if (ifTile) removeObjectFromArray(attack, Game.tiles);
+            if (ifTile) {
+                removeObjectFromArray(attack, Game.tiles);
+                if (Game.stage === STAGE.DARK_TUNNEL && attack.maskLayer) {
+                    Game.darkTiles[attack.tilePosition.y][attack.tilePosition.x].removeLightSource(attack.maskLayer);
+                }
+            }
         }
     };
     Game.app.ticker.add(animation);
@@ -106,12 +117,16 @@ export function createFadingText(caption, positionX, positionY) {
 //maybe need to move it to AnimatedTileElement class?
 export function rotate(object, clockwise = true) {
     let counter = 0;
+    const intendedRotation = object.rotation;
 
     const animation = (delta) => {
-        if (clockwise) object.rotation += 2 * Math.PI / Game.TURNTIME;
+        if (clockwise) object.rotation += 2 * Math.PI / Game.TURNTIME * delta;
         else object.rotation -= 2 * Math.PI / Game.TURNTIME * delta;
         counter += delta;
-        if (counter >= Game.TURNTIME) Game.app.ticker.remove(animation);
+        if (counter >= Game.TURNTIME) {
+            Game.app.ticker.remove(animation);
+            object.rotation = intendedRotation;
+        }
     };
     object.animation = animation;
     Game.app.ticker.add(animation);
