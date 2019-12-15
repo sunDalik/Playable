@@ -1,4 +1,3 @@
-//is not used yet. Will it ever be though?
 export const ENEMY_TYPE = Object.freeze({
     ROLLER: 0,
     ROLLER_RED: 1,

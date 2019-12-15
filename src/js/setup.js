@@ -5,7 +5,6 @@ import {loadAll} from "./loader";
 import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
-import {redrawTiles} from "./camera";
 import {STAGE} from "./enums";
 import {generateLevel, getLevelPlayerGraph} from "./level_generation";
 import {calculateDetectionGraph, generateMap} from "./map_generation";
@@ -160,4 +159,31 @@ function mapSetFullView() {
             Game.darkTiles[i][j].visible = false;
         }
     }
+}
+
+//is deprecated and will be changed later
+function redrawTiles() {
+    Game.world.removeChild(Game.grid);
+    Game.grid = drawGrid();
+    for (const graphic of Game.otherGraphics) {
+        Game.world.removeChild(graphic);
+    }
+    Game.otherGraphics = [];
+
+    for (const enemy of Game.enemies) {
+        if (!enemy.dead) enemy.redrawHealth();
+    }
+
+    for (const tile of Game.tiles) {
+        tile.fitToTile();
+        tile.place();
+    }
+
+    for (const hazard of Game.hazards) {
+        hazard.fitToTile();
+        hazard.place();
+    }
+
+    drawOther();
+    camera.center()
 }

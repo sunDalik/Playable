@@ -31,12 +31,16 @@ export class Bullet extends TileElement {
         } else this.delay--;
     }
 
-    die() {
+    die(toRemove = true) {
         this.dead = true;
         this.removeFromMap();
-        this.visible = false;
         removeObjectFromArray(this, Game.tiles);
         removeObjectFromArray(this, Game.bullets);
+        if (toRemove) this.removeFromWorld();
+    }
+
+    removeFromWorld() {
+        this.visible = false;
         Game.world.removeChild(this);
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
@@ -49,7 +53,8 @@ export class Bullet extends TileElement {
         } else if (entity.role === ROLE.PLAYER) {
             entity.damage(this.atk, this, false, false);
         }
-        this.die();
+        this.die(false);
+        this.dieFly(entity.tilePosition.x - this.tilePosition.x, entity.tilePosition.y - this.tilePosition.y);
     }
 
     removeFromMap() {
@@ -84,19 +89,36 @@ export class Bullet extends TileElement {
         this.tilePosition.x += tileStepX;
         this.tilePosition.y += tileStepY;
         this.placeOnMap();
-        let animationCounter = 0;
+        let counter = 0;
 
+        Game.app.ticker.remove(this.animation);
         const animation = (delta) => {
             this.position.x += stepX * delta;
             this.position.y += stepY * delta;
-            animationCounter += delta;
-            if (animationCounter >= animationTime) {
+            counter += delta;
+            if (counter >= animationTime) {
                 Game.app.ticker.remove(animation);
-                this.animation = null;
                 this.place();
             }
         };
         this.animation = animation;
+        Game.app.ticker.add(animation);
+    }
+
+    dieFly(tileStepX, tileStepY, animationTime = this.ANIMATION_TIME) {
+        const stepX = Game.TILESIZE * tileStepX / animationTime;
+        const stepY = Game.TILESIZE * tileStepY / animationTime;
+        let counter = 0;
+        Game.app.ticker.remove(this.animation);
+        const animation = (delta) => {
+            this.position.x += stepX * delta;
+            this.position.y += stepY * delta;
+            counter += delta;
+            if (counter >= animationTime * 0.8) {
+                Game.app.ticker.remove(animation);
+                this.removeFromWorld();
+            }
+        };
         Game.app.ticker.add(animation);
     }
 }

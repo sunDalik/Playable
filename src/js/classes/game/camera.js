@@ -21,6 +21,7 @@ camera.setNewPoint = (x, y, time) => {
         if (counter >= time) {
             camera.setup(x, y);
             Game.app.ticker.remove(animation);
+            camera.animation = null;
         }
     };
 

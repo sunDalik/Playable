@@ -5,6 +5,7 @@ import {randomChoice} from "./utils/random_utils";
 import {ITEM_OUTLINE_FILTER} from "./filters";
 import {HUDTextStyle, HUDTextStyleTitle} from "./drawing/draw_constants";
 import {HUD} from "./drawing/hud_object";
+import {camera} from "./classes/game/camera";
 
 export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false) {
     const tileX1 = player.tilePosition.x;
@@ -143,7 +144,10 @@ export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1
     let shakeCounter = 0;
     const step = shakeAmplitude / shakeAnimationTime;
     const stepY = xOnly ? 0 : randomChoice([-1, 1]) * step / 2;
-    if (Game.shakeAnimation) Game.app.ticker.remove(Game.shakeAnimation);
+    if (Game.shakeAnimation) {
+        Game.app.ticker.remove(Game.shakeAnimation);
+        if (camera.animation === null) camera.center();
+    }
 
     const animation = (delta) => {
         if (counter < shakeAnimationTime / 4) {
@@ -163,6 +167,7 @@ export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1
         }
         if (shakeCounter >= shakeCount) {
             Game.app.ticker.remove(animation);
+            if (camera.animation === null) camera.center();
         }
     };
 
