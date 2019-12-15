@@ -1,13 +1,13 @@
 //is not used yet. Will it ever be though?
 export const ENEMY_TYPE = Object.freeze({
     ROLLER: 0,
-    ROLLER_B: 1,
+    ROLLER_RED: 1,
     STAR: 2,
-    STAR_B: 3,
+    STAR_RED: 3,
     SPIDER: 4,
-    SPIDER_B: 5,
+    SPIDER_GRAY: 5,
     SNAIL: 6,
-    SNAIL_B: 7,
+    SNAIL_SPIKY: 7,
     EEL: 8,
     POISON_EEL: 9,
     DARK_EEL: 10,
@@ -60,7 +60,7 @@ export const WEAPON_TYPE = Object.freeze({
 });
 export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1, VAMPIRE_CROWN: 2});
 export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4});
-export const FOOTWEAR_TYPE = Object.freeze({ADVENTURER: 0, DAMAGING: 1, DARK: 2});
+export const FOOTWEAR_TYPE = Object.freeze({ADVENTURER: 0, DAMAGING: 1, DARK: 2, OLD_BALLET_SHOES: 3});
 export const SHIELD_TYPE = Object.freeze({PASSIVE: 0, STUNNING: 1, SPIKY: 2, ARMORING: 3});
 export const TOOL_TYPE = Object.freeze({TORCH: 0});
 

@@ -8,7 +8,7 @@ export class GraySpider extends Spider {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 3;
         this.health = this.maxHealth;
-        this.type = ENEMY_TYPE.SPIDER_B;
+        this.type = ENEMY_TYPE.SPIDER_GRAY;
     }
 
     throwAway(throwX, throwY) {

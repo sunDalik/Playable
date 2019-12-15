@@ -10,7 +10,7 @@ export class RedRoller extends Roller {
         this.atk = 1.25;
         this.SLIDE_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 14;
-        this.type = ENEMY_TYPE.ROLLER_B;
+        this.type = ENEMY_TYPE.ROLLER_RED;
     }
 
     move() {

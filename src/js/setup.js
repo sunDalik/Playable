@@ -17,7 +17,7 @@ import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8DirectionsWithoutItems} from "./utils/map_utils";
-import {gotoNextLevel, kiss} from "./game_logic";
+import {kiss} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 

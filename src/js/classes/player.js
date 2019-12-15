@@ -147,6 +147,9 @@ export class Player extends AnimatedTileElement {
                     return false;
                 } else {
                     this.step(tileStepX, tileStepY);
+                    for (const eq of this.getEquipment()) {
+                        if (eq && eq.onMove) eq.onMove(this);
+                    }
                 }
             } else if (this.secondHand && this.secondHand.use && this.secondHand.use(this, tileStepX, tileStepY)
                 || this.weapon && this.weapon.use && this.weapon.use(this, tileStepX, tileStepY)) {

@@ -9,6 +9,6 @@ export class SpikySnail extends Snail {
         this.health = this.maxHealth;
         this.turnDelay = 2;
         this.atk = 1.5;
-        this.type = ENEMY_TYPE.SNAIL_B;
+        this.type = ENEMY_TYPE.SNAIL_SPIKY;
     }
 }
