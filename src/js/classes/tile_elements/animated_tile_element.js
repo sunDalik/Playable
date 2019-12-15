@@ -16,7 +16,7 @@ export class AnimatedTileElement extends TileElement {
         this.animation = null;
     }
 
-    stepXY(tileStepX, tileStepY, onFrame = null, onEnd = null) {
+    step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {
         this.onAnimationEnd = onEnd;
         this.removeFromMap();
         this.tilePosition.x += tileStepX;
@@ -25,21 +25,22 @@ export class AnimatedTileElement extends TileElement {
 
         let jumpHeight = Game.TILESIZE * 30 * (Math.abs(tileStepY) + Math.abs(tileStepX)) / 2 / 75;
         if (tileStepY < 0) jumpHeight += Math.abs(tileStepY) * Game.TILESIZE;
+        else if (tileStepY === 0 && this.stepXjumpHeight) jumpHeight = this.stepXjumpHeight * (Math.abs(tileStepX));
+        else if (tileStepY === 0) jumpHeight = Game.TILESIZE * 50 * (Math.abs(tileStepX)) / 75;
+
         const oldPosX = this.position.x;
         const oldPosY = this.position.y;
         let counter = 0;
-        const animationTime = this.STEP_ANIMATION_TIME - 1 + Math.abs(tileStepX) + Math.abs(tileStepY);
-        const step = 1 / animationTime;
+        const time = animationTime - 1 + Math.abs(tileStepX) + Math.abs(tileStepY);
+        const step = 1 / time;
 
         const animation = (delta) => {
-            const t = (counter + 1) * step;
-            const stepX = quadraticBezier(t, 0, tileStepX * Game.TILESIZE / 2, tileStepX * Game.TILESIZE);
-            const stepY = quadraticBezier(t, 0, -jumpHeight, tileStepY * Game.TILESIZE);
-            this.position.x = oldPosX + stepX;
-            this.position.y = oldPosY + stepY;
             counter += delta;
+            const t = counter * step;
+            this.position.x = quadraticBezier(t, oldPosX, oldPosX + tileStepX * Game.TILESIZE / 2, oldPosX + tileStepX * Game.TILESIZE);
+            this.position.y = quadraticBezier(t, oldPosY, oldPosY - jumpHeight, oldPosY + tileStepY * Game.TILESIZE);
             if (onFrame) onFrame();
-            if (counter >= animationTime) {
+            if (counter >= time) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
@@ -49,87 +50,6 @@ export class AnimatedTileElement extends TileElement {
         };
         this.animation = animation;
         Game.app.ticker.add(animation);
-    }
-
-    stepX(tileStepX, onFrame = null, onEnd = null) {
-        this.onAnimationEnd = onEnd;
-        this.removeFromMap();
-        this.tilePosition.x += tileStepX;
-        this.placeOnMap();
-        const animationTime = this.STEP_ANIMATION_TIME + (Math.abs(tileStepX) - 1) * 2;
-        let jumpHeight = Game.TILESIZE * 25 / 75;
-        if (this.stepXjumpHeight) jumpHeight = this.stepXjumpHeight;
-        const a = jumpHeight / ((tileStepX * Game.TILESIZE / 2) ** 2);
-        const b = -(this.position.x + (tileStepX * Game.TILESIZE) / 2) * 2 * a;
-        const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
-        const stepX = tileStepX * Game.TILESIZE / animationTime;
-        let counter = 0;
-
-        const animation = (delta) => {
-            this.position.x += stepX * delta;
-            this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
-            counter += delta;
-            if (onFrame) onFrame();
-            if (counter >= animationTime) {
-                Game.app.ticker.remove(animation);
-                this.animation = null;
-                this.place();
-                this.onAnimationEnd = null;
-                if (onEnd) onEnd();
-            }
-        };
-        this.animation = animation;
-        Game.app.ticker.add(animation);
-    }
-
-    //Is not used now and will probably be removed!!
-    //are we happy with this??
-    //I'm not sure...
-    //todo...
-    stepY(tileStepY, onFrame = null, onEnd = null) {
-        this.onAnimationEnd = onEnd;
-        this.removeFromMap();
-        this.tilePosition.y += tileStepY;
-        this.placeOnMap();
-        const oldPosY = this.position.y;
-        let P0, P1, P2, P3;
-        if (tileStepY < 0) {
-            P0 = 0.17;
-            P1 = 0.89;
-            P2 = 0.84;
-            P3 = 1.24;
-        } else {
-            P0 = 0.42;
-            P1 = -0.37;
-            P2 = 0.97;
-            P3 = 0.75;
-        }
-
-        const animationTime = this.STEP_ANIMATION_TIME + (Math.abs(tileStepY) - 1) * 2;
-        const step = 1 / animationTime;
-        let counter = 0;
-
-        const animation = (delta) => {
-            const t = (counter + 1) * step;
-            this.position.y = oldPosY + cubicBezier(t, P0, P1, P2, P3) * Game.TILESIZE * tileStepY;
-            counter += delta;
-            if (onFrame) onFrame();
-            if (counter >= animationTime) {
-                Game.app.ticker.remove(animation);
-                this.animation = null;
-                this.place();
-                this.onAnimationEnd = null;
-                if (onEnd) onEnd();
-            }
-        };
-        this.animation = animation;
-        Game.app.ticker.add(animation);
-    }
-
-    step(tileStepX, tileStepY, onFrame = null, onEnd = null) {
-        if (tileStepX !== 0 && tileStepY !== 0) this.stepXY(tileStepX, tileStepY, onFrame, onEnd);
-        else if (tileStepX !== 0) this.stepX(tileStepX, onFrame, onEnd);
-        else if (tileStepY !== 0) this.stepXY(tileStepX, tileStepY, onFrame, onEnd);
     }
 
     bumpX(tileStepX, onFrame = null, onEnd = null) {

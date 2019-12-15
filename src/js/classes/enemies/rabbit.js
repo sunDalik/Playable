@@ -20,7 +20,7 @@ export class Rabbit extends Enemy {
         this.predator = null;
         this.turnDelay = 1;
         this.currentTurnDelay = this.turnDelay;
-        this.stepXjumpHeight = Game.TILESIZE * 35 / 75;
+        this.stepXjumpHeight = Game.TILESIZE * 70 / 75;
         if (this.rabbitType === RABBIT_TYPE.ENERGY) {
             this.energyDrop = 30;
         }

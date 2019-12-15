@@ -25,7 +25,7 @@ export class Alligator extends Enemy {
         this.prey = null;
         this.triggeredDirection = null;
         this.direction = {x: 1, y: 0};
-        this.stepXjumpHeight = Game.TILESIZE * 12 / 75;
+        this.stepXjumpHeight = Game.TILESIZE * 24 / 75;
         this.scaleModifier = 1.1;
         this.maxShootingTimes = 5;
         this.currentShootingTimes = 0;
@@ -33,6 +33,7 @@ export class Alligator extends Enemy {
             this.energyDrop = 40;
         }
         this.fitToTile();
+        this.updateTexture();
     }
 
     fitToTile() {
@@ -60,7 +61,7 @@ export class Alligator extends Enemy {
                 if (this.prey.rabbitType !== undefined) {
                     this.alligatorType = this.prey.rabbitType;
                     if (this.alligatorType === RABBIT_TYPE.ENERGY) {
-                        this.stepXjumpHeight = Game.TILESIZE * 30 / 75;
+                        this.stepXjumpHeight = Game.TILESIZE * 60 / 75;
                         this.energyDrop = 40;
                     }
                     this.updateTexture();
@@ -97,7 +98,7 @@ export class Alligator extends Enemy {
                 if (this.prey.rabbitType !== undefined) {
                     this.alligatorType = this.prey.rabbitType;
                     if (this.alligatorType === RABBIT_TYPE.ENERGY) {
-                        this.stepXjumpHeight = Game.TILESIZE * 30 / 75;
+                        this.stepXjumpHeight = Game.TILESIZE * 60 / 75;
                         this.energyDrop = 40;
                         this.step(this.direction.x, this.direction.y);
                         this.updateTexture();

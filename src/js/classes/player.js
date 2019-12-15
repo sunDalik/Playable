@@ -249,6 +249,9 @@ export class Player extends AnimatedTileElement {
         } else {
             super.step(tileStepX, tileStepY);
             if (otherPlayer(this).carried) otherPlayer(this).step(tileStepX, tileStepY);
+            lightPlayerPosition(this);
+            this.pickUpItems();
+            camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
         }
         if (!Game.player.carried && !Game.player2.carried) drawInteractionKeys();
     }
@@ -261,27 +264,6 @@ export class Player extends AnimatedTileElement {
             super.bump(tileStepX, tileStepY);
             if (otherPlayer(this).carried) otherPlayer(this).bump(tileStepX, tileStepY);
         }
-    }
-
-    stepX(tileStepX) {
-        super.stepX(tileStepX);
-        lightPlayerPosition(this);
-        this.pickUpItems();
-        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
-    }
-
-    stepY(tileStepY) {
-        super.stepY(tileStepY);
-        lightPlayerPosition(this);
-        this.pickUpItems();
-        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
-    }
-
-    stepXY(tileStepX, tileStepY) {
-        super.stepXY(tileStepX, tileStepY);
-        lightPlayerPosition(this);
-        this.pickUpItems();
-        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
     }
 
     slide(tileDirX, tileDirY, SLIDE_ANIMATION_TIME = this.SLIDE_ANIMATION_TIME) {
