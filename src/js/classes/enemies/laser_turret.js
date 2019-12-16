@@ -81,7 +81,7 @@ export class LaserTurret extends Enemy {
         for (let x = this.directionX; ; x += this.directionX) {
             if (isAnyWall(this.tilePosition.x + x, this.tilePosition.y)) break;
             const attackSprite = new FullTileElement(PIXI.Texture.WHITE, this.tilePosition.x + x, this.tilePosition.y);
-            attackSprite.zIndex = 4;
+            attackSprite.zIndex = 5;
             attackSprite.tint = 0xFF0000;
             attackSprite.width = Game.TILESIZE;
             attackSprite.height = Game.TILESIZE / 3;

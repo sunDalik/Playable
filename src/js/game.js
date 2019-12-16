@@ -1,4 +1,4 @@
-import {STAGE} from "./enums"
+import {STAGE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 
 export const Game = {};
@@ -70,3 +70,5 @@ Game.darkEnergy = 0;
 
 Game.obelisks = [];
 Game.torchTile = {};
+
+Game.followChain = null;

@@ -4,6 +4,7 @@ import {ROLE, STAGE} from "../enums";
 import {FullTileElement} from "../classes/tile_elements/full_tile_element";
 import {decrementEachDigitInHex} from "../utils/basic_utils";
 import {DarkTunnelTile} from "../classes/tile_elements/dark_tunnel_tile";
+import {updateFollowChain} from "./draw_dunno";
 
 export function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {
@@ -87,4 +88,9 @@ export function drawOther() {
     Game.world.addChild(blackOutline);
     Game.otherGraphics.push(gameWorldBG);
     Game.otherGraphics.push(blackOutline);
+    if (Game.followChain === null) {
+        Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
+        Game.world.addChild(Game.followChain);
+    }
+    updateFollowChain();
 }

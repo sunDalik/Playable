@@ -22,6 +22,10 @@ export function tileDistance(a, b) {
     return Math.abs(a.tilePosition.x - b.tilePosition.x) + Math.abs(a.tilePosition.y - b.tilePosition.y);
 }
 
+export function distance(a, b) {
+    return Math.abs(a.position.x - b.position.x) + Math.abs(a.position.y - b.position.y);
+}
+
 export function setTickTimeout(callback, tickTimeout) {
     let counter = 0;
     const timeout = (delta) => {

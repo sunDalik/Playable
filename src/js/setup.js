@@ -15,7 +15,7 @@ import {drawHUD, drawInteractionKeys, drawMiniMap, drawMovementKeyBindings} from
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
-import {get8DirectionsWithoutItems} from "./utils/map_utils";
+import {get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
 import {kiss} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
@@ -56,7 +56,7 @@ function setup() {
     Game.player.armor = new BasicArmor();
 
     Game.player.zIndex = 1;
-    Game.player2.zIndex = Game.player.zIndex + 1;
+    Game.player2.zIndex = Game.player.zIndex + 2;
     Game.primaryPlayer = Game.player2;
     Game.lastPlayerMoved = Game.player;
 
@@ -91,7 +91,9 @@ export function initializeLevel() {
         if (Game.player.dead) {
             Game.player2.tilePosition.set(Game.startPos.x, Game.startPos.y);
         } else {
-            const startPlace = randomChoice(get8DirectionsWithoutItems(Game.player));
+            let startPlace;
+            if (Game.followMode) startPlace = randomChoice(getCardinalDirectionsWithoutItems(Game.player));
+            else startPlace = randomChoice(get8DirectionsWithoutItems(Game.player));
             Game.player2.tilePosition.set(Game.player.tilePosition.x + startPlace.x, Game.player.tilePosition.y + startPlace.y);
         }
         Game.player2.place();

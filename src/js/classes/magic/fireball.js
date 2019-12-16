@@ -38,7 +38,7 @@ export class Fireball {
             fire.height = Game.TILESIZE * this.multiplier;
             fire.rotation = Math.atan((Game.player2.y - Game.player.y) / (Game.player2.x - Game.player.x));
             if ((Game.player2.x - Game.player.x) < 0) fire.rotation += Math.PI;
-            fire.zIndex = 4;
+            fire.zIndex = 5;
             if (Game.stage === STAGE.DARK_TUNNEL) fire.zIndex = Game.darkTiles[0][0].zIndex + 1;
             if (fire.width !== 0) createFadingAttack(fire);
 
@@ -57,7 +57,7 @@ export class Fireball {
         if (Game.player2.x < Game.player.x) {
             fire.rotation += Math.PI;
         }
-        fire.zIndex = 4;
+        fire.zIndex = 5;
         if (Game.stage === STAGE.DARK_TUNNEL) fire.zIndex = Game.darkTiles[0][0].zIndex + 1;
         createFadingAttack(fire);
         fire.getBounds();

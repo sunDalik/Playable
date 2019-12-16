@@ -1,6 +1,6 @@
 import {Game} from "../game";
 import {keyboard} from "./keyboard_handler";
-import {carryPlayer, playerTurn, switchPlayers, toggleFollowMode} from "../game_logic";
+import {carryPlayer, gotoNextLevel, playerTurn, switchPlayers, toggleFollowMode} from "../game_logic";
 import * as PIXI from "pixi.js"
 
 export function bindKeys() {
@@ -56,6 +56,8 @@ export function bindKeys() {
     followKey.press = () => {
         playerTurn(null, toggleFollowMode, true)
     };
+
+    //keyboard("KeyN").press = gotoNextLevel; //for tests
 }
 
 function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {

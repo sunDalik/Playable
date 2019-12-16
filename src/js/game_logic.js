@@ -5,6 +5,7 @@ import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE} from "./enums"
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance} from "./utils/game_utils";
+import {updateFollowChain} from "./drawing/draw_dunno";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -80,9 +81,12 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
         const moveResult = playerMove();
         if (moveResult !== false) {
             if (player) Game.lastPlayerMoved = player;
-            if (player && Game.followMode && tileDistance(player, otherPlayer(player)) >= 2) {
+            if (player && Game.followMode && tileDistance(player, otherPlayer(player)) === 2) {
                 if (otherPlayer(player).cancellable) otherPlayer(player).cancelAnimation();
                 otherPlayer(player).step(lastPlayerPos.x - otherPlayer(player).tilePosition.x, lastPlayerPos.y - otherPlayer(player).tilePosition.y);
+            } else if (player && Game.followMode && tileDistance(player, otherPlayer(player)) > 2) {
+                Game.followMode = false;
+                updateFollowChain();
             }
             damagePlayersWithHazards();
             setEnemyTurnTimeout();
@@ -144,12 +148,15 @@ export function toggleFollowMode() {
     } else {
         Game.followMode = false;
     }
-    if (Game.followMode) {
-
-    } else {
-
-    }
+    updateFollowChain();
     return false;
+}
+
+export function checkFollowMode() {
+    if (Game.followMode && (tileDistance(Game.player, Game.player2) > 1 || Game.player.dead || Game.player2.dead)) {
+        Game.followMode = false;
+    }
+    updateFollowChain();
 }
 
 export function kiss(healAmount = 1) {

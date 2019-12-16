@@ -17,7 +17,7 @@ import {createHeartAnimation, rotate, shakeScreen, showHelpBox} from "../animati
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
-    drawStatsForPlayer, redrawAllMagicSlots,
+    redrawAllMagicSlots,
     redrawHealthForPlayer,
     redrawMiniMapPixel,
     redrawSecondHand,
@@ -26,12 +26,13 @@ import {
     redrawWeaponAndSecondHand
 } from "../drawing/draw_hud";
 import {isInanimate, isRelativelyEmpty} from "../map_checks";
-import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer, toggleFollowMode} from "../game_logic";
+import {checkFollowMode, gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {LyingItem} from "./equipment/lying_item";
 import {randomChoice} from "../utils/random_utils";
-import {getEffectivePlayerCenter, otherPlayer, setTickTimeout, tileDistance} from "../utils/game_utils";
+import {getEffectivePlayerCenter, otherPlayer, setTickTimeout} from "../utils/game_utils";
 import {camera} from "./game/camera";
+import {updateFollowChain} from "../drawing/draw_dunno";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -101,10 +102,12 @@ export class Player extends AnimatedTileElement {
                 let result = false;
                 if (isRelativelyEmpty(otherPlayer(this).tilePosition.x + tileStepX, otherPlayer(this).tilePosition.y + tileStepY)) {
                     if (isRelativelyEmpty(otherPlayer(this).tilePosition.x + tileStepX * 2, otherPlayer(this).tilePosition.y + tileStepY * 2)) {
-                        otherPlayer(this).slide(tileStepX * 2, tileStepY * 2, this.PUSH_PULL_ANIMATION_TIME);
+                        otherPlayer(this).place();
+                        otherPlayer(this).slide(tileStepX * 2, tileStepY * 2, this.SLIDE_ANIMATION_TIME);
                         result = true;
                     } else {
-                        otherPlayer(this).slide(tileStepX, tileStepY, this.PUSH_PULL_ANIMATION_TIME);
+                        otherPlayer(this).place();
+                        otherPlayer(this).slide(tileStepX, tileStepY, this.SLIDE_ANIMATION_TIME / 2);
                         result = true;
                     }
                 } else {
@@ -112,11 +115,9 @@ export class Player extends AnimatedTileElement {
                     result = false;
                 }
                 this.pushPullMode = false;
+                checkFollowMode();
                 drawMovementKeyBindings();
                 drawInteractionKeys();
-                if (Game.followMode && tileDistance(this, otherPlayer(this)) > 1) {
-                    toggleFollowMode();
-                }
                 return result;
             } else return false;
         }
@@ -250,7 +251,7 @@ export class Player extends AnimatedTileElement {
         if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
             this.slide(tileStepX, tileStepY);
         } else {
-            super.step(tileStepX, tileStepY);
+            super.step(tileStepX, tileStepY, updateFollowChain, updateFollowChain);
             lightPlayerPosition(this);
             this.pickUpItems();
             camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
@@ -260,14 +261,14 @@ export class Player extends AnimatedTileElement {
 
     bump(tileStepX, tileStepY) {
         if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
-            this.slideBump(tileStepX, tileStepY, null, null, this.SLIDE_BUMP_ANIMATION_TIME);
+            this.slideBump(tileStepX, tileStepY, updateFollowChain, updateFollowChain, this.SLIDE_BUMP_ANIMATION_TIME);
         } else {
-            super.bump(tileStepX, tileStepY);
+            super.bump(tileStepX, tileStepY, updateFollowChain, updateFollowChain);
         }
     }
 
     slide(tileDirX, tileDirY, animationTime = this.SLIDE_ANIMATION_TIME) {
-        super.slide(tileDirX, tileDirY, null, null, animationTime);
+        super.slide(tileDirX, tileDirY, updateFollowChain, updateFollowChain, animationTime);
         lightPlayerPosition(this);
         this.pickUpItems();
         drawInteractionKeys();
@@ -328,7 +329,8 @@ export class Player extends AnimatedTileElement {
     die() {
         this.dead = true;
         this.visible = false;
-        toggleFollowMode();
+        Game.followMode = false;
+        updateFollowChain();
         drawMovementKeyBindings(this);
         drawInteractionKeys(this);
         this.removeFromMap(this);
@@ -548,6 +550,16 @@ export class Player extends AnimatedTileElement {
         drawMovementKeyBindings();
         drawInteractionKeys();
         return false;
+    }
+
+    microSlide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.MICRO_SLIDE_ANIMATION_TIME) {
+        super.microSlide(tileStepX, tileStepY, () => {
+            if (onFrame) onFrame();
+            updateFollowChain();
+        }, () => {
+            if (onEnd) onEnd();
+            updateFollowChain();
+        }, animationTime);
     }
 
     spinItem(item, animationTime = 20, fullSpinTimes = 1) {

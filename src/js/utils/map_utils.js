@@ -54,3 +54,13 @@ export function get8DirectionsWithoutItems(tileElement) {
     }
     return directions;
 }
+
+export function getCardinalDirectionsWithoutItems(tileElement) {
+    const directions = [];
+    for (const dir of getCardinalDirections()) {
+        if (Game.map[tileElement.tilePosition.y + dir.y][tileElement.tilePosition.x + dir.x].item === null) {
+            directions.push(dir);
+        }
+    }
+    return directions;
+}

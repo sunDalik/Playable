@@ -13,6 +13,7 @@ export function loadAll(afterLoad) {
         .add("src/images/exit.png")
         .add("src/images/player_attack.png")
         .add("src/images/player2_attack.png")
+        .add("src/images/follow_chain.png")
 
         .add("src/images/icons/swap_icon_1.png")
         .add("src/images/icons/swap_icon_2.png")
