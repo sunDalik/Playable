@@ -88,9 +88,7 @@ export function drawOther() {
     Game.world.addChild(blackOutline);
     Game.otherGraphics.push(gameWorldBG);
     Game.otherGraphics.push(blackOutline);
-    if (Game.followChain === null) {
-        Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
-        Game.world.addChild(Game.followChain);
-    }
+    Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
+    Game.world.addChild(Game.followChain);
     updateFollowChain();
 }

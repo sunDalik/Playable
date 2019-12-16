@@ -3,6 +3,7 @@ import {Game} from "../../game";
 import {isEmpty} from "../../map_checks";
 import {HAZARD_TYPE, ROLE} from "../../enums";
 import {removeObjectFromArray} from "../../utils/basic_utils";
+import {removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 
 export class World extends PIXI.Container {
     constructor() {
@@ -71,21 +72,9 @@ export class World extends PIXI.Container {
     }
 
     clean() {
-        for (const tile of Game.tiles) {
-            this.removeChild(tile);
-        }
-        for (const tile of Game.darkTiles) {
-            this.removeChild(tile);
-        }
-        for (const graphic of Game.otherGraphics) {
-            this.removeChild(graphic);
-        }
-        for (const hazard of Game.hazards) {
-            this.removeChild(hazard);
-        }
+        removeAllChildrenFromContainer(this);
         for (const animation of Game.infiniteAnimations) {
             Game.app.ticker.remove(animation);
         }
-        this.removeChild(Game.grid);
     }
 }

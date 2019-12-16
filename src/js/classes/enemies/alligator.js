@@ -153,6 +153,7 @@ export class Alligator extends Enemy {
                         }
                         break;
                     case RABBIT_TYPE.POISON:
+                        //ugghh should kinda fix somehow the issue when you damage poison alligator while he is shooting
                         if (isNotAWall(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 1),
                             this.tilePosition.y + this.direction.y * (this.currentShootingTimes * 2 + 1))) {
                             Game.world.addHazard(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 1),

@@ -17,6 +17,7 @@ export class AbyssalSpit {
         this.description = "They get what they deserve";
     }
 
+    //todo: dont draw unusable key bindings while charging
     cast(wielder) {
         if (this.uses <= 0) return false;
         if (!wielder.charging) {

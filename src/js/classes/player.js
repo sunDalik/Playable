@@ -277,7 +277,6 @@ export class Player extends AnimatedTileElement {
 
     shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
         super.shake(dirX, dirY, animationTime);
-        otherPlayer(this).shake(dirX, dirY, animationTime);
     }
 
     pickUpItems() {
@@ -570,7 +569,7 @@ export class Player extends AnimatedTileElement {
         itemSprite.position.set(this.tilePosition.x * Game.TILESIZE + Game.TILESIZE / 2, this.tilePosition.y * Game.TILESIZE + Game.TILESIZE / 2);
         itemSprite.width = Game.TILESIZE * 0.9;
         itemSprite.height = Game.TILESIZE * 0.9;
-        itemSprite.zIndex = 2;
+        itemSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(itemSprite);
 
         this.cancelAnimation();

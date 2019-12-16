@@ -20,6 +20,7 @@ export class DarkBoots {
         wielder.fireImmunity--;
     }
 
+    //should boots work with wings or nah?...
     onNewTurn(wielder) {
         const hazard = Game.map[wielder.tilePosition.y][wielder.tilePosition.x].hazard;
         if (hazard) {
