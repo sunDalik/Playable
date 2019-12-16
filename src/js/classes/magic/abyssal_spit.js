@@ -31,7 +31,6 @@ export class AbyssalSpit {
     release(wielder, stepX, stepY) {
         if (stepX === 0 && stepY === 0) return false;
         wielder.cancelAnimation();
-        if (otherPlayer(wielder).carried) otherPlayer(wielder).cancelAnimation();
         wielder.bump(stepX, stepY);
         this.uses--;
         for (let i = 1; ; i++) {

@@ -1,6 +1,6 @@
 import {Game} from "../game";
 import {keyboard} from "./keyboard_handler";
-import {carryPlayer, playerTurn, switchPlayers} from "../game_logic";
+import {carryPlayer, playerTurn, switchPlayers, toggleFollowMode} from "../game_logic";
 import * as PIXI from "pixi.js"
 
 export function bindKeys() {
@@ -52,9 +52,9 @@ export function bindKeys() {
         }, true);
     };
 
-    const carryKey = keyboard("KeyX");
-    carryKey.press = () => {
-        playerTurn(null, carryPlayer, true)
+    const followKey = keyboard("KeyF");
+    followKey.press = () => {
+        playerTurn(null, toggleFollowMode, true)
     };
 }
 

@@ -12,6 +12,7 @@ Game.grid = null;
 Game.TILESIZE = 65;
 Game.REFERENCE_TILESIZE = Game.TILESIZE;
 
+Game.followMode = false;
 Game.chainLength = 800;
 
 Game.level = [];

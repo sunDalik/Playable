@@ -26,11 +26,11 @@ import {
     redrawWeaponAndSecondHand
 } from "../drawing/draw_hud";
 import {isInanimate, isRelativelyEmpty} from "../map_checks";
-import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
+import {gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer, toggleFollowMode} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {LyingItem} from "./equipment/lying_item";
 import {randomChoice} from "../utils/random_utils";
-import {getEffectivePlayerCenter, otherPlayer, setTickTimeout} from "../utils/game_utils";
+import {getEffectivePlayerCenter, otherPlayer, setTickTimeout, tileDistance} from "../utils/game_utils";
 import {camera} from "./game/camera";
 
 export class Player extends AnimatedTileElement {
@@ -40,10 +40,8 @@ export class Player extends AnimatedTileElement {
         this.health = this.maxHealth;
         this.atkBase = 0;
         this.atkMul = 1;
-        this.extraAtkMul = 1;
         this.defBase = 0;
         this.defMul = 1;
-        this.extraDefMul = 1;
         this.STEP_ANIMATION_TIME = 8;
         this.BUMP_ANIMATION_TIME = 12;
         this.SLIDE_ANIMATION_TIME = 8;
@@ -66,7 +64,6 @@ export class Player extends AnimatedTileElement {
         this.savedTileStepX = 0;
         this.savedTileStepY = 0;
         this.animationSubSprites = [];
-        this.carried = false;
         this.pushPullMode = false;
         this.cancellable = true;
         this.fireImmunity = 0;
@@ -117,6 +114,9 @@ export class Player extends AnimatedTileElement {
                 this.pushPullMode = false;
                 drawMovementKeyBindings();
                 drawInteractionKeys();
+                if (Game.followMode && tileDistance(this, otherPlayer(this)) > 1) {
+                    toggleFollowMode();
+                }
                 return result;
             } else return false;
         }
@@ -223,7 +223,7 @@ export class Player extends AnimatedTileElement {
     }
 
     getAtkMul() {
-        return this.atkMul * this.extraAtkMul;
+        return this.atkMul;
     }
 
     getDef() {
@@ -243,29 +243,26 @@ export class Player extends AnimatedTileElement {
     }
 
     getDefMul() {
-        return this.defMul * this.extraDefMul;
+        return this.defMul;
     }
 
     step(tileStepX, tileStepY) {
-        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS && !this.carried) {
+        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
             this.slide(tileStepX, tileStepY);
         } else {
             super.step(tileStepX, tileStepY);
-            if (otherPlayer(this).carried) otherPlayer(this).step(tileStepX, tileStepY);
             lightPlayerPosition(this);
             this.pickUpItems();
             camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, this.STEP_ANIMATION_TIME);
         }
-        if (!Game.player.carried && !Game.player2.carried) drawInteractionKeys();
+        drawInteractionKeys();
     }
 
     bump(tileStepX, tileStepY) {
-        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS && !this.carried) {
+        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
             this.slideBump(tileStepX, tileStepY, null, null, this.SLIDE_BUMP_ANIMATION_TIME);
-            if (otherPlayer(this).carried) otherPlayer(this).slideBump(tileStepX, tileStepY, null, null, this.SLIDE_BUMP_ANIMATION_TIME);
         } else {
             super.bump(tileStepX, tileStepY);
-            if (otherPlayer(this).carried) otherPlayer(this).bump(tileStepX, tileStepY);
         }
     }
 
@@ -273,14 +270,13 @@ export class Player extends AnimatedTileElement {
         super.slide(tileDirX, tileDirY, null, null, animationTime);
         lightPlayerPosition(this);
         this.pickUpItems();
-        if (otherPlayer(this).carried) otherPlayer(this).slide(tileDirX, tileDirY);
-        if (!Game.player.carried && !Game.player2.carried) drawInteractionKeys();
+        drawInteractionKeys();
         camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
     }
 
     shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
         super.shake(dirX, dirY, animationTime);
-        if (otherPlayer(this).carried) otherPlayer(this).shake(dirX, dirY, animationTime);
+        otherPlayer(this).shake(dirX, dirY, animationTime);
     }
 
     pickUpItems() {
@@ -303,9 +299,7 @@ export class Player extends AnimatedTileElement {
                     && (ally.shielded || ally.secondHand.type === SHIELD_TYPE.PASSIVE) && ally.secondHand.onBlock(source, ally, directHit)) {
                     blocked = true;
                 } else if (this.armor && this.armor.type === ARMOR_TYPE.WINGS && Math.random() < this.armor.dodgeChance) {
-                    const rotateClockwise = randomChoice([true, false]);
-                    rotate(this, rotateClockwise);
-                    if (otherPlayer(this).carried) rotate(otherPlayer(this), rotateClockwise);
+                    rotate(this, randomChoice([true, false]));
                     blocked = true;
                 }
             }
@@ -332,13 +326,9 @@ export class Player extends AnimatedTileElement {
     }
 
     die() {
-        this.carried = false;
-        otherPlayer(this).carried = false;
-        this.extraAtkMul = 1;
-        this.extraDefMul = 1;
-        drawStatsForPlayer(this);
         this.dead = true;
         this.visible = false;
+        toggleFollowMode();
         drawMovementKeyBindings(this);
         drawInteractionKeys(this);
         this.removeFromMap(this);

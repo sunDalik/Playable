@@ -83,37 +83,19 @@ export function initializeLevel() {
     calculateDetectionGraph(Game.map);
     Game.levelGraph = getLevelPlayerGraph(level);
     if (!Game.player.dead) {
-        if (!Game.player.carried) {
-            Game.player.tilePosition.set(Game.startPos.x, Game.startPos.y);
-            Game.player.place();
-            Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
-        }
-        if (Game.player2.carried) {
-            Game.player2.tilePosition.set(Game.player.tilePosition.x, Game.player.tilePosition.y);
-            Game.player2.place();
-            Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = Game.player2;
-        }
+        Game.player.tilePosition.set(Game.startPos.x, Game.startPos.y);
+        Game.player.place();
+        Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
     }
     if (!Game.player2.dead) {
-        if (!Game.player2.carried) {
-            if (Game.player.carried)
-                Game.player2.tilePosition.set(Game.startPos.x, Game.startPos.y);
-            else {
-                if (Game.player.dead) {
-                    Game.player2.tilePosition.set(Game.startPos.x, Game.startPos.y);
-                } else {
-                    const startPlace = randomChoice(get8DirectionsWithoutItems(Game.player));
-                    Game.player2.tilePosition.set(Game.player.tilePosition.x + startPlace.x, Game.player.tilePosition.y + startPlace.y);
-                }
-            }
-            Game.player2.place();
-            Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+        if (Game.player.dead) {
+            Game.player2.tilePosition.set(Game.startPos.x, Game.startPos.y);
+        } else {
+            const startPlace = randomChoice(get8DirectionsWithoutItems(Game.player));
+            Game.player2.tilePosition.set(Game.player.tilePosition.x + startPlace.x, Game.player.tilePosition.y + startPlace.y);
         }
-        if (Game.player.carried) {
-            Game.player.tilePosition.set(Game.player2.tilePosition.x, Game.player2.tilePosition.y);
-            Game.player.place();
-            Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].secondaryEntity = Game.player;
-        }
+        Game.player2.place();
+        Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
     }
     drawInteractionKeys();
     drawMovementKeyBindings();

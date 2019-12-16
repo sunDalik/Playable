@@ -26,10 +26,9 @@ export function lightPlayerPosition(player) {
             }
             lightWorldDT(px, py, player.secondHand.lightSpread);
         } else {
-            if (!player.carried) lightWorld(px, py, 1, true);
+            lightWorld(px, py, 1, true);
         }
     } else {
-        if (player.carried) return;
         const pathDist = 5;
         const roomDist = 9;
         if (Game.map[py][px].tileType === TILE_TYPE.PATH) {

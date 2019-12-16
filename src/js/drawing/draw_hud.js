@@ -288,7 +288,7 @@ export function redrawFootwear(player) {
 export function drawMovementKeyBindings() {
     const container = HUD.movementGuide;
     removeAllChildrenFromContainer(container);
-    if (!Game.player.dead && !Game.player.carried && !Game.player2.pushPullMode) {
+    if (!Game.player.dead && !Game.player2.pushPullMode) {
         const heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
         const topKey = "W";
         const bottomRowKeys = ["A", "S", "D"];
@@ -307,7 +307,7 @@ export function drawMovementKeyBindings() {
         }
     }
 
-    if (!Game.player2.dead && !Game.player2.carried && !Game.player.pushPullMode) {
+    if (!Game.player2.dead && !Game.player.pushPullMode) {
         const heartXOffset = Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 - HUDGuideOffsetX;
         let topKey = "I";
         const bottomRowKeys = ["L", "K", "J"];
@@ -352,16 +352,9 @@ export function drawInteractionKeys() {
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
         drawPlayer(Game.player);
         drawPlayer(Game.player2);
-        if (Game.player.carried || Game.player2.carried) {
-            drawIconAndKey("src/images/icons/unchain_icon.png", "X",
-                Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
-        } else {
-            drawIconAndKey("src/images/icons/chain_icon.png", "X",
-                Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
-            const swapTexture = Game.player === Game.primaryPlayer ? "src/images/icons/swap_icon_1.png" : "src/images/icons/swap_icon_2.png";
-            drawIconAndKey(swapTexture, "Z",
-                Game.app.renderer.screen.width / 2 - playerSize - HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
-        }
+        const swapTexture = Game.player === Game.primaryPlayer ? "src/images/icons/swap_icon_1.png" : "src/images/icons/swap_icon_2.png";
+        drawIconAndKey(swapTexture, "Z",
+            Game.app.renderer.screen.width / 2 - playerSize - HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
 
         function drawPlayer(player) {
             const texture = player === Game.player ? "src/images/player.png" : "src/images/player2.png";

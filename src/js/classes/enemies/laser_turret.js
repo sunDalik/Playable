@@ -15,7 +15,7 @@ export class LaserTurret extends Enemy {
         this.atk = 1;
         this.triggered = false;
         this.type = ENEMY_TYPE.LASER_TURRET;
-        this.turnDelay = 2;
+        this.turnDelay = 3;
         this.currentTurnDelay = 1;
         this.movable = false;
         this.role = ROLE.WALL_TRAP;

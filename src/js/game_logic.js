@@ -4,7 +4,7 @@ import {initializeLevel} from "./setup"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE} from "./enums"
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation, showHelpBox} from "./animations";
-import {otherPlayer, setTickTimeout} from "./utils/game_utils";
+import {otherPlayer, setTickTimeout, tileDistance} from "./utils/game_utils";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -61,7 +61,7 @@ export function updateHazards() {
 
 export function playerTurn(player, playerMove, bothPlayers = false) {
     if (((bothPlayers && !Game.player.dead && !Game.player2.dead)
-        || (!bothPlayers && !player.dead && !player.carried))) {
+        || (!bothPlayers && !player.dead))) {
         if (Game.enemiesTimeout !== null) {
             Game.app.ticker.remove(Game.enemiesTimeout);
             enemyTurn();
@@ -73,13 +73,17 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
             if (Game.player2.cancellable) Game.player2.cancelAnimation();
         } else {
             if (player.cancellable) player.cancelAnimation();
-            if (otherPlayer(player).carried) {
-                if (otherPlayer(player).cancellable) otherPlayer(player).cancelAnimation();
-            }
         }
+        let lastPlayerPos;
+        if (player) lastPlayerPos = {x: player.tilePosition.x, y: player.tilePosition.y};
+
         const moveResult = playerMove();
         if (moveResult !== false) {
             if (player) Game.lastPlayerMoved = player;
+            if (player && Game.followMode && tileDistance(player, otherPlayer(player)) >= 2) {
+                if (otherPlayer(player).cancellable) otherPlayer(player).cancelAnimation();
+                otherPlayer(player).step(lastPlayerPos.x - otherPlayer(player).tilePosition.x, lastPlayerPos.y - otherPlayer(player).tilePosition.y);
+            }
             damagePlayersWithHazards();
             setEnemyTurnTimeout();
             Game.player.cancellable = true;
@@ -94,7 +98,7 @@ export function damagePlayersWithHazards() {
 }
 
 export function damagePlayerWithHazards(player) {
-    if (!player.dead && !player.carried) {
+    if (!player.dead) {
         const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
         if (hazard) {
             if ((hazard.type === HAZARD_TYPE.POISON || hazard.type === HAZARD_TYPE.DARK_POISON) && player.poisonImmunity <= 0) {
@@ -117,7 +121,7 @@ export function damagePlayerWithHazards(player) {
 
 export function switchPlayers() {
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y
-        && !Game.player.dead && !Game.player2.dead && !Game.player.carried && !Game.player2.carried) {
+        && !Game.player.dead && !Game.player2.dead) {
         let temp = Game.player2.zIndex;
         Game.player2.zIndex = Game.player.zIndex;
         Game.player.zIndex = temp;
@@ -134,29 +138,18 @@ export function switchPlayers() {
     } else return false;
 }
 
-export function carryPlayer() {
-    if (Game.player.carried === true) {
-        Game.player.carried = false;
-        Game.player2.extraAtkMul = 1;
-        Game.player2.extraDefMul = 1;
-        drawStatsForPlayer(Game.player2);
-    } else if (Game.player2.carried === true) {
-        Game.player2.carried = false;
-        Game.player.extraAtkMul = 1;
-        Game.player.extraDefMul = 1;
-        drawStatsForPlayer(Game.player);
-    } else if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y
-        && !Game.player.dead && !Game.player2.dead) {
-        otherPlayer(Game.primaryPlayer).carried = true;
-        Game.primaryPlayer.extraAtkMul = 0.5;
-        Game.primaryPlayer.extraDefMul = 0.5;
-        drawStatsForPlayer(Game.primaryPlayer);
-    } else return false;
-    drawMovementKeyBindings();
-    drawInteractionKeys();
-    if ((Game.player.armor && Game.player.armor.type === ARMOR_TYPE.ELECTRIC)
-        || (Game.player2.armor && Game.player2.armor.type === ARMOR_TYPE.ELECTRIC)) return false;
-    else return true;
+export function toggleFollowMode() {
+    if (!Game.player.dead && !Game.player2.dead && tileDistance(Game.player, Game.player2) <= 1) {
+        Game.followMode = !Game.followMode;
+    } else {
+        Game.followMode = false;
+    }
+    if (Game.followMode) {
+
+    } else {
+
+    }
+    return false;
 }
 
 export function kiss(healAmount = 1) {
