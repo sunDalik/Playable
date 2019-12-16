@@ -24,6 +24,7 @@ import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
 import {EQUIPMENT_TYPE, MAGIC_TYPE, SHIELD_TYPE, TILE_TYPE} from "../enums";
+import {otherPlayer} from "../utils/game_utils";
 
 export function drawHUD() {
     drawHealth();
@@ -340,6 +341,7 @@ function drawKey(container, keyText, posX, posY) {
     key.addChild(rect);
     key.addChild(text);
     container.addChild(key);
+    return key;
 }
 
 export function drawInteractionKeys() {
@@ -350,8 +352,24 @@ export function drawInteractionKeys() {
     const offsetY = 18;
     const iconSize = 30;
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
-        drawPlayer(Game.player);
+        const playerSprite = drawPlayer(Game.player);
         drawPlayer(Game.player2);
+        if (Game.followMode) {
+            drawIconAndKey("src/images/icons/unchain_icon.png", "F",
+                Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
+            const chain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
+            chain.width = chain.height = playerSize;
+            chain.anchor.set(0.5, 0.5);
+            chain.zIndex = Game.primaryPlayer.zIndex;
+            chain.angle = 45;
+            chain.alpha = 0.8;
+            chain.position.x = playerSprite.position.x + playerSprite.width / 2;
+            chain.position.y = playerSprite.position.y + playerSprite.height / 2;
+            container.addChild(chain);
+        } else {
+            drawIconAndKey("src/images/icons/chain_icon.png", "F",
+                Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
+        }
         const swapTexture = Game.player === Game.primaryPlayer ? "src/images/icons/swap_icon_1.png" : "src/images/icons/swap_icon_2.png";
         drawIconAndKey(swapTexture, "Z",
             Game.app.renderer.screen.width / 2 - playerSize - HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
@@ -365,12 +383,12 @@ export function drawInteractionKeys() {
             playerSprite.position.x = Game.app.renderer.screen.width / 2 - playerSize / 2;
             playerSprite.position.y = offsetY;
             container.addChild(playerSprite);
+            return playerSprite;
         }
 
         function drawIconAndKey(iconTexture, keyText, posX, posY) {
             const icon = new PIXI.Sprite(Game.resources[iconTexture].texture);
-            icon.width = iconSize;
-            icon.height = iconSize;
+            icon.width = icon.height = iconSize;
             icon.position.set(posX - iconSize / 2, posY);
             container.addChild(icon);
             drawKey(container, keyText, posX - HUDKeyBindSize / 2, posY + iconSize + 5);
@@ -386,6 +404,17 @@ export function drawInteractionKeys() {
             drawKey(container, "R", Game.app.renderer.screen.width / 2 - togetherSprite.width / 2 - HUDKeyBindSize, offsetY + playerSize / 2 - HUDKeyBindSize);
         if (!Game.player.pushPullMode)
             drawKey(container, "P", Game.app.renderer.screen.width / 2 + togetherSprite.width / 2, offsetY + playerSize / 2 - HUDKeyBindSize);
+        const fKey = drawKey(container, "F", Game.app.renderer.screen.width / 2 - HUDKeyBindSize / 2, offsetY + togetherSprite.height / 2 - HUDKeyBindSize / 2);
+        fKey.zIndex = 1;
+        if (Game.followMode) {
+            const chain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
+            chain.width = chain.height = playerSize;
+            chain.anchor.set(0.5, 0.5);
+            chain.angle = 45;
+            chain.position.x = togetherSprite.position.x + togetherSprite.width / 2;
+            chain.position.y = togetherSprite.position.y + togetherSprite.height / 2;
+            container.addChild(chain);
+        }
     }
 }
 

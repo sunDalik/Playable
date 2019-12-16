@@ -86,6 +86,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
                 otherPlayer(player).step(lastPlayerPos.x - otherPlayer(player).tilePosition.x, lastPlayerPos.y - otherPlayer(player).tilePosition.y);
             } else if (player && Game.followMode && tileDistance(player, otherPlayer(player)) > 2) {
                 Game.followMode = false;
+                drawInteractionKeys();
                 updateFollowChain();
             }
             damagePlayersWithHazards();
@@ -148,6 +149,7 @@ export function toggleFollowMode() {
     } else {
         Game.followMode = false;
     }
+    drawInteractionKeys();
     updateFollowChain();
     return false;
 }
@@ -155,6 +157,7 @@ export function toggleFollowMode() {
 export function checkFollowMode() {
     if (Game.followMode && (tileDistance(Game.player, Game.player2) > 1 || Game.player.dead || Game.player2.dead)) {
         Game.followMode = false;
+        drawInteractionKeys();
     }
     updateFollowChain();
 }
