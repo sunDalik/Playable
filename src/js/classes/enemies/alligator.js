@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../enums";
-import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall} from "../../map_checks";
+import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall, isRelativelyEmpty} from "../../map_checks";
 import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 import {PoisonHazard} from "../hazards/poison";
@@ -181,9 +181,15 @@ export class Alligator extends Enemy {
             } else this.shooting = false;
         } else if (this.currentTurnDelay <= 0) {
             this.prey = null;
-            let movementOptions;
-            if (this.triggeredDirection) movementOptions = [this.triggeredDirection];
-            else {
+            let movementOptions = [];
+            if (this.triggeredDirection) {
+                if (isRelativelyEmpty(this.tilePosition.x + this.triggeredDirection.x, this.tilePosition.y + this.triggeredDirection.y)) {
+                    movementOptions = [this.triggeredDirection];
+                } else {
+                    this.bump(this.triggeredDirection.x, this.triggeredDirection.y);
+                    this.currentTurnDelay = this.turnDelay;
+                }
+            } else {
                 if (this.alligatorType === RABBIT_TYPE.ENERGY) {
                     movementOptions = getRelativelyEmptyCardinalDirections(this, 2);
                     if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
