@@ -55,9 +55,9 @@ function setup() {
     Game.player2.weapon = new Knife();
     Game.player.armor = new BasicArmor();
 
-    Game.player.zIndex = 1;
-    Game.player2.zIndex = Game.player.zIndex + 2;
-    Game.primaryPlayer = Game.player2;
+    Game.player2.zIndex = 1;
+    Game.player.zIndex = Game.player2.zIndex + 2;
+    Game.primaryPlayer = Game.player;
     Game.lastPlayerMoved = Game.player;
 
     drawHUD();

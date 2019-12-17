@@ -180,6 +180,7 @@ export class Alligator extends Enemy {
                 }
             } else this.shooting = false;
         } else if (this.currentTurnDelay <= 0) {
+            this.prey = null;
             let movementOptions;
             if (this.triggeredDirection) movementOptions = [this.triggeredDirection];
             else {
@@ -276,5 +277,10 @@ export class Alligator extends Enemy {
                 Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
             }
         }
+    }
+
+    die(source) {
+        super.die(source);
+        this.prey = null;
     }
 }

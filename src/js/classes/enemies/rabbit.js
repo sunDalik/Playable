@@ -84,6 +84,7 @@ export class Rabbit extends Enemy {
 
     die(source, eaten = false) {
         super.die(source);
+        this.predator = null;
         if (!eaten) {
             if (this.rabbitType === RABBIT_TYPE.FIRE) {
                 Game.world.addHazard(new FireHazard(this.tilePosition.x, this.tilePosition.y));
