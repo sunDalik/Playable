@@ -11,10 +11,12 @@ import {
     HUDGuideOffsetY,
     HUDKeyBindSize,
     HUDKeyBindTextStyle,
-    HUDTextStyle, HUDTextStyleSlot,
+    HUDTextStyle,
+    HUDTextStyleSlot,
     miniMapPixelSize,
     slotBorderOffsetX,
-    slotContentSizeMargin, slotOffsetFromHeartsY,
+    slotContentSizeMargin,
+    slotOffsetFromHeartsY,
     slotsColOffset,
     slotSize,
     slotsRowOffset,
@@ -24,11 +26,11 @@ import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
 import {EQUIPMENT_TYPE, MAGIC_TYPE, SHIELD_TYPE, TILE_TYPE} from "../enums";
-import {otherPlayer} from "../utils/game_utils";
 
 export function drawHUD() {
     drawHealth();
     drawSlots();
+    drawOther();
     drawMovementKeyBindings();
     drawInteractionKeys();
     redrawEnergy();
@@ -70,8 +72,13 @@ export function redrawHealthForPlayer(player) {
         const heart = new PIXI.Sprite(getHeartTexture(healthArray[i]));
         heart.width = heartSize;
         heart.height = heartSize;
-        heart.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.floor(i / 5);
-        heart.position.x = heartXOffset + (i % 5) * (heartColOffset + heartSize);
+        heart.anchor.set(0.5, 0.5);
+        if (player === Game.player2 && i === 0 || player === Game.player && i !== 0) {
+            //heart.angle = 180;
+            //heart.scale.x *= -1;
+        }
+        heart.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.floor(i / 5) + heart.height * heart.anchor.y;
+        heart.position.x = heartXOffset + (i % 5) * (heartColOffset + heartSize) + heart.width * heart.anchor.x;
         container.addChild(heart);
     }
 }
@@ -474,5 +481,29 @@ export function redrawMiniMapPixel(x, y) {
     Game.minimap[y][x] = pixel;
     if (!Game.map[y][x].lit) {
         pixel.visible = false;
+    }
+}
+
+function drawOther() {
+    const container = HUD.other;
+    removeAllChildrenFromContainer(container);
+    const playerSize = 60;
+    drawPlayer(Game.player, heartBorderOffsetX + heartSize / 2 - playerSize / 2, heartYOffset + heartSize / 2 - playerSize / 2);
+    drawPlayer(Game.player2, Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset + heartSize / 2 - playerSize / 2,
+        heartYOffset + heartSize / 2 - playerSize / 2);
+
+    function drawPlayer(player, posX, posY) {
+        let playerSprite;
+        if (player === Game.player) playerSprite = new PIXI.Sprite(Game.resources["src/images/player.png"].texture);
+        else {
+            playerSprite = new PIXI.Sprite(Game.resources["src/images/player2.png"].texture);
+            playerSprite.anchor.set(0.5, 0.5);
+            playerSprite.angle = 180;
+        }
+        playerSprite.width = playerSprite.height = playerSize;
+        playerSprite.alpha = 0.5;
+        playerSprite.position.x = posX + playerSprite.width * playerSprite.anchor.x;
+        playerSprite.position.y = posY + playerSprite.height * playerSprite.anchor.y;
+        container.addChild(playerSprite);
     }
 }
