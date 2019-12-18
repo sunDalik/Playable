@@ -3,9 +3,10 @@ import {camera} from "../game/camera"
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
 import {
     drawInteractionKeys,
-    drawMovementKeyBindings, redrawAllMagicSlots,
+    drawMovementKeyBindings,
+    redrawAllMagicSlots,
     redrawHealthForPlayer,
-    redrawWeapon, redrawWeaponAndSecondHand
+    redrawWeaponAndSecondHand
 } from "../../drawing/draw_hud";
 import {otherPlayer} from "../../utils/game_utils";
 
@@ -28,6 +29,7 @@ export class Necromancy {
         if (revivedPlayer.dead) {
             revivedPlayer.dead = false;
             revivedPlayer.visible = true;
+            Game.world.addChild(revivedPlayer);
             revivedPlayer.health = revivedPlayer.maxHealth;
             redrawHealthForPlayer(revivedPlayer);
             revivedPlayer.tilePosition.set(wielder.tilePosition.x, wielder.tilePosition.y);
