@@ -13,7 +13,7 @@ Game.TILESIZE = 65;
 Game.REFERENCE_TILESIZE = Game.TILESIZE;
 
 Game.followMode = false;
-Game.chainLength = 800;
+Game.chainLength = 10;
 
 Game.level = [];
 Game.stage = STAGE.FLOODED_CAVE;
@@ -72,3 +72,4 @@ Game.obelisks = [];
 Game.torchTile = {};
 
 Game.followChain = null;
+Game.limitChain = null;

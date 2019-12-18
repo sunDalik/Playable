@@ -22,8 +22,16 @@ export function tileDistance(a, b) {
     return Math.abs(a.tilePosition.x - b.tilePosition.x) + Math.abs(a.tilePosition.y - b.tilePosition.y);
 }
 
+export function tileDistanceDiagonal(a, b) {
+    const tileDistX = Math.abs(a.tilePosition.x - b.tilePosition.x);
+    const tileDistY = Math.abs(a.tilePosition.y - b.tilePosition.y);
+    const diagonalTiles = Math.min(tileDistX, tileDistY);
+    const cardinalTiles = Math.max(tileDistX, tileDistY) - diagonalTiles;
+    return diagonalTiles * 1.5 + cardinalTiles;
+}
+
 export function distance(a, b) {
-    return Math.abs(a.position.x - b.position.x) + Math.abs(a.position.y - b.position.y);
+    return Math.sqrt(Math.pow(a.position.x - b.position.x, 2) + Math.pow(a.position.y - b.position.y, 2));
 }
 
 export function setTickTimeout(callback, tickTimeout) {

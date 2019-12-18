@@ -3,6 +3,7 @@ import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
 import {drawInteractionKeys, drawMovementKeyBindings} from "../../drawing/draw_hud";
 import {otherPlayer} from "../../utils/game_utils";
 import {camera} from "../game/camera";
+import {updateChain} from "../../drawing/draw_dunno";
 
 export class Teleport {
     constructor() {
@@ -26,6 +27,7 @@ export class Teleport {
         wielder.tilePosition.set(otherPlayer(wielder).tilePosition.x, otherPlayer(wielder).tilePosition.y);
         wielder.placeOnMap();
         wielder.place();
+        updateChain();
         drawMovementKeyBindings();
         drawInteractionKeys();
         camera.center();

@@ -4,8 +4,8 @@ import {initializeLevel} from "./setup"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE} from "./enums"
 import {drawInteractionKeys, drawMovementKeyBindings, drawStatsForPlayer, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation, showHelpBox} from "./animations";
-import {otherPlayer, setTickTimeout, tileDistance} from "./utils/game_utils";
-import {updateFollowChain} from "./drawing/draw_dunno";
+import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
+import {updateChain} from "./drawing/draw_dunno";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -84,10 +84,12 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
             if (player && Game.followMode && tileDistance(player, otherPlayer(player)) === 2) {
                 if (otherPlayer(player).cancellable) otherPlayer(player).cancelAnimation();
                 otherPlayer(player).step(lastPlayerPos.x - otherPlayer(player).tilePosition.x, lastPlayerPos.y - otherPlayer(player).tilePosition.y);
-            } else if (player && Game.followMode && tileDistance(player, otherPlayer(player)) > 2) {
+            }
+
+            if (player && Game.followMode && tileDistance(player, otherPlayer(player)) >= 2) {
                 Game.followMode = false;
                 drawInteractionKeys();
-                updateFollowChain();
+                updateChain();
             }
             damagePlayersWithHazards();
             setEnemyTurnTimeout();
@@ -121,6 +123,12 @@ export function damagePlayerWithHazards(player) {
                 && Game.darkTiles[player.tilePosition.y][player.tilePosition.x - 1].dark)
                 player.damage(0.25, null, false, false);
         }
+
+        if (!otherPlayer(player).dead) {
+            if (tileDistanceDiagonal(Game.player, Game.player2) > Game.chainLength) {
+                player.damage(0.25, null, false, false);
+            }
+        }
     }
 }
 
@@ -150,7 +158,7 @@ export function toggleFollowMode() {
         Game.followMode = false;
     }
     drawInteractionKeys();
-    updateFollowChain();
+    updateChain();
     return false;
 }
 
@@ -159,7 +167,7 @@ export function checkFollowMode() {
         Game.followMode = false;
         drawInteractionKeys();
     }
-    updateFollowChain();
+    updateChain();
 }
 
 export function kiss(healAmount = 1) {

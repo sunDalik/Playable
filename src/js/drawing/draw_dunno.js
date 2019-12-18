@@ -1,7 +1,12 @@
-import {distance, otherPlayer} from "../utils/game_utils";
+import {distance, otherPlayer, tileDistanceDiagonal} from "../utils/game_utils";
 import {Game} from "../game";
 
-export function updateFollowChain() {
+export function updateChain() {
+    updateFollowChain();
+    Game.limitChain.update();
+}
+
+function updateFollowChain() {
     if (Game.followMode) {
         Game.followChain.zIndex = otherPlayer(Game.primaryPlayer).zIndex + 1;
         Game.followChain.visible = true;
