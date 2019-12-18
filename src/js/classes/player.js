@@ -350,6 +350,15 @@ export class Player extends AnimatedTileElement {
         }
         redrawWeaponAndSecondHand(this);
         redrawAllMagicSlots(this);
+        this.removeHealthContainers(1);
+        otherPlayer(this).removeHealthContainers(1);
+    }
+
+    removeHealthContainers(num) {
+        this.maxHealth -= num;
+        if (this.maxHealth < 1) this.maxHealth = 1;
+        if (this.health > this.maxHealth) this.health = this.maxHealth;
+        redrawHealthForPlayer(this);
     }
 
     heal(healHP, showHeart = true) {
