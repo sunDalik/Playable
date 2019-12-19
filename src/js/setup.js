@@ -53,6 +53,7 @@ function setup() {
     Game.player.setStats(0, 0.5, 0, 1.00);
     Game.player2.setStats(0, 1.00, 0, 0.5);
     Game.player2.weapon = new Knife();
+    Game.player.weapon = new Knife();
     Game.player.armor = new BasicArmor();
 
     Game.player2.zIndex = 1;
