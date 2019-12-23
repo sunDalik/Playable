@@ -26,6 +26,7 @@ import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
 import {EQUIPMENT_TYPE, MAGIC_TYPE, SHIELD_TYPE, TILE_TYPE} from "../enums";
+import {ITEM_OUTLINE_FILTER} from "../filters";
 
 export function drawHUD() {
     drawHealth();
@@ -199,6 +200,7 @@ export function redrawSlotContents(player, slot) {
         sprite.position.set(slotContentSizeMargin / 2, slotContentSizeMargin / 2);
         sprite.width = slotSize - slotContentSizeMargin;
         sprite.height = slotSize - slotContentSizeMargin;
+        sprite.filters = [ITEM_OUTLINE_FILTER];
         container.sprite.addChild(sprite);
     }
 
