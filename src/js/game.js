@@ -9,8 +9,7 @@ Game.resources = null;
 Game.world = null;
 Game.grid = null;
 
-Game.TILESIZE = 65;
-Game.REFERENCE_TILESIZE = Game.TILESIZE;
+Game.TILESIZE = 62;
 
 Game.followMode = false;
 Game.chainLength = 10;
