@@ -57,6 +57,9 @@ export function isInanimate(tilePositionX, tilePositionY) {
     return false;
 }
 
+export function isAnyWallOrInanimate(tilePositionX, tilePositionY) {
+    return isAnyWall(tilePositionX, tilePositionY) || isInanimate(tilePositionX, tilePositionY);
+}
 
 export function isRelativelyEmpty(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {

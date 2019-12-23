@@ -498,7 +498,7 @@ function drawOther() {
         else {
             playerSprite = new PIXI.Sprite(Game.resources["src/images/player2.png"].texture);
             playerSprite.anchor.set(0.5, 0.5);
-            playerSprite.angle = 180;
+            //playerSprite.angle = 180;
         }
         playerSprite.width = playerSprite.height = playerSize;
         playerSprite.alpha = 0.5;

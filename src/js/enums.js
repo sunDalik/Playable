@@ -20,7 +20,8 @@ export const ENEMY_TYPE = Object.freeze({
     SMALL_MUSHROOM: 18,
     ALLIGATOR: 19,
     RABBIT: 20,
-    LASER_TURRET: 21
+    LASER_TURRET: 21,
+    SPIKY_WALL_TRAP: 22
 });
 export const RABBIT_TYPE = Object.freeze({
     ENERGY: 0,
@@ -114,6 +115,7 @@ export const MAP_SYMBOLS = Object.freeze({
     RABBIT_FIRE: "rabbit_fire",
     RABBIT_POISON: "rabbit_poison",
     LASER_TURRET: "laser_turret",
+    SPIKY_WALL_TRAP: "swt",
     STATUE: "statue",
     CHEST: "chest",
     OBELISK: "obelisk",

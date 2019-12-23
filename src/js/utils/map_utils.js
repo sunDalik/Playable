@@ -1,4 +1,4 @@
-import {isRelativelyEmpty} from "../map_checks";
+import {isAnyWallOrInanimate, isRelativelyEmpty} from "../map_checks";
 import {Game} from "../game";
 
 export function get8Directions() {
@@ -59,6 +59,16 @@ export function getCardinalDirectionsWithoutItems(tileElement) {
     const directions = [];
     for (const dir of getCardinalDirections()) {
         if (Game.map[tileElement.tilePosition.y + dir.y][tileElement.tilePosition.x + dir.x].item === null) {
+            directions.push(dir);
+        }
+    }
+    return directions;
+}
+
+export function getCardinalDirectionsWithNoWallsOrInanimates(tileElement) {
+    const directions = [];
+    for (const dir of getCardinalDirections()) {
+        if (!isAnyWallOrInanimate(tileElement.tilePosition.x + dir.x, tileElement.tilePosition.y + dir.y)) {
             directions.push(dir);
         }
     }

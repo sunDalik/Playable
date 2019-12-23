@@ -16,7 +16,7 @@ export class Grail extends FullTileElement {
         //just some default texture
         this.magicSprite = new TileElement(Game.resources["src/images/magic/aura.png"].texture, 0, 0);
         this.magicSprite.visible = false;
-        this.magicSprite.zIndex = 2;
+        this.magicSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(this.magicSprite);
         Game.tiles.push(this.magicSprite);
     }

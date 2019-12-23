@@ -17,7 +17,7 @@ export class Chest extends FullTileElement {
         this.contentsSprite.width = Game.TILESIZE * 0.9;
         this.contentsSprite.height = Game.TILESIZE * 0.9;
         this.contentsSprite.visible = false;
-        this.contentsSprite.zIndex = 3;
+        this.contentsSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(this.contentsSprite);
         Game.tiles.push(this.contentsSprite);
     }
