@@ -27,13 +27,13 @@ export class Eel extends Enemy {
     move() {
         if (this.turnDelay === 0) {
             if (this.inMemoryAngle === 0) {
-                this.swimToTile(0, -1);
+                this.swimToTile(0, 1);
             } else if (this.inMemoryAngle === 90) {
-                this.swimToTile(1, 0);
-            } else if (this.inMemoryAngle === 180) {
-                this.swimToTile(0, 1)
-            } else if (this.inMemoryAngle === 270) {
                 this.swimToTile(-1, 0);
+            } else if (this.inMemoryAngle === 180) {
+                this.swimToTile(0, -1)
+            } else if (this.inMemoryAngle === 270) {
+                this.swimToTile(1, 0);
             }
             this.turnDelay = 1;
         } else this.turnDelay--;
@@ -65,19 +65,19 @@ export class Eel extends Enemy {
         if (!this.dead && !hazardDamage) {
             if (inputX !== 0) {
                 if (inputX > 0) {
-                    this.rotateByAngleMinimal(270 - this.inMemoryAngle);
-                    this.inMemoryAngle = 270;
-                } else if (inputX < 0) {
                     this.rotateByAngleMinimal(90 - this.inMemoryAngle);
                     this.inMemoryAngle = 90;
+                } else if (inputX < 0) {
+                    this.rotateByAngleMinimal(270 - this.inMemoryAngle);
+                    this.inMemoryAngle = 270;
                 }
             } else if (inputY !== 0) {
                 if (inputY > 0) {
-                    this.rotateByAngleMinimal(0 - this.inMemoryAngle);
-                    this.inMemoryAngle = 0;
-                } else if (inputY < 0) {
                     this.rotateByAngleMinimal(180 - this.inMemoryAngle);
                     this.inMemoryAngle = 180;
+                } else if (inputY < 0) {
+                    this.rotateByAngleMinimal(0 - this.inMemoryAngle);
+                    this.inMemoryAngle = 0;
                 }
             } else {
                 this.rotateByAngle(90);
