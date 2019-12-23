@@ -18,6 +18,13 @@ export class Eel extends Enemy {
         this.type = ENEMY_TYPE.EEL;
     }
 
+    afterMapGen() {
+        if (Math.random() < 0.5) {
+            this.angle = 180;
+            this.inMemoryAngle = 180;
+        }
+    }
+
     cancelAnimation() {
         super.cancelAnimation();
         this.angle = this.inMemoryAngle;
