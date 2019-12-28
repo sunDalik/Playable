@@ -75,7 +75,6 @@ export function drawGrid() {
 
     grid.zIndex = -2;
     Game.world.addChild(grid);
-    return grid;
 }
 
 export function drawOther() {

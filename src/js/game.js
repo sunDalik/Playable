@@ -7,7 +7,6 @@ Game.loader = null;
 Game.resources = null;
 
 Game.world = null;
-Game.grid = null;
 
 Game.TILESIZE = 62;
 
@@ -36,7 +35,7 @@ Game.BOTH_PLAYERS = {};
 Game.startPos = {x: 0, y: 0};
 Game.primaryPlayer = null;
 Game.lastPlayerMoved = Game.player;
-//Game.playerMoved = null;
+Game.actionsMade = 0;
 
 Game.enemiesTimeout = null;
 Game.maraudedStatues = [];

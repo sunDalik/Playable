@@ -11,15 +11,19 @@ export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
         Game.enemiesTimeout = setTickTimeout(() => {
             enemyTurn();
-        }, 4);
+        }, 6);
     }
 }
 
 function enemyTurn() {
+    damagePlayersWithHazards();
+    Game.player.damagedWithHazards = false;
+    Game.player2.damagedWithHazards = false;
     moveEnemies();
     moveBullets();
     updateHazards();
     Game.enemiesTimeout = null;
+    Game.actionsMade = 0;
     Game.afterTurn = true;
     Game.player.afterEnemyTurn();
     Game.player2.afterEnemyTurn();
@@ -63,7 +67,8 @@ export function updateHazards() {
 export function playerTurn(player, playerMove, bothPlayers = false) {
     if (((bothPlayers && !Game.player.dead && !Game.player2.dead)
         || (!bothPlayers && !player.dead))) {
-        if (Game.enemiesTimeout !== null) {
+        if (Game.enemiesTimeout !== null
+            && (bothPlayers || player === Game.lastPlayerMoved || Game.actionsMade >= 2)) {
             Game.app.ticker.remove(Game.enemiesTimeout);
             enemyTurn();
         }
@@ -81,6 +86,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
         const moveResult = playerMove();
         if (moveResult !== false) {
             if (player) Game.lastPlayerMoved = player;
+            Game.actionsMade++;
             if (player && Game.followMode && tileDistance(player, otherPlayer(player)) === 2) {
                 if (otherPlayer(player).cancellable) otherPlayer(player).cancelAnimation();
                 otherPlayer(player).step(lastPlayerPos.x - otherPlayer(player).tilePosition.x, lastPlayerPos.y - otherPlayer(player).tilePosition.y);
@@ -91,7 +97,8 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
                 drawInteractionKeys();
                 updateChain();
             }
-            damagePlayersWithHazards();
+            if (bothPlayers) damagePlayersWithHazards();
+            else damagePlayerWithHazards(player);
             setEnemyTurnTimeout();
             Game.player.cancellable = true;
             Game.player2.cancellable = true;
@@ -105,6 +112,8 @@ export function damagePlayersWithHazards() {
 }
 
 export function damagePlayerWithHazards(player) {
+    if (player.damagedWithHazards) return;
+    player.damagedWithHazards = true;
     if (!player.dead) {
         const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
         if (hazard) {

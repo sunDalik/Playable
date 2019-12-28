@@ -103,7 +103,7 @@ export function initializeLevel() {
     drawInteractionKeys();
     drawMovementKeyBindings();
 
-    Game.grid = drawGrid();
+    drawGrid();
     drawTiles();
     drawEntities();
     for (const enemy of Game.enemies) {

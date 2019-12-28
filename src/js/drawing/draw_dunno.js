@@ -2,7 +2,7 @@ import {distance, otherPlayer, tileDistanceDiagonal} from "../utils/game_utils";
 import {Game} from "../game";
 
 export function updateChain() {
-    updateFollowChain();
+    //updateFollowChain();
     Game.limitChain.update();
 }
 

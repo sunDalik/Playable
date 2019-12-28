@@ -354,6 +354,7 @@ function drawKey(container, keyText, posX, posY) {
 }
 
 export function drawInteractionKeys() {
+    return;
     const container = HUD.interactionGuide;
     removeAllChildrenFromContainer(container);
     if (Game.player.dead || Game.player2.dead) return;

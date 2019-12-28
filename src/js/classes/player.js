@@ -447,7 +447,7 @@ export class Player extends AnimatedTileElement {
     }
 
     releaseMagic(stepX = 0, stepY = 0) {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode || otherPlayer(this).charging) return false;
+        if (this.pushPullMode || otherPlayer(this).pushPullMode) return false;
         if (this.chargingMagic) {
             const magicResult = this.chargingMagic.release(this, stepX, stepY);
             if (magicResult === true) {
@@ -517,7 +517,7 @@ export class Player extends AnimatedTileElement {
     }
 
     useSecondHand() {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode || otherPlayer(this).charging || this.charging) return false;
+        if (this.pushPullMode || otherPlayer(this).pushPullMode ||  this.charging) return false;
         if (!this.secondHand) return false;
         if (this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD) {
             if (this.secondHand.activate(this)) {
@@ -541,7 +541,7 @@ export class Player extends AnimatedTileElement {
     }
 
     concentrateWeapon() {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode || otherPlayer(this).charging || this.charging) return false;
+        if (this.pushPullMode || otherPlayer(this).pushPullMode ||  this.charging) return false;
         if (!this.weapon || !this.weapon.concentrate) return false;
         if (this.weapon.concentrate(this)) {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type) {
