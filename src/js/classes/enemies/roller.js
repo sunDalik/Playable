@@ -25,6 +25,7 @@ export class Roller extends Enemy {
         if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)
             || isInanimate(this.tilePosition.x + 1, this.tilePosition.y)) {
             this.direction = -1;
+            this.scale.x = Math.abs(this.scale.x) * -1;
         }
     }
 

@@ -21,7 +21,6 @@ camera.setNewPoint = (x, y, time) => {
         if (counter >= time) {
             camera.setup(x, y);
             Game.app.ticker.remove(animation);
-            camera.animation = null;
         }
     };
 
@@ -34,6 +33,8 @@ camera.setup = (x, y) => {
     Game.world.position.y = Game.app.renderer.screen.height / 2 - y * Game.world.scale.y;
     camera.x = x;
     camera.y = y;
+    Game.app.ticker.remove(camera.animation);
+    camera.animation = null;
 };
 
 camera.center = () => {
