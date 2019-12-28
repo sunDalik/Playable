@@ -174,7 +174,5 @@ export function loadAll(afterLoad) {
         .add("src/images/magic/petrification.png")
         .add("src/images/magic/wind.png")
         .add("src/images/magic/abyssal_spit.png")
-
-        .add("src/images/grid.png")
         .load(afterLoad);
 }

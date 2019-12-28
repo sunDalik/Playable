@@ -62,13 +62,21 @@ export function drawEntities() {
 }
 
 export function drawGrid() {
-    const gridTexture = Game.resources["src/images/grid.png"].texture;
-    const grid = new PIXI.TilingSprite(gridTexture, Game.map[0].length * gridTexture.width, Game.map.length * gridTexture.height);
-    grid.scale.set(Game.TILESIZE / gridTexture.width, Game.TILESIZE / gridTexture.height);
-    //2 is half-width of a tile's border... Don't ask me I don't understand why it works either
-    grid.position.x -= 2 * Game.TILESIZE / gridTexture.width;
-    grid.position.y -= 2 * Game.TILESIZE / gridTexture.height;
-    grid.tint = decrementEachDigitInHex(Game.BGColor);
+    const grid = new PIXI.Container();
+    const lineThickness = 2 * Math.round(Game.TILESIZE / 25 / 2);
+    for (let i = 1; i < Game.map.length; i++) {
+        const line = new PIXI.Graphics();
+        line.beginFill(decrementEachDigitInHex(Game.BGColor));
+        line.drawRect(0, Game.TILESIZE * i - lineThickness / 2, Game.map[0].length * Game.TILESIZE, lineThickness);
+        grid.addChild(line);
+    }
+    for (let i = 1; i < Game.map[0].length; i++) {
+        const line = new PIXI.Graphics();
+        line.beginFill(decrementEachDigitInHex(Game.BGColor));
+        line.drawRect(Game.TILESIZE * i - lineThickness / 2, 0, lineThickness, Game.map.length * Game.TILESIZE);
+        grid.addChild(line);
+    }
+
     grid.zIndex = -2;
     Game.world.addChild(grid);
     return grid;
@@ -79,16 +87,8 @@ export function drawOther() {
     gameWorldBG.beginFill(Game.BGColor);
     gameWorldBG.drawRect(10, 10, Game.world.width - 20, Game.world.height - 20);
     gameWorldBG.zIndex = -4;
-    //to hide grid on world borders
-    const gridBorderWidth = -2 * Game.TILESIZE / Game.resources["src/images/grid.png"].texture.width;
-    const blackOutline = new PIXI.Graphics();
-    blackOutline.lineStyle(3, 0x000000);
-    blackOutline.drawRect(gridBorderWidth, gridBorderWidth, Game.world.width, Game.world.height);
-    blackOutline.endFill();
     Game.world.addChild(gameWorldBG);
-    Game.world.addChild(blackOutline);
     Game.otherGraphics.push(gameWorldBG);
-    Game.otherGraphics.push(blackOutline);
     Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
     Game.world.addChild(Game.followChain);
     Game.limitChain = new LimitChain();

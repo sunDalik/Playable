@@ -34,8 +34,8 @@ Game.obeliskRooms = null;
 Game.chestRooms = null;
 Game.BGColor = 0xffffff;
 
-Game.player = null;
-Game.player2 = null;
+Game.player = null; //white player
+Game.player2 = null; //black player
 Game.BOTH_PLAYERS = {};
 Game.startPos = {x: 0, y: 0};
 Game.primaryPlayer = null;

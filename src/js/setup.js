@@ -136,7 +136,7 @@ export function initializeLevel() {
 
 function mapSetFullView() {
     //for testing purposes ONLY
-    Game.TILESIZE = 10;
+    Game.TILESIZE = 15;
     redrawTiles();
     for (let i = 0; i < Game.darkTiles.length; i++) {
         for (let j = 0; j < Game.darkTiles[0].length; j++) {
