@@ -1,5 +1,4 @@
 import {Game} from "./game"
-import {removeObjectFromArray} from "./utils/basic_utils"
 import * as PIXI from "pixi.js"
 import {randomChoice} from "./utils/random_utils";
 import {ITEM_OUTLINE_FILTER} from "./filters";
@@ -56,7 +55,6 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
     Game.world.addChild(attack);
     const ifTile = !!attack.fitToTile;
     if (ifTile) {
-        Game.tiles.push(attack);
         if (Game.stage === STAGE.DARK_TUNNEL && attack.maskLayer) {
             Game.darkTiles[attack.tilePosition.y][attack.tilePosition.x].addLightSource(attack.maskLayer);
         }
@@ -73,7 +71,6 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
             Game.app.ticker.remove(animation);
             Game.world.removeChild(attack);
             if (ifTile) {
-                removeObjectFromArray(attack, Game.tiles);
                 if (Game.stage === STAGE.DARK_TUNNEL && attack.maskLayer) {
                     Game.darkTiles[attack.tilePosition.y][attack.tilePosition.x].removeLightSource(attack.maskLayer);
                 }

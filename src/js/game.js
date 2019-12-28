@@ -21,11 +21,7 @@ Game.enemies = [];
 Game.hazards = [];
 Game.bullets = [];
 
-//why... why do we need it again?
-Game.tiles = [];
-
 Game.darkTiles = [];
-Game.otherGraphics = [];
 Game.infiniteAnimations = [];
 
 Game.normalRooms = null;

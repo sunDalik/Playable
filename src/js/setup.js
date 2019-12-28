@@ -8,7 +8,7 @@ import {BasicArmor} from "./classes/equipment/armor/basic";
 import {STAGE} from "./enums";
 import {generateLevel, getLevelPlayerGraph} from "./level_generation";
 import {calculateDetectionGraph, generateMap} from "./map_generation";
-import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
+import {lightPlayerPosition, lightPosition} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
 import {drawHUD, drawInteractionKeys, drawMiniMap, drawMovementKeyBindings} from "./drawing/draw_hud";
@@ -132,43 +132,4 @@ export function initializeLevel() {
             kiss();
         }
     }, 10);
-}
-
-function mapSetFullView() {
-    //for testing purposes ONLY
-    Game.TILESIZE = 15;
-    redrawTiles();
-    for (let i = 0; i < Game.darkTiles.length; i++) {
-        for (let j = 0; j < Game.darkTiles[0].length; j++) {
-            lightTile(j, i);
-            Game.darkTiles[i][j].visible = false;
-        }
-    }
-}
-
-//is deprecated and will be changed later
-function redrawTiles() {
-    Game.world.removeChild(Game.grid);
-    Game.grid = drawGrid();
-    for (const graphic of Game.otherGraphics) {
-        Game.world.removeChild(graphic);
-    }
-    Game.otherGraphics = [];
-
-    for (const enemy of Game.enemies) {
-        if (!enemy.dead) enemy.redrawHealth();
-    }
-
-    for (const tile of Game.tiles) {
-        tile.fitToTile();
-        tile.place();
-    }
-
-    for (const hazard of Game.hazards) {
-        hazard.fitToTile();
-        hazard.place();
-    }
-
-    drawOther();
-    camera.center()
 }

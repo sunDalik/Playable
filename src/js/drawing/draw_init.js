@@ -12,7 +12,6 @@ export function drawTiles() {
         for (let j = 0; j < Game.map[0].length; ++j) {
             if (Game.map[i][j].tile !== null) {
                 Game.world.addChild(Game.map[i][j].tile);
-                Game.tiles.push(Game.map[i][j].tile);
             }
         }
     }
@@ -31,7 +30,6 @@ export function createDarkness() {
                 voidTile.zIndex = 10;
             }
             Game.world.addChild(voidTile);
-            Game.tiles.push(voidTile);
             Game.darkTiles[i][j] = voidTile;
         }
     }
@@ -43,7 +41,6 @@ export function drawEntities() {
             for (const entity of [Game.map[i][j].entity, Game.map[i][j].secondaryEntity]) {
                 if (entity !== null) {
                     Game.world.addChild(entity);
-                    Game.tiles.push(entity);
                     if (entity.role === ROLE.ENEMY || entity.role === ROLE.WALL_TRAP) {
                         Game.enemies.push(entity);
                     }
@@ -55,7 +52,6 @@ export function drawEntities() {
             const entity = Game.map[i][j].item;
             if (entity !== null) {
                 Game.world.addChild(entity);
-                Game.tiles.push(entity);
             }
         }
     }
@@ -88,7 +84,6 @@ export function drawOther() {
     gameWorldBG.drawRect(10, 10, Game.world.width - 20, Game.world.height - 20);
     gameWorldBG.zIndex = -4;
     Game.world.addChild(gameWorldBG);
-    Game.otherGraphics.push(gameWorldBG);
     Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
     Game.world.addChild(Game.followChain);
     Game.limitChain = new LimitChain();

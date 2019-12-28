@@ -34,7 +34,6 @@ export class Bullet extends TileElement {
     die(toRemove = true) {
         this.dead = true;
         this.removeFromMap();
-        removeObjectFromArray(this, Game.tiles);
         removeObjectFromArray(this, Game.bullets);
         if (toRemove) this.removeFromWorld();
     }

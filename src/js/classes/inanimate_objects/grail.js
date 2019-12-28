@@ -18,7 +18,6 @@ export class Grail extends FullTileElement {
         this.magicSprite.visible = false;
         this.magicSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(this.magicSprite);
-        Game.tiles.push(this.magicSprite);
     }
 
     placeGrail() {

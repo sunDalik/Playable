@@ -337,7 +337,6 @@ export class Player extends AnimatedTileElement {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.TORCH) {
                 const item = new LyingItem(this.tilePosition.x, this.tilePosition.y, this.secondHand);
                 Game.world.addChild(item);
-                Game.tiles.push(item);
                 Game.map[this.tilePosition.y][this.tilePosition.x].item = item;
                 this.secondHand = null;
             }

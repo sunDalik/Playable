@@ -18,7 +18,6 @@ export class LyingItem extends TileElement {
         this.item = swapEquipmentWithPlayer(player, this.item);
         if (this.item === null) {
             Game.world.removeChild(this);
-            removeObjectFromArray(this, Game.tiles);
             Game.map[this.tilePosition.y][this.tilePosition.x].item = null;
             Game.app.ticker.remove(this.animation);
         } else {

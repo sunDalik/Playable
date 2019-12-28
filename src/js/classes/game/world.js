@@ -49,7 +49,6 @@ export class World extends PIXI.Container {
     }
 
     addBullet(bullet) {
-        Game.tiles.push(bullet);
         Game.bullets.push(bullet);
         this.addChild(bullet);
         if (isEmpty(bullet.tilePosition.x, bullet.tilePosition.y)) {
@@ -64,11 +63,6 @@ export class World extends PIXI.Container {
                 } else bullet.die();
             } else bullet.die();
         }
-    }
-
-    removeTile(tile) {
-        removeObjectFromArray(tile, Game.tiles);
-        this.removeChild(tile);
     }
 
     clean() {

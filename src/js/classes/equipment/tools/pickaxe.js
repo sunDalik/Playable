@@ -30,7 +30,7 @@ export class Pickaxe {
 
     use(wielder, tileDirX, tileDirY) {
         if (isDiggable(wielder.tilePosition.x + tileDirX, wielder.tilePosition.y + tileDirY)) {
-            Game.world.removeTile(Game.map[wielder.tilePosition.y + tileDirY][wielder.tilePosition.x + tileDirX].tile);
+            Game.world.removeChild(Game.map[wielder.tilePosition.y + tileDirY][wielder.tilePosition.x + tileDirX].tile);
             Game.map[wielder.tilePosition.y + tileDirY][wielder.tilePosition.x + tileDirX].tileType = TILE_TYPE.NONE;
             if (Game.stage === STAGE.DARK_TUNNEL) {
                 if (wielder.secondHand && wielder.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && wielder.secondHand.type === TOOL_TYPE.TORCH) {
