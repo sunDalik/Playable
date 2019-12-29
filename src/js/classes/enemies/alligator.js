@@ -65,7 +65,7 @@ export class Alligator extends Enemy {
                     if (this.alligatorType === RABBIT_TYPE.ENERGY) {
                         this.stepXjumpHeight = Game.TILESIZE * 60 / 75;
                         this.energyDrop = 40;
-                    }
+                    } else this.turnDelay = 1;
                     this.updateTexture();
                     this.lightItself();
                 }
