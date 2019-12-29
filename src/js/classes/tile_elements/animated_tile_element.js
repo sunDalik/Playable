@@ -159,8 +159,9 @@ export class AnimatedTileElement extends TileElement {
     slideBump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         this.onAnimationEnd = onEnd;
         this.animationCounter = 0;
-        const stepX = Game.TILESIZE * tileStepX / animationTime;
-        const stepY = Game.TILESIZE * tileStepY / animationTime;
+        const time = animationTime - 2 + Math.abs(tileStepX) * 2 + Math.abs(tileStepY) * 2;
+        const stepX = Game.TILESIZE * 0.7 * tileStepX / time;
+        const stepY = Game.TILESIZE * 0.7 * tileStepY / time;
 
         const animation = (delta) => {
             if (this.animationCounter < animationTime / 2) {
@@ -172,7 +173,7 @@ export class AnimatedTileElement extends TileElement {
             }
             this.animationCounter += delta;
             if (onFrame) onFrame();
-            if (this.animationCounter >= animationTime) {
+            if (this.animationCounter >= time) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();

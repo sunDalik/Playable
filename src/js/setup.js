@@ -123,12 +123,12 @@ export function initializeLevel() {
         if (Math.random() < 0.5 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {
             Game.player.microSlide(Game.player2.tilePosition.x - Game.player.tilePosition.x,
                 Game.player2.tilePosition.y - Game.player.tilePosition.y,
-                null, () => setTickTimeout(() => Game.player.microSlide(0, 0), 12),
-                10);
+                null, () => setTickTimeout(() => Game.player.microSlide(0, 0), 11),
+                9);
             Game.player2.microSlide(Game.player.tilePosition.x - Game.player2.tilePosition.x,
                 Game.player.tilePosition.y - Game.player2.tilePosition.y,
-                null, () => setTickTimeout(() => Game.player2.microSlide(0, 0), 12),
-                10);
+                null, () => setTickTimeout(() => Game.player2.microSlide(0, 0), 11),
+                9);
             kiss();
         }
     }, 10);

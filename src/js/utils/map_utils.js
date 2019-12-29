@@ -1,4 +1,4 @@
-import {isAnyWallOrInanimate, isRelativelyEmpty} from "../map_checks";
+import {isAnyWallOrInanimate, isEmpty, isRelativelyEmpty} from "../map_checks";
 import {Game} from "../game";
 
 export function get8Directions() {
@@ -69,6 +69,64 @@ export function getCardinalDirectionsWithNoWallsOrInanimates(tileElement) {
     const directions = [];
     for (const dir of getCardinalDirections()) {
         if (!isAnyWallOrInanimate(tileElement.tilePosition.x + dir.x, tileElement.tilePosition.y + dir.y)) {
+            directions.push(dir);
+        }
+    }
+    return directions;
+}
+
+export function getChasingDirections(chaser, runner) {
+    if (chaser.tilePosition.x === runner.tilePosition.x || chaser.tilePosition.y === runner.tilePosition.y) {
+        return [{
+            x: Math.sign(runner.tilePosition.x - chaser.tilePosition.x),
+            y: Math.sign(runner.tilePosition.y - chaser.tilePosition.y)
+        }];
+    } else {
+        return [
+            {x: Math.sign(runner.tilePosition.x - chaser.tilePosition.x), y: 0},
+            {x: 0, y: Math.sign(runner.tilePosition.y - chaser.tilePosition.y)}
+        ];
+    }
+}
+
+export function getRunAwayDirections(runner, chaser) {
+    let directions = [];
+    if (chaser.tilePosition.x === runner.tilePosition.x) {
+        directions.push({x: -1, y: 0});
+        directions.push({x: 1, y: 0});
+    } else directions.push({x: Math.sign(runner.tilePosition.x - chaser.tilePosition.x), y: 0});
+    if (chaser.tilePosition.y === runner.tilePosition.y) {
+        directions.push({x: 0, y: -1});
+        directions.push({x: 0, y: 1});
+    } else directions.push({x: 0, y: Math.sign(runner.tilePosition.y - chaser.tilePosition.y)});
+    return directions;
+}
+
+export function getChasingOptions(chaser, runner) {
+    const directions = [];
+    for (const dir of getChasingDirections(chaser, runner)) {
+        if (isRelativelyEmpty(chaser.tilePosition.x + dir.x, chaser.tilePosition.y + dir.y)) {
+            directions.push(dir);
+        }
+    }
+    return directions;
+}
+
+
+export function getRunAwayOptions(runner, chaser) {
+    const directions = [];
+    for (const dir of getRunAwayDirections(runner, chaser)) {
+        if (isRelativelyEmpty(runner.tilePosition.x + dir.x, runner.tilePosition.y + dir.y)) {
+            directions.push(dir);
+        }
+    }
+    return directions;
+}
+
+export function getEmptyRunAwayOptions(runner, chaser) {
+    const directions = [];
+    for (const dir of getRunAwayDirections(runner, chaser)) {
+        if (isEmpty(runner.tilePosition.x + dir.x, runner.tilePosition.y + dir.y)) {
             directions.push(dir);
         }
     }

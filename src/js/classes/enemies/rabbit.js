@@ -1,13 +1,13 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE, RABBIT_TYPE} from "../../enums";
-import {getRelativelyEmptyDirections, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
+import {getEmptyRunAwayOptions, getRelativelyEmptyCardinalDirections, getRunAwayOptions} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {FireHazard} from "../hazards/fire";
 import {PoisonHazard} from "../hazards/poison";
 import {ElectricBullet} from "./bullets/electric";
-import {closestPlayer} from "../../utils/game_utils";
+import {closestPlayer, tileDistance} from "../../utils/game_utils";
 
 export class Rabbit extends Enemy {
     constructor(tilePositionX, tilePositionY, type, texture = Game.resources["src/images/enemies/rabbit_x_energy.png"].texture) {
@@ -37,34 +37,18 @@ export class Rabbit extends Enemy {
     move() {
         if (this.predator && !this.predator.dead) {
             return false;
-        } else if (this.rabbitType === RABBIT_TYPE.ENERGY) {
-            const threat = closestPlayer(this);
-            let directions = [];
-            if (Math.abs(threat.tilePosition.x - this.tilePosition.x) === 0) {
-                directions.push({x: -1, y: 0});
-                directions.push({x: 1, y: 0});
-            } else directions.push({x: Math.sign(this.tilePosition.x - threat.tilePosition.x), y: 0});
-            if (Math.abs(threat.tilePosition.y - this.tilePosition.y) === 0) {
-                directions.push({x: 0, y: -1});
-                directions.push({x: 0, y: 1});
-            } else directions.push({x: 0, y: Math.sign(this.tilePosition.y - threat.tilePosition.y)});
-            directions = getRelativelyEmptyDirections(this, directions);
-            if (directions.length !== 0) {
-                const moveDir = randomChoice(directions);
-                if (moveDir.x !== 0 && Math.sign(moveDir.x) !== Math.sign(this.scale.x)) {
-                    this.scale.x *= -1;
-                }
-                const player = getPlayerOnTile(this.tilePosition.x + moveDir.x, this.tilePosition.y + moveDir.y);
-                if (player) {
-                    this.bump(moveDir.x, moveDir.y);
-                    player.damage(this.atk, this, true);
-                } else {
-                    this.step(moveDir.x, moveDir.y);
-                }
-            } else this.bump(Math.sign(this.tilePosition.x - threat.tilePosition.x), Math.sign(this.tilePosition.y - threat.tilePosition.y));
-        } else if (this.currentTurnDelay <= 0) {
+        } else if (this.currentTurnDelay <= 0 || this.rabbitType === RABBIT_TYPE.ENERGY) {
             this.predator = null;
-            const movementOptions = getRelativelyEmptyCardinalDirections(this);
+            let movementOptions;
+            if (this.rabbitType === RABBIT_TYPE.ENERGY) {
+                movementOptions = getEmptyRunAwayOptions(this, closestPlayer(this));
+                if (movementOptions.length === 0) getRunAwayOptions(this, closestPlayer(this));
+            } else {
+                if (tileDistance(this, closestPlayer(this)) <= 2) {
+                    movementOptions = getRunAwayOptions(this, closestPlayer(this));
+                    if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
+                } else movementOptions = getRelativelyEmptyCardinalDirections(this);
+            }
             if (movementOptions.length !== 0) {
                 const moveDir = randomChoice(movementOptions);
                 if (moveDir.x !== 0 && Math.sign(moveDir.x) !== Math.sign(this.scale.x)) {
@@ -78,7 +62,8 @@ export class Rabbit extends Enemy {
                     this.step(moveDir.x, moveDir.y);
                 }
                 this.currentTurnDelay = this.turnDelay;
-            }
+            } else this.bump(Math.sign(this.tilePosition.x - closestPlayer(this).tilePosition.x), Math.sign(this.tilePosition.y - closestPlayer(this).tilePosition.y));
+
         } else this.currentTurnDelay--;
     }
 

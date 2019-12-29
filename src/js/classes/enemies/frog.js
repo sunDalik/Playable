@@ -2,9 +2,10 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {randomChoice} from "../../utils/random_utils";
-import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
+import {getRelativelyEmptyCardinalDirections, getRunAwayOptions} from "../../utils/map_utils";
 import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "../../map_checks";
 import {PoisonHazard} from "../hazards/poison";
+import {closestPlayer, tileDistance} from "../../utils/game_utils";
 
 export class Frog extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/frog.png"].texture) {
@@ -42,7 +43,11 @@ export class Frog extends Enemy {
         } else if (this.arePlayersInAttackRange()) {
             this.triggered = true;
         } else if (this.currentTurnDelay <= 0) {
-            const movementOptions = getRelativelyEmptyCardinalDirections(this);
+            let movementOptions;
+            if (tileDistance(this, closestPlayer(this)) <= 2) {
+                movementOptions = getRunAwayOptions(this, closestPlayer(this));
+                if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
+            } else movementOptions = getRelativelyEmptyCardinalDirections(this);
             if (movementOptions.length !== 0) {
                 const moveDir = randomChoice(movementOptions);
                 if (moveDir.x !== 0 && Math.sign(moveDir.x) !== Math.sign(this.scale.x)) {

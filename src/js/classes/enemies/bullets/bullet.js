@@ -13,7 +13,7 @@ export class Bullet extends TileElement {
         this.role = ROLE.BULLET;
         this.ANIMATION_TIME = 8;
         this.delay = 1;
-        this.atk = 0.5;
+        this.atk = 1;
         this.zIndex = Game.primaryPlayer.zIndex + 1;
     }
 

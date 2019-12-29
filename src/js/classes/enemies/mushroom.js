@@ -5,6 +5,7 @@ import {PoisonHazard} from "../hazards/poison";
 import {getRandomInt, randomChoice} from "../../utils/random_utils";
 import {getRelativelyEmptyHorizontalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile, isEmpty, isNotAWall} from "../../map_checks";
+import {closestPlayer, tileDistance} from "../../utils/game_utils";
 
 export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/mushroom.png"].texture) {
@@ -132,7 +133,9 @@ export class Mushroom extends Enemy {
         if ((this.direction.x === 1 && this.scale.x < 0) || (this.direction.x === -1 && this.scale.x > 0)) {
             this.scale.x *= -1
         } else if (this.direction.x === 0) {
-            this.scale.x *= randomChoice([-1, 1]);
+            const playerDir = Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x);
+            if (playerDir === 0 || tileDistance(this, closestPlayer(this)) > 2) this.scale.x *= randomChoice([-1, 1]);
+            else this.scale.x = playerDir * Math.abs(this.scale.x);
         }
     }
 

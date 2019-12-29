@@ -2,7 +2,8 @@ import {Game} from "../../game"
 import {ENEMY_TYPE} from "../../enums";
 import {getRandomInt} from "../../utils/random_utils";
 import {Mushroom} from "./mushroom";
-import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
+import {getChasingOptions, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
+import {closestPlayer, tileDistance} from "../../utils/game_utils";
 
 export class SmallMushroom extends Mushroom {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/mushroom_small.png"].texture) {
@@ -22,6 +23,11 @@ export class SmallMushroom extends Mushroom {
     }
 
     getDirections() {
-        return getRelativelyEmptyCardinalDirections(this);
+        let movementOptions;
+        if (tileDistance(this, closestPlayer(this)) <= 2) {
+            movementOptions = getChasingOptions(this, closestPlayer(this));
+            if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
+        } else movementOptions = getRelativelyEmptyCardinalDirections(this);
+        return movementOptions;
     }
 }

@@ -2,11 +2,12 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../enums";
 import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall, isRelativelyEmpty} from "../../map_checks";
-import {getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
+import {getChasingOptions, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 import {PoisonHazard} from "../hazards/poison";
 import {ElectricBullet} from "./bullets/electric";
 import {FireBullet} from "./bullets/fire";
+import {closestPlayer, tileDistance} from "../../utils/game_utils";
 
 export class Alligator extends Enemy {
     constructor(tilePositionX, tilePositionY, type = undefined, texture = Game.resources["src/images/enemies/alligator_x.png"].texture) {
@@ -34,6 +35,7 @@ export class Alligator extends Enemy {
         this.scaleModifier = 1.1;
         this.fitToTile();
         this.updateTexture();
+        this.poisonCounter = 0;
     }
 
     fitToTile() {
@@ -153,25 +155,25 @@ export class Alligator extends Enemy {
                         }
                         break;
                     case RABBIT_TYPE.POISON:
-                        //ugghh should kinda fix somehow the issue when you damage poison alligator while he is shooting
-                        if (isNotAWall(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 1),
-                            this.tilePosition.y + this.direction.y * (this.currentShootingTimes * 2 + 1))) {
-                            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 1),
-                                this.tilePosition.y + this.direction.y * (this.currentShootingTimes * 2 + 1)));
+                        if (isNotAWall(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 1),
+                            this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 1))) {
+                            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 1),
+                                this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 1)));
                         }
-                        if (isNotAWall(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 2),
-                            this.tilePosition.y + this.direction.y * (this.currentShootingTimes * 2 + 2))) {
-                            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 2),
-                                this.tilePosition.y + this.direction.y * (this.currentShootingTimes * 2 + 2)));
+                        if (isNotAWall(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 2),
+                            this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 2))) {
+                            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 2),
+                                this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 2)));
                         }
-                        if (isAnyWall(this.tilePosition.x + this.direction.x * (this.currentShootingTimes * 2 + 3),
-                            this.tilePosition.y + this.direction.y * (this.currentShootingTimes * 2 + 3))) {
+                        if (isAnyWall(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 3),
+                            this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 3))) {
                             this.currentShootingTimes = this.maxShootingTimes;
                         }
                         break;
                 }
 
                 this.currentShootingTimes++;
+                this.poisonCounter++;
                 if (this.currentShootingTimes < this.maxShootingTimes) {
                     this.shake(this.direction.y, this.direction.x);
                 } else {
@@ -193,7 +195,12 @@ export class Alligator extends Enemy {
                 if (this.alligatorType === RABBIT_TYPE.ENERGY) {
                     movementOptions = getRelativelyEmptyCardinalDirections(this, 2);
                     if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
-                } else movementOptions = getRelativelyEmptyCardinalDirections(this);
+                } else {
+                    if (tileDistance(this, closestPlayer(this)) <= 2) {
+                        movementOptions = getChasingOptions(this, closestPlayer(this));
+                        if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
+                    } else movementOptions = getRelativelyEmptyCardinalDirections(this);
+                }
             }
             this.triggeredDirection = null;
             if (movementOptions.length !== 0) {
@@ -217,6 +224,7 @@ export class Alligator extends Enemy {
         if (!this.dead) {
             if (!hazardDamage && !magical && (inputY !== 0 || inputX !== 0) && (!this.prey || this.prey.dead)) {
                 this.triggeredDirection = {x: -inputX, y: -inputY};
+                this.poisonCounter = 0;
                 this.direction = this.triggeredDirection;
                 this.updateTexture();
                 if (this.alligatorType === RABBIT_TYPE.ENERGY) {
@@ -228,6 +236,7 @@ export class Alligator extends Enemy {
                     this.shooting = true;
                     this.shootingDelay = true;
                     this.currentShootingTimes = 0;
+                    this.poisonCounter = 0;
                     this.updateTexture();
                     this.shake(this.direction.y, this.direction.x);
                 }
