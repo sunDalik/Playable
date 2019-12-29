@@ -11,7 +11,9 @@ export class ElectricBullet extends Bullet {
     }
 
     attack(entity) {
-        if (entity.electricityImmunity > 0) this.die();
-        else super.attack(entity);
+        if (entity.electricityImmunity > 0) {
+            this.die(false);
+            this.dieFly(entity.tilePosition.x - this.tilePosition.x, entity.tilePosition.y - this.tilePosition.y);
+        } else super.attack(entity);
     }
 }

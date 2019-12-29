@@ -14,6 +14,7 @@ export class Bullet extends TileElement {
         this.ANIMATION_TIME = 8;
         this.delay = 1;
         this.atk = 0.5;
+        this.zIndex = Game.primaryPlayer.zIndex + 1;
     }
 
     move() {
@@ -27,7 +28,10 @@ export class Bullet extends TileElement {
                 this.fly(this.pattern[this.patternIndex].x, this.pattern[this.patternIndex].y);
                 this.patternIndex++;
                 if (this.patternIndex >= this.pattern.length) this.patternIndex = 0;
-            } else this.die();
+            } else {
+                this.die(false);
+                this.dieFly(this.pattern[this.patternIndex].x, this.pattern[this.patternIndex].y, this.ANIMATION_TIME, 0.5);
+            }
         } else this.delay--;
     }
 
@@ -39,7 +43,6 @@ export class Bullet extends TileElement {
     }
 
     removeFromWorld() {
-        this.visible = false;
         Game.world.removeChild(this);
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
@@ -104,7 +107,7 @@ export class Bullet extends TileElement {
         Game.app.ticker.add(animation);
     }
 
-    dieFly(tileStepX, tileStepY, animationTime = this.ANIMATION_TIME) {
+    dieFly(tileStepX, tileStepY, animationTime = this.ANIMATION_TIME, animationTimeMul = 0.8) {
         const stepX = Game.TILESIZE * tileStepX / animationTime;
         const stepY = Game.TILESIZE * tileStepY / animationTime;
         let counter = 0;
@@ -113,7 +116,7 @@ export class Bullet extends TileElement {
             this.position.x += stepX * delta;
             this.position.y += stepY * delta;
             counter += delta;
-            if (counter >= animationTime * 0.8) {
+            if (counter >= animationTime * animationTimeMul) {
                 Game.app.ticker.remove(animation);
                 this.removeFromWorld();
             }
