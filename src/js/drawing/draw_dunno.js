@@ -1,4 +1,4 @@
-import {distance, otherPlayer, tileDistanceDiagonal} from "../utils/game_utils";
+import {distance, otherPlayer} from "../utils/game_utils";
 import {Game} from "../game";
 
 export function updateChain() {

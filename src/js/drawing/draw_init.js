@@ -83,8 +83,8 @@ export function drawOther() {
     gameWorldBG.drawRect(10, 10, Game.world.width - 20, Game.world.height - 20);
     gameWorldBG.zIndex = -4;
     Game.world.addChild(gameWorldBG);
-    Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
-    Game.world.addChild(Game.followChain);
+    //Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
+    //Game.world.addChild(Game.followChain);
     Game.limitChain = new LimitChain();
     Game.world.addChild(Game.limitChain);
     updateChain();
