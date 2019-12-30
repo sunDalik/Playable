@@ -1,9 +1,10 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
-import {ENEMY_TYPE, DIRECTIONS} from "../../enums";
+import {DIRECTIONS, ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile, isRelativelyEmpty} from "../../map_checks";
 import {createFadingAttack} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
+import * as PIXI from "pixi.js";
 
 export class Star extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/star.png"].texture) {
@@ -85,7 +86,10 @@ export class Star extends Enemy {
         const attackPositionX = this.tilePosition.x + tileOffsetX;
         const attackPositionY = this.tilePosition.y + tileOffsetY;
         if (isRelativelyEmpty(attackPositionX, attackPositionY)) {
-            createFadingAttack(new TileElement(Game.resources["src/images/enemy_attack.png"].texture, attackPositionX, attackPositionY));
+            const attack = new TileElement(PIXI.Texture.WHITE, attackPositionX, attackPositionY);
+            attack.tint = 0x888888;
+            attack.width = attack.height = Game.TILESIZE * 0.6;
+            createFadingAttack(attack);
             const player = getPlayerOnTile(attackPositionX, attackPositionY);
             if (player) player.damage(this.atk, this, false, true);
         }

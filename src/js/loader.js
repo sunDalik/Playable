@@ -29,7 +29,6 @@ export function loadAll(afterLoad) {
         .add("src/images/hazards/dark_fire.png")
         .add("src/images/hazards/dark_fire_small.png")
 
-        .add("src/images/enemy_attack.png")
         //make different folders for enemies? based on what? on their stage maybe? dunno...
         .add("src/images/enemies/roller.png")
         .add("src/images/enemies/roller_b.png")
