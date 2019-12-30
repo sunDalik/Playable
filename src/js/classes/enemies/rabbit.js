@@ -42,10 +42,11 @@ export class Rabbit extends Enemy {
             let movementOptions;
             if (this.rabbitType === RABBIT_TYPE.ENERGY) {
                 movementOptions = getEmptyRunAwayOptions(this, closestPlayer(this));
-                if (movementOptions.length === 0) getRunAwayOptions(this, closestPlayer(this));
+                if (movementOptions.length === 0) movementOptions = getRunAwayOptions(this, closestPlayer(this));
             } else {
                 if (tileDistance(this, closestPlayer(this)) <= 2) {
-                    movementOptions = getRunAwayOptions(this, closestPlayer(this));
+                    movementOptions = getEmptyRunAwayOptions(this, closestPlayer(this));
+                    if (movementOptions.length === 0) movementOptions = getRunAwayOptions(this, closestPlayer(this));
                     if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
                 } else movementOptions = getRelativelyEmptyCardinalDirections(this);
             }
