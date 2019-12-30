@@ -23,6 +23,7 @@ export class ParanoidEel extends Boss {
         this.scaleModifier = 3.7;
         this.direction = {x: 1, y: 0};
         this.fitToTile();
+        this.zIndex = Game.primaryPlayer.zIndex + 1;
     }
 
     cancelAnimation() {
@@ -35,6 +36,15 @@ export class ParanoidEel extends Boss {
         this.placeOnMap();
     }
 
+    /*
+    TODO ATTACKS:
+    - charge horizontally
+    - spill poison in a straight line
+    - vertical rush
+    - spit small eels
+    - spill poison around (two types)
+     */
+
     move() {
         if (this.triggeredSpinAttack) {
             if (this.waitingToAttack) this.waitingToAttack = false;
@@ -43,8 +53,13 @@ export class ParanoidEel extends Boss {
                 if (this.currentSpinCounter >= this.spinCounter) this.triggeredSpinAttack = false;
             }
         } else {
-            // check if empty
-            this.slide(this.direction.x, this.direction.y);
+            if (isRelativelyEmpty(this.tilePosition.x + this.direction.x * 2, this.tilePosition.y + this.direction.y * 2)) {
+                const player = getPlayerOnTile(this.tilePosition.x + this.direction.x * 2, this.tilePosition.y + this.direction.y * 2);
+                if (player) {
+                    player.damage(this.atk, this, true, true);
+                    this.slideBump(this.direction.x, this.direction.y);
+                } else this.slide(this.direction.x, this.direction.y);
+            } else this.turnAround();
         }
     }
 
@@ -114,6 +129,7 @@ export class ParanoidEel extends Boss {
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         if (!this.dead) {
+            if (this.triggeredSpinAttack) return;
             const rand = Math.random() * 100;
             if (rand <= 20) {
                 this.triggeredSpinAttack = true;

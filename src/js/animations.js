@@ -31,6 +31,7 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
     if (stepX === 0) attackParticle.height = 0;
     if (stepY === 0) attackParticle.width = 0;
 
+    attackParticle.zIndex = Game.primaryPlayer.zIndex + 1;
     let counter = 0;
     //big hack
     let goBack = false;
