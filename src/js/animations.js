@@ -32,6 +32,10 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
     if (stepY === 0) attackParticle.width = 0;
 
     let counter = 0;
+    //big hack
+    let goBack = false;
+    const oldW = attackParticle.width;
+    const oldH = attackParticle.height;
 
     const animation = (delta) => {
         if (counter < Game.WEAPON_ATTACK_TIME / 2) {
@@ -42,6 +46,14 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
             attackParticle.height -= stepY * delta;
         }
         counter += delta;
+        //big hack
+        if (!goBack && counter >= Game.WEAPON_ATTACK_TIME / 2) {
+            goBack = true;
+            counter = Game.WEAPON_ATTACK_TIME / 2;
+            attackParticle.width = oldW + stepX * Game.WEAPON_ATTACK_TIME / 2;
+            attackParticle.height = oldH + stepY * Game.WEAPON_ATTACK_TIME / 2;
+        }
+
         if (counter >= Game.WEAPON_ATTACK_TIME) {
             Game.world.removeChild(attackParticle);
             Game.app.ticker.remove(animation);
