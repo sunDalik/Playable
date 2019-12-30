@@ -132,3 +132,14 @@ export function getEmptyRunAwayOptions(runner, chaser) {
     }
     return directions;
 }
+
+export function get8DirectionsInRadius(radius, excludeZero = true) {
+    const directions = [];
+    for (let x = -radius; x <= radius; x++) {
+        for (let y = -radius; y <= radius; y++) {
+            if (x === 0 && y === 0 && excludeZero) continue;
+            directions.push({x: x, y: y});
+        }
+    }
+    return directions;
+}

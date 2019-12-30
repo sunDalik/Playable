@@ -1,7 +1,10 @@
 import {Game} from "../../../game"
 import {ENEMY_TYPE} from "../../../enums";
 import {Boss} from "./boss";
-import {isRelativelyEmpty} from "../../../map_checks";
+import {getPlayerOnTile, isRelativelyEmpty} from "../../../map_checks";
+import {randomChoiceSeveral} from "../../../utils/random_utils";
+import {get8Directions, get8DirectionsInRadius} from "../../../utils/map_utils";
+import {PoisonHazard} from "../../hazards/poison";
 
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture) {
@@ -9,10 +12,22 @@ export class ParanoidEel extends Boss {
         this.maxHealth = 15;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.PARANOID_EEL;
-        this.atk = 0.5;
+        this.atk = 1;
+
+        this.waitingToAttack = false;
+
+        this.triggeredSpinAttack = false;
+        this.spinCounter = 4;
+        this.currentSpinCounter = 0;
+
         this.scaleModifier = 3.7;
         this.direction = {x: 1, y: 0};
         this.fitToTile();
+    }
+
+    cancelAnimation() {
+        super.cancelAnimation();
+        this.angle = 0;
     }
 
     afterMapGen() {
@@ -21,8 +36,16 @@ export class ParanoidEel extends Boss {
     }
 
     move() {
-        // check if empty
-        this.slide(this.direction.x, this.direction.y);
+        if (this.triggeredSpinAttack) {
+            if (this.waitingToAttack) this.waitingToAttack = false;
+            else {
+                this.spinAttack();
+                if (this.currentSpinCounter >= this.spinCounter) this.triggeredSpinAttack = false;
+            }
+        } else {
+            // check if empty
+            this.slide(this.direction.x, this.direction.y);
+        }
     }
 
     slide(tileStepX, tileStepY) {
@@ -71,6 +94,32 @@ export class ParanoidEel extends Boss {
             }
         } else if (this.direction.y !== 0) {
 
+        }
+    }
+
+    spinAttack() {
+        this.currentSpinCounter++;
+        this.rotateByAngle(360, 12);
+        const tileSpread = Math.min(this.currentSpinCounter, 2);
+        const poisonDirs = randomChoiceSeveral(get8DirectionsInRadius(tileSpread, true), 6);
+        for (const dir of poisonDirs) {
+            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y));
+        }
+        for (const dir of get8Directions()) {
+            const player = getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
+            if (player) player.damage(this.atk, this, true, true);
+        }
+    }
+
+    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
+        super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
+        if (!this.dead) {
+            const rand = Math.random() * 100;
+            if (rand <= 20) {
+                this.triggeredSpinAttack = true;
+                this.waitingToAttack = true;
+                this.currentSpinCounter = 0;
+            }
         }
     }
 

@@ -295,7 +295,7 @@ export function generateLevel() {
         }
     }
 
-    entryPoints = randomShuffle(entryPoints);
+    randomShuffle(entryPoints);
 
     const levelGraph = getLevelPathGraph(level);
 

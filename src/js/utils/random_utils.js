@@ -10,11 +10,21 @@ export function randomShuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-    return array;
 }
 
 export function randomChoice(array) {
     return array[Math.floor(Math.random() * array.length)];
+}
+
+export function randomChoiceSeveral(array, n) {
+    const arrayCopy = array.slice();
+    if (n >= array.length) return arrayCopy;
+    const choices = [];
+    randomShuffle(arrayCopy);
+    for (let i = 0; i < n; i++) {
+        choices.push(arrayCopy[i]);
+    }
+    return choices;
 }
 
 export function randomArrayIndex(array) {
