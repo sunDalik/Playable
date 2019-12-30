@@ -8,7 +8,7 @@ import {BasicArmor} from "./classes/equipment/armor/basic";
 import {STAGE} from "./enums";
 import {generateLevel, getLevelPlayerGraph} from "./level_generation";
 import {calculateDetectionGraph, generateMap} from "./map_generation";
-import {lightPlayerPosition, lightPosition} from "./drawing/lighting";
+import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
 import {drawHUD, drawInteractionKeys, drawMiniMap, drawMovementKeyBindings} from "./drawing/draw_hud";
@@ -70,9 +70,11 @@ function setup() {
         drawMiniMap();
     });
 
+    //Game.TILESIZE = 13;
     Game.stage = STAGE.FLOODED_CAVE;
     initPools();
     initializeLevel();
+    //test();
     //Game.world.scale.set(0.5, 0.5); //it works!
     //camera.center()();
 }
@@ -136,4 +138,13 @@ export function initializeLevel() {
             kiss();
         } else Game.unplayable = false;
     }, 8, 2);
+}
+
+function test() {
+    for (let i = 0; i < Game.map.length; i++) {
+        for (let j = 0; j < Game.map[0].length; j++) {
+            lightTile(j, i);
+        }
+    }
+    camera.setup(Game.world.width / 2, Game.world.height / 2);
 }

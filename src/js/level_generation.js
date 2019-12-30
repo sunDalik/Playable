@@ -2,10 +2,12 @@ import {Game} from "./game"
 //https://github.com/qiao/PathFinding.js
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 
-import {arraySum, copy2dArray, init2dArray} from "./utils/basic_utils";
+import {arraySum, copy2dArray, init2dArray, removeObjectFromArray} from "./utils/basic_utils";
 import {MAP_SYMBOLS, STAGE} from "./enums";
 import {getRandomInt, randomArrayIndex, randomChoice, randomShuffle} from "./utils/random_utils";
 import {get8Directions} from "./utils/map_utils";
+
+const maxPathLength = 15;
 
 export function generateLevel() {
     let level = [[]];
@@ -277,7 +279,9 @@ export function generateLevel() {
             const startPositionY = Math.floor(endingRoomHeight / 2) - 2;
             //currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;
 
-            currentRoom[Math.floor(endingRoomHeight / 2) + 2][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.PARANOID_EEL;
+            if (Game.stage === STAGE.FLOODED_CAVE) {
+                currentRoom[Math.floor(endingRoomHeight / 2) + 2][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.PARANOID_EEL;
+            }
         }
         mergeRoomIntoLevel(level, currentRoom, startX, startY);
 
@@ -305,11 +309,16 @@ export function generateLevel() {
         roomConnections[i] = [];
     }
 
-    for (const entry of entryPoints) {
+    for (let i = entryPoints.length - 1; i >= 0; i--) {
+        const entry = entryPoints[i];
         if (!entry.connected) {
             let minConnection = getMinimalConnection(levelGraph, roomConnections, entry, entryPoints);
             if (minConnection !== undefined) {
-                connectEntries(minConnection.entry, entry, minConnection.connection, roomConnections, level);
+                if (minConnection.connection.length > maxPathLength && entryPoints.filter(e => e.room_id === entry.room_id).length > 1) {
+                    removeObjectFromArray(entry, entryPoints);
+                    level[entry.coords.y][entry.coords.x] = MAP_SYMBOLS.WALL;
+                } else
+                    connectEntries(minConnection.entry, entry, minConnection.connection, roomConnections, level);
             }
         }
     }
