@@ -32,15 +32,15 @@ export class AnimatedTileElement extends TileElement {
         const oldPosY = this.position.y;
         const time = animationTime - 1 + Math.abs(tileStepX) + Math.abs(tileStepY);
         const step = 1 / time;
-        let counter = 0;
+        this.animationCounter = 0;
 
         const animation = (delta) => {
-            counter += delta;
-            const t = counter * step;
+            this.animationCounter += delta;
+            const t = this.animationCounter * step;
             this.position.x = quadraticBezier(t, oldPosX, oldPosX + tileStepX * Game.TILESIZE / 2, oldPosX + tileStepX * Game.TILESIZE);
             this.position.y = quadraticBezier(t, oldPosY, oldPosY - jumpHeight, oldPosY + tileStepY * Game.TILESIZE);
             if (onFrame) onFrame();
-            if (counter >= time) {
+            if (this.animationCounter >= time) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
@@ -250,7 +250,7 @@ export class AnimatedTileElement extends TileElement {
         Game.app.ticker.add(animation);
     }
 
-    microSlide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.MICRO_SLIDE_ANIMATION_TIME) {
+    microSlide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.MICRO_SLIDE_ANIMATION_TIME, maxDelta = 99) {
         this.animationCounter = 0;
         let stepX;
         let stepY;
@@ -266,6 +266,7 @@ export class AnimatedTileElement extends TileElement {
         }
 
         const animation = (delta) => {
+            if (delta > maxDelta) delta = maxDelta;
             this.position.x += stepX * delta;
             this.position.y += stepY * delta;
             this.animationCounter += delta;

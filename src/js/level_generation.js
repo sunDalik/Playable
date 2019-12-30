@@ -270,9 +270,9 @@ export function generateLevel() {
             }
         } else if (r === endingRoomI) {
             currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = MAP_SYMBOLS.EXIT;
-            /*const startPositionX = startX + Math.floor(endingRoomWidth / 2) - 2; //for tests
-            const startPositionY = startY + Math.floor(endingRoomHeight / 2) - 2;
-            currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;*/
+            const startPositionX = Math.floor(endingRoomWidth / 2) - 2; //for tests
+            const startPositionY = Math.floor(endingRoomHeight / 2) - 2;
+            //currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;
         }
         mergeRoomIntoLevel(level, currentRoom, startX, startY);
 

@@ -40,3 +40,7 @@ camera.setup = (x, y) => {
 camera.center = () => {
     camera.setup(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y);
 };
+
+camera.moveToCenter = (animationTime) => {
+    camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
+};

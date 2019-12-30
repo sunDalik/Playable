@@ -34,9 +34,10 @@ export function distance(a, b) {
     return Math.sqrt(Math.pow(a.position.x - b.position.x, 2) + Math.pow(a.position.y - b.position.y, 2));
 }
 
-export function setTickTimeout(callback, tickTimeout) {
+export function setTickTimeout(callback, tickTimeout, maxDelta = 99) {
     let counter = 0;
     const timeout = (delta) => {
+        if (delta > maxDelta) delta = maxDelta;
         counter += delta;
         if (counter >= tickTimeout) {
             callback();

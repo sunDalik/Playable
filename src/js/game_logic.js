@@ -65,6 +65,7 @@ export function updateHazards() {
 }
 
 export function playerTurn(player, playerMove, bothPlayers = false) {
+    if (Game.unplayable) return false;
     if (((bothPlayers && !Game.player.dead && !Game.player2.dead)
         || (!bothPlayers && !player.dead))) {
         if (Game.enemiesTimeout !== null

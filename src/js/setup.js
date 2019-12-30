@@ -19,6 +19,7 @@ import {get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./u
 import {kiss} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
+import {retreatBlackBars} from "./drawing/hud_animations";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();
@@ -119,17 +120,20 @@ export function initializeLevel() {
     }
     camera.center();
 
+    retreatBlackBars();
     setTickTimeout(() => {
         if (Math.random() < 0.5 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {
             Game.player.microSlide(Game.player2.tilePosition.x - Game.player.tilePosition.x,
                 Game.player2.tilePosition.y - Game.player.tilePosition.y,
-                null, () => setTickTimeout(() => Game.player.microSlide(0, 0), 11),
-                9);
+                null, () => setTickTimeout(() =>
+                    Game.player.microSlide(0, 0, null, () => Game.unplayable = false, 5, 2), 11),
+                10, 2);
             Game.player2.microSlide(Game.player.tilePosition.x - Game.player2.tilePosition.x,
                 Game.player.tilePosition.y - Game.player2.tilePosition.y,
-                null, () => setTickTimeout(() => Game.player2.microSlide(0, 0), 11),
-                9);
+                null, () => setTickTimeout(() =>
+                    Game.player2.microSlide(0, 0, null, () => Game.unplayable = false, 5, 2), 11),
+                10, 2);
             kiss();
-        }
-    }, 10);
+        } else Game.unplayable = false;
+    }, 8, 2);
 }

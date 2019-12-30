@@ -23,7 +23,7 @@ export class NinjaKnife {
         if (isEnemy(attackTileX, attackTileY)) {
             if (isRelativelyEmpty(wielder.tilePosition.x + tileDirX * 2, wielder.tilePosition.y + tileDirY * 2)) {
                 createNinjaKnifeAnimation(this);
-                wielder.slide(tileDirX * 2, tileDirY * 2, this.SLIDE_ANIMATION_TIME);
+                wielder.slide(tileDirX * 2, tileDirY * 2, null, null, this.SLIDE_ANIMATION_TIME);
                 if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun = 1;
             } else {
                 createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
