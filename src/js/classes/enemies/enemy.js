@@ -49,6 +49,7 @@ export class Enemy extends AnimatedTileElement {
             if (this.health <= 0) {
                 this.die(source);
             } else {
+                this.runHitAnimation();
                 this.healthContainer.visible = true;
                 this.redrawHealth();
             }

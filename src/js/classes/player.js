@@ -26,11 +26,11 @@ import {
     redrawWeaponAndSecondHand
 } from "../drawing/draw_hud";
 import {isInanimate, isRelativelyEmpty} from "../map_checks";
-import {checkFollowMode, gotoNextLevel, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
+import {checkFollowMode, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {LyingItem} from "./equipment/lying_item";
 import {randomChoice} from "../utils/random_utils";
-import {getEffectivePlayerCenter, otherPlayer, setTickTimeout} from "../utils/game_utils";
+import {otherPlayer, setTickTimeout} from "../utils/game_utils";
 import {camera} from "./game/camera";
 import {updateChain} from "../drawing/draw_dunno";
 import {closeBlackBarsAndGotoNextLevel} from "../drawing/hud_animations";
@@ -327,6 +327,7 @@ export class Player extends AnimatedTileElement {
                 let dmg = atk - this.getDef();
                 if (dmg < 0.25) dmg = 0.25;
                 this.health -= dmg;
+                this.runHitAnimation();
                 shakeScreen();
                 redrawHealthForPlayer(this);
                 if (this.health <= 0) {
@@ -341,6 +342,7 @@ export class Player extends AnimatedTileElement {
             this.health -= damage;
             if (this.health <= 0) this.health = 0.25;
             if (toShake) shakeScreen();
+            this.runHitAnimation();
             redrawHealthForPlayer(this);
         }
     }

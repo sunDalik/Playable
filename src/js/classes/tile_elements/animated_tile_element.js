@@ -1,6 +1,8 @@
 import {Game} from "../../game"
 import {TileElement} from "./tile_element"
 import {cubicBezier, quadraticBezier} from "../../utils/math_utils";
+import {HIT_FILTER} from "../../filters";
+import {removeObjectFromArray} from "../../utils/basic_utils";
 
 export class AnimatedTileElement extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -14,6 +16,7 @@ export class AnimatedTileElement extends TileElement {
         this.MICRO_SLIDE_ANIMATION_TIME = 4;
         this.animationCounter = 0;
         this.animation = null;
+        this.filters = [];
     }
 
     step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {
@@ -289,5 +292,20 @@ export class AnimatedTileElement extends TileElement {
         this.placeOnMap();
         this.position.x += Game.TILESIZE * tileStepX;
         this.position.y += Game.TILESIZE * tileStepY;
+    }
+
+    runHitAnimation() {
+        this.filters.push(HIT_FILTER);
+        const time = 6;
+        let counter = 0;
+
+        const animation = delta => {
+            counter += delta;
+            if (counter >= time) {
+                removeObjectFromArray(HIT_FILTER, this.filters);
+                Game.app.ticker.remove(animation);
+            }
+        };
+        Game.app.ticker.add(animation);
     }
 }
