@@ -40,7 +40,8 @@ export function generateLevel() {
 
     let endingRoomX;
     let endingRoomY;
-    const endingRoomWidth = getRandomInt(8, 11);
+    //choose random ending room from POOL OF ENDING ROOMS
+    const endingRoomWidth = getRandomInt(12, 14);
     const endingRoomHeight = getRandomInt(8, 11);
     let endingRoomEntry;
     if (startRoomX + 1 <= (levelRoomWidth + 1) / 2) endingRoomX = levelRoomWidth - 1;
@@ -248,7 +249,7 @@ export function generateLevel() {
             previousY += previousYMaxAddition;
             previousYMaxAddition = 0;
         }
-        const currentRoom = levelRooms[r];
+        let currentRoom = levelRooms[r];
         const randomOffsetX = getRandomInt(minRandRoomOffset, maxRandRoomOffset + 1);
         const randomOffsetY = getRandomInt(minRandRoomOffset, maxRandRoomOffset + 1);
         const startX = previousX + randomOffsetX;
@@ -269,10 +270,14 @@ export function generateLevel() {
                 currentRoom[torchY][torchX] = MAP_SYMBOLS.TORCH;
             }
         } else if (r === endingRoomI) {
+            currentRoom = copy2dArray(currentRoom);
             currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = MAP_SYMBOLS.EXIT;
+
             const startPositionX = Math.floor(endingRoomWidth / 2) - 2; //for tests
             const startPositionY = Math.floor(endingRoomHeight / 2) - 2;
             //currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;
+
+            currentRoom[Math.floor(endingRoomHeight / 2) + 2][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.PARANOID_EEL;
         }
         mergeRoomIntoLevel(level, currentRoom, startX, startY);
 
