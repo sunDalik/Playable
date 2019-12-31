@@ -111,4 +111,9 @@ export class Eel extends Enemy {
         if (angle > 180) angle = angle - 360;
         super.rotateByAngle(angle, rotateTime);
     }
+
+    setAngle(angle) {
+        this.angle = angle;
+        this.inMemoryAngle = angle;
+    }
 }
