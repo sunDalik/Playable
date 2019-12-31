@@ -15,7 +15,7 @@ export class ParanoidEel extends Boss {
         this.type = ENEMY_TYPE.PARANOID_EEL;
         this.atk = 1;
 
-        this.waitingToAttack = false;
+        this.waitingToMove = false;
 
         this.triggeredSpinAttack = false;
         this.spinCounter = 4;
@@ -29,14 +29,20 @@ export class ParanoidEel extends Boss {
         this.direction = {x: 1, y: 0};
         this.fitToTile();
         this.zIndex = Game.primaryPlayer.zIndex + 1;
+        this.normalScaleX = this.scale.x;
+
+        this.normTextures = [Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture,
+            Game.resources["src/images/bosses/paranoid_eel/neutral_2.png"].texture]
     }
 
     cancelAnimation() {
         super.cancelAnimation();
-        this.angle = 0;
         if (this.direction.x !== 0) {
-            this.scale.x = this.direction.x * Math.abs(this.scale.x);
+            this.scale.x = this.direction.x * Math.abs(this.normalScaleX);
         }
+        if (this.direction.y === 1) this.angle = 0;
+        else if (this.direction.y === -1) this.angle = 180;
+        else this.angle = 0;
     }
 
     afterMapGen() {
@@ -50,27 +56,26 @@ export class ParanoidEel extends Boss {
     - spill poison in a straight line
     - vertical rush
     + spit small eels DONE
+    - rotate on hit
     - spill poison around (two types)
      */
 
     move() {
-        if (this.triggeredSpinAttack) {
-            if (this.waitingToAttack) this.waitingToAttack = false;
-            else {
-                this.spinAttack();
-                if (this.currentSpinCounter >= this.spinCounter) this.triggeredSpinAttack = false;
-            }
+        if (this.waitingToMove) this.waitingToMove = false;
+        else if (this.triggeredSpinAttack) {
+            this.spinAttack();
+            if (this.currentSpinCounter >= this.spinCounter) this.triggeredSpinAttack = false;
         } else if (this.triggeredEelSpit) {
             this.spitEels();
             if (this.currentEelSpitCounter >= this.eelSpitCounter) this.triggeredEelSpit = false;
         } else {
             let canMove = true;
-            const roll = Math.random();
-            if (roll < 0.05) {
+            const roll = Math.random() * 100;
+            if (roll < 5) {
                 if (this.emptyInFront()) {
                     this.triggeredEelSpit = true;
                     this.currentEelSpitCounter = 0;
-                    //this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit.png"].texture
+                    this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit.png"].texture;
                     this.shake(this.direction.y, this.direction.x);
                     canMove = false;
                 }
@@ -88,6 +93,7 @@ export class ParanoidEel extends Boss {
 
     slide(tileStepX, tileStepY) {
         this.wiggled = false;
+        this.setNeutralTextureIfNone();
         super.slide(tileStepX, tileStepY, () => {
             if (this.animationCounter >= this.SLIDE_ANIMATION_TIME / 2 && !this.wiggled) {
                 this.wiggle();
@@ -101,14 +107,18 @@ export class ParanoidEel extends Boss {
     }
 
     turnAround() {
+        this.setNeutralTextureIfNone();
         if (this.direction.x !== 0) {
             this.flip();
             this.direction.x *= -1;
+        } else if (this.direction.y !== 0) {
+            this.rotateByAngle(180);
+            this.direction.y *= -1;
         }
     }
 
     spitEels() {
-        //this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting.png"].texture
+        this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting.png"].texture;
         this.currentEelSpitCounter++;
         const minionEel = new Eel(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
         Game.world.addChild(minionEel);
@@ -133,7 +143,6 @@ export class ParanoidEel extends Boss {
 
     flip() {
         const oldScaleX = this.scale.x;
-        this.onAnimationEnd = () => this.scale.x = -oldScaleX;
         const time = 12;
         const step = -Math.sign(oldScaleX) * Math.abs(oldScaleX) * 2 / time;
         let counter = 0;
@@ -141,7 +150,6 @@ export class ParanoidEel extends Boss {
             counter += delta;
             this.scale.x += step * delta;
             if (counter >= time) {
-                this.onAnimationEnd = null;
                 this.scale.x = -oldScaleX;
                 Game.app.ticker.remove(animation);
             }
@@ -152,10 +160,10 @@ export class ParanoidEel extends Boss {
 
     wiggle() {
         if (this.direction.x !== 0) {
-            if (this.texture === Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture) {
-                this.texture = Game.resources["src/images/bosses/paranoid_eel/neutral_2.png"].texture
+            if (this.texture === this.normTextures[0]) {
+                this.texture = this.normTextures[1];
             } else {
-                this.texture = Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture
+                this.texture = this.normTextures[0];
             }
         } else if (this.direction.y !== 0) {
 
@@ -179,12 +187,14 @@ export class ParanoidEel extends Boss {
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         if (!this.dead) {
+            this.direction = {x: -inputX, y: -inputY};
             if (this.triggeredSpinAttack) return;
-            const rand = Math.random() * 100;
-            if (rand <= 20) {
+            const roll = Math.random() * 100;
+            if (roll <= 20) {
                 this.triggeredSpinAttack = true;
-                this.waitingToAttack = true;
+                this.waitingToMove = true;
                 this.currentSpinCounter = 0;
+                this.shake(this.direction.y, this.direction.x);
             }
         }
     }
@@ -215,6 +225,13 @@ export class ParanoidEel extends Boss {
             }
         }
         return true;
+    }
+
+    setNeutralTextureIfNone() {
+        if (this.direction.x !== 0 && !(this.texture === this.normTextures[0] || this.texture === this.normTextures[1])) {
+            if (Math.random() < 0.5) this.texture = this.normTextures[0];
+            else this.texture = this.normTextures[1];
+        }
     }
 
     placeOnMap() {
