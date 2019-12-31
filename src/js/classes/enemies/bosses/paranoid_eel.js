@@ -84,6 +84,10 @@ export class ParanoidEel extends Boss {
         }
     }
 
+    spitEels() {
+
+    }
+
     flip() {
         const oldScaleX = this.scale.x;
         const time = 12;
@@ -116,7 +120,7 @@ export class ParanoidEel extends Boss {
         this.currentSpinCounter++;
         this.rotateByAngle(360, 12);
         const tileSpread = Math.min(this.currentSpinCounter, 2);
-        const poisonDirs = randomChoiceSeveral(get8DirectionsInRadius(tileSpread, true), 6);
+        const poisonDirs = randomChoiceSeveral(get8DirectionsInRadius(tileSpread, true), 3 + this.currentSpinCounter * 2);
         for (const dir of poisonDirs) {
             Game.world.addHazard(new PoisonHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y));
         }

@@ -7,8 +7,6 @@ import {MAP_SYMBOLS, STAGE} from "./enums";
 import {getRandomInt, randomArrayIndex, randomChoice, randomShuffle} from "./utils/random_utils";
 import {get8Directions} from "./utils/map_utils";
 
-const maxPathLength = 15;
-
 export function generateLevel() {
     let level = [[]];
     let roomNumber;
@@ -314,7 +312,7 @@ export function generateLevel() {
         if (!entry.connected) {
             let minConnection = getMinimalConnection(levelGraph, roomConnections, entry, entryPoints);
             if (minConnection !== undefined) {
-                if (minConnection.connection.length > maxPathLength && entryPoints.filter(e => e.room_id === entry.room_id).length > 1) {
+                if (minConnection.connection.length > Math.min(levelTileWidth, levelTileHeight) * 0.32 && entryPoints.filter(e => e.room_id === entry.room_id).length > 1) {
                     removeObjectFromArray(entry, entryPoints);
                     level[entry.coords.y][entry.coords.x] = MAP_SYMBOLS.WALL;
                 } else
