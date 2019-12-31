@@ -6,7 +6,7 @@ import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
 import {STAGE} from "./enums";
-import {generateLevel, getLevelPlayerGraph} from "./level_generation";
+import {generateLevel} from "./level_generation/level_generation";
 import {calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
@@ -20,6 +20,7 @@ import {kiss} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 import {retreatBlackBars} from "./drawing/hud_animations";
+import {getLevelPlayerGraph} from "./level_generation/generation_utils";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();
