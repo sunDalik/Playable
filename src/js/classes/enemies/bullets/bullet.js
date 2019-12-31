@@ -53,7 +53,7 @@ export class Bullet extends TileElement {
         if (entity.role === ROLE.ENEMY) {
             entity.damage(this, this.atk, 0, 0, false, true);
         } else if (entity.role === ROLE.PLAYER) {
-            entity.damage(this.atk, this, false, false);
+            entity.damage(this.atk, this, false, true);
         }
         this.die(false);
         this.dieFly(entity.tilePosition.x - this.tilePosition.x, entity.tilePosition.y - this.tilePosition.y);

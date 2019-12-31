@@ -115,10 +115,10 @@ export function lightTile(tileX, tileY) {
 
     const secondaryEntity = Game.map[tileY][tileX].secondaryEntity;
     if (secondaryEntity) {
-        if (!entity.visible && !entity.dead && entity.immediateReaction) {
-            entity.immediateReaction();
+        if (!secondaryEntity.visible && !secondaryEntity.dead && secondaryEntity.immediateReaction) {
+            secondaryEntity.immediateReaction();
         }
-        entity.visible = true;
+        secondaryEntity.visible = true;
     }
 
     if (Game.map[tileY][tileX].hazard) {

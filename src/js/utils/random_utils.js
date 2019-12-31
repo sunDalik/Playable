@@ -1,6 +1,7 @@
 import {Game} from "../game";
 import {removeItemFromPool} from "../game_changer";
 
+//modifies the array
 export function randomShuffle(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
     while (0 !== currentIndex) {
@@ -10,6 +11,7 @@ export function randomShuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
+    return array;
 }
 
 export function randomChoice(array) {
