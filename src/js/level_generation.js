@@ -19,7 +19,7 @@ export function generateLevel() {
             else if (roomNumber === 15) levelRoomWidth = 5;
             break;
         case STAGE.DARK_TUNNEL:
-            roomNumber = randomChoice([10, 12, 14]);
+            roomNumber = randomChoice([12, 14, 16]);
             levelRoomWidth = roomNumber / 2;
             break;
         default:
@@ -34,8 +34,12 @@ export function generateLevel() {
     //generate starting room position
     const startRoomY = getRandomInt(0, levelRoomHeight);
     let startRoomX;
-    if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) startRoomX = getRandomInt(0, levelRoomWidth);
-    else startRoomX = randomChoice([0, levelRoomWidth - 1]);
+    if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) {
+        startRoomX = getRandomInt(0, levelRoomWidth);
+        if (Game.stage === STAGE.DARK_TUNNEL) {
+            startRoomX = randomChoice([0, 1, levelRoomWidth - 2, levelRoomWidth - 1]);
+        }
+    } else startRoomX = randomChoice([0, levelRoomWidth - 1]);
     const startRoomI = startRoomY * levelRoomWidth + startRoomX;
 
     let endingRoomX;
