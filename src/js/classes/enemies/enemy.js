@@ -213,21 +213,10 @@ export class Enemy extends AnimatedTileElement {
         }
     }
 
-    bumpX(tileStepX) {
-        super.bumpX(tileStepX, () => this.moveHealthContainer())
-    }
-
     step(tileStepX, tileStepY, onFrame = null, onEnd = null) {
         super.step(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
             this.moveHealthContainer();
-        }, onEnd);
-    }
-
-    bumpY(tileStepY, onFrame = null, onEnd = null) {
-        super.bumpY(tileStepY, () => {
-            if (onFrame) onFrame();
-            this.moveHealthContainer()
         }, onEnd);
     }
 

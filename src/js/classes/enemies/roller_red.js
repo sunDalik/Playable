@@ -130,7 +130,7 @@ export class RedRoller extends Roller {
             this.cancelAnimation();
             if (isEmpty(this.tilePosition.x, this.tilePosition.y + inputY)) {
                 this.step(0, inputY);
-            } else this.bumpY(inputY);
+            } else this.bump(0, inputY);
             this.cancellable = false;
         } else {
             super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
