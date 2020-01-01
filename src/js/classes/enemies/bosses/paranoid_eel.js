@@ -40,6 +40,8 @@ export class ParanoidEel extends Boss {
             Game.resources["src/images/bosses/paranoid_eel/neutral_2.png"].texture,
             Game.resources["src/images/bosses/paranoid_eel/neutral_y.png"].texture,
             Game.resources["src/images/bosses/paranoid_eel/neutral_y_2.png"].texture]
+
+        this.minions = [];
     }
 
     cancelAnimation() {
@@ -55,19 +57,14 @@ export class ParanoidEel extends Boss {
     /*
     TODO ATTACKS:
     - charge horizontally
-    + spill poison in a straight line DONE
     - vertical rush
-    + spit small eels DONE
-    + rotate on hit DONE
-    + spit poison eel DONE
     - spill poison around (two types)
      */
 
     move() {
         if (this.waitingToMove) {
             this.waitingToMove = false;
-            if (this.triggeredSpinAttack) this.shake(this.direction.y, this.direction.x);
-            if (this.triggeredPoisonEelSpit) this.shake(this.direction.y, this.direction.x);
+            if (this.triggeredSpinAttack || this.triggeredPoisonEelSpit) this.shake(this.direction.y, this.direction.x);
         } else if (this.triggeredStraightPoisonAttack) {
             this.straightPoisonAttack();
             this.triggeredStraightPoisonAttack = false;
@@ -163,6 +160,7 @@ export class ParanoidEel extends Boss {
         const minionEel = new Eel(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
         Game.world.addChild(minionEel);
         Game.enemies.push(minionEel);
+        this.minions.push(minionEel);
         minionEel.stun = 1;
         if (this.direction.x !== 0) {
             minionEel.setAngle(90 * (this.direction.x + 2));
@@ -188,6 +186,7 @@ export class ParanoidEel extends Boss {
         const minionEel = new PoisonEel(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
         Game.world.addChild(minionEel);
         Game.enemies.push(minionEel);
+        this.minions.push(minionEel);
         minionEel.stun = 1;
         if (this.direction.x !== 0) {
             minionEel.setAngle(90 * (this.direction.x + 2));
@@ -255,7 +254,7 @@ export class ParanoidEel extends Boss {
         this.currentSpinCounter++;
         this.rotateByAngle(360, 12);
         const tileSpread = Math.min(this.currentSpinCounter, 3);
-        const poisonDirs = randomChoiceSeveral(get8DirectionsInRadius(tileSpread, true), 3 + Math.min(this.currentSpinCounter, 3) * 2);
+        const poisonDirs = randomChoiceSeveral(get8DirectionsInRadius(tileSpread, true), 3 + Math.min(this.currentSpinCounter, 3));
         for (const dir of poisonDirs) {
             Game.world.addHazard(new PoisonHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y));
         }

@@ -289,6 +289,9 @@ export function generateEntryBasedLevel() {
             const startPositionY = Math.floor(endingRoomHeight / 2) - 2;
             //currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;
 
+            currentRoom[0][0] += ":" + MAP_SYMBOLS.END_ROOM_BOUNDARY;
+            currentRoom[endingRoomHeight - 1][endingRoomWidth - 1] += ":" + MAP_SYMBOLS.END_ROOM_BOUNDARY;
+
             if (Game.stage === STAGE.FLOODED_CAVE) {
                 //currentRoom[Math.floor(endingRoomHeight / 2) + 2][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.PARANOID_EEL;
             }

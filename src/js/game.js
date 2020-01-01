@@ -72,3 +72,4 @@ Game.followChain = null;
 Game.limitChain = null;
 
 Game.unplayable = true;
+Game.endRoomBoundaries = [];

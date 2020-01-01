@@ -49,25 +49,27 @@ export function generateMap(level) {
                 item: null,
                 lit: false
             };
-            if (map[i][j] === MAP_SYMBOLS.WALL) {
+            if (map[i][j].split(":")[0] === MAP_SYMBOLS.WALL) {
                 mapCell.tileType = TILE_TYPE.WALL;
                 mapCell.tile = new FullTileElement(Game.resources["src/images/wall.png"].texture, j, i);
-            } else if (map[i][j] === MAP_SYMBOLS.SUPER_WALL) {
+            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.SUPER_WALL) {
                 mapCell.tileType = TILE_TYPE.SUPER_WALL;
                 mapCell.tile = new FullTileElement(Game.resources["src/images/super_wall.png"].texture, j, i);
-            } else if (map[i][j] === MAP_SYMBOLS.VOID) {
+            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.VOID) {
                 mapCell.tileType = TILE_TYPE.VOID;
-            } else if (map[i][j] === MAP_SYMBOLS.ENTRY) {
+            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.ENTRY) {
                 mapCell.tileType = TILE_TYPE.ENTRY;
-            } else if (map[i][j] === MAP_SYMBOLS.PATH) {
+            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.PATH) {
                 mapCell.tileType = TILE_TYPE.PATH;
-            } else if (map[i][j] === MAP_SYMBOLS.EXIT) {
+            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.EXIT) {
                 mapCell.tileType = TILE_TYPE.EXIT;
                 mapCell.tile = new FullTileElement(Game.resources["src/images/exit.png"].texture, j, i);
                 //mapCell.tile.zIndex = 100;
-            } else if (map[i][j] === MAP_SYMBOLS.START) {
+            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.START) {
                 Game.startPos = {x: j, y: i};
             }
+
+            if (map[i][j].split(":")[1] === MAP_SYMBOLS.END_ROOM_BOUNDARY) Game.endRoomBoundaries.push({x: j, y: i});
 
             if (map[i][j] === MAP_SYMBOLS.ROLLER) mapCell.entity = new Roller(j, i);
             else if (map[i][j] === MAP_SYMBOLS.ROLLER_RED) mapCell.entity = new RedRoller(j, i);

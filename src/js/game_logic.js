@@ -32,6 +32,7 @@ function enemyTurn() {
 export function moveEnemies() {
     for (const enemy of Game.enemies) {
         if (!enemy.dead && (enemy.visible || enemy.canMoveInvisible)) {
+            if (enemy.boss) enemy.stun = 0;
             if (enemy.stun <= 0) {
                 const egp = enemy.getGlobalPosition();
                 const limit = Game.TILESIZE * 2;
@@ -265,6 +266,7 @@ export function gotoNextLevel() {
     Game.bullets = [];
     Game.infiniteAnimations = [];
     Game.obelisks = [];
+    Game.endRoomBoundaries = [];
     incrementStage();
     initializeLevel();
     Game.player.applyNextLevelMethods();

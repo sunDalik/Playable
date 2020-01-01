@@ -25,7 +25,8 @@ camera.setNewPoint = (x, y, time) => {
     };
 
     camera.animation = animation;
-    Game.app.ticker.add(animation);
+    if (time === 0) camera.setup(x, y);
+    else Game.app.ticker.add(animation);
 };
 
 camera.setup = (x, y) => {
@@ -38,9 +39,17 @@ camera.setup = (x, y) => {
 };
 
 camera.center = () => {
-    camera.setup(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y);
+    camera.moveToCenter(0);
 };
 
 camera.moveToCenter = (animationTime) => {
-    camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
+    const endRoomTime = animationTime === 0 ? 0 : 15;
+    if (Game.player.dead && Game.player2.dead) return;
+    if ((Game.player.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player.tilePosition.y >= Game.endRoomBoundaries[0].y
+        && Game.player.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player.dead)
+        && (Game.player2.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player2.tilePosition.y >= Game.endRoomBoundaries[0].y
+            && Game.player2.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player2.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player2.dead)) {
+        camera.setNewPoint((Game.endRoomBoundaries[0].x + (Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x) / 2) * Game.TILESIZE + Game.TILESIZE / 2,
+            (Game.endRoomBoundaries[0].y + (Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y) / 2) * Game.TILESIZE + Game.TILESIZE / 2, endRoomTime);
+    } else camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
 };

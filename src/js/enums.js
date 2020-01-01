@@ -124,5 +124,6 @@ export const MAP_SYMBOLS = Object.freeze({
     STATUE: "statue",
     CHEST: "chest",
     OBELISK: "obelisk",
-    TORCH: "torch"
+    TORCH: "torch",
+    END_ROOM_BOUNDARY: "end_bound"
 });
