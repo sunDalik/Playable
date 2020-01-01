@@ -290,7 +290,7 @@ export function generateEntryBasedLevel() {
             //currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;
 
             if (Game.stage === STAGE.FLOODED_CAVE) {
-                currentRoom[Math.floor(endingRoomHeight / 2) + 2][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.PARANOID_EEL;
+                //currentRoom[Math.floor(endingRoomHeight / 2) + 2][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.PARANOID_EEL;
             }
         }
         mergeRoomIntoLevel(level, currentRoom, startX, startY);

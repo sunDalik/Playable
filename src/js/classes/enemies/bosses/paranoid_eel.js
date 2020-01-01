@@ -73,7 +73,8 @@ export class ParanoidEel extends Boss {
                 if (this.emptyInFront()) {
                     this.triggeredEelSpit = true;
                     this.currentEelSpitCounter = 0;
-                    this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit.png"].texture;
+                    if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit.png"].texture;
+                    else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_y.png"].texture;
                     this.shake(this.direction.y, this.direction.x);
                     canMove = false;
                 }
@@ -117,7 +118,8 @@ export class ParanoidEel extends Boss {
 
     spitEels() {
         //todo if player in front then spit eel that will damage him and die
-        this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting.png"].texture;
+        if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting.png"].texture;
+        else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting_y.png"].texture;
         this.currentEelSpitCounter++;
         const minionEel = new Eel(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
         Game.world.addChild(minionEel);
@@ -237,7 +239,9 @@ export class ParanoidEel extends Boss {
             if (Math.random() < 0.5) this.texture = this.normTextures[0];
             else this.texture = this.normTextures[1];
         } else if (this.direction.y !== 0 && this.texture !== this.normTextures[2] && this.texture !== this.normTextures[3]) {
-            if (Math.random() < 0.5) this.texture = this.normTextures[2];
+            if (this.texture === Game.resources["src/images/bosses/paranoid_eel/spitting_y.png"].texture) {
+                this.texture = this.normTextures[2];
+            } else if (Math.random() < 0.5) this.texture = this.normTextures[2];
             else this.texture = this.normTextures[3];
         }
 
