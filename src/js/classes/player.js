@@ -28,7 +28,7 @@ import {
 import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {
     activateBossMode,
-    amIinTheBossRoom,
+    amIInTheBossRoom,
     checkFollowMode,
     removeEquipmentFromPlayer,
     swapEquipmentWithPlayer
@@ -150,9 +150,7 @@ export class Player extends AnimatedTileElement {
                 this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity);
                 this.bump(tileStepX, tileStepY);
             } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
-                if (Game.boss && !Game.boss.dead && !Game.bossFight && amIinTheBossRoom()) {
-                    activateBossMode();
-                } else if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
+                if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
                     Game.unplayable = true;
                     this.toCloseBlackBars = true;
                     this.step(tileStepX, tileStepY, () => {
@@ -166,6 +164,9 @@ export class Player extends AnimatedTileElement {
                     this.step(tileStepX, tileStepY);
                     for (const eq of this.getEquipment()) {
                         if (eq && eq.onMove) eq.onMove(this);
+                    }
+                    if (Game.boss && !Game.boss.dead && !Game.bossFight && amIInTheBossRoom(this)) {
+                        activateBossMode(this);
                     }
                 }
             } else if (this.secondHand && this.secondHand.use && this.secondHand.use(this, tileStepX, tileStepY)

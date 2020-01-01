@@ -277,7 +277,7 @@ export function gotoNextLevel() {
     Game.player2.applyNextLevelMethods();
 }
 
-export function activateBossMode() {
+export function activateBossMode(player) {
     for (let x = Game.endRoomBoundaries[0].x; x <= Game.endRoomBoundaries[1].x; x++) {
         Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[0].y - 1), TILE_TYPE.SUPER_WALL);
         Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[1].y + 1), TILE_TYPE.SUPER_WALL);
@@ -285,6 +285,10 @@ export function activateBossMode() {
     for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
         Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[0].x - 1, y), TILE_TYPE.SUPER_WALL);
         Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[1].x + 1, y), TILE_TYPE.SUPER_WALL);
+    }
+
+    if (!otherPlayer(player).dead) {
+        otherPlayer(player).step(player.tilePosition.x - otherPlayer(player).tilePosition.x, player.tilePosition.y - otherPlayer(player).tilePosition.y);
     }
     Game.bossFight = true;
 }
@@ -297,10 +301,16 @@ export function deactivateBossMode() {
     Game.bossFight = false;
 }
 
-export function amIinTheBossRoom() {
+export function areWeInTheBossRoom() {
     return (Game.player.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player.tilePosition.y >= Game.endRoomBoundaries[0].y
         && Game.player.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player.dead)
         && (Game.player2.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player2.tilePosition.y >= Game.endRoomBoundaries[0].y
             && Game.player2.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player2.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player2.dead)
         && (!Game.player.dead || !Game.player2.dead);
+}
+
+export function amIInTheBossRoom(player) {
+    return player.tilePosition.x >= Game.endRoomBoundaries[0].x && player.tilePosition.y >= Game.endRoomBoundaries[0].y
+        && player.tilePosition.x <= Game.endRoomBoundaries[1].x && player.tilePosition.y <= Game.endRoomBoundaries[1].y
+        && !player.dead;
 }
