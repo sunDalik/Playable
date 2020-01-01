@@ -56,6 +56,7 @@ export class ParanoidEel extends Boss {
     - vertical rush
     + spit small eels DONE
     + rotate on hit DONE
+    - spit poison eel
     - spill poison around (two types)
      */
 
@@ -86,8 +87,8 @@ export class ParanoidEel extends Boss {
             } else if (roll < 25) {
                 if (this.canDoPoisonStraightAttack()) {
                     this.triggeredStraightPoisonAttack = true;
-                    if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit.png"].texture;
-                    else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_y.png"].texture;
+                    if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_poison.png"].texture;
+                    else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_poison_y.png"].texture;
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
                 }
@@ -158,8 +159,12 @@ export class ParanoidEel extends Boss {
     straightPoisonAttack() {
         this.bump(this.direction.x, this.direction.y);
         for (let i = (this.direction.x + this.direction.y) * 2; ; i += this.direction.x + this.direction.y) {
-            if (isAnyWall(this.tilePosition.x + i * Math.abs(this.direction.x), this.tilePosition.y + i * Math.abs(this.direction.y))) break;
-            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + i * Math.abs(this.direction.x), this.tilePosition.y + i * Math.abs(this.direction.y)));
+            const x = this.tilePosition.x + i * Math.abs(this.direction.x);
+            const y = this.tilePosition.y + i * Math.abs(this.direction.y);
+            if (isAnyWall(x, y)) break;
+            Game.world.addHazard(new PoisonHazard(x, y));
+            const player = getPlayerOnTile(x, y);
+            if (player) player.damage(this.atk, this, false, true);
         }
     }
 
@@ -213,10 +218,11 @@ export class ParanoidEel extends Boss {
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         if (!this.dead) {
-            if (this.direction.x !== -inputX || this.direction.y !== -inputY) this.waitingToMove = true;
-            this.direction = {x: -inputX, y: -inputY};
-            this.correctLook();
             if (this.triggeredSpinAttack) return;
+            if (this.direction.x !== -inputX || this.direction.y !== -inputY) this.waitingToMove = true;
+            if (inputX !== 0 || inputY !== 0) {
+                this.shiftPositionOnDamage(source, inputX, inputY);
+            } else this.rotateDirectionBy90();
             const roll = Math.random() * 100;
             if (roll <= 20) {
                 this.triggeredSpinAttack = true;
@@ -257,15 +263,55 @@ export class ParanoidEel extends Boss {
 
     canDoPoisonStraightAttack() {
         for (let i = (this.direction.x + this.direction.y) * 2; ; i += this.direction.x + this.direction.y) {
-            console.log(this.tilePosition.x + i + Math.abs(this.direction.y), this.tilePosition.y + i + Math.abs(this.direction.x));
-            if (getPlayerOnTile(this.tilePosition.x + i * Math.abs(this.direction.x) + Math.abs(this.direction.y), this.tilePosition.y + i * Math.abs(this.direction.y) + Math.abs(this.direction.x))) return true;
-            if (isAnyWall(this.tilePosition.x + i * Math.abs(this.direction.x) + Math.abs(this.direction.y), this.tilePosition.y + i * Math.abs(this.direction.y) + Math.abs(this.direction.x))) break;
+            const x = this.tilePosition.x + i * Math.abs(this.direction.x) + Math.abs(this.direction.y);
+            const y = this.tilePosition.y + i * Math.abs(this.direction.y) + Math.abs(this.direction.x);
+            if (getPlayerOnTile(x, y)) return true;
+            if (isAnyWall(x, y)) break;
         }
         for (let i = (this.direction.x + this.direction.y) * 2; ; i += this.direction.x + this.direction.y) {
-            if (getPlayerOnTile(this.tilePosition.x + i * Math.abs(this.direction.x) - Math.abs(this.direction.y), this.tilePosition.y + i * Math.abs(this.direction.y) - Math.abs(this.direction.x))) return true;
-            if (isAnyWall(this.tilePosition.x + i * Math.abs(this.direction.x) - Math.abs(this.direction.y), this.tilePosition.y + i * Math.abs(this.direction.y) - Math.abs(this.direction.x))) break;
+            const x = this.tilePosition.x + i * Math.abs(this.direction.x) - Math.abs(this.direction.y);
+            const y = this.tilePosition.y + i * Math.abs(this.direction.y) - Math.abs(this.direction.x);
+            if (getPlayerOnTile(x, y)) return true;
+            if (isAnyWall(x, y)) break;
         }
         return false;
+    }
+
+    shiftPositionOnDamage(player, inputX, inputY) {
+        if (inputX === -this.direction.x && inputY === -this.direction.y) {
+            return;
+        } else if (inputX === this.direction.x && inputY === this.direction.y) {
+            this.turnAround();
+        } else {
+            if (!player) return;
+            this.removeFromMap();
+            if (inputX !== 0) {
+                this.tilePosition.y += Math.sign(player.tilePosition.y - this.tilePosition.y);
+                this.tilePosition.x += Math.sign(this.tilePosition.x - player.tilePosition.x);
+            } else if (inputY !== 0) {
+                this.tilePosition.x += Math.sign(player.tilePosition.x - this.tilePosition.x);
+                this.tilePosition.y += Math.sign(this.tilePosition.y - player.tilePosition.y);
+            }
+            this.direction = {x: -inputX, y: -inputY};
+            this.correctLook();
+            this.place();
+            this.placeOnMap();
+        }
+    }
+
+    rotateDirectionBy90() {
+        this.removeFromMap();
+        if (this.direction.x === 1) {
+            this.direction = {x: 0, y: 1}
+        } else if (this.direction.x === -1) {
+            this.direction = {x: 0, y: -1}
+        } else if (this.direction.y === 1) {
+            this.direction = {x: -1, y: 0}
+        } else if (this.direction.y === -1) {
+            this.direction = {x: 1, y: 0}
+        }
+        this.correctLook();
+        this.placeOnMap();
     }
 
     correctLook() {
