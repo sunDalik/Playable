@@ -12,7 +12,7 @@ export class Spider extends Enemy {
         this.maxHealth = 1.5;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.SPIDER;
-        this.atk = 0.5;
+        this.atk = 1;
         this.chase = false;
         this.thrown = false;
         this.STEP_ANIMATION_TIME = 6;

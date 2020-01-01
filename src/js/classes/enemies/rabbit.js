@@ -16,7 +16,7 @@ export class Rabbit extends Enemy {
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.RABBIT;
         this.rabbitType = type;
-        this.atk = 0.25;
+        this.atk = 0.5;
         this.predator = null;
         this.turnDelay = 1;
         this.currentTurnDelay = this.turnDelay;

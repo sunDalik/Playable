@@ -11,7 +11,7 @@ export class SmallMushroom extends Mushroom {
         this.maxHealth = 1;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.SMALL_MUSHROOM;
-        this.atk = 0.5;
+        this.atk = 1;
         this.poisonSpread = 1;
         this.walkingTexture = Game.resources["src/images/enemies/mushroom_small_walking.png"].texture;
         this.normalTexture = Game.resources["src/images/enemies/mushroom_small.png"].texture;

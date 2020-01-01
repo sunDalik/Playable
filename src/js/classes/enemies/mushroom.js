@@ -13,7 +13,7 @@ export class Mushroom extends Enemy {
         this.maxHealth = 2;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.MUSHROOM;
-        this.atk = 1;
+        this.atk = 1.5;
         this.poisonDelay = 6; //half of poison hazard lifetime
         this.currentPoisonDelay = this.poisonDelay;
         this.poisonSpread = 2;
