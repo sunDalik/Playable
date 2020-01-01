@@ -18,7 +18,7 @@ export class ParanoidEel extends Boss {
         this.waitingToMove = false;
 
         this.triggeredSpinAttack = false;
-        this.spinCounter = 4;
+        this.spinCounter = 5;
         this.currentSpinCounter = 0;
 
         this.triggeredEelSpit = false;
@@ -61,8 +61,10 @@ export class ParanoidEel extends Boss {
      */
 
     move() {
-        if (this.waitingToMove) this.waitingToMove = false;
-        else if (this.triggeredStraightPoisonAttack) {
+        if (this.waitingToMove) {
+            this.waitingToMove = false;
+            if (this.triggeredSpinAttack) this.shake(this.direction.y, this.direction.x);
+        } else if (this.triggeredStraightPoisonAttack) {
             this.straightPoisonAttack();
             this.triggeredStraightPoisonAttack = false;
         } else if (this.triggeredSpinAttack) {
@@ -92,6 +94,11 @@ export class ParanoidEel extends Boss {
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
                 }
+            } else if (roll < 30) {
+                this.triggeredSpinAttack = true;
+                this.currentSpinCounter = 0;
+                this.shake(this.direction.y, this.direction.x);
+                canMove = false;
             }
             if (!canMove) return;
             if (isRelativelyEmpty(this.tilePosition.x + this.direction.x * 2, this.tilePosition.y + this.direction.y * 2)) {
@@ -204,8 +211,8 @@ export class ParanoidEel extends Boss {
     spinAttack() {
         this.currentSpinCounter++;
         this.rotateByAngle(360, 12);
-        const tileSpread = Math.min(this.currentSpinCounter, 2);
-        const poisonDirs = randomChoiceSeveral(get8DirectionsInRadius(tileSpread, true), 3 + this.currentSpinCounter * 2);
+        const tileSpread = Math.min(this.currentSpinCounter, 3);
+        const poisonDirs = randomChoiceSeveral(get8DirectionsInRadius(tileSpread, true), 3 + Math.min(this.currentSpinCounter, 3) * 2);
         for (const dir of poisonDirs) {
             Game.world.addHazard(new PoisonHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y));
         }
