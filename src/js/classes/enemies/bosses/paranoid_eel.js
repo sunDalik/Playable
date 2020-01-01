@@ -65,6 +65,7 @@ export class ParanoidEel extends Boss {
             Game.resources["src/images/bosses/paranoid_eel/neutral_y_2.png"].texture];
 
         this.minions = [];
+        Game.boss = this;
     }
 
     cancelAnimation() {
@@ -204,7 +205,6 @@ export class ParanoidEel extends Boss {
     }
 
     spitEels() {
-        //todo if player in front then spit eel that will damage him and die
         if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting.png"].texture;
         else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting_y.png"].texture;
         this.currentEelSpitCounter++;
@@ -216,19 +216,26 @@ export class ParanoidEel extends Boss {
             minionEel.setAngle(90 * (-this.direction.y + 1));
         }
         const spitAnimationTime = minionEel.SLIDE_ANIMATION_TIME - 6 + this.currentEelSpitCounter * 2;
-        minionEel.slide(this.currentEelSpitCounter * this.direction.x, this.currentEelSpitCounter * this.direction.y, null, () => {
-            if (Math.random() < 0.5) {
-                minionEel.rotateByAngle(90);
-                minionEel.increaseAngle(90);
-            } else {
-                minionEel.rotateByAngle(-90);
-                minionEel.increaseAngle(-90);
-            }
-        }, spitAnimationTime);
+        if (isEmpty(this.tilePosition.x + this.direction.x * (this.currentEelSpitCounter + 1), this.tilePosition.y + this.direction.y * (this.currentEelSpitCounter + 1))) {
+            minionEel.slide(this.currentEelSpitCounter * this.direction.x, this.currentEelSpitCounter * this.direction.y, null, () => {
+                if (Math.random() < 0.5) {
+                    minionEel.rotateByAngle(90);
+                    minionEel.increaseAngle(90);
+                } else {
+                    minionEel.rotateByAngle(-90);
+                    minionEel.increaseAngle(-90);
+                }
+            }, spitAnimationTime);
+        } else {
+            const player = getPlayerOnTile(this.tilePosition.x + this.direction.x * (this.currentEelSpitCounter + 1), this.tilePosition.y + this.direction.y * (this.currentEelSpitCounter + 1));
+            if (player) player.damage(minionEel.atk, this, false, true);
+            minionEel.slide(this.currentEelSpitCounter * this.direction.x, this.currentEelSpitCounter * this.direction.y, null, () => {
+                minionEel.die(null);
+            }, spitAnimationTime);
+        }
     }
 
     spitPoisonEel() {
-        //todo if player in front then spit eel that will ???
         if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting.png"].texture;
         else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting_y.png"].texture;
         const minionEel = this.spawnMinion(PoisonEel, this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
@@ -239,15 +246,26 @@ export class ParanoidEel extends Boss {
             minionEel.setAngle(90 * (-this.direction.y + 1));
         }
         const spitAnimationTime = minionEel.SLIDE_ANIMATION_TIME - 2;
-        minionEel.slide(2 * this.direction.x, 2 * this.direction.y, null, () => {
-            if (Math.random() < 0.5) {
-                minionEel.rotateByAngle(90);
-                minionEel.increaseAngle(90);
-            } else {
-                minionEel.rotateByAngle(-90);
-                minionEel.increaseAngle(-90);
-            }
-        }, spitAnimationTime);
+        if (isEmpty(this.tilePosition.x + this.direction.x * 3, this.tilePosition.y + this.direction.y * 3)) {
+            minionEel.slide(2 * this.direction.x, 2 * this.direction.y, null, () => {
+                if (Math.random() < 0.5) {
+                    minionEel.rotateByAngle(90);
+                    minionEel.increaseAngle(90);
+                } else {
+                    minionEel.rotateByAngle(-90);
+                    minionEel.increaseAngle(-90);
+                }
+            }, spitAnimationTime);
+        } else {
+            const player = getPlayerOnTile(this.tilePosition.x + this.direction.x * 3, this.tilePosition.y + this.direction.y * 3);
+            if (player) player.damage(minionEel.atk, this, false, true);
+            minionEel.slide(2 * this.direction.x, 2 * this.direction.y, null, () => {
+                minionEel.die(null);
+                for (const dir of get8Directions()) {
+                    Game.world.addHazard(new PoisonHazard(minionEel.tilePosition.x + dir.x, minionEel.tilePosition.y + dir.y));
+                }
+            }, spitAnimationTime);
+        }
     }
 
     verticalRush() {
@@ -393,12 +411,13 @@ export class ParanoidEel extends Boss {
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         if (!this.dead) {
-            if (this.triggeredSpinAttack || this.triggeredVerticalRush) return;
+            if (this.triggeredSpinAttack || this.triggeredVerticalRush || this.triggeredSneezeAttack || this.triggeredHorizontalRush) return;
             if ((this.direction.x !== -inputX || this.direction.y !== -inputY)
-                && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit && !this.triggeredVerticalRush) this.waitingToMove = true;
+                && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit) this.waitingToMove = true;
             if (inputX !== 0 || inputY !== 0) {
                 this.shiftPositionOnDamage(source, inputX, inputY);
             } else this.rotateDirectionBy90();
+            if (this.triggeredStraightPoisonAttack || this.triggeredEelSpit || this.triggeredPoisonEelSpit) return;
             let roll = Math.random() * 100;
             if (this.turnsWithoutDamageReactions >= this.maxTurnsWithoutDamageReactions) roll = randomChoice([8, 20]);
             if (roll < 16) {
