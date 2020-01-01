@@ -30,7 +30,7 @@ export class ParanoidEel extends Boss {
         this.triggeredSpinAttack = false;
         this.spinCounter = 5;
         this.currentSpinCounter = 0;
-        this.maxTurnsWithoutSpinAttacks = 4;
+        this.maxTurnsWithoutSpinAttacks = 3;
         this.turnsWithoutSpinAttacks = 0;
 
         this.triggeredEelSpit = false;
@@ -71,12 +71,6 @@ export class ParanoidEel extends Boss {
         this.placeOnMap();
     }
 
-    /*
-    TODO ATTACKS:
-    - charge horizontally
-    - spill poison around (two types)
-     */
-
     move() {
         if (this.waitingToMove) {
             this.waitingToMove = false;
@@ -89,6 +83,7 @@ export class ParanoidEel extends Boss {
             if (this.currentVerticalRushCounter >= this.verticalRushCounter) this.triggeredVerticalRush = false;
         } else if (this.triggeredHorizontalRush) {
             this.horizontalRush();
+            this.triggeredHorizontalRush = false;
         } else if (this.triggeredSpinAttack) {
             this.spinAttack();
             if (this.currentSpinCounter >= this.spinCounter) this.triggeredSpinAttack = false;
@@ -146,7 +141,7 @@ export class ParanoidEel extends Boss {
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
                 }
-            } else if (roll < 30) {
+            } else if (roll < 25) {
                 const dir = this.canDoHorizontalRushAttack();
                 if (dir) {
                     this.triggeredHorizontalRush = true;
@@ -264,6 +259,7 @@ export class ParanoidEel extends Boss {
                         else if (wall.x === Game.endRoomBoundaries[1].x) minionEel.setAngle(90);
                         else if (wall.y === Game.endRoomBoundaries[0].y) minionEel.setAngle(0);
                         else if (wall.y === Game.endRoomBoundaries[1].y) minionEel.setAngle(180);
+                        minionEel.placeOnMap();
                         minionEel.move();
                     }
                 }, Math.abs(i) * 1.5, true);
@@ -275,8 +271,18 @@ export class ParanoidEel extends Boss {
     }
 
     horizontalRush() {
-
-        this.triggeredHorizontalRush = false;
+        for (let i = this.direction.x * 2; ; i += this.direction.x) {
+            if (isAnyWall(this.tilePosition.x + i, this.tilePosition.y) || getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y)) {
+                const player = getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y);
+                if (player) player.damage(this.atk, this, true, true);
+                this.slide(i - 2 * Math.sign(i), 0, null, () => {
+                    shakeScreen();
+                }, Math.abs(i) * 1.5);
+                break;
+            } else if (isEnemy(this.tilePosition.x + i, this.tilePosition.y)) {
+                Game.map[this.tilePosition.y][this.tilePosition.x + i].entity.die(this);
+            }
+        }
     }
 
     straightPoisonAttack() {
@@ -436,11 +442,11 @@ export class ParanoidEel extends Boss {
     }
 
     canDoHorizontalRushAttack() {
-        for (let i = 1; i <= 4 + Math.abs(this.direction.x); i++) {
+        for (let i = 1; ; i++) {
             if (getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y)) return {x: 1, y: 0};
             if (isAnyWall(this.tilePosition.x + i, this.tilePosition.y)) break;
         }
-        for (let i = -1; i >= -4 - Math.abs(this.direction.x); i--) {
+        for (let i = -1; ; i--) {
             if (getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y)) return {x: -1, y: 0};
             if (isAnyWall(this.tilePosition.x + i, this.tilePosition.y)) break;
         }
