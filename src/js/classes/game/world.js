@@ -1,9 +1,12 @@
 import * as PIXI from "pixi.js";
 import {Game} from "../../game";
 import {isEmpty} from "../../map_checks";
-import {HAZARD_TYPE, ROLE} from "../../enums";
-import {removeObjectFromArray} from "../../utils/basic_utils";
+import {EQUIPMENT_TYPE, HAZARD_TYPE, ROLE, STAGE, TILE_TYPE, TOOL_TYPE} from "../../enums";
 import {removeAllChildrenFromContainer} from "../../drawing/draw_utils";
+import {lightPlayerPosition} from "../../drawing/lighting";
+import {otherPlayer} from "../../utils/game_utils";
+import {recalculateTileInDetectionGraph} from "../../map_generation";
+import {redrawMiniMapPixel} from "../../drawing/draw_hud";
 
 export class World extends PIXI.Container {
     constructor() {
@@ -70,5 +73,21 @@ export class World extends PIXI.Container {
         for (const animation of Game.infiniteAnimations) {
             Game.app.ticker.remove(animation);
         }
+    }
+
+    removeTile(x, y, remover = null) {
+        this.removeChild(Game.map[y][x].tile);
+        Game.map[y][x].tileType = TILE_TYPE.NONE;
+        if (remover) {
+            if (Game.stage === STAGE.DARK_TUNNEL) {
+                if (remover.secondHand && remover.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && remover.secondHand.type === TOOL_TYPE.TORCH) {
+                    lightPlayerPosition(remover);
+                } else if (!otherPlayer(remover).dead && otherPlayer(remover).secondHand && otherPlayer(remover).secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && otherPlayer(remover).secondHand.type === TOOL_TYPE.TORCH) {
+                    lightPlayerPosition(otherPlayer(remover));
+                } else lightPlayerPosition(remover)
+            } else lightPlayerPosition(remover);
+        }
+        recalculateTileInDetectionGraph(x, y);
+        redrawMiniMapPixel(x, y);
     }
 }
