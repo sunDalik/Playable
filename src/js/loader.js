@@ -93,6 +93,8 @@ export function loadAll(afterLoad) {
 
         .add("src/images/bosses/paranoid_eel/neutral.png")
         .add("src/images/bosses/paranoid_eel/neutral_2.png")
+        .add("src/images/bosses/paranoid_eel/neutral_y.png")
+        .add("src/images/bosses/paranoid_eel/neutral_y_2.png")
         .add("src/images/bosses/paranoid_eel/ready_to_spit.png")
         .add("src/images/bosses/paranoid_eel/spitting.png")
 

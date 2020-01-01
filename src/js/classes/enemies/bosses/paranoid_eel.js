@@ -2,7 +2,7 @@ import {Game} from "../../../game"
 import {ENEMY_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../../map_checks";
-import {randomChoiceSeveral} from "../../../utils/random_utils";
+import {randomChoice, randomChoiceSeveral} from "../../../utils/random_utils";
 import {get8Directions, get8DirectionsInRadius} from "../../../utils/map_utils";
 import {PoisonHazard} from "../../hazards/poison";
 import {Eel} from "../eel";
@@ -32,17 +32,14 @@ export class ParanoidEel extends Boss {
         this.normalScaleX = this.scale.x;
 
         this.normTextures = [Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture,
-            Game.resources["src/images/bosses/paranoid_eel/neutral_2.png"].texture]
+            Game.resources["src/images/bosses/paranoid_eel/neutral_2.png"].texture,
+            Game.resources["src/images/bosses/paranoid_eel/neutral_y.png"].texture,
+            Game.resources["src/images/bosses/paranoid_eel/neutral_y_2.png"].texture]
     }
 
     cancelAnimation() {
         super.cancelAnimation();
-        if (this.direction.x !== 0) {
-            this.scale.x = this.direction.x * Math.abs(this.normalScaleX);
-        }
-        if (this.direction.y === 1) this.angle = 0;
-        else if (this.direction.y === -1) this.angle = 180;
-        else this.angle = 0;
+        this.correctLook();
     }
 
     afterMapGen() {
@@ -56,7 +53,7 @@ export class ParanoidEel extends Boss {
     - spill poison in a straight line
     - vertical rush
     + spit small eels DONE
-    - rotate on hit
+    + rotate on hit DONE
     - spill poison around (two types)
      */
 
@@ -71,6 +68,7 @@ export class ParanoidEel extends Boss {
         } else {
             let canMove = true;
             const roll = Math.random() * 100;
+            //bugs when it slides into wall then spits and all that happens quickly because you double tap player. Dont know why.
             if (roll < 5) {
                 if (this.emptyInFront()) {
                     this.triggeredEelSpit = true;
@@ -93,7 +91,7 @@ export class ParanoidEel extends Boss {
 
     slide(tileStepX, tileStepY) {
         this.wiggled = false;
-        this.setNeutralTextureIfNone();
+        this.correctLook();
         super.slide(tileStepX, tileStepY, () => {
             if (this.animationCounter >= this.SLIDE_ANIMATION_TIME / 2 && !this.wiggled) {
                 this.wiggle();
@@ -107,7 +105,7 @@ export class ParanoidEel extends Boss {
     }
 
     turnAround() {
-        this.setNeutralTextureIfNone();
+        this.correctLook();
         if (this.direction.x !== 0) {
             this.flip();
             this.direction.x *= -1;
@@ -118,6 +116,7 @@ export class ParanoidEel extends Boss {
     }
 
     spitEels() {
+        //todo if player in front then spit eel that will damage him and die
         this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting.png"].texture;
         this.currentEelSpitCounter++;
         const minionEel = new Eel(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
@@ -166,7 +165,11 @@ export class ParanoidEel extends Boss {
                 this.texture = this.normTextures[0];
             }
         } else if (this.direction.y !== 0) {
-
+            if (this.texture === this.normTextures[2]) {
+                this.texture = this.normTextures[3];
+            } else {
+                this.texture = this.normTextures[2];
+            }
         }
     }
 
@@ -187,7 +190,9 @@ export class ParanoidEel extends Boss {
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         if (!this.dead) {
+            if (this.direction.x !== -inputX || this.direction.y !== -inputY) this.waitingToMove = true;
             this.direction = {x: -inputX, y: -inputY};
+            this.correctLook();
             if (this.triggeredSpinAttack) return;
             const roll = Math.random() * 100;
             if (roll <= 20) {
@@ -227,11 +232,21 @@ export class ParanoidEel extends Boss {
         return true;
     }
 
-    setNeutralTextureIfNone() {
-        if (this.direction.x !== 0 && !(this.texture === this.normTextures[0] || this.texture === this.normTextures[1])) {
+    correctLook() {
+        if (this.direction.x !== 0 && this.texture !== this.normTextures[0] && this.texture !== this.normTextures[1]) {
             if (Math.random() < 0.5) this.texture = this.normTextures[0];
             else this.texture = this.normTextures[1];
+        } else if (this.direction.y !== 0 && this.texture !== this.normTextures[2] && this.texture !== this.normTextures[3]) {
+            if (Math.random() < 0.5) this.texture = this.normTextures[2];
+            else this.texture = this.normTextures[3];
         }
+
+        if (this.direction.x !== 0) {
+            this.scale.x = this.direction.x * Math.abs(this.normalScaleX);
+        }
+        if (this.direction.y === 1) this.angle = 0;
+        else if (this.direction.y === -1) this.angle = 180;
+        else this.angle = 0;
     }
 
     placeOnMap() {

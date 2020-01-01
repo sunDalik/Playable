@@ -60,10 +60,10 @@ export function generateEntryBasedLevel() {
     else endingRoomX = 0;
     if (startRoomY + 1 <= (levelRoomHeight + 1) / 2) {
         endingRoomY = levelRoomHeight - 1;
-        endingRoomEntry = {x: getRandomInt(1, endingRoomWidth - 1), y: 0}
+        endingRoomEntry = {x: Math.floor(endingRoomWidth / 2), y: 0}
     } else {
         endingRoomY = 0;
-        endingRoomEntry = {x: getRandomInt(1, endingRoomWidth - 1), y: endingRoomHeight - 1}
+        endingRoomEntry = {x: Math.floor(endingRoomWidth / 2), y: endingRoomHeight - 1}
     }
     const endingRoomI = endingRoomY * levelRoomWidth + endingRoomX;
     levelRooms[endingRoomI] = createRoom(endingRoomWidth, endingRoomHeight, [endingRoomEntry]);
