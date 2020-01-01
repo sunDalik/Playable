@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {ENEMY_TYPE} from "../../../enums";
 import {Boss} from "./boss";
-import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../../map_checks";
+import {getPlayerOnTile, isAnyWall, isEmpty, isRelativelyEmpty} from "../../../map_checks";
 import {randomChoice, randomChoiceSeveral} from "../../../utils/random_utils";
 import {get8Directions, get8DirectionsInRadius} from "../../../utils/map_utils";
 import {PoisonHazard} from "../../hazards/poison";
@@ -24,6 +24,8 @@ export class ParanoidEel extends Boss {
         this.triggeredEelSpit = false;
         this.eelSpitCounter = 2;
         this.currentEelSpitCounter = 0;
+
+        this.triggeredStraightPoisonAttack = false;
 
         this.scaleModifier = 3.7;
         this.direction = {x: 1, y: 0};
@@ -50,7 +52,7 @@ export class ParanoidEel extends Boss {
     /*
     TODO ATTACKS:
     - charge horizontally
-    - spill poison in a straight line
+    + spill poison in a straight line DONE
     - vertical rush
     + spit small eels DONE
     + rotate on hit DONE
@@ -59,7 +61,10 @@ export class ParanoidEel extends Boss {
 
     move() {
         if (this.waitingToMove) this.waitingToMove = false;
-        else if (this.triggeredSpinAttack) {
+        else if (this.triggeredStraightPoisonAttack) {
+            this.straightPoisonAttack();
+            this.triggeredStraightPoisonAttack = false;
+        } else if (this.triggeredSpinAttack) {
             this.spinAttack();
             if (this.currentSpinCounter >= this.spinCounter) this.triggeredSpinAttack = false;
         } else if (this.triggeredEelSpit) {
@@ -76,6 +81,14 @@ export class ParanoidEel extends Boss {
                     if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit.png"].texture;
                     else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_y.png"].texture;
                     this.shake(this.direction.y, this.direction.x);
+                    canMove = false;
+                }
+            } else if (roll < 25) {
+                if (this.canDoPoisonStraightAttack()) {
+                    this.triggeredStraightPoisonAttack = true;
+                    if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit.png"].texture;
+                    else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_y.png"].texture;
+                    this.shake(this.direction.x, this.direction.y);
                     canMove = false;
                 }
             }
@@ -140,6 +153,14 @@ export class ParanoidEel extends Boss {
                 minionEel.increaseAngle(-90);
             }
         }, spitAnimationTime);
+    }
+
+    straightPoisonAttack() {
+        this.bump(this.direction.x, this.direction.y);
+        for (let i = (this.direction.x + this.direction.y) * 2; ; i += this.direction.x + this.direction.y) {
+            if (isAnyWall(this.tilePosition.x + i * Math.abs(this.direction.x), this.tilePosition.y + i * Math.abs(this.direction.y))) break;
+            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + i * Math.abs(this.direction.x), this.tilePosition.y + i * Math.abs(this.direction.y)));
+        }
     }
 
     flip() {
@@ -232,6 +253,19 @@ export class ParanoidEel extends Boss {
             }
         }
         return true;
+    }
+
+    canDoPoisonStraightAttack() {
+        for (let i = (this.direction.x + this.direction.y) * 2; ; i += this.direction.x + this.direction.y) {
+            console.log(this.tilePosition.x + i + Math.abs(this.direction.y), this.tilePosition.y + i + Math.abs(this.direction.x));
+            if (getPlayerOnTile(this.tilePosition.x + i * Math.abs(this.direction.x) + Math.abs(this.direction.y), this.tilePosition.y + i * Math.abs(this.direction.y) + Math.abs(this.direction.x))) return true;
+            if (isAnyWall(this.tilePosition.x + i * Math.abs(this.direction.x) + Math.abs(this.direction.y), this.tilePosition.y + i * Math.abs(this.direction.y) + Math.abs(this.direction.x))) break;
+        }
+        for (let i = (this.direction.x + this.direction.y) * 2; ; i += this.direction.x + this.direction.y) {
+            if (getPlayerOnTile(this.tilePosition.x + i * Math.abs(this.direction.x) - Math.abs(this.direction.y), this.tilePosition.y + i * Math.abs(this.direction.y) - Math.abs(this.direction.x))) return true;
+            if (isAnyWall(this.tilePosition.x + i * Math.abs(this.direction.x) - Math.abs(this.direction.y), this.tilePosition.y + i * Math.abs(this.direction.y) - Math.abs(this.direction.x))) break;
+        }
+        return false;
     }
 
     correctLook() {
