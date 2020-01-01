@@ -59,7 +59,7 @@ export class ParanoidEel extends Boss {
     - vertical rush
     + spit small eels DONE
     + rotate on hit DONE
-    - spit poison eel
+    + spit poison eel DONE
     - spill poison around (two types)
      */
 
@@ -269,7 +269,8 @@ export class ParanoidEel extends Boss {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         if (!this.dead) {
             if (this.triggeredSpinAttack) return;
-            if (this.direction.x !== -inputX || this.direction.y !== -inputY) this.waitingToMove = true;
+            if ((this.direction.x !== -inputX || this.direction.y !== -inputY)
+                && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit) this.waitingToMove = true;
             if (inputX !== 0 || inputY !== 0) {
                 this.shiftPositionOnDamage(source, inputX, inputY);
             } else this.rotateDirectionBy90();

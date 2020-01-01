@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {TileElement} from "./tile_element"
 import {cubicBezier, quadraticBezier} from "../../utils/math_utils";
-import {HIT_FILTER} from "../../filters";
+import {BLACK_INVERT_FILTER, HIT_FILTER} from "../../filters";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 
 export class AnimatedTileElement extends TileElement {
@@ -295,13 +295,16 @@ export class AnimatedTileElement extends TileElement {
     }
 
     runHitAnimation() {
+        this.filters.push(BLACK_INVERT_FILTER);
         this.filters.push(HIT_FILTER);
+
         const time = 6;
         let counter = 0;
 
         const animation = delta => {
             counter += delta;
             if (counter >= time) {
+                removeObjectFromArray(BLACK_INVERT_FILTER, this.filters);
                 removeObjectFromArray(HIT_FILTER, this.filters);
                 Game.app.ticker.remove(animation);
             }
