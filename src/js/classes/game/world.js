@@ -90,4 +90,33 @@ export class World extends PIXI.Container {
         recalculateTileInDetectionGraph(x, y);
         redrawMiniMapPixel(x, y);
     }
+
+    addAndSaveTile(tile, tileType) {
+        this.addChild(tile);
+        Game.savedTiles.push({
+            x: tile.tilePosition.x,
+            y: tile.tilePosition.y,
+            tile: Game.map[tile.tilePosition.y][tile.tilePosition.x].tile,
+            tileType: Game.map[tile.tilePosition.y][tile.tilePosition.x].tileType
+        });
+        this.removeChild(Game.map[tile.tilePosition.y][tile.tilePosition.x].tile);
+        Game.map[tile.tilePosition.y][tile.tilePosition.x].tile = tile;
+        Game.map[tile.tilePosition.y][tile.tilePosition.x].tileType = tileType;
+        recalculateTileInDetectionGraph(tile.tilePosition.x, tile.tilePosition.y);
+        redrawMiniMapPixel(tile.tilePosition.x, tile.tilePosition.y);
+    }
+
+    addTile(tile, tileType, x = 0, y = 0) {
+        if (tile) {
+            this.addChild(tile);
+            Game.map[tile.tilePosition.y][tile.tilePosition.x].tile = tile;
+            Game.map[tile.tilePosition.y][tile.tilePosition.x].tileType = tileType;
+            recalculateTileInDetectionGraph(tile.tilePosition.x, tile.tilePosition.y);
+            redrawMiniMapPixel(tile.tilePosition.x, tile.tilePosition.y);
+        } else {
+            Game.map[y][x].tileType = tileType;
+            recalculateTileInDetectionGraph(x, y);
+            redrawMiniMapPixel(x, y);
+        }
+    }
 }

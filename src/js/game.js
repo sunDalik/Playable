@@ -75,3 +75,4 @@ Game.unplayable = true;
 Game.endRoomBoundaries = [];
 Game.boss = null;
 Game.bossFight = false;
+Game.savedTiles = [];

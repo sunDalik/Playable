@@ -26,7 +26,13 @@ import {
     redrawWeaponAndSecondHand
 } from "../drawing/draw_hud";
 import {isInanimate, isRelativelyEmpty} from "../map_checks";
-import {checkFollowMode, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../game_logic";
+import {
+    activateBossMode,
+    amIinTheBossRoom,
+    checkFollowMode,
+    removeEquipmentFromPlayer,
+    swapEquipmentWithPlayer
+} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {LyingItem} from "./equipment/lying_item";
 import {randomChoice} from "../utils/random_utils";
@@ -144,7 +150,9 @@ export class Player extends AnimatedTileElement {
                 this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity);
                 this.bump(tileStepX, tileStepY);
             } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
-                if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
+                if (Game.boss && !Game.boss.dead && !Game.bossFight && amIinTheBossRoom()) {
+                    activateBossMode();
+                } else if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
                     Game.unplayable = true;
                     this.toCloseBlackBars = true;
                     this.step(tileStepX, tileStepY, () => {

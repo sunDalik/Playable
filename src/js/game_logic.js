@@ -1,11 +1,12 @@
 import {Game} from "./game"
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE} from "./enums"
+import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "./enums"
 import {drawInteractionKeys, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
 import {updateChain} from "./drawing/draw_dunno";
+import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -261,14 +262,45 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
 export function gotoNextLevel() {
     Game.world.clean();
     Game.enemies = [];
+    Game.savedTiles = [];
     Game.darkTiles = [];
     Game.hazards = [];
     Game.bullets = [];
     Game.infiniteAnimations = [];
     Game.obelisks = [];
     Game.endRoomBoundaries = [];
+    Game.boss = null;
+    Game.bossFight = false;
     incrementStage();
     initializeLevel();
     Game.player.applyNextLevelMethods();
     Game.player2.applyNextLevelMethods();
+}
+
+export function activateBossMode() {
+    for (let x = Game.endRoomBoundaries[0].x; x <= Game.endRoomBoundaries[1].x; x++) {
+        Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[0].y - 1), TILE_TYPE.SUPER_WALL);
+        Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[1].y + 1), TILE_TYPE.SUPER_WALL);
+    }
+    for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
+        Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[0].x - 1, y), TILE_TYPE.SUPER_WALL);
+        Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[1].x + 1, y), TILE_TYPE.SUPER_WALL);
+    }
+    Game.bossFight = true;
+}
+
+export function deactivateBossMode() {
+    for (const savedTile of Game.savedTiles) {
+        Game.world.removeTile(savedTile.x, savedTile.y);
+        Game.world.addTile(savedTile.tile, savedTile.tileType, savedTile.x, savedTile.y);
+    }
+    Game.bossFight = false;
+}
+
+export function amIinTheBossRoom() {
+    return (Game.player.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player.tilePosition.y >= Game.endRoomBoundaries[0].y
+        && Game.player.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player.dead)
+        && (Game.player2.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player2.tilePosition.y >= Game.endRoomBoundaries[0].y
+            && Game.player2.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player2.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player2.dead)
+        && (!Game.player.dead || !Game.player2.dead);
 }

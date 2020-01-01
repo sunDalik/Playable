@@ -1,5 +1,6 @@
 import {Game} from "../../game";
 import {getEffectivePlayerCenter} from "../../utils/game_utils";
+import {amIinTheBossRoom} from "../../game_logic";
 
 export const camera = {
     animation: null,
@@ -45,10 +46,7 @@ camera.center = () => {
 camera.moveToCenter = (animationTime) => {
     const endRoomTime = animationTime === 0 ? 0 : 15;
     if (Game.player.dead && Game.player2.dead) return;
-    if ((Game.player.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player.tilePosition.y >= Game.endRoomBoundaries[0].y
-        && Game.player.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player.dead)
-        && (Game.player2.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player2.tilePosition.y >= Game.endRoomBoundaries[0].y
-            && Game.player2.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player2.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player2.dead)) {
+    if (amIinTheBossRoom()) {
         camera.setNewPoint((Game.endRoomBoundaries[0].x + (Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x) / 2) * Game.TILESIZE + Game.TILESIZE / 2,
             (Game.endRoomBoundaries[0].y + (Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y) / 2) * Game.TILESIZE + Game.TILESIZE / 2, endRoomTime);
     } else camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
