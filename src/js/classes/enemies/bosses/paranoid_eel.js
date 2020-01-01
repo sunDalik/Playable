@@ -16,6 +16,7 @@ import {PoisonHazard} from "../../hazards/poison";
 import {Eel} from "../eel";
 import {PoisonEel} from "../eel_poison";
 import {shakeScreen} from "../../../animations";
+import {DarkEel} from "../eel_dark";
 
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture) {
@@ -207,7 +208,7 @@ export class ParanoidEel extends Boss {
         } else if (this.direction.y !== 0) {
             minionEel.setAngle(90 * (-this.direction.y + 1));
         }
-        const spitAnimationTime = minionEel.SLIDE_ANIMATION_TIME - 6 + Math.abs(this.currentEelSpitCounter * this.direction.x) * 2 + Math.abs(this.currentEelSpitCounter * this.direction.y) * 2;
+        const spitAnimationTime = minionEel.SLIDE_ANIMATION_TIME - 6 + this.currentEelSpitCounter * 2;
         minionEel.slide(this.currentEelSpitCounter * this.direction.x, this.currentEelSpitCounter * this.direction.y, null, () => {
             if (Math.random() < 0.5) {
                 minionEel.rotateByAngle(90);
@@ -230,7 +231,7 @@ export class ParanoidEel extends Boss {
         } else if (this.direction.y !== 0) {
             minionEel.setAngle(90 * (-this.direction.y + 1));
         }
-        const spitAnimationTime = minionEel.SLIDE_ANIMATION_TIME - 6 + Math.abs(2 * this.direction.x) * 2 + Math.abs(2 * this.direction.y) * 2;
+        const spitAnimationTime = minionEel.SLIDE_ANIMATION_TIME - 2;
         minionEel.slide(2 * this.direction.x, 2 * this.direction.y, null, () => {
             if (Math.random() < 0.5) {
                 minionEel.rotateByAngle(90);
@@ -271,6 +272,21 @@ export class ParanoidEel extends Boss {
     }
 
     horizontalRush() {
+        if (isEmpty(this.tilePosition.x - this.direction.x * 2, this.tilePosition.y)) {
+            const minionEel = this.spawnMinion(DarkEel, this.tilePosition.x - this.direction.x, this.tilePosition.y);
+            minionEel.stun = 1;
+            minionEel.setAngle(90 * (-this.direction.x + 2));
+            const spitAnimationTime = minionEel.SLIDE_ANIMATION_TIME - 4;
+            minionEel.slide(-this.direction.x, 0, null, () => {
+                if (Math.random() < 0.5) {
+                    minionEel.rotateByAngle(90);
+                    minionEel.increaseAngle(90);
+                } else {
+                    minionEel.rotateByAngle(-90);
+                    minionEel.increaseAngle(-90);
+                }
+            }, spitAnimationTime);
+        }
         for (let i = this.direction.x * 2; ; i += this.direction.x) {
             if (isAnyWall(this.tilePosition.x + i, this.tilePosition.y) || getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y)) {
                 const player = getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y);

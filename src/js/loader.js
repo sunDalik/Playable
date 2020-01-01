@@ -105,6 +105,8 @@ export function loadAll(afterLoad) {
         .add("src/images/bosses/paranoid_eel/spitting_y.png")
         .add("src/images/bosses/paranoid_eel/vertical_rush.png")
         .add("src/images/bosses/paranoid_eel/horizontal_rush.png")
+        .add("src/images/bosses/paranoid_eel/sneeze.png")
+        .add("src/images/bosses/paranoid_eel/sneeze_y.png")
 
         .add("src/images/bullets/electric_bullet.png")
         .add("src/images/bullets/fire_bullet.png")
