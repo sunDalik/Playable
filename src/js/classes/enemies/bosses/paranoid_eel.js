@@ -1,7 +1,15 @@
 import {Game} from "../../../game"
 import {ENEMY_TYPE} from "../../../enums";
 import {Boss} from "./boss";
-import {getPlayerOnTile, isAnyWall, isDiggable, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
+import {
+    getPlayerOnTile,
+    isAnyWall,
+    isDiggable,
+    isEmpty,
+    isEnemy,
+    isNotOutOfMap,
+    isRelativelyEmpty
+} from "../../../map_checks";
 import {randomChoice, randomChoiceSeveral} from "../../../utils/random_utils";
 import {get8Directions, get8DirectionsInRadius} from "../../../utils/map_utils";
 import {PoisonHazard} from "../../hazards/poison";
@@ -12,7 +20,7 @@ import {shakeScreen} from "../../../animations";
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 15;
+        this.maxHealth = 20;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.PARANOID_EEL;
         this.atk = 1;
@@ -22,6 +30,8 @@ export class ParanoidEel extends Boss {
         this.triggeredSpinAttack = false;
         this.spinCounter = 5;
         this.currentSpinCounter = 0;
+        this.maxTurnsWithoutSpinAttacks = 4;
+        this.turnsWithoutSpinAttacks = 0;
 
         this.triggeredEelSpit = false;
         this.eelSpitCounter = 2;
@@ -35,6 +45,8 @@ export class ParanoidEel extends Boss {
         this.verticalRushCounter = 6;
         this.currentVerticalRushCounter = 0;
 
+        this.triggeredHorizontalRush = false;
+
         this.scaleModifier = 3.7;
         this.direction = {x: 1, y: 0};
         this.fitToTile();
@@ -44,7 +56,7 @@ export class ParanoidEel extends Boss {
         this.normTextures = [Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture,
             Game.resources["src/images/bosses/paranoid_eel/neutral_2.png"].texture,
             Game.resources["src/images/bosses/paranoid_eel/neutral_y.png"].texture,
-            Game.resources["src/images/bosses/paranoid_eel/neutral_y_2.png"].texture]
+            Game.resources["src/images/bosses/paranoid_eel/neutral_y_2.png"].texture];
 
         this.minions = [];
     }
@@ -75,9 +87,12 @@ export class ParanoidEel extends Boss {
         } else if (this.triggeredVerticalRush) {
             this.verticalRush();
             if (this.currentVerticalRushCounter >= this.verticalRushCounter) this.triggeredVerticalRush = false;
+        } else if (this.triggeredHorizontalRush) {
+            this.horizontalRush();
         } else if (this.triggeredSpinAttack) {
             this.spinAttack();
             if (this.currentSpinCounter >= this.spinCounter) this.triggeredSpinAttack = false;
+            this.turnsWithoutSpinAttacks = 0;
         } else if (this.triggeredEelSpit) {
             this.spitEels();
             if (this.currentEelSpitCounter >= this.eelSpitCounter) this.triggeredEelSpit = false;
@@ -106,14 +121,14 @@ export class ParanoidEel extends Boss {
                     this.shake(this.direction.y, this.direction.x);
                     canMove = false;
                 }
-            } else if (roll < 12) {
+            } else if (roll < 10) {
                 this.triggeredSpinAttack = true;
                 if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/panic.png"].texture;
                 else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/panic_y.png"].texture;
                 this.currentSpinCounter = 0;
                 this.shake(this.direction.y, this.direction.x);
                 canMove = false;
-            } else if (roll < 25) {
+            } else if (roll < 15) {
                 if (this.canDoPoisonStraightAttack()) {
                     this.triggeredStraightPoisonAttack = true;
                     if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_poison.png"].texture;
@@ -121,14 +136,22 @@ export class ParanoidEel extends Boss {
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
                 }
-            } else if (roll < 30) {
+            } else if (roll < 20) {
                 const dir = this.canDoVerticalRushAttack();
                 if (dir) {
                     this.triggeredVerticalRush = true;
                     this.currentVerticalRushCounter = 0;
                     this.direction = dir;
-                    this.texture = Game.resources["src/images/bosses/paranoid_eel/vertical_rush.png"].texture;
-                    if (this.direction.y === -1) this.angle = 180;
+                    this.correctLook();
+                    this.shake(this.direction.x, this.direction.y);
+                    canMove = false;
+                }
+            } else if (roll < 30) {
+                const dir = this.canDoHorizontalRushAttack();
+                if (dir) {
+                    this.triggeredHorizontalRush = true;
+                    this.direction = dir;
+                    this.correctLook();
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
                 }
@@ -182,10 +205,7 @@ export class ParanoidEel extends Boss {
         if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting.png"].texture;
         else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting_y.png"].texture;
         this.currentEelSpitCounter++;
-        const minionEel = new Eel(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
-        Game.world.addChild(minionEel);
-        Game.enemies.push(minionEel);
-        this.minions.push(minionEel);
+        const minionEel = this.spawnMinion(Eel, this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
         minionEel.stun = 1;
         if (this.direction.x !== 0) {
             minionEel.setAngle(90 * (this.direction.x + 2));
@@ -208,10 +228,7 @@ export class ParanoidEel extends Boss {
         //todo if player in front then spit eel that will ???
         if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting.png"].texture;
         else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/spitting_y.png"].texture;
-        const minionEel = new PoisonEel(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
-        Game.world.addChild(minionEel);
-        Game.enemies.push(minionEel);
-        this.minions.push(minionEel);
+        const minionEel = this.spawnMinion(PoisonEel, this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
         minionEel.stun = 1;
         if (this.direction.x !== 0) {
             minionEel.setAngle(90 * (this.direction.x + 2));
@@ -239,16 +256,15 @@ export class ParanoidEel extends Boss {
                 this.slide(0, i - 2 * Math.sign(i), null, () => {
                     if (isAnyWall(this.tilePosition.x, this.tilePosition.y + this.direction.y * 2)) {
                         const wall = this.randomEndRoomWall();
+                        shakeScreen();
+                        if (wall === undefined) return;
                         Game.world.removeTile(wall.x, wall.y);
-                        const minionEel = new Eel(wall.x, wall.y);
-                        Game.world.addChild(minionEel);
-                        Game.enemies.push(minionEel);
-                        this.minions.push(minionEel);
+                        const minionEel = this.spawnMinion(Eel, wall.x, wall.y);
                         if (wall.x === Game.endRoomBoundaries[0].x) minionEel.setAngle(270);
                         else if (wall.x === Game.endRoomBoundaries[1].x) minionEel.setAngle(90);
                         else if (wall.y === Game.endRoomBoundaries[0].y) minionEel.setAngle(0);
                         else if (wall.y === Game.endRoomBoundaries[1].y) minionEel.setAngle(180);
-                        shakeScreen();
+                        minionEel.move();
                     }
                 }, Math.abs(i) * 1.5, true);
                 break;
@@ -256,6 +272,11 @@ export class ParanoidEel extends Boss {
                 Game.map[this.tilePosition.y + i][this.tilePosition.x].entity.die(this);
             }
         }
+    }
+
+    horizontalRush() {
+
+        this.triggeredHorizontalRush = false;
     }
 
     straightPoisonAttack() {
@@ -310,7 +331,9 @@ export class ParanoidEel extends Boss {
         const tileSpread = Math.min(this.currentSpinCounter, 3);
         const poisonDirs = randomChoiceSeveral(get8DirectionsInRadius(tileSpread, true), 3 + Math.min(this.currentSpinCounter, 3));
         for (const dir of poisonDirs) {
-            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y));
+            if (isNotOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
+                Game.world.addHazard(new PoisonHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y));
+            }
         }
         for (const dir of get8Directions()) {
             const player = getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
@@ -321,21 +344,21 @@ export class ParanoidEel extends Boss {
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         if (!this.dead) {
-            if (this.triggeredSpinAttack) return;
+            if (this.triggeredSpinAttack || this.triggeredVerticalRush) return;
             if ((this.direction.x !== -inputX || this.direction.y !== -inputY)
-                && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit) this.waitingToMove = true;
+                && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit && !this.triggeredVerticalRush) this.waitingToMove = true;
             if (inputX !== 0 || inputY !== 0) {
                 this.shiftPositionOnDamage(source, inputX, inputY);
             } else this.rotateDirectionBy90();
             const roll = Math.random() * 100;
-            if (roll <= 20) {
+            if (roll <= 18 || this.turnsWithoutSpinAttacks >= this.maxTurnsWithoutSpinAttacks) {
                 this.triggeredSpinAttack = true;
                 if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/panic.png"].texture;
                 else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/panic_y.png"].texture;
                 this.waitingToMove = true;
                 this.currentSpinCounter = 0;
                 this.shake(this.direction.y, this.direction.x);
-            }
+            } else this.turnsWithoutSpinAttacks++;
         }
     }
 
@@ -412,6 +435,18 @@ export class ParanoidEel extends Boss {
         return false;
     }
 
+    canDoHorizontalRushAttack() {
+        for (let i = 1; i <= 4 + Math.abs(this.direction.x); i++) {
+            if (getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y)) return {x: 1, y: 0};
+            if (isAnyWall(this.tilePosition.x + i, this.tilePosition.y)) break;
+        }
+        for (let i = -1; i >= -4 - Math.abs(this.direction.x); i--) {
+            if (getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y)) return {x: -1, y: 0};
+            if (isAnyWall(this.tilePosition.x + i, this.tilePosition.y)) break;
+        }
+        return false;
+    }
+
     shiftPositionOnDamage(player, inputX, inputY) {
         if (inputX === -this.direction.x && inputY === -this.direction.y) {
             return;
@@ -458,6 +493,8 @@ export class ParanoidEel extends Boss {
             }
         } else if (this.triggeredVerticalRush) {
             this.texture = Game.resources["src/images/bosses/paranoid_eel/vertical_rush.png"].texture;
+        } else if (this.triggeredHorizontalRush) {
+            this.texture = Game.resources["src/images/bosses/paranoid_eel/horizontal_rush.png"].texture;
         } else if (this.triggeredEelSpit || this.triggeredPoisonEelSpit) {
             if (this.direction.x !== 0) {
                 this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit.png"].texture;
@@ -511,5 +548,21 @@ export class ParanoidEel extends Boss {
                 }
             }
         }
+    }
+
+    die(source) {
+        super.die(source);
+        for (const minion of this.minions) {
+            minion.die(null);
+        }
+    }
+
+    spawnMinion(constructor, x, y) {
+        const minion = new constructor(x, y);
+        Game.world.addChild(minion);
+        Game.enemies.push(minion);
+        this.minions.push(minion);
+        minion.energyDrop = 0;
+        return minion;
     }
 }
