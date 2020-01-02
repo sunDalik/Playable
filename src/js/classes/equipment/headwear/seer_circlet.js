@@ -2,6 +2,7 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HEAD_TYPE, TILE_TYPE} from "../../../enums";
 import {darkenTile, lightTile} from "../../../drawing/lighting";
 import {otherPlayer} from "../../../utils/game_utils";
+import {tileOutsideOfTheBossRoom} from "../../../game_logic";
 
 export class SeerCirclet {
     constructor() {
@@ -15,7 +16,7 @@ export class SeerCirclet {
     onWear() {
         for (let i = 0; i < Game.darkTiles.length; i++) {
             for (let j = 0; j < Game.darkTiles[0].length; j++) {
-                if (Game.map[i][j].tileType === TILE_TYPE.NONE && !Game.map[i][j].lit) {
+                if (Game.map[i][j].tileType === TILE_TYPE.NONE && !Game.map[i][j].lit && tileOutsideOfTheBossRoom(j, i)) {
                     lightTile(j, i);
                     Game.map[i][j].lit = false;
                 }

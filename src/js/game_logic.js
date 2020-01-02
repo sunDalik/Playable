@@ -7,6 +7,7 @@ import {createKissHeartAnimation, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
 import {updateChain} from "./drawing/draw_dunno";
 import {FullTileElement} from "./classes/tile_elements/full_tile_element";
+import {lightTile} from "./drawing/lighting";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -282,13 +283,19 @@ export function activateBossMode(player) {
         Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[0].y - 1), TILE_TYPE.SUPER_WALL);
         Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[1].y + 1), TILE_TYPE.SUPER_WALL);
     }
-    for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
+    for (let y = Game.endRoomBoundaries[0].y; y <= Game.endRoomBoundaries[1].y; y++) {
         Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[0].x - 1, y), TILE_TYPE.SUPER_WALL);
         Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[1].x + 1, y), TILE_TYPE.SUPER_WALL);
     }
 
     if (!otherPlayer(player).dead) {
         otherPlayer(player).step(player.tilePosition.x - otherPlayer(player).tilePosition.x, player.tilePosition.y - otherPlayer(player).tilePosition.y);
+    }
+
+    for (let y = Game.endRoomBoundaries[0].y; y <= Game.endRoomBoundaries[1].y; y++) {
+        for (let x = Game.endRoomBoundaries[0].x; x <= Game.endRoomBoundaries[1].x; x++) {
+            lightTile(x, y);
+        }
     }
     Game.bossFight = true;
 }
@@ -313,4 +320,9 @@ export function amIInTheBossRoom(player) {
     return player.tilePosition.x >= Game.endRoomBoundaries[0].x && player.tilePosition.y >= Game.endRoomBoundaries[0].y
         && player.tilePosition.x <= Game.endRoomBoundaries[1].x && player.tilePosition.y <= Game.endRoomBoundaries[1].y
         && !player.dead;
+}
+
+export function tileOutsideOfTheBossRoom(x, y) {
+    return !(x >= Game.endRoomBoundaries[0].x && y >= Game.endRoomBoundaries[0].y
+        && x <= Game.endRoomBoundaries[1].x && y <= Game.endRoomBoundaries[1].y);
 }

@@ -34,7 +34,7 @@ export class ParanoidEel extends Boss {
         this.currentSpinCounter = 0;
 
         this.triggeredSneezeAttack = false;
-        this.sneezeCounter = 4;
+        this.sneezeCounter = 3;
         this.currentSneezeCounter = 0;
 
         this.maxTurnsWithoutDamageReactions = 3;
