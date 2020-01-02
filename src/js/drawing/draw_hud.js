@@ -25,7 +25,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, MAGIC_TYPE, SHIELD_TYPE, TILE_TYPE} from "../enums";
+import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
 
 export function drawHUD() {
@@ -477,6 +477,10 @@ export function redrawMiniMapPixel(x, y) {
         pixel.beginFill(0x757167);
     } else if (Game.map[y][x].tileType === TILE_TYPE.VOID) {
         pixel.beginFill(0x000000);
+    } else if (Game.map[y][x].entity && Game.map[y][x].entity.role === ROLE.INANIMATE && Game.map[y][x].entity.type !== INANIMATE_TYPE.GRAIL) {
+        pixel.beginFill(0xffb03b);
+    } else if (Game.map[y][x].tileType === TILE_TYPE.EXIT) {
+        pixel.beginFill(0xff4adb);
     } else if (Game.map[y][x].entity === Game.player || Game.map[y][x].entity === Game.player2) {
         pixel.beginFill(0x0000ff);
     } else pixel.beginFill(0xffffff);
