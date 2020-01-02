@@ -166,7 +166,7 @@ export class Alligator extends Enemy {
                             Game.world.addHazard(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 2),
                                 this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 2)));
                         } else this.currentShootingTimes = this.maxShootingTimes;
-                        
+
                         if (isAnyWall(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 3),
                             this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 3))) {
                             this.currentShootingTimes = this.maxShootingTimes;

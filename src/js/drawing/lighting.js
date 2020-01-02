@@ -15,6 +15,7 @@ export function lightPosition(pos, distance = 3, bright = false) {
 }
 
 export function lightPlayerPosition(player) {
+    if (player.dead) return;
     litAreas = [];
     const px = player.tilePosition.x;
     const py = player.tilePosition.y;
