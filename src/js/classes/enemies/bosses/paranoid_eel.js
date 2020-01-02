@@ -28,7 +28,8 @@ export class ParanoidEel extends Boss {
         this.name = "Paranoid Eel";
         this.atk = 1;
 
-        this.waitingToMove = false;
+        this.waitingToMove = true;
+        this.startNoActionCounter = 3;
 
         this.triggeredSpinAttack = false;
         this.spinCounter = 5;
@@ -107,7 +108,8 @@ export class ParanoidEel extends Boss {
             this.triggeredPoisonEelSpit = false;
         } else {
             let canMove = true;
-            const roll = Math.random() * 100;
+            let roll = Math.random() * 100;
+            if (this.startNoActionCounter > 0) roll = 999;
             //bugs when it slides into wall then spits and all that happens quickly because you double tap player. Dont know why.
             if (roll < 2) {
                 if (this.emptyInFront()) {
@@ -171,6 +173,7 @@ export class ParanoidEel extends Boss {
                 } else this.slide(this.direction.x, this.direction.y);
             } else this.turnAround();
         }
+        this.startNoActionCounter--;
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME, turnAwayFromPlayers = false) {
