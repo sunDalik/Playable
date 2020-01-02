@@ -6,7 +6,7 @@ import {
     isAnyWall,
     isDiggable,
     isEmpty,
-    isEnemy,
+    isEnemy, isNotAWall,
     isNotOutOfMap,
     isRelativelyEmpty
 } from "../../../map_checks";
@@ -25,6 +25,7 @@ export class ParanoidEel extends Boss {
         this.maxHealth = 20;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.PARANOID_EEL;
+        this.name = "Paranoid Eel";
         this.atk = 1;
 
         this.waitingToMove = false;
@@ -66,7 +67,6 @@ export class ParanoidEel extends Boss {
             Game.resources["src/images/bosses/paranoid_eel/neutral_y_2.png"].texture];
 
         this.minions = [];
-        Game.boss = this;
     }
 
     cancelAnimation() {
@@ -86,6 +86,7 @@ export class ParanoidEel extends Boss {
         } else if (this.triggeredStraightPoisonAttack) {
             this.straightPoisonAttack();
             this.triggeredStraightPoisonAttack = false;
+            this.correctLook();
         } else if (this.triggeredVerticalRush) {
             this.verticalRush();
             if (this.currentVerticalRushCounter >= this.verticalRushCounter) this.triggeredVerticalRush = false;
@@ -112,8 +113,7 @@ export class ParanoidEel extends Boss {
                 if (this.emptyInFront()) {
                     this.triggeredPoisonEelSpit = true;
                     this.waitingToMove = true;
-                    if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit.png"].texture;
-                    else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_y.png"].texture;
+                    this.correctLook();
                     this.shake(this.direction.y, this.direction.x);
                     canMove = false;
                 }
@@ -121,23 +121,20 @@ export class ParanoidEel extends Boss {
                 if (this.emptyInFront()) {
                     this.triggeredEelSpit = true;
                     this.currentEelSpitCounter = 0;
-                    if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit.png"].texture;
-                    else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_y.png"].texture;
+                    this.correctLook();
                     this.shake(this.direction.y, this.direction.x);
                     canMove = false;
                 }
             } else if (roll < 10) {
                 this.triggeredSpinAttack = true;
-                if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/panic.png"].texture;
-                else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/panic_y.png"].texture;
+                this.correctLook()
                 this.currentSpinCounter = 0;
                 this.shake(this.direction.y, this.direction.x);
                 canMove = false;
             } else if (roll < 15) {
                 if (this.canDoPoisonStraightAttack()) {
                     this.triggeredStraightPoisonAttack = true;
-                    if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_poison.png"].texture;
-                    else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_poison_y.png"].texture;
+                    this.correctLook();
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
                 }
@@ -323,7 +320,7 @@ export class ParanoidEel extends Boss {
                 if (player) player.damage(this.atk, this, true, true);
                 this.slide(i - 2 * Math.sign(i), 0, null, () => {
                     shakeScreen();
-                }, Math.abs(i) * 1.5);
+                }, Math.abs(i) * 1.2);
                 break;
             } else if (isEnemy(this.tilePosition.x + i, this.tilePosition.y)) {
                 Game.map[this.tilePosition.y][this.tilePosition.x + i].entity.die(this);
@@ -422,8 +419,7 @@ export class ParanoidEel extends Boss {
 
             const triggerSpinAttack = () => {
                 this.triggeredSpinAttack = true;
-                if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/panic.png"].texture;
-                else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/panic_y.png"].texture;
+                this.correctLook();
                 this.waitingToMove = true;
                 this.currentSpinCounter = 0;
                 this.turnsWithoutDamageReactions = 0;
@@ -449,8 +445,7 @@ export class ParanoidEel extends Boss {
                 triggerSpinAttack();
             } else if (roll < 25) {
                 this.triggeredSneezeAttack = true;
-                if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/sneeze.png"].texture;
-                else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/sneeze_y.png"].texture;
+                this.correctLook();
                 this.waitingToMove = true;
                 this.currentSneezeCounter = 0;
                 this.turnsWithoutDamageReactions = 0;
@@ -609,6 +604,9 @@ export class ParanoidEel extends Boss {
             } else if (this.direction.y !== 0) {
                 this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_y.png"].texture;
             }
+        } else if (this.triggeredStraightPoisonAttack) {
+            if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_poison.png"].texture;
+            else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/ready_to_spit_poison_y.png"].texture;
         } else {
             if (this.direction.x !== 0 && this.texture !== this.normTextures[0] && this.texture !== this.normTextures[1]) {
                 if (this.texture === Game.resources["src/images/bosses/paranoid_eel/spitting.png"].texture) {
@@ -625,7 +623,8 @@ export class ParanoidEel extends Boss {
 
         if (this.direction.x !== 0) {
             this.scale.x = this.direction.x * Math.abs(this.normalScaleX);
-        }
+        } else this.scale.x = Math.abs(this.normalScaleX);
+
         if (this.direction.y === 1) this.angle = 0;
         else if (this.direction.y === -1) this.angle = 180;
         else this.angle = 0;
@@ -633,7 +632,8 @@ export class ParanoidEel extends Boss {
 
     canPlaceWithDirection(direction) {
         return (Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === null || Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === this)
-            && (Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === null || Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === this);
+            && (Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === null || Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === this)
+            && (isNotAWall(this.tilePosition.x + direction.x, this.tilePosition.y + direction.y) || isNotAWall(this.tilePosition.x - direction.x, this.tilePosition.y - direction.y));
     }
 
     canPlaceWithShifting(player, inputX, inputY) {
@@ -653,7 +653,8 @@ export class ParanoidEel extends Boss {
             }
             return (Game.map[tpy][tpx].entity === null || Game.map[tpy][tpx].entity === this)
                 && (Game.map[tpy - inputY][tpx - inputX].entity === null || Game.map[tpy - inputY][tpx - inputX].entity === this)
-                && (Game.map[tpy + inputY][tpx + inputX].entity === null || Game.map[tpy + inputY][tpx + inputX].entity === this);
+                && (Game.map[tpy + inputY][tpx + inputX].entity === null || Game.map[tpy + inputY][tpx + inputX].entity === this)
+                && (isNotAWall(tpx + inputX, tpy + inputY) || isNotAWall(tpx - inputX, tpy - inputY));
         }
     }
 

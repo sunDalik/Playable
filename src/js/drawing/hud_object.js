@@ -15,6 +15,9 @@ HUD.energy = new PIXI.Container();
 HUD.other = new PIXI.Container();
 HUD.other.zIndex = -1;
 
+HUD.bossHealth = new PIXI.Container();
+HUD.bossHealth.zIndex = 1;
+
 HUD.minimap = new PIXI.Container();
 HUD.minimap.bg = new PIXI.Graphics();
 HUD.minimap.addChild(HUD.minimap.bg);
@@ -31,6 +34,7 @@ HUD.addChild(HUD.stats2);
 HUD.addChild(HUD.energy);
 HUD.addChild(HUD.minimap);
 HUD.addChild(HUD.other);
+HUD.addChild(HUD.bossHealth);
 
 const keys = Object.keys(HUD.slots1Contents);
 for (let i = 0; i < keys.length; i++) {

@@ -8,6 +8,8 @@ import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from ".
 import {updateChain} from "./drawing/draw_dunno";
 import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 import {lightTile} from "./drawing/lighting";
+import {removeAllChildrenFromContainer} from "./drawing/draw_utils";
+import {HUD} from "./drawing/hud_object";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -272,6 +274,7 @@ export function gotoNextLevel() {
     Game.endRoomBoundaries = [];
     Game.boss = null;
     Game.bossFight = false;
+    removeAllChildrenFromContainer(HUD.bossHealth);
     incrementStage();
     initializeLevel();
     Game.player.applyNextLevelMethods();
@@ -297,6 +300,8 @@ export function activateBossMode(player) {
             lightTile(x, y);
         }
     }
+
+    Game.boss.redrawHealth();
     Game.bossFight = true;
 }
 

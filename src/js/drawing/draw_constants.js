@@ -12,8 +12,13 @@ export const slotBorderOffsetX = 15;
 export const statsOffsetX = 15;
 export const miniMapPixelSize = 5;
 
+export const bossHeartSize = 35;
+export const bossHeartOffset = 8;
+export const bottomBossHeartOffset = 25;
+
 export const HUDFontSize = 16;
 export const HUDSlotFontSize = 12;
+export const HUDBossFontSize = 18;
 export const HUDTitleFontSize = 20;
 export const HUDTextStyle = {
     fontSize: HUDFontSize,
@@ -25,6 +30,7 @@ export const HUDTextStyle = {
 };
 
 export const HUDTextStyleTitle = Object.assign({}, HUDTextStyle, {fontSize: HUDTitleFontSize});
+export const HUDTextStyleBoss = Object.assign({}, HUDTextStyle, {fontSize: HUDBossFontSize});
 export const HUDTextStyleSlot = Object.assign({}, HUDTextStyle, {
     fontSize: HUDSlotFontSize,
     lineHeight: HUDSlotFontSize - 2
