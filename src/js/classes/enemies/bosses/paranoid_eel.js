@@ -143,19 +143,23 @@ export class ParanoidEel extends Boss {
                 }
             } else if (roll < 20) {
                 const dir = this.canDoVerticalRushAttack();
-                if (dir) {
+                if (dir && this.canPlaceWithDirection(dir)) {
                     this.triggeredVerticalRush = true;
                     this.currentVerticalRushCounter = 0;
+                    this.removeFromMap();
                     this.direction = dir;
+                    this.placeOnMap();
                     this.correctLook();
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
                 }
             } else if (roll < 25) {
                 const dir = this.canDoHorizontalRushAttack();
-                if (dir) {
+                if (dir && this.canPlaceWithDirection(dir)) {
                     this.triggeredHorizontalRush = true;
+                    this.removeFromMap();
                     this.direction = dir;
+                    this.placeOnMap();
                     this.correctLook();
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
@@ -415,13 +419,8 @@ export class ParanoidEel extends Boss {
             if (this.triggeredSpinAttack || this.triggeredVerticalRush || this.triggeredSneezeAttack || this.triggeredHorizontalRush) return;
             if ((this.direction.x !== -inputX || this.direction.y !== -inputY)
                 && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit) this.waitingToMove = true;
-            if (inputX !== 0 || inputY !== 0) {
-                this.shiftPositionOnDamage(source, inputX, inputY);
-            } else this.rotateDirectionBy90();
-            if (this.triggeredStraightPoisonAttack || this.triggeredEelSpit || this.triggeredPoisonEelSpit) return;
-            let roll = Math.random() * 100;
-            if (this.turnsWithoutDamageReactions >= this.maxTurnsWithoutDamageReactions) roll = randomChoice([8, 20]);
-            if (roll < 16) {
+
+            const triggerSpinAttack = () => {
                 this.triggeredSpinAttack = true;
                 if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/panic.png"].texture;
                 else if (this.direction.y !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/panic_y.png"].texture;
@@ -429,6 +428,25 @@ export class ParanoidEel extends Boss {
                 this.currentSpinCounter = 0;
                 this.turnsWithoutDamageReactions = 0;
                 this.shake(this.direction.y, this.direction.x);
+            };
+
+            if (inputX === 0 && inputY === 0) {
+                if (!this.rotateDirectionBy90()) {
+                    triggerSpinAttack();
+                    return;
+                }
+            }
+            if (!this.canPlaceWithShifting(source, inputX, inputY)) {
+                triggerSpinAttack();
+                return;
+            } else {
+                this.shiftPositionOnDamage(source, inputX, inputY);
+            }
+            if (this.triggeredStraightPoisonAttack || this.triggeredEelSpit || this.triggeredPoisonEelSpit) return;
+            let roll = Math.random() * 100;
+            if (this.turnsWithoutDamageReactions >= this.maxTurnsWithoutDamageReactions) roll = randomChoice([8, 20]);
+            if (roll < 16) {
+                triggerSpinAttack();
             } else if (roll < 25) {
                 this.triggeredSneezeAttack = true;
                 if (this.direction.x !== 0) this.texture = Game.resources["src/images/bosses/paranoid_eel/sneeze.png"].texture;
@@ -549,18 +567,23 @@ export class ParanoidEel extends Boss {
     }
 
     rotateDirectionBy90() {
-        this.removeFromMap();
+        let direction = {};
         if (this.direction.x === 1) {
-            this.direction = {x: 0, y: 1}
+            direction = {x: 0, y: 1}
         } else if (this.direction.x === -1) {
-            this.direction = {x: 0, y: -1}
+            direction = {x: 0, y: -1}
         } else if (this.direction.y === 1) {
-            this.direction = {x: -1, y: 0}
+            direction = {x: -1, y: 0}
         } else if (this.direction.y === -1) {
-            this.direction = {x: 1, y: 0}
+            direction = {x: 1, y: 0}
         }
-        this.correctLook();
-        this.placeOnMap();
+        if (this.canPlaceWithDirection(direction)) {
+            this.direction = direction;
+            this.removeFromMap();
+            this.correctLook();
+            this.placeOnMap();
+            return true;
+        } else return false;
     }
 
     correctLook() {
@@ -606,6 +629,32 @@ export class ParanoidEel extends Boss {
         if (this.direction.y === 1) this.angle = 0;
         else if (this.direction.y === -1) this.angle = 180;
         else this.angle = 0;
+    }
+
+    canPlaceWithDirection(direction) {
+        return (Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === null || Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === this)
+            && (Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === null || Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === this);
+    }
+
+    canPlaceWithShifting(player, inputX, inputY) {
+        if (inputX === -this.direction.x && inputY === -this.direction.y
+            || inputX === this.direction.x && inputY === this.direction.y) {
+            return true;
+        } else {
+            if (!player) return;
+            let tpx = this.tilePosition.x;
+            let tpy = this.tilePosition.y;
+            if (inputX !== 0) {
+                tpy += Math.sign(player.tilePosition.y - this.tilePosition.y);
+                tpx += Math.sign(this.tilePosition.x - player.tilePosition.x);
+            } else if (inputY !== 0) {
+                tpx += Math.sign(player.tilePosition.x - this.tilePosition.x);
+                tpy += Math.sign(this.tilePosition.y - player.tilePosition.y);
+            }
+            return (Game.map[tpy][tpx].entity === null || Game.map[tpy][tpx].entity === this)
+                && (Game.map[tpy - inputY][tpx - inputX].entity === null || Game.map[tpy - inputY][tpx - inputX].entity === this)
+                && (Game.map[tpy + inputY][tpx + inputX].entity === null || Game.map[tpy + inputY][tpx + inputX].entity === this);
+        }
     }
 
     placeOnMap() {
