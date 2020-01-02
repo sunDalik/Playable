@@ -11,6 +11,7 @@ export function loadAll(afterLoad) {
         .add("src/images/wall.png")
         .add("src/images/super_wall.png")
         .add("src/images/boss_entry.png")
+        .add("src/images/boss_entry_opened.png")
         .add("src/images/exit_text.png")
         .add("src/images/player_attack.png")
         .add("src/images/player2_attack.png")

@@ -434,8 +434,7 @@ export class ParanoidEel extends Boss {
                     triggerSpinAttack();
                     return;
                 }
-            }
-            if (!this.canPlaceWithShifting(source, inputX, inputY)) {
+            } else if (!this.canPlaceWithShifting(source, inputX, inputY)) {
                 triggerSpinAttack();
                 return;
             } else {

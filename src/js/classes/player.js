@@ -165,9 +165,6 @@ export class Player extends AnimatedTileElement {
                     for (const eq of this.getEquipment()) {
                         if (eq && eq.onMove) eq.onMove(this);
                     }
-                    if (Game.boss && !Game.boss.dead && !Game.bossFight && amIInTheBossRoom(this)) {
-                        activateBossMode(this);
-                    }
                     if (this.tilePosition.x === Game.bossEntry.x && this.tilePosition.y === Game.bossEntry.y && !Game.bossEntryOpened) {
                         Game.world.removeTile(this.tilePosition.x, this.tilePosition.y);
                         Game.bossEntryOpened = true;
@@ -175,6 +172,9 @@ export class Player extends AnimatedTileElement {
                             lightPlayerPosition(Game.player);
                             lightPlayerPosition(Game.player2);
                         }
+                    }
+                    if (Game.boss && !Game.boss.dead && !Game.bossFight && amIInTheBossRoom(this)) {
+                        activateBossMode(this);
                     }
                 }
             } else if (this.secondHand && this.secondHand.use && this.secondHand.use(this, tileStepX, tileStepY)

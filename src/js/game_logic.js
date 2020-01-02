@@ -304,6 +304,10 @@ export function activateBossMode(player) {
         }
     }
 
+    if (Game.map[Game.bossEntry.y][Game.bossEntry.x].tile) {
+        Game.map[Game.bossEntry.y][Game.bossEntry.x].tile.texture = Game.resources["src/images/boss_entry_opened.png"].texture;
+    }
+
     Game.boss.redrawHealth();
     Game.bossFight = true;
 }
