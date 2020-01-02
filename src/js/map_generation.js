@@ -194,6 +194,7 @@ export function generateMap(level) {
     for (const entry of entries) {
         if (tileInsideTheBossRoom(entry.x, entry.y)) {
             const entrySprite = new FullTileElement(Game.resources["src/images/boss_entry.png"].texture, entry.x, entry.y);
+            Game.bossEntry = {x: entry.x, y: entry.y};
             if (map[entry.y][entry.x - 1].tileType === TILE_TYPE.PATH) entrySprite.angle = 90;
             else if (map[entry.y][entry.x + 1].tileType === TILE_TYPE.PATH) entrySprite.angle = -90;
             else if (map[entry.y - 1][entry.x].tileType === TILE_TYPE.PATH) entrySprite.angle = 180;

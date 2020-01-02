@@ -277,6 +277,7 @@ export function gotoNextLevel() {
     Game.boss = null;
     Game.bossFight = false;
     removeAllChildrenFromContainer(HUD.bossHealth);
+    Game.bossEntryOpened = false;
     incrementStage();
     initializeLevel();
     Game.player.applyNextLevelMethods();

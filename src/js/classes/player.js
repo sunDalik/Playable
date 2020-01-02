@@ -168,8 +168,13 @@ export class Player extends AnimatedTileElement {
                     if (Game.boss && !Game.boss.dead && !Game.bossFight && amIInTheBossRoom(this)) {
                         activateBossMode(this);
                     }
-                    if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.ENTRY && Game.map[this.tilePosition.y][this.tilePosition.x].tile) {
+                    if (this.tilePosition.x === Game.bossEntry.x && this.tilePosition.y === Game.bossEntry.y && !Game.bossEntryOpened) {
                         Game.world.removeTile(this.tilePosition.x, this.tilePosition.y);
+                        Game.bossEntryOpened = true;
+                        if (Game.stage === STAGE.DARK_TUNNEL) {
+                            lightPlayerPosition(Game.player);
+                            lightPlayerPosition(Game.player2);
+                        }
                     }
                 }
             } else if (this.secondHand && this.secondHand.use && this.secondHand.use(this, tileStepX, tileStepY)
