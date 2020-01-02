@@ -70,6 +70,10 @@ export function generateMap(level) {
                 //mapCell.tile.zIndex = 100;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.START) {
                 Game.startPos = {x: j, y: i};
+            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.BOSS_EXIT) {
+                mapCell.tileType = TILE_TYPE.EXIT;
+                mapCell.tile = new FullTileElement(Game.resources["src/images/exit_text.png"].texture, j, i);
+                Game.bossExit = {x: j, y: i};
             }
 
             if (map[i][j].split(":")[1] === MAP_SYMBOLS.END_ROOM_BOUNDARY) Game.endRoomBoundaries.push({x: j, y: i});

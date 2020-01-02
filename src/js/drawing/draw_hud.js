@@ -36,6 +36,7 @@ export function drawHUD() {
     drawInteractionKeys();
     redrawEnergy();
     drawSlotsContents();
+    if (Game.bossFight) Game.boss.redrawHealth();
 }
 
 export function drawHealth() {

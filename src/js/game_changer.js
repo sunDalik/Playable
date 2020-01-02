@@ -74,6 +74,7 @@ export function setVariablesForStage() {
             Game.statueRooms = rooms.FCStatueRooms;
             Game.obeliskRooms = rooms.FCObeliskRooms;
             Game.chestRooms = rooms.FCChestRooms;
+            Game.bossRooms = rooms.FCBossRooms;
             Game.BGColor = 0xabcfd1;
             break;
         case STAGE.DARK_TUNNEL:

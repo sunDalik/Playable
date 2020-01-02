@@ -18,6 +18,7 @@ with open("src/js/rooms.js", "a+") as f:
     f.write(compileDirectoryIntoVariable("rooms/FC/statue_rooms/", "FCStatueRooms"))
     f.write(compileDirectoryIntoVariable("rooms/FC/obelisk_rooms/", "FCObeliskRooms"))
     f.write(compileDirectoryIntoVariable("rooms/FC/chest_rooms/", "FCChestRooms"))
+    f.write(compileDirectoryIntoVariable("rooms/FC/boss_rooms/", "FCBossRooms"))
 
     f.write(compileDirectoryIntoVariable("rooms/DT/normal_rooms/", "DTNormalRooms"))
     f.write(compileDirectoryIntoVariable("rooms/DT/statue_rooms/", "DTStatueRooms"))

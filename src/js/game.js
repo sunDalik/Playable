@@ -27,6 +27,7 @@ Game.normalRooms = null;
 Game.statueRooms = null;
 Game.obeliskRooms = null;
 Game.chestRooms = null;
+Game.bossRooms = null;
 Game.BGColor = 0xffffff;
 
 Game.player = null; //white player
@@ -75,4 +76,5 @@ Game.unplayable = true;
 Game.endRoomBoundaries = [];
 Game.boss = null;
 Game.bossFight = false;
+Game.bossExit = false;
 Game.savedTiles = [];

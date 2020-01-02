@@ -9,6 +9,7 @@ import {
     bottomBossHeartOffset,
     HUDTextStyleTitle
 } from "../../../drawing/draw_constants";
+import {deactivateBossMode} from "../../../game_logic";
 
 export class Boss extends Enemy {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -41,5 +42,6 @@ export class Boss extends Enemy {
     die(source) {
         super.die(source);
         removeAllChildrenFromContainer(HUD.bossHealth);
+        deactivateBossMode();
     }
 }

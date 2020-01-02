@@ -7,9 +7,11 @@ import {createKissHeartAnimation, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
 import {updateChain} from "./drawing/draw_dunno";
 import {FullTileElement} from "./classes/tile_elements/full_tile_element";
-import {lightTile} from "./drawing/lighting";
+import {lightPosition, lightTile} from "./drawing/lighting";
 import {removeAllChildrenFromContainer} from "./drawing/draw_utils";
 import {HUD} from "./drawing/hud_object";
+import {camera} from "./classes/game/camera";
+import {get8Directions} from "./utils/map_utils";
 
 export function setEnemyTurnTimeout() {
     if (Game.enemiesTimeout === null) {
@@ -311,6 +313,16 @@ export function deactivateBossMode() {
         Game.world.addTile(savedTile.tile, savedTile.tileType, savedTile.x, savedTile.y);
     }
     Game.bossFight = false;
+
+    for (const dir of get8Directions()) {
+        if (Game.map[Game.bossExit.y + dir.y][Game.bossExit.x + dir.x].tileType !== TILE_TYPE.SUPER_WALL) {
+            Game.world.removeTile(Game.bossExit.x + dir.x, Game.bossExit.y + dir.y);
+        }
+    }
+
+    lightPosition(Game.bossExit);
+
+    camera.moveToCenter(15);
 }
 
 export function areWeInTheBossRoom() {

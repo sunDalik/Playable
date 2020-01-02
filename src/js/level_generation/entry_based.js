@@ -2,12 +2,16 @@ import {Game} from "../game"
 //https://github.com/qiao/PathFinding.js
 import PF from "../../../bower_components/pathfinding/pathfinding-browser";
 
-import {arraySum, copy2dArray, removeObjectFromArray} from "../utils/basic_utils";
+import {arraySum, copy2dArray, init2dArray, removeObjectFromArray} from "../utils/basic_utils";
 import {MAP_SYMBOLS, STAGE} from "../enums";
 import {getRandomInt, randomArrayIndex, randomChoice, randomShuffle} from "../utils/random_utils";
 import {
-    connectDiagonalPaths, createRoom,
-    expandLevel, flipHorizontally, flipVertically, getLevelPlayerGraph,
+    connectDiagonalPaths,
+    createRoom,
+    expandLevel,
+    flipHorizontally,
+    flipVertically,
+    getLevelPlayerGraph,
     mergeRoomIntoLevel,
     outlinePathsWithWalls,
     outlineWallsWithSuperWalls,
@@ -52,9 +56,8 @@ export function generateEntryBasedLevel() {
 
     let endingRoomX;
     let endingRoomY;
-    //choose random ending room from POOL OF ENDING ROOMS
-    const endingRoomWidth = getRandomInt(12, 14);
-    const endingRoomHeight = getRandomInt(8, 11);
+    let endingRoomWidth = getRandomInt(12, 14);
+    let endingRoomHeight = getRandomInt(8, 11);
     let endingRoomEntry;
     if (startRoomX + 1 <= (levelRoomWidth + 1) / 2) endingRoomX = levelRoomWidth - 1;
     else endingRoomX = 0;
@@ -67,6 +70,16 @@ export function generateEntryBasedLevel() {
     }
     const endingRoomI = endingRoomY * levelRoomWidth + endingRoomX;
     levelRooms[endingRoomI] = createRoom(endingRoomWidth, endingRoomHeight, [endingRoomEntry]);
+    if (Game.stage === STAGE.FLOODED_CAVE) {
+        levelRooms[endingRoomI] = copy2dArray(randomChoice(Game.bossRooms));
+        endingRoomWidth = levelRooms[endingRoomI][0].length;
+        endingRoomHeight = levelRooms[endingRoomI].length;
+        //copy paste...
+        if (startRoomY + 1 <= (levelRoomHeight + 1) / 2) endingRoomEntry = {x: Math.floor(endingRoomWidth / 2), y: 0};
+        else endingRoomEntry = {x: Math.floor(endingRoomWidth / 2), y: endingRoomHeight - 1};
+
+        levelRooms[endingRoomI][endingRoomEntry.y][endingRoomEntry.x] = MAP_SYMBOLS.ENTRY;
+    }
 
     //determining statue rooms indexes
     let statueRoomsNumber = randomChoice([1, 2]);
@@ -242,14 +255,7 @@ export function generateEntryBasedLevel() {
 
     const levelTileWidth = Math.max(...levelTileWidths) + maxRandRoomOffset * levelRoomWidth + 2;
     const levelTileHeight = arraySum(levelTileHeights) + maxRandRoomOffset * levelRoomHeight + 2;
-
-    //initialize level array
-    for (let i = 0; i < levelTileHeight; ++i) {
-        level[i] = [];
-        for (let j = 0; j < levelTileWidth; ++j) {
-            level[i][j] = MAP_SYMBOLS.VOID;
-        }
-    }
+    level = init2dArray(levelTileHeight, levelTileWidth, MAP_SYMBOLS.VOID);
 
     let previousX = 0;
     let previousY = 0;
@@ -282,8 +288,9 @@ export function generateEntryBasedLevel() {
                 currentRoom[torchY][torchX] = MAP_SYMBOLS.TORCH;
             }
         } else if (r === endingRoomI) {
-            currentRoom = copy2dArray(currentRoom);
-            currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = MAP_SYMBOLS.EXIT;
+            if (Game.stage !== STAGE.FLOODED_CAVE) {
+                currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = MAP_SYMBOLS.EXIT;
+            }
 
             const startPositionX = Math.floor(endingRoomWidth / 2) - 2; //for tests
             const startPositionY = Math.floor(endingRoomHeight / 2) - 2;
@@ -293,6 +300,11 @@ export function generateEntryBasedLevel() {
             currentRoom[endingRoomHeight - 1][endingRoomWidth - 1] += ":" + MAP_SYMBOLS.END_ROOM_BOUNDARY;
 
             if (Game.stage === STAGE.FLOODED_CAVE) {
+                if (endingRoomEntry.y === 0) {
+                    level[startY + endingRoomHeight][startX + endingRoomEntry.x] = MAP_SYMBOLS.BOSS_EXIT;
+                } else if (endingRoomEntry.y === endingRoomHeight - 1) {
+                    level[startY - 1][startX + endingRoomEntry.x] = MAP_SYMBOLS.BOSS_EXIT;
+                }
                 //currentRoom[Math.floor(endingRoomHeight / 2) + 2][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.PARANOID_EEL;
             }
         }

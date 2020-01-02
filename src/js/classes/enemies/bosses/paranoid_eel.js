@@ -6,7 +6,8 @@ import {
     isAnyWall,
     isDiggable,
     isEmpty,
-    isEnemy, isNotAWall,
+    isEnemy,
+    isNotAWall,
     isNotOutOfMap,
     isRelativelyEmpty
 } from "../../../map_checks";
@@ -17,7 +18,6 @@ import {Eel} from "../eel";
 import {PoisonEel} from "../eel_poison";
 import {shakeScreen} from "../../../animations";
 import {DarkEel} from "../eel_dark";
-import {deactivateBossMode} from "../../../game_logic";
 
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture) {
@@ -696,7 +696,6 @@ export class ParanoidEel extends Boss {
         for (const minion of this.minions) {
             minion.die(null);
         }
-        deactivateBossMode();
     }
 
     spawnMinion(constructor, x, y) {

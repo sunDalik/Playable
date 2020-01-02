@@ -47,7 +47,18 @@ camera.moveToCenter = (animationTime) => {
     const endRoomTime = animationTime === 0 ? 0 : 15;
     if (Game.player.dead && Game.player2.dead) return;
     if (areWeInTheBossRoom()) {
-        camera.setNewPoint((Game.endRoomBoundaries[0].x + (Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x) / 2) * Game.TILESIZE + Game.TILESIZE / 2,
-            (Game.endRoomBoundaries[0].y + (Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y) / 2) * Game.TILESIZE + Game.TILESIZE / 2, endRoomTime);
-    } else camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
+        const newPoint = {
+            x: (Game.endRoomBoundaries[0].x + (Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x) / 2) * Game.TILESIZE + Game.TILESIZE / 2,
+            y: (Game.endRoomBoundaries[0].y + (Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y) / 2) * Game.TILESIZE + Game.TILESIZE / 2
+        };
+        //add Game.TILESIZE/3 to y coord because it feels too low with boss healthbar at the bottom
+        if (Game.boss && !Game.boss.dead) {
+            camera.setNewPoint(newPoint.x, newPoint.y + Game.TILESIZE / 3, endRoomTime);
+        } else {
+            camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
+        }
+
+    } else {
+        camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
+    }
 };
