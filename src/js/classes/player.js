@@ -168,6 +168,9 @@ export class Player extends AnimatedTileElement {
                     if (Game.boss && !Game.boss.dead && !Game.bossFight && amIInTheBossRoom(this)) {
                         activateBossMode(this);
                     }
+                    if (Game.map[this.tilePosition.y][this.tilePosition.x].tileType === TILE_TYPE.ENTRY && Game.map[this.tilePosition.y][this.tilePosition.x].tile) {
+                        Game.world.removeTile(this.tilePosition.x, this.tilePosition.y);
+                    }
                 }
             } else if (this.secondHand && this.secondHand.use && this.secondHand.use(this, tileStepX, tileStepY)
                 || this.weapon && this.weapon.use && this.weapon.use(this, tileStepX, tileStepY)) {

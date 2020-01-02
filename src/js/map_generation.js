@@ -34,10 +34,12 @@ import {LaserTurret} from "./classes/enemies/laser_turret";
 import {SpikyWallTrap} from "./classes/enemies/spiky_wall_trap";
 import {ParanoidEel} from "./classes/enemies/bosses/paranoid_eel";
 import {BalletSpider} from "./classes/enemies/bosses/ballet_spider";
+import {tileInsideTheBossRoom} from "./game_logic";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
-    let obeliskTiles = [];
+    const obeliskTiles = [];
+    const entries = [];
     for (let i = 0; i < map.length; ++i) {
         for (let j = 0; j < map[0].length; ++j) {
             let mapCell = {
@@ -59,11 +61,12 @@ export function generateMap(level) {
                 mapCell.tileType = TILE_TYPE.VOID;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.ENTRY) {
                 mapCell.tileType = TILE_TYPE.ENTRY;
+                entries.push({x: j, y: i});
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.PATH) {
                 mapCell.tileType = TILE_TYPE.PATH;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.EXIT) {
                 mapCell.tileType = TILE_TYPE.EXIT;
-                mapCell.tile = new FullTileElement(Game.resources["src/images/exit.png"].texture, j, i);
+                mapCell.tile = new FullTileElement(Game.resources["src/images/exit_text.png"].texture, j, i);
                 //mapCell.tile.zIndex = 100;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.START) {
                 Game.startPos = {x: j, y: i};
@@ -182,6 +185,16 @@ export function generateMap(level) {
             obeliskEntity.grail4.tilePosition.set(obelisk.x + 2, obelisk.y);
         }
         obeliskEntity.placeGrails();
+    }
+
+    for (const entry of entries) {
+        if (tileInsideTheBossRoom(entry.x, entry.y)) {
+            const entrySprite = new FullTileElement(Game.resources["src/images/boss_entry.png"].texture, entry.x, entry.y);
+            if (map[entry.y][entry.x - 1].tileType === TILE_TYPE.PATH) entrySprite.angle = 90;
+            else if (map[entry.y][entry.x + 1].tileType === TILE_TYPE.PATH) entrySprite.angle = -90;
+            else if (map[entry.y - 1][entry.x].tileType === TILE_TYPE.PATH) entrySprite.angle = 180;
+            map[entry.y][entry.x].tile = entrySprite;
+        }
     }
 
     return map;

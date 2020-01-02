@@ -125,20 +125,20 @@ export class ParanoidEel extends Boss {
                     this.shake(this.direction.y, this.direction.x);
                     canMove = false;
                 }
-            } else if (roll < 10) {
+            } else if (roll < 9) {
                 this.triggeredSpinAttack = true;
-                this.correctLook()
+                this.correctLook();
                 this.currentSpinCounter = 0;
                 this.shake(this.direction.y, this.direction.x);
                 canMove = false;
-            } else if (roll < 15) {
+            } else if (roll < 14) {
                 if (this.canDoPoisonStraightAttack()) {
                     this.triggeredStraightPoisonAttack = true;
                     this.correctLook();
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
                 }
-            } else if (roll < 20) {
+            } else if (roll < 18) {
                 const dir = this.canDoVerticalRushAttack();
                 if (dir && this.canPlaceWithDirection(dir)) {
                     this.triggeredVerticalRush = true;
@@ -150,7 +150,7 @@ export class ParanoidEel extends Boss {
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
                 }
-            } else if (roll < 25) {
+            } else if (roll < 24) {
                 const dir = this.canDoHorizontalRushAttack();
                 if (dir && this.canPlaceWithDirection(dir)) {
                     this.triggeredHorizontalRush = true;
@@ -632,8 +632,11 @@ export class ParanoidEel extends Boss {
 
     canPlaceWithDirection(direction) {
         return (Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === null || Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === this)
-            && (Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === null || Game.map[this.tilePosition.y + direction.y][this.tilePosition.x + direction.x].entity === this)
-            && (isNotAWall(this.tilePosition.x + direction.x, this.tilePosition.y + direction.y) || isNotAWall(this.tilePosition.x - direction.x, this.tilePosition.y - direction.y));
+            && (Game.map[this.tilePosition.y - direction.y][this.tilePosition.x - direction.x].entity === null || Game.map[this.tilePosition.y - direction.y][this.tilePosition.x - direction.x].entity === this)
+            && (isNotAWall(this.tilePosition.x + direction.x, this.tilePosition.y + direction.y)
+                && isNotAWall(this.tilePosition.x + direction.x * 2, this.tilePosition.y + direction.y * 2)
+                || isNotAWall(this.tilePosition.x - direction.x, this.tilePosition.y - direction.y)
+                && isNotAWall(this.tilePosition.x - direction.x * 2, this.tilePosition.y - direction.y * 2));
     }
 
     canPlaceWithShifting(player, inputX, inputY) {
@@ -654,7 +657,10 @@ export class ParanoidEel extends Boss {
             return (Game.map[tpy][tpx].entity === null || Game.map[tpy][tpx].entity === this)
                 && (Game.map[tpy - inputY][tpx - inputX].entity === null || Game.map[tpy - inputY][tpx - inputX].entity === this)
                 && (Game.map[tpy + inputY][tpx + inputX].entity === null || Game.map[tpy + inputY][tpx + inputX].entity === this)
-                && (isNotAWall(tpx + inputX, tpy + inputY) || isNotAWall(tpx - inputX, tpy - inputY));
+                && (isNotAWall(tpx + inputX, tpy + inputY)
+                    && isNotAWall(tpx + inputX * 2, tpy + inputY * 2)
+                    || isNotAWall(tpx - inputX, tpy - inputY)
+                    && isNotAWall(tpx - inputX * 2, tpy - inputY * 2));
         }
     }
 

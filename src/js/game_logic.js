@@ -327,7 +327,7 @@ export function amIInTheBossRoom(player) {
         && !player.dead;
 }
 
-export function tileOutsideOfTheBossRoom(x, y) {
-    return !(x >= Game.endRoomBoundaries[0].x && y >= Game.endRoomBoundaries[0].y
-        && x <= Game.endRoomBoundaries[1].x && y <= Game.endRoomBoundaries[1].y);
+export function tileInsideTheBossRoom(x, y) {
+    return x >= Game.endRoomBoundaries[0].x && y >= Game.endRoomBoundaries[0].y
+        && x <= Game.endRoomBoundaries[1].x && y <= Game.endRoomBoundaries[1].y;
 }
