@@ -22,14 +22,14 @@ import {DarkEel} from "../eel_dark";
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 20;
+        this.maxHealth = 25;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.PARANOID_EEL;
         this.name = "Paranoid Eel";
         this.atk = 1;
 
         this.waitingToMove = true;
-        this.startNoActionCounter = 3;
+        this.startNoActionCounter = 4;
 
         this.triggeredSpinAttack = false;
         this.spinCounter = 5;
@@ -429,7 +429,7 @@ export class ParanoidEel extends Boss {
             const triggerSpinAttack = () => {
                 this.triggeredSpinAttack = true;
                 this.correctLook();
-                this.waitingToMove = true;
+                if (!Game.afterTurn) this.waitingToMove = true;
                 this.currentSpinCounter = 0;
                 this.turnsWithoutDamageReactions = 0;
                 this.shake(this.direction.y, this.direction.x);
@@ -454,7 +454,7 @@ export class ParanoidEel extends Boss {
             } else if (roll < 25) {
                 this.triggeredSneezeAttack = true;
                 this.correctLook();
-                this.waitingToMove = true;
+                if (!Game.afterTurn) this.waitingToMove = true;
                 this.currentSneezeCounter = 0;
                 this.turnsWithoutDamageReactions = 0;
                 this.shake(this.direction.y, this.direction.x);

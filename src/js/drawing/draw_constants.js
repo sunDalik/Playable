@@ -13,7 +13,7 @@ export const statsOffsetX = 15;
 export const miniMapPixelSize = 5;
 
 export const bossHeartSize = 35;
-export const bossHeartOffset = 8;
+export const bossHeartOffset = -16;
 export const bottomBossHeartOffset = 25;
 
 export const HUDFontSize = 16;
