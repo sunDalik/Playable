@@ -68,6 +68,7 @@ export class Spider extends Enemy {
 
     updateIntentIcon() {
         super.updateIntentIcon();
-        this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+        if (this.thrown) this.intentIcon.texture = Game.resources["src/images/icons/intents/stun.png"].texture;
+        else this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
     }
 }
