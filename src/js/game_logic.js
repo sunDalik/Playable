@@ -15,10 +15,7 @@ import {get8Directions} from "./utils/map_utils";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
-        if (!enemy.dead && enemy.visible) {
-            if (enemy.stun > 0) enemy.setStunIcon();
-            else enemy.updateIntentIcon();
-        }
+        updateIntent(enemy);
     }
 
     if (Game.enemiesTimeout === null) {
@@ -61,9 +58,15 @@ export function moveEnemies() {
                 enemy.stun--;
                 enemy.damageWithHazards();
             }
-            if (enemy.stun > 0) enemy.setStunIcon();
-            else enemy.updateIntentIcon();
+            updateIntent(enemy);
         }
+    }
+}
+
+function updateIntent(enemy) {
+    if (!enemy.dead && enemy.visible) {
+        if (enemy.stun > 0) enemy.setStunIcon();
+        else enemy.updateIntentIcon();
     }
 }
 
