@@ -17,7 +17,7 @@ export class Petrification {
     cast(wielder) {
         if (this.uses <= 0) return false;
         for (const enemy of Game.enemies) {
-            if (enemy.visible) enemy.stun += 8;
+            if (enemy.visible) enemy.stun += 9;
         }
         this.uses--;
         return true;

@@ -11,7 +11,7 @@ export class Fireball {
         this.type = MAGIC_TYPE.FIREBALL;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.GRAY;
-        this.atk = 1.5;
+        this.atk = 2;
         this.multiplier = 0;
         this.castedThisTurn = true;
         this.multiplierDecreaseDelay = 2;

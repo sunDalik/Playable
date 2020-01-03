@@ -79,7 +79,7 @@ export class Enemy extends AnimatedTileElement {
     }
 
     moveHealthContainer() {
-        this.healthContainer.position.x = this.position.x - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 5) / 2 + 5 / 2;
+        this.healthContainer.position.x = this.position.x - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 0) / 2 + 0 / 2;
         this.healthContainer.position.y = this.position.y + this.height * 0.5 + 10;
 
         this.intentIcon.position.x = this.position.x;
@@ -90,7 +90,7 @@ export class Enemy extends AnimatedTileElement {
         removeAllChildrenFromContainer(this.healthContainer);
         const heartSize = Game.TILESIZE / 65 * 20;
         const heartRowOffset = 0;
-        const heartColOffset = 5;
+        const heartColOffset = 0;
         const healthArray = getHealthArray(this);
         for (let i = 0; i < healthArray.length; ++i) {
             const heart = new PIXI.Sprite(getHeartTexture(healthArray[i]));
