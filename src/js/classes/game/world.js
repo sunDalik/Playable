@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import {Game} from "../../game";
-import {isEmpty} from "../../map_checks";
+import {isAnyWall, isEmpty} from "../../map_checks";
 import {EQUIPMENT_TYPE, HAZARD_TYPE, ROLE, STAGE, TILE_TYPE, TOOL_TYPE} from "../../enums";
 import {removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {lightPlayerPosition} from "../../drawing/lighting";
@@ -14,6 +14,8 @@ export class World extends PIXI.Container {
     }
 
     addHazard(hazard) {
+        if (isAnyWall(hazard.tilePosition.x, hazard.tilePosition.y)) return false;
+
         const competingHazard = Game.map[hazard.tilePosition.y][hazard.tilePosition.x].hazard;
         if (competingHazard === null) {
             hazard.addToWorld();

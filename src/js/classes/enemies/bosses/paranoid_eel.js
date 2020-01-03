@@ -391,6 +391,12 @@ export class ParanoidEel extends Boss {
             const player = getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
             if (player) player.damage(this.atk, this, true, true);
         }
+
+        let player = getPlayerOnTile(this.tilePosition.x + this.direction.x * 2, this.tilePosition.y + this.direction.y * 2);
+        if (player) player.damage(this.atk, this, true, true);
+
+        player = getPlayerOnTile(this.tilePosition.x - this.direction.x * 2, this.tilePosition.y - this.direction.y * 2);
+        if (player) player.damage(this.atk, this, true, true);
     }
 
     sneezeAttack() {
