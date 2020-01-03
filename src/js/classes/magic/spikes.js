@@ -12,7 +12,7 @@ export class Spikes {
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 3;
         this.friendlyFire = 1;
-        this.maxUses = 5;
+        this.maxUses = 4;
         this.uses = this.maxUses;
         this.name = "Spikes";
         this.description = "Wield with care";
