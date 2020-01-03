@@ -21,4 +21,11 @@ export class FireFrog extends Frog {
     spitHazard(tileX, tileY) {
         Game.world.addHazard(new FireHazard(tileX, tileY));
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.triggered) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/fire.png"].texture;
+        }
+    }
 }

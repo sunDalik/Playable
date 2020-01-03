@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {Roller} from "./roller"
 import {ENEMY_TYPE} from "../../enums";
-import {isNotOutOfMap, isRelativelyEmpty, getPlayerOnTile, isEmpty} from "../../map_checks";
+import {getPlayerOnTile, isEmpty, isNotOutOfMap, isRelativelyEmpty} from "../../map_checks";
 
 export class RedRoller extends Roller {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/roller_b.png"].texture) {
@@ -16,6 +16,8 @@ export class RedRoller extends Roller {
     move() {
         let lastDirTileEmpty = true;
         let lastNotDirTileEmpty = true;
+
+        //refactor this please
         for (let x = 1; ; x++) {
             if (isNotOutOfMap(this.tilePosition.x + x * this.direction, this.tilePosition.y)) {
                 if (lastDirTileEmpty === true) {
@@ -135,5 +137,27 @@ export class RedRoller extends Roller {
         } else {
             super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         }
+    }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        this.intentIcon.angle = 0;
+
+        for (let i = 1; ; i++) {
+            if (!isRelativelyEmpty(this.tilePosition.x + i, this.tilePosition.y)) break;
+            if (getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y)) {
+                this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+                return;
+            }
+        }
+        for (let i = -1; ; i--) {
+            if (!isRelativelyEmpty(this.tilePosition.x + i, this.tilePosition.y)) break;
+            if (getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y)) {
+                this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+                return;
+            }
+        }
+
+        this.intentIcon.texture = Game.resources["src/images/icons/intents/eye.png"].texture;
     }
 }

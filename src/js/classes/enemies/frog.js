@@ -91,4 +91,17 @@ export class Frog extends Enemy {
         Game.world.addHazard(new PoisonHazard(this.tilePosition.x + Math.floor((tileX - this.tilePosition.x) / 2),
             this.tilePosition.y + Math.floor((tileY - this.tilePosition.y) / 2)));
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.triggered) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/poison.png"].texture;
+        } else if (this.currentTurnDelay > 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+        } else if (tileDistance(this, closestPlayer(this)) <= 2) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/fear.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/neutral.png"].texture;
+        }
+    }
 }

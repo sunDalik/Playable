@@ -390,8 +390,8 @@ export function generateEntryBasedLevel() {
             }
         }
     }
+    level = expandLevel(level, 3, 3);
     outlinePathsWithWalls(level);
-    level = expandLevel(level, 2, 2);
     connectDiagonalPaths(level);
     outlineWallsWithWalls(level);
     outlineWallsWithSuperWalls(level);

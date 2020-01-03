@@ -64,4 +64,13 @@ export class Snail extends Enemy {
             this.scale.x *= -1;
         }
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.currentTurnDelay > 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+        }
+    }
 }

@@ -30,4 +30,12 @@ export class SmallMushroom extends Mushroom {
         } else movementOptions = getRelativelyEmptyCardinalDirections(this);
         return movementOptions;
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.walking && tileDistance(this, closestPlayer(this)) <= 2) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+            this.intentIcon.angle = 0;
+        }
+    }
 }

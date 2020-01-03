@@ -65,4 +65,9 @@ export class Spider extends Enemy {
         this.thrown = true;
         this.cancellable = false;
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+    }
 }

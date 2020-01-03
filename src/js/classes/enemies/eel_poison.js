@@ -65,4 +65,12 @@ export class PoisonEel extends Eel {
         }
         super.rotateByAngle(angle, rotateTime, this.cancellable);
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.triggered) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/poison.png"].texture;
+            this.intentIcon.angle = 0;
+        }
+    }
 }

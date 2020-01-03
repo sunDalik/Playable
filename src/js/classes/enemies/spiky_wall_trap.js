@@ -19,6 +19,7 @@ export class SpikyWallTrap extends Enemy {
         this.role = ROLE.WALL_TRAP;
         this.direction = {x: 1, y: 0};
         this.zIndex = Game.primaryPlayer.zIndex + 1;
+        this.intentIcon.zIndex = this.zIndex + 1;
     }
 
     afterMapGen() {
@@ -47,6 +48,17 @@ export class SpikyWallTrap extends Enemy {
         if (!this.direction) return;
         this.position.x += this.width / 4 * this.direction.x;
         this.position.y += this.height / 4 * this.direction.y;
+    }
+
+    moveHealthContainer() {
+        super.moveHealthContainer();
+        if (this.type !== ENEMY_TYPE.SPIKY_WALL_TRAP) return;
+        //dude... refactor this dude's textures already!
+        if (this.direction.y === 1) {
+            this.intentIcon.position.y = this.position.y - this.height / 4 - this.intentIcon.height / 2;
+        } else if (this.direction.y === -1) {
+            this.intentIcon.position.y = this.position.y - this.height / 4 - this.intentIcon.height / 2;
+        }
     }
 
     move() {
@@ -111,6 +123,17 @@ export class SpikyWallTrap extends Enemy {
             if (this.direction.x !== 0) this.texture = Game.resources["src/images/enemies/spiky_wall_trap_x.png"].texture;
             else if (this.direction.y === -1) this.texture = Game.resources["src/images/enemies/spiky_wall_trap_top.png"].texture;
             else this.texture = Game.resources["src/images/enemies/spiky_wall_trap_bottom.png"].texture;
+        }
+    }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.triggered) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/spikes.png"].texture;
+        } else if (this.currentTurnDelay > 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/eye.png"].texture;
         }
     }
 }

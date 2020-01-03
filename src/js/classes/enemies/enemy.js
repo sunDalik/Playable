@@ -24,6 +24,14 @@ export class Enemy extends AnimatedTileElement {
         Game.world.addChild(this.healthContainer);
         this.healthContainer.visible = false;
         this.healthContainer.zIndex = 1;
+
+        this.intentIcon = new PIXI.Sprite(PIXI.Texture.WHITE);
+        Game.world.addChild(this.intentIcon);
+        this.intentIcon.visible = false;
+        this.intentIcon.zIndex = Game.primaryPlayer.zIndex + 1;
+        this.intentIcon.width = this.intentIcon.height = 25;
+        this.intentIcon.anchor.set(0.5, 0.5);
+
         this.place();
     }
 
@@ -73,6 +81,9 @@ export class Enemy extends AnimatedTileElement {
     moveHealthContainer() {
         this.healthContainer.position.x = this.position.x - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 5) / 2 + 5 / 2;
         this.healthContainer.position.y = this.position.y + this.height * 0.5 + 10;
+
+        this.intentIcon.position.x = this.position.x;
+        this.intentIcon.position.y = this.position.y - this.height / 2 - this.intentIcon.height / 2;
     }
 
     redrawHealth() {
@@ -121,6 +132,7 @@ export class Enemy extends AnimatedTileElement {
         this.cancelAnimation();
         this.visible = false;
         this.healthContainer.visible = false;
+        this.intentIcon.visible = false;
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
         }
@@ -239,5 +251,21 @@ export class Enemy extends AnimatedTileElement {
             if (onFrame) onFrame();
             this.moveHealthContainer()
         }, onEnd, animationTime);
+    }
+
+    updateIntentIcon() {
+        this.intentIcon.visible = !this.dead;
+    }
+
+    setStunIcon() {
+        this.intentIcon.texture = Game.resources["src/images/icons/intents/stun.png"].texture;
+        this.intentIcon.angle = 0;
+    }
+
+    getArrowRightAngleForDirection(direction) {
+        if (direction.x === -1) return 180;
+        else if (direction.x === 1) return 0;
+        else if (direction.y === -1) return -90;
+        else if (direction.y === 1) return 90;
     }
 }

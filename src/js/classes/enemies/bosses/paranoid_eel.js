@@ -230,6 +230,7 @@ export class ParanoidEel extends Boss {
                     minionEel.rotateByAngle(-90);
                     minionEel.increaseAngle(-90);
                 }
+                minionEel.updateIntentIcon();
             }, spitAnimationTime);
         } else {
             const player = getPlayerOnTile(this.tilePosition.x + this.direction.x * (this.currentEelSpitCounter + 1), this.tilePosition.y + this.direction.y * (this.currentEelSpitCounter + 1));
@@ -238,6 +239,7 @@ export class ParanoidEel extends Boss {
                 minionEel.die(null);
             }, spitAnimationTime);
         }
+        minionEel.updateIntentIcon();
     }
 
     spitPoisonEel() {
@@ -260,6 +262,7 @@ export class ParanoidEel extends Boss {
                     minionEel.rotateByAngle(-90);
                     minionEel.increaseAngle(-90);
                 }
+                minionEel.updateIntentIcon();
             }, spitAnimationTime);
         } else {
             const player = getPlayerOnTile(this.tilePosition.x + this.direction.x * 3, this.tilePosition.y + this.direction.y * 3);
@@ -292,6 +295,7 @@ export class ParanoidEel extends Boss {
                         else if (wall.y === Game.endRoomBoundaries[1].y) minionEel.setAngle(180);
                         minionEel.placeOnMap();
                         minionEel.move();
+                        minionEel.updateIntentIcon();
                     }
                 }, Math.abs(i) * 1.5, true);
                 break;
@@ -315,6 +319,7 @@ export class ParanoidEel extends Boss {
                     minionEel.rotateByAngle(-90);
                     minionEel.increaseAngle(-90);
                 }
+                minionEel.updateIntentIcon();
             }, spitAnimationTime);
         }
         for (let i = this.direction.x * 2; ; i += this.direction.x) {

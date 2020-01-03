@@ -116,4 +116,15 @@ export class Eel extends Enemy {
         this.angle = angle;
         this.inMemoryAngle = angle;
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.turnDelay > 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.angle = 0;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+            this.intentIcon.angle = this.inMemoryAngle - 270;
+        }
+    }
 }

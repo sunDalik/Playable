@@ -94,4 +94,15 @@ export class Star extends Enemy {
             if (player) player.damage(this.atk, this, false, true);
         }
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.triggered) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/spikes.png"].texture;
+        } else if (this.turnDelay > 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/eye.png"].texture;
+        }
+    }
 }

@@ -75,4 +75,10 @@ export class Roller extends Enemy {
         };
         Game.app.ticker.add(this.animation);
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        this.intentIcon.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+        this.intentIcon.angle = this.getArrowRightAngleForDirection({x: this.direction, y: 0});
+    }
 }

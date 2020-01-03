@@ -106,4 +106,15 @@ export class LaserTurret extends Enemy {
             this.texture = Game.resources["src/images/enemies/laser_turret_awake.png"].texture;
         }
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.triggered) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/laser.png"].texture;
+        } else if (this.currentTurnDelay > 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/eye.png"].texture;
+        }
+    }
 }

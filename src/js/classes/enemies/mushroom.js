@@ -142,4 +142,19 @@ export class Mushroom extends Enemy {
     getDirections() {
         return getRelativelyEmptyHorizontalDirections(this);
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        this.intentIcon.angle = 0;
+        if (this.walking) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+            this.intentIcon.angle = this.getArrowRightAngleForDirection(this.direction);
+        } else if (this.standing) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+        } else if (this.currentPoisonDelay === 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/poison.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+        }
+    }
 }

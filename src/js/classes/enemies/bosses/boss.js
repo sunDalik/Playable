@@ -44,4 +44,8 @@ export class Boss extends Enemy {
         removeAllChildrenFromContainer(HUD.bossHealth);
         deactivateBossMode();
     }
+
+    updateIntentIcon() {
+        return false;
+    }
 }

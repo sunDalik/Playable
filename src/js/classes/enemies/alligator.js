@@ -300,4 +300,36 @@ export class Alligator extends Enemy {
         super.die(source);
         this.prey = null;
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        this.intentIcon.angle = 0;
+        if (this.shooting) {
+            switch (this.alligatorType) {
+                case RABBIT_TYPE.ELECTRIC:
+                    this.intentIcon.texture = Game.resources["src/images/icons/intents/electricity.png"].texture;
+                    break;
+                case RABBIT_TYPE.FIRE:
+                    this.intentIcon.texture = Game.resources["src/images/icons/intents/fire.png"].texture;
+                    break;
+                case RABBIT_TYPE.POISON:
+                    this.intentIcon.texture = Game.resources["src/images/icons/intents/poison.png"].texture;
+                    break;
+            }
+        } else if (this.alligatorType === undefined && this.prey && !this.prey.dead) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+            this.intentIcon.angle = this.getArrowRightAngleForDirection(this.direction);
+        } else if (this.currentTurnDelay > 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+        } else if (this.triggeredDirection) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+            this.intentIcon.angle = this.getArrowRightAngleForDirection(this.triggeredDirection);
+        } else if (tileDistance(this, closestPlayer(this)) <= 2) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+        } else if (this.alligatorType === RABBIT_TYPE.ENERGY) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/question_mark.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/neutral.png"].texture;
+        }
+    }
 }

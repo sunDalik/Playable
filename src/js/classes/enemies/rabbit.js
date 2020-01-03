@@ -105,4 +105,19 @@ export class Rabbit extends Enemy {
                 break;
         }
     }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.predator && !this.predator.dead) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/fear.png"].texture;
+        } else if (this.rabbitType === RABBIT_TYPE.ENERGY) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/fear.png"].texture;
+        } else if (this.currentTurnDelay > 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+        } else if (tileDistance(this, closestPlayer(this)) <= 2) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/fear.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/neutral.png"].texture;
+        }
+    }
 }

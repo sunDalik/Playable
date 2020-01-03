@@ -8,7 +8,7 @@ export class VampireCrown {
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.killsNeeded = 10;
         this.killsMade = 0;
-        this.healAmount = 0.5;
+        this.healAmount = 1;
         this.name = "Vampire Crown";
         this.description = "Kills heal";
     }
