@@ -35,6 +35,7 @@ import {SpikyWallTrap} from "./classes/enemies/spiky_wall_trap";
 import {ParanoidEel} from "./classes/enemies/bosses/paranoid_eel";
 import {BalletSpider} from "./classes/enemies/bosses/ballet_spider";
 import {tileInsideTheBossRoom} from "./game_logic";
+import {GuardianOfTheLight} from "./classes/enemies/bosses/guardian_of_the_light";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -124,6 +125,7 @@ export function generateMap(level) {
             else if (map[i][j] === MAP_SYMBOLS.SPIKY_WALL_TRAP) mapCell.entity = new SpikyWallTrap(j, i);
             else if (map[i][j] === MAP_SYMBOLS.PARANOID_EEL) mapCell.entity = new ParanoidEel(j, i);
             else if (map[i][j] === MAP_SYMBOLS.BALLET_SPIDER) mapCell.entity = new BalletSpider(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.GUARDIAN_OF_THE_LIGHT) mapCell.entity = new GuardianOfTheLight(j, i);
             else if (map[i][j] === MAP_SYMBOLS.STATUE) {
                 if (Game.weaponPool.length > 0) {
                     mapCell.entity = new Statue(j, i, getRandomWeapon());

@@ -288,7 +288,8 @@ export function generateEntryBasedLevel() {
                 currentRoom[torchY][torchX] = MAP_SYMBOLS.TORCH;
             }
         } else if (r === endingRoomI) {
-            if (Game.stage !== STAGE.FLOODED_CAVE) {
+            const bossAreas = [STAGE.FLOODED_CAVE];
+            if (!bossAreas.includes(Game.stage)) {
                 currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = MAP_SYMBOLS.EXIT;
             }
 
@@ -299,13 +300,14 @@ export function generateEntryBasedLevel() {
             currentRoom[0][0] += ":" + MAP_SYMBOLS.END_ROOM_BOUNDARY;
             currentRoom[endingRoomHeight - 1][endingRoomWidth - 1] += ":" + MAP_SYMBOLS.END_ROOM_BOUNDARY;
 
-            if (Game.stage === STAGE.FLOODED_CAVE) {
+            if (bossAreas.includes(Game.stage)) {
                 if (endingRoomEntry.y === 0) {
                     level[startY + endingRoomHeight][startX + endingRoomEntry.x] = MAP_SYMBOLS.BOSS_EXIT;
                 } else if (endingRoomEntry.y === endingRoomHeight - 1) {
                     level[startY - 1][startX + endingRoomEntry.x] = MAP_SYMBOLS.BOSS_EXIT;
                 }
                 //currentRoom[Math.floor(endingRoomHeight / 2) + 2][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.PARANOID_EEL;
+                //currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.GUARDIAN_OF_THE_LIGHT;
             }
         }
         mergeRoomIntoLevel(level, currentRoom, startX, startY);

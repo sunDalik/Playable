@@ -112,7 +112,6 @@ export function getChasingOptions(chaser, runner) {
     return directions;
 }
 
-
 export function getRunAwayOptions(runner, chaser) {
     const directions = [];
     for (const dir of getRunAwayDirections(runner, chaser)) {

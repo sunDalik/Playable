@@ -58,7 +58,7 @@ export class Roller extends Enemy {
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
         let counter = 0;
 
-        this.animation = (delta) => {
+        const animation = delta => {
             if (counter < this.BUMP_ANIMATION_TIME / 3) {
                 this.position.x += oldStep * delta;
             } else if (counter >= this.BUMP_ANIMATION_TIME / 3 && counter < this.BUMP_ANIMATION_TIME) {
@@ -68,12 +68,14 @@ export class Roller extends Enemy {
             }
             counter += delta;
             if (counter >= this.BUMP_ANIMATION_TIME) {
-                Game.app.ticker.remove(this.animation);
+                Game.app.ticker.remove(animation);
                 this.place();
             }
             this.moveHealthContainer();
         };
-        Game.app.ticker.add(this.animation);
+
+        this.animation = animation;
+        Game.app.ticker.add(animation);
     }
 
     updateIntentIcon() {

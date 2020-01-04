@@ -3,6 +3,7 @@ import {ROLE, STAGE} from "../../../enums";
 import {TileElement} from "../../tile_elements/tile_element";
 import {getPlayerOnTile, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
+import * as PIXI from "pixi.js";
 
 export class Bullet extends TileElement {
     constructor(texture, tilePositionX, tilePositionY, pattern) {
@@ -15,6 +16,23 @@ export class Bullet extends TileElement {
         this.delay = 1;
         this.atk = 1;
         this.zIndex = Game.primaryPlayer.zIndex + 1;
+
+        this.intentIcon = new PIXI.Sprite(PIXI.Texture.WHITE);
+        Game.world.addChild(this.intentIcon);
+        this.intentIcon.visible = false;
+        this.intentIcon.zIndex = this.zIndex + 1;
+        this.intentIcon.width = this.intentIcon.height = 14;
+        this.intentIcon.alpha = 0.8;
+        this.intentIcon.anchor.set(0.5, 0.5);
+        this.updateIntentIcon();
+        this.place();
+    }
+
+    place() {
+        super.place();
+        if (this.intentIcon) {
+            this.moveIntentIcon();
+        }
     }
 
     move() {
@@ -33,13 +51,20 @@ export class Bullet extends TileElement {
                 this.dieFly(this.pattern[this.patternIndex].x, this.pattern[this.patternIndex].y, this.ANIMATION_TIME, 0.5);
             }
         } else this.delay--;
+        this.updateIntentIcon();
     }
 
     die(toRemove = true) {
         this.dead = true;
+        this.intentIcon.visible = false;
         this.removeFromMap();
         removeObjectFromArray(this, Game.bullets);
         if (toRemove) this.removeFromWorld();
+    }
+
+    moveIntentIcon() {
+        this.intentIcon.position.x = this.position.x;
+        this.intentIcon.position.y = this.position.y;
     }
 
     removeFromWorld() {
@@ -98,6 +123,7 @@ export class Bullet extends TileElement {
             this.position.x += stepX * delta;
             this.position.y += stepY * delta;
             counter += delta;
+            this.moveIntentIcon();
             if (counter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.place();
@@ -122,5 +148,30 @@ export class Bullet extends TileElement {
             }
         };
         Game.app.ticker.add(animation);
+    }
+
+    updateIntentIcon() {
+        this.intentIcon.visible = !this.dead;
+        this.intentIcon.angle = 0;
+        if (this.delay > 0) {
+            this.intentIcon.visible = false;
+        } else if (this.pattern[this.patternIndex].x === 0 && this.pattern[this.patternIndex].y === 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+            this.intentIcon.angle = this.getArrowRightAngle();
+        }
+    }
+
+    getArrowRightAngle() {
+        const dir = this.pattern[this.patternIndex];
+        if (dir.x === -1 && dir.y === 0) return 180;
+        else if (dir.x === 1 && dir.y === 0) return 0;
+        else if (dir.x === 0 && dir.y === -1) return -90;
+        else if (dir.x === 0 && dir.y === 1) return 90;
+        else if (dir.x === 1 && dir.y === 1) return 45;
+        else if (dir.x === 1 && dir.y === -1) return -45;
+        else if (dir.x === -1 && dir.y === 1) return 135;
+        else if (dir.x === -1 && dir.y === -1) return -135;
     }
 }

@@ -21,6 +21,7 @@ import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 import {retreatBlackBars} from "./drawing/hud_animations";
 import {getLevelPlayerGraph} from "./level_generation/generation_utils";
+import {Torch} from "./classes/equipment/tools/torch";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();
@@ -147,5 +148,6 @@ function test() {
             lightTile(j, i);
         }
     }
-    camera.setup(Game.world.width / 2, Game.world.height / 2);
+    if (Game.stage === STAGE.DARK_TUNNEL) Game.player.secondHand = new Torch();
+    //camera.setup(Game.world.width / 2, Game.world.height / 2);
 }
