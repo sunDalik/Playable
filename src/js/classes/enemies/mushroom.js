@@ -115,6 +115,17 @@ export class Mushroom extends Enemy {
         return getRandomInt(8, 15);
     }
 
+    moveHealthContainer() {
+        super.moveHealthContainer();
+        if (this.type !== ENEMY_TYPE.MUSHROOM && this.type !== ENEMY_TYPE.SMALL_MUSHROOM) return;
+        if (this.standing || this.walking) {
+            if (this.type === ENEMY_TYPE.SMALL_MUSHROOM) {
+                this.intentIcon.position.y = this.position.y - this.height / 5 - this.intentIcon.height / 2;
+            } else {
+                this.intentIcon.position.y = this.position.y - this.height / 3 - this.intentIcon.height / 2;
+            }
+        }
+    }
 
     place() {
         this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
