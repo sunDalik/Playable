@@ -155,16 +155,20 @@ export class Alligator extends Enemy {
                         }
                         break;
                     case RABBIT_TYPE.POISON:
-                        if (isNotAWall(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 1),
-                            this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 1))) {
-                            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 1),
-                                this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 1)));
+                        const x1 = this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 1);
+                        const y1 = this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 1);
+                        if (isNotAWall(x1, y1)) {
+                            Game.world.addHazard(new PoisonHazard(x1, y1));
+                            const player = getPlayerOnTile(x1, y1);
+                            if (player) player.damage(this.atk, this, false, true);
                         } else this.currentShootingTimes = this.maxShootingTimes;
 
-                        if (isNotAWall(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 2),
-                            this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 2))) {
-                            Game.world.addHazard(new PoisonHazard(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 2),
-                                this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 2)));
+                        const x2 = this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 2);
+                        const y2 = this.tilePosition.y + this.direction.y * (this.poisonCounter * 2 + 2);
+                        if (isNotAWall(x2, y2)) {
+                            Game.world.addHazard(new PoisonHazard(x2, y2));
+                            const player = getPlayerOnTile(x2, y2);
+                            if (player) player.damage(this.atk, this, false, true);
                         } else this.currentShootingTimes = this.maxShootingTimes;
 
                         if (isAnyWall(this.tilePosition.x + this.direction.x * (this.poisonCounter * 2 + 3),
