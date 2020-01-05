@@ -40,7 +40,7 @@ import {otherPlayer, setTickTimeout} from "../utils/game_utils";
 import {camera} from "./game/camera";
 import {updateChain} from "../drawing/draw_dunno";
 import {closeBlackBarsAndGotoNextLevel} from "../drawing/hud_animations";
-import {INVERT_FILTER} from "../filters";
+import {DOT_FILTER} from "../filters";
 import {removeObjectFromArray} from "../utils/basic_utils";
 import {HUD} from "../drawing/hud_object";
 
@@ -351,8 +351,8 @@ export class Player extends AnimatedTileElement {
                 shakeScreen();
                 redrawHealthForPlayer(this);
                 if (this.health <= 0) {
-                    if (otherPlayer(this).dead) this.dieWaitNegative();
-                    else this.dieNegative();
+                    if (otherPlayer(this).dead) this.dieAnimationWait();
+                    else this.dieAnimation();
                 }
             }
         }
@@ -368,20 +368,21 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    dieWaitNegative() {
+    dieAnimationWait() {
         Game.unplayable = true;
+        this.dead = true;
         setTickTimeout(() => {
-            this.dieNegative(80);
+            this.dieAnimation(80);
             Game.unplayable = false;
         }, 5, 99, false);
     }
 
-    dieNegative(time = 45) {
-        const alphaStep = 1 / (time / 1.8);
+    dieAnimation(time = 45) {
+        const alphaStep = 1 / time;
         let counter = 0;
-        Game.world.filters.push(INVERT_FILTER);
-        HUD.filters.push(INVERT_FILTER);
-        this.filters.push(INVERT_FILTER);
+        const filter = DOT_FILTER;
+        Game.world.filters.push(filter);
+        HUD.filters.push(filter);
         Game.paused = true;
         this.dead = true;
         const animation = delta => {
@@ -390,9 +391,8 @@ export class Player extends AnimatedTileElement {
             if (counter >= time) {
                 Game.app.ticker.remove(animation);
                 Game.paused = false;
-                removeObjectFromArray(INVERT_FILTER, Game.world.filters);
-                removeObjectFromArray(INVERT_FILTER, HUD.filters);
-                removeObjectFromArray(INVERT_FILTER, this.filters);
+                removeObjectFromArray(filter, Game.world.filters);
+                removeObjectFromArray(filter, HUD.filters);
                 this.die();
             }
         };

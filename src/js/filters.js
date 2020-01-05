@@ -1,4 +1,4 @@
-import {ColorReplaceFilter, OutlineFilter} from "pixi-filters";
+import {ColorReplaceFilter, OutlineFilter, DotFilter} from "pixi-filters";
 import * as PIXI from "pixi.js";
 
 export const ITEM_OUTLINE_FILTER = new OutlineFilter(2, 0xFFFFFF);
@@ -15,3 +15,10 @@ BLACK_INVERT_FILTER.resolution = 2;
 export const INVERT_FILTER = new PIXI.filters.ColorMatrixFilter();
 INVERT_FILTER.negative();
 INVERT_FILTER.resolution = 2;
+
+export const DESATURATE_FILTER = new PIXI.filters.ColorMatrixFilter();
+DESATURATE_FILTER.desaturate();
+DESATURATE_FILTER.resolution = 2;
+
+export const DOT_FILTER = new DotFilter(2);
+DOT_FILTER.resolution = 2;
