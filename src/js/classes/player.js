@@ -413,6 +413,7 @@ export class Player extends AnimatedTileElement {
                 Game.world.upWorld.removeChild(this);
                 Game.world.addChild(this);
                 removeObjectFromArray(filter, this.filters);
+                this.alpha = 1;
 
                 this.die();
             }
