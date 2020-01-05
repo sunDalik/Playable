@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js"
 
 export const HUD = new PIXI.Container();
 HUD.filters = [];
+HUD.zIndex = 2;
 HUD.hearts1 = new PIXI.Container();
 HUD.hearts2 = new PIXI.Container();
 HUD.slots1 = new PIXI.Container();

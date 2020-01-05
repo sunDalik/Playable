@@ -8,16 +8,17 @@ export const camera = {
     y: 0
 };
 
-camera.setNewPoint = (x, y, time) => {
+camera.setNewPoint = (x, y, time, pausable = true) => {
     const stepX = (x - camera.x) / time;
     const stepY = (y - camera.y) / time;
     let counter = 0;
     if (camera.animation) Game.app.ticker.remove(camera.animation);
     const animation = (delta) => {
-        if (Game.paused) return;
+        if (pausable && Game.paused) return;
         counter += delta;
         Game.world.position.x -= stepX * delta * Game.world.scale.x;
         Game.world.position.y -= stepY * delta * Game.world.scale.y;
+        Game.world.upWorld.position = Game.world.position;
         camera.x += stepX * delta;
         camera.y += stepY * delta;
         if (counter >= time) {
@@ -35,6 +36,7 @@ camera.setup = (x, y) => {
     if (Game.paused) return;
     Game.world.position.x = Game.app.renderer.screen.width / 2 - x * Game.world.scale.x;
     Game.world.position.y = Game.app.renderer.screen.height / 2 - y * Game.world.scale.y;
+    Game.world.upWorld.position = Game.world.position;
     camera.x = x;
     camera.y = y;
     Game.app.ticker.remove(camera.animation);
@@ -63,4 +65,8 @@ camera.moveToCenter = (animationTime) => {
     } else {
         camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
     }
+};
+
+camera.centerOnPlayer = (player, animationTime) => {
+    camera.setNewPoint(player.getTilePositionX(), player.getTilePositionY(), animationTime, false);
 };

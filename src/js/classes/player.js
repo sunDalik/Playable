@@ -347,13 +347,12 @@ export class Player extends AnimatedTileElement {
                 let dmg = atk - this.getDef();
                 if (dmg < 0.25) dmg = 0.25;
                 this.health -= dmg;
-                this.runHitAnimation();
                 shakeScreen();
                 redrawHealthForPlayer(this);
                 if (this.health <= 0) {
-                    if (otherPlayer(this).dead) this.dieAnimationWait();
-                    else this.dieAnimation();
-                }
+                    this.health = 0;
+                    this.dieAnimationWait(source);
+                } else this.runHitAnimation();
             }
         }
     }
@@ -368,23 +367,35 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    dieAnimationWait() {
+    dieAnimationWait(source) {
         Game.unplayable = true;
         this.dead = true;
         setTickTimeout(() => {
-            this.dieAnimation(80);
             Game.unplayable = false;
+            this.dieAnimation(source, 80);
         }, 5, 99, false);
     }
 
-    dieAnimation(time = 45) {
-        const alphaStep = 1 / time;
+    dieAnimation(source, time = 45) {
+        const alphaStep = 1 / (time / 1.5);
         let counter = 0;
         const filter = DOT_FILTER;
+        this.dead = true;
         Game.world.filters.push(filter);
         HUD.filters.push(filter);
         Game.paused = true;
-        this.dead = true;
+        camera.centerOnPlayer(this, 10);
+
+        Game.world.upWorld.position = Game.world.position;
+        if (source) {
+            Game.world.removeChild(source);
+            Game.world.upWorld.addChild(source);
+            if (source === Game.limitChain) source.visible = true;
+        }
+        this.filters.push(filter);
+        Game.world.removeChild(this);
+        Game.world.upWorld.addChild(this);
+
         const animation = delta => {
             counter += delta;
             this.alpha -= alphaStep * delta;
@@ -393,10 +404,19 @@ export class Player extends AnimatedTileElement {
                 Game.paused = false;
                 removeObjectFromArray(filter, Game.world.filters);
                 removeObjectFromArray(filter, HUD.filters);
+
+                if (source) {
+                    Game.world.upWorld.removeChild(source);
+                    Game.world.addChild(source);
+                    if (source === Game.limitChain) source.visible = false;
+                }
+                Game.world.upWorld.removeChild(this);
+                Game.world.addChild(this);
+                removeObjectFromArray(filter, this.filters);
+
                 this.die();
             }
         };
-
         Game.app.ticker.add(animation);
     }
 

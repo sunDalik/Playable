@@ -17,6 +17,7 @@ export class TileElement extends Sprite {
         this.anchor.set(0.5, 0.5);
         this.fitToTile();
         this.place();
+        this.filters = [];
     }
 
     cancelAnimation() {

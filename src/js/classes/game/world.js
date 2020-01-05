@@ -12,6 +12,9 @@ export class World extends PIXI.Container {
     constructor() {
         super();
         this.filters = [];
+        this.upWorld = new PIXI.Container();
+        Game.app.stage.addChild(this.upWorld);
+        this.upWorld.zIndex = this.zIndex + 1;
     }
 
     addHazard(hazard) {

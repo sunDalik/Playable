@@ -16,7 +16,6 @@ export class AnimatedTileElement extends TileElement {
         this.MICRO_SLIDE_ANIMATION_TIME = 4;
         this.animationCounter = 0;
         this.animation = null;
-        this.filters = [];
     }
 
     step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {

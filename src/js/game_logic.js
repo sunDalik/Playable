@@ -26,13 +26,13 @@ export function setEnemyTurnTimeout() {
 }
 
 function enemyTurn() {
+    Game.enemiesTimeout = null;
     damagePlayersWithHazards();
     Game.player.damagedWithHazards = false;
     Game.player2.damagedWithHazards = false;
     moveEnemies();
     moveBullets();
     updateHazards();
-    Game.enemiesTimeout = null;
     Game.actionsMade = 0;
     Game.afterTurn = true;
     Game.player.afterEnemyTurn();
@@ -117,8 +117,6 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
                 drawInteractionKeys();
                 updateChain();
             }
-            if (bothPlayers) damagePlayersWithHazards();
-            else damagePlayerWithHazards(player);
             setEnemyTurnTimeout();
             Game.player.cancellable = true;
             Game.player2.cancellable = true;
@@ -155,7 +153,7 @@ export function damagePlayerWithHazards(player) {
 
         if (!otherPlayer(player).dead) {
             if (tileDistanceDiagonal(Game.player, Game.player2) > Game.chainLength) {
-                player.damage(0.25, null, false, false);
+                player.damage(0.25, Game.limitChain, false, false);
             }
         }
     }

@@ -39,6 +39,7 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false
     const oldH = attackParticle.height;
 
     const animation = (delta) => {
+        if (Game.paused) return;
         if (counter < Game.WEAPON_ATTACK_TIME / 2) {
             attackParticle.width += stepX * delta;
             attackParticle.height += stepY * delta;
@@ -76,6 +77,7 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
     let counter = 0;
 
     const animation = (delta) => {
+        if (Game.paused) return;
         if (counter >= delay) {
             attack.alpha -= 1 / animationTime * delta;
         }
@@ -110,6 +112,7 @@ export function createFadingText(caption, positionX, positionY) {
     const alphaStep = 1 / TEXT_ANIMATION_TIME;
 
     const animation = (delta) => {
+        if (Game.paused) return;
         text.position.y -= stepY * delta;
         if (counter >= TEXT_ANIMATION_TIME / 2) {
             text.alpha -= alphaStep * delta;
@@ -130,6 +133,7 @@ export function rotate(object, clockwise = true) {
     const intendedRotation = object.rotation;
 
     const animation = (delta) => {
+        if (Game.paused) return;
         if (clockwise) object.rotation += 2 * Math.PI / Game.TURNTIME * delta;
         else object.rotation -= 2 * Math.PI / Game.TURNTIME * delta;
         counter += delta;
@@ -147,6 +151,7 @@ export function createFloatingItemAnimation(item) {
     const step = item.height / 4 / Game.ITEM_FLOAT_ANIMATION_TIME;
 
     item.animation = (delta) => {
+        if (Game.paused) return;
         if (counter < Game.ITEM_FLOAT_ANIMATION_TIME / 4) {
             item.position.y -= step * delta;
         } else if (counter < Game.ITEM_FLOAT_ANIMATION_TIME * 3 / 4) {
@@ -175,6 +180,7 @@ export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1
     }
 
     const animation = (delta) => {
+        if (Game.paused) return;
         if (counter < shakeAnimationTime / 4) {
             Game.world.position.x -= step * delta;
             Game.world.position.y -= stepY * delta;
@@ -217,6 +223,7 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
     let counter = 0;
 
     const animation = (delta) => {
+        if (Game.paused) return;
         heart.position.y -= stepY * delta;
         heart.width += heartSize / 3 / animationTime * delta;
         heart.height += heartSize / 3 / animationTime * delta;
@@ -285,6 +292,7 @@ export function showHelpBox(item) {
     let counter = 0;
 
     const animation = (delta) => {
+        if (Game.paused) return;
         if (counter < slideTime) {
             Game.itemHelp.position.y -= slideStep * delta;
         } else if (counter >= slideTime + stayTime && counter < slideTime + stayTime + slideTime) {
