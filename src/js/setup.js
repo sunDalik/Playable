@@ -16,12 +16,14 @@ import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
-import {kiss, swapEquipmentWithPlayer} from "./game_logic";
+import {cleanGameState, kiss, swapEquipmentWithPlayer} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
-import {retreatBlackBars} from "./drawing/hud_animations";
+import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";
 import {getLevelPlayerGraph} from "./level_generation/generation_utils";
 import {Torch} from "./classes/equipment/tools/torch";
+import {SUPER_HUD} from "./drawing/super_hud";
+import {removeObjectFromArray} from "./utils/basic_utils";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();
@@ -48,22 +50,9 @@ function setup() {
     Game.world = new World();
     Game.app.stage.addChild(Game.world);
     Game.app.stage.addChild(HUD);
-    Game.world.sortableChildren = true;
+    Game.app.stage.addChild(SUPER_HUD);
     Game.app.stage.sortableChildren = true;
-
-    Game.player = new Player(Game.resources["src/images/player.png"].texture, 0, 0);
-    Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, 0, 0);
-    Game.player.setStats(0, 0.5, 0, 1.00);
-    Game.player2.setStats(0, 1.00, 0, 0.5);
-    Game.player2.weapon = new Knife();
-    Game.player.weapon = new Knife();
-    Game.player.armor = new BasicArmor();
-
-    Game.player2.zIndex = 1;
-    Game.player.zIndex = Game.player2.zIndex + 2;
-    Game.primaryPlayer = Game.player;
-    Game.lastPlayerMoved = Game.player;
-
+    initPlayers();
     drawHUD();
     bindKeys();
     window.addEventListener("resize", () => {
@@ -140,6 +129,38 @@ export function initializeLevel() {
             kiss();
         } else Game.unplayable = false;
     }, 8, 2);
+}
+
+function initPlayers() {
+    Game.player = new Player(Game.resources["src/images/player.png"].texture, 0, 0);
+    Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, 0, 0);
+    Game.player.setStats(0, 0.5, 0, 1.00);
+    Game.player2.setStats(0, 1.00, 0, 0.5);
+    Game.player2.weapon = new Knife();
+    Game.player.weapon = new Knife();
+    Game.player.armor = new BasicArmor();
+
+    Game.player2.zIndex = 1;
+    Game.player.zIndex = Game.player2.zIndex + 2;
+    Game.primaryPlayer = Game.player;
+    Game.lastPlayerMoved = Game.player;
+}
+
+export function retry(deathFilter) {
+    closeBlackBars(() => retryAfterBlackBars(deathFilter));
+}
+
+function retryAfterBlackBars(deathFilter) {
+    removeObjectFromArray(deathFilter, Game.world.filters);
+    removeObjectFromArray(deathFilter, HUD.filters);
+    Game.world.clean();
+    cleanGameState();
+    initPlayers();
+    drawHUD();
+    bindKeys();
+    Game.stage = STAGE.FLOODED_CAVE;
+    initPools();
+    initializeLevel();
 }
 
 function test() {

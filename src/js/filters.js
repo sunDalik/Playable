@@ -1,4 +1,4 @@
-import {ColorReplaceFilter, OutlineFilter, DotFilter} from "pixi-filters";
+import {ColorReplaceFilter, OutlineFilter, DotFilter, KawaseBlurFilter} from "pixi-filters";
 import * as PIXI from "pixi.js";
 
 export const ITEM_OUTLINE_FILTER = new OutlineFilter(2, 0xFFFFFF);
@@ -22,3 +22,8 @@ DESATURATE_FILTER.resolution = 2;
 
 export const DOT_FILTER = new DotFilter(2);
 DOT_FILTER.resolution = 2;
+
+export const GAME_OVER_BLUR_FILTER = new PIXI.filters.BlurFilter(2);
+GAME_OVER_BLUR_FILTER.padding = 15;
+GAME_OVER_BLUR_FILTER.maxBlur = 2;
+GAME_OVER_BLUR_FILTER.resolution = 2;

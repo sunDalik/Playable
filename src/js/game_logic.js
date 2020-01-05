@@ -28,8 +28,6 @@ export function setEnemyTurnTimeout() {
 function enemyTurn() {
     Game.enemiesTimeout = null;
     damagePlayersWithHazards();
-    Game.player.damagedWithHazards = false;
-    Game.player2.damagedWithHazards = false;
     moveEnemies();
     moveBullets();
     updateHazards();
@@ -130,8 +128,6 @@ export function damagePlayersWithHazards() {
 }
 
 export function damagePlayerWithHazards(player) {
-    if (player.damagedWithHazards) return;
-    player.damagedWithHazards = true;
     if (!player.dead) {
         const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
         if (hazard) {
@@ -276,6 +272,14 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
 
 export function gotoNextLevel() {
     Game.world.clean();
+    cleanGameState();
+    incrementStage();
+    initializeLevel();
+    Game.player.applyNextLevelMethods();
+    Game.player2.applyNextLevelMethods();
+}
+
+export function cleanGameState() {
     Game.enemies = [];
     Game.savedTiles = [];
     Game.darkTiles = [];
@@ -288,10 +292,6 @@ export function gotoNextLevel() {
     Game.bossFight = false;
     removeAllChildrenFromContainer(HUD.bossHealth);
     Game.bossEntryOpened = false;
-    incrementStage();
-    initializeLevel();
-    Game.player.applyNextLevelMethods();
-    Game.player2.applyNextLevelMethods();
 }
 
 export function activateBossMode(player) {

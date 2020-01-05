@@ -29,7 +29,7 @@ import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {
     activateBossMode,
     amIInTheBossRoom,
-    checkFollowMode,
+    checkFollowMode, gotoNextLevel,
     removeEquipmentFromPlayer,
     swapEquipmentWithPlayer
 } from "../game_logic";
@@ -39,7 +39,7 @@ import {randomChoice} from "../utils/random_utils";
 import {otherPlayer, setTickTimeout} from "../utils/game_utils";
 import {camera} from "./game/camera";
 import {updateChain} from "../drawing/draw_dunno";
-import {closeBlackBarsAndGotoNextLevel} from "../drawing/hud_animations";
+import {closeBlackBars, pullUpGameOverScreen} from "../drawing/hud_animations";
 import {DOT_FILTER} from "../filters";
 import {removeObjectFromArray} from "../utils/basic_utils";
 import {HUD} from "../drawing/hud_object";
@@ -158,7 +158,7 @@ export class Player extends AnimatedTileElement {
                     this.toCloseBlackBars = true;
                     this.step(tileStepX, tileStepY, () => {
                         if (this.toCloseBlackBars && this.animationCounter >= this.STEP_ANIMATION_TIME / 2) {
-                            closeBlackBarsAndGotoNextLevel();
+                            closeBlackBars(gotoNextLevel);
                             this.toCloseBlackBars = false;
                         }
                     });
@@ -347,12 +347,14 @@ export class Player extends AnimatedTileElement {
                 let dmg = atk - this.getDef();
                 if (dmg < 0.25) dmg = 0.25;
                 this.health -= dmg;
-                shakeScreen();
                 redrawHealthForPlayer(this);
                 if (this.health <= 0) {
                     this.health = 0;
                     this.dieAnimationWait(source);
-                } else this.runHitAnimation();
+                } else {
+                    this.runHitAnimation();
+                    shakeScreen();
+                }
             }
         }
     }
@@ -402,8 +404,11 @@ export class Player extends AnimatedTileElement {
             if (counter >= time) {
                 Game.app.ticker.remove(animation);
                 Game.paused = false;
-                removeObjectFromArray(filter, Game.world.filters);
-                removeObjectFromArray(filter, HUD.filters);
+                if (otherPlayer(this).dead) pullUpGameOverScreen(filter);
+                else {
+                    removeObjectFromArray(filter, Game.world.filters);
+                    removeObjectFromArray(filter, HUD.filters);
+                }
 
                 if (source) {
                     Game.world.upWorld.removeChild(source);
@@ -413,6 +418,7 @@ export class Player extends AnimatedTileElement {
                 Game.world.upWorld.removeChild(this);
                 Game.world.addChild(this);
                 removeObjectFromArray(filter, this.filters);
+
                 this.alpha = 1;
 
                 this.die();

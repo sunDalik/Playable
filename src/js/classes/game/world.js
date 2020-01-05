@@ -15,6 +15,7 @@ export class World extends PIXI.Container {
         this.upWorld = new PIXI.Container();
         Game.app.stage.addChild(this.upWorld);
         this.upWorld.zIndex = this.zIndex + 1;
+        this.sortableChildren = true;
     }
 
     addHazard(hazard) {

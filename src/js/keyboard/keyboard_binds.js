@@ -2,48 +2,55 @@ import {Game} from "../game";
 import {keyboard} from "./keyboard_handler";
 import {playerTurn, switchPlayers} from "../game_logic";
 
+const switchKey = keyboard("KeyZ");
+const secondHandKeyP1 = keyboard("KeyE");
+const secondHandKeyP2 = keyboard("KeyO");
+const weaponKeyP1 = keyboard("KeyQ");
+const weaponKeyP2 = keyboard("KeyU");
+const releaseKey = keyboard("Space");
+let keys = [];
+
 export function bindKeys() {
+    for (const key of keys) {
+        key.unsubscribe();
+    }
+    keys = [];
+
     bindMovement(Game.player, {upCode: "KeyW", leftCode: "KeyA", downCode: "KeyS", rightCode: "KeyD"});
     bindMovement(Game.player2, {upCode: "KeyI", leftCode: "KeyJ", downCode: "KeyK", rightCode: "KeyL"});
     bindMagic(Game.player, {oneCode: "Digit1", twoCode: "Digit2", threeCode: "Digit3", fourCode: "Digit4"});
     bindMagic(Game.player2, {oneCode: "Digit7", twoCode: "Digit8", threeCode: "Digit9", fourCode: "Digit0"});
 
-    const switchKey = keyboard("KeyZ");
     switchKey.press = () => {
         playerTurn(null, switchPlayers, true)
     };
 
-    const secondHandKeyP1 = keyboard("KeyE");
     secondHandKeyP1.press = () => {
         playerTurn(Game.player, () => Game.player.useSecondHand())
     };
 
-    const secondHandKeyP2 = keyboard("KeyO");
     secondHandKeyP2.press = () => {
         playerTurn(Game.player2, () => Game.player2.useSecondHand())
     };
 
-    const weaponKeyP1 = keyboard("KeyQ");
     weaponKeyP1.press = () => {
         playerTurn(Game.player, () => Game.player.concentrateWeapon())
     };
 
-    const weaponKeyP2 = keyboard("KeyU");
     weaponKeyP2.press = () => {
         playerTurn(Game.player2, () => Game.player2.concentrateWeapon())
     };
 
-    const pushKeyP1 = keyboard("KeyR");
+    /*const pushKeyP1 = keyboard("KeyR");
     pushKeyP1.press = () => {
-        //playerTurn(Game.player, () => Game.player.pushOrPull())
-    };
+        playerTurn(Game.player, () => Game.player.pushOrPull())
+    };*/
 
-    const pushKeyP2 = keyboard("KeyP");
+    /*const pushKeyP2 = keyboard("KeyP");
     pushKeyP2.press = () => {
-        //playerTurn(Game.player2, () => Game.player2.pushOrPull())
-    };
+        playerTurn(Game.player2, () => Game.player2.pushOrPull())
+    };*/
 
-    const releaseKey = keyboard("Space");
     releaseKey.press = () => {
         playerTurn(null, () => {
             if (Game.player.releaseMagic()) return true;
@@ -51,10 +58,10 @@ export function bindKeys() {
         }, true);
     };
 
-    const followKey = keyboard("KeyF");
+    /*const followKey = keyboard("KeyF");
     followKey.press = () => {
-        //playerTurn(null, toggleFollowMode, true)
-    };
+        playerTurn(null, toggleFollowMode, true)
+    };*/
 
     //keyboard("KeyN").press = gotoNextLevel; //for tests
 }
@@ -77,6 +84,10 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     rightKey.press = (e) => {
         playerTurn(player, () => player.move(1, 0, e));
     };
+    keys.push(upKey);
+    keys.push(leftKey);
+    keys.push(downKey);
+    keys.push(rightKey);
     return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
 }
 
@@ -97,7 +108,10 @@ function bindMagic(player, {oneCode, twoCode, threeCode, fourCode}) {
     fourKey.press = () => {
         if (player.magic4) playerTurn(player, () => player.castMagic(player.magic4));
     };
-
+    keys.push(oneKey);
+    keys.push(twoKey);
+    keys.push(threeKey);
+    keys.push(fourKey);
     return {oneKey: oneKey, twoKey: twoKey, threeKey: threeKey, fourKey: fourKey}
 }
 

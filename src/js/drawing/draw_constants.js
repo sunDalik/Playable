@@ -18,7 +18,7 @@ export const bottomBossHeartOffset = 25;
 
 export const HUDFontSize = 16;
 export const HUDSlotFontSize = 12;
-export const HUDBossFontSize = 18;
+export const HUDGameOverFontSize = 26;
 export const HUDTitleFontSize = 20;
 export const HUDTextStyle = {
     fontSize: HUDFontSize,
@@ -30,7 +30,7 @@ export const HUDTextStyle = {
 };
 
 export const HUDTextStyleTitle = Object.assign({}, HUDTextStyle, {fontSize: HUDTitleFontSize});
-export const HUDTextStyleBoss = Object.assign({}, HUDTextStyle, {fontSize: HUDBossFontSize});
+export const HUDTextStyleGameOver = Object.assign({}, HUDTextStyle, {fontSize: HUDGameOverFontSize});
 export const HUDTextStyleSlot = Object.assign({}, HUDTextStyle, {
     fontSize: HUDSlotFontSize,
     lineHeight: HUDSlotFontSize - 2
