@@ -6,7 +6,6 @@ import {GAME_OVER_BLUR_FILTER} from "../filters";
 import {SUPER_HUD} from "./super_hud";
 import {keyboard} from "../keyboard/keyboard_handler";
 import {retry} from "../setup";
-import {removeObjectFromArray} from "../utils/basic_utils";
 
 const blackBarLeft = initBlackBar();
 const blackBarRight = initBlackBar();
@@ -18,7 +17,7 @@ function initBlackBar() {
     blackBar.drawRect(0, 0, 1, 1);
     blackBar.zIndex = 10;
     blackBar.visible = false;
-    HUD.addChild(blackBar);
+    SUPER_HUD.addChild(blackBar);
     return blackBar;
 }
 
@@ -87,9 +86,6 @@ export function pullUpGameOverScreen() {
 
     retryButton.press = () => {
         retryButton.press = null;
-        SUPER_HUD.gameOverScreen.visible = false;
-        removeObjectFromArray(GAME_OVER_BLUR_FILTER, Game.world.filters);
-        removeObjectFromArray(GAME_OVER_BLUR_FILTER, HUD.filters);
         retry();
     };
 
