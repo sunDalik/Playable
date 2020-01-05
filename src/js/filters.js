@@ -20,8 +20,8 @@ export const DESATURATE_FILTER = new PIXI.filters.ColorMatrixFilter();
 DESATURATE_FILTER.desaturate();
 DESATURATE_FILTER.resolution = 2;
 
-export const DOT_FILTER = new DotFilter(2);
-DOT_FILTER.resolution = 2;
+export const DEATH_FILTER = new DotFilter(2);
+DEATH_FILTER.resolution = 2;
 
 export const GAME_OVER_BLUR_FILTER = new PIXI.filters.BlurFilter(2);
 GAME_OVER_BLUR_FILTER.padding = 15;

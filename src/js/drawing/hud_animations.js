@@ -72,7 +72,7 @@ export function retreatBlackBars() {
 
 const retryButton = keyboard("KeyR");
 
-export function pullUpGameOverScreen(deathFilter) {
+export function pullUpGameOverScreen() {
     Game.world.filters.push(GAME_OVER_BLUR_FILTER);
     HUD.filters.push(GAME_OVER_BLUR_FILTER);
     GAME_OVER_BLUR_FILTER.blur = 0;
@@ -90,7 +90,7 @@ export function pullUpGameOverScreen(deathFilter) {
         SUPER_HUD.gameOverScreen.visible = false;
         removeObjectFromArray(GAME_OVER_BLUR_FILTER, Game.world.filters);
         removeObjectFromArray(GAME_OVER_BLUR_FILTER, HUD.filters);
-        retry(deathFilter);
+        retry();
     };
 
     const animation = delta => {

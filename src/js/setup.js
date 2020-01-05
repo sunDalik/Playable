@@ -24,6 +24,7 @@ import {getLevelPlayerGraph} from "./level_generation/generation_utils";
 import {Torch} from "./classes/equipment/tools/torch";
 import {SUPER_HUD} from "./drawing/super_hud";
 import {removeObjectFromArray} from "./utils/basic_utils";
+import {DEATH_FILTER} from "./filters";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();
@@ -146,13 +147,13 @@ function initPlayers() {
     Game.lastPlayerMoved = Game.player;
 }
 
-export function retry(deathFilter) {
-    closeBlackBars(() => retryAfterBlackBars(deathFilter));
+export function retry() {
+    closeBlackBars(retryAfterBlackBars);
 }
 
-function retryAfterBlackBars(deathFilter) {
-    removeObjectFromArray(deathFilter, Game.world.filters);
-    removeObjectFromArray(deathFilter, HUD.filters);
+function retryAfterBlackBars() {
+    removeObjectFromArray(DEATH_FILTER, Game.world.filters);
+    removeObjectFromArray(DEATH_FILTER, HUD.filters);
     Game.world.clean();
     cleanGameState();
     initPlayers();

@@ -40,7 +40,7 @@ import {otherPlayer, setTickTimeout} from "../utils/game_utils";
 import {camera} from "./game/camera";
 import {updateChain} from "../drawing/draw_dunno";
 import {closeBlackBars, pullUpGameOverScreen} from "../drawing/hud_animations";
-import {DOT_FILTER} from "../filters";
+import {DEATH_FILTER} from "../filters";
 import {removeObjectFromArray} from "../utils/basic_utils";
 import {HUD} from "../drawing/hud_object";
 
@@ -381,10 +381,9 @@ export class Player extends AnimatedTileElement {
     dieAnimation(source, time = 45) {
         const alphaStep = 1 / (time / 1.5);
         let counter = 0;
-        const filter = DOT_FILTER;
         this.dead = true;
-        Game.world.filters.push(filter);
-        HUD.filters.push(filter);
+        Game.world.filters.push(DEATH_FILTER);
+        HUD.filters.push(DEATH_FILTER);
         Game.paused = true;
         camera.centerOnPlayer(this, 10);
 
@@ -394,7 +393,7 @@ export class Player extends AnimatedTileElement {
             Game.world.upWorld.addChild(source);
             if (source === Game.limitChain) source.visible = true;
         }
-        this.filters.push(filter);
+        this.filters.push(DEATH_FILTER);
         Game.world.removeChild(this);
         Game.world.upWorld.addChild(this);
 
@@ -404,10 +403,10 @@ export class Player extends AnimatedTileElement {
             if (counter >= time) {
                 Game.app.ticker.remove(animation);
                 Game.paused = false;
-                if (otherPlayer(this).dead) pullUpGameOverScreen(filter);
+                if (otherPlayer(this).dead) pullUpGameOverScreen();
                 else {
-                    removeObjectFromArray(filter, Game.world.filters);
-                    removeObjectFromArray(filter, HUD.filters);
+                    removeObjectFromArray(DEATH_FILTER, Game.world.filters);
+                    removeObjectFromArray(DEATH_FILTER, HUD.filters);
                 }
 
                 if (source) {
@@ -417,7 +416,7 @@ export class Player extends AnimatedTileElement {
                 }
                 Game.world.upWorld.removeChild(this);
                 Game.world.addChild(this);
-                removeObjectFromArray(filter, this.filters);
+                removeObjectFromArray(DEATH_FILTER, this.filters);
 
                 this.alpha = 1;
 
