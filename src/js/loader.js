@@ -55,7 +55,7 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/spider_green.png")
         .add("src/images/enemies/spider_red.png")
         .add("src/images/enemies/snail.png")
-        .add("src/images/enemies/snail_b.png")
+        .add("src/images/enemies/snail_spiky.png")
         .add("src/images/enemies/eel.png")
         .add("src/images/enemies/eel_poison.png")
         .add("src/images/enemies/eel_dark.png")

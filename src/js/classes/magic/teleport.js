@@ -15,7 +15,7 @@ export class Teleport {
         this.maxUses = 20;
         this.uses = this.maxUses;
         this.name = "Teleport";
-        this.description = "Teleport";
+        this.description = "Teleport to her";
     }
 
     cast(wielder) {

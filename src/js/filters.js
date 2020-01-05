@@ -11,3 +11,7 @@ HIT_FILTER.alpha = 0.4;
 
 export const BLACK_INVERT_FILTER = new ColorReplaceFilter([0, 0, 0], [1, 1, 1], 1);
 BLACK_INVERT_FILTER.resolution = 2;
+
+export const INVERT_FILTER = new PIXI.filters.ColorMatrixFilter();
+INVERT_FILTER.negative();
+INVERT_FILTER.resolution = 2;
