@@ -16,7 +16,7 @@ import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
-import {kiss} from "./game_logic";
+import {kiss, swapEquipmentWithPlayer} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 import {retreatBlackBars} from "./drawing/hud_animations";
@@ -148,6 +148,6 @@ function test() {
             lightTile(j, i);
         }
     }
-    if (Game.stage === STAGE.DARK_TUNNEL) Game.player.secondHand = new Torch();
+    if (Game.stage === STAGE.DARK_TUNNEL) swapEquipmentWithPlayer(Game.player, new Torch(), false);
     //camera.setup(Game.world.width / 2, Game.world.height / 2);
 }

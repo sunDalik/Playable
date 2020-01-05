@@ -24,14 +24,7 @@ export class Enemy extends AnimatedTileElement {
         Game.world.addChild(this.healthContainer);
         this.healthContainer.visible = false;
         this.healthContainer.zIndex = 1;
-
-        this.intentIcon = new PIXI.Sprite(PIXI.Texture.WHITE);
-        Game.world.addChild(this.intentIcon);
-        this.intentIcon.visible = false;
-        this.intentIcon.zIndex = Game.primaryPlayer.zIndex + 1;
-        this.intentIcon.width = this.intentIcon.height = 25;
-        this.intentIcon.anchor.set(0.5, 0.5);
-
+        this.intentIcon = this.createIntentIcon();
         this.place();
     }
 
@@ -84,6 +77,10 @@ export class Enemy extends AnimatedTileElement {
 
         this.intentIcon.position.x = this.position.x;
         this.intentIcon.position.y = this.position.y - this.height / 2 - this.intentIcon.height / 2;
+        if (this.intentIcon2) {
+            this.intentIcon2.position.x = this.intentIcon.position.x;
+            this.intentIcon2.position.y = this.intentIcon.position.y;
+        }
     }
 
     redrawHealth() {
@@ -133,6 +130,7 @@ export class Enemy extends AnimatedTileElement {
         this.visible = false;
         this.healthContainer.visible = false;
         this.intentIcon.visible = false;
+        if (this.intentIcon2) this.intentIcon2.visible = false;
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
         }
@@ -267,5 +265,15 @@ export class Enemy extends AnimatedTileElement {
         else if (direction.x === 1) return 0;
         else if (direction.y === -1) return -90;
         else if (direction.y === 1) return 90;
+    }
+
+    createIntentIcon() {
+        const intentIcon = new PIXI.Sprite(PIXI.Texture.WHITE);
+        Game.world.addChild(intentIcon);
+        intentIcon.visible = false;
+        intentIcon.zIndex = Game.primaryPlayer.zIndex + 1;
+        intentIcon.width = intentIcon.height = 25;
+        intentIcon.anchor.set(0.5, 0.5);
+        return intentIcon;
     }
 }

@@ -2,7 +2,6 @@ import {Game} from "../../game"
 import {createFloatingItemAnimation} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
 import {swapEquipmentWithPlayer} from "../../game_logic";
-import {removeObjectFromArray} from "../../utils/basic_utils";
 
 export class LyingItem extends TileElement {
     constructor(tilePositionX, tilePositionY, item) {

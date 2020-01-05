@@ -97,8 +97,10 @@ export class Star extends Enemy {
 
     updateIntentIcon() {
         super.updateIntentIcon();
+        this.intentIcon.angle = 0;
         if (this.triggered) {
             this.intentIcon.texture = Game.resources["src/images/icons/intents/spikes.png"].texture;
+            if (this.triggeredDirections === DIRECTIONS.CARDINAL) this.intentIcon.angle = 45;
         } else if (this.turnDelay > 0) {
             this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
         } else {

@@ -21,8 +21,8 @@ export class GuardianOfTheLight extends Boss {
 
     move() {
         if (this.test < 0) {
-            const attack = randomChoice([() => this.verticalStream(), () => this.horizontalStream(), () => this.upAndDownBullets(),
-                () => this.upAndDownBullets2(), () => this.verticalStream(1), () => this.horizontalStream(1)]);
+            const attack = randomChoice([() => this.verticalStream(), () => this.horizontalStream(), () => this.tunnelBullets(),
+                () => this.diamondBullets(), () => this.verticalStream(1), () => this.horizontalStream(1)]);
             attack();
             this.test = 2;
         } else this.test--;
@@ -60,23 +60,23 @@ export class GuardianOfTheLight extends Boss {
         }
     }
 
-    upAndDownBullets() {
+    tunnelBullets() {
         const amountOfBullets = 6;
         //relies on the first element having X direction
         const dir = getChasingDirections(this, closestPlayer(this))[0].x;
         if (dir === 0) return;
         for (let n = 1; n <= amountOfBullets; n++) {
             const bullet1 = new ElectricBullet(this.tilePosition.x + dir, this.tilePosition.y,
-                [{x: dir, y: 1}, {x: dir, y: 0}, {x: dir, y: -1}, {x: dir, y: 0}]);
+                [{x: dir, y: 1}, {x: dir, y: 0}, {x: dir, y: 0}, {x: dir, y: -1}]);
             const bullet2 = new ElectricBullet(this.tilePosition.x + dir, this.tilePosition.y,
-                [{x: dir, y: -1}, {x: dir, y: 0}, {x: dir, y: 1}, {x: dir, y: 0}]);
+                [{x: dir, y: -1}, {x: dir, y: 0}, {x: dir, y: 0}, {x: dir, y: 1}]);
             bullet1.delay = bullet2.delay = n;
             Game.world.addBullet(bullet1);
             Game.world.addBullet(bullet2);
         }
     }
 
-    upAndDownBullets2() {
+    diamondBullets() {
         const amountOfBullets = 6;
         //relies on the first element having X direction
         const dir = getChasingDirections(this, closestPlayer(this))[0].x;

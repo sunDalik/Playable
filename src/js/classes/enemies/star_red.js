@@ -1,12 +1,13 @@
 import {Game} from "../../game"
 import {Star} from "./star"
-import {ENEMY_TYPE} from "../../enums";
+import {DIRECTIONS, ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile} from "../../map_checks";
 
 export class RedStar extends Star {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/star_b.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
         this.type = ENEMY_TYPE.STAR_RED;
+        this.intentIcon2 = this.createIntentIcon();
     }
 
     move() {
@@ -35,5 +36,18 @@ export class RedStar extends Star {
         this.attackCardinal();
         this.attackDiagonal();
         this.turnDelay = 1;
+    }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        this.intentIcon2.visible = !this.dead;
+        this.intentIcon.angle = this.intentIcon2.angle = 0;
+        if (this.triggered) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/spikes.png"].texture;
+            this.intentIcon.angle = 45;
+            this.intentIcon2.texture = Game.resources["src/images/icons/intents/spikes.png"].texture;
+        } else {
+            this.intentIcon2.visible = false;
+        }
     }
 }
