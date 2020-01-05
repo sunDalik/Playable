@@ -11,6 +11,7 @@ import {redrawMiniMapPixel} from "../../drawing/draw_hud";
 export class World extends PIXI.Container {
     constructor() {
         super();
+        this.filters = [];
     }
 
     addHazard(hazard) {

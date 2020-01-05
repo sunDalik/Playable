@@ -73,6 +73,8 @@ Game.followChain = null;
 Game.limitChain = null;
 
 Game.unplayable = true;
+Game.paused = false;
+
 Game.endRoomBoundaries = [];
 Game.boss = null;
 Game.bossFight = false;

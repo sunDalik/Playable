@@ -38,6 +38,7 @@ export class AnimatedTileElement extends TileElement {
         this.animationCounter = 0;
 
         const animation = (delta) => {
+            if (Game.paused) return;
             this.animationCounter += delta;
             const t = this.animationCounter * step;
             this.position.x = quadraticBezier(t, oldPosX, oldPosX + tileStepX * Game.TILESIZE / 2, oldPosX + tileStepX * Game.TILESIZE);
@@ -66,6 +67,7 @@ export class AnimatedTileElement extends TileElement {
         let counter = 0;
 
         const animation = (delta) => {
+            if (Game.paused) return;
             if (counter < this.BUMP_ANIMATION_TIME / 2) {
                 this.position.x += stepX * delta;
             } else {
@@ -106,6 +108,7 @@ export class AnimatedTileElement extends TileElement {
         let counter = 0;
 
         const animation = (delta) => {
+            if (Game.paused) return;
             counter += delta;
             const x = counter / this.BUMP_ANIMATION_TIME;
             if (counter <= this.BUMP_ANIMATION_TIME / 2) {
@@ -143,6 +146,7 @@ export class AnimatedTileElement extends TileElement {
         this.placeOnMap();
 
         const animation = (delta) => {
+            if (Game.paused) return;
             this.position.x += stepX * delta;
             this.position.y += stepY * delta;
             this.animationCounter += delta;
@@ -167,6 +171,7 @@ export class AnimatedTileElement extends TileElement {
         const stepY = Game.TILESIZE * 0.7 * tileStepY / time;
 
         const animation = (delta) => {
+            if (Game.paused) return;
             if (this.animationCounter < animationTime / 2) {
                 this.position.x += stepX * delta;
                 this.position.y += stepY * delta;
@@ -194,6 +199,7 @@ export class AnimatedTileElement extends TileElement {
         if (cancellable) this.cancelAnimation(); //to not reset angle
 
         const animation = (delta) => {
+            if (Game.paused) return;
             this.angle += step * delta;
             this.animationCounter += delta;
             if (this.animationCounter >= rotateTime) {
@@ -210,6 +216,7 @@ export class AnimatedTileElement extends TileElement {
         const step = Game.TILESIZE / 20 / (animationTime / 4);
 
         const animation = (delta) => {
+            if (Game.paused) return;
             if (this.animationCounter < animationTime / 4) {
                 this.position.x += step * dirX * delta;
                 this.position.y += step * dirY * delta;
@@ -237,6 +244,7 @@ export class AnimatedTileElement extends TileElement {
         let counter = 0;
 
         const animation = (delta) => {
+            if (Game.paused) return;
             if (counter < this.MICRO_JUMP_ANIMATION_TIME / 2) {
                 this.position.y -= stepY * delta;
             } else {
@@ -269,6 +277,7 @@ export class AnimatedTileElement extends TileElement {
         }
 
         const animation = (delta) => {
+            if (Game.paused) return;
             if (delta > maxDelta) delta = maxDelta;
             this.position.x += stepX * delta;
             this.position.y += stepY * delta;
@@ -302,6 +311,7 @@ export class AnimatedTileElement extends TileElement {
         let counter = 0;
 
         const animation = delta => {
+            if (Game.paused) return;
             counter += delta;
             if (counter >= time) {
                 removeObjectFromArray(BLACK_INVERT_FILTER, this.filters);

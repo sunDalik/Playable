@@ -59,6 +59,7 @@ export class Roller extends Enemy {
         let counter = 0;
 
         const animation = delta => {
+            if (Game.paused) return;
             if (counter < this.BUMP_ANIMATION_TIME / 3) {
                 this.position.x += oldStep * delta;
             } else if (counter >= this.BUMP_ANIMATION_TIME / 3 && counter < this.BUMP_ANIMATION_TIME) {

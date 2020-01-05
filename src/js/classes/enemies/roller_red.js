@@ -81,6 +81,7 @@ export class RedRoller extends Roller {
         let counter = 0;
 
         const animation = (delta) => {
+            if (Game.paused) return;
             if (counter < this.SLIDE_ANIMATION_TIME / 2) {
                 this.position.x += step * delta;
             } else if (counter < this.SLIDE_ANIMATION_TIME / 2 + this.BUMP_ANIMATION_TIME / 3) {
@@ -110,6 +111,7 @@ export class RedRoller extends Roller {
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
 
         const animation = (delta) => {
+            if (Game.paused) return;
             if (counter < this.BUMP_ANIMATION_TIME / 3) {
                 this.position.x += step * delta;
             } else if (counter < this.BUMP_ANIMATION_TIME) {

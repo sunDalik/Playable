@@ -40,6 +40,9 @@ import {otherPlayer, setTickTimeout} from "../utils/game_utils";
 import {camera} from "./game/camera";
 import {updateChain} from "../drawing/draw_dunno";
 import {closeBlackBarsAndGotoNextLevel} from "../drawing/hud_animations";
+import {INVERT_FILTER} from "../filters";
+import {removeObjectFromArray} from "../utils/basic_utils";
+import {HUD} from "../drawing/hud_object";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -348,7 +351,8 @@ export class Player extends AnimatedTileElement {
                 shakeScreen();
                 redrawHealthForPlayer(this);
                 if (this.health <= 0) {
-                    this.die();
+                    if (otherPlayer(this).dead) this.dieWaitNegative();
+                    else this.dieNegative();
                 }
             }
         }
@@ -362,6 +366,38 @@ export class Player extends AnimatedTileElement {
             this.runHitAnimation();
             redrawHealthForPlayer(this);
         }
+    }
+
+    dieWaitNegative() {
+        Game.unplayable = true;
+        setTickTimeout(() => {
+            this.dieNegative(80);
+            Game.unplayable = false;
+        }, 5, 99, false);
+    }
+
+    dieNegative(time = 45) {
+        const alphaStep = 1 / (time / 1.8);
+        let counter = 0;
+        Game.world.filters.push(INVERT_FILTER);
+        HUD.filters.push(INVERT_FILTER);
+        this.filters.push(INVERT_FILTER);
+        Game.paused = true;
+        this.dead = true;
+        const animation = delta => {
+            counter += delta;
+            this.alpha -= alphaStep * delta;
+            if (counter >= time) {
+                Game.app.ticker.remove(animation);
+                Game.paused = false;
+                removeObjectFromArray(INVERT_FILTER, Game.world.filters);
+                removeObjectFromArray(INVERT_FILTER, HUD.filters);
+                removeObjectFromArray(INVERT_FILTER, this.filters);
+                this.die();
+            }
+        };
+
+        Game.app.ticker.add(animation);
     }
 
     die() {
@@ -632,6 +668,7 @@ export class Player extends AnimatedTileElement {
         this.cancelAnimation();
         this.animationSubSprites.push(itemSprite);
         const animation = (delta) => {
+            if (Game.paused) return;
             itemSprite.angle += step * delta;
             this.animationCounter += delta;
             if (this.animationCounter >= animationTime) {
