@@ -293,6 +293,10 @@ export function showHelpBox(item) {
 
     const animation = (delta) => {
         if (Game.paused) return;
+        if (Game.itemHelp === null) {
+            Game.app.ticker.remove(animation);
+            return;
+        }
         if (counter < slideTime) {
             Game.itemHelp.position.y -= slideStep * delta;
         } else if (counter >= slideTime + stayTime && counter < slideTime + stayTime + slideTime) {

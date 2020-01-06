@@ -24,6 +24,5 @@ export const DEATH_FILTER = new DotFilter(2);
 DEATH_FILTER.resolution = 2;
 
 export const GAME_OVER_BLUR_FILTER = new KawaseBlurFilter(0.5);
-//GAME_OVER_BLUR_FILTER.padding = 15;
 GAME_OVER_BLUR_FILTER.maxBlur = 0.5;
 GAME_OVER_BLUR_FILTER.resolution = 2;

@@ -11,7 +11,9 @@ import {lightPosition, lightTile} from "./drawing/lighting";
 import {removeAllChildrenFromContainer} from "./drawing/draw_utils";
 import {HUD} from "./drawing/hud_object";
 import {camera} from "./classes/game/camera";
-import {get8Directions} from "./utils/map_utils";
+import {get8Directions, getCardinalDirections} from "./utils/map_utils";
+import {getPlayerOnTile} from "./map_checks";
+import {ITEM_OUTLINE_FILTER} from "./filters";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -35,6 +37,7 @@ function enemyTurn() {
     Game.afterTurn = true;
     Game.player.afterEnemyTurn();
     Game.player2.afterEnemyTurn();
+    updateInanimates();
 }
 
 export function moveEnemies() {
@@ -78,6 +81,24 @@ export function updateHazards() {
     for (let i = Game.hazards.length - 1; i >= 0; i--) {
         if (Game.hazards[i].visible)
             Game.hazards[i].updateLifetime();
+    }
+}
+
+export function updateInanimates() {
+    for (let i = 0; i < Game.inanimates.length; i++) {
+        const inanimate = Game.inanimates[i];
+        if (inanimate.visible) {
+            let playerFound = false;
+            for (const dir of getCardinalDirections()) {
+                if (getPlayerOnTile(inanimate.tilePosition.x + dir.x, inanimate.tilePosition.y + dir.y) !== null) {
+                    inanimate.filters = [ITEM_OUTLINE_FILTER];
+                    playerFound = true;
+                    break;
+                }
+            }
+            if (!playerFound) inanimate.filters = [];
+            if (inanimate.onUpdate) inanimate.onUpdate();
+        }
     }
 }
 
@@ -284,12 +305,17 @@ export function cleanGameState() {
     Game.savedTiles = [];
     Game.darkTiles = [];
     Game.hazards = [];
+    Game.inanimates = [];
     Game.bullets = [];
     Game.infiniteAnimations = [];
     Game.obelisks = [];
     Game.endRoomBoundaries = [];
     Game.boss = null;
     Game.bossFight = false;
+    if (Game.itemHelp) {
+        HUD.removeChild(Game.itemHelp);
+        Game.itemHelp = null;
+    }
     removeAllChildrenFromContainer(HUD.bossHealth);
     Game.bossEntryOpened = false;
 }

@@ -12,7 +12,7 @@ import {closestPlayer, tileDistance} from "../../utils/game_utils";
 export class Alligator extends Enemy {
     constructor(tilePositionX, tilePositionY, type = undefined, texture = Game.resources["src/images/enemies/alligator_x.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 3;
+        this.maxHealth = 4;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.ALLIGATOR;
         this.alligatorType = type;

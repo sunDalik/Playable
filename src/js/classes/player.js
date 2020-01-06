@@ -31,7 +31,7 @@ import {
     amIInTheBossRoom,
     checkFollowMode, gotoNextLevel,
     removeEquipmentFromPlayer,
-    swapEquipmentWithPlayer
+    swapEquipmentWithPlayer, updateInanimates
 } from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {LyingItem} from "./equipment/lying_item";
@@ -374,12 +374,12 @@ export class Player extends AnimatedTileElement {
         this.dead = true;
         setTickTimeout(() => {
             Game.unplayable = false;
-            this.dieAnimation(source, 80);
+            this.dieAnimation(source, 75);
         }, 5, 99, false);
     }
 
-    dieAnimation(source, time = 45) {
-        const alphaStep = 1 / (time / 1.5);
+    dieAnimation(source, time = 40) {
+        const alphaStep = 1 / (time / 1.4);
         let counter = 0;
         this.dead = true;
         Game.world.filters.push(DEATH_FILTER);
@@ -391,6 +391,7 @@ export class Player extends AnimatedTileElement {
         if (source) {
             Game.world.removeChild(source);
             Game.world.upWorld.addChild(source);
+            source.visible = true;
             if (source === Game.limitChain) source.visible = true;
         }
         this.filters.push(DEATH_FILTER);
@@ -412,6 +413,7 @@ export class Player extends AnimatedTileElement {
                 if (source) {
                     Game.world.upWorld.removeChild(source);
                     Game.world.addChild(source);
+                    if (source.dead) source.visible = false;
                     if (source === Game.limitChain) source.visible = false;
                 }
                 Game.world.upWorld.removeChild(this);
@@ -452,6 +454,7 @@ export class Player extends AnimatedTileElement {
         redrawAllMagicSlots(this);
         this.removeHealthContainers(1);
         otherPlayer(this).removeHealthContainers(1);
+        updateInanimates();
     }
 
     removeHealthContainers(num) {

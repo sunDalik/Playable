@@ -152,11 +152,15 @@ export function retry() {
 }
 
 function retryAfterBlackBars() {
-    removeObjectFromArray(DEATH_FILTER, Game.world.filters);
-    removeObjectFromArray(DEATH_FILTER, HUD.filters);
+    for (let i = 0; i < 2; i++) {
+        //two times. In case two players die simultaneously
+        removeObjectFromArray(DEATH_FILTER, Game.world.filters);
+        removeObjectFromArray(DEATH_FILTER, HUD.filters);
+        removeObjectFromArray(GAME_OVER_BLUR_FILTER, Game.world.filters);
+        removeObjectFromArray(GAME_OVER_BLUR_FILTER, HUD.filters);
+    }
+
     SUPER_HUD.gameOverScreen.visible = false;
-    removeObjectFromArray(GAME_OVER_BLUR_FILTER, Game.world.filters);
-    removeObjectFromArray(GAME_OVER_BLUR_FILTER, HUD.filters);
 
     Game.world.clean();
     cleanGameState();

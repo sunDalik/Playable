@@ -57,7 +57,14 @@ export const STAGE = Object.freeze({
 });
 export const TILE_TYPE = Object.freeze({VOID: 0, NONE: 1, WALL: 2, PATH: 3, ENTRY: 4, SUPER_WALL: 5, EXIT: 6});
 export const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1, INANIMATE: 2, BULLET: 3, WALL_TRAP: 4});
-export const INANIMATE_TYPE = Object.freeze({STATUE: 0, OBELISK: 1, GRAIL: 2, CHEST: 3, ACCUMULATOR: 4});
+export const INANIMATE_TYPE = Object.freeze({
+    STATUE: 0,
+    OBELISK: 1,
+    GRAIL: 2,
+    CHEST: 3,
+    ACCUMULATOR: 4,
+    FIRE_GOBLET: 5
+});
 
 export const EQUIPMENT_TYPE = Object.freeze({WEAPON: 0, HEAD: 1, ARMOR: 2, FOOT: 3, SHIELD: 5, TOOL: 6, MAGIC: 7});
 export const WEAPON_TYPE = Object.freeze({
@@ -124,6 +131,7 @@ export const MAP_SYMBOLS = Object.freeze({
     PARANOID_EEL: "paranoid_eel",
     BALLET_SPIDER: "ballet_spider",
     GUARDIAN_OF_THE_LIGHT: "guardian_of_the_light",
+    FIRE_GOBLET: "fire_goblet",
     STATUE: "statue",
     CHEST: "chest",
     OBELISK: "obelisk",

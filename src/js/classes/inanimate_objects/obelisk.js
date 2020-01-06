@@ -111,4 +111,8 @@ export class Obelisk extends FullTileElement {
             }
         }
     }
+
+    onUpdate() {
+        //todo: add -heart icon
+    }
 }

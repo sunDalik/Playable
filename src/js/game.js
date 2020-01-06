@@ -18,6 +18,7 @@ Game.stage = STAGE.FLOODED_CAVE;
 Game.map = [];
 Game.enemies = [];
 Game.hazards = [];
+Game.inanimates = [];
 Game.bullets = [];
 
 Game.darkTiles = [];

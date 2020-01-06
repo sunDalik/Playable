@@ -19,6 +19,8 @@ import {
     removeGarbage
 } from "./generation_utils";
 
+const bossAreas = [STAGE.FLOODED_CAVE];
+
 export function generateEntryBasedLevel() {
     let level = [[]];
     let roomNumber;
@@ -70,7 +72,7 @@ export function generateEntryBasedLevel() {
     }
     const endingRoomI = endingRoomY * levelRoomWidth + endingRoomX;
     levelRooms[endingRoomI] = createRoom(endingRoomWidth, endingRoomHeight, [endingRoomEntry]);
-    if (Game.stage === STAGE.FLOODED_CAVE) {
+    if (bossAreas.includes(Game.stage)) {
         levelRooms[endingRoomI] = copy2dArray(randomChoice(Game.bossRooms));
         endingRoomWidth = levelRooms[endingRoomI][0].length;
         endingRoomHeight = levelRooms[endingRoomI].length;
@@ -288,7 +290,6 @@ export function generateEntryBasedLevel() {
                 currentRoom[torchY][torchX] = MAP_SYMBOLS.TORCH;
             }
         } else if (r === endingRoomI) {
-            const bossAreas = [STAGE.FLOODED_CAVE];
             if (!bossAreas.includes(Game.stage)) {
                 currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = MAP_SYMBOLS.EXIT;
             }

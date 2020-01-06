@@ -63,13 +63,15 @@ export class GuardianOfTheLight extends Boss {
     tunnelBullets() {
         const amountOfBullets = 6;
         //relies on the first element having X direction
-        const dir = getChasingDirections(this, closestPlayer(this))[0].x;
-        if (dir === 0) return;
+        let dirX = getChasingDirections(this, closestPlayer(this))[0].x;
+        if (dirX === 0) {
+            dirX = randomChoice([-1, 1]);
+        }
         for (let n = 1; n <= amountOfBullets; n++) {
-            const bullet1 = new ElectricBullet(this.tilePosition.x + dir, this.tilePosition.y,
-                [{x: dir, y: 1}, {x: dir, y: 0}, {x: dir, y: 0}, {x: dir, y: -1}]);
-            const bullet2 = new ElectricBullet(this.tilePosition.x + dir, this.tilePosition.y,
-                [{x: dir, y: -1}, {x: dir, y: 0}, {x: dir, y: 0}, {x: dir, y: 1}]);
+            const bullet1 = new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
+                [{x: dirX, y: 1}, {x: dirX, y: 0}, {x: dirX, y: 0}, {x: dirX, y: -1}]);
+            const bullet2 = new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
+                [{x: dirX, y: -1}, {x: dirX, y: 0}, {x: dirX, y: 0}, {x: dirX, y: 1}]);
             bullet1.delay = bullet2.delay = n;
             Game.world.addBullet(bullet1);
             Game.world.addBullet(bullet2);
@@ -79,13 +81,15 @@ export class GuardianOfTheLight extends Boss {
     diamondBullets() {
         const amountOfBullets = 6;
         //relies on the first element having X direction
-        const dir = getChasingDirections(this, closestPlayer(this))[0].x;
-        if (dir === 0) return;
+        let dirX = getChasingDirections(this, closestPlayer(this))[0].x;
+        if (dirX === 0) {
+            dirX = randomChoice([-1, 1]);
+        }
         for (let n = 1; n <= amountOfBullets; n++) {
-            const bullet1 = new ElectricBullet(this.tilePosition.x + dir, this.tilePosition.y,
-                [{x: dir, y: 1}, {x: dir, y: 1}, {x: dir, y: -1}, {x: dir, y: -1}]);
-            const bullet2 = new ElectricBullet(this.tilePosition.x + dir, this.tilePosition.y,
-                [{x: dir, y: -1}, {x: dir, y: -1}, {x: dir, y: 1}, {x: dir, y: 1}]);
+            const bullet1 = new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
+                [{x: dirX, y: 1}, {x: dirX, y: 1}, {x: dirX, y: -1}, {x: dirX, y: -1}]);
+            const bullet2 = new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
+                [{x: dirX, y: -1}, {x: dirX, y: -1}, {x: dirX, y: 1}, {x: dirX, y: 1}]);
             bullet1.delay = bullet2.delay = n;
             Game.world.addBullet(bullet1);
             Game.world.addBullet(bullet2);

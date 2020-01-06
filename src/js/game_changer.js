@@ -82,6 +82,7 @@ export function setVariablesForStage() {
             Game.statueRooms = rooms.DTStatueRooms;
             Game.obeliskRooms = rooms.DTObeliskRooms;
             Game.chestRooms = rooms.DTChestRooms;
+            Game.bossRooms = rooms.DTBossRooms;
             Game.BGColor = 0x666666;
             break;
         case STAGE.RUINS:

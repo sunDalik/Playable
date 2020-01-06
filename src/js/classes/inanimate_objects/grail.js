@@ -66,4 +66,11 @@ export class Grail extends FullTileElement {
             this.obelisk.deactivate(this);
         }
     }
+
+    onUpdate() {
+        if (this.magic === null) {
+            //no highlight
+            this.filters = [];
+        }
+    }
 }

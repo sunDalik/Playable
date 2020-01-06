@@ -36,6 +36,7 @@ import {ParanoidEel} from "./classes/enemies/bosses/paranoid_eel";
 import {BalletSpider} from "./classes/enemies/bosses/ballet_spider";
 import {tileInsideTheBossRoom} from "./game_logic";
 import {GuardianOfTheLight} from "./classes/enemies/bosses/guardian_of_the_light";
+import {FireGoblet} from "./classes/inanimate_objects/fire_goblet";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -162,6 +163,8 @@ export function generateMap(level) {
             } else if (map[i][j] === MAP_SYMBOLS.TORCH) {
                 mapCell.item = new LyingItem(j, i, new Torch());
                 Game.torchTile = {x: j, y: i};
+            } else if (map[i][j] === MAP_SYMBOLS.FIRE_GOBLET) {
+                mapCell.entity = new FireGoblet(j, i);
             }
 
             map[i][j] = mapCell;

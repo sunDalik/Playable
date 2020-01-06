@@ -43,6 +43,8 @@ export function drawEntities() {
                     Game.world.addChild(entity);
                     if (entity.role === ROLE.ENEMY || entity.role === ROLE.WALL_TRAP) {
                         Game.enemies.push(entity);
+                    } else if (entity.role === ROLE.INANIMATE) {
+                        Game.inanimates.push(entity);
                     }
                     if (entity.role !== ROLE.PLAYER) {
                         entity.visible = false;
