@@ -44,7 +44,7 @@ export class Spider extends Enemy {
 
     damage(source, dmg, inputX, inputY, magical = false, hazardDamage = false) {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
-        if (!this.dead && this.stun === 0) this.throwAway(inputX, inputY);
+        if (!this.dead && this.stun === 0 && !magical) this.throwAway(inputX, inputY);
         if (Game.afterTurn) {
             this.thrown = false;
         }

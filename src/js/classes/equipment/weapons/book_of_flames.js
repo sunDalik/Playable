@@ -66,7 +66,7 @@ export class BookOfFlames {
             }
 
             for (const enemy of enemiesToAttack) {
-                enemy.damage(wielder, atk, 0, 0, this.magical);
+                enemy.damage(wielder, atk, tileDirX, tileDirY, this.magical);
             }
             this.uses--;
             this.updateTexture();
