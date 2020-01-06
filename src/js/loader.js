@@ -179,6 +179,7 @@ export function loadAll(afterLoad) {
         .add("src/images/other/statue_tool.png")
 
         .add("src/images/other/fire_goblet.png")
+        .add("src/images/other/fire_goblet_fallen.png")
 
         .add("src/images/other/chest.png")
         .add("src/images/other/chest_opened.png")

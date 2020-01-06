@@ -150,7 +150,7 @@ export class Player extends AnimatedTileElement {
         }
         if (!attackResult) {
             if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
-                this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity);
+                this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity, tileStepX, tileStepY);
                 this.bump(tileStepX, tileStepY);
             } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
                 if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
@@ -485,7 +485,8 @@ export class Player extends AnimatedTileElement {
         else this.texture = Game.resources["src/images/player2.png"].texture;
     }
 
-    interactWithInanimateEntity(entity) {
+    //maybe we should make uniform method to interact with inanimates? like... inanimate.interact() ?
+    interactWithInanimateEntity(entity, tileStepX, tileStepY) {
         switch (entity.type) {
             case INANIMATE_TYPE.STATUE:
                 if (!entity.marauded) Game.maraudedStatues.push(entity.weapon);
@@ -507,6 +508,9 @@ export class Player extends AnimatedTileElement {
                 break;
             case INANIMATE_TYPE.CHEST:
                 entity.interact(this);
+                break;
+            case INANIMATE_TYPE.FIRE_GOBLET:
+                entity.push(tileStepX, tileStepY);
                 break;
         }
     }

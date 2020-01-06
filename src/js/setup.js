@@ -101,12 +101,12 @@ export function initializeLevel() {
     drawGrid();
     drawTiles();
     drawEntities();
-    for (const enemy of Game.enemies) {
+    createDarkness();
+    for (const enemy of Game.enemies.concat(Game.inanimates)) {
         if (enemy.afterMapGen) enemy.afterMapGen();
     }
     drawOther();
     drawMiniMap();
-    createDarkness();
     if (!Game.player.dead) lightPlayerPosition(Game.player);
     if (!Game.player2.dead) lightPlayerPosition(Game.player2);
     if (Game.stage === STAGE.DARK_TUNNEL) {

@@ -477,7 +477,9 @@ export function redrawMiniMapPixel(x, y) {
         pixel.beginFill(0x757167);
     } else if (Game.map[y][x].tileType === TILE_TYPE.VOID) {
         pixel.beginFill(0x000000);
-    } else if (Game.map[y][x].entity && Game.map[y][x].entity.role === ROLE.INANIMATE && Game.map[y][x].entity.type !== INANIMATE_TYPE.GRAIL) {
+    } else if (Game.map[y][x].entity && Game.map[y][x].entity.role === ROLE.INANIMATE
+        && Game.map[y][x].entity.type !== INANIMATE_TYPE.GRAIL
+        && Game.map[y][x].entity.type !== INANIMATE_TYPE.FIRE_GOBLET) {
         pixel.beginFill(0xffb03b);
     } else if (Game.map[y][x].tileType === TILE_TYPE.EXIT) {
         pixel.beginFill(0xff4adb);

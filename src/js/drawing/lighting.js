@@ -100,7 +100,9 @@ function lightWorld(tileX, tileY, distance, crossEntries = false, sourceDirX = 0
 
 export function lightTile(tileX, tileY) {
     if (Game.stage === STAGE.DARK_TUNNEL) {
-        Game.darkTiles[tileY][tileX].alpha = 0.85;
+        if (Game.darkTiles[tileY][tileX].alpha === 1) {
+            Game.darkTiles[tileY][tileX].alpha = Game.darkTiles[tileY][tileX].semiAlpha;
+        }
     } else {
         Game.darkTiles[tileY][tileX].visible = false;
     }

@@ -20,6 +20,7 @@ export class GuardianOfTheLight extends Boss {
     }
 
     move() {
+        return;
         if (this.test < 0) {
             const attack = randomChoice([() => this.verticalStream(), () => this.horizontalStream(), () => this.tunnelBullets(),
                 () => this.diamondBullets(), () => this.verticalStream(1), () => this.horizontalStream(1)]);
