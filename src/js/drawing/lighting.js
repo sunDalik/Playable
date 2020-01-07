@@ -14,6 +14,13 @@ export function lightPosition(pos, distance = 3, bright = false) {
     }
 }
 
+export function extinguishTorch() {
+    for (const lightSource of torchedAreas) {
+        Game.darkTiles[lightSource.y][lightSource.x].removeLightSource(torchLightSprite);
+    }
+    torchedAreas = [];
+}
+
 export function lightPlayerPosition(player) {
     if (player.dead) return;
     litAreas = [];
@@ -25,6 +32,7 @@ export function lightPlayerPosition(player) {
             for (const lightSource of torchedAreas) {
                 Game.darkTiles[lightSource.y][lightSource.x].removeLightSource(torchLightSprite);
             }
+            torchedAreas = [];
             lightWorldDT(px, py, player.secondHand.lightSpread);
         } else {
             lightWorld(px, py, 1, true);

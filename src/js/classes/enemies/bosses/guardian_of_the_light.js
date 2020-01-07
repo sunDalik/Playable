@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE, EQUIPMENT_TYPE, TOOL_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {getRandomInt, randomChoice} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
@@ -10,6 +10,10 @@ import {average} from "../../../utils/math_utils";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {FireHazard} from "../../hazards/fire";
 import {WARNING_BULLET_OUTLINE_FILTER} from "../../../filters";
+import {removeEquipmentFromPlayer} from "../../../game_logic";
+import {LyingItem} from "../../equipment/lying_item";
+import {Torch} from "../../equipment/tools/torch";
+import {extinguishTorch, lightPosition} from "../../../drawing/lighting";
 
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/guardian_of_the_light/neutral.png"].texture) {
@@ -19,7 +23,6 @@ export class GuardianOfTheLight extends Boss {
         this.type = ENEMY_TYPE.GUARDIAN_OF_THE_LIGHT;
         this.atk = 1.5;
         this.name = "Guardian of the Light";
-
         this.maskLayer = {};
         this.test = 2;
         this.toBecomeNeutral = false;
@@ -51,6 +54,15 @@ export class GuardianOfTheLight extends Boss {
         super.cancelAnimation();
         this.alpha = 1;
         this.zIndex = this.initialZIndex;
+    }
+
+    onBossModeActivate() {
+        if (Game.player.secondHand && Game.player.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && Game.player.secondHand.type === TOOL_TYPE.TORCH) {
+            removeEquipmentFromPlayer(Game.player, EQUIPMENT_TYPE.TOOL);
+        } else if (Game.player2.secondHand && Game.player2.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && Game.player2.secondHand.type === TOOL_TYPE.TORCH) {
+            removeEquipmentFromPlayer(Game.player2, EQUIPMENT_TYPE.TOOL);
+        }
+        extinguishTorch();
     }
 
     move() {
@@ -116,7 +128,6 @@ export class GuardianOfTheLight extends Boss {
             this.fireTeleport();
             this.triggeredFireTeleport = false;
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/fire.png"].texture;
-            this.waitingToMove = true;
 
         } else if (this.electricWearOff || this.electricDoomWearOff) {
             this.electricWearOff = false;
@@ -352,6 +363,7 @@ export class GuardianOfTheLight extends Boss {
 
     activateFinalPhase() {
         this.finalPhase = true;
+        //todo: todo?
     }
 
     updatePatience() {
@@ -403,8 +415,15 @@ export class GuardianOfTheLight extends Boss {
         for (const warningBullet of this.warningBullets) {
             warningBullet.die();
         }
-        for (const bullet of Game.bullets) {
-            bullet.die();
+        for (let i = Game.bullets.length - 1; i >= 0; i--) {
+            Game.bullets[i].die();
         }
+
+        const torchX = Game.endRoomBoundaries[0].x + Math.floor((Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x) / 2);
+        const torchY = Game.endRoomBoundaries[0].y + Math.floor((Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y) / 2);
+        const torch = new LyingItem(torchX, torchY, new Torch());
+        Game.map[torchY][torchX].item = torch;
+        Game.world.addChild(torch);
+        lightPosition({x: torchX, y: torchY}, torch.item.lightSpread, true);
     }
 }

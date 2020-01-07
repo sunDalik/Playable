@@ -346,6 +346,10 @@ export function activateBossMode(player) {
 
     Game.boss.redrawHealth();
     Game.bossFight = true;
+
+    if (Game.boss.onBossModeActivate) {
+        Game.boss.onBossModeActivate();
+    }
 }
 
 export function deactivateBossMode() {
@@ -362,7 +366,6 @@ export function deactivateBossMode() {
     }
 
     lightPosition(Game.bossExit);
-
     camera.moveToCenter(15);
 }
 

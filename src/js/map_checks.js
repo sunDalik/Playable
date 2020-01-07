@@ -60,11 +60,22 @@ export function isInanimate(tilePositionX, tilePositionY) {
 export function isBullet(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
-        if (tileEntity && tileEntity.role === ROLE.BULLET) {
+        const tileEntity2 = Game.map[tilePositionY][tilePositionX].secondaryEntity;
+        if (tileEntity && tileEntity.role === ROLE.BULLET || tileEntity2 && tileEntity2.role === ROLE.BULLET) {
             return true
         }
     }
     return false;
+}
+
+export function getBullet(tilePositionX, tilePositionY) {
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
+        const tileEntity2 = Game.map[tilePositionY][tilePositionX].secondaryEntity;
+        if (tileEntity && tileEntity.role === ROLE.BULLET) return tileEntity;
+        else if (tileEntity2 && tileEntity2.role === ROLE.BULLET) return tileEntity2
+    }
+    return null;
 }
 
 export function isAnyWallOrInanimate(tilePositionX, tilePositionY) {
