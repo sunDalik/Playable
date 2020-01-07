@@ -27,7 +27,9 @@ export class GuardianOfTheLight extends Boss {
     }
 
     move() {
-        this.fireTeleport();
+        this.verticalDoomBullets();
+        this.move = () => {
+        };
         return;
         if (this.test < 0) {
             const attack = randomChoice([() => this.verticalStream(), () => this.horizontalStream(), () => this.tunnelBullets(),
@@ -131,6 +133,32 @@ export class GuardianOfTheLight extends Boss {
         };
         this.animation = animation;
         Game.app.ticker.add(animation);
+    }
+
+    verticalDoomBullets() {
+        const amountOfBullets = 6;
+        let startY = randomChoice([Game.endRoomBoundaries[0].y + 1, Game.endRoomBoundaries[1].y - 1]);
+        let dirY = startY === Game.endRoomBoundaries[0].y + 1 ? 1 : -1;
+        for (let x = Game.endRoomBoundaries[0].x + 1; x < Game.endRoomBoundaries[1].x; x++) {
+            for (let n = 1; n <= amountOfBullets; n++) {
+                const bullet = new ElectricBullet(x, startY, [{x: 0, y: dirY}]);
+                bullet.delay = n;
+                Game.world.addBullet(bullet);
+            }
+        }
+    }
+
+    horizontalDoomBullets() {
+        const amountOfBullets = 8;
+        let startX = randomChoice([Game.endRoomBoundaries[0].x + 1, Game.endRoomBoundaries[1].x - 1]);
+        let dirX = startX === Game.endRoomBoundaries[0].x + 1 ? 1 : -1;
+        for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
+            for (let n = 1; n <= amountOfBullets; n++) {
+                const bullet = new ElectricBullet(startX, y, [{x: dirX, y: 0}]);
+                bullet.delay = n;
+                Game.world.addBullet(bullet);
+            }
+        }
     }
 
     fireTeleport() {
