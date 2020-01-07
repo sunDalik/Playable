@@ -15,3 +15,12 @@ export function getCrossProduct(x1, y1, x2, y2, a1, b1, a2, b2) {
 export function distanceBetweenPoints(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
 }
+
+export function average(array) {
+    if (array.length === 0) return 0;
+    let sum = 0;
+    for (let i = 0; i < array.length; i++) {
+        sum += array[i];
+    }
+    return sum / array.length;
+}

@@ -18,6 +18,7 @@ export class GuardianOfTheLight extends Boss {
 
         this.test = 2;
         this.patience = {turns: 0, damage: 0};
+        this.overallDamage = [];
         this.updatePatience();
     }
 
@@ -27,9 +28,16 @@ export class GuardianOfTheLight extends Boss {
     }
 
     move() {
-        this.verticalDoomBullets();
-        this.move = () => {
-        };
+        const lookDirection = Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x);
+        if (lookDirection !== 0) {
+            this.scale.x = lookDirection * Math.abs(this.scale.x);
+        }
+        if (this.patience.turns <= 0) {
+            //...?
+        }
+        //this.verticalDoomBullets();
+        //this.move = () => {
+        //};
         return;
         if (this.test < 0) {
             const attack = randomChoice([() => this.verticalStream(), () => this.horizontalStream(), () => this.tunnelBullets(),
@@ -187,5 +195,14 @@ export class GuardianOfTheLight extends Boss {
     updatePatience() {
         this.patience.turns = getRandomInt(20, 30);
         this.patience.damage = getRandomInt(4, 8);
+    }
+
+    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
+        super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
+        this.overallDamage.push(dmg);
+        this.patience.damage -= dmg;
+        if (this.patience.damage <= 0) {
+            //...?
+        }
     }
 }
