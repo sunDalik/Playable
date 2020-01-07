@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE, STAGE} from "../../../enums";
 import {Boss} from "./boss";
 import {getRandomInt, randomChoice} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
@@ -7,6 +7,7 @@ import {getChasingDirections} from "../../../utils/map_utils";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {isEmpty} from "../../../map_checks";
 import {average} from "../../../utils/math_utils";
+import {removeObjectFromArray} from "../../../utils/basic_utils";
 
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/guardian_of_the_light/neutral.png"].texture) {
@@ -28,6 +29,8 @@ export class GuardianOfTheLight extends Boss {
         this.updatePatience();
         this.initialZIndex = this.zIndex;
         this.scaleModifier = 1.25;
+        this.warningBullets = [];
+        this.bulletQueue = [];
         this.fitToTile();
     }
 
@@ -38,6 +41,20 @@ export class GuardianOfTheLight extends Boss {
     }
 
     move() {
+        for (const warningBullet of this.warningBullets) {
+            warningBullet.die();
+        }
+        for (let i = this.bulletQueue.length - 1; i >= 0; i--) {
+            const bullet = this.bulletQueue[i];
+            bullet.delay--;
+            if (bullet.delay <= 0) {
+                bullet.delay = 1;
+                Game.world.addBullet(bullet);
+                removeObjectFromArray(bullet, this.bulletQueue);
+            }
+        }
+        this.verticalStream();
+        return;
         if (this.dontChangeLook) this.dontChangeLook = false;
         else {
             const lookDirection = Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x);
@@ -84,71 +101,51 @@ export class GuardianOfTheLight extends Boss {
     }
 
     verticalStream(gap = 2) {
-        const amountOfBullets = 6;
         const startX = randomChoice([Game.endRoomBoundaries[0].x + 1, Game.endRoomBoundaries[0].x + 2]);
         let startY = randomChoice([Game.endRoomBoundaries[0].y + 1, Game.endRoomBoundaries[1].y - 1]);
         let dirY = startY === Game.endRoomBoundaries[0].y + 1 ? 1 : -1;
         for (let x = startX; x < Game.endRoomBoundaries[1].x; x += gap + 1) {
-            for (let n = 1; n <= amountOfBullets; n++) {
-                const bullet = new ElectricBullet(x, startY, [{x: 0, y: dirY}]);
-                bullet.delay = n;
-                Game.world.addBullet(bullet);
-            }
+            this.prepareBullets(x, startY, [{x: 0, y: dirY}], 6);
+
             startY = startY === Game.endRoomBoundaries[0].y + 1 ? Game.endRoomBoundaries[1].y - 1 : Game.endRoomBoundaries[0].y + 1;
             dirY = startY === Game.endRoomBoundaries[0].y + 1 ? 1 : -1;
         }
     }
 
     horizontalStream(gap = 2) {
-        const amountOfBullets = 8;
         const startY = randomChoice([Game.endRoomBoundaries[0].y + 1, Game.endRoomBoundaries[0].y + 2]);
         let startX = randomChoice([Game.endRoomBoundaries[0].x + 1, Game.endRoomBoundaries[1].x - 1]);
         let dirX = startX === Game.endRoomBoundaries[0].x + 1 ? 1 : -1;
         for (let y = startY; y < Game.endRoomBoundaries[1].y; y += gap + 1) {
-            for (let n = 1; n <= amountOfBullets; n++) {
-                const bullet = new ElectricBullet(startX, y, [{x: dirX, y: 0}]);
-                bullet.delay = n;
-                Game.world.addBullet(bullet);
-            }
+            this.prepareBullets(startX, y, [{x: dirX, y: 0}], 8);
+
             startX = startX === Game.endRoomBoundaries[0].x + 1 ? Game.endRoomBoundaries[1].x - 1 : Game.endRoomBoundaries[0].x + 1;
             dirX = startX === Game.endRoomBoundaries[0].x + 1 ? 1 : -1;
         }
     }
 
     tunnelBullets() {
-        const amountOfBullets = 6;
         //relies on the first element having X direction
         let dirX = getChasingDirections(this, closestPlayer(this))[0].x;
         if (dirX === 0) {
             dirX = randomChoice([-1, 1]);
         }
-        for (let n = 1; n <= amountOfBullets; n++) {
-            const bullet1 = new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
-                [{x: dirX, y: 1}, {x: dirX, y: 0}, {x: dirX, y: 0}, {x: dirX, y: -1}]);
-            const bullet2 = new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
-                [{x: dirX, y: -1}, {x: dirX, y: 0}, {x: dirX, y: 0}, {x: dirX, y: 1}]);
-            bullet1.delay = bullet2.delay = n;
-            Game.world.addBullet(bullet1);
-            Game.world.addBullet(bullet2);
-        }
+        this.prepareBullets(this.tilePosition.x + dirX, this.tilePosition.y,
+            [{x: dirX, y: 1}, {x: dirX, y: 0}, {x: dirX, y: 0}, {x: dirX, y: -1}], 6);
+        this.prepareBullets(this.tilePosition.x + dirX, this.tilePosition.y,
+            [{x: dirX, y: -1}, {x: dirX, y: 0}, {x: dirX, y: 0}, {x: dirX, y: 1}], 6);
     }
 
     diamondBullets() {
-        const amountOfBullets = 6;
         //relies on the first element having X direction
         let dirX = getChasingDirections(this, closestPlayer(this))[0].x;
         if (dirX === 0) {
             dirX = randomChoice([-1, 1]);
         }
-        for (let n = 1; n <= amountOfBullets; n++) {
-            const bullet1 = new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
-                [{x: dirX, y: 1}, {x: dirX, y: 1}, {x: dirX, y: -1}, {x: dirX, y: -1}]);
-            const bullet2 = new ElectricBullet(this.tilePosition.x + dirX, this.tilePosition.y,
-                [{x: dirX, y: -1}, {x: dirX, y: -1}, {x: dirX, y: 1}, {x: dirX, y: 1}]);
-            bullet1.delay = bullet2.delay = n;
-            Game.world.addBullet(bullet1);
-            Game.world.addBullet(bullet2);
-        }
+        this.prepareBullets(this.tilePosition.x + dirX, this.tilePosition.y,
+            [{x: dirX, y: 1}, {x: dirX, y: 1}, {x: dirX, y: -1}, {x: dirX, y: -1}], 6);
+        this.prepareBullets(this.tilePosition.x + dirX, this.tilePosition.y,
+            [{x: dirX, y: -1}, {x: dirX, y: -1}, {x: dirX, y: 1}, {x: dirX, y: 1}], 6);
     }
 
     teleport() {
@@ -181,15 +178,10 @@ export class GuardianOfTheLight extends Boss {
     }
 
     verticalDoomBullets() {
-        const amountOfBullets = 6;
         let startY = randomChoice([Game.endRoomBoundaries[0].y + 1, Game.endRoomBoundaries[1].y - 1]);
         let dirY = startY === Game.endRoomBoundaries[0].y + 1 ? 1 : -1;
         for (let x = Game.endRoomBoundaries[0].x + 1; x < Game.endRoomBoundaries[1].x; x++) {
-            for (let n = 1; n <= amountOfBullets; n++) {
-                const bullet = new ElectricBullet(x, startY, [{x: 0, y: dirY}]);
-                bullet.delay = n;
-                Game.world.addBullet(bullet);
-            }
+            this.prepareBullets(x, startY, [{x: 0, y: dirY}], 6);
         }
     }
 
@@ -198,11 +190,7 @@ export class GuardianOfTheLight extends Boss {
         let startX = randomChoice([Game.endRoomBoundaries[0].x + 1, Game.endRoomBoundaries[1].x - 1]);
         let dirX = startX === Game.endRoomBoundaries[0].x + 1 ? 1 : -1;
         for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
-            for (let n = 1; n <= amountOfBullets; n++) {
-                const bullet = new ElectricBullet(startX, y, [{x: dirX, y: 0}]);
-                bullet.delay = n;
-                Game.world.addBullet(bullet);
-            }
+            this.prepareBullets(startX, y, [{x: dirX, y: 0}], 8);
         }
     }
 
@@ -253,6 +241,26 @@ export class GuardianOfTheLight extends Boss {
         this.patience.damage -= dmg;
         if (this.patience.damage <= 0) {
             //...?
+        }
+    }
+
+    createWarningBullet(tilePosX, tilePosY, pattern) {
+        const warningBullet = new ElectricBullet(tilePosX, tilePosY, pattern);
+        Game.world.addChild(warningBullet);
+        //we assume that this boss cannot spawn anywhere but in dark tunnel
+        Game.darkTiles[warningBullet.tilePosition.y][warningBullet.tilePosition.x].addLightSource(warningBullet.maskLayer);
+        warningBullet.delay = 0;
+        warningBullet.updateIntentIcon();
+        warningBullet.alpha = warningBullet.intentIcon.alpha = 0.3;
+        this.warningBullets.push(warningBullet);
+    }
+
+    prepareBullets(tilePosX, tilePosY, pattern, amount) {
+        this.createWarningBullet(tilePosX, tilePosY, pattern);
+        for (let n = 1; n <= amount; n++) {
+            const bullet = new ElectricBullet(tilePosX, tilePosY, pattern);
+            bullet.delay = n;
+            this.bulletQueue.push(bullet);
         }
     }
 }
