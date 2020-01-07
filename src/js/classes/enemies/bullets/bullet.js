@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {ROLE, STAGE} from "../../../enums";
 import {TileElement} from "../../tile_elements/tile_element";
-import {getPlayerOnTile, isEnemy, isRelativelyEmpty} from "../../../map_checks";
+import {canBeFliedOverByBullet, getPlayerOnTile, isEnemy} from "../../../map_checks";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import * as PIXI from "pixi.js";
 
@@ -42,7 +42,7 @@ export class Bullet extends TileElement {
             const newY = this.tilePosition.y + this.pattern[this.patternIndex].y;
             if (isEnemy(newX, newY) || getPlayerOnTile(newX, newY) !== null) {
                 this.attack(Game.map[newY][newX].entity);
-            } else if (isRelativelyEmpty(newX, newY)) {
+            } else if (canBeFliedOverByBullet(newX, newY)) {
                 this.fly(this.pattern[this.patternIndex].x, this.pattern[this.patternIndex].y);
                 this.patternIndex++;
                 if (this.patternIndex >= this.pattern.length) this.patternIndex = 0;

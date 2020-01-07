@@ -10,7 +10,7 @@ import {isEmpty} from "../../../map_checks";
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/guardian_of_the_light/neutral.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 30;
+        this.maxHealth = 32;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.GUARDIAN_OF_THE_LIGHT;
         this.atk = 1.5;
@@ -35,9 +35,9 @@ export class GuardianOfTheLight extends Boss {
         if (this.patience.turns <= 0) {
             //...?
         }
-        //this.verticalDoomBullets();
-        //this.move = () => {
-        //};
+        this.verticalDoomBullets();
+        this.move = () => {
+        };
         return;
         if (this.test < 0) {
             const attack = randomChoice([() => this.verticalStream(), () => this.horizontalStream(), () => this.tunnelBullets(),

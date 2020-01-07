@@ -72,6 +72,18 @@ export function isRelativelyEmpty(tilePositionX, tilePositionY) {
     return false;
 }
 
+export function canBeFliedOverByBullet(tilePositionX, tilePositionY) {
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
+        if (isNotAWall(tilePositionX, tilePositionY)
+            && (tileEntity === null || tileEntity.role === ROLE.BULLET
+                || tileEntity.role === ROLE.INANIMATE && tileEntity.type === INANIMATE_TYPE.FIRE_GOBLET && tileEntity.standing === false)) {
+            return true
+        }
+    }
+    return false;
+}
+
 export function isEmpty(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         if (Game.map[tilePositionY][tilePositionX].entity === null && isNotAWall(tilePositionX, tilePositionY)) {
