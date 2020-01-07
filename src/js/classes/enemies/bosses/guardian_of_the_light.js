@@ -9,6 +9,7 @@ import {isEmpty, isRelativelyEmpty} from "../../../map_checks";
 import {average} from "../../../utils/math_utils";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {FireHazard} from "../../hazards/fire";
+import {WARNING_BULLET_OUTLINE_FILTER} from "../../../filters";
 
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/guardian_of_the_light/neutral.png"].texture) {
@@ -339,8 +340,9 @@ export class GuardianOfTheLight extends Boss {
         //we assume that this boss cannot spawn anywhere but in dark tunnel
         Game.darkTiles[warningBullet.tilePosition.y][warningBullet.tilePosition.x].addLightSource(warningBullet.maskLayer);
         warningBullet.delay = 0;
+        warningBullet.filters = [WARNING_BULLET_OUTLINE_FILTER];
         warningBullet.updateIntentIcon();
-        warningBullet.alpha = warningBullet.intentIcon.alpha = 0.3;
+        warningBullet.alpha = warningBullet.intentIcon.alpha = 0.4;
         this.warningBullets.push(warningBullet);
     }
 
@@ -350,6 +352,16 @@ export class GuardianOfTheLight extends Boss {
             const bullet = new ElectricBullet(tilePosX, tilePosY, pattern);
             bullet.delay = n;
             this.bulletQueue.push(bullet);
+        }
+    }
+
+    die(source) {
+        super.die(source);
+        for (const warningBullet of this.warningBullets) {
+            warningBullet.die();
+        }
+        for (const bullet of Game.bullets) {
+            bullet.die();
         }
     }
 }
