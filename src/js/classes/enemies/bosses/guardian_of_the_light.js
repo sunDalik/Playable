@@ -1,25 +1,33 @@
 import {Game} from "../../../game"
 import {ENEMY_TYPE} from "../../../enums";
 import {Boss} from "./boss";
-import {randomChoice} from "../../../utils/random_utils";
+import {getRandomInt, randomChoice} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
 import {getChasingDirections} from "../../../utils/map_utils";
-import {closestPlayer} from "../../../utils/game_utils";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {isEmpty} from "../../../map_checks";
 
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/guardian_of_the_light/neutral.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 20;
+        this.maxHealth = 30;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.GUARDIAN_OF_THE_LIGHT;
         this.atk = 1.5;
         this.name = "Guardian of the Light";
 
-
         this.test = 2;
+        this.patience = {turns: 0, damage: 0};
+        this.updatePatience();
+    }
+
+    cancelAnimation() {
+        super.cancelAnimation();
+        this.alpha = 1;
     }
 
     move() {
+        this.fireTeleport();
         return;
         if (this.test < 0) {
             const attack = randomChoice([() => this.verticalStream(), () => this.horizontalStream(), () => this.tunnelBullets(),
@@ -27,6 +35,7 @@ export class GuardianOfTheLight extends Boss {
             attack();
             this.test = 2;
         } else this.test--;
+        this.patience.turns--;
     }
 
     verticalStream(gap = 2) {
@@ -95,5 +104,60 @@ export class GuardianOfTheLight extends Boss {
             Game.world.addBullet(bullet1);
             Game.world.addBullet(bullet2);
         }
+    }
+
+    teleport() {
+        const freeLocations = this.getFreeTeleportLocations();
+        if (freeLocations.length === 0) return;
+        this.updatePatience();
+        const location = randomChoice(freeLocations);
+        this.tilePosition = location;
+        const time = 10;
+        const alphaStep = 1 / (time / 2);
+        let counter = 0;
+        const animation = delta => {
+            if (Game.paused) return;
+            counter += delta;
+            if (counter < time / 2) {
+                this.alpha -= alphaStep;
+            } else {
+                this.place();
+                this.alpha += alphaStep;
+            }
+            if (counter >= time) {
+                this.place();
+                Game.app.ticker.remove(animation);
+            }
+        };
+        this.animation = animation;
+        Game.app.ticker.add(animation);
+    }
+
+    fireTeleport() {
+        const freeLocations = this.getFreeTeleportLocations();
+        if (freeLocations.length === 0) return;
+        this.updatePatience();
+        const location = randomChoice(freeLocations);
+        const animationTime = Math.abs(location.x - this.tilePosition.x) + Math.abs(location.y - this.tilePosition.y);
+        this.slide(location.x - this.tilePosition.x, location.y - this.tilePosition.y, null, null, animationTime);
+        //todo: add fire
+    }
+
+    getFreeTeleportLocations() {
+        const freeLocations = [];
+        for (let i = Game.endRoomBoundaries[0].y + 2; i <= Game.endRoomBoundaries[1].y - 2; i++) {
+            for (let j = Game.endRoomBoundaries[0].x + 2; j <= Game.endRoomBoundaries[1].x - 2; j++) {
+                const newPos = {tilePosition: {x: j, y: i}};
+                if (tileDistance(this, newPos) > 4 && isEmpty(j, i) && tileDistance(newPos, closestPlayer(newPos)) > 3) {
+                    freeLocations.push({x: j, y: i});
+                }
+            }
+        }
+        return freeLocations;
+    }
+
+    updatePatience() {
+        this.patience.turns = getRandomInt(20, 30);
+        this.patience.damage = getRandomInt(4, 8);
     }
 }

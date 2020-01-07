@@ -12,7 +12,7 @@ export class DarkTunnelTile extends FullTileElement {
         this.zIndex = 10;
         this.dark = true;
         this.lightSources = [];
-        this.nearbyAlpha = 0.73;
+        this.nearbyAlpha = 0.70;
         this.semiAlpha = 0.93;
         //this.maskContainer = new PIXI.Container();
     }

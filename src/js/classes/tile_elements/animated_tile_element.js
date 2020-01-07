@@ -302,6 +302,16 @@ export class AnimatedTileElement extends TileElement {
         this.position.y += Game.TILESIZE * tileStepY;
     }
 
+    /*
+    setTilePosition(tilePosX, tilePosY) {
+        this.removeFromMap();
+        this.tilePosition.x = tilePosX;
+        this.tilePosition.y = tilePosY;
+        this.placeOnMap();
+        this.place();
+    }
+     */
+
     runHitAnimation() {
         this.filters.push(BLACK_INVERT_FILTER);
         this.filters.push(HIT_FILTER);
