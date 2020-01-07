@@ -2,6 +2,7 @@ import {Game} from "../../game"
 import {TallTileElement} from "../tile_elements/tall_tile_element"
 import {INANIMATE_TYPE, ROLE, STAGE} from "../../enums";
 import {otherPlayer} from "../../utils/game_utils";
+import {isBullet} from "../../map_checks";
 
 export class FireGoblet extends TallTileElement {
     constructor(tilePositionX, tilePositionY) {
@@ -21,7 +22,7 @@ export class FireGoblet extends TallTileElement {
     }
 
     push(tileStepX, tileStepY) {
-        if (tileStepX === this.direction.x && tileStepY === this.direction.y) {
+        if (tileStepX === this.direction.x && tileStepY === this.direction.y || isBullet(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
             this.direction = {x: 0, y: 0};
             this.angle = 0;
             this.standing = true;

@@ -5,9 +5,10 @@ import {getRandomInt, randomChoice} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
 import {getChasingDirections} from "../../../utils/map_utils";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
-import {isEmpty} from "../../../map_checks";
+import {isEmpty, isRelativelyEmpty} from "../../../map_checks";
 import {average} from "../../../utils/math_utils";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
+import {FireHazard} from "../../hazards/fire";
 
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/guardian_of_the_light/neutral.png"].texture) {
@@ -150,8 +151,10 @@ export class GuardianOfTheLight extends Boss {
         for (let x = startX; x < Game.endRoomBoundaries[1].x; x += gap + 1) {
             this.prepareBullets(x, startY, [{x: 0, y: dirY}], 6);
 
-            startY = startY === Game.endRoomBoundaries[0].y + 1 ? Game.endRoomBoundaries[1].y - 1 : Game.endRoomBoundaries[0].y + 1;
-            dirY = startY === Game.endRoomBoundaries[0].y + 1 ? 1 : -1;
+            if (this.phase >= 2) {
+                startY = startY === Game.endRoomBoundaries[0].y + 1 ? Game.endRoomBoundaries[1].y - 1 : Game.endRoomBoundaries[0].y + 1;
+                dirY = startY === Game.endRoomBoundaries[0].y + 1 ? 1 : -1;
+            }
         }
     }
 
@@ -162,33 +165,50 @@ export class GuardianOfTheLight extends Boss {
         for (let y = startY; y < Game.endRoomBoundaries[1].y; y += gap + 1) {
             this.prepareBullets(startX, y, [{x: dirX, y: 0}], 8);
 
-            startX = startX === Game.endRoomBoundaries[0].x + 1 ? Game.endRoomBoundaries[1].x - 1 : Game.endRoomBoundaries[0].x + 1;
-            dirX = startX === Game.endRoomBoundaries[0].x + 1 ? 1 : -1;
+            if (this.phase >= 2) {
+                startX = startX === Game.endRoomBoundaries[0].x + 1 ? Game.endRoomBoundaries[1].x - 1 : Game.endRoomBoundaries[0].x + 1;
+                dirX = startX === Game.endRoomBoundaries[0].x + 1 ? 1 : -1;
+            }
         }
     }
 
     tunnelBullets() {
+        const prepareTunnelBullets = dir => {
+            this.prepareBullets(this.tilePosition.x + dir, this.tilePosition.y,
+                [{x: dirX, y: 0}, {x: dir, y: 1}, {x: dir, y: 0}, {x: dir, y: 0}, {x: dir, y: -1}], 6);
+            this.prepareBullets(this.tilePosition.x + dir, this.tilePosition.y,
+                [{x: dirX, y: 0}, {x: dir, y: -1}, {x: dir, y: 0}, {x: dir, y: 0}, {x: dir, y: 1}], 6);
+        };
+
         //relies on the first element having X direction
         let dirX = getChasingDirections(this, closestPlayer(this))[0].x;
         if (dirX === 0) {
             dirX = randomChoice([-1, 1]);
         }
-        this.prepareBullets(this.tilePosition.x + dirX, this.tilePosition.y,
-            [{x: dirX, y: 1}, {x: dirX, y: 0}, {x: dirX, y: 0}, {x: dirX, y: -1}], 6);
-        this.prepareBullets(this.tilePosition.x + dirX, this.tilePosition.y,
-            [{x: dirX, y: -1}, {x: dirX, y: 0}, {x: dirX, y: 0}, {x: dirX, y: 1}], 6);
+
+        prepareTunnelBullets(dirX);
+        if (this.phase === 3 || this.phase === 2 && Math.random() < 0.5) {
+            prepareTunnelBullets(-dirX);
+        }
     }
 
     diamondBullets() {
+        const prepareDiamondBullets = dir => {
+            this.prepareBullets(this.tilePosition.x + dir, this.tilePosition.y,
+                [{x: dir, y: 1}, {x: dir, y: 1}, {x: dir, y: -1}, {x: dir, y: -1}], 6);
+            this.prepareBullets(this.tilePosition.x + dir, this.tilePosition.y,
+                [{x: dir, y: -1}, {x: dir, y: -1}, {x: dir, y: 1}, {x: dir, y: 1}], 6);
+        };
+
         //relies on the first element having X direction
         let dirX = getChasingDirections(this, closestPlayer(this))[0].x;
         if (dirX === 0) {
             dirX = randomChoice([-1, 1]);
         }
-        this.prepareBullets(this.tilePosition.x + dirX, this.tilePosition.y,
-            [{x: dirX, y: 1}, {x: dirX, y: 1}, {x: dirX, y: -1}, {x: dirX, y: -1}], 6);
-        this.prepareBullets(this.tilePosition.x + dirX, this.tilePosition.y,
-            [{x: dirX, y: -1}, {x: dirX, y: -1}, {x: dirX, y: 1}, {x: dirX, y: 1}], 6);
+        prepareDiamondBullets(dirX);
+        if (this.phase === 3) {
+            prepareDiamondBullets(-dirX);
+        }
     }
 
     teleport() {
@@ -248,9 +268,29 @@ export class GuardianOfTheLight extends Boss {
         Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
         this.updatePatience();
         const location = randomChoice(freeLocations);
+        const oldLocation = {x: this.tilePosition.x, y: this.tilePosition.y};
         const animationTime = Math.abs(location.x - this.tilePosition.x) + Math.abs(location.y - this.tilePosition.y);
         this.slide(location.x - this.tilePosition.x, location.y - this.tilePosition.y, null, null, animationTime);
-        //todo: add fire
+
+        while (location.x !== oldLocation.x || location.y !== oldLocation.y) {
+            if (isRelativelyEmpty(oldLocation.x, oldLocation.y)) {
+                const newFire = new FireHazard(oldLocation.x, oldLocation.y);
+                newFire.spreadTimes = 1;
+                newFire.tileSpread = 1;
+                newFire.LIFETIME = newFire.turnsLeft = 7;
+                Game.world.addHazard(newFire);
+            }
+            if (location.x !== oldLocation.x && location.y !== oldLocation.y) {
+                if (Math.abs(location.x - oldLocation.x) === Math.abs(location.y - oldLocation.y)) {
+                    if (Math.random() < 0.5) oldLocation.x += Math.sign(location.x - oldLocation.x);
+                    else oldLocation.y += Math.sign(location.y - oldLocation.y)
+                } else if (Math.abs(location.x - oldLocation.x) > Math.abs(location.y - oldLocation.y)) oldLocation.x += Math.sign(location.x - oldLocation.x);
+                else oldLocation.y += Math.sign(location.y - oldLocation.y);
+            } else {
+                if (location.x !== oldLocation.x) oldLocation.x += Math.sign(location.x - oldLocation.x);
+                else oldLocation.y += Math.sign(location.y - oldLocation.y)
+            }
+        }
     }
 
     getFreeTeleportLocations() {

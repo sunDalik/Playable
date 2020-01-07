@@ -65,11 +65,14 @@ export class FireHazard extends Hazard {
                 for (const dir of randomShuffle(directionsArray)) {
                     if (spreadCounter <= 0) break;
                     if (isNotAWall(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
+                        let newHazard;
                         if (this.type === HAZARD_TYPE.FIRE) {
-                            Game.world.addHazard(new FireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1));
+                            newHazard = new FireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1);
                         } else if (this.type === HAZARD_TYPE.DARK_FIRE) {
-                            Game.world.addHazard(new DarkFireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1));
+                            newHazard = new DarkFireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1);
                         }
+                        Game.world.addHazard(newHazard);
+                        newHazard.LIFETIME = newHazard.turnsLeft = this.LIFETIME;
                     }
                     spreadCounter--;
                 }

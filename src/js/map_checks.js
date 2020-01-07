@@ -57,6 +57,16 @@ export function isInanimate(tilePositionX, tilePositionY) {
     return false;
 }
 
+export function isBullet(tilePositionX, tilePositionY) {
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
+        if (tileEntity && tileEntity.role === ROLE.BULLET) {
+            return true
+        }
+    }
+    return false;
+}
+
 export function isAnyWallOrInanimate(tilePositionX, tilePositionY) {
     return isAnyWall(tilePositionX, tilePositionY) || isInanimate(tilePositionX, tilePositionY);
 }
