@@ -4,7 +4,7 @@ import {Boss} from "./boss";
 import {getRandomInt, randomChoice} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
 import {getChasingDirections} from "../../../utils/map_utils";
-import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {isEmpty, isRelativelyEmpty} from "../../../map_checks";
 import {average} from "../../../utils/math_utils";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
@@ -63,7 +63,58 @@ export class GuardianOfTheLight extends Boss {
         }
         extinguishTorch();
 
-        //todo: teleport players on different sides
+        let teleportedPlayer = null;
+        Game.unplayable = true;
+        for (const inanimate of Game.inanimates) {
+            if (inanimate.type === INANIMATE_TYPE.FIRE_GOBLET) {
+                if (inanimate.tilePosition.y > Game.endRoomBoundaries[0].y + 2 && inanimate.tilePosition.y < Game.endRoomBoundaries[1].y - 2) {
+                    if (Game.player.dead) {
+                        this.teleportPlayer(Game.player2, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
+                        break;
+                    } else if (Game.player2.dead) {
+                        this.teleportPlayer(Game.player, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
+                        break;
+                    } else if (teleportedPlayer === null) {
+                        teleportedPlayer = randomChoice([Game.player, Game.player2]);
+                        this.teleportPlayer(teleportedPlayer, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
+                    } else {
+                        this.teleportPlayer(otherPlayer(teleportedPlayer), inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
+                    }
+                }
+            }
+        }
+
+    }
+
+    teleportPlayer(player, tilePosX, tilePosY) {
+        player.cancelAnimation();
+        player.removeFromMap();
+        player.tilePosition.x = tilePosX;
+        player.tilePosition.y = tilePosY;
+        player.placeOnMap();
+        const initialZIndex = player.zIndex;
+        const time = 30;
+        const alphaStep1 = 1 / (time / 3);
+        const alphaStep2 = 1 / (time * 2 / 3);
+        let counter = 0;
+        const animation = delta => {
+            counter += delta;
+            if (counter < time / 3) {
+                player.zIndex = Game.darkTiles[0][0].zIndex + 1;
+                player.alpha -= alphaStep1;
+            } else {
+                player.place();
+                player.alpha += alphaStep2;
+            }
+            if (counter >= time) {
+                player.place();
+                player.alpha = 1;
+                player.zIndex = initialZIndex;
+                Game.unplayable = false;
+                Game.app.ticker.remove(animation);
+            }
+        };
+        Game.app.ticker.add(animation);
     }
 
     move() {

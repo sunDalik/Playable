@@ -29,9 +29,11 @@ import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {
     activateBossMode,
     amIInTheBossRoom,
-    checkFollowMode, gotoNextLevel,
+    checkFollowMode,
+    gotoNextLevel,
     removeEquipmentFromPlayer,
-    swapEquipmentWithPlayer, updateInanimates
+    swapEquipmentWithPlayer,
+    updateInanimates
 } from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {LyingItem} from "./equipment/lying_item";

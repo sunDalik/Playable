@@ -19,7 +19,7 @@ import {
     removeGarbage
 } from "./generation_utils";
 
-const bossAreas = [STAGE.FLOODED_CAVE];
+const bossAreas = [STAGE.FLOODED_CAVE, STAGE.DARK_TUNNEL];
 
 export function generateEntryBasedLevel() {
     let level = [[]];
