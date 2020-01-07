@@ -120,6 +120,7 @@ export function loadAll(afterLoad) {
 
         .add("src/images/bosses/guardian_of_the_light/neutral.png")
         .add("src/images/bosses/guardian_of_the_light/electric.png")
+        .add("src/images/bosses/guardian_of_the_light/fire.png")
         .add("src/images/bosses/guardian_of_the_light/before_electric.png")
         .add("src/images/bosses/guardian_of_the_light/after_electric.png")
         .add("src/images/bosses/guardian_of_the_light/about_to_teleport.png")
