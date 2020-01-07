@@ -115,6 +115,7 @@ export class GuardianOfTheLight extends Boss {
             const attack = randomChoice([() => this.verticalStream(), () => this.horizontalStream(), () => this.tunnelBullets(),
                 () => this.diamondBullets(), () => this.verticalStream(1), () => this.horizontalStream(1)]);
             attack();
+            //DON'T REPEAT ATTACKS
             this.plannedElectricAttacks--;
             if (this.plannedElectricAttacks <= 0) {
                 this.triggeredElectric = false;

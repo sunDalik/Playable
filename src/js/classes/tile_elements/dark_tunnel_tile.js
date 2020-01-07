@@ -3,7 +3,7 @@ import {removeObjectFromArray} from "../../utils/basic_utils";
 import * as PIXI from "pixi.js";
 import {Game} from "../../game";
 import {getCardinalDirections} from "../../utils/map_utils";
-import {isNotAWall} from "../../map_checks";
+import {isNotAWall, isNotOutOfMap} from "../../map_checks";
 
 export class DarkTunnelTile extends FullTileElement {
     constructor(tilePositionX, tilePositionY, texture = PIXI.Texture.WHITE) {
@@ -35,8 +35,8 @@ export class DarkTunnelTile extends FullTileElement {
     }
 
     lightNearby() {
-        for (const dir of getCardinalDirections()) {
-            if (isNotAWall(this.tilePosition.x, this.tilePosition.y)) {
+        if (isNotAWall(this.tilePosition.x, this.tilePosition.y)) {
+            for (const dir of getCardinalDirections()) {
                 Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].alpha = this.nearbyAlpha;
             }
         }
@@ -44,7 +44,9 @@ export class DarkTunnelTile extends FullTileElement {
 
     checkNearbyLight() {
         for (const dir of getCardinalDirections()) {
-            if (Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].dark && Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].alpha <= this.nearbyAlpha) {
+            if (isNotOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y) &&
+                Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].dark &&
+                Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].alpha <= this.nearbyAlpha) {
                 Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].recalculateLight();
             }
         }
@@ -56,7 +58,8 @@ export class DarkTunnelTile extends FullTileElement {
 
             let foundLight = false;
             for (const dir of getCardinalDirections()) {
-                if (Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].dark === false) {
+                if (isNotOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)
+                    && Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].dark === false) {
                     foundLight = true;
                     break;
                 }
