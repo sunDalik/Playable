@@ -21,10 +21,9 @@ export class GuardianOfTheLight extends Boss {
         this.maxHealth = 32;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.GUARDIAN_OF_THE_LIGHT;
-        this.atk = 1.5;
+        this.atk = 1.5; //??
         this.name = "Guardian of the Light";
         this.maskLayer = {};
-        this.test = 2;
         this.toBecomeNeutral = false;
         this.dontChangeLook = false;
         this.triggeredElectric = false;
@@ -66,8 +65,16 @@ export class GuardianOfTheLight extends Boss {
     }
 
     move() {
-        for (const warningBullet of this.warningBullets) {
-            warningBullet.die();
+        /*
+        if you add final phase then constants will be like this:
+        phase 2 if this.health <= this.maxHealth / 1.25
+        phase 3 if this.health <= this.maxHealth / 1.75
+
+        final phase if !this.finalPhase && this.health <= Math.max(this.maxHealth / 5, average(this.overallDamage) * 3) && this.health <= this.maxHealth / 3
+         */
+
+        for (let i = this.warningBullets.length - 1; i >= 0; i--) {
+            this.warningBullets[i].die();
         }
         for (let i = this.bulletQueue.length - 1; i >= 0; i--) {
             const bullet = this.bulletQueue[i];
@@ -79,11 +86,11 @@ export class GuardianOfTheLight extends Boss {
             }
         }
 
-        if (this.phase === 1 && this.health <= this.maxHealth / 1.25) {
+        if (this.phase === 1 && this.health <= this.maxHealth / 1.35) {
             this.phase = 2;
             this.electricityDelay -= 2;
         }
-        if (this.phase === 2 && this.health <= this.maxHealth / 1.75) {
+        if (this.phase === 2 && this.health <= this.maxHealth / 2.5) {
             this.phase = 3;
             this.electricityDelay -= 3;
         }
@@ -137,11 +144,9 @@ export class GuardianOfTheLight extends Boss {
                 this.electricDoomWearOff = false;
                 this.electricityDelay = getRandomInt(11, 14);
             } else {
-                if (this.phase === 1) {
-                    this.electricityDelay = getRandomInt(8, 13);
-                } else {
-                    this.electricityDelay = getRandomInt(10, 14) - this.phase;
-                }
+                if (this.phase === 1) this.electricityDelay = getRandomInt(8, 13);
+                else if (this.phase === 2) this.electricityDelay = getRandomInt(8, 12);
+                else if (this.phase === 3) this.electricityDelay = getRandomInt(10, 14);
             }
 
         } else if (this.triggeredElectricDoom) {
@@ -412,8 +417,8 @@ export class GuardianOfTheLight extends Boss {
 
     die(source) {
         super.die(source);
-        for (const warningBullet of this.warningBullets) {
-            warningBullet.die();
+        for (let i = this.warningBullets.length - 1; i >= 0; i--) {
+            this.warningBullets[i].die();
         }
         for (let i = Game.bullets.length - 1; i >= 0; i--) {
             Game.bullets[i].die();
