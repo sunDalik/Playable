@@ -119,6 +119,9 @@ export function loadAll(afterLoad) {
         .add("src/images/bosses/paranoid_eel/sneeze_y.png")
 
         .add("src/images/bosses/guardian_of_the_light/neutral.png")
+        .add("src/images/bosses/guardian_of_the_light/electric.png")
+        .add("src/images/bosses/guardian_of_the_light/before_electric.png")
+        .add("src/images/bosses/guardian_of_the_light/after_electric.png")
 
         .add("src/images/bullets/electric_bullet.png")
         .add("src/images/bullets/fire_bullet.png")
