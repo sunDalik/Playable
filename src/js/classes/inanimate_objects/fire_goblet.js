@@ -16,7 +16,7 @@ export class FireGoblet extends TallTileElement {
         this.place();
     }
 
-    afterMapGen() {
+    immediateReaction() {
         this.relight();
     }
 

@@ -25,14 +25,17 @@ export class GuardianOfTheLight extends Boss {
         this.triggeredTeleport = false;
         this.triggeredFireTeleport = false;
         this.electricWearOff = false;
+        this.phase = 1;
         this.finalPhase = false;
         this.patience = {turns: 0, damage: 0};
+        this.startDelay = 4;
+        this.plannedElectricAttacks = 0;
         this.overallDamage = [];
-        this.updatePatience();
         this.initialZIndex = this.zIndex;
         this.scaleModifier = 1.25;
         this.warningBullets = [];
         this.bulletQueue = [];
+        this.electricityDelay = 1;
         this.fitToTile();
     }
 
@@ -56,6 +59,15 @@ export class GuardianOfTheLight extends Boss {
             }
         }
 
+        if (this.phase === 1 && this.health <= this.maxHealth / 1.25) {
+            this.phase = 2;
+            this.electricityDelay -= 2;
+        }
+        if (this.phase === 2 && this.health <= this.maxHealth / 1.75) {
+            this.phase = 3;
+            this.electricityDelay -= 3;
+        }
+
         if (this.afterTeleport) {
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/neutral.png"].texture;
             this.afterTeleport = false;
@@ -70,6 +82,12 @@ export class GuardianOfTheLight extends Boss {
         }
         if (!this.finalPhase && this.health <= Math.max(this.maxHealth / 5, average(this.overallDamage) * 3) && this.health <= this.maxHealth / 3) {
             this.activateFinalPhase();
+        } else if (this.startDelay > 0) {
+            this.startDelay--;
+            if (this.startDelay <= 0) {
+                this.triggeredTeleport = true;
+                this.texture = Game.resources["src/images/bosses/guardian_of_the_light/about_to_teleport.png"].texture;
+            }
         } else if (this.waitingToMove) {
             this.waitingToMove = false;
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/neutral.png"].texture;
@@ -89,17 +107,24 @@ export class GuardianOfTheLight extends Boss {
             this.electricWearOff = false;
             this.waitingToMove = true;
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/after_electric.png"].texture;
+            this.electricityDelay = getRandomInt(8, 13) - this.phase;
         } else if (this.triggeredElectric) {
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/electric.png"].texture;
             const attack = randomChoice([() => this.verticalStream(), () => this.horizontalStream(), () => this.tunnelBullets(),
                 () => this.diamondBullets(), () => this.verticalStream(1), () => this.horizontalStream(1)]);
             attack();
-            this.triggeredElectric = false;
-            this.electricWearOff = true;
-        } else if (Math.random() < 0.3) {
+            this.plannedElectricAttacks--;
+            if (this.plannedElectricAttacks <= 0) {
+                this.triggeredElectric = false;
+                this.electricWearOff = true;
+            } else {
+                this.shake(0, 1);
+            }
+        } else if (this.electricityDelay <= 0) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/before_electric.png"].texture;
             this.triggeredElectric = true;
+            this.plannedElectricAttacks = this.phase;
             this.shake(0, 1);
         } else if (this.patience.turns <= 0) {
             if (this.health > this.maxHealth / 1.5) {
@@ -112,6 +137,7 @@ export class GuardianOfTheLight extends Boss {
             }
         }
         this.patience.turns--;
+        this.electricityDelay--;
     }
 
     verticalStream(gap = 2) {
@@ -241,7 +267,7 @@ export class GuardianOfTheLight extends Boss {
 
     updatePatience() {
         this.patience.turns = getRandomInt(20, 30);
-        this.patience.damage = getRandomInt(4, 8);
+        this.patience.damage = getRandomInt(3, 6);
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
@@ -254,6 +280,11 @@ export class GuardianOfTheLight extends Boss {
         this.patience.damage -= dmg;
         if (this.patience.damage <= 0) {
             this.patience.turns = 0;
+            if (this.startDelay > 0) {
+                this.startDelay = 0;
+                this.triggeredTeleport = true;
+                this.texture = Game.resources["src/images/bosses/guardian_of_the_light/about_to_teleport.png"].texture;
+            }
         }
     }
 
