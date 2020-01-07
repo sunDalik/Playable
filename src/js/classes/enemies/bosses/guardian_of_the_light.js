@@ -33,6 +33,8 @@ export class GuardianOfTheLight extends Boss {
         this.patience = {turns: 0, damage: 0};
         this.startDelay = 4;
         this.plannedElectricAttacks = 0;
+        this.possibleAttacks = [this.verticalStream, this.horizontalStream, this.tunnelBullets, this.diamondBullets];
+        this.usedAttacks = [];
         this.overallDamage = [];
         this.initialZIndex = this.zIndex;
         this.scaleModifier = 1.25;
@@ -114,10 +116,12 @@ export class GuardianOfTheLight extends Boss {
             this.electricityDelay = getRandomInt(8, 13) - this.phase;
         } else if (this.triggeredElectric) {
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/electric.png"].texture;
-            const attack = randomChoice([() => this.verticalStream(), () => this.horizontalStream(), () => this.tunnelBullets(),
-                () => this.diamondBullets(), () => this.verticalStream(1), () => this.horizontalStream(1)]);
-            attack();
-            //DON'T REPEAT ATTACKS
+            const attack = randomChoice(this.possibleAttacks.filter(attack => !this.usedAttacks.includes(attack)));
+            this.usedAttacks.push(attack);
+            if (attack === this.verticalStream || attack === this.horizontalStream) {
+                if (Math.random() < 0.5) attack.call(this, 2);
+                else attack.call(this, 1);
+            } else attack.call(this);
             this.plannedElectricAttacks--;
             if (this.plannedElectricAttacks <= 0) {
                 this.triggeredElectric = false;
@@ -130,6 +134,7 @@ export class GuardianOfTheLight extends Boss {
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/before_electric.png"].texture;
             this.triggeredElectric = true;
             this.plannedElectricAttacks = this.phase;
+            this.usedAttacks = [];
             this.shake(0, 1);
         } else if (this.patience.turns <= 0) {
             if (this.phase === 3) {
@@ -176,9 +181,9 @@ export class GuardianOfTheLight extends Boss {
     tunnelBullets() {
         const prepareTunnelBullets = dir => {
             this.prepareBullets(this.tilePosition.x + dir, this.tilePosition.y,
-                [{x: dirX, y: 0}, {x: dir, y: 1}, {x: dir, y: 0}, {x: dir, y: 0}, {x: dir, y: -1}], 6);
+                [{x: dir, y: 0}, {x: dir, y: 1}, {x: dir, y: 0}, {x: dir, y: 0}, {x: dir, y: -1}], 6);
             this.prepareBullets(this.tilePosition.x + dir, this.tilePosition.y,
-                [{x: dirX, y: 0}, {x: dir, y: -1}, {x: dir, y: 0}, {x: dir, y: 0}, {x: dir, y: 1}], 6);
+                [{x: dir, y: 0}, {x: dir, y: -1}, {x: dir, y: 0}, {x: dir, y: 0}, {x: dir, y: 1}], 6);
         };
 
         //relies on the first element having X direction
