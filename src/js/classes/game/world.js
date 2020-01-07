@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import {Game} from "../../game";
-import {isAnyWall, isEmpty} from "../../map_checks";
-import {EQUIPMENT_TYPE, HAZARD_TYPE, ROLE, STAGE, TILE_TYPE, TOOL_TYPE} from "../../enums";
+import {canBeFliedOverByBullet, getPlayerOnTile, isAnyWall, isEnemy} from "../../map_checks";
+import {EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE, TOOL_TYPE} from "../../enums";
 import {removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {lightPlayerPosition} from "../../drawing/lighting";
 import {otherPlayer} from "../../utils/game_utils";
@@ -61,17 +61,12 @@ export class World extends PIXI.Container {
     addBullet(bullet) {
         Game.bullets.push(bullet);
         this.addChild(bullet);
-        if (isEmpty(bullet.tilePosition.x, bullet.tilePosition.y)) {
+        if (isEnemy(bullet.tilePosition.x, bullet.tilePosition.y) || getPlayerOnTile(bullet.tilePosition.x, bullet.tilePosition.y) !== null) {
+            bullet.attack(Game.map[bullet.tilePosition.y][bullet.tilePosition.x].entity);
+        } else if (canBeFliedOverByBullet(bullet.tilePosition.x, bullet.tilePosition.y)) {
             bullet.placeOnMap();
         } else {
-            const entity = Game.map[bullet.tilePosition.y][bullet.tilePosition.x].entity;
-            if (entity) {
-                if (entity.role === ROLE.ENEMY || entity.role === ROLE.PLAYER) {
-                    bullet.attack(Game.map[bullet.tilePosition.y][bullet.tilePosition.x].entity);
-                } else if (entity.role === ROLE.BULLET) {
-                    bullet.placeOnMap();
-                } else bullet.die();
-            } else bullet.die();
+            bullet.die();
         }
     }
 

@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ENEMY_TYPE, STAGE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {getRandomInt, randomChoice} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
@@ -25,9 +25,11 @@ export class GuardianOfTheLight extends Boss {
         this.toBecomeNeutral = false;
         this.dontChangeLook = false;
         this.triggeredElectric = false;
+        this.triggeredElectricDoom = false;
         this.triggeredTeleport = false;
         this.triggeredFireTeleport = false;
         this.electricWearOff = false;
+        this.electricDoomWearOff = false;
         this.phase = 1;
         this.finalPhase = false;
         this.patience = {turns: 0, damage: 0};
@@ -35,6 +37,7 @@ export class GuardianOfTheLight extends Boss {
         this.plannedElectricAttacks = 0;
         this.possibleAttacks = [this.verticalStream, this.horizontalStream, this.tunnelBullets, this.diamondBullets];
         this.usedAttacks = [];
+        this.canCreateDoom = true;
         this.overallDamage = [];
         this.initialZIndex = this.zIndex;
         this.scaleModifier = 1.25;
@@ -97,23 +100,46 @@ export class GuardianOfTheLight extends Boss {
         } else if (this.waitingToMove) {
             this.waitingToMove = false;
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/neutral.png"].texture;
-            if (!this.triggeredElectric && !this.electricWearOff && !this.triggeredFireTeleport) {
+            if (this.triggeredElectricDoom || this.triggeredElectric) {
+                this.texture = Game.resources["src/images/bosses/guardian_of_the_light/electric.png"].texture;
+                this.shake(0, 1);
+            }
+            if (!this.triggeredElectric && !this.triggeredElectricDoom && !this.electricWearOff && !this.triggeredFireTeleport) {
                 Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
             }
         } else if (this.triggeredTeleport) {
             this.teleport();
             this.triggeredTeleport = false;
             this.toBecomeNeutral = true;
+
         } else if (this.triggeredFireTeleport) {
             this.fireTeleport();
             this.triggeredFireTeleport = false;
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/fire.png"].texture;
             this.waitingToMove = true;
-        } else if (this.electricWearOff) {
+
+        } else if (this.electricWearOff || this.electricDoomWearOff) {
             this.electricWearOff = false;
             this.toBecomeNeutral = true;
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/after_electric.png"].texture;
-            this.electricityDelay = getRandomInt(8, 13) - this.phase;
+            if (this.electricDoomWearOff) {
+                this.electricDoomWearOff = false;
+                this.electricityDelay = getRandomInt(11, 14);
+            } else {
+                if (this.phase === 1) {
+                    this.electricityDelay = getRandomInt(8, 13);
+                } else {
+                    this.electricityDelay = getRandomInt(10, 14) - this.phase;
+                }
+            }
+
+        } else if (this.triggeredElectricDoom) {
+            this.texture = Game.resources["src/images/bosses/guardian_of_the_light/electric.png"].texture;
+            if (Math.random() < 0.5) this.horizontalDoomBullets();
+            else this.verticalDoomBullets();
+            this.triggeredElectricDoom = false;
+            this.electricDoomWearOff = true;
+
         } else if (this.triggeredElectric) {
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/electric.png"].texture;
             const attack = randomChoice(this.possibleAttacks.filter(attack => !this.usedAttacks.includes(attack)));
@@ -129,13 +155,24 @@ export class GuardianOfTheLight extends Boss {
             } else {
                 this.shake(0, 1);
             }
+
         } else if (this.electricityDelay <= 0) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/before_electric.png"].texture;
-            this.triggeredElectric = true;
+            if (this.phase === 3) {
+                if (Math.random() < 0.5 && this.canCreateDoom) {
+                    this.triggeredElectricDoom = true;
+                    this.waitingToMove = true;
+                    this.canCreateDoom = false;
+                } else {
+                    this.triggeredElectric = true;
+                    this.canCreateDoom = true;
+                }
+            } else this.triggeredElectric = true;
             this.plannedElectricAttacks = this.phase;
             this.usedAttacks = [];
             this.shake(0, 1);
+
         } else if (this.patience.turns <= 0) {
             if (this.phase === 3) {
                 Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
@@ -146,6 +183,7 @@ export class GuardianOfTheLight extends Boss {
                 this.texture = Game.resources["src/images/bosses/guardian_of_the_light/about_to_teleport.png"].texture;
             }
         }
+
         this.patience.turns--;
         this.electricityDelay--;
     }
@@ -227,13 +265,13 @@ export class GuardianOfTheLight extends Boss {
         this.tilePosition = location;
         this.placeOnMap();
         const time = 18;
-        const alphaStep1 = 1 / (time / 3);
-        const alphaStep2 = 1 / (time * 2 / 3);
+        const alphaStep1 = 1 / (time / 4);
+        const alphaStep2 = 1 / (time * 3 / 4);
         let counter = 0;
         const animation = delta => {
             if (Game.paused) return;
             counter += delta;
-            if (counter < time / 3) {
+            if (counter < time / 4) {
                 this.zIndex = Game.darkTiles[0][0].zIndex + 1;
                 this.alpha -= alphaStep1;
             } else {
