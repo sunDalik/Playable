@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ENEMY_TYPE, EQUIPMENT_TYPE, TOOL_TYPE} from "../../../enums";
+import {ENEMY_TYPE, EQUIPMENT_TYPE, INANIMATE_TYPE, TOOL_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {getRandomInt, randomChoice} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
@@ -62,6 +62,8 @@ export class GuardianOfTheLight extends Boss {
             removeEquipmentFromPlayer(Game.player2, EQUIPMENT_TYPE.TOOL);
         }
         extinguishTorch();
+
+        //todo: teleport players on different sides
     }
 
     move() {
@@ -135,6 +137,7 @@ export class GuardianOfTheLight extends Boss {
             this.fireTeleport();
             this.triggeredFireTeleport = false;
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/fire.png"].texture;
+            this.toBecomeNeutral = true;
 
         } else if (this.electricWearOff || this.electricDoomWearOff) {
             this.electricWearOff = false;
@@ -373,7 +376,7 @@ export class GuardianOfTheLight extends Boss {
 
     updatePatience() {
         this.patience.turns = getRandomInt(24, 32) - this.phase * 2;
-        this.patience.damage = getRandomInt(3, 6);
+        this.patience.damage = getRandomInt(3, 5);
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
@@ -430,5 +433,11 @@ export class GuardianOfTheLight extends Boss {
         Game.map[torchY][torchX].item = torch;
         Game.world.addChild(torch);
         lightPosition({x: torchX, y: torchY}, torch.item.lightSpread, true);
+
+        for (const inanimate of Game.inanimates) {
+            if (inanimate.type === INANIMATE_TYPE.FIRE_GOBLET) {
+                inanimate.shatter();
+            }
+        }
     }
 }
