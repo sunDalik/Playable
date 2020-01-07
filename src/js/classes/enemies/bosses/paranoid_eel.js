@@ -84,6 +84,7 @@ export class ParanoidEel extends Boss {
         if (this.waitingToMove) {
             this.waitingToMove = false;
             if (this.triggeredSpinAttack || this.triggeredPoisonEelSpit || this.triggeredSneezeAttack) this.shake(this.direction.y, this.direction.x);
+            if (this.triggeredHorizontalRush || this.triggeredVerticalRush) this.shake(this.direction.x, this.direction.y);
         } else if (this.triggeredStraightPoisonAttack) {
             this.straightPoisonAttack();
             this.triggeredStraightPoisonAttack = false;
@@ -144,6 +145,7 @@ export class ParanoidEel extends Boss {
                 const dir = this.canDoVerticalRushAttack();
                 if (dir && this.canPlaceWithDirection(dir)) {
                     this.triggeredVerticalRush = true;
+                    this.waitingToMove = true;
                     this.currentVerticalRushCounter = 0;
                     this.removeFromMap();
                     this.direction = dir;
@@ -156,6 +158,7 @@ export class ParanoidEel extends Boss {
                 const dir = this.canDoHorizontalRushAttack();
                 if (dir && this.canPlaceWithDirection(dir)) {
                     this.triggeredHorizontalRush = true;
+                    this.waitingToMove = true;
                     this.removeFromMap();
                     this.direction = dir;
                     this.placeOnMap();
