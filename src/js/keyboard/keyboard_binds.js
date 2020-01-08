@@ -18,8 +18,8 @@ export function bindKeys() {
 
     bindMovement(Game.player, {upCode: "KeyW", leftCode: "KeyA", downCode: "KeyS", rightCode: "KeyD"});
     bindMovement(Game.player2, {upCode: "KeyI", leftCode: "KeyJ", downCode: "KeyK", rightCode: "KeyL"});
-    bindMagic(Game.player, {oneCode: "Digit1", twoCode: "Digit2", threeCode: "Digit3", fourCode: "Digit4"});
-    bindMagic(Game.player2, {oneCode: "Digit7", twoCode: "Digit8", threeCode: "Digit9", fourCode: "Digit0"});
+    bindMagic(Game.player, {oneCode: "Digit1", twoCode: "Digit2", threeCode: "Digit3"});
+    bindMagic(Game.player2, {oneCode: "Digit8", twoCode: "Digit9", threeCode: "Digit0"});
 
     switchKey.press = () => {
         playerTurn(null, switchPlayers, true)
@@ -40,30 +40,12 @@ export function bindKeys() {
     weaponKeyP2.press = () => {
         playerTurn(Game.player2, () => Game.player2.concentrateWeapon())
     };
-
-    /*const pushKeyP1 = keyboard("KeyR");
-    pushKeyP1.press = () => {
-        playerTurn(Game.player, () => Game.player.pushOrPull())
-    };*/
-
-    /*const pushKeyP2 = keyboard("KeyP");
-    pushKeyP2.press = () => {
-        playerTurn(Game.player2, () => Game.player2.pushOrPull())
-    };*/
-
     releaseKey.press = () => {
         playerTurn(null, () => {
             if (Game.player.releaseMagic()) return true;
             else return Game.player2.releaseMagic();
         }, true);
     };
-
-    /*const followKey = keyboard("KeyF");
-    followKey.press = () => {
-        playerTurn(null, toggleFollowMode, true)
-    };*/
-
-    //keyboard("KeyN").press = gotoNextLevel; //for tests
 }
 
 function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
@@ -91,11 +73,10 @@ function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {
     return {upKey: upKey, leftKey: leftKey, downKey: downKey, rightKey: rightKey}
 }
 
-function bindMagic(player, {oneCode, twoCode, threeCode, fourCode}) {
+function bindMagic(player, {oneCode, twoCode, threeCode}) {
     const oneKey = keyboard(oneCode);
     const twoKey = keyboard(twoCode);
     const threeKey = keyboard(threeCode);
-    const fourKey = keyboard(fourCode);
     oneKey.press = () => {
         if (player.magic1) playerTurn(player, () => player.castMagic(player.magic1));
     };
@@ -105,14 +86,10 @@ function bindMagic(player, {oneCode, twoCode, threeCode, fourCode}) {
     threeKey.press = () => {
         if (player.magic3) playerTurn(player, () => player.castMagic(player.magic3));
     };
-    fourKey.press = () => {
-        if (player.magic4) playerTurn(player, () => player.castMagic(player.magic4));
-    };
     keys.push(oneKey);
     keys.push(twoKey);
     keys.push(threeKey);
-    keys.push(fourKey);
-    return {oneKey: oneKey, twoKey: twoKey, threeKey: threeKey, fourKey: fourKey}
+    return {oneKey: oneKey, twoKey: twoKey, threeKey: threeKey}
 }
 
 

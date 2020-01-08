@@ -14,7 +14,7 @@ export class WizardRobe {
     }
 
     onWear(player) {
-        for (const eq of [player.magic1, player.magic2, player.magic3, player.magic4, player.weapon, player.secondHand]) {
+        for (const eq of [player.magic1, player.magic2, player.magic3, player.weapon, player.secondHand]) {
             if (this.upgradeMagicEquipment(eq)) {
                 redrawSlotContents(player, player.getPropertyNameOfItem(eq));
             }
@@ -22,7 +22,7 @@ export class WizardRobe {
     }
 
     onTakeOff(player) {
-        for (const eq of [player.magic1, player.magic2, player.magic3, player.magic4, player.weapon, player.secondHand]) {
+        for (const eq of [player.magic1, player.magic2, player.magic3, player.weapon, player.secondHand]) {
             if (eq) {
                 let preserveUses = false;
                 if (eq.equipmentType === EQUIPMENT_TYPE.WEAPON) preserveUses = true;

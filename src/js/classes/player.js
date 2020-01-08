@@ -70,7 +70,6 @@ export class Player extends AnimatedTileElement {
         this.magic1 = null;
         this.magic2 = null;
         this.magic3 = null;
-        this.magic4 = null;
         this.shielded = false;
         this.canDoubleAttack = false;
         this.attackTimeout = null;
@@ -210,7 +209,6 @@ export class Player extends AnimatedTileElement {
         if (i === 1) return this.magic1;
         else if (i === 2) return this.magic2;
         else if (i === 3) return this.magic3;
-        else if (i === 4) return this.magic4;
         else return null;
     }
 
@@ -219,7 +217,6 @@ export class Player extends AnimatedTileElement {
         if (i === 1) this.magic1 = magic;
         else if (i === 2) this.magic2 = magic;
         else if (i === 3) this.magic3 = magic;
-        else if (i === 4) this.magic4 = magic;
         redrawSlotContents(this, "magic" + i);
     }
 
@@ -521,7 +518,6 @@ export class Player extends AnimatedTileElement {
         if (this.magic1 === null) this.magic1 = magic;
         else if (this.magic2 === null) this.magic2 = magic;
         else if (this.magic3 === null) this.magic3 = magic;
-        else if (this.magic4 === null) this.magic4 = magic;
         else return;
         for (const eq of this.getEquipment()) {
             if (eq && eq.onEquipmentReceive) {
@@ -549,7 +545,7 @@ export class Player extends AnimatedTileElement {
     }
 
     getMagic() {
-        return [this.magic1, this.magic2, this.magic3, this.magic4];
+        return [this.magic1, this.magic2, this.magic3];
     }
 
     getEquipmentAndMagic() {
@@ -723,8 +719,6 @@ export class Player extends AnimatedTileElement {
                 return "magic2";
             case this.magic3:
                 return "magic3";
-            case this.magic4:
-                return "magic4";
             case this.weapon:
                 return "weapon";
             case this.secondHand:

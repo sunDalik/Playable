@@ -1,5 +1,6 @@
 import {Game} from "../game";
 import {
+    healthBarLength,
     heartBorderOffsetX,
     heartColOffset,
     heartRowOffset,
@@ -68,19 +69,15 @@ export function redrawHealthForPlayer(player) {
     removeAllChildrenFromContainer(container);
     const heartXOffset = player === Game.player ?
         heartBorderOffsetX :
-        Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset;
+        Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * getHealthBarLength(player) + heartColOffset;
     const healthArray = getHealthArray(player);
     for (let i = 0; i < healthArray.length; ++i) {
         const heart = new PIXI.Sprite(getHeartTexture(healthArray[i]));
         heart.width = heartSize;
         heart.height = heartSize;
         heart.anchor.set(0.5, 0.5);
-        if (player === Game.player2 && i === 0 || player === Game.player && i !== 0) {
-            //heart.angle = 180;
-            //heart.scale.x *= -1;
-        }
-        heart.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.floor(i / 5) + heart.height * heart.anchor.y;
-        heart.position.x = heartXOffset + (i % 5) * (heartColOffset + heartSize) + heart.width * heart.anchor.x;
+        heart.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.floor(i / healthBarLength) + heart.height * heart.anchor.y;
+        heart.position.x = heartXOffset + (i % healthBarLength) * (heartColOffset + heartSize) + heart.width * heart.anchor.x;
         container.addChild(heart);
     }
 }
@@ -90,14 +87,14 @@ export function redrawSlotsForPlayer(player) {
     removeAllChildrenFromContainer(container);
 
     const topRowSlots = [getSlotWithName("Magic"), getSlotWithName("Magic"),
-        getSlotWithName("Magic"), getSlotWithName("Magic")];
+        getSlotWithName("Magic")];
     const secondRowSlots = [getSlotWithName("Weapon"), getSlotWithName("Extra")];
     const columnSlots = [getSlotWithName("Head"), getSlotWithName("Armor"), getSlotWithName("Feet")];
 
-    const slotsYOffset = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5) + slotOffsetFromHeartsY;
+    const slotsYOffset = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / healthBarLength) + slotOffsetFromHeartsY;
     const slotsXOffset = player === Game.player ?
         slotBorderOffsetX :
-        Game.app.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * 4 + slotsColOffset;
+        Game.app.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * 3 + slotsColOffset;
 
     const slotsEquipmentOffset = player === Game.player ?
         slotsXOffset :
@@ -173,11 +170,11 @@ export function redrawSlotsForPlayer(player) {
 export function drawStatsForPlayer(player) {
     const container = player === Game.player ? HUD.stats1 : HUD.stats2;
     removeAllChildrenFromContainer(container);
-    const text = new PIXI.Text(`ATK = ${player.getAtkBaseWithWeapon(player.weapon)} x${player.getAtkMul()} = ${player.getAtkWithWeapon(player.weapon)}\nDEF = ${player.getDefBase()} x${player.getDefMul()} = ${player.getDef()}`, HUDTextStyle);
+    const text = new PIXI.Text(`ATK ${player.getAtkWithWeapon(player.weapon)}\nDEF ${player.getDef()}`, HUDTextStyle);
 
     if (player === Game.player) text.position.x = slotBorderOffsetX + slotSize * 2 + slotsColOffset + statsOffsetX;
     else text.position.x = Game.app.renderer.screen.width - slotBorderOffsetX - slotSize * 2 - slotsColOffset - text.width - statsOffsetX;
-    text.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / 5) + slotOffsetFromHeartsY + slotSize + slotsRowOffset + slotSize / 2 - text.height / 2;
+    text.position.y = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / healthBarLength) + slotOffsetFromHeartsY + slotSize + slotsRowOffset + slotSize / 2 - text.height / 2;
     container.addChild(text);
 }
 
@@ -256,13 +253,11 @@ export function redrawSlotContents(player, slot) {
                 if (item === player.magic1) return "1" + release;
                 else if (item === player.magic2) return "2" + release;
                 else if (item === player.magic3) return "3" + release;
-                else if (item === player.magic4) return "4" + release;
                 else return false;
             } else {
-                if (item === player.magic1) return "7" + release;
-                else if (item === player.magic2) return "8" + release;
-                else if (item === player.magic3) return "9" + release;
-                else if (item === player.magic4) return "0" + release;
+                if (item === player.magic1) return "8" + release;
+                else if (item === player.magic2) return "9" + release;
+                else if (item === player.magic3) return "0" + release;
                 else return false;
             }
         } else return false;
@@ -273,7 +268,6 @@ export function redrawAllMagicSlots(player) {
     redrawSlotContents(player, "magic1");
     redrawSlotContents(player, "magic2");
     redrawSlotContents(player, "magic3");
-    redrawSlotContents(player, "magic4");
 }
 
 export function redrawWeapon(player) {
@@ -309,7 +303,7 @@ export function drawMovementKeyBindings() {
         const topKey = "W";
         const bottomRowKeys = ["A", "S", "D"];
         if (!Game.player.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {
-            drawKey(container, topKey, heartXOffset + 5 * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+            drawKey(container, topKey, heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         } else bottomRowKeys[1] = "";
         if (Game.player.pushPullMode && Game.player.tilePosition.y !== Game.player2.tilePosition.y) {
             bottomRowKeys[0] = "";
@@ -317,14 +311,14 @@ export function drawMovementKeyBindings() {
         }
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
-                drawKey(container, bottomRowKeys[i], heartXOffset + 5 * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
+                drawKey(container, bottomRowKeys[i], heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
                     heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
             }
         }
     }
 
     if (!Game.player2.dead && !Game.player.pushPullMode) {
-        const heartXOffset = Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 - HUDGuideOffsetX;
+        const heartXOffset = Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * getHealthBarLength(Game.player2) - HUDGuideOffsetX;
         let topKey = "I";
         const bottomRowKeys = ["L", "K", "J"];
         if (!Game.player2.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {
@@ -367,25 +361,8 @@ export function drawInteractionKeys() {
     const offsetY = 20;
     const iconSize = 30;
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
-        const playerSprite = drawPlayer(Game.player);
+        drawPlayer(Game.player);
         drawPlayer(Game.player2);
-        /*if (Game.followMode) {
-            drawIconAndKey("src/images/icons/unchain_icon.png", "F",
-                Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
-            const chain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
-            chain.width = chain.height = playerSize;
-            chain.anchor.set(0.5, 0.5);
-            chain.zIndex = Game.primaryPlayer.zIndex;
-            chain.angle = 45;
-            chain.alpha = 0.8;
-            chain.position.x = playerSprite.position.x + playerSprite.width / 2;
-            chain.position.y = playerSprite.position.y + playerSprite.height / 2;
-            container.addChild(chain);
-        } else {
-            drawIconAndKey("src/images/icons/chain_icon.png", "F",
-                Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
-        }*/
-        //const swapTexture = Game.player === Game.primaryPlayer ? "src/images/icons/swap_icon_1.png" : "src/images/icons/swap_icon_2.png";
         const ZKey = drawKey(container, "Z",
             Game.app.renderer.screen.width / 2 - HUDKeyBindSize / 2, offsetY + playerSize / 2 - HUDKeyBindSize / 2);
         ZKey.zIndex = Game.primaryPlayer.zIndex + 1;
@@ -409,35 +386,13 @@ export function drawInteractionKeys() {
             container.addChild(icon);
             drawKey(container, keyText, posX - HUDKeyBindSize / 2, posY + iconSize + 5);
         }
-    } /*else if (Math.abs(Game.player.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(Game.player.tilePosition.y - Game.player2.tilePosition.y) === 1) {
-        const togetherSprite = new PIXI.Sprite(Game.resources["src/images/icons/together_icon.png"].texture);
-        togetherSprite.width = playerSize * 2;
-        togetherSprite.height = playerSize;
-        togetherSprite.position.x = Game.app.renderer.screen.width / 2 - togetherSprite.width / 2;
-        togetherSprite.position.y = offsetY;
-        container.addChild(togetherSprite);
-        if (!Game.player2.pushPullMode)
-            drawKey(container, "R", Game.app.renderer.screen.width / 2 - togetherSprite.width / 2 - HUDKeyBindSize, offsetY + playerSize / 2 - HUDKeyBindSize);
-        if (!Game.player.pushPullMode)
-            drawKey(container, "P", Game.app.renderer.screen.width / 2 + togetherSprite.width / 2, offsetY + playerSize / 2 - HUDKeyBindSize);
-        const fKey = drawKey(container, "F", Game.app.renderer.screen.width / 2 - HUDKeyBindSize / 2, offsetY + togetherSprite.height / 2 - HUDKeyBindSize / 2);
-        fKey.zIndex = 1;
-        if (Game.followMode) {
-            const chain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
-            chain.width = chain.height = playerSize;
-            chain.anchor.set(0.5, 0.5);
-            chain.angle = 45;
-            chain.position.x = togetherSprite.position.x + togetherSprite.width / 2;
-            chain.position.y = togetherSprite.position.y + togetherSprite.height / 2;
-            container.addChild(chain);
-        }
-    }*/
+    }
 }
 
 export function redrawEnergy() {
     const container = HUD.energy;
     removeAllChildrenFromContainer(container);
-    const text = new PIXI.Text(`LE = ${Game.lightEnergy}\nDE = ${Game.darkEnergy}`, HUDTextStyle);
+    const text = new PIXI.Text(`LE ${Game.lightEnergy}\nDE ${Game.darkEnergy}`, HUDTextStyle);
     container.addChild(text);
 }
 
@@ -504,7 +459,7 @@ function drawOther() {
     removeAllChildrenFromContainer(container);
     const playerSize = 60;
     drawPlayer(Game.player, heartBorderOffsetX + heartSize / 2 - playerSize / 2, heartYOffset + heartSize / 2 - playerSize / 2);
-    drawPlayer(Game.player2, Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * 5 + heartColOffset + heartSize / 2 - playerSize / 2,
+    drawPlayer(Game.player2, Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * getHealthBarLength(Game.player2) + heartColOffset + heartSize / 2 - playerSize / 2,
         heartYOffset + heartSize / 2 - playerSize / 2);
 
     function drawPlayer(player, posX, posY) {
@@ -513,7 +468,6 @@ function drawOther() {
         else {
             playerSprite = new PIXI.Sprite(Game.resources["src/images/player2.png"].texture);
             playerSprite.anchor.set(0.5, 0.5);
-            //playerSprite.angle = 180;
         }
         playerSprite.width = playerSprite.height = playerSize;
         playerSprite.alpha = 0.5;
@@ -521,4 +475,8 @@ function drawOther() {
         playerSprite.position.y = posY + playerSprite.height * playerSprite.anchor.y;
         container.addChild(playerSprite);
     }
+}
+
+function getHealthBarLength(player) {
+    return Math.min(player.maxHealth, healthBarLength);
 }
