@@ -114,5 +114,9 @@ export class Obelisk extends FullTileElement {
 
     onUpdate() {
         //todo: add -heart icon
+        if (!this.working) {
+            //no highlight
+            this.filters = [];
+        }
     }
 }
