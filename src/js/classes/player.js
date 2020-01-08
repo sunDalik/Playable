@@ -29,7 +29,6 @@ import {isInanimate, isRelativelyEmpty} from "../map_checks";
 import {
     activateBossMode,
     amIInTheBossRoom,
-    checkFollowMode,
     gotoNextLevel,
     removeEquipmentFromPlayer,
     swapEquipmentWithPlayer,
@@ -55,11 +54,8 @@ export class Player extends AnimatedTileElement {
         this.atkMul = 1;
         this.defBase = 0;
         this.defMul = 1;
-        this.STEP_ANIMATION_TIME = 8;
-        this.BUMP_ANIMATION_TIME = 12;
         this.SLIDE_ANIMATION_TIME = 8;
         this.SLIDE_BUMP_ANIMATION_TIME = 10;
-        this.PUSH_PULL_ANIMATION_TIME = 6;
         this.role = ROLE.PLAYER;
         this.dead = false;
         this.weapon = null;
@@ -76,7 +72,6 @@ export class Player extends AnimatedTileElement {
         this.savedTileStepX = 0;
         this.savedTileStepY = 0;
         this.animationSubSprites = [];
-        this.pushPullMode = false;
         this.cancellable = true;
         this.fireImmunity = 0;
         this.poisonImmunity = 0;
@@ -106,33 +101,7 @@ export class Player extends AnimatedTileElement {
     }
 
     move(tileStepX, tileStepY, event) {
-        if (otherPlayer(this).pushPullMode || otherPlayer(this).charging) return false;
-        if (this.pushPullMode) {
-            if (this.tilePosition.x === otherPlayer(this).tilePosition.x && tileStepY !== 0
-                || this.tilePosition.y === otherPlayer(this).tilePosition.y && tileStepX !== 0) {
-                let result = false;
-                if (isRelativelyEmpty(otherPlayer(this).tilePosition.x + tileStepX, otherPlayer(this).tilePosition.y + tileStepY)) {
-                    if (isRelativelyEmpty(otherPlayer(this).tilePosition.x + tileStepX * 2, otherPlayer(this).tilePosition.y + tileStepY * 2)) {
-                        otherPlayer(this).place();
-                        otherPlayer(this).slide(tileStepX * 2, tileStepY * 2, this.SLIDE_ANIMATION_TIME);
-                        result = true;
-                    } else {
-                        otherPlayer(this).place();
-                        otherPlayer(this).slide(tileStepX, tileStepY, this.SLIDE_ANIMATION_TIME / 2);
-                        result = true;
-                    }
-                } else {
-                    otherPlayer(this).microSlide(0, 0);
-                    result = false;
-                }
-                this.pushPullMode = false;
-                checkFollowMode();
-                drawMovementKeyBindings();
-                drawInteractionKeys();
-                return result;
-            } else return false;
-        }
-
+        if (otherPlayer(this).charging) return false;
         if (this.charging) {
             return this.releaseMagic(tileStepX, tileStepY);
         }
@@ -191,7 +160,7 @@ export class Player extends AnimatedTileElement {
 
 
     castMagic(magic) {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode || otherPlayer(this).charging || this.charging) return false;
+        if (otherPlayer(this).charging || this.charging) return false;
         if (magic) {
             const magicResult = magic.cast(this);
             if (magicResult === false) return false;
@@ -553,7 +522,6 @@ export class Player extends AnimatedTileElement {
     }
 
     releaseMagic(stepX = 0, stepY = 0) {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode) return false;
         if (this.chargingMagic) {
             const magicResult = this.chargingMagic.release(this, stepX, stepY);
             if (magicResult === true) {
@@ -623,7 +591,7 @@ export class Player extends AnimatedTileElement {
     }
 
     useSecondHand() {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode || this.charging) return false;
+        if (this.charging) return false;
         if (!this.secondHand) return false;
         if (this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD) {
             if (this.secondHand.activate(this)) {
@@ -647,7 +615,7 @@ export class Player extends AnimatedTileElement {
     }
 
     concentrateWeapon() {
-        if (this.pushPullMode || otherPlayer(this).pushPullMode || this.charging) return false;
+        if (this.charging) return false;
         if (!this.weapon || !this.weapon.concentrate) return false;
         if (this.weapon.concentrate(this)) {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type) {
@@ -656,23 +624,6 @@ export class Player extends AnimatedTileElement {
             if (this.armor && this.armor.type === ARMOR_TYPE.ELECTRIC && this.weapon.concentration === 1) return false;
             return true;
         } else return false;
-    }
-
-    pushOrPull() {
-        if (otherPlayer(this).pushPullMode || otherPlayer(this).charging || this.charging) return false;
-        if (this.pushPullMode) {
-            this.pushPullMode = false;
-            otherPlayer(this).microSlide(0, 0);
-        } else {
-            if (Math.abs(otherPlayer(this).tilePosition.x - this.tilePosition.x) + Math.abs(otherPlayer(this).tilePosition.y - this.tilePosition.y) === 1) {
-                this.pushPullMode = true;
-                otherPlayer(this).microSlide(this.tilePosition.x - otherPlayer(this).tilePosition.x, this.tilePosition.y - otherPlayer(this).tilePosition.y);
-                otherPlayer(this).cancellable = false;
-            }
-        }
-        drawMovementKeyBindings();
-        drawInteractionKeys();
-        return false;
     }
 
     microSlide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.MICRO_SLIDE_ANIMATION_TIME, maxDelta = 99) {

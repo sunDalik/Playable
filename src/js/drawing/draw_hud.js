@@ -298,17 +298,11 @@ export function redrawFootwear(player) {
 export function drawMovementKeyBindings() {
     const container = HUD.movementGuide;
     removeAllChildrenFromContainer(container);
-    if (!Game.player.dead && !Game.player2.pushPullMode) {
+    if (!Game.player.dead) {
         const heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
         const topKey = "W";
         const bottomRowKeys = ["A", "S", "D"];
-        if (!Game.player.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {
-            drawKey(container, topKey, heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
-        } else bottomRowKeys[1] = "";
-        if (Game.player.pushPullMode && Game.player.tilePosition.y !== Game.player2.tilePosition.y) {
-            bottomRowKeys[0] = "";
-            bottomRowKeys[2] = "";
-        }
+        drawKey(container, topKey, heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
                 drawKey(container, bottomRowKeys[i], heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
@@ -317,17 +311,11 @@ export function drawMovementKeyBindings() {
         }
     }
 
-    if (!Game.player2.dead && !Game.player.pushPullMode) {
+    if (!Game.player2.dead) {
         const heartXOffset = Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * getHealthBarLength(Game.player2) - HUDGuideOffsetX;
         let topKey = "I";
         const bottomRowKeys = ["L", "K", "J"];
-        if (!Game.player2.pushPullMode || Game.player.tilePosition.x === Game.player2.tilePosition.x) {
-            drawKey(container, topKey, heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
-        } else bottomRowKeys[1] = "";
-        if (Game.player2.pushPullMode && Game.player.tilePosition.y !== Game.player2.tilePosition.y) {
-            bottomRowKeys[0] = "";
-            bottomRowKeys[2] = "";
-        }
+        drawKey(container, topKey, heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
                 drawKey(container, bottomRowKeys[i], heartXOffset - HUDKeyBindSize * (i + 1) - i * HUDGuideKeyOffsetX,
