@@ -73,8 +73,8 @@ export function generateMap(level) {
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.START) {
                 Game.startPos = {x: j, y: i};
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.BOSS_EXIT) {
-                mapCell.tileType = TILE_TYPE.EXIT;
-                mapCell.tile = new FullTileElement(Game.resources["src/images/exit_text.png"].texture, j, i);
+                mapCell.tileType = TILE_TYPE.WALL;
+                mapCell.tile = new FullTileElement(Game.resources["src/images/wall.png"].texture, j, i);
                 Game.bossExit = {x: j, y: i};
             }
 

@@ -360,6 +360,9 @@ export function deactivateBossMode() {
     }
     Game.bossFight = false;
 
+    Game.world.removeTile(Game.bossExit.x, Game.bossExit.y);
+    Game.world.addTile(new FullTileElement(Game.resources["src/images/exit_text.png"].texture, Game.bossExit.x, Game.bossExit.y), TILE_TYPE.EXIT);
+
     for (const dir of get8Directions()) {
         if (Game.map[Game.bossExit.y + dir.y][Game.bossExit.x + dir.x].tileType !== TILE_TYPE.SUPER_WALL) {
             Game.world.removeTile(Game.bossExit.x + dir.x, Game.bossExit.y + dir.y);
