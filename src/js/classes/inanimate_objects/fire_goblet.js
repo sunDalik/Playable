@@ -108,9 +108,9 @@ export class FireGoblet extends AnimatedTileElement {
     }
 
     shatter() {
-        this.shake(0.5, 0);
+        this.shatterShake();
         this.toBeShattered = true;
-        this.shatterDelay = 1;
+        this.shatterDelay = 2;
     }
 
     onUpdate() {
@@ -125,9 +125,10 @@ export class FireGoblet extends AnimatedTileElement {
             this.direction = {x: randomChoice([-1, 1]), y: 0};
             this.angle = this.getAngleForDirection(this.direction);
             this.standing = false;
-            this.zIndex = -3;
+            this.zIndex = 0;
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
             const newFire = new FireHazard(this.tilePosition.x, this.tilePosition.y);
+            newFire.currentSpreadDelay = 0;
             newFire.tileSpread = 2;
             newFire.spreadTimes = 3;
             Game.world.addHazard(newFire);
@@ -137,6 +138,17 @@ export class FireGoblet extends AnimatedTileElement {
         }
         if (this.shatterDelay > 0) {
             this.shatterDelay--;
+            this.cancelAnimation();
+            this.place();
+            this.shatterShake();
+        }
+    }
+
+    shatterShake() {
+        if (this.angle === 90 || this.angle === -90) {
+            this.shake(0, 0.5)
+        } else {
+            this.shake(0.5, 0);
         }
     }
 }
