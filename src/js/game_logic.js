@@ -126,6 +126,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
         if (moveResult !== false) {
             if (player) Game.lastPlayerMoved = player;
             Game.actionsMade++;
+            if (bothPlayers) Game.actionsMade++;
             if (player && Game.followMode && tileDistance(player, otherPlayer(player)) === 2) {
                 if (otherPlayer(player).cancellable) otherPlayer(player).cancelAnimation();
                 otherPlayer(player).step(lastPlayerPos.x - otherPlayer(player).tilePosition.x, lastPlayerPos.y - otherPlayer(player).tilePosition.y);
