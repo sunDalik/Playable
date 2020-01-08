@@ -95,11 +95,10 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
     Game.app.ticker.add(animation);
 }
 
-export function createFadingText(caption, positionX, positionY) {
-    const TEXT_ANIMATION_TIME = 80;
+export function createFadingText(caption, positionX, positionY, fontSize = Game.TILESIZE / 65 * 26, TEXT_ANIMATION_TIME = 80) {
     let counter = 0;
     const text = new PIXI.Text(caption, {
-        fontSize: Game.TILESIZE / 65 * 26,
+        fontSize: fontSize,
         fill: 0xffffff,
         fontWeight: "bold",
         stroke: 0x000000,

@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {FullTileElement} from "../tile_elements/full_tile_element";
 import {INANIMATE_TYPE, MAGIC_ALIGNMENT, ROLE} from "../../enums";
-import {createFloatingItemAnimation} from "../../animations";
+import {createFadingText, createFloatingItemAnimation} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
 import {removeItemFromPool} from "../../game_changer";
 
@@ -64,6 +64,11 @@ export class Grail extends FullTileElement {
             player.giveNewMagic(this.magic);
             removeItemFromPool(this.magic, Game.magicPool);
             this.obelisk.deactivate(this);
+        }
+        if (this.magic && this.magic.alignment === MAGIC_ALIGNMENT.DARK && player === Game.player) {
+            createFadingText("I cannot use dark magic", player.position.x, player.position.y, Game.TILESIZE / 65 * 22, 60);
+        } else if (this.magic && this.magic.alignment === MAGIC_ALIGNMENT.WHITE && player === Game.player2) {
+            createFadingText("I cannot use white magic", player.position.x, player.position.y, Game.TILESIZE / 65 * 22, 60);
         }
     }
 
