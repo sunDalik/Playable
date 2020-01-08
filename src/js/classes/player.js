@@ -292,7 +292,7 @@ export class Player extends AnimatedTileElement {
             this.pickUpItems();
             camera.moveToCenter(this.STEP_ANIMATION_TIME);
         }
-        drawInteractionKeys();
+        //drawInteractionKeys();
     }
 
     bump(tileStepX, tileStepY) {
@@ -313,7 +313,7 @@ export class Player extends AnimatedTileElement {
         }, animationTime);
         lightPlayerPosition(this);
         this.pickUpItems();
-        drawInteractionKeys();
+        //drawInteractionKeys();
         camera.moveToCenter(animationTime);
     }
 

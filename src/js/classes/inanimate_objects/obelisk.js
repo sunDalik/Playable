@@ -1,9 +1,12 @@
 import {Game} from "../../game"
 import {FullTileElement} from "../tile_elements/full_tile_element";
-import {ROLE, INANIMATE_TYPE} from "../../enums";
+import {INANIMATE_TYPE, ROLE} from "../../enums";
 import {Grail} from "./grail";
 import {createFadingText, longShakeScreen} from "../../animations";
 import {redrawHealthForPlayer} from "../../drawing/draw_hud";
+import * as PIXI from "pixi.js";
+import {getCardinalDirections} from "../../utils/map_utils";
+import {getPlayerOnTile} from "../../map_checks";
 
 export class Obelisk extends FullTileElement {
     constructor(tilePositionX, tilePositionY, magic, onDestroyMagic) {
@@ -24,6 +27,15 @@ export class Obelisk extends FullTileElement {
         this.grail2 = new Grail(0, 0, this);
         this.grail3 = new Grail(0, 0, this);
         this.grail4 = new Grail(0, 0, this);
+
+        this.icon = new PIXI.Sprite(Game.resources["src/images/icons/obelisk_sacrifice.png"].texture);
+        Game.world.addChild(this.icon);
+        this.icon.visible = false;
+        this.icon.zIndex = Game.primaryPlayer.zIndex + 1;
+        this.icon.width = this.icon.height = 25;
+        this.icon.anchor.set(0.5, 0.5);
+        this.icon.position.x = this.position.x;
+        this.icon.position.y = this.position.y - this.height / 2 - this.icon.height / 2;
     }
 
     placeGrails() {
@@ -118,5 +130,13 @@ export class Obelisk extends FullTileElement {
             //no highlight
             this.filters = [];
         }
+        let playerFound = false;
+        for (const dir of getCardinalDirections()) {
+            if (getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y) !== null) {
+                playerFound = true;
+                break;
+            }
+        }
+        this.icon.visible = this.working && this.activated && this.timesDonated < 2 && playerFound;
     }
 }

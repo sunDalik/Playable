@@ -23,6 +23,7 @@ export function loadAll(afterLoad) {
         .add("src/images/icons/chain_icon.png")
         .add("src/images/icons/unchain_icon.png")
         .add("src/images/icons/together_icon.png")
+        .add("src/images/icons/obelisk_sacrifice.png")
 
         .add("src/images/icons/intents/hourglass.png")
         .add("src/images/icons/intents/arrow_right.png")
