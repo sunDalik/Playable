@@ -1,5 +1,6 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HEAD_TYPE} from "../../../enums";
+import {redrawHeadwear} from "../../../drawing/draw_hud";
 
 export class VampireCrown {
     constructor() {
@@ -19,5 +20,6 @@ export class VampireCrown {
             player.heal(this.healAmount);
             this.killsMade = 0;
         }
+        redrawHeadwear(player);
     }
 }

@@ -25,7 +25,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE} from "../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
 
 export function drawHUD() {
@@ -206,9 +206,14 @@ export function redrawSlotContents(player, slot) {
     }
 
     function drawUses() {
-        if (item.uses == null || item.maxUses == null) return false;
-        const text = new PIXI.Text(item.uses + "/" + item.maxUses, HUDTextStyle);
-        text.position.set(slotSize - text.width / 2 - 6, 0);//6 arbitrary
+        let text;
+        if (item.equipmentType === EQUIPMENT_TYPE.HEAD && item.type === HEAD_TYPE.VAMPIRE_CROWN) {
+            text = new PIXI.Text(item.killsMade + "/" + item.killsNeeded, HUDTextStyle);
+        } else {
+            if (item.uses == null || item.maxUses == null) return false;
+            text = new PIXI.Text(item.uses + "/" + item.maxUses, HUDTextStyle);
+        }
+        text.position.set(slotSize - text.width / 2, 0);
         container.meta.addChild(text);
     }
 
