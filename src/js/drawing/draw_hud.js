@@ -355,17 +355,16 @@ function drawKey(container, keyText, posX, posY) {
 }
 
 export function drawInteractionKeys() {
-    return;
     const container = HUD.interactionGuide;
     removeAllChildrenFromContainer(container);
     if (Game.player.dead || Game.player2.dead) return;
     const playerSize = 50;
-    const offsetY = 18;
+    const offsetY = 20;
     const iconSize = 30;
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
         const playerSprite = drawPlayer(Game.player);
         drawPlayer(Game.player2);
-        if (Game.followMode) {
+        /*if (Game.followMode) {
             drawIconAndKey("src/images/icons/unchain_icon.png", "F",
                 Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
             const chain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
@@ -380,10 +379,11 @@ export function drawInteractionKeys() {
         } else {
             drawIconAndKey("src/images/icons/chain_icon.png", "F",
                 Game.app.renderer.screen.width / 2 + playerSize + HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
-        }
-        const swapTexture = Game.player === Game.primaryPlayer ? "src/images/icons/swap_icon_1.png" : "src/images/icons/swap_icon_2.png";
-        drawIconAndKey(swapTexture, "Z",
-            Game.app.renderer.screen.width / 2 - playerSize - HUDKeyBindSize / 2, offsetY + playerSize - HUDKeyBindSize - iconSize - 5);
+        }*/
+        //const swapTexture = Game.player === Game.primaryPlayer ? "src/images/icons/swap_icon_1.png" : "src/images/icons/swap_icon_2.png";
+        const ZKey = drawKey(container, "Z",
+            Game.app.renderer.screen.width / 2 - HUDKeyBindSize / 2, offsetY + playerSize / 2 - HUDKeyBindSize / 2);
+        ZKey.zIndex = Game.primaryPlayer.zIndex + 1;
 
         function drawPlayer(player) {
             const texture = player === Game.player ? "src/images/player.png" : "src/images/player2.png";
@@ -404,7 +404,7 @@ export function drawInteractionKeys() {
             container.addChild(icon);
             drawKey(container, keyText, posX - HUDKeyBindSize / 2, posY + iconSize + 5);
         }
-    } else if (Math.abs(Game.player.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(Game.player.tilePosition.y - Game.player2.tilePosition.y) === 1) {
+    } /*else if (Math.abs(Game.player.tilePosition.x - Game.player2.tilePosition.x) + Math.abs(Game.player.tilePosition.y - Game.player2.tilePosition.y) === 1) {
         const togetherSprite = new PIXI.Sprite(Game.resources["src/images/icons/together_icon.png"].texture);
         togetherSprite.width = playerSize * 2;
         togetherSprite.height = playerSize;
@@ -426,7 +426,7 @@ export function drawInteractionKeys() {
             chain.position.y = togetherSprite.position.y + togetherSprite.height / 2;
             container.addChild(chain);
         }
-    }
+    }*/
 }
 
 export function redrawEnergy() {
