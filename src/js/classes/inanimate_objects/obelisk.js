@@ -80,6 +80,7 @@ export class Obelisk extends FullTileElement {
                     if (this.timesDonated === 1) this.grail3.setMagic(this.magic3);
                     else this.grail4.setMagic(this.magic4);
                     createFadingText("Be blessed...", this.position.x, this.position.y);
+                    player.runHitAnimation();
                     longShakeScreen();
                 } else {
                     createFadingText("Your offer is fictitious...", this.position.x, this.position.y);
