@@ -7,8 +7,8 @@ import {camera} from "../classes/game/camera";
 
 let mapCollapsed = true;
 let mapMask = new PIXI.Graphics();
-const miniMapCollapsedWidth = 100;
-const miniMapCollapsedHeight = 100;
+const miniMapCollapsedWidth = 110;
+const miniMapCollapsedHeight = 110;
 const outlineWidth = 3;
 const bottomOffset = 20;
 let keyBind = null;
@@ -72,6 +72,7 @@ export function toggleMiniMap() {
 
 export function collapseMiniMap() {
     mapCollapsed = true;
+    HUD.minimap.scale.set(1, 1);
     HUD.removeChild(mapMask);
     mapMask = new PIXI.Graphics();
     const mapMaskX = Game.app.renderer.screen.width - miniMapCollapsedWidth - slotBorderOffsetX - outlineWidth / 2;
@@ -97,6 +98,7 @@ export function expandMiniMap() {
     HUD.removeChild(mapMask);
     HUD.minimap.mask = null;
 
+    HUD.minimap.scale.set(1.6, 1.6);
     redrawMiniMapBG(Game.app.renderer.screen.width - getMiniMapWidth() - slotBorderOffsetX,
         Game.app.renderer.screen.height - getMiniMapHeight() - bottomOffset, getMiniMapWidth(), getMiniMapHeight());
     HUD.minimapBG.zIndex = 1;
@@ -112,7 +114,7 @@ function redrawMiniMapBG(x, y, width, height) {
     HUD.removeChild(HUD.minimapBG);
     HUD.minimapBG = new PIXI.Graphics();
     HUD.minimapBG.lineStyle(outlineWidth, 0xffffff, 0.8);
-    HUD.minimapBG.beginFill(0x000000, 0.2);
+    HUD.minimapBG.beginFill(0x000000, 0.3);
     HUD.minimapBG.drawRect(x - outlineWidth, y - outlineWidth, width + outlineWidth, height + outlineWidth);
     HUD.addChild(HUD.minimapBG);
 }
@@ -126,11 +128,11 @@ export function centerMiniMap() {
 }
 
 function getMiniMapWidth() {
-    return Game.map[0].length * miniMapPixelSize;
+    return Game.map[0].length * miniMapPixelSize * HUD.minimap.scale.x;
 }
 
 function getMiniMapHeight() {
-    return Game.map.length * miniMapPixelSize;
+    return Game.map.length * miniMapPixelSize * HUD.minimap.scale.y;
 }
 
 function initKeyBind() {

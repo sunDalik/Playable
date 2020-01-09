@@ -42,7 +42,7 @@ export const HUDKeyBindTextStyle = {
     fill: 0xffffff,
     fontWeight: "bold",
     stroke: 0x333333,
-    strokeThickness: 2,
+    strokeThickness: 2
 };
 
 export const HUDKeyBindSize = 20;
