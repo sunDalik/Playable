@@ -31,7 +31,7 @@ import {ITEM_OUTLINE_FILTER} from "../filters";
 export function drawHUD() {
     drawHealth();
     drawSlots();
-    drawOther();
+    drawOtherHUD();
     drawMovementKeyBindings();
     drawInteractionKeys();
     redrawEnergy();
@@ -383,7 +383,7 @@ export function redrawEnergy() {
     container.addChild(text);
 }
 
-function drawOther() {
+export function drawOtherHUD() {
     const container = HUD.other;
     removeAllChildrenFromContainer(container);
     const playerSize = 60;

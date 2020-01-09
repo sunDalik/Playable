@@ -17,6 +17,7 @@ import {createHeartAnimation, rotate, shakeScreen, showHelpBox} from "../animati
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
+    drawOtherHUD,
     redrawAllMagicSlots,
     redrawHealthForPlayer,
     redrawSecondHand,
@@ -401,9 +402,8 @@ export class Player extends AnimatedTileElement {
         this.visible = false;
         Game.followMode = false;
         updateChain();
-        drawMovementKeyBindings(this);
-        drawInteractionKeys(this);
-        this.removeFromMap(this);
+        drawInteractionKeys();
+        this.removeFromMap();
         if (Game.stage === STAGE.DARK_TUNNEL) {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.TORCH) {
                 const item = new LyingItem(this.tilePosition.x, this.tilePosition.y, this.secondHand);
@@ -422,6 +422,8 @@ export class Player extends AnimatedTileElement {
         redrawAllMagicSlots(this);
         this.removeHealthContainers(1);
         otherPlayer(this).removeHealthContainers(1);
+        drawOtherHUD();
+        drawMovementKeyBindings();
         updateInanimates();
     }
 
