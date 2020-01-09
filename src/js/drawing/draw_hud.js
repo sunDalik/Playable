@@ -14,7 +14,6 @@ import {
     HUDKeyBindTextStyle,
     HUDTextStyle,
     HUDTextStyleSlot,
-    miniMapPixelSize,
     slotBorderOffsetX,
     slotContentSizeMargin,
     slotOffsetFromHeartsY,
@@ -26,7 +25,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, HEAD_TYPE, INANIMATE_TYPE, MAGIC_TYPE, ROLE, SHIELD_TYPE, TILE_TYPE} from "../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
 
 export function drawHUD() {
@@ -94,7 +93,7 @@ export function redrawSlotsForPlayer(player) {
     const slotsYOffset = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / healthBarLength) + slotOffsetFromHeartsY;
     const slotsXOffset = player === Game.player ?
         slotBorderOffsetX :
-        Game.app.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * 3 + slotsColOffset;
+        Game.app.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * topRowSlots.length + slotsColOffset;
 
     const slotsEquipmentOffset = player === Game.player ?
         slotsXOffset :
@@ -382,64 +381,6 @@ export function redrawEnergy() {
     removeAllChildrenFromContainer(container);
     const text = new PIXI.Text(`LE ${Game.lightEnergy}\nDE ${Game.darkEnergy}`, HUDTextStyle);
     container.addChild(text);
-}
-
-export function drawMiniMap() {
-    for (let i = 0; i < Game.minimap.length; i++) {
-        for (let j = 0; j < Game.minimap[0].length; j++) {
-            HUD.minimap.removeChild(Game.minimap[i][j]);
-        }
-    }
-
-    Game.minimap = [];
-    for (let i = 0; i < Game.map.length; i++) {
-        Game.minimap[i] = [];
-        for (let j = 0; j < Game.map[0].length; j++) {
-            redrawMiniMapPixel(j, i);
-        }
-    }
-    const miniMapWidth = Game.map[0].length * miniMapPixelSize;
-    const miniMapHeight = Game.map.length * miniMapPixelSize;
-    HUD.minimap.removeChild(HUD.minimap.bg);
-    HUD.minimap.bg = new PIXI.Graphics();
-    const lineWidth = 3;
-    /*hmmm.... it seems that element's width changes by one line width exactly because half of line width
-    from both sides goes inward and another one goes outward? Dunno, just my hypothesis*/
-    HUD.minimap.bg.lineStyle(lineWidth, 0xffffff, 0.8);
-    HUD.minimap.bg.beginFill(0x000000, 0.2);
-    HUD.minimap.bg.drawRect(0, 0, miniMapWidth + lineWidth, miniMapHeight + lineWidth);
-    HUD.minimap.bg.zIndex = -1;
-    HUD.minimap.addChild(HUD.minimap.bg);
-    HUD.minimap.bg.position.set(-lineWidth / 2, -lineWidth / 2);
-    HUD.minimap.position.set(Game.app.renderer.screen.width - miniMapWidth - slotBorderOffsetX - lineWidth / 2, Game.app.renderer.screen.height - miniMapHeight - 15)
-}
-
-export function redrawMiniMapPixel(x, y) {
-    if (Game.minimap[y][x]) {
-        HUD.minimap.removeChild(Game.minimap[y][x]);
-    }
-    const pixel = new PIXI.Graphics();
-    if (Game.map[y][x].tileType === TILE_TYPE.WALL) {
-        pixel.beginFill(0x7a5916);
-    } else if (Game.map[y][x].tileType === TILE_TYPE.SUPER_WALL) {
-        pixel.beginFill(0x757167);
-    } else if (Game.map[y][x].tileType === TILE_TYPE.VOID) {
-        pixel.beginFill(0x000000);
-    } else if (Game.map[y][x].entity && Game.map[y][x].entity.role === ROLE.INANIMATE
-        && Game.map[y][x].entity.type !== INANIMATE_TYPE.GRAIL
-        && Game.map[y][x].entity.type !== INANIMATE_TYPE.FIRE_GOBLET) {
-        pixel.beginFill(0xffb03b);
-    } else if (Game.map[y][x].tileType === TILE_TYPE.EXIT) {
-        pixel.beginFill(0xff4adb);
-    } else if (Game.map[y][x].entity === Game.player || Game.map[y][x].entity === Game.player2) {
-        pixel.beginFill(0x0000ff);
-    } else pixel.beginFill(0xffffff);
-    pixel.drawRect(miniMapPixelSize * x, miniMapPixelSize * y, miniMapPixelSize, miniMapPixelSize);
-    HUD.minimap.addChild(pixel);
-    Game.minimap[y][x] = pixel;
-    if (!Game.map[y][x].lit) {
-        pixel.visible = false;
-    }
 }
 
 function drawOther() {

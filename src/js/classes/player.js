@@ -19,7 +19,6 @@ import {
     drawMovementKeyBindings,
     redrawAllMagicSlots,
     redrawHealthForPlayer,
-    redrawMiniMapPixel,
     redrawSecondHand,
     redrawSlotContents,
     redrawSlotContentsForPlayer,
@@ -44,6 +43,7 @@ import {closeBlackBars, pullUpGameOverScreen} from "../drawing/hud_animations";
 import {DEATH_FILTER} from "../filters";
 import {removeObjectFromArray} from "../utils/basic_utils";
 import {HUD} from "../drawing/hud_object";
+import {redrawMiniMapPixel} from "../drawing/minimap";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -249,7 +249,7 @@ export class Player extends AnimatedTileElement {
         } else {
             super.step(tileStepX, tileStepY, () => {
                 if (onFrame) onFrame();
-                updateChain()
+                updateChain();
             }, () => {
                 if (onEnd) onEnd();
                 updateChain()

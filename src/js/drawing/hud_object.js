@@ -21,8 +21,10 @@ HUD.bossHealth = new PIXI.Container();
 HUD.bossHealth.zIndex = 1;
 
 HUD.minimap = new PIXI.Container();
-HUD.minimap.bg = new PIXI.Graphics();
-HUD.minimap.addChild(HUD.minimap.bg);
+HUD.minimapBG = new PIXI.Graphics();
+HUD.minimap.zIndex = -1;
+HUD.minimapBG.zIndex = -1;
+HUD.addChild(HUD.minimapBG);
 HUD.minimap.sortableChildren = true;
 
 HUD.addChild(HUD.hearts1);

@@ -51,6 +51,7 @@ export class Obelisk extends FullTileElement {
             this.activated = true;
             createFadingText("Choose one...", this.position.x, this.position.y);
             longShakeScreen();
+            this.onUpdate();
         }
     }
 
@@ -74,13 +75,11 @@ export class Obelisk extends FullTileElement {
         if (this.working && this.activated) {
             if (this.timesDonated < 2) {
                 if (player.health > 1) {
-                    player.health -= 1;
-                    redrawHealthForPlayer(player);
+                    player.voluntaryDamage(1, false);
                     this.timesDonated++;
                     if (this.timesDonated === 1) this.grail3.setMagic(this.magic3);
                     else this.grail4.setMagic(this.magic4);
                     createFadingText("Be blessed...", this.position.x, this.position.y);
-                    player.runHitAnimation();
                     longShakeScreen();
                 } else {
                     createFadingText("Your offer is fictitious...", this.position.x, this.position.y);

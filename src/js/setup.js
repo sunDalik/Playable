@@ -11,7 +11,7 @@ import {calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
-import {drawHUD, drawInteractionKeys, drawMiniMap, drawMovementKeyBindings} from "./drawing/draw_hud";
+import {drawHUD, drawInteractionKeys, drawMovementKeyBindings} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
@@ -25,6 +25,7 @@ import {Torch} from "./classes/equipment/tools/torch";
 import {SUPER_HUD} from "./drawing/super_hud";
 import {removeObjectFromArray} from "./utils/basic_utils";
 import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "./filters";
+import {drawMiniMap} from "./drawing/minimap";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();
@@ -145,6 +146,9 @@ function initPlayers() {
     Game.player.zIndex = Game.player2.zIndex + 2;
     Game.primaryPlayer = Game.player;
     Game.lastPlayerMoved = Game.player;
+
+    Game.darkEnergy = 0;
+    Game.lightEnergy = 0;
 }
 
 export function retry() {

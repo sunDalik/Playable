@@ -1,11 +1,7 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, STAGE, TILE_TYPE, TOOL_TYPE, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
 import {isDiggable, isEnemy} from "../../../map_checks";
-import {lightPlayerPosition} from "../../../drawing/lighting";
-import {recalculateTileInDetectionGraph} from "../../../map_generation";
 import {createPlayerWeaponAnimation} from "../../../animations";
-import {redrawMiniMapPixel} from "../../../drawing/draw_hud";
-import {otherPlayer} from "../../../utils/game_utils";
 
 export class Pickaxe {
     constructor() {

@@ -1,4 +1,5 @@
 import {Game} from "../game";
+import * as PIXI from "pixi.js";
 
 export function getHealthArray(entity) {
     const health = [];
@@ -29,7 +30,7 @@ export function getHeartTexture(heartValue) {
         case 0:
             return Game.resources["src/images/HUD/heart_empty.png"].texture;
         default:
-            return Game.resources["src/images/void.png"].texture;
+            return PIXI.Texture.WHITE;
     }
 }
 

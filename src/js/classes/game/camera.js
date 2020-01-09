@@ -1,6 +1,7 @@
 import {Game} from "../../game";
 import {getEffectivePlayerCenter} from "../../utils/game_utils";
 import {areWeInTheBossRoom} from "../../game_logic";
+import {centerMiniMap} from "../../drawing/minimap";
 
 export const camera = {
     animation: null,
@@ -21,6 +22,7 @@ camera.setNewPoint = (x, y, time, pausable = true) => {
         Game.world.upWorld.position = Game.world.position;
         camera.x += stepX * delta;
         camera.y += stepY * delta;
+        centerMiniMap();
         if (counter >= time) {
             camera.setup(x, y);
             Game.app.ticker.remove(animation);
@@ -41,6 +43,7 @@ camera.setup = (x, y) => {
     camera.y = y;
     Game.app.ticker.remove(camera.animation);
     camera.animation = null;
+    centerMiniMap();
 };
 
 camera.center = () => {

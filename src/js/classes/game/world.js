@@ -6,7 +6,7 @@ import {removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {lightPlayerPosition} from "../../drawing/lighting";
 import {otherPlayer} from "../../utils/game_utils";
 import {recalculateTileInDetectionGraph} from "../../map_generation";
-import {redrawMiniMapPixel} from "../../drawing/draw_hud";
+import {redrawMiniMapPixel} from "../../drawing/minimap";
 
 export class World extends PIXI.Container {
     constructor() {

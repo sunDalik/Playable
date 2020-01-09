@@ -1,6 +1,7 @@
 import {Game} from "../game";
 import {keyboard} from "./keyboard_handler";
 import {playerTurn, switchPlayers} from "../game_logic";
+import {toggleMiniMap} from "../drawing/minimap";
 
 const switchKey = keyboard("KeyZ");
 const secondHandKeyP1 = keyboard("KeyE");
@@ -8,6 +9,7 @@ const secondHandKeyP2 = keyboard("KeyO");
 const weaponKeyP1 = keyboard("KeyQ");
 const weaponKeyP2 = keyboard("KeyU");
 const releaseKey = keyboard("Space");
+const mapKey = keyboard("KeyM");
 let keys = [];
 
 export function bindKeys() {
@@ -40,6 +42,11 @@ export function bindKeys() {
     weaponKeyP2.press = () => {
         playerTurn(Game.player2, () => Game.player2.concentrateWeapon())
     };
+
+    mapKey.press = () => {
+        toggleMiniMap();
+    };
+
     releaseKey.press = () => {
         playerTurn(null, () => {
             if (Game.player.releaseMagic()) return true;
