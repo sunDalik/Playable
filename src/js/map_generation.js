@@ -266,7 +266,7 @@ export function assignDrops() {
     randomShuffle(Game.enemies);
     let enemyIndex = 0;
 
-    distributeDrops(Bomb, getRandomInt(4, 8));
+    distributeDrops(Bomb, getRandomInt(3, 6));
 
     //distributeDrops(SmallHealingPotion, getRandomInt(1, 3));
 

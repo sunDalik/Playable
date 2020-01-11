@@ -92,7 +92,7 @@ export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2, HEA
 export const FOOTWEAR_TYPE = Object.freeze({ADVENTURER: 0, DAMAGING: 1, DARK: 2, OLD_BALLET_SHOES: 3});
 export const SHIELD_TYPE = Object.freeze({PASSIVE: 0, STUNNING: 1, SPIKY: 2, ARMORING: 3});
 export const TOOL_TYPE = Object.freeze({TORCH: 0});
-export const BAG_ITEM_TYPE = Object.freeze({BOMB: 0});
+export const BAG_ITEM_TYPE = Object.freeze({BOMB: 0, SMALL_HEALING_POTION: 1});
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
 
