@@ -5,7 +5,7 @@ import {
     heartColOffset,
     heartRowOffset,
     heartSize,
-    heartYOffset,
+    heartYOffset, HUDFontSize,
     HUDGuideKeyOffsetX,
     HUDGuideKeyOffsetY,
     HUDGuideOffsetX,
@@ -147,7 +147,7 @@ export function redrawSlotsForPlayer(player) {
     let x;
     if (player === Game.player) x = slotsEquipmentOffset + slotSize + slotsRowOffset;
     else x = slotsSecondRowXOffset;
-    const y = slotsYOffset + (slotSize + slotsRowOffset) * 3;
+    const y = slotsYOffset + (slotSize + slotsRowOffset) * 2;
     drawSlot(x, y, bagSlot);
     contentsContainer["bag"].sprite.position.x = x;
     contentsContainer["bag"].sprite.position.y = y;
@@ -225,7 +225,7 @@ export function redrawSlotContents(player, slot) {
         if (item.equipmentType === EQUIPMENT_TYPE.HEAD && item.type === HEAD_TYPE.VAMPIRE_CROWN) {
             text = new PIXI.Text(item.killsMade + "/" + item.killsNeeded, HUDTextStyle);
         } else if (item.equipmentType === EQUIPMENT_TYPE.BAG_ITEM) {
-            text = new PIXI.Text(item.amount, HUDTextStyle);
+            text = new PIXI.Text(item.amount, Object.assign({}, HUDTextStyle, {fontSize: HUDFontSize + 2}));
             text.position.set(slotSize - text.width, 0);
         } else {
             if (item.uses == null || item.maxUses == null) return false;
