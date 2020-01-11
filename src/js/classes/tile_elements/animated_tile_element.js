@@ -55,19 +55,19 @@ export class AnimatedTileElement extends TileElement {
         Game.app.ticker.add(animation);
     }
 
-    bumpX(tileStepX, onFrame = null, onEnd = null) {
+    bumpX(tileStepX, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
         this.onAnimationEnd = onEnd;
         let jumpHeight = Game.TILESIZE * 25 / 75;
         if (this.stepXjumpHeight) jumpHeight = this.stepXjumpHeight / 2;
         const a = jumpHeight / ((tileStepX * Game.TILESIZE / 2) ** 2);
         const b = -(this.position.x + (tileStepX * Game.TILESIZE / 2) / 2) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
-        const stepX = tileStepX * Game.TILESIZE / this.BUMP_ANIMATION_TIME;
+        const stepX = tileStepX * Game.TILESIZE / animationTime;
         let counter = 0;
 
         const animation = (delta) => {
             if (Game.paused) return;
-            if (counter < this.BUMP_ANIMATION_TIME / 2) {
+            if (counter < animationTime / 2) {
                 this.position.x += stepX * delta;
             } else {
                 this.position.x -= stepX * delta;
@@ -76,7 +76,7 @@ export class AnimatedTileElement extends TileElement {
             counter += delta;
 
             if (onFrame) onFrame();
-            if (counter >= this.BUMP_ANIMATION_TIME) {
+            if (counter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
@@ -88,7 +88,7 @@ export class AnimatedTileElement extends TileElement {
         Game.app.ticker.add(animation);
     }
 
-    bumpY(tileStepY, onFrame = null, onEnd = null) {
+    bumpY(tileStepY, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
         this.onAnimationEnd = onEnd;
         const oldPosition = this.position.y;
         let newPosition = null;
@@ -109,15 +109,15 @@ export class AnimatedTileElement extends TileElement {
         const animation = (delta) => {
             if (Game.paused) return;
             counter += delta;
-            const x = counter / this.BUMP_ANIMATION_TIME;
-            if (counter <= this.BUMP_ANIMATION_TIME / 2) {
+            const x = counter / animationTime;
+            if (counter <= animationTime / 2) {
                 this.position.y = oldPosition + cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE / 2 * tileStepY;
                 newPosition = this.position.y;
             } else {
                 this.position.y = newPosition - cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE / 2 * tileStepY;
             }
             if (onFrame) onFrame();
-            if (counter >= this.BUMP_ANIMATION_TIME) {
+            if (counter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
@@ -129,9 +129,9 @@ export class AnimatedTileElement extends TileElement {
         Game.app.ticker.add(animation);
     }
 
-    bump(tileStepX, tileStepY, onFrame = null, onEnd = null) {
-        if (tileStepX !== 0) this.bumpX(tileStepX, onFrame, onEnd);
-        else if (tileStepY !== 0) this.bumpY(tileStepY, onFrame, onEnd);
+    bump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
+        if (tileStepX !== 0) this.bumpX(tileStepX, onFrame, onEnd, animationTime);
+        else if (tileStepY !== 0) this.bumpY(tileStepY, onFrame, onEnd, animationTime);
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {

@@ -249,11 +249,9 @@ export class Player extends AnimatedTileElement {
             this.slide(tileStepX, tileStepY, onFrame, onEnd);
         } else {
             super.step(tileStepX, tileStepY, () => {
-                if (onFrame) onFrame();
-                updateChain();
+                this.onMoveFrame(onFrame);
             }, () => {
-                if (onEnd) onEnd();
-                updateChain()
+                this.onMoveFrame(onEnd);
             }, animationTime);
             lightPlayerPosition(this);
             this.pickUpItems();
@@ -262,26 +260,37 @@ export class Player extends AnimatedTileElement {
         //drawInteractionKeys();
     }
 
-    bump(tileStepX, tileStepY) {
+    bump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
         if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
-            this.slideBump(tileStepX, tileStepY, updateChain, updateChain, this.SLIDE_BUMP_ANIMATION_TIME);
+            this.slideBump(tileStepX, tileStepY, () => {
+                this.onMoveFrame(onFrame);
+            }, () => {
+                this.onMoveFrame(onEnd);
+            }, this.SLIDE_BUMP_ANIMATION_TIME);
         } else {
-            super.bump(tileStepX, tileStepY, updateChain, updateChain);
+            super.bump(tileStepX, tileStepY, () => {
+                this.onMoveFrame(onFrame);
+            }, () => {
+                this.onMoveFrame(onEnd);
+            }, animationTime);
         }
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         super.slide(tileStepX, tileStepY, () => {
-            if (onFrame) onFrame();
-            updateChain()
+            this.onMoveFrame(onFrame);
         }, () => {
-            if (onEnd) onEnd();
-            updateChain()
+            this.onMoveFrame(onEnd);
         }, animationTime);
         lightPlayerPosition(this);
         this.pickUpItems();
         //drawInteractionKeys();
         camera.moveToCenter(animationTime);
+    }
+
+    onMoveFrame(extra = null) {
+        if (extra) extra();
+        updateChain();
     }
 
     shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
