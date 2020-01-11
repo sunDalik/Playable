@@ -28,8 +28,8 @@ export function setEnemyTurnTimeout() {
 }
 
 function enemyTurn() {
-    drawInteractionKeys();
     Game.enemiesTimeout = null;
+    drawInteractionKeys();
     updateList();
     damagePlayersWithHazards();
     moveEnemies();

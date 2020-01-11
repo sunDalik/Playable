@@ -131,6 +131,7 @@ export class Enemy extends AnimatedTileElement {
         this.dead = true;
         this.removeFromMap();
         this.cancelAnimation();
+        if (this.animation) Game.app.ticker.remove(this.animation);
         this.visible = false;
         this.healthContainer.visible = false;
         this.intentIcon.visible = false;
