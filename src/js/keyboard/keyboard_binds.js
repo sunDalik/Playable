@@ -8,6 +8,8 @@ const secondHandKeyP1 = keyboard("KeyE");
 const secondHandKeyP2 = keyboard("KeyO");
 const weaponKeyP1 = keyboard("KeyQ");
 const weaponKeyP2 = keyboard("KeyU");
+const bagKeyP1 = keyboard("KeyF");
+const bagKeyP2 = keyboard("KeyH");
 const releaseKey = keyboard("Space");
 const mapKey = keyboard("KeyM");
 let keys = [];
@@ -41,6 +43,14 @@ export function bindKeys() {
 
     weaponKeyP2.press = () => {
         playerTurn(Game.player2, () => Game.player2.concentrateWeapon())
+    };
+
+    bagKeyP1.press = () => {
+        playerTurn(Game.player, () => Game.player.useBag())
+    };
+
+    bagKeyP2.press = () => {
+        playerTurn(Game.player2, () => Game.player2.useBag())
     };
 
     mapKey.press = () => {

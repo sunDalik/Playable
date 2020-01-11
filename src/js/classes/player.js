@@ -67,6 +67,7 @@ export class Player extends AnimatedTileElement {
         this.magic1 = null;
         this.magic2 = null;
         this.magic3 = null;
+        this.bag = {item: null, amount: 0};
         this.shielded = false;
         this.canDoubleAttack = false;
         this.attackTimeout = null;
@@ -635,6 +636,16 @@ export class Player extends AnimatedTileElement {
             if (this.armor && this.armor.type === ARMOR_TYPE.ELECTRIC && this.weapon.concentration === 1) return false;
             return true;
         } else return false;
+    }
+
+    useBag() {
+        if (this.bag.item && this.bag.amount > 0) {
+            if (this.bag.item.useItem) {
+                this.bag.item.useItem();
+                return true;
+            }
+        }
+        return false;
     }
 
     microSlide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.MICRO_SLIDE_ANIMATION_TIME, maxDelta = 99) {
