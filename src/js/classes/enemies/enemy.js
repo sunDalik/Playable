@@ -20,6 +20,7 @@ export class Enemy extends AnimatedTileElement {
         this.onAnimationEnd = null;
         this.movable = true;
         this.energyDrop = undefined;
+        this.drop = null;
         this.healthContainer = new PIXI.Container();
         Game.world.addChild(this.healthContainer);
         this.healthContainer.visible = false;
@@ -133,6 +134,10 @@ export class Enemy extends AnimatedTileElement {
         if (this.intentIcon2) this.intentIcon2.visible = false;
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
+        }
+
+        if (this.drop) {
+
         }
     }
 

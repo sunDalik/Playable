@@ -171,6 +171,10 @@ export function loadAll(afterLoad) {
         .add("src/images/headwear/wizard_hat.png")
         .add("src/images/headwear/vampire_crown.png")
 
+        .add("src/images/bag/bomb.png")
+        .add("src/images/bag/bomb_ticking.png")
+        .add("src/images/bag/bomb_about_to_explode.png")
+
         .add("src/images/other/statue.png")
         .add("src/images/other/statue_knife.png")
         .add("src/images/other/statue_ninja_knife.png")

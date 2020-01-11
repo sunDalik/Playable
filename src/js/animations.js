@@ -149,7 +149,7 @@ export function createFloatingItemAnimation(item) {
     let counter = 0;
     const step = item.height / 4 / Game.ITEM_FLOAT_ANIMATION_TIME;
 
-    item.animation = (delta) => {
+    const animation = (delta) => {
         if (Game.paused) return;
         if (counter < Game.ITEM_FLOAT_ANIMATION_TIME / 4) {
             item.position.y -= step * delta;
@@ -164,8 +164,9 @@ export function createFloatingItemAnimation(item) {
         }
     };
 
-    Game.app.ticker.add(item.animation);
-    Game.infiniteAnimations.push(item.animation);
+    Game.app.ticker.add(animation);
+    Game.infiniteAnimations.push(animation);
+    return animation;
 }
 
 export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1, shakeAmplitude = Game.SHAKE_AMPLITUDE, xOnly = false) {

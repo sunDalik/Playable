@@ -28,7 +28,7 @@ export class Chest extends FullTileElement {
             else this.contents = removeEquipmentFromPlayer(player, this.contentsType);
         } else {
             this.opened = true;
-            createFloatingItemAnimation(this.contentsSprite);
+            this.animation = createFloatingItemAnimation(this.contentsSprite);
         }
         if (this.contents) {
             Game.app.ticker.remove(this.contentsSprite.animation);

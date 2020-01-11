@@ -7,7 +7,7 @@ import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
 import {STAGE} from "./enums";
 import {generateLevel} from "./level_generation/level_generation";
-import {calculateDetectionGraph, generateMap} from "./map_generation";
+import {assignDrops, calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
@@ -115,6 +115,7 @@ export function initializeLevel() {
     }
     camera.center();
 
+    assignDrops();
     retreatBlackBars();
     setTickTimeout(() => {
         if (Math.random() < 0.5 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {

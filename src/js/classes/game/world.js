@@ -75,6 +75,11 @@ export class World extends PIXI.Container {
         for (const animation of Game.infiniteAnimations) {
             Game.app.ticker.remove(animation);
         }
+        for (const entity of Game.enemies.concat(Game.inanimates)) {
+            if (entity.animation) {
+                Game.app.ticker.remove(entity.animation);
+            }
+        }
     }
 
     removeTile(x, y, remover = null) {

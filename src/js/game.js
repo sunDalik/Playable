@@ -19,6 +19,7 @@ Game.map = [];
 Game.enemies = [];
 Game.hazards = [];
 Game.inanimates = [];
+Game.updateList = [];
 Game.bullets = [];
 
 Game.darkTiles = [];

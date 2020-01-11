@@ -308,6 +308,7 @@ export function cleanGameState() {
     Game.darkTiles = [];
     Game.hazards = [];
     Game.inanimates = [];
+    Game.updateList = [];
     Game.bullets = [];
     Game.infiniteAnimations = [];
     Game.obelisks = [];

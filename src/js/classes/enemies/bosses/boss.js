@@ -16,6 +16,7 @@ export class Boss extends Enemy {
         super(texture, tilePositionX, tilePositionY);
         this.boss = true;
         this.name = "";
+        this.drops = [];
         Game.boss = this;
         Game.world.removeChild(this.healthContainer);
     }

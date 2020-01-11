@@ -1,6 +1,6 @@
 import {Game} from "../game";
 import {keyboard} from "./keyboard_handler";
-import {playerTurn, switchPlayers} from "../game_logic";
+import {gotoNextLevel, playerTurn, switchPlayers} from "../game_logic";
 import {toggleMiniMap} from "../drawing/minimap";
 
 const switchKey = keyboard("KeyZ");
@@ -63,6 +63,8 @@ export function bindKeys() {
             else return Game.player2.releaseMagic();
         }, true);
     };
+
+    //keyboard("KeyN").press = gotoNextLevel;
 }
 
 function bindMovement(player, {upCode, leftCode, downCode, rightCode}) {

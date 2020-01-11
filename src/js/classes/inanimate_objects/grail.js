@@ -42,7 +42,7 @@ export class Grail extends FullTileElement {
             }
             if (!this.magicSet) {
                 this.magicSet = true;
-                createFloatingItemAnimation(this.magicSprite);
+                this.animation = createFloatingItemAnimation(this.magicSprite);
             }
             Game.app.ticker.remove(this.magicSprite.animation);
             Game.app.ticker.add(this.magicSprite.animation);

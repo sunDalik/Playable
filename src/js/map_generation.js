@@ -1,9 +1,16 @@
 import {Game} from "./game";
-import {MAP_SYMBOLS, RABBIT_TYPE, TILE_TYPE} from "./enums";
+import {ENEMY_TYPE, MAP_SYMBOLS, RABBIT_TYPE, ROLE, TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 import {copy2dArray} from "./utils/basic_utils";
-import {getRandomChestDrop, getRandomInt, getRandomSpell, getRandomValue, getRandomWeapon} from "./utils/random_utils";
+import {
+    getRandomChestDrop,
+    getRandomInt,
+    getRandomSpell,
+    getRandomValue,
+    getRandomWeapon,
+    randomShuffle
+} from "./utils/random_utils";
 import {Roller} from "./classes/enemies/roller";
 import {RedRoller} from "./classes/enemies/roller_red";
 import {Snail} from "./classes/enemies/snail";
@@ -38,6 +45,7 @@ import {tileInsideTheBossRoom} from "./game_logic";
 import {GuardianOfTheLight} from "./classes/enemies/bosses/guardian_of_the_light";
 import {FireGoblet} from "./classes/inanimate_objects/fire_goblet";
 import {Necromancy} from "./classes/magic/necromancy";
+import {Bomb} from "./classes/equipment/bag/bomb";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -252,4 +260,34 @@ export function recalculateTileInDetectionGraph(tileX, tileY) {
         mapWithWeights[tileY][tileX] = 0;
     }
     Game.playerDetectionGraph = new PF.Grid(mapWithWeights);
+}
+
+export function assignDrops() {
+    randomShuffle(Game.enemies);
+    let enemyIndex = 0;
+
+    distributeDrops(Bomb, getRandomInt(3, 5));
+
+    //distributeDrops(SmallHealingPotion, getRandomInt(1, 3));
+
+    function distributeDrops(dropConstructor, amount) {
+        while (amount > 0) {
+            if (enemyIndex >= Game.enemies.length) {
+                if (Game.boss) {
+                    Game.boss.drops.push(new dropConstructor());
+                    amount--;
+                } else break;
+            } else {
+                const enemy = Game.enemies[enemyIndex];
+                if (enemy.boss || enemy.role === ROLE.WALL_TRAP || enemy.type === ENEMY_TYPE.MUSHROOM || enemy.type === ENEMY_TYPE.RABBIT && enemy.predator) {
+                    enemyIndex++;
+                } else {
+                    enemy.drop = new dropConstructor();
+                    enemy.energyDrop = 0;
+                    amount--;
+                    enemyIndex++;
+                }
+            }
+        }
+    }
 }
