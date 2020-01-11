@@ -3,7 +3,7 @@ import {MAP_SYMBOLS, RABBIT_TYPE, TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 import {copy2dArray} from "./utils/basic_utils";
-import {getRandomChestDrop, getRandomSpell, getRandomValue, getRandomWeapon} from "./utils/random_utils";
+import {getRandomChestDrop, getRandomInt, getRandomSpell, getRandomValue, getRandomWeapon} from "./utils/random_utils";
 import {Roller} from "./classes/enemies/roller";
 import {RedRoller} from "./classes/enemies/roller_red";
 import {Snail} from "./classes/enemies/snail";
@@ -37,6 +37,7 @@ import {BalletSpider} from "./classes/enemies/bosses/ballet_spider";
 import {tileInsideTheBossRoom} from "./game_logic";
 import {GuardianOfTheLight} from "./classes/enemies/bosses/guardian_of_the_light";
 import {FireGoblet} from "./classes/inanimate_objects/fire_goblet";
+import {Necromancy} from "./classes/magic/necromancy";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -137,13 +138,27 @@ export function generateMap(level) {
                 }
             } else if (map[i][j] === MAP_SYMBOLS.OBELISK) {
                 if (Game.magicPool.length >= 4) {
+                    let necromancyIndex = -1;
+                    let alivePlayer = null;
+                    if (Game.player.dead) alivePlayer = Game.player2;
+                    else if (Game.player2.dead) alivePlayer = Game.player;
+                    if (alivePlayer !== null) {
+                        if (alivePlayer.health >= 3.5) necromancyIndex = getRandomInt(0, 4);
+                        else if (alivePlayer.health >= 2.5) necromancyIndex = getRandomInt(0, 3);
+                        else necromancyIndex = getRandomInt(0, 2);
+                    }
+
                     let magicPool = [];
                     for (let i = 0; i < 4; ++i) {
-                        while (true) {
-                            const randomSpell = getRandomSpell();
-                            if (!magicPool.some(magic => magic.type === randomSpell.type)) {
-                                magicPool.push(randomSpell);
-                                break;
+                        if (i === necromancyIndex) {
+                            magicPool.push(new Necromancy());
+                        } else {
+                            while (true) {
+                                const randomSpell = getRandomSpell();
+                                if (!magicPool.some(magic => magic.type === randomSpell.type)) {
+                                    magicPool.push(randomSpell);
+                                    break;
+                                }
                             }
                         }
                     }

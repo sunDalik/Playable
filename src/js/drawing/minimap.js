@@ -13,8 +13,6 @@ const outlineWidth = 3;
 const bottomOffset = 20;
 let keyBind = null;
 
-//todo: draw key bind
-
 export function drawMiniMap() {
     if (keyBind === null) keyBind = initKeyBind();
     cleanMiniMap();

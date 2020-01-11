@@ -3,7 +3,6 @@ import {FullTileElement} from "../tile_elements/full_tile_element";
 import {INANIMATE_TYPE, ROLE} from "../../enums";
 import {Grail} from "./grail";
 import {createFadingText, longShakeScreen} from "../../animations";
-import {redrawHealthForPlayer} from "../../drawing/draw_hud";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
