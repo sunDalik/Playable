@@ -18,7 +18,7 @@ import {
     drawInteractionKeys,
     drawMovementKeyBindings,
     drawOtherHUD,
-    redrawAllMagicSlots,
+    redrawAllMagicSlots, redrawBag,
     redrawHealthForPlayer,
     redrawSecondHand,
     redrawSlotContents,
@@ -67,7 +67,7 @@ export class Player extends AnimatedTileElement {
         this.magic1 = null;
         this.magic2 = null;
         this.magic3 = null;
-        this.bag = {item: null, amount: 0};
+        this.bag = null;
         this.shielded = false;
         this.canDoubleAttack = false;
         this.attackTimeout = null;
@@ -639,9 +639,11 @@ export class Player extends AnimatedTileElement {
     }
 
     useBag() {
-        if (this.bag.item && this.bag.amount > 0) {
-            if (this.bag.item.useItem) {
-                this.bag.item.useItem();
+        if (this.bag && this.bag.amount > 0) {
+            if (this.bag.useItem) {
+                this.bag.useItem(this);
+                if (this.bag.amount <= 0) this.bag = null;
+                redrawBag(this);
                 return true;
             }
         }

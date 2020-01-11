@@ -51,6 +51,9 @@ for (let i = 0; i < keys.length; i++) {
 HUD.sortableChildren = true;
 HUD.interactionGuide.sortableChildren = true;
 
+HUD.bagSlot1 = null;
+HUD.bagSlot2 = null;
+
 function generateSlotsContentsContainer() {
     const container = {
         weapon: {},
@@ -60,7 +63,8 @@ function generateSlotsContentsContainer() {
         footwear: {},
         magic1: {},
         magic2: {},
-        magic3: {}
+        magic3: {},
+        bag: {}
     };
     const keys = Object.keys(container);
     for (let i = 0; i < keys.length; i++) {

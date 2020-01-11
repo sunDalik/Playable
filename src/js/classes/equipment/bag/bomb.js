@@ -7,10 +7,16 @@ export class Bomb {
         this.type = BAG_ITEM_TYPE.BOMB;
         this.equipmentType = EQUIPMENT_TYPE.BAG_ITEM;
         this.name = "Bomb";
-        this.description = "Explode";
+        this.description = "What will you explode with this?";
+        this.amount = 1;
     }
 
-    useItem() {
+    useItem(player) {
+
+        this.amount--;
+    }
+
+    update() {
 
     }
 }

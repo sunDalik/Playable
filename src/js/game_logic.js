@@ -2,7 +2,7 @@ import {Game} from "./game"
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "./enums"
-import {drawInteractionKeys, redrawSlotContents} from "./drawing/draw_hud";
+import {drawInteractionKeys, redrawBag, redrawSlotContents} from "./drawing/draw_hud";
 import {createKissHeartAnimation, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
 import {updateChain} from "./drawing/draw_dunno";
@@ -244,6 +244,18 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
         case EQUIPMENT_TYPE.FOOT:
             slot = "footwear";
             break;
+        case EQUIPMENT_TYPE.BAG_ITEM:
+            if (player.bag && player.bag.type === equipment.type) {
+                player.bag.amount++;
+                redrawBag(player);
+                return null;
+            } else {
+                const swappedItem = player.bag;
+                player.bag = equipment;
+                if (showHelp) showHelpBox(player.bag);
+                redrawBag(player);
+                return swappedItem;
+            }
     }
     if (!slot) return null;
     if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);

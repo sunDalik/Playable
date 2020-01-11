@@ -89,6 +89,7 @@ export function redrawSlotsForPlayer(player) {
         getSlotWithName("Magic")];
     const secondRowSlots = [getSlotWithName("Weapon"), getSlotWithName("Extra")];
     const columnSlots = [getSlotWithName("Head"), getSlotWithName("Armor"), getSlotWithName("Feet")];
+    const bagSlot = getSlotWithName("Bag");
 
     const slotsYOffset = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / healthBarLength) + slotOffsetFromHeartsY;
     const slotsXOffset = player === Game.player ?
@@ -104,6 +105,7 @@ export function redrawSlotsForPlayer(player) {
         Game.app.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * 2 + slotsColOffset;
 
     const contentsContainer = player === Game.player ? HUD.slots1Contents : HUD.slots2Contents;
+
     for (let i = 0; i < topRowSlots.length; ++i) {
         const x = slotsXOffset + (slotSize + slotsColOffset) * i;
         const y = slotsYOffset;
@@ -141,6 +143,19 @@ export function redrawSlotsForPlayer(player) {
         contentsContainer[slotContentsName].meta.position.x = x;
         contentsContainer[slotContentsName].meta.position.y = y;
     }
+
+    let x;
+    if (player === Game.player) x = slotsEquipmentOffset + slotSize + slotsRowOffset;
+    else x = slotsSecondRowXOffset;
+    const y = slotsYOffset + (slotSize + slotsRowOffset) * 3;
+    drawSlot(x, y, bagSlot);
+    contentsContainer["bag"].sprite.position.x = x;
+    contentsContainer["bag"].sprite.position.y = y;
+    contentsContainer["bag"].meta.position.x = x;
+    contentsContainer["bag"].meta.position.y = y;
+    if (player === Game.player) HUD.bagSlot1 = bagSlot;
+    else if (player === Game.player2) HUD.bagSlot2 = bagSlot;
+    if (player.bag === null) bagSlot.visible = false;
 
     HUD.energy.position.set(slotBorderOffsetX, slotsYOffset + (slotSize + slotsRowOffset) * 5);
 
@@ -191,6 +206,10 @@ export function redrawSlotContents(player, slot) {
         }
     }
     drawStatsForPlayer(player);
+    if (slot === "bag") {
+        const bagSlot = player === Game.player ? HUD.bagSlot1 : HUD.bagSlot2;
+        bagSlot.visible = player[slot] !== null;
+    }
 
     function drawSprite() {
         const sprite = new PIXI.Sprite(item.texture);
@@ -205,11 +224,17 @@ export function redrawSlotContents(player, slot) {
         let text;
         if (item.equipmentType === EQUIPMENT_TYPE.HEAD && item.type === HEAD_TYPE.VAMPIRE_CROWN) {
             text = new PIXI.Text(item.killsMade + "/" + item.killsNeeded, HUDTextStyle);
+        } else if (item.equipmentType === EQUIPMENT_TYPE.BAG_ITEM) {
+            text = new PIXI.Text(item.amount, HUDTextStyle);
+            text.position.set(slotSize - text.width, 0);
         } else {
             if (item.uses == null || item.maxUses == null) return false;
             text = new PIXI.Text(item.uses + "/" + item.maxUses, HUDTextStyle);
         }
-        text.position.set(slotSize - text.width / 2, 0);
+
+        if (item.equipmentType !== EQUIPMENT_TYPE.BAG_ITEM) {
+            text.position.set(slotSize - text.width / 2, 0);
+        }
         container.meta.addChild(text);
     }
 
@@ -244,6 +269,9 @@ export function redrawSlotContents(player, slot) {
         } else if (slot === "weapon" && item.concentrate && item.uses < item.maxUses) {
             if (player === Game.player) return "Q";
             else return "U";
+        } else if (slot === "bag" && item.amount > 0) {
+            if (player === Game.player) return "F";
+            else return "H";
         } else if (item.uses > 0) {
             if (item.equipmentType === EQUIPMENT_TYPE.SHIELD && item.type !== SHIELD_TYPE.PASSIVE) {
                 if (player === Game.player) return "E";
@@ -292,6 +320,10 @@ export function redrawArmor(player) {
 
 export function redrawFootwear(player) {
     redrawSlotContents(player, "footwear");
+}
+
+export function redrawBag(player) {
+    redrawSlotContents(player, "bag");
 }
 
 export function drawMovementKeyBindings() {
