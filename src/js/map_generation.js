@@ -46,6 +46,7 @@ import {GuardianOfTheLight} from "./classes/enemies/bosses/guardian_of_the_light
 import {FireGoblet} from "./classes/inanimate_objects/fire_goblet";
 import {Necromancy} from "./classes/magic/necromancy";
 import {Bomb} from "./classes/equipment/bag/bomb";
+import {SmallHealingPotion} from "./classes/equipment/bag/small_healing_potion";
 
 export function generateMap(level) {
     let map = copy2dArray(level);
@@ -268,7 +269,7 @@ export function assignDrops() {
 
     distributeDrops(Bomb, getRandomInt(3, 6));
 
-    //distributeDrops(SmallHealingPotion, getRandomInt(1, 3));
+    distributeDrops(SmallHealingPotion, getRandomInt(1, 3));
 
     function distributeDrops(dropConstructor, amount) {
         while (amount > 0) {

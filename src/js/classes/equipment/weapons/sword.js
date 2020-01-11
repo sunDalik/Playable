@@ -10,7 +10,7 @@ export class Sword {
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
         this.name = "Sword";
-        this.description = "Solid choice";
+        this.description = "2-range weapon";
     }
 
     attack(wielder, tileDirX, tileDirY) {

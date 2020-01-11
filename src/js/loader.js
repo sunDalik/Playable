@@ -174,6 +174,7 @@ export function loadAll(afterLoad) {
         .add("src/images/bag/bomb.png")
         .add("src/images/bag/bomb_ticking.png")
         .add("src/images/bag/bomb_about_to_explode.png")
+        .add("src/images/bag/small_healing_potion.png")
 
         .add("src/images/other/statue.png")
         .add("src/images/other/statue_knife.png")

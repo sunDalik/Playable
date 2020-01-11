@@ -13,5 +13,7 @@ export class SmallHealingPotion {
     }
 
     useItem(player) {
+        player.heal(this.healAmount);
+        this.amount--;
     }
 }

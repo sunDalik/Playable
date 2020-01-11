@@ -112,4 +112,9 @@ export class SpikyWallTrap extends Enemy {
             this.intentIcon.texture = Game.resources["src/images/icons/intents/eye.png"].texture;
         }
     }
+
+    die(source) {
+        super.die(source);
+        this.spikesSprite.visible = false;
+    }
 }
