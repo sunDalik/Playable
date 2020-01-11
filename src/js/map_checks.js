@@ -47,6 +47,17 @@ export function isEnemy(tilePositionX, tilePositionY) {
     return false;
 }
 
+//umm refactor these please...
+export function isWallTrap(tilePositionX, tilePositionY) {
+    if (isNotOutOfMap(tilePositionX, tilePositionY)) {
+        const tileEntity = Game.map[tilePositionY][tilePositionX].entity;
+        if (tileEntity && tileEntity.role === ROLE.WALL_TRAP) {
+            return true
+        }
+    }
+    return false;
+}
+
 export function isInanimate(tilePositionX, tilePositionY) {
     if (isNotOutOfMap(tilePositionX, tilePositionY)) {
         const tileEntity = Game.map[tilePositionY][tilePositionX].entity;

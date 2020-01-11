@@ -30,6 +30,7 @@ export function setEnemyTurnTimeout() {
 function enemyTurn() {
     drawInteractionKeys();
     Game.enemiesTimeout = null;
+    updateList();
     damagePlayersWithHazards();
     moveEnemies();
     moveBullets();
@@ -82,6 +83,13 @@ export function updateHazards() {
     for (let i = Game.hazards.length - 1; i >= 0; i--) {
         if (Game.hazards[i].visible)
             Game.hazards[i].updateLifetime();
+    }
+}
+
+function updateList() {
+    for (let i = Game.updateList.length - 1; i >= 0; i--) {
+        if (Game.updateList[i].update)
+            Game.updateList[i].update();
     }
 }
 

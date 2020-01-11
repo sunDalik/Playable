@@ -157,6 +157,7 @@ export class Enemy extends AnimatedTileElement {
                     //else? what will we do if all 8 tiles are busy? think about it later...
                 }
             }
+            this.drop = null;
         }
     }
 
@@ -173,6 +174,7 @@ export class Enemy extends AnimatedTileElement {
     revive() {
         if (Game.map[this.tilePosition.y][this.tilePosition.x].entity === null) {
             this.energyDrop = 0;
+            this.drop = null;
             this.dead = false;
             this.visible = true;
             this.health = this.maxHealth;

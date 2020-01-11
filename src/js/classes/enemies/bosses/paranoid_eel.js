@@ -18,6 +18,7 @@ import {Eel} from "../eel";
 import {PoisonEel} from "../eel_poison";
 import {shakeScreen} from "../../../animations";
 import {DarkEel} from "../eel_dark";
+import {removeObjectFromArray} from "../../../utils/basic_utils";
 
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/paranoid_eel/neutral.png"].texture) {
@@ -711,6 +712,7 @@ export class ParanoidEel extends Boss {
         super.die(source);
         for (const minion of this.minions) {
             minion.die(null);
+            removeObjectFromArray(minion, Game.enemies); //to prevent from respawning
         }
     }
 

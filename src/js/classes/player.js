@@ -275,6 +275,7 @@ export class Player extends AnimatedTileElement {
                 this.onMoveFrame(onEnd);
             }, animationTime);
         }
+        this.pickUpItems();
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
