@@ -50,6 +50,14 @@ export class Bomb {
                 if (isObelisk(posX, posY)) {
                     Game.map[posY][posX].entity.destroy();
                 }
+                if (Game.map[posY][posX].hazard) {
+                    Game.map[posY][posX].hazard.removeFromWorld();
+                }
+                for (let i = Game.bullets.length - 1; i >= 0; i--) {
+                    if (Game.bullets[i].tilePosition.x === posX && Game.bullets[i].tilePosition.y === posY) {
+                        Game.bullets[i].die();
+                    }
+                }
                 const player = getPlayerOnTile(posX, posY);
                 if (player) {
                     player.damage(this.friendlyFire, this, false, true);

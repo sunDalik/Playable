@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {INANIMATE_TYPE, ROLE} from "../../enums";
 import {otherPlayer} from "../../utils/game_utils";
-import {getBullet, isBullet} from "../../map_checks";
+import {isBullet} from "../../map_checks";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {randomChoice} from "../../utils/random_utils";
 import {FireHazard} from "../hazards/fire";
@@ -37,8 +37,11 @@ export class FireGoblet extends AnimatedTileElement {
             this.standing = true;
             this.zIndex = Game.primaryPlayer.zIndex + 1;
             this.texture = Game.resources["src/images/other/fire_goblet.png"].texture;
-            const bullet = getBullet(this.tilePosition.x, this.tilePosition.y);
-            if (bullet) bullet.die();
+            for (let i = Game.bullets.length - 1; i >= 0; i--) {
+                if (Game.bullets[i].tilePosition.x === this.tilePosition.x && Game.bullets[i].tilePosition.y === this.tilePosition.y) {
+                    Game.bullets[i].die();
+                }
+            }
         } else {
             this.direction = {x: tileStepX, y: tileStepY};
             this.angle = this.getAngleForDirection(this.direction);

@@ -64,16 +64,6 @@ export function isBullet(tilePosX, tilePosY) {
     return false;
 }
 
-export function getBullet(tilePosX, tilePosY) {
-    if (isNotOutOfMap(tilePosX, tilePosY)) {
-        const entity = Game.map[tilePosY][tilePosX].entity;
-        const secondaryEntity = Game.map[tilePosY][tilePosX].secondaryEntity;
-        if (entity && entity.role === ROLE.BULLET) return entity;
-        else if (secondaryEntity && secondaryEntity.role === ROLE.BULLET) return secondaryEntity
-    }
-    return null;
-}
-
 export function isAnyWallOrInanimate(tilePosX, tilePosY) {
     return isAnyWall(tilePosX, tilePosY) || isInanimate(tilePosX, tilePosY);
 }
