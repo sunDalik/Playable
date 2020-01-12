@@ -197,9 +197,6 @@ export function loadAll(afterLoad) {
         .add("src/images/other/chest_opened.png")
 
         .add("src/images/other/grail.png")
-        .add("src/images/other/grail_white.png")
-        .add("src/images/other/grail_dark.png")
-        .add("src/images/other/grail_gray.png")
         .add("src/images/other/obelisk.png")
         .add("src/images/other/obelisk_damaged.png")
         .add("src/images/other/obelisk_used.png")

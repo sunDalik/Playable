@@ -4,6 +4,11 @@ import {INANIMATE_TYPE, MAGIC_ALIGNMENT, ROLE} from "../../enums";
 import {createFadingText, createFloatingItemAnimation} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
 import {removeItemFromPool} from "../../game_changer";
+import {
+    ITEM_OUTLINE_FILTER_SMALL,
+    ITEM_OUTLINE_FILTER_SMALL_BLACK,
+    ITEM_OUTLINE_FILTER_SMALL_GRAY
+} from "../../filters";
 
 export class Grail extends FullTileElement {
     constructor(tilePositionX, tilePositionY, obelisk) {
@@ -22,7 +27,7 @@ export class Grail extends FullTileElement {
 
     placeGrail() {
         this.place();
-        this.magicSprite.tilePosition.set(this.tilePosition.x, this.tilePosition.y - 0.3);
+        this.magicSprite.tilePosition.set(this.tilePosition.x, this.tilePosition.y - 0.28);
         this.magicSprite.place();
     }
 
@@ -31,13 +36,13 @@ export class Grail extends FullTileElement {
         if (this.magic) {
             switch (this.magic.alignment) {
                 case MAGIC_ALIGNMENT.WHITE:
-                    this.texture = Game.resources["src/images/other/grail_white.png"].texture;
+                    this.magicSprite.filters = [ITEM_OUTLINE_FILTER_SMALL];
                     break;
                 case MAGIC_ALIGNMENT.DARK:
-                    this.texture = Game.resources["src/images/other/grail_dark.png"].texture;
+                    this.magicSprite.filters = [ITEM_OUTLINE_FILTER_SMALL_BLACK];
                     break;
                 case MAGIC_ALIGNMENT.GRAY:
-                    this.texture = Game.resources["src/images/other/grail_gray.png"].texture;
+                    this.magicSprite.filters = [ITEM_OUTLINE_FILTER_SMALL_GRAY];
                     break;
             }
             if (!this.magicSet) {
