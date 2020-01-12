@@ -215,11 +215,11 @@ export function longShakeScreen() {
     shakeScreen(Game.LONG_SHAKE_TIME, 2, Game.SHORT_SHAKE_AMPLITUDE, true);
 }
 
-export function createHeartAnimation(positionX, positionY, heartSize = Game.TILESIZE / 3, angleStep = 0, animationTime = 30) {
+export function createHeartAnimation(positionX, positionY, heartSize = Game.TILESIZE / 3, animationTime = 26, pound = false, poundTwice = false) {
     const heart = new PIXI.Sprite(Game.resources["src/images/HUD/heart_full.png"].texture);
     heart.width = heartSize;
     heart.height = heartSize;
-    const sizeEndChange = heartSize / 2;
+    const sizeEndChange = pound ? heartSize : heartSize / 2;
     heart.anchor.set(0.5, 0.5);
     heart.position.set(positionX, positionY - heart.height / 4);
     const startPosY = heart.position.y;
@@ -232,16 +232,37 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
         if (Game.paused) return;
         counter += delta;
         heart.position.y = startPosY + easeOutQuad(counter / animationTime) * posYEndChange;
-        heart.height = heart.width = heartSize + easeOutQuad(counter / animationTime) * sizeEndChange;
-        if (counter >= animationTime * 3 / 4) {
-            heart.alpha = 1 - easeOutQuad((counter - animationTime * 3 / 4) / animationTime) * 2;
-        }
-        if (counter < animationTime / 4) {
-            heart.angle -= angleStep * delta
-        } else if (counter < animationTime * 3 / 4) {
-            heart.angle += angleStep * delta
-        } else if (counter < animationTime) {
-            heart.angle -= angleStep * delta;
+        if (pound) {
+            if (poundTwice) {
+                if (counter < animationTime / 7) {
+                    heart.height = heart.width = heartSize + easeOutQuad(counter / (animationTime / 7)) * sizeEndChange;
+                } else if (counter < animationTime * 2 / 7) {
+                    heart.height = heart.width = heartSize + sizeEndChange - easeInQuad((counter - animationTime / 7) / (animationTime / 7)) * sizeEndChange;
+                } else if (counter < animationTime * 3 / 7) {
+                    heart.height = heart.width = heartSize + easeOutQuad((counter - animationTime * 2 / 7) / (animationTime / 7)) * sizeEndChange;
+                } else if (counter < animationTime * 4 / 7) {
+                    heart.height = heart.width = heartSize + sizeEndChange - easeInQuad((counter - animationTime * 3 / 7) / (animationTime / 7)) * sizeEndChange;
+                } else if (counter < animationTime) {
+                    heart.height = heart.width = heartSize + easeOutQuad((counter - animationTime * 4 / 7) / (animationTime * 3 / 7)) * sizeEndChange;
+                }
+            } else {
+                if (counter < animationTime / 5) {
+                    heart.height = heart.width = heartSize + easeOutQuad(counter / (animationTime / 5)) * sizeEndChange;
+                } else if (counter < animationTime * 2 / 5) {
+                    heart.height = heart.width = heartSize + sizeEndChange - easeInQuad((counter - animationTime / 5) / (animationTime / 5)) * sizeEndChange;
+                } else if (counter < animationTime) {
+                    heart.height = heart.width = heartSize + easeOutQuad((counter - animationTime * 2 / 5) / (animationTime * 3 / 5)) * sizeEndChange;
+                }
+            }
+
+            if (counter >= animationTime * 4 / 5) {
+                heart.alpha = 1 - easeOutQuad((counter - animationTime * 4 / 5) / animationTime) * 2;
+            }
+        } else {
+            heart.height = heart.width = heartSize + easeOutQuad(counter / animationTime) * sizeEndChange;
+            if (counter >= animationTime * 3 / 4) {
+                heart.alpha = 1 - easeOutQuad((counter - animationTime * 3 / 4) / animationTime) * 2;
+            }
         }
         if (counter >= animationTime) {
             Game.world.removeChild(heart);
@@ -253,7 +274,11 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
 }
 
 export function createKissHeartAnimation(positionX, positionY) {
-    createHeartAnimation(positionX, positionY, Game.TILESIZE / 2.5, 1.5, 50)
+    createHeartAnimation(positionX, positionY, Game.TILESIZE / 3, 60, true)
+}
+
+export function createStrongKissHeartAnimation(positionX, positionY) {
+    createHeartAnimation(positionX, positionY, Game.TILESIZE / 3, 70, true, true)
 }
 
 export function showHelpBox(item) {
