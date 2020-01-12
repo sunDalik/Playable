@@ -3,7 +3,7 @@ import {BAG_ITEM_TYPE, EQUIPMENT_TYPE} from "../../../enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {get8Directions} from "../../../utils/map_utils";
 import {FullTileElement} from "../../tile_elements/full_tile_element";
-import {createFadingAttack} from "../../../animations";
+import {createFadingAttack, shakeScreen} from "../../../animations";
 import {getPlayerOnTile, isDiggable, isEnemy, isObelisk, isWallTrap} from "../../../map_checks";
 import * as PIXI from "pixi.js";
 import {lightPlayerPosition} from "../../../drawing/lighting";
@@ -63,6 +63,7 @@ export class Bomb {
                     player.damage(this.friendlyFire, this, false, true);
                 }
                 createFadingAttack(sprite, 9);
+                shakeScreen(5, 1, 40);
             }
             lightPlayerPosition(Game.player);
             lightPlayerPosition(Game.player2);
