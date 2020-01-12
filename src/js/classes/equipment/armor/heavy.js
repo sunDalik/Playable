@@ -13,6 +13,6 @@ export class HeavyArmor {
     }
 
     onMagicCast(player) {
-        player.damage(this.magicPunishment, this, false, false);
+        player.damage(this.magicPunishment, null, false, false);
     }
 }
