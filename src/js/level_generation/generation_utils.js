@@ -115,13 +115,13 @@ export function connectDiagonalPaths(level) {
 }
 
 //entries format = [{x: 1, y:3}, {x:4, y:2} ... ]
-export function createRoom(width, height, entries) {
+export function createRoom(width, height, entries, wallSymbol = MAP_SYMBOLS.WALL) {
     let room = [];
     for (let i = 0; i < height; ++i) {
         room[i] = [];
         for (let j = 0; j < width; ++j) {
             if (j === 0 || j === width - 1 || i === 0 || i === height - 1) {
-                room[i][j] = MAP_SYMBOLS.WALL;
+                room[i][j] = wallSymbol;
             } else room[i][j] = MAP_SYMBOLS.NONE;
 
             //for tests

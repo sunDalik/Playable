@@ -37,6 +37,10 @@ export function lightPlayerPosition(player) {
         } else {
             lightWorld(px, py, 1, true);
         }
+    } else if (Game.stage === STAGE.RUINS) {
+        return;
+        const roomDist = 10;
+        lightWorld(px, py, roomDist);
     } else {
         const pathDist = 5;
         const roomDist = 9;

@@ -148,6 +148,7 @@ export function generateEntryBasedLevel() {
                 }
             }
 
+            room = copy2dArray(room);
             let transformOption = getRandomInt(0, 4);
             if (obeliskRoomIs.includes(i)) transformOption = randomChoice([0, 1]);
             switch (transformOption) {
@@ -204,8 +205,8 @@ export function generateEntryBasedLevel() {
             }
         }
     } else {
-        startRoomWidth = getRandomInt(6, 9);
-        startRoomHeight = getRandomInt(6, 9);
+        startRoomWidth = getRandomInt(5, 8);
+        startRoomHeight = getRandomInt(5, 8);
         if (entryCount % 2 === 0) startRoomEntriesCount = 2;
         else startRoomEntriesCount = 3;
         if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 1), y: 0};

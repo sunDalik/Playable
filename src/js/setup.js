@@ -132,6 +132,10 @@ export function initializeLevel() {
             kiss();
         } else Game.unplayable = false;
     }, 8, 2);
+
+    if (Game.stage === STAGE.RUINS) {
+        lightAll();
+    }
 }
 
 function initPlayers() {
@@ -178,11 +182,15 @@ function retryAfterBlackBars() {
 }
 
 function test() {
+    lightAll();
+    if (Game.stage === STAGE.DARK_TUNNEL) swapEquipmentWithPlayer(Game.player, new Torch(), false);
+    camera.setup(Game.world.width / 2, Game.world.height / 2);
+}
+
+function lightAll() {
     for (let i = 0; i < Game.map.length; i++) {
         for (let j = 0; j < Game.map[0].length; j++) {
             lightTile(j, i);
         }
     }
-    if (Game.stage === STAGE.DARK_TUNNEL) swapEquipmentWithPlayer(Game.player, new Torch(), false);
-    //camera.setup(Game.world.width / 2, Game.world.height / 2);
 }

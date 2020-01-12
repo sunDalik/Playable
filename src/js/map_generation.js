@@ -1,5 +1,5 @@
 import {Game} from "./game";
-import {ENEMY_TYPE, MAP_SYMBOLS, RABBIT_TYPE, ROLE, TILE_TYPE} from "./enums";
+import {ENEMY_TYPE, MAP_SYMBOLS, RABBIT_TYPE, ROLE, STAGE, TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 import {copy2dArray} from "./utils/basic_utils";
@@ -49,12 +49,12 @@ import {Bomb} from "./classes/equipment/bag/bomb";
 import {SmallHealingPotion} from "./classes/equipment/bag/small_healing_potion";
 
 export function generateMap(level) {
-    let map = copy2dArray(level);
+    const map = copy2dArray(level);
     const obeliskTiles = [];
     const entries = [];
     for (let i = 0; i < map.length; ++i) {
         for (let j = 0; j < map[0].length; ++j) {
-            let mapCell = {
+            const mapCell = {
                 tileType: TILE_TYPE.NONE,
                 tile: null,
                 hazard: null,
@@ -228,6 +228,7 @@ export function generateMap(level) {
             else if (map[entry.y][entry.x + 1].tileType === TILE_TYPE.PATH) entrySprite.angle = -90;
             else if (map[entry.y - 1][entry.x].tileType === TILE_TYPE.PATH) entrySprite.angle = 180;
             map[entry.y][entry.x].tile = entrySprite;
+            if (Game.stage === STAGE.RUINS) map[entry.y][entry.x].tile = null;
         }
     }
 
