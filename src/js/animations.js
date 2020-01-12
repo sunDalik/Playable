@@ -219,21 +219,22 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
     const heart = new PIXI.Sprite(Game.resources["src/images/HUD/heart_full.png"].texture);
     heart.width = heartSize;
     heart.height = heartSize;
+    const sizeEndChange = heartSize / 2;
     heart.anchor.set(0.5, 0.5);
     heart.position.set(positionX, positionY - heart.height / 4);
+    const startPosY = heart.position.y;
+    const posYEndChange = -Game.TILESIZE / 3;
     heart.zIndex = 99;
     Game.world.addChild(heart);
-    const stepY = Game.TILESIZE / 2.5 / animationTime;
-    const alphaStep = 1 / animationTime;
     let counter = 0;
 
     const animation = (delta) => {
         if (Game.paused) return;
-        heart.position.y -= stepY * delta;
-        heart.width += heartSize / 3 / animationTime * delta;
-        heart.height += heartSize / 3 / animationTime * delta;
-        if (counter >= animationTime / 2) {
-            heart.alpha -= alphaStep * delta;
+        counter += delta;
+        heart.position.y = startPosY + easeOutQuad(counter / animationTime) * posYEndChange;
+        heart.height = heart.width = heartSize + easeOutQuad(counter / animationTime) * sizeEndChange;
+        if (counter >= animationTime * 3 / 4) {
+            heart.alpha = 1 - easeOutQuad((counter - animationTime * 3 / 4) / animationTime) * 2;
         }
         if (counter < animationTime / 4) {
             heart.angle -= angleStep * delta
@@ -242,7 +243,6 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
         } else if (counter < animationTime) {
             heart.angle -= angleStep * delta;
         }
-        counter += delta;
         if (counter >= animationTime) {
             Game.world.removeChild(heart);
             Game.app.ticker.remove(animation);

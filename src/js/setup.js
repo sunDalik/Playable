@@ -122,16 +122,16 @@ export function initializeLevel() {
             Game.player.microSlide(Game.player2.tilePosition.x - Game.player.tilePosition.x,
                 Game.player2.tilePosition.y - Game.player.tilePosition.y,
                 null, () => setTickTimeout(() =>
-                    Game.player.microSlide(0, 0, null, () => Game.unplayable = false, 5, 2), 11),
-                10, 2);
+                    Game.player.microSlide(0, 0, null, () => Game.unplayable = false, 5, 2.5), 11),
+                10, 2.5);
             Game.player2.microSlide(Game.player.tilePosition.x - Game.player2.tilePosition.x,
                 Game.player.tilePosition.y - Game.player2.tilePosition.y,
                 null, () => setTickTimeout(() =>
-                    Game.player2.microSlide(0, 0, null, () => Game.unplayable = false, 5, 2), 11),
-                10, 2);
+                    Game.player2.microSlide(0, 0, null, () => Game.unplayable = false, 5, 2.5), 11),
+                10, 2.5);
             kiss();
         } else Game.unplayable = false;
-    }, 8, 2);
+    }, 8, 2.5);
 
     if (Game.stage === STAGE.RUINS) {
         lightAll();

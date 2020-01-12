@@ -88,8 +88,8 @@ export function generateOpenSpaceLevel() {
     }
 
     //determining obelisk room index
-    let obeliskRoomNumber = randomChoice([1]); //this is for testing purposes. Actually there will always be only one obelisk
-    let obeliskRoomIs = [];
+    let obeliskRoomNumber = 1;
+    let obeliskRoomIs = []; //this is for testing purposes. Actually there will always be only one obelisk
     for (let i = 0; i < obeliskRoomNumber; ++i) {
         while (true) {
             const randomI = getRandomInt(0, roomNumber);
