@@ -33,6 +33,8 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, size = Game.
     const oldW = attackParticle.width;
     const oldH = attackParticle.height;
 
+    //shakeDirectional(-Math.sign(tileX2 - tileX1), -Math.sign(tileY2 - tileY1), 2, 3);
+
     const animation = (delta) => {
         if (Game.paused) return;
         if (counter < Game.WEAPON_ATTACK_TIME / 2) {
@@ -202,6 +204,30 @@ export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1
     };
 
     Game.shakeAnimation = animation;
+    Game.app.ticker.add(animation);
+}
+
+export function shakeDirectional(x, y, amplitude, animationTime) {
+    const stepX = x * amplitude / animationTime;
+    const stepY = y * amplitude / animationTime;
+    let counter = 0;
+
+    const animation = delta => {
+        if (Game.paused) return;
+        counter += delta;
+        if (counter < animationTime / 2) {
+            Game.world.position.x -= stepX * delta;
+            Game.world.position.y -= stepY * delta;
+        } else {
+            Game.world.position.x += stepX * delta;
+            Game.world.position.y += stepY * delta;
+        }
+        if (counter >= animationTime) {
+            Game.app.ticker.remove(animation);
+            if (camera.animation === null) camera.center();
+        }
+    };
+
     Game.app.ticker.add(animation);
 }
 

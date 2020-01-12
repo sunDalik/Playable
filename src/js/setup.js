@@ -5,7 +5,7 @@ import {loadAll} from "./loader";
 import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
-import {STAGE} from "./enums";
+import {STAGE, TILE_TYPE} from "./enums";
 import {generateLevel} from "./level_generation/level_generation";
 import {assignDrops, calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
@@ -50,6 +50,7 @@ window.addEventListener("resize", () => {
 });
 
 function setup() {
+    //Game.TILESIZE = 40;
     Game.world = new World();
     Game.app.stage.addChild(Game.world);
     Game.app.stage.addChild(HUD);
@@ -64,7 +65,6 @@ function setup() {
         drawMiniMap();
     });
 
-    //Game.TILESIZE = 13;
     Game.stage = STAGE.FLOODED_CAVE;
     initPools();
     initializeLevel();
@@ -192,6 +192,15 @@ function lightAll() {
     for (let i = 0; i < Game.map.length; i++) {
         for (let j = 0; j < Game.map[0].length; j++) {
             lightTile(j, i);
+        }
+    }
+}
+
+function lightRandom() {
+    for (let i = 0; i < Game.map.length; i++) {
+        for (let j = 0; j < Game.map[0].length; j++) {
+            if (Math.random() < 0.3 && Game.map[i][j].tileType !== TILE_TYPE.VOID)
+                lightTile(j, i);
         }
     }
 }
