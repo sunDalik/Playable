@@ -517,7 +517,10 @@ export class Player extends AnimatedTileElement {
             }
         }
         for (const mg of this.getMagic()) {
-            if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) mg.uses = mg.maxUses;
+            if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) {
+                mg.uses += Math.ceil(mg.maxUses / 2);
+                if (mg.uses > mg.maxUses) mg.uses = mg.maxUses;
+            }
         }
         redrawSlotContentsForPlayer(this);
     }

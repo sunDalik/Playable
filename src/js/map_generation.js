@@ -268,7 +268,6 @@ export function assignDrops() {
     let enemyIndex = 0;
 
     distributeDrops(Bomb, getRandomInt(3, 6));
-
     distributeDrops(SmallHealingPotion, getRandomInt(1, 3));
 
     function distributeDrops(dropConstructor, amount) {
