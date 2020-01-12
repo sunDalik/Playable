@@ -147,6 +147,7 @@ export function loadAll(afterLoad) {
         .add("src/images/weapons/book_of_flames_exhausted_1.png")
         .add("src/images/weapons/book_of_flames_exhausted_2.png")
         .add("src/images/weapons/scythe.png")
+        .add("src/images/weapons/spear.png")
         .add("src/images/weapons/maiden_dagger.png")
         .add("src/images/weapons/hammer.png")
 
@@ -186,6 +187,7 @@ export function loadAll(afterLoad) {
         .add("src/images/other/statue_maiden_dagger_2.png")
         .add("src/images/other/statue_scythe.png")
         .add("src/images/other/statue_hammer.png")
+        .add("src/images/other/statue_spear.png")
         .add("src/images/other/statue_shield.png")
         .add("src/images/other/statue_tool.png")
 

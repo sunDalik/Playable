@@ -39,6 +39,9 @@ export class Statue extends TallTileElement {
             case WEAPON_TYPE.SCYTHE:
                 this.texture = Game.resources["src/images/other/statue_scythe.png"].texture;
                 break;
+            case WEAPON_TYPE.SPEAR:
+                this.texture = Game.resources["src/images/other/statue_spear.png"].texture;
+                break;
             case WEAPON_TYPE.MAIDEN_DAGGER:
                 const option = randomChoice([1, 2]);
                 if (option === 1) {

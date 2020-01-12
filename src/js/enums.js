@@ -85,7 +85,8 @@ export const WEAPON_TYPE = Object.freeze({
     SCYTHE: 5,
     MAIDEN_DAGGER: 6,
     HAMMER: 7,
-    PICKAXE: 8
+    PICKAXE: 8,
+    SPEAR: 9
 });
 export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1, VAMPIRE_CROWN: 2});
 export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4});

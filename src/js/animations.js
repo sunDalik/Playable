@@ -8,18 +8,12 @@ import {camera} from "./classes/game/camera";
 import {STAGE} from "./enums";
 import {easeInOutQuad, easeInQuad, easeOutQuad} from "./utils/math_utils";
 
-export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false) {
+export function createPlayerWeaponAnimation(player, tileX2, tileY2, size = Game.TILESIZE / 3) {
     const tileX1 = player.tilePosition.x;
     const tileY1 = player.tilePosition.y;
     let attackParticle = new PIXI.Sprite(PIXI.Texture.WHITE);
     player.animationSubSprites.push(attackParticle);
-    if (thin) {
-        attackParticle.width = Game.TILESIZE / 5;
-        attackParticle.height = Game.TILESIZE / 5;
-    } else {
-        attackParticle.width = Game.TILESIZE / 3;
-        attackParticle.height = Game.TILESIZE / 3;
-    }
+    attackParticle.width = attackParticle.height = size;
     if (tileX2 > tileX1) attackParticle.anchor.set(0, 0.5);
     else if (tileX2 < tileX1) attackParticle.anchor.set(1, 0.5);
     else if (tileY2 > tileY1) attackParticle.anchor.set(0.5, 0);

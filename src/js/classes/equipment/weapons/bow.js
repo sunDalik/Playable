@@ -23,16 +23,16 @@ export class Bow {
         const atk = wielder.getAtkWithWeapon(this);
         //maybe should weaken close-range attacks for bow? who knows...
         if (isEnemy(attackTileX1, attackTileY1)) {
-            createPlayerWeaponAnimation(wielder, attackTileX1, attackTileY1, true);
+            createPlayerWeaponAnimation(wielder, attackTileX1, attackTileY1, Game.TILESIZE / 5);
             Game.map[attackTileY1][attackTileX1].entity.damage(wielder, atk, tileDirX, tileDirY, false);
             return true;
             //Assuming that tiles directly adjacent to players are always lit
         } else if (isEnemy(attackTileX2, attackTileY2) && isNotAWall(attackTileX1, attackTileY1) && isLit(attackTileX2, attackTileY2)) {
-            createPlayerWeaponAnimation(wielder, attackTileX2, attackTileY2, true);
+            createPlayerWeaponAnimation(wielder, attackTileX2, attackTileY2, Game.TILESIZE / 5);
             Game.map[attackTileY2][attackTileX2].entity.damage(wielder, atk, tileDirX, tileDirY, false);
             return true;
         } else if (isEnemy(attackTileX3, attackTileY3) && isNotAWall(attackTileX2, attackTileY2) && isNotAWall(attackTileX1, attackTileY1) && isLit(attackTileX3, attackTileY3) && isLit(attackTileX2, attackTileY2)) {
-            createPlayerWeaponAnimation(wielder, attackTileX3, attackTileY3, true);
+            createPlayerWeaponAnimation(wielder, attackTileX3, attackTileY3, Game.TILESIZE / 5);
             Game.map[attackTileY3][attackTileX3].entity.damage(wielder, atk, tileDirX, tileDirY, false);
             return true;
         } else return false;
