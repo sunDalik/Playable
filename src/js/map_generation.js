@@ -255,13 +255,13 @@ export function calculateDetectionGraph(map) {
 }
 
 export function recalculateTileInDetectionGraph(tileX, tileY) {
-    if (mapWithWeights[tileY][tileX].tileType === TILE_TYPE.VOID || mapWithWeights[tileY][tileX].tileType === TILE_TYPE.PATH
-        || mapWithWeights[tileY][tileX].tileType === TILE_TYPE.WALL || mapWithWeights[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
+    if (Game.map[tileY][tileX].tileType === TILE_TYPE.VOID || Game.map[tileY][tileX].tileType === TILE_TYPE.PATH
+        || Game.map[tileY][tileX].tileType === TILE_TYPE.WALL || Game.map[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
         mapWithWeights[tileY][tileX] = 1;
     } else {
         mapWithWeights[tileY][tileX] = 0;
     }
-    Game.playerDetectionGraph = new PF.Grid(mapWithWeights);
+    Game.playerDetectionGraph = new PF.Grid(mapWithWeights); //wait do I need it? I don't know
 }
 
 export function assignDrops() {

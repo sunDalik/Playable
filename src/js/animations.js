@@ -2,10 +2,11 @@ import {Game} from "./game"
 import * as PIXI from "pixi.js"
 import {randomChoice} from "./utils/random_utils";
 import {ITEM_OUTLINE_FILTER} from "./filters";
-import {HUDTextStyle, HUDTextStyleTitle} from "./drawing/draw_constants";
+import {HUDTextStyle, HUDTextStyleTitle, miniMapBottomOffset} from "./drawing/draw_constants";
 import {HUD} from "./drawing/hud_object";
 import {camera} from "./classes/game/camera";
 import {STAGE} from "./enums";
+import {easeInQuad, easeOutQuad} from "./utils/math_utils";
 
 export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false) {
     const tileX1 = player.tilePosition.x;
@@ -286,23 +287,29 @@ export function showHelpBox(item) {
     Game.itemHelp.position.set(Game.app.renderer.screen.width / 2 - Game.itemHelp.width / 2, Game.app.renderer.screen.height);
     Game.itemHelp.zIndex = 1;
 
-    const slideTime = 14;
-    const slideStep = Game.itemHelp.height / slideTime;
+    const slideTime = 20;
+    const startVal = Game.itemHelp.position.y;
+    const endChange = -Game.itemHelp.height - miniMapBottomOffset;
     const stayTime = 180;
+    let placed = false;
     let counter = 0;
 
     const animation = (delta) => {
+        counter += delta;
         if (Game.paused) return;
         if (Game.itemHelp === null) {
             Game.app.ticker.remove(animation);
             return;
         }
         if (counter < slideTime) {
-            Game.itemHelp.position.y -= slideStep * delta;
+            Game.itemHelp.position.y = startVal + easeOutQuad(counter / slideTime) * endChange;
         } else if (counter >= slideTime + stayTime && counter < slideTime + stayTime + slideTime) {
-            Game.itemHelp.position.y += slideStep * delta;
+            Game.itemHelp.position.y = startVal + endChange - easeInQuad((counter - slideTime - stayTime) / slideTime) * endChange;
         }
-        counter += delta;
+        if (counter >= slideTime && !placed) {
+            placed = true;
+            Game.itemHelp.position.y = startVal + endChange;
+        }
         if (counter >= slideTime + stayTime + slideTime) {
             Game.app.ticker.remove(animation);
             HUD.removeChild(Game.itemHelp);

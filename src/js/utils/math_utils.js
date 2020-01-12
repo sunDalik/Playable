@@ -24,3 +24,19 @@ export function average(array) {
     }
     return sum / array.length;
 }
+
+export function easeInOutQuad(time) {
+    if (time <= 0.5) return 2 * time * time;
+    else {
+        time -= 0.5;
+        return 2 * time * (1 - time) + 0.5;
+    }
+}
+
+export function easeOutQuad(time) {
+    return -1 * (time) * (time - 2);
+}
+
+export function easeInQuad(time) {
+    return time * time;
+}

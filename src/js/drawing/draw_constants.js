@@ -10,7 +10,9 @@ export const slotsColOffset = 15;
 export const slotContentSizeMargin = 10;
 export const slotBorderOffsetX = 15;
 export const statsOffsetX = 15;
+
 export const miniMapPixelSize = 5;
+export const miniMapBottomOffset = 20;
 
 export const bossHeartSize = 35;
 export const bossHeartOffset = -16;

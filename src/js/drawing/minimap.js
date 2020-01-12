@@ -1,6 +1,12 @@
 import {Game} from "../game";
 import {HUD} from "./hud_object";
-import {HUDKeyBindSize, HUDKeyBindTextStyle, miniMapPixelSize, slotBorderOffsetX} from "./draw_constants";
+import {
+    HUDKeyBindSize,
+    HUDKeyBindTextStyle,
+    miniMapBottomOffset,
+    miniMapPixelSize,
+    slotBorderOffsetX
+} from "./draw_constants";
 import * as PIXI from "pixi.js";
 import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "../enums";
 import {camera} from "../classes/game/camera";
@@ -10,7 +16,7 @@ let mapMask = new PIXI.Graphics();
 const miniMapCollapsedWidth = 110;
 const miniMapCollapsedHeight = 110;
 const outlineWidth = 3;
-const bottomOffset = 20;
+const bottomOffset = miniMapBottomOffset;
 let keyBind = null;
 
 export function drawMiniMap() {
