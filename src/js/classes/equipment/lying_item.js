@@ -11,7 +11,11 @@ export class LyingItem extends TileElement {
         this.animation = createFloatingItemAnimation(this);
         this.width = Game.TILESIZE * 0.9;
         this.height = Game.TILESIZE * 0.9;
-        this.zIndex = -1;
+    }
+
+    place() {
+        super.place();
+        this.position.y -= Game.TILESIZE / 5;
     }
 
     pickUp(player) {

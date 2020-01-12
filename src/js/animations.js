@@ -6,7 +6,7 @@ import {HUDTextStyle, HUDTextStyleTitle, miniMapBottomOffset} from "./drawing/dr
 import {HUD} from "./drawing/hud_object";
 import {camera} from "./classes/game/camera";
 import {STAGE} from "./enums";
-import {easeInQuad, easeOutQuad} from "./utils/math_utils";
+import {easeInOutQuad, easeInQuad, easeOutQuad} from "./utils/math_utils";
 
 export function createPlayerWeaponAnimation(player, tileX2, tileY2, thin = false) {
     const tileX1 = player.tilePosition.x;
@@ -147,21 +147,25 @@ export function rotate(object, clockwise = true) {
 }
 
 export function createFloatingItemAnimation(item) {
-    let counter = 0;
-    const step = item.height / 4 / Game.ITEM_FLOAT_ANIMATION_TIME;
+    const animationTime = Game.ITEM_FLOAT_ANIMATION_TIME;
+    const amplitude = item.height / 4;
+    const startVal = item.position.y + amplitude / 2;
+    const endChange = -amplitude;
+    let goUp = true;
+    let counter = animationTime / 2;
 
     const animation = (delta) => {
         if (Game.paused) return;
-        if (counter < Game.ITEM_FLOAT_ANIMATION_TIME / 4) {
-            item.position.y -= step * delta;
-        } else if (counter < Game.ITEM_FLOAT_ANIMATION_TIME * 3 / 4) {
-            item.position.y += step * delta;
-        } else if (counter < Game.ITEM_FLOAT_ANIMATION_TIME) {
-            item.position.y -= step * delta;
-        }
         counter += delta;
-        if (counter >= Game.ITEM_FLOAT_ANIMATION_TIME) {
+
+        if (goUp) item.position.y = startVal + easeInOutQuad(counter / animationTime) * endChange;
+        else item.position.y = startVal + endChange - easeInOutQuad(counter / animationTime) * endChange;
+
+        if (counter >= animationTime) {
             counter = 0;
+            if (goUp) item.position.y = startVal + endChange;
+            else item.position.y = startVal;
+            goUp = !goUp;
         }
     };
 
@@ -295,8 +299,8 @@ export function showHelpBox(item) {
     let counter = 0;
 
     const animation = (delta) => {
-        counter += delta;
         if (Game.paused) return;
+        counter += delta;
         if (Game.itemHelp === null) {
             Game.app.ticker.remove(animation);
             return;

@@ -6,7 +6,7 @@ import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from ".
 import {redrawEnergy} from "../../drawing/draw_hud";
 import {LyingItem} from "../equipment/lying_item";
 import {get8Directions} from "../../utils/map_utils";
-import {isNotAWall} from "../../map_checks";
+import {isInanimate, isNotAWall} from "../../map_checks";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -149,7 +149,7 @@ export class Enemy extends AnimatedTileElement {
                 for (const dir of get8Directions()) {
                     const posY = this.tilePosition.y + dir.y;
                     const posX = this.tilePosition.x + dir.x;
-                    if (isNotAWall(posX, posY) && Game.map[posY][posX].item === null) {
+                    if (isNotAWall(posX, posY) && !isInanimate(posX, posY) && Game.map[posY][posX].item === null) {
                         const item = new LyingItem(posX, posY, this.drop);
                         Game.map[posY][posX].item = item;
                         Game.world.addChild(item);
