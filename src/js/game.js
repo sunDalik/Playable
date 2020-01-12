@@ -20,6 +20,7 @@ Game.enemies = [];
 Game.hazards = [];
 Game.inanimates = [];
 Game.updateList = [];
+Game.delayList = [];
 Game.bullets = [];
 
 Game.darkTiles = [];

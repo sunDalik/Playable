@@ -255,7 +255,7 @@ export class Player extends AnimatedTileElement {
                 this.onMoveFrame(onEnd);
             }, animationTime);
             lightPlayerPosition(this);
-            this.pickUpItems();
+            Game.delayList.push(() => this.pickUpItems());
             camera.moveToCenter(this.STEP_ANIMATION_TIME);
         }
         //drawInteractionKeys();
@@ -275,7 +275,7 @@ export class Player extends AnimatedTileElement {
                 this.onMoveFrame(onEnd);
             }, animationTime);
         }
-        this.pickUpItems();
+        Game.delayList.push(() => this.pickUpItems());
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
@@ -285,7 +285,7 @@ export class Player extends AnimatedTileElement {
             this.onMoveFrame(onEnd);
         }, animationTime);
         lightPlayerPosition(this);
-        this.pickUpItems();
+        Game.delayList.push(() => this.pickUpItems());
         //drawInteractionKeys();
         camera.moveToCenter(animationTime);
     }

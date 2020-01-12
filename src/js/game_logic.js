@@ -30,6 +30,7 @@ export function setEnemyTurnTimeout() {
 function enemyTurn() {
     Game.enemiesTimeout = null;
     drawInteractionKeys();
+    callDelayedMethods();
     updateList();
     damagePlayersWithHazards();
     moveEnemies();
@@ -91,6 +92,13 @@ function updateList() {
         if (Game.updateList[i].update)
             Game.updateList[i].update();
     }
+}
+
+function callDelayedMethods() {
+    for (let i = Game.delayList.length - 1; i >= 0; i--) {
+        Game.delayList[i]();
+    }
+    Game.delayList = [];
 }
 
 export function updateInanimates() {
@@ -329,6 +337,7 @@ export function cleanGameState() {
     Game.hazards = [];
     Game.inanimates = [];
     Game.updateList = [];
+    Game.delayList = [];
     Game.bullets = [];
     Game.infiniteAnimations = [];
     Game.obelisks = [];
