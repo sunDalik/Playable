@@ -212,7 +212,7 @@ export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1
 }
 
 export function longShakeScreen() {
-    shakeScreen(Game.LONG_SHAKE_TIME, 2, Game.SHORT_SHAKE_AMPLITUDE, true);
+    //shakeScreen(8, 1, 40);
 }
 
 export function createHeartAnimation(positionX, positionY, heartSize = Game.TILESIZE / 3, animationTime = 26, pound = false, poundTwice = false) {

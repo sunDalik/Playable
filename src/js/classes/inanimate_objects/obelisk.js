@@ -74,7 +74,7 @@ export class Obelisk extends FullTileElement {
         if (this.working && this.activated) {
             if (this.timesDonated < 2) {
                 if (player.health > 1) {
-                    player.voluntaryDamage(1, false);
+                    player.voluntaryDamage(1);
                     this.timesDonated++;
                     if (this.timesDonated === 1) this.grail3.setMagic(this.magic3);
                     else this.grail4.setMagic(this.magic4);
