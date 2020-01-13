@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {ENEMY_TYPE, EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 
@@ -23,6 +23,17 @@ export class Spear {
             createPlayerWeaponAnimation(wielder, attackTileX2, attackTileY2, Game.TILESIZE / 4);
             Game.map[attackTileY2][attackTileX2].entity.damage(wielder, atk, tileDirX, tileDirY, false);
             return true;
-        } else return false;
+        } else if (isEnemy(tileX1, tileY1)) {
+            const enemy = Game.map[tileY1][tileX1].entity;
+            if (enemy.type === ENEMY_TYPE.SPIDER || enemy.type === ENEMY_TYPE.SPIDER_GRAY
+                || enemy.type === ENEMY_TYPE.SPIDER_GREEN || enemy.type === ENEMY_TYPE.SPIDER_RED || enemy.type === ENEMY_TYPE.ROLLER_RED) {
+                if (enemy.stun < 2) {
+                    createPlayerWeaponAnimation(wielder, tileX1, tileY1, Game.TILESIZE / 3);
+                    enemy.stun = 2;
+                    return true
+                }
+            }
+        }
+        return false;
     }
 }
