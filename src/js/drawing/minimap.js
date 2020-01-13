@@ -35,7 +35,8 @@ export function drawMiniMap() {
 function cleanMiniMap() {
     for (let i = 0; i < Game.minimap.length; i++) {
         for (let j = 0; j < Game.minimap[0].length; j++) {
-            HUD.minimap.removeChild(Game.minimap[i][j]);
+            if (Game.minimap[i][j])
+                HUD.minimap.removeChild(Game.minimap[i][j]);
         }
     }
     Game.minimap = [];
@@ -51,7 +52,8 @@ export function redrawMiniMapPixel(x, y) {
     } else if (Game.map[y][x].tileType === TILE_TYPE.SUPER_WALL) {
         pixel.beginFill(0x757167);
     } else if (Game.map[y][x].tileType === TILE_TYPE.VOID) {
-        pixel.beginFill(0x000000);
+        return;
+        //pixel.beginFill(0x000000);
     } else if (Game.map[y][x].entity && Game.map[y][x].entity.role === ROLE.INANIMATE
         && Game.map[y][x].entity.type !== INANIMATE_TYPE.GRAIL
         && Game.map[y][x].entity.type !== INANIMATE_TYPE.FIRE_GOBLET) {

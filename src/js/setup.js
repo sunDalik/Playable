@@ -191,7 +191,8 @@ function test() {
 function lightAll() {
     for (let i = 0; i < Game.map.length; i++) {
         for (let j = 0; j < Game.map[0].length; j++) {
-            lightTile(j, i);
+            if (Game.map[i][j].tileType !== TILE_TYPE.VOID)
+                lightTile(j, i);
         }
     }
 }
