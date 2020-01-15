@@ -262,7 +262,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
             break;
         case EQUIPMENT_TYPE.BAG_ITEM:
             if (player.bag && player.bag.type === equipment.type) {
-                player.bag.amount++;
+                player.bag.amount += equipment.amount;
                 redrawBag(player);
                 return null;
             } else {

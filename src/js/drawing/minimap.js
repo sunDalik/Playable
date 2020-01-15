@@ -10,6 +10,7 @@ import {
 import * as PIXI from "pixi.js";
 import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "../enums";
 import {camera} from "../classes/game/camera";
+import {removeAllChildrenFromContainer} from "./draw_utils";
 
 let mapCollapsed = true;
 let mapMask = new PIXI.Graphics();
@@ -33,12 +34,7 @@ export function drawMiniMap() {
 }
 
 function cleanMiniMap() {
-    for (let i = 0; i < Game.minimap.length; i++) {
-        for (let j = 0; j < Game.minimap[0].length; j++) {
-            if (Game.minimap[i][j])
-                HUD.minimap.removeChild(Game.minimap[i][j]);
-        }
-    }
+    removeAllChildrenFromContainer(HUD.minimap);
     Game.minimap = [];
 }
 

@@ -228,7 +228,7 @@ export class Alligator extends Enemy {
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         if (!this.dead) {
-            if (!hazardDamage && !magical && (inputY !== 0 || inputX !== 0) && (!this.prey || this.prey.dead)) {
+            if (!hazardDamage && (inputY !== 0 || inputX !== 0) && (!this.prey || this.prey.dead)) {
                 this.triggeredDirection = {x: -inputX, y: -inputY};
                 this.poisonCounter = 0;
                 this.direction = this.triggeredDirection;

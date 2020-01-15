@@ -225,7 +225,7 @@ export function redrawSlotContents(player, slot) {
         if (item.equipmentType === EQUIPMENT_TYPE.HEAD && item.type === HEAD_TYPE.VAMPIRE_CROWN) {
             text = new PIXI.Text(item.killsMade + "/" + item.killsNeeded, HUDTextStyle);
         } else if (item.equipmentType === EQUIPMENT_TYPE.BAG_ITEM) {
-            text = new PIXI.Text(item.amount, Object.assign({}, HUDTextStyle, {fontSize: HUDFontSize + 2}));
+            text = new PIXI.Text("x" + item.amount, HUDTextStyle);
             text.position.set(slotSize - text.width, 0);
         } else {
             if (item.uses == null || item.maxUses == null) return false;
