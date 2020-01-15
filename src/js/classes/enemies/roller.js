@@ -13,6 +13,8 @@ export class Roller extends Enemy {
         this.SLIDE_ANIMATION_TIME = 6;
         this.BUMP_ANIMATION_TIME = 14;
         this.type = ENEMY_TYPE.ROLLER;
+        this.scaleModifier = 0.8;
+        this.fitToTile();
     }
 
     cancelAnimation() {

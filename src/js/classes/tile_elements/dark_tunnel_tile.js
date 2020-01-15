@@ -1,11 +1,11 @@
-import {FullTileElement} from "./full_tile_element";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import * as PIXI from "pixi.js";
 import {Game} from "../../game";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {isNotAWall, isNotOutOfMap} from "../../map_checks";
+import {TileElement} from "./tile_element";
 
-export class DarkTunnelTile extends FullTileElement {
+export class DarkTunnelTile extends TileElement {
     constructor(tilePositionX, tilePositionY, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
         this.tint = 0x000000;

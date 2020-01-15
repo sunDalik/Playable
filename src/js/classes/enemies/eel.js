@@ -16,6 +16,8 @@ export class Eel extends Enemy {
         this.ROTATE_TIME = 6;
         this.wiggled = false;
         this.type = ENEMY_TYPE.EEL;
+        this.scaleModifier = 0.8;
+        this.fitToTile();
     }
 
     afterMapGen() {

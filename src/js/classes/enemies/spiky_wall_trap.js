@@ -4,7 +4,7 @@ import {ENEMY_TYPE, ROLE} from "../../enums";
 import {getPlayerOnTile} from "../../map_checks";
 import {randomChoice} from "../../utils/random_utils";
 import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../utils/map_utils";
-import {FullTileElement} from "../tile_elements/full_tile_element";
+import {TileElement} from "../tile_elements/tile_element";
 
 export class SpikyWallTrap extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/spiky_wall_trap_x.png"].texture) {
@@ -19,9 +19,7 @@ export class SpikyWallTrap extends Enemy {
         this.movable = false;
         this.role = ROLE.WALL_TRAP;
         this.direction = {x: 1, y: 0};
-        this.scaleModifier = 1;
-        this.fitToTile();
-        this.spikesSprite = new FullTileElement(Game.resources["src/images/enemies/spikes_right.png"].texture, 0, 0);
+        this.spikesSprite = new TileElement(Game.resources["src/images/enemies/spikes_right.png"].texture, 0, 0);
         this.spikesSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         this.spikesSprite.visible = false;
         Game.world.addChild(this.spikesSprite);

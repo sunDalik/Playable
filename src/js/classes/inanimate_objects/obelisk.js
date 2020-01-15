@@ -1,13 +1,13 @@
 import {Game} from "../../game"
-import {FullTileElement} from "../tile_elements/full_tile_element";
 import {INANIMATE_TYPE, ROLE} from "../../enums";
 import {Grail} from "./grail";
 import {createFadingText, longShakeScreen} from "../../animations";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
+import {TileElement} from "../tile_elements/tile_element";
 
-export class Obelisk extends FullTileElement {
+export class Obelisk extends TileElement {
     constructor(tilePositionX, tilePositionY, magic, onDestroyMagic) {
         super(Game.resources["src/images/other/obelisk.png"].texture, tilePositionX, tilePositionY);
         this.role = ROLE.INANIMATE;

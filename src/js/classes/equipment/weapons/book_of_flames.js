@@ -2,9 +2,9 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createFadingAttack, createFadingText} from "../../../animations";
-import {FullTileElement} from "../../tile_elements/full_tile_element";
 import * as PIXI from "pixi.js";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
+import {TileElement} from "../../tile_elements/tile_element";
 
 export class BookOfFlames {
     constructor() {
@@ -56,7 +56,7 @@ export class BookOfFlames {
                 }
                 const attackTile = attackTiles[i];
                 if (isNotAWall(attackTile.x, attackTile.y)) {
-                    const attackSprite = new FullTileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y);
+                    const attackSprite = new TileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y);
                     attackSprite.tint = 0x10afa6;
                     createFadingAttack(attackSprite);
                 }

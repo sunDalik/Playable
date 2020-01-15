@@ -2,11 +2,11 @@ import {Game} from "../../../game"
 import {BAG_ITEM_TYPE, EQUIPMENT_TYPE} from "../../../enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {get8Directions} from "../../../utils/map_utils";
-import {FullTileElement} from "../../tile_elements/full_tile_element";
 import {createFadingAttack, shakeScreen} from "../../../animations";
 import {getPlayerOnTile, isDiggable, isEnemy, isObelisk, isWallTrap} from "../../../map_checks";
 import * as PIXI from "pixi.js";
 import {lightPlayerPosition} from "../../../drawing/lighting";
+import {TileElement} from "../../tile_elements/tile_element";
 
 export class Bomb {
     constructor() {
@@ -25,7 +25,7 @@ export class Bomb {
 
     useItem(player) {
         const placedBomb = new Bomb();
-        placedBomb.sprite = new FullTileElement(Game.resources["src/images/bag/bomb_ticking.png"].texture, player.tilePosition.x, player.tilePosition.y);
+        placedBomb.sprite = new TileElement(Game.resources["src/images/bag/bomb_ticking.png"].texture, player.tilePosition.x, player.tilePosition.y);
         Game.world.addChild(placedBomb.sprite);
         Game.updateList.push(placedBomb);
         this.amount--;
@@ -36,7 +36,7 @@ export class Bomb {
             for (const dir of get8Directions().concat({x: 0, y: 0})) {
                 const posX = this.sprite.tilePosition.x + dir.x;
                 const posY = this.sprite.tilePosition.y + dir.y;
-                const sprite = new FullTileElement(PIXI.Texture.WHITE, posX, posY);
+                const sprite = new TileElement(PIXI.Texture.WHITE, posX, posY);
                 sprite.tint = 0xfa794d;
                 if (isEnemy(posX, posY)) {
                     Game.map[posY][posX].entity.damage(this, this.bombAtk, 0, 0, false, true);

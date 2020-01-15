@@ -1,5 +1,4 @@
 import {Game} from "../../game"
-import {FullTileElement} from "../tile_elements/full_tile_element";
 import {INANIMATE_TYPE, MAGIC_ALIGNMENT, ROLE} from "../../enums";
 import {createFadingText, createFloatingItemAnimation} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
@@ -10,7 +9,7 @@ import {
     ITEM_OUTLINE_FILTER_SMALL_GRAY
 } from "../../filters";
 
-export class Grail extends FullTileElement {
+export class Grail extends TileElement {
     constructor(tilePositionX, tilePositionY, obelisk) {
         super(Game.resources["src/images/other/grail.png"].texture, tilePositionX, tilePositionY);
         this.role = ROLE.INANIMATE;
@@ -20,6 +19,8 @@ export class Grail extends FullTileElement {
         this.magicSet = false;
         //just some default texture
         this.magicSprite = new TileElement(Game.resources["src/images/magic/aura.png"].texture, 0, 0);
+        this.magicSprite.scaleModifier = 0.8;
+        this.magicSprite.fitToTile();
         this.magicSprite.visible = false;
         this.magicSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(this.magicSprite);

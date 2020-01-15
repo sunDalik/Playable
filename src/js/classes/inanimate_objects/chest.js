@@ -1,11 +1,10 @@
 import {Game} from "../../game"
-import {FullTileElement} from "../tile_elements/full_tile_element"
 import {INANIMATE_TYPE, ROLE} from "../../enums";
 import {createFloatingItemAnimation} from "../../animations";
 import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import {TileElement} from "../tile_elements/tile_element";
 
-export class Chest extends FullTileElement {
+export class Chest extends TileElement {
     constructor(tilePositionX, tilePositionY, contents) {
         super(Game.resources["src/images/other/chest.png"].texture, tilePositionX, tilePositionY);
         this.contents = contents;
@@ -16,6 +15,8 @@ export class Chest extends FullTileElement {
         this.contentsSprite = new TileElement(this.contents.texture, this.tilePosition.x, this.tilePosition.y - 0.5);
         this.contentsSprite.width = Game.TILESIZE * 0.9;
         this.contentsSprite.height = Game.TILESIZE * 0.9;
+        this.contentsSprite.scaleModifier = 0.8;
+        this.contentsSprite.fitToTile();
         this.contentsSprite.visible = false;
         this.contentsSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(this.contentsSprite);

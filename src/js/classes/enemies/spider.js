@@ -17,6 +17,8 @@ export class Spider extends Enemy {
         this.thrown = false;
         this.STEP_ANIMATION_TIME = 6;
         this.BUMP_ANIMATION_TIME = 12;
+        this.scaleModifier = 0.8;
+        this.fitToTile();
     }
 
     move() {

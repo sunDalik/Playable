@@ -13,7 +13,7 @@ export class TileElement extends Sprite {
             }
         };
         this.animation = null;
-        this.scaleModifier = 0.8;
+        this.scaleModifier = 1;
         this.anchor.set(0.5, 0.5);
         this.fitToTile();
         this.place();

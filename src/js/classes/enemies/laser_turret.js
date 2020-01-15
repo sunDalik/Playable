@@ -4,8 +4,8 @@ import {Enemy} from "./enemy";
 import {ENEMY_TYPE, ROLE, STAGE} from "../../enums";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
-import {FullTileElement} from "../tile_elements/full_tile_element";
 import {createFadingAttack} from "../../animations";
+import {TileElement} from "../tile_elements/tile_element";
 
 export class LaserTurret extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/laser_turret_0.png"].texture) {
@@ -22,8 +22,6 @@ export class LaserTurret extends Enemy {
         this.noticeTileDistance = 5;
         this.canMoveInvisible = true;
         this.directionX = 1;
-        this.scaleModifier = 1;
-        this.fitToTile();
     }
 
     afterMapGen() {
@@ -80,7 +78,7 @@ export class LaserTurret extends Enemy {
     attack() {
         for (let x = this.directionX; ; x += this.directionX) {
             if (isAnyWall(this.tilePosition.x + x, this.tilePosition.y)) break;
-            const attackSprite = new FullTileElement(PIXI.Texture.WHITE, this.tilePosition.x + x, this.tilePosition.y);
+            const attackSprite = new TileElement(PIXI.Texture.WHITE, this.tilePosition.x + x, this.tilePosition.y);
             attackSprite.zIndex = 5;
             attackSprite.tint = 0xFF0000;
             attackSprite.width = Game.TILESIZE;

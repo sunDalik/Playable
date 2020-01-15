@@ -368,3 +368,11 @@ export function showHelpBox(item) {
     Game.itemHelpAnimation = animation;
     Game.app.ticker.add(animation);
 }
+
+export function runDestroyAnimation(tilElement) {
+    const textureClones = [];
+    for (let i = 0; i < 4; i++) {
+        textureClones[i] = tilElement.texture.clone();
+    }
+    // dont forget about texture.updateUvs(); after frame
+}

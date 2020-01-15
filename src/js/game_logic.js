@@ -6,7 +6,6 @@ import {drawInteractionKeys, redrawBag, redrawSlotContents} from "./drawing/draw
 import {createKissHeartAnimation, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
 import {updateChain} from "./drawing/draw_dunno";
-import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 import {lightPosition, lightTile} from "./drawing/lighting";
 import {removeAllChildrenFromContainer} from "./drawing/draw_utils";
 import {HUD} from "./drawing/hud_object";
@@ -14,6 +13,7 @@ import {camera} from "./classes/game/camera";
 import {get8Directions, getCardinalDirections} from "./utils/map_utils";
 import {getPlayerOnTile} from "./map_checks";
 import {ITEM_OUTLINE_FILTER} from "./filters";
+import {TileElement} from "./classes/tile_elements/tile_element";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -354,12 +354,12 @@ export function cleanGameState() {
 
 export function activateBossMode(player) {
     for (let x = Game.endRoomBoundaries[0].x; x <= Game.endRoomBoundaries[1].x; x++) {
-        Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[0].y - 1), TILE_TYPE.SUPER_WALL);
-        Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[1].y + 1), TILE_TYPE.SUPER_WALL);
+        Game.world.addAndSaveTile(new TileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[0].y - 1), TILE_TYPE.SUPER_WALL);
+        Game.world.addAndSaveTile(new TileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[1].y + 1), TILE_TYPE.SUPER_WALL);
     }
     for (let y = Game.endRoomBoundaries[0].y; y <= Game.endRoomBoundaries[1].y; y++) {
-        Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[0].x - 1, y), TILE_TYPE.SUPER_WALL);
-        Game.world.addAndSaveTile(new FullTileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[1].x + 1, y), TILE_TYPE.SUPER_WALL);
+        Game.world.addAndSaveTile(new TileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[0].x - 1, y), TILE_TYPE.SUPER_WALL);
+        Game.world.addAndSaveTile(new TileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[1].x + 1, y), TILE_TYPE.SUPER_WALL);
     }
 
     if (!otherPlayer(player).dead) {
@@ -392,7 +392,7 @@ export function deactivateBossMode() {
     Game.bossFight = false;
 
     Game.world.removeTile(Game.bossExit.x, Game.bossExit.y);
-    Game.world.addTile(new FullTileElement(Game.resources["src/images/exit_text.png"].texture, Game.bossExit.x, Game.bossExit.y), TILE_TYPE.EXIT);
+    Game.world.addTile(new TileElement(Game.resources["src/images/exit_text.png"].texture, Game.bossExit.x, Game.bossExit.y), TILE_TYPE.EXIT);
 
     for (const dir of get8Directions()) {
         if (Game.map[Game.bossExit.y + dir.y][Game.bossExit.x + dir.x].tileType !== TILE_TYPE.SUPER_WALL) {

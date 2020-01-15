@@ -18,6 +18,8 @@ export class Frog extends Enemy {
         this.currentTurnDelay = 0;
         this.triggered = false;
         this.triggeredTile = null;
+        this.scaleModifier = 0.8;
+        this.fitToTile();
     }
 
     afterMapGen() {

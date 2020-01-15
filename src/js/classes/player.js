@@ -80,6 +80,8 @@ export class Player extends AnimatedTileElement {
         this.electricityImmunity = 0;
         this.charging = false;
         this.chargingMagic = null;
+        this.scaleModifier = 0.8;
+        this.fitToTile();
     }
 
     cancelAnimation() {

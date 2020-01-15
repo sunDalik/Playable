@@ -17,6 +17,8 @@ export class Star extends Enemy {
         this.type = ENEMY_TYPE.STAR;
         this.turnDelay = 0;
         this.movable = false;
+        this.scaleModifier = 0.8;
+        this.fitToTile();
     }
 
     move() {

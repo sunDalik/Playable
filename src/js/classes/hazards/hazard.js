@@ -1,8 +1,8 @@
 import {Game} from "../../game"
-import {FullTileElement} from "../tile_elements/full_tile_element";
 import {removeObjectFromArray} from "../../utils/basic_utils";
+import {TileElement} from "../tile_elements/tile_element";
 
-export class Hazard extends FullTileElement {
+export class Hazard extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.zIndex = -3;

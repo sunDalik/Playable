@@ -24,6 +24,8 @@ export class Rabbit extends Enemy {
         if (this.rabbitType === RABBIT_TYPE.ENERGY) {
             this.energyDrop = 30;
         }
+        this.scaleModifier = 0.8;
+        this.fitToTile();
         this.updateTexture();
     }
 

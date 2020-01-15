@@ -1,7 +1,6 @@
 import {Game} from "./game";
 import {ENEMY_TYPE, MAP_SYMBOLS, RABBIT_TYPE, ROLE, STAGE, TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
-import {FullTileElement} from "./classes/tile_elements/full_tile_element";
 import {copy2dArray} from "./utils/basic_utils";
 import {
     getRandomChestDrop,
@@ -47,6 +46,7 @@ import {FireGoblet} from "./classes/inanimate_objects/fire_goblet";
 import {Necromancy} from "./classes/magic/necromancy";
 import {Bomb} from "./classes/equipment/bag/bomb";
 import {SmallHealingPotion} from "./classes/equipment/bag/small_healing_potion";
+import {TileElement} from "./classes/tile_elements/tile_element";
 
 export function generateMap(level) {
     const map = copy2dArray(level);
@@ -65,10 +65,10 @@ export function generateMap(level) {
             };
             if (map[i][j].split(":")[0] === MAP_SYMBOLS.WALL) {
                 mapCell.tileType = TILE_TYPE.WALL;
-                mapCell.tile = new FullTileElement(Game.resources["src/images/wall.png"].texture, j, i);
+                mapCell.tile = new TileElement(Game.resources["src/images/wall.png"].texture, j, i);
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.SUPER_WALL) {
                 mapCell.tileType = TILE_TYPE.SUPER_WALL;
-                mapCell.tile = new FullTileElement(Game.resources["src/images/super_wall.png"].texture, j, i);
+                mapCell.tile = new TileElement(Game.resources["src/images/super_wall.png"].texture, j, i);
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.VOID) {
                 mapCell.tileType = TILE_TYPE.VOID;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.ENTRY) {
@@ -78,13 +78,13 @@ export function generateMap(level) {
                 mapCell.tileType = TILE_TYPE.PATH;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.EXIT) {
                 mapCell.tileType = TILE_TYPE.EXIT;
-                mapCell.tile = new FullTileElement(Game.resources["src/images/exit_text.png"].texture, j, i);
+                mapCell.tile = new TileElement(Game.resources["src/images/exit_text.png"].texture, j, i);
                 //mapCell.tile.zIndex = 100;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.START) {
                 Game.startPos = {x: j, y: i};
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.BOSS_EXIT) {
                 mapCell.tileType = TILE_TYPE.WALL;
-                mapCell.tile = new FullTileElement(Game.resources["src/images/wall.png"].texture, j, i);
+                mapCell.tile = new TileElement(Game.resources["src/images/wall.png"].texture, j, i);
                 Game.bossExit = {x: j, y: i};
             }
 
@@ -222,7 +222,7 @@ export function generateMap(level) {
 
     for (const entry of entries) {
         if (tileInsideTheBossRoom(entry.x, entry.y)) {
-            const entrySprite = new FullTileElement(Game.resources["src/images/boss_entry.png"].texture, entry.x, entry.y);
+            const entrySprite = new TileElement(Game.resources["src/images/boss_entry.png"].texture, entry.x, entry.y);
             Game.bossEntry = {x: entry.x, y: entry.y};
             if (map[entry.y][entry.x - 1].tileType === TILE_TYPE.PATH) entrySprite.angle = 90;
             else if (map[entry.y][entry.x + 1].tileType === TILE_TYPE.PATH) entrySprite.angle = -90;
