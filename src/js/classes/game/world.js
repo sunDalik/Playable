@@ -7,6 +7,7 @@ import {lightPlayerPosition} from "../../drawing/lighting";
 import {otherPlayer} from "../../utils/game_utils";
 import {recalculateTileInDetectionGraph} from "../../map_generation";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
+import {runDestroyAnimation} from "../../animations";
 
 export class World extends PIXI.Container {
     constructor() {
@@ -82,7 +83,7 @@ export class World extends PIXI.Container {
         }
     }
 
-    removeTile(x, y, remover = null) {
+    removeTile(x, y, remover = null, animate = true) {
         this.removeChild(Game.map[y][x].tile);
         Game.map[y][x].tileType = TILE_TYPE.NONE;
         if (remover) {
@@ -96,6 +97,9 @@ export class World extends PIXI.Container {
         }
         recalculateTileInDetectionGraph(x, y);
         redrawMiniMapPixel(x, y);
+        if (animate && Game.map[y][x].tile) {
+            runDestroyAnimation(Game.map[y][x].tile);
+        }
     }
 
     addAndSaveTile(tile, tileType) {

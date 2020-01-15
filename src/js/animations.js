@@ -1,6 +1,6 @@
 import {Game} from "./game"
 import * as PIXI from "pixi.js"
-import {randomChoice} from "./utils/random_utils";
+import {getRandomInt, randomChoice} from "./utils/random_utils";
 import {ITEM_OUTLINE_FILTER} from "./filters";
 import {HUDTextStyle, HUDTextStyleTitle, miniMapBottomOffset} from "./drawing/draw_constants";
 import {HUD} from "./drawing/hud_object";
@@ -369,10 +369,25 @@ export function showHelpBox(item) {
     Game.app.ticker.add(animation);
 }
 
-export function runDestroyAnimation(tilElement) {
-    const textureClones = [];
-    for (let i = 0; i < 4; i++) {
-        textureClones[i] = tilElement.texture.clone();
+export function runDestroyAnimation(tileElement) {
+    return;
+    for (const place of [{x: -1, y: -1}, {x: 0, y: -1}, {x: -1, y: 0}, {x: 0, y: 0}]) {
+        const particle = new PIXI.Sprite(tileElement.texture.clone());
+        particle.width = tileElement.width;
+        particle.height = tileElement.height;
+        particle.anchor.set(tileElement.anchor.x, tileElement.anchor.y);
+        particle.position.set(tileElement.position.x, tileElement.position.y);
+        Game.world.addChild(particle);
+
+        const halfX = particle.texture.width / 2;
+        const halfY = particle.texture.height / 2;
+        const minModifier = 1 / 7;
+        const maxModifier = 1 / 5;
+        const trimWidth = getRandomInt(particle.texture.width * minModifier, particle.texture.width * maxModifier);
+        const trimHeight = getRandomInt(particle.texture.height * minModifier, particle.texture.height * maxModifier);
+        particle.texture.trim = new PIXI.Rectangle(halfX + halfX * place.x + (halfX - trimWidth) / 2,
+            halfY + halfY * place.y + (halfY - trimHeight) / 2,
+            trimWidth, trimHeight);
+        particle.texture.updateUvs();
     }
-    // dont forget about texture.updateUvs(); after frame
 }
