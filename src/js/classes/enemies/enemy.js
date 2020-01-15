@@ -7,6 +7,7 @@ import {redrawEnergy} from "../../drawing/draw_hud";
 import {LyingItem} from "../equipment/lying_item";
 import {get8Directions} from "../../utils/map_utils";
 import {isInanimate, isNotAWall} from "../../map_checks";
+import {runDestroyAnimation} from "../../animations";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -160,6 +161,7 @@ export class Enemy extends AnimatedTileElement {
             }
             this.drop = null;
         }
+        runDestroyAnimation(this);
     }
 
     heal(healHP) {

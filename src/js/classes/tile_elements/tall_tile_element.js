@@ -9,6 +9,7 @@ export class TallTileElement extends TileElement {
         this.place();
     }
 
+    //I hate this class okay?
     place() {
         this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
         if (this.placedAtBottom) {
