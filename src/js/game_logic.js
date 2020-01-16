@@ -386,12 +386,12 @@ export function activateBossMode(player) {
 
 export function deactivateBossMode() {
     for (const savedTile of Game.savedTiles) {
-        Game.world.removeTile(savedTile.x, savedTile.y);
+        Game.world.removeTile(savedTile.x, savedTile.y, null, false);
         Game.world.addTile(savedTile.tile, savedTile.tileType, savedTile.x, savedTile.y);
     }
     Game.bossFight = false;
 
-    Game.world.removeTile(Game.bossExit.x, Game.bossExit.y);
+    Game.world.removeTile(Game.bossExit.x, Game.bossExit.y, null, false);
     Game.world.addTile(new TileElement(Game.resources["src/images/exit_text.png"].texture, Game.bossExit.x, Game.bossExit.y), TILE_TYPE.EXIT);
 
     for (const dir of get8Directions()) {

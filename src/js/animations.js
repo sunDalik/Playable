@@ -370,111 +370,51 @@ export function showHelpBox(item) {
 }
 
 export function runDestroyAnimation(tileElement) {
-    if (tileElement.role === ROLE.ENEMY) {
-        runDestroyAnimationFull(tileElement);
-        return;
+    //todo: fix angle
+    //todo: add to player death
+    const YBorders = [0, undefined, undefined, tileElement.texture.height];
+    const XBorders = [0, undefined, undefined, tileElement.texture.width];
+    const maxOffsetMul = 1 / 9;
+    for (let i = 1; i <= 2; i++) {
+        YBorders[i] = YBorders[i - 1] + tileElement.texture.height / 3 + getRandomInt(-tileElement.texture.height * maxOffsetMul, tileElement.texture.height * maxOffsetMul);
+        XBorders[i] = XBorders[i - 1] + tileElement.texture.width / 3 + getRandomInt(-tileElement.texture.width * maxOffsetMul, tileElement.texture.width * maxOffsetMul);
     }
-    for (const place of [{x: -1, y: -1}, {x: 0, y: -1}, {x: -1, y: 0}, {x: 0, y: 0}]) {
+    for (const region of [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0},
+        {x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1},
+        {x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}]) {
         const particle = new PIXI.Sprite(tileElement.texture.clone());
-        particle.scale.set(tileElement.scale.x, tileElement.scale.y);
+        const scaleMul = tileElement.role !== undefined ? 1 : 0.5;
+        particle.scale.set(tileElement.scale.x * scaleMul, tileElement.scale.y * scaleMul);
         particle.angle = tileElement.angle;
         particle.anchor.set(tileElement.anchor.x, tileElement.anchor.y);
         particle.position.set(tileElement.position.x, tileElement.position.y);
         particle.zIndex = -1;
         Game.world.addChild(particle);
 
-
-        let minModifier = 1 / 7;
-        let maxModifier = 1 / 5;
-        if (tileElement.role === ROLE.ENEMY) {
-            minModifier *= 2;
-            maxModifier *= 2;
-        }
-        const halfTexX = tileElement.texture.width / 2;
-        const halfTexY = tileElement.texture.height / 2;
-        const trimTexWidth = getRandomInt(tileElement.texture.width * minModifier, tileElement.texture.width * maxModifier);
-        const trimTexHeight = getRandomInt(tileElement.texture.height * minModifier, tileElement.texture.height * maxModifier);
-        const trimWidth = trimTexWidth / tileElement.texture.width * tileElement.width;
-        const trimHeight = trimTexWidth / tileElement.texture.height * tileElement.height;
-        let offsetX = halfTexX + halfTexX * place.x + (halfTexX - trimTexWidth) / getRandomInt(125, 200) / 100;
-        let offsetY = halfTexY + halfTexY * place.y + (halfTexY - trimTexHeight) / getRandomInt(125, 200) / 100;
+        let offsetX = XBorders[region.x];
+        let offsetY = YBorders[region.y];
+        const trimTexWidth = XBorders[region.x + 1] - XBorders[region.x];
+        const trimTexHeight = YBorders[region.y + 1] - YBorders[region.y];
         if (Math.sign(tileElement.scale.x) === -1) offsetX = tileElement.texture.width - offsetX - trimTexWidth;
         if (Math.sign(tileElement.scale.y) === -1) offsetY = tileElement.texture.height - offsetY - trimTexHeight;
         particle.texture.frame = new PIXI.Rectangle(offsetX, offsetY, trimTexWidth, trimTexHeight);
-        const halfX = tileElement.width / 2;
-        const halfY = tileElement.height / 2;
-        const posOffsetX = halfX * tileElement.anchor.x + halfX * place.x + (halfX - trimWidth) / getRandomInt(125, 200) / 100;
-        const posOffsetY = halfY * tileElement.anchor.y + halfY * place.y + (halfY - trimHeight) / getRandomInt(125, 200) / 100;
+        const trimWidth = trimTexWidth / tileElement.texture.width * tileElement.width;
+        const trimHeight = trimTexHeight / tileElement.texture.height * tileElement.height;
+        const posOffsetX = trimWidth * (region.x - 1.5) + trimWidth * tileElement.anchor.x;
+        const posOffsetY = trimHeight * (region.y - 1.5) + trimHeight * tileElement.anchor.y;
         particle.position.x += posOffsetX;
         particle.position.y += posOffsetY;
         particle.texture.updateUvs();
 
-        if (place.x === 0) place.x = 1;
-        if (place.y === 0) place.y = 1;
 
-        const flyHeight = Game.TILESIZE;
+        let flyDir = 1;
+        if (region.x === 0) flyDir = -1;
+        else if (region.x === 2) flyDir = 1;
+        else if (region.x === 1) flyDir = randomChoice([-1, 1]);
+        const flyHeight = getRandomInt(Game.TILESIZE, Game.TILESIZE * 2);
         const oldPosX = particle.position.x;
         const oldPosY = particle.position.y;
-        const distX = getRandomInt(-tileElement.width / 4, tileElement.width / 2) * (place.x);
-        const middlePoint = {x: oldPosX + distX / 2, y: oldPosY - flyHeight};
-        const finalPoint = {
-            x: oldPosX + distX,
-            y: tileElement.getTilePositionY() + (1 - tileElement.anchor.y) * Game.TILESIZE - getRandomInt(0, Game.TILESIZE / 2)
-        };
-
-        const animationTime = 9;
-        const step = 1 / animationTime;
-        let counter = 0;
-
-        const animation = delta => {
-            if (Game.paused) return;
-            counter += delta;
-            const t = counter * step;
-            particle.position.x = quadraticBezier(t, oldPosX, middlePoint.x, finalPoint.x);
-            particle.position.y = quadraticBezier(t, oldPosY, middlePoint.y, finalPoint.y);
-            if (counter >= animationTime) {
-                Game.app.ticker.remove(animation);
-                particle.position.set(finalPoint.x, finalPoint.y);
-            }
-        };
-        Game.app.ticker.add(animation);
-    }
-}
-
-export function runDestroyAnimationFull(tileElement) {
-    //todo: fix angle
-    //todo: add to player death
-    for (const place of [{x: -1, y: -1}, {x: 0, y: -1}, {x: -1, y: 0}, {x: 0, y: 0}]) {
-        const particle = new PIXI.Sprite(tileElement.texture.clone());
-        particle.scale.set(tileElement.scale.x, tileElement.scale.y);
-        particle.angle = tileElement.angle;
-        particle.anchor.set(tileElement.anchor.x, tileElement.anchor.y);
-        particle.position.set(tileElement.position.x, tileElement.position.y);
-        particle.zIndex = -1;
-        Game.world.addChild(particle);
-
-        const halfTexWidth = tileElement.texture.width / 2;
-        const halfTexHeight = tileElement.texture.height / 2;
-        let offsetX = halfTexWidth + halfTexWidth * place.x;
-        let offsetY = halfTexHeight + halfTexHeight * place.y;
-        if (Math.sign(tileElement.scale.x) === -1) offsetX = tileElement.texture.width - offsetX - halfTexWidth;
-        if (Math.sign(tileElement.scale.y) === -1) offsetY = tileElement.texture.height - offsetY - halfTexHeight;
-        particle.texture.frame = new PIXI.Rectangle(offsetX, offsetY, halfTexWidth, halfTexHeight);
-        const halfX = tileElement.width / 2;
-        const halfY = tileElement.height / 2;
-        const posOffsetX = halfX * tileElement.anchor.x + halfX * place.x;
-        const posOffsetY = halfY * tileElement.anchor.y + halfY * place.y;
-        particle.position.x += posOffsetX;
-        particle.position.y += posOffsetY;
-        particle.texture.updateUvs();
-
-        if (place.x === 0) place.x = 1;
-        if (place.y === 0) place.y = 1;
-
-        const flyHeight = Game.TILESIZE;
-        const oldPosX = particle.position.x;
-        const oldPosY = particle.position.y;
-        const distX = getRandomInt(-tileElement.width / 4, tileElement.width / 1.5) * (place.x);
+        const distX = getRandomInt(-tileElement.width / 4, tileElement.width / 1.5) * flyDir;
         const middlePoint = {x: oldPosX + distX / 2, y: oldPosY - flyHeight};
         const finalPoint = {
             x: oldPosX + distX,
@@ -498,5 +438,4 @@ export function runDestroyAnimationFull(tileElement) {
         };
         Game.app.ticker.add(animation);
     }
-
 }
