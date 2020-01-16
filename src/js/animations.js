@@ -369,9 +369,8 @@ export function showHelpBox(item) {
     Game.app.ticker.add(animation);
 }
 
-export function runDestroyAnimation(tileElement) {
+export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul = 0.1) {
     //todo: fix angle
-    //todo: add to player death
     const YBorders = [0, undefined, undefined, tileElement.texture.height];
     const XBorders = [0, undefined, undefined, tileElement.texture.width];
     const maxOffsetMul = 1 / 9;
@@ -388,8 +387,10 @@ export function runDestroyAnimation(tileElement) {
         particle.angle = tileElement.angle;
         particle.anchor.set(tileElement.anchor.x, tileElement.anchor.y);
         particle.position.set(tileElement.position.x, tileElement.position.y);
-        particle.zIndex = -1;
-        Game.world.addChild(particle);
+        if (playerDeath) particle.zIndex = 2;
+        else particle.zIndex = -1;
+        if (playerDeath) Game.world.upWorld.addChild(particle);
+        else Game.world.addChild(particle);
 
         let offsetX = XBorders[region.x];
         let offsetY = YBorders[region.y];
@@ -426,14 +427,25 @@ export function runDestroyAnimation(tileElement) {
         let counter = 0;
 
         const animation = delta => {
-            if (Game.paused) return;
-            counter += delta;
+            if (playerDeath && Game.paused) counter += delta * sloMoMul;
+            else if (Game.paused) return;
+            else counter += delta;
             const t = counter * step;
             particle.position.x = quadraticBezier(t, oldPosX, middlePoint.x, finalPoint.x);
             particle.position.y = quadraticBezier(t, oldPosY, middlePoint.y, finalPoint.y);
+
+            if (!Game.paused && playerDeath) {
+                Game.world.upWorld.removeChild(particle);
+                Game.world.addChild(particle);
+            }
             if (counter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 particle.position.set(finalPoint.x, finalPoint.y);
+                if (playerDeath) {
+                    Game.world.upWorld.removeChild(particle);
+                    Game.world.addChild(particle);
+                    particle.zIndex = -1;
+                }
             }
         };
         Game.app.ticker.add(animation);

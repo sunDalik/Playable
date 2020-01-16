@@ -13,7 +13,7 @@ import {
     TOOL_TYPE,
     WEAPON_TYPE
 } from "../enums";
-import {createHeartAnimation, rotate, shakeScreen, showHelpBox} from "../animations";
+import {createHeartAnimation, rotate, runDestroyAnimation, shakeScreen, showHelpBox} from "../animations";
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
@@ -361,53 +361,39 @@ export class Player extends AnimatedTileElement {
     }
 
     dieAnimation(source, time = 40) {
-        const alphaStep = 1 / (time / 1.4);
-        let counter = 0;
         this.dead = true;
+        this.visible = false;
         Game.world.filters.push(DEATH_FILTER);
         HUD.filters.push(DEATH_FILTER);
         Game.paused = true;
-        camera.centerOnPlayer(this, 10);
+        camera.centerOnPlayer(this, 6);
 
         Game.world.upWorld.position = Game.world.position;
+        runDestroyAnimation(this, true, 2 / time);
         if (source) {
             Game.world.removeChild(source);
             Game.world.upWorld.addChild(source);
             source.visible = true;
             if (source === Game.limitChain) source.visible = true;
         }
-        this.filters.push(DEATH_FILTER);
-        Game.world.removeChild(this);
-        Game.world.upWorld.addChild(this);
 
-        const animation = delta => {
-            counter += delta;
-            this.alpha -= alphaStep * delta;
-            if (counter >= time) {
-                Game.app.ticker.remove(animation);
-                Game.paused = false;
-                if (otherPlayer(this).dead) pullUpGameOverScreen();
-                else {
-                    removeObjectFromArray(DEATH_FILTER, Game.world.filters);
-                    removeObjectFromArray(DEATH_FILTER, HUD.filters);
-                }
-
-                if (source) {
-                    Game.world.upWorld.removeChild(source);
-                    Game.world.addChild(source);
-                    if (source.dead) source.visible = false;
-                    if (source === Game.limitChain) source.visible = false;
-                }
-                Game.world.upWorld.removeChild(this);
-                Game.world.addChild(this);
-                removeObjectFromArray(DEATH_FILTER, this.filters);
-
-                this.alpha = 1;
-
-                this.die();
+        setTickTimeout(() => {
+            Game.paused = false;
+            if (otherPlayer(this).dead) pullUpGameOverScreen();
+            else {
+                removeObjectFromArray(DEATH_FILTER, Game.world.filters);
+                removeObjectFromArray(DEATH_FILTER, HUD.filters);
             }
-        };
-        Game.app.ticker.add(animation);
+
+            if (source) {
+                Game.world.upWorld.removeChild(source);
+                Game.world.addChild(source);
+                if (source.dead) source.visible = false;
+                if (source === Game.limitChain) source.visible = false;
+            }
+
+            this.die();
+        }, time, 99, false);
     }
 
     die() {
