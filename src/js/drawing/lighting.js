@@ -167,6 +167,7 @@ export function darkenTile(tileX, tileY) {
         Game.map[tileY][tileX].item.visible = false;
     }
 
+    if (Game.map[tileY][tileX].tileType === TILE_TYPE.VOID) return;
     Game.minimap[tileY][tileX].visible = false;
 }
 
