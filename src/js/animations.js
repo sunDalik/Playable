@@ -370,6 +370,10 @@ export function showHelpBox(item) {
 }
 
 export function runDestroyAnimation(tileElement) {
+    if (tileElement.role === ROLE.ENEMY) {
+        runDestroyAnimationFull(tileElement);
+        return;
+    }
     for (const place of [{x: -1, y: -1}, {x: 0, y: -1}, {x: -1, y: 0}, {x: 0, y: 0}]) {
         const particle = new PIXI.Sprite(tileElement.texture.clone());
         particle.scale.set(tileElement.scale.x, tileElement.scale.y);
@@ -435,4 +439,64 @@ export function runDestroyAnimation(tileElement) {
         };
         Game.app.ticker.add(animation);
     }
+}
+
+export function runDestroyAnimationFull(tileElement) {
+    //todo: fix angle
+    //todo: add to player death
+    for (const place of [{x: -1, y: -1}, {x: 0, y: -1}, {x: -1, y: 0}, {x: 0, y: 0}]) {
+        const particle = new PIXI.Sprite(tileElement.texture.clone());
+        particle.scale.set(tileElement.scale.x, tileElement.scale.y);
+        particle.angle = tileElement.angle;
+        particle.anchor.set(tileElement.anchor.x, tileElement.anchor.y);
+        particle.position.set(tileElement.position.x, tileElement.position.y);
+        particle.zIndex = -1;
+        Game.world.addChild(particle);
+
+        const halfTexWidth = tileElement.texture.width / 2;
+        const halfTexHeight = tileElement.texture.height / 2;
+        let offsetX = halfTexWidth + halfTexWidth * place.x;
+        let offsetY = halfTexHeight + halfTexHeight * place.y;
+        if (Math.sign(tileElement.scale.x) === -1) offsetX = tileElement.texture.width - offsetX - halfTexWidth;
+        if (Math.sign(tileElement.scale.y) === -1) offsetY = tileElement.texture.height - offsetY - halfTexHeight;
+        particle.texture.frame = new PIXI.Rectangle(offsetX, offsetY, halfTexWidth, halfTexHeight);
+        const halfX = tileElement.width / 2;
+        const halfY = tileElement.height / 2;
+        const posOffsetX = halfX * tileElement.anchor.x + halfX * place.x;
+        const posOffsetY = halfY * tileElement.anchor.y + halfY * place.y;
+        particle.position.x += posOffsetX;
+        particle.position.y += posOffsetY;
+        particle.texture.updateUvs();
+
+        if (place.x === 0) place.x = 1;
+        if (place.y === 0) place.y = 1;
+
+        const flyHeight = Game.TILESIZE;
+        const oldPosX = particle.position.x;
+        const oldPosY = particle.position.y;
+        const distX = getRandomInt(-tileElement.width / 4, tileElement.width / 1.5) * (place.x);
+        const middlePoint = {x: oldPosX + distX / 2, y: oldPosY - flyHeight};
+        const finalPoint = {
+            x: oldPosX + distX,
+            y: tileElement.getTilePositionY() + (1 - tileElement.anchor.y) * Game.TILESIZE - getRandomInt(0, Game.TILESIZE / 2)
+        };
+
+        const animationTime = getRandomInt(7, 10);
+        const step = 1 / animationTime;
+        let counter = 0;
+
+        const animation = delta => {
+            if (Game.paused) return;
+            counter += delta;
+            const t = counter * step;
+            particle.position.x = quadraticBezier(t, oldPosX, middlePoint.x, finalPoint.x);
+            particle.position.y = quadraticBezier(t, oldPosY, middlePoint.y, finalPoint.y);
+            if (counter >= animationTime) {
+                Game.app.ticker.remove(animation);
+                particle.position.set(finalPoint.x, finalPoint.y);
+            }
+        };
+        Game.app.ticker.add(animation);
+    }
+
 }

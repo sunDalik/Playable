@@ -6,7 +6,7 @@ import {getPlayerOnTile, isNotAWall} from "../../map_checks";
 export class KingFrog extends Frog {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/frog_king.png"].texture) {
         super(tilePositionX, tilePositionY, texture);
-        this.maxHealth = 4;
+        this.maxHealth = 3;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.FROG_KING;
         this.atk = 1.25;
