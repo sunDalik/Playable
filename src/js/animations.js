@@ -407,7 +407,6 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         particle.position.y += posOffsetY;
         particle.texture.updateUvs();
 
-
         let flyDir = 1;
         if (region.x === 0) flyDir = -1;
         else if (region.x === 2) flyDir = 1;
@@ -422,7 +421,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
             y: tileElement.getTilePositionY() + (1 - tileElement.anchor.y) * Game.TILESIZE - getRandomInt(0, Game.TILESIZE / 2)
         };
 
-        const animationTime = getRandomInt(7, 10);
+        const animationTime = getRandomInt(10, 14);
         const step = 1 / animationTime;
         let counter = 0;
 

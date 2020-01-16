@@ -369,7 +369,7 @@ export class Player extends AnimatedTileElement {
         camera.centerOnPlayer(this, 6);
 
         Game.world.upWorld.position = Game.world.position;
-        runDestroyAnimation(this, true, 2 / time);
+        runDestroyAnimation(this, true, 2.5 / time);
         if (source) {
             Game.world.removeChild(source);
             Game.world.upWorld.addChild(source);
