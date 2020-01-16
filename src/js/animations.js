@@ -382,8 +382,13 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         {x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1},
         {x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}]) {
         const particle = new PIXI.Sprite(tileElement.texture.clone());
-        const scaleMul = tileElement.role !== undefined ? 1 : 0.5;
-        particle.scale.set(tileElement.scale.x * scaleMul, tileElement.scale.y * scaleMul);
+        let scaleMul = 1;
+        if (playerDeath) scaleMul = 1.2;
+        else if (tileElement.role !== undefined) scaleMul = 0.8;
+        else scaleMul = 0.4;
+        particle.scale.set(tileElement.scale.x, tileElement.scale.y);
+        const initScaleX = particle.scale.x;
+        const initScaleY = particle.scale.y;
         particle.angle = tileElement.angle;
         particle.anchor.set(tileElement.anchor.x, tileElement.anchor.y);
         particle.position.set(tileElement.position.x, tileElement.position.y);
@@ -430,6 +435,8 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
             else if (Game.paused) return;
             else counter += delta;
             const t = counter * step;
+            particle.scale.set(initScaleX * (1 - counter / animationTime) + initScaleX * (counter / animationTime) * scaleMul,
+                initScaleY * (1 - counter / animationTime) + initScaleY * (counter / animationTime) * scaleMul);
             particle.position.x = quadraticBezier(t, oldPosX, middlePoint.x, finalPoint.x);
             particle.position.y = quadraticBezier(t, oldPosY, middlePoint.y, finalPoint.y);
 
@@ -444,6 +451,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
                     Game.world.upWorld.removeChild(particle);
                     Game.world.addChild(particle);
                     particle.zIndex = -1;
+                    particle.scale.set(initScaleX * scaleMul, initScaleY * scaleMul);
                 }
             }
         };
