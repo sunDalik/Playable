@@ -1,8 +1,17 @@
-import {ColorReplaceFilter, OutlineFilter, DotFilter, KawaseBlurFilter} from "pixi-filters";
+import {ColorReplaceFilter, OutlineFilter, DotFilter, KawaseBlurFilter, GlowFilter} from "pixi-filters";
 import * as PIXI from "pixi.js";
 
 export const ITEM_OUTLINE_FILTER = new OutlineFilter(2, 0xFFFFFF);
+ITEM_OUTLINE_FILTER.padding = 3;
 ITEM_OUTLINE_FILTER.resolution = 2;
+
+export const GRAIL_TEXT_WHITE_FILTER = new GlowFilter(10, 5, 0, 0xffffff, 0.3);
+GRAIL_TEXT_WHITE_FILTER.padding = 10;
+GRAIL_TEXT_WHITE_FILTER.resolution = 2;
+
+export const GRAIL_TEXT_DARK_FILTER = new GlowFilter(8, 3, 0, 0x000000, 0.3);
+GRAIL_TEXT_DARK_FILTER.padding = 8;
+GRAIL_TEXT_DARK_FILTER.resolution = 2;
 
 export const WARNING_BULLET_OUTLINE_FILTER = new OutlineFilter(1, 0x81D0DA);
 WARNING_BULLET_OUTLINE_FILTER.resolution = 2;

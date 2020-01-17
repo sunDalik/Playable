@@ -7,6 +7,7 @@ import * as PIXI from "pixi.js";
 import {HUDTextStyle} from "../../drawing/draw_constants";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
+import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
 
 export class Grail extends TileElement {
     constructor(tilePositionX, tilePositionY, obelisk) {
@@ -46,18 +47,21 @@ export class Grail extends TileElement {
         Game.app.ticker.remove(this.animation);
         Game.app.ticker.remove(this.textObj.animation);
         if (this.magic) {
+            this.textObj.style.strokeThickness = 3;
             switch (this.magic.alignment) {
                 case MAGIC_ALIGNMENT.WHITE:
-                    this.textObj.style.fill = 0xffffff;
-                    this.textObj.style.stroke = 0x000000;
+                    //todo: fill with rarity color when you implement rarity
+                    //this.textObj.style.fill = 0xffecb0;
+                    this.textObj.filters = [GRAIL_TEXT_WHITE_FILTER];
                     break;
                 case MAGIC_ALIGNMENT.DARK:
-                    this.textObj.style.fill = 0x000000;
-                    this.textObj.style.stroke = 0xffffff;
+                    //this.textObj.style.fill = 0xffecb0;
+                    this.textObj.style.strokeThickness = 2;
+                    this.textObj.filters = [GRAIL_TEXT_DARK_FILTER];
                     break;
                 case MAGIC_ALIGNMENT.GRAY:
-                    this.textObj.style.fill = 0xdbb6d8;
-                    this.textObj.style.stroke = 0x000000;
+                    //this.textObj.style.fill = 0xffecb0;
+                    this.textObj.filters = [];
                     break;
             }
             if (!this.magicSet) {
