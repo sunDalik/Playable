@@ -15,12 +15,12 @@ export class Statue extends TallTileElement {
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.STATUE;
         this.marauded = false;
-        this.textObj = new PIXI.Text("", Object.assign({}, HUDTextStyle, {fontSize: Game.TILESIZE / 3.5}));
+        this.textObj = new PIXI.Text("", Object.assign({}, HUDTextStyle, {fontSize: Game.TILESIZE / 3.2}));
         this.textObj.anchor.set(0.5, 0.5);
         this.textObj.position.set(this.position.x, this.position.y - this.height / 4);
         this.textObj.visible = false;
         this.textObj.zIndex = 99;
-        this.zIndex = 6;
+        this.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(this.textObj);
         this.updateTexture();
     }

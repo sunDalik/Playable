@@ -90,13 +90,15 @@ export class Obelisk extends TileElement {
     }
 
     destroy() {
-        if (this.working) {
-            this.working = false;
+        if (!this.destroyed) {
             this.destroyed = true;
-            this.texture = Game.resources["src/images/other/obelisk_used_damaged.png"].texture;
-            runDestroyAnimation(this);
             this.visible = false;
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+            this.texture = Game.resources["src/images/other/obelisk_used_damaged.png"].texture;
+            runDestroyAnimation(this);
+        }
+        if (this.working) {
+            this.working = false;
             this.grail1.setMagic(this.onDestroyMagic[0]);
             this.grail2.setMagic(this.onDestroyMagic[1]);
             this.grail3.setMagic(null);

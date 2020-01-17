@@ -8,6 +8,10 @@ import {
     ITEM_OUTLINE_FILTER_SMALL_BLACK,
     ITEM_OUTLINE_FILTER_SMALL_GRAY
 } from "../../filters";
+import * as PIXI from "pixi.js";
+import {HUDTextStyle} from "../../drawing/draw_constants";
+import {getCardinalDirections} from "../../utils/map_utils";
+import {getPlayerOnTile} from "../../map_checks";
 
 export class Grail extends TileElement {
     constructor(tilePositionX, tilePositionY, obelisk) {
@@ -24,6 +28,11 @@ export class Grail extends TileElement {
         this.magicSprite.visible = false;
         this.magicSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(this.magicSprite);
+
+        this.textObj = new PIXI.Text("", Object.assign({}, HUDTextStyle, {fontSize: Game.TILESIZE / 3.2}));
+        this.textObj.anchor.set(0.5, 0.5);
+        this.textObj.visible = false;
+        this.textObj.zIndex = 99;
     }
 
     placeGrail() {
@@ -34,6 +43,10 @@ export class Grail extends TileElement {
 
     setMagic(magic) {
         this.magic = magic;
+        if (this.magic) {
+            this.textObj.text = this.magic.name;
+            Game.world.addChild(this.textObj);
+        } else this.textObj.text = "";
         if (this.magic) {
             switch (this.magic.alignment) {
                 case MAGIC_ALIGNMENT.WHITE:
@@ -80,8 +93,15 @@ export class Grail extends TileElement {
 
     onUpdate() {
         if (this.magic === null) {
-            //no highlight
             this.filters = [];
+        }
+        this.textObj.visible = false;
+        for (const dir of getCardinalDirections()) {
+            if (getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y) !== null) {
+                this.textObj.visible = true;
+                this.textObj.position.set(this.position.x, this.position.y - this.height);
+                break;
+            }
         }
     }
 }
