@@ -203,7 +203,6 @@ export function loadAll(afterLoad) {
         .add("src/images/other/obelisk_damaged.png")
         .add("src/images/other/obelisk_used.png")
         .add("src/images/other/obelisk_used_damaged.png")
-        .add("src/images/other/obelisk_broken.png")
 
         .add("src/images/magic/aura.png")
         .add("src/images/magic/fireball.png")

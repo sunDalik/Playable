@@ -384,6 +384,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         const particle = new PIXI.Sprite(tileElement.texture.clone());
         let scaleMul = 1;
         if (playerDeath) scaleMul = 1.2;
+        else if (tileElement.role === ROLE.INANIMATE) scaleMul = 1;
         else if (tileElement.role !== undefined) scaleMul = 0.8;
         else scaleMul = 0.4;
         particle.scale.set(tileElement.scale.x, tileElement.scale.y);

@@ -280,7 +280,8 @@ export function assignDrops() {
                 } else break;
             } else {
                 const enemy = Game.enemies[enemyIndex];
-                if (enemy.boss || enemy.role === ROLE.WALL_TRAP || enemy.type === ENEMY_TYPE.MUSHROOM || enemy.type === ENEMY_TYPE.RABBIT && enemy.predator) {
+                if (enemy.boss || enemy.role === ROLE.WALL_TRAP || enemy.type === ENEMY_TYPE.MUSHROOM || enemy.type === ENEMY_TYPE.RABBIT && enemy.predator
+                    || tileInsideTheBossRoom(enemy.tilePosition.x, enemy.tilePosition.y)) {
                     enemyIndex++;
                 } else {
                     enemy.drop = new dropConstructor();

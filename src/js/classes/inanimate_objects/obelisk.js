@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {INANIMATE_TYPE, ROLE} from "../../enums";
 import {Grail} from "./grail";
-import {createFadingText, longShakeScreen} from "../../animations";
+import {createFadingText, longShakeScreen, runDestroyAnimation} from "../../animations";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
@@ -93,20 +93,21 @@ export class Obelisk extends TileElement {
         if (this.working) {
             this.working = false;
             this.destroyed = true;
-            this.texture = Game.resources["src/images/other/obelisk_broken.png"].texture;
+            this.texture = Game.resources["src/images/other/obelisk_used_damaged.png"].texture;
+            runDestroyAnimation(this);
+            this.visible = false;
+            Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
             this.grail1.setMagic(this.onDestroyMagic[0]);
             this.grail2.setMagic(this.onDestroyMagic[1]);
             this.grail3.setMagic(null);
             this.grail4.setMagic(null);
             for (const enemy of Game.enemies) {
                 if (enemy.dead) {
-                    if (Game.map[enemy.tilePosition.y][enemy.tilePosition.x].entity === null) {
-                        enemy.revive();
-                        enemy.stun = 2;
-                    }
+                    enemy.revive();
+                    enemy.stun = 2;
                 } else enemy.atk += 0.25;
             }
-            createFadingText("Live with it... you will not...", this.position.x, this.position.y);
+            //createFadingText("Live with it... you will not...", this.position.x, this.position.y);
             longShakeScreen();
         }
     }
