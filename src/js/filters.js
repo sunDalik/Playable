@@ -4,15 +4,6 @@ import * as PIXI from "pixi.js";
 export const ITEM_OUTLINE_FILTER = new OutlineFilter(2, 0xFFFFFF);
 ITEM_OUTLINE_FILTER.resolution = 2;
 
-export const ITEM_OUTLINE_FILTER_SMALL = new OutlineFilter(1.5, 0xFFFFFF);
-ITEM_OUTLINE_FILTER_SMALL.resolution = 2;
-
-export const ITEM_OUTLINE_FILTER_SMALL_BLACK = new OutlineFilter(1.5, 0x000000);
-ITEM_OUTLINE_FILTER_SMALL_BLACK.resolution = 2;
-
-export const ITEM_OUTLINE_FILTER_SMALL_GRAY = new OutlineFilter(1.5, 0x767882);
-ITEM_OUTLINE_FILTER_SMALL_GRAY.resolution = 2;
-
 export const WARNING_BULLET_OUTLINE_FILTER = new OutlineFilter(1, 0x81D0DA);
 WARNING_BULLET_OUTLINE_FILTER.resolution = 2;
 

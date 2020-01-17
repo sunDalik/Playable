@@ -26,7 +26,7 @@ export const HUDTextStyle = {
     fontSize: HUDFontSize,
     fill: 0xffffff,
     fontWeight: "bold",
-    stroke: 0x333333,
+    stroke: 0x000000,
     strokeThickness: 2,
     align: "center"
 };
@@ -39,13 +39,7 @@ export const HUDTextStyleSlot = Object.assign({}, HUDTextStyle, {
 });
 
 export const HUDKeyBindFontsize = 13;
-export const HUDKeyBindTextStyle = {
-    fontSize: HUDKeyBindFontsize,
-    fill: 0xffffff,
-    fontWeight: "bold",
-    stroke: 0x333333,
-    strokeThickness: 2
-};
+export const HUDKeyBindTextStyle = Object.assign({}, HUDTextStyle, {fontSize: HUDKeyBindFontsize});
 
 export const HUDKeyBindSize = 20;
 export const HUDGuideOffsetX = 15;

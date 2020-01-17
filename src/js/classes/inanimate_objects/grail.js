@@ -3,11 +3,6 @@ import {INANIMATE_TYPE, MAGIC_ALIGNMENT, ROLE} from "../../enums";
 import {createFadingText, createFloatingItemAnimation} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
 import {removeItemFromPool} from "../../game_changer";
-import {
-    ITEM_OUTLINE_FILTER_SMALL,
-    ITEM_OUTLINE_FILTER_SMALL_BLACK,
-    ITEM_OUTLINE_FILTER_SMALL_GRAY
-} from "../../filters";
 import * as PIXI from "pixi.js";
 import {HUDTextStyle} from "../../drawing/draw_constants";
 import {getCardinalDirections} from "../../utils/map_utils";
@@ -53,18 +48,22 @@ export class Grail extends TileElement {
         if (this.magic) {
             switch (this.magic.alignment) {
                 case MAGIC_ALIGNMENT.WHITE:
-                    this.magicSprite.filters = [ITEM_OUTLINE_FILTER_SMALL];
+                    this.textObj.style.fill = 0xffffff;
+                    this.textObj.style.stroke = 0x000000;
                     break;
                 case MAGIC_ALIGNMENT.DARK:
-                    this.magicSprite.filters = [ITEM_OUTLINE_FILTER_SMALL_BLACK];
+                    this.textObj.style.fill = 0x000000;
+                    this.textObj.style.stroke = 0xffffff;
                     break;
                 case MAGIC_ALIGNMENT.GRAY:
-                    this.magicSprite.filters = [ITEM_OUTLINE_FILTER_SMALL_GRAY];
+                    this.textObj.style.fill = 0xdbb6d8;
+                    this.textObj.style.stroke = 0x000000;
                     break;
             }
             if (!this.magicSet) {
                 this.magicSet = true;
                 this.animation = createFloatingItemAnimation(this.magicSprite);
+                this.textObj.position.set(this.position.x, this.position.y - this.height * 5 / 6);
                 this.textObj.animation = createFloatingItemAnimation(this.textObj);
                 Game.app.ticker.remove(this.animation);
                 Game.app.ticker.remove(this.textObj.animation);
@@ -104,7 +103,6 @@ export class Grail extends TileElement {
         for (const dir of getCardinalDirections()) {
             if (getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y) !== null) {
                 this.textObj.visible = true;
-                this.textObj.position.set(this.position.x, this.position.y - this.height);
                 break;
             }
         }
