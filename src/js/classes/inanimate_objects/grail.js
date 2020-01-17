@@ -47,6 +47,9 @@ export class Grail extends TileElement {
             this.textObj.text = this.magic.name;
             Game.world.addChild(this.textObj);
         } else this.textObj.text = "";
+
+        Game.app.ticker.remove(this.animation);
+        Game.app.ticker.remove(this.textObj.animation);
         if (this.magic) {
             switch (this.magic.alignment) {
                 case MAGIC_ALIGNMENT.WHITE:
@@ -62,13 +65,15 @@ export class Grail extends TileElement {
             if (!this.magicSet) {
                 this.magicSet = true;
                 this.animation = createFloatingItemAnimation(this.magicSprite);
+                this.textObj.animation = createFloatingItemAnimation(this.textObj);
+                Game.app.ticker.remove(this.animation);
+                Game.app.ticker.remove(this.textObj.animation);
             }
-            Game.app.ticker.remove(this.magicSprite.animation);
-            Game.app.ticker.add(this.magicSprite.animation);
+            Game.app.ticker.add(this.animation);
+            Game.app.ticker.add(this.textObj.animation);
             this.magicSprite.texture = this.magic.texture;
             this.magicSprite.visible = true;
         } else {
-            Game.app.ticker.remove(this.magicSprite.animation);
             this.magicSprite.visible = false;
             this.texture = Game.resources["src/images/other/grail.png"].texture;
         }
