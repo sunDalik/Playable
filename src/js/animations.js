@@ -142,9 +142,9 @@ export function rotate(object, clockwise = true) {
     Game.app.ticker.add(animation);
 }
 
-export function createFloatingItemAnimation(item) {
+export function createFloatingItemAnimation(item, height = item.height) {
     const animationTime = Game.ITEM_FLOAT_ANIMATION_TIME;
-    const amplitude = item.height / 4;
+    const amplitude = height / 4;
     const startVal = item.position.y + amplitude / 2;
     const endChange = -amplitude;
     let goUp = true;

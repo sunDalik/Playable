@@ -41,17 +41,21 @@ export class Chest extends TileElement {
         } else {
             this.opened = true;
             this.animation = createFloatingItemAnimation(this.contentsSprite);
+            this.textObj.animation = createFloatingItemAnimation(this.textObj);
         }
+
+        Game.app.ticker.remove(this.animation);
+        Game.app.ticker.remove(this.textObj.animation);
         if (this.contents) {
-            Game.app.ticker.remove(this.contentsSprite.animation); //wait... Does it actually work like that??? I think remove is redundant here...
-            Game.app.ticker.add(this.contentsSprite.animation);
+            Game.app.ticker.add(this.animation);
+            Game.app.ticker.add(this.textObj.animation);
             this.textObj.text = this.contents.name;
             this.contentsSprite.texture = this.contents.texture;
             this.contentsSprite.width = Game.TILESIZE * 0.9;
             this.contentsSprite.height = Game.TILESIZE * 0.9;
             this.contentsSprite.visible = true;
+            this.textObj.visible = true;
         } else {
-            Game.app.ticker.remove(this.contentsSprite.animation);
             this.textObj.text = "";
             this.contentsSprite.visible = false;
         }
