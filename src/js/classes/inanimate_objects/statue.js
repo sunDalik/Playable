@@ -26,8 +26,10 @@ export class Statue extends TallTileElement {
     }
 
     updateTexture() {
-        if (this.weapon) this.textObj.text = this.weapon.name;
-        else this.textObj.text = "";
+        if (this.weapon) {
+            this.textObj.text = this.weapon.name;
+            this.textObj.style.fill = this.weapon.rarity.color;
+        } else this.textObj.text = "";
         if (this.weapon === null) this.texture = Game.resources["src/images/other/statue.png"].texture;
         else if (this.weapon.equipmentType === EQUIPMENT_TYPE.SHIELD) {
             this.texture = Game.resources["src/images/other/statue_shield.png"].texture;

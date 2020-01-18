@@ -324,6 +324,7 @@ export function showHelpBox(item) {
     Game.itemHelp.addChild(itemSprite);
     const textOffsetX = itemOffsetX + itemSprite.width;
     const nameText = new PIXI.Text(item.name, HUDTextStyleTitle);
+    nameText.style.fill = item.rarity.color;
     nameText.fontSize += 3;
     nameText.position.set(textOffsetX + (Game.itemHelp.width - textOffsetX) / 2 - nameText.width / 2, itemOffsetY - 4);
     Game.itemHelp.addChild(nameText);

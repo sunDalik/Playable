@@ -50,6 +50,7 @@ export class Chest extends TileElement {
             Game.app.ticker.add(this.animation);
             Game.app.ticker.add(this.textObj.animation);
             this.textObj.text = this.contents.name;
+            this.textObj.style.fill = this.contents.rarity.color;
             this.contentsSprite.texture = this.contents.texture;
             this.contentsSprite.width = Game.TILESIZE * 0.9;
             this.contentsSprite.height = Game.TILESIZE * 0.9;

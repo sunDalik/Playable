@@ -41,6 +41,7 @@ export class Grail extends TileElement {
         this.magic = magic;
         if (this.magic) {
             this.textObj.text = this.magic.name;
+            this.textObj.style.fill = this.magic.rarity.color;
             Game.world.addChild(this.textObj);
         } else this.textObj.text = "";
 

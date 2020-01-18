@@ -1,5 +1,7 @@
 import {Game} from "../game";
 import {removeItemFromPool} from "../game_changer";
+import {Bomb} from "../classes/equipment/bag/bomb";
+import {RARITY} from "../enums";
 
 //modifies the array
 export function randomShuffle(array) {
@@ -44,22 +46,41 @@ export function getRandomValue(obj) {
 
 export function getRandomWeapon() {
     if (Game.weaponPool.length === 0) return null;
-    const randomConstructor = randomChoice(Game.weaponPool);
-    return new randomConstructor();
+    const constructor = getItemFromPoolByRarity(Game.weaponPool);
+    if (constructor === null) return null;
+    return new constructor();
 }
 
-//todo implement rarity system
 export function getRandomSpell() {
     if (Game.magicPool.length === 0) return null;
-    const randomConstructor = randomChoice(Game.magicPool);
-    return new randomConstructor();
+    const constructor = getItemFromPoolByRarity(Game.magicPool);
+    if (constructor === null) return null;
+    return new constructor();
 }
 
-//todo implement rarity system
 export function getRandomChestDrop() {
-    if (Game.chestItemPool.length === 0) return null;
-    const randomConstructor = randomChoice(Game.chestItemPool);
-    const item = new randomConstructor();
+    if (Game.chestItemPool.length === 0) return new Bomb();
+    const constructor = getItemFromPoolByRarity(Game.chestItemPool);
+    if (constructor === null) return new Bomb();
+    const item = new constructor();
     removeItemFromPool(item, Game.chestItemPool);
+    return item;
+}
+
+//pool consists of constructors!
+function getItemFromPoolByRarity(pool) {
+    if (pool.length === 0) return null;
+    let attempt = 0;
+    let item = null;
+    while (attempt++ < 200 && item === null) {
+        const rand = Math.random() * 100;
+        for (const rarity of [RARITY.C, RARITY.B, RARITY.A, RARITY.S]) {
+            if (rand >= rarity.chanceFrom && rand <= rarity.chanceTo) {
+                const filteredPool = pool.filter(item => (new item()).rarity === rarity);
+                if (filteredPool.length !== 0) item = randomChoice(filteredPool);
+                break;
+            }
+        }
+    }
     return item;
 }

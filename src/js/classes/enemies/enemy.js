@@ -300,7 +300,7 @@ export class Enemy extends AnimatedTileElement {
         const intentIcon = new PIXI.Sprite(PIXI.Texture.WHITE);
         Game.world.addChild(intentIcon);
         intentIcon.visible = false;
-        intentIcon.zIndex = Game.primaryPlayer.zIndex + 1;
+        intentIcon.zIndex = Game.primaryPlayer.zIndex + 2;
         intentIcon.width = intentIcon.height = 25;
         intentIcon.anchor.set(0.5, 0.5);
         return intentIcon;
