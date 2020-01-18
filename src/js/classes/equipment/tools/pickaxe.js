@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isDiggable, isEnemy} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 
@@ -11,6 +11,7 @@ export class Pickaxe {
         this.atk = 0.75;
         this.name = "Pickaxe";
         this.description = "Dig walls";
+        this.rarity = RARITY.B;
     }
 
     attack(wielder, tileDirX, tileDirY) {

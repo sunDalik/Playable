@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isNotAWall, isLit} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 
@@ -11,6 +11,7 @@ export class Bow {
         this.atk = 0.75;
         this.name = "Bow";
         this.description = "Long-range weak attacks";
+        this.rarity = RARITY.A;
     }
 
     attack(wielder, tileDirX, tileDirY) {

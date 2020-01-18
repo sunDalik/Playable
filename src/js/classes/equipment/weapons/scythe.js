@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createFadingAttack} from "../../../animations";
 import * as PIXI from "pixi.js";
@@ -13,6 +13,7 @@ export class Scythe {
         this.atk = 1;
         this.name = "Scythe";
         this.description = "Death to them all";
+        this.rarity = RARITY.A;
     }
 
     attack(wielder, tileDirX, tileDirY) {

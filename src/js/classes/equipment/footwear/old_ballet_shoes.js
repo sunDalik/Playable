@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ENEMY_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE} from "../../../enums";
+import {ENEMY_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, RARITY} from "../../../enums";
 
 export class OldBalletShoes {
     constructor() {
@@ -8,6 +8,7 @@ export class OldBalletShoes {
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
         this.name = "Old Ballet Shoes";
         this.description = "They are covered in web";
+        this.rarity = RARITY.B;
     }
 
     //not sure if the effect should activate when the wielder has flight...

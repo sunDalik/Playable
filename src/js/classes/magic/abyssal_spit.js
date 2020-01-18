@@ -1,5 +1,5 @@
 import {Game} from "../../game"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../enums";
 import {isNotAWall} from "../../map_checks";
 import {DarkPoisonHazard} from "../hazards/poison";
 
@@ -14,6 +14,7 @@ export class AbyssalSpit {
         this.uses = this.maxUses;
         this.name = "Abyssal Spit";
         this.description = "They get what they deserve";
+        this.rarity = RARITY.C;
     }
 
     //todo: dont draw unusable key bindings while charging

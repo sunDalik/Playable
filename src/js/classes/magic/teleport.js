@@ -1,5 +1,5 @@
 import {Game} from "../../game"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../enums";
 import {drawInteractionKeys, drawMovementKeyBindings} from "../../drawing/draw_hud";
 import {otherPlayer} from "../../utils/game_utils";
 import {camera} from "../game/camera";
@@ -16,6 +16,7 @@ export class Teleport {
         this.uses = this.maxUses;
         this.name = "Teleport";
         this.description = "Teleport to her";
+        this.rarity = RARITY.C;
     }
 
     cast(wielder) {

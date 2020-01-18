@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isAnyWall, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 import * as PIXI from "pixi.js";
@@ -12,6 +12,7 @@ export class MaidenDagger {
         this.atk = 1;
         this.name = "Maiden's Dagger";
         this.description = "I hear weeping...";
+        this.rarity = RARITY.B;
     }
 
     onWear(player) {

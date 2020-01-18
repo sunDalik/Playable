@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, HEAD_TYPE, TILE_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY, TILE_TYPE} from "../../../enums";
 import {darkenTile, lightTile} from "../../../drawing/lighting";
 import {otherPlayer} from "../../../utils/game_utils";
 import {tileInsideTheBossRoom} from "../../../game_logic";
@@ -11,6 +11,7 @@ export class SeerCirclet {
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.name = "Seer Circlet";
         this.description = "See your future";
+        this.rarity = RARITY.A;
     }
 
     onWear() {

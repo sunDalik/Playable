@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, HAZARD_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, HAZARD_TYPE, RARITY} from "../../../enums";
 
 export class DarkBoots {
     constructor() {
@@ -8,6 +8,7 @@ export class DarkBoots {
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
         this.name = "Dark Boots";
         this.description = "Turn hazards to your will...";
+        this.rarity = RARITY.B;
     }
 
     onWear(wielder) {

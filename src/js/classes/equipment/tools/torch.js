@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, TOOL_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, TOOL_TYPE} from "../../../enums";
 
 export class Torch {
     constructor() {
@@ -9,6 +9,7 @@ export class Torch {
         this.lightSpread = 3;
         this.name = "Torch";
         this.description = "You are safe now";
+        this.rarity = RARITY.UNIQUE;
     }
 
     use() {

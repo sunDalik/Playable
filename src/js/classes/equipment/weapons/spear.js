@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ENEMY_TYPE, EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {ENEMY_TYPE, EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 
@@ -11,6 +11,7 @@ export class Spear {
         this.atk = 0.75;
         this.name = "Spear";
         this.description = "It isn't well suitable for a close-range combat...";
+        this.rarity = RARITY.UNIQUE;
     }
 
     attack(wielder, dirX, dirY) {

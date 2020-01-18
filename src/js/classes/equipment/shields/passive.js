@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, SHIELD_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, SHIELD_TYPE} from "../../../enums";
 import {Shield} from "./shield";
 import {redrawSecondHand} from "../../../drawing/draw_hud";
 
@@ -14,6 +14,7 @@ export class PassiveShield extends Shield {
         this.usedOnThisTurn = false;
         this.name = "Passive Shield";
         this.description = "Passively blocks damage";
+        this.rarity = RARITY.S;
     }
 
     activate() {

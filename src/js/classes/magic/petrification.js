@@ -1,5 +1,5 @@
 import {Game} from "../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE,} from "../../enums";
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, RARITY,} from "../../enums";
 
 export class Petrification {
     constructor() {
@@ -12,6 +12,7 @@ export class Petrification {
         this.uses = this.maxUses;
         this.name = "Petrification";
         this.description = "Petrify all enemies";
+        this.rarity = RARITY.C;
     }
 
     cast(wielder) {

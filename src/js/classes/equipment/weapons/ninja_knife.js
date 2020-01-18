@@ -1,6 +1,6 @@
 import {Game} from "../../../game"
 import * as PIXI from "pixi.js"
-import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 
@@ -11,9 +11,10 @@ export class NinjaKnife {
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.SLIDE_ANIMATION_TIME = 4;
         this.FINISH_SLIDE_TIME = 2;
-        this.atk = 1.25; //maybe I should actually lower it?
+        this.atk = 1.25;
         this.name = "Ninja Knife";
         this.description = "Kill with style";
+        this.rarity = RARITY.S;
     }
 
     attack(wielder, tileDirX, tileDirY) {

@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {BAG_ITEM_TYPE, EQUIPMENT_TYPE} from "../../../enums";
+import {BAG_ITEM_TYPE, EQUIPMENT_TYPE, RARITY} from "../../../enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {get8Directions} from "../../../utils/map_utils";
 import {createFadingAttack, shakeScreen} from "../../../animations";
@@ -21,6 +21,7 @@ export class Bomb {
         this.bombAtk = 3;
         this.friendlyFire = 1;
         this.sprite = null;
+        this.rarity = RARITY.C;
     }
 
     useItem(player) {

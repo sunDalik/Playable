@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, ARMOR_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, ARMOR_TYPE, RARITY} from "../../../enums";
 
 export class Wings {
     constructor() {
@@ -10,6 +10,7 @@ export class Wings {
         this.dodgeChance = 0.5;
         this.name = "Wings";
         this.description = "50% to dodge any attack\nImmunity to hazards";
+        this.rarity = RARITY.S;
     }
 
     onWear(wielder) {

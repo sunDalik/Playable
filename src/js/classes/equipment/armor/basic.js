@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, ARMOR_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, ARMOR_TYPE, RARITY} from "../../../enums";
 
 export class BasicArmor {
     constructor() {
@@ -8,6 +8,7 @@ export class BasicArmor {
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.name = "Basic Armor";
         this.description = "+0.5 defense";
+        this.rarity = RARITY.C;
         this.def = 0.5;
     }
 }

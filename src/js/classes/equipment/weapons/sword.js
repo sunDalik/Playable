@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isNotAWall, isLit} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 
@@ -11,6 +11,7 @@ export class Sword {
         this.atk = 1;
         this.name = "Sword";
         this.description = "2-range weapon";
+        this.rarity = RARITY.B;
     }
 
     attack(wielder, tileDirX, tileDirY) {

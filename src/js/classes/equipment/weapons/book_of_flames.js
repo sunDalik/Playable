@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createFadingAttack, createFadingText} from "../../../animations";
 import * as PIXI from "pixi.js";
@@ -19,6 +19,7 @@ export class BookOfFlames {
         this.concentration = 0;
         this.name = "Book of Flames";
         this.description = "Magical wonder";
+        this.rarity = RARITY.S;
     }
 
     attack(wielder, tileDirX, tileDirY) {

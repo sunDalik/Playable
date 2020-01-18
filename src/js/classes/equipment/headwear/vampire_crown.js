@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, HEAD_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY} from "../../../enums";
 import {redrawHeadwear} from "../../../drawing/draw_hud";
 
 export class VampireCrown {
@@ -12,6 +12,7 @@ export class VampireCrown {
         this.healAmount = 1;
         this.name = "Vampire Crown";
         this.description = "Kills heal";
+        this.rarity = RARITY.B;
     }
 
     onKill(player) {

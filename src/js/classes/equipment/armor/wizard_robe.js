@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ARMOR_TYPE, EQUIPMENT_TYPE, MAGIC_TYPE} from "../../../enums";
+import {ARMOR_TYPE, EQUIPMENT_TYPE, MAGIC_TYPE, RARITY} from "../../../enums";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 
 export class WizardRobe {
@@ -11,6 +11,7 @@ export class WizardRobe {
         this.magAtk = 1;
         this.name = "Wizard Robe";
         this.description = "+1 magic use, +1 magic attack";
+        this.rarity = RARITY.A;
     }
 
     onWear(player) {

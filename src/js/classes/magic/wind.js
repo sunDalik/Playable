@@ -1,5 +1,5 @@
 import {Game} from "../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, HAZARD_TYPE,} from "../../enums";
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, HAZARD_TYPE, RARITY,} from "../../enums";
 import {isEmpty, isEnemy} from "../../map_checks";
 
 export class Wind {
@@ -15,6 +15,7 @@ export class Wind {
         this.uses = this.maxUses;
         this.name = "Wind";
         this.description = "Push everybody away from you";
+        this.rarity = RARITY.C;
     }
 
     cast(wielder) {

@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE, RARITY} from "../../../enums";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 
 export class WizardHat {
@@ -10,6 +10,7 @@ export class WizardHat {
         this.magUses = 1;
         this.name = "Wizard Hat";
         this.description = "+1 magic use";
+        this.rarity = RARITY.C;
     }
 
     onWear(player) {

@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerWeaponAnimation} from "../../../animations";
 
@@ -11,6 +11,7 @@ export class Hammer {
         this.atk = 1;
         this.name = "Hammer";
         this.description = "Stuns enemies";
+        this.rarity = RARITY.C;
     }
 
     attack(wielder, tileDirX, tileDirY) {

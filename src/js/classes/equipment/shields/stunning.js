@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, SHIELD_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, SHIELD_TYPE} from "../../../enums";
 import {Shield} from "./shield";
 
 export class StunningShield extends Shield {
@@ -12,6 +12,7 @@ export class StunningShield extends Shield {
         this.uses = this.maxUses;
         this.name = "Stunning Shield";
         this.description = "Activate to block all damage and stun your opponents";
+        this.rarity = RARITY.C;
     }
 
     onBlock(source, wielder, directHit) {

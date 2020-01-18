@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {BAG_ITEM_TYPE, EQUIPMENT_TYPE} from "../../../enums";
+import {BAG_ITEM_TYPE, EQUIPMENT_TYPE, RARITY} from "../../../enums";
 
 export class SmallHealingPotion {
     constructor() {
@@ -10,6 +10,7 @@ export class SmallHealingPotion {
         this.description = "Drink to restore 1 HP";
         this.amount = 1;
         this.healAmount = 1;
+        this.rarity = RARITY.C;
     }
 
     useItem(player) {

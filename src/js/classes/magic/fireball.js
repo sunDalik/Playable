@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import * as PIXI from "pixi.js"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE,} from "../../enums";
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../../enums";
 import {collisionCheck} from "../../collision_check";
 import {createFadingAttack} from "../../animations";
 import {redrawSlotContents} from "../../drawing/draw_hud";
@@ -19,6 +19,7 @@ export class Fireball {
         this.uses = this.maxUses;
         this.name = "Fireball";
         this.description = "It emanates power";
+        this.rarity = RARITY.A;
     }
 
     cast(wielder) {

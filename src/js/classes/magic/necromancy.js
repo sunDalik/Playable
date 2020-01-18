@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import {camera} from "../game/camera"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE,} from "../../enums";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../enums";
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
@@ -21,6 +21,7 @@ export class Necromancy {
         this.uses = this.maxUses;
         this.name = "Necromancy";
         this.description = "Return your beloved";
+        this.rarity = RARITY.B;
     }
 
     cast(wielder) {

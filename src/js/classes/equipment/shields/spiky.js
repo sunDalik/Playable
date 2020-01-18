@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, SHIELD_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, SHIELD_TYPE} from "../../../enums";
 import {Shield} from "./shield";
 
 export class SpikyShield extends Shield {
@@ -13,6 +13,7 @@ export class SpikyShield extends Shield {
         this.uses = this.maxUses;
         this.name = "Spiky Shield";
         this.description = "Activate to block all damage and hurt your opponents";
+        this.rarity = RARITY.C;
     }
 
     onBlock(source, wielder, directHit) {
