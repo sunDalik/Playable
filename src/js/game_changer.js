@@ -32,11 +32,11 @@ import {Game} from "./game";
 import {RARITY, STAGE} from "./enums";
 import * as rooms from "./rooms";
 import {AbyssalSpit} from "./classes/magic/abyssal_spit";
+import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
 
 export function initPools() {
-    Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe];
+    Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit];
-    //Abyssal spit is temporary in the pool. It will be removed later... or not?
     Game.chestItemPool = [Pickaxe, BasicArmor, WizardRobe, SeerCirclet, WizardHat, AdventurerBoots,
         DamagingBoots, DarkBoots, PassiveShield, SpikyShield, StunningShield, HeavyArmor, ElectricArmor, VampireCrown, Wings];
 }
@@ -85,7 +85,7 @@ export function setVariablesForStage() {
             Game.chestRooms = rooms.DTChestRooms;
             Game.bossRooms = rooms.DTBossRooms;
             Game.BGColor = 0x666666;
-            assignRarityChances(20, 78, 94); // 20% 58% 16% 6%
+            assignRarityChances(22, 78, 94); // 22% 56% 16% 6%
             break;
         case STAGE.RUINS:
             Game.BGColor = 0xd8d9d7;

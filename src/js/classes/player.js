@@ -577,6 +577,8 @@ export class Player extends AnimatedTileElement {
     }
 
     doubleAttack() {
+        this.attackTimeout = null;
+        if (this.dead) return;
         if (this.weapon.type === WEAPON_TYPE.NINJA_KNIFE) {
             this.savedTileStepX *= -1;
             this.savedTileStepY *= -1;
@@ -585,7 +587,6 @@ export class Player extends AnimatedTileElement {
         this.rotation = 0; //added because of wings. But what if we want the player to rotate when he is attacking with some weapon?...
         this.secondHand.attack(this, this.savedTileStepX, this.savedTileStepY);
         redrawSecondHand(this);
-        this.attackTimeout = null;
     }
 
     useSecondHand() {
