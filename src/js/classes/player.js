@@ -139,9 +139,6 @@ export class Player extends AnimatedTileElement {
                     return false;
                 } else {
                     this.step(tileStepX, tileStepY);
-                    for (const eq of this.getEquipment()) {
-                        if (eq && eq.onMove) eq.onMove(this);
-                    }
                     if (this.tilePosition.x === Game.bossEntry.x && this.tilePosition.y === Game.bossEntry.y && !Game.bossEntryOpened) {
                         Game.world.removeTile(this.tilePosition.x, this.tilePosition.y, null, false);
                         Game.bossEntryOpened = true;
@@ -256,11 +253,8 @@ export class Player extends AnimatedTileElement {
             }, () => {
                 this.onMoveFrame(onEnd);
             }, animationTime);
-            lightPlayerPosition(this);
-            Game.delayList.push(() => this.pickUpItems());
-            camera.moveToCenter(this.STEP_ANIMATION_TIME);
+            this.onMove(animationTime);
         }
-        //drawInteractionKeys();
     }
 
     bump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
@@ -286,15 +280,21 @@ export class Player extends AnimatedTileElement {
         }, () => {
             this.onMoveFrame(onEnd);
         }, animationTime);
-        lightPlayerPosition(this);
-        Game.delayList.push(() => this.pickUpItems());
-        //drawInteractionKeys();
-        camera.moveToCenter(animationTime);
+        this.onMove(animationTime);
     }
 
     onMoveFrame(extra = null) {
         if (extra) extra();
         updateChain();
+    }
+
+    onMove(animationTime) {
+        lightPlayerPosition(this);
+        Game.delayList.push(() => this.pickUpItems());
+        camera.moveToCenter(animationTime);
+        for (const eq of this.getEquipment()) {
+            if (eq && eq.onMove) eq.onMove(this);
+        }
     }
 
     shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
