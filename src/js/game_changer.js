@@ -29,7 +29,7 @@ import {PassiveShield} from "./classes/equipment/shields/passive";
 import {SpikyShield} from "./classes/equipment/shields/spiky";
 import {StunningShield} from "./classes/equipment/shields/stunning";
 import {Game} from "./game";
-import {STAGE} from "./enums";
+import {RARITY, STAGE} from "./enums";
 import * as rooms from "./rooms";
 import {AbyssalSpit} from "./classes/magic/abyssal_spit";
 
@@ -76,6 +76,7 @@ export function setVariablesForStage() {
             Game.chestRooms = rooms.FCChestRooms;
             Game.bossRooms = rooms.FCBossRooms;
             Game.BGColor = 0xabcfd1;
+            assignRarityChances(55, 88, 97); // 55% 33% 9% 3%
             break;
         case STAGE.DARK_TUNNEL:
             Game.normalRooms = rooms.DTNormalRooms;
@@ -84,15 +85,27 @@ export function setVariablesForStage() {
             Game.chestRooms = rooms.DTChestRooms;
             Game.bossRooms = rooms.DTBossRooms;
             Game.BGColor = 0x666666;
+            assignRarityChances(20, 78, 94); // 20% 58% 16% 6%
             break;
         case STAGE.RUINS:
             Game.BGColor = 0xd8d9d7;
+            assignRarityChances(10, 55, 91); // 10% 45% 36% 9%
             break;
         case STAGE.LABYRINTH:
             Game.BGColor = 0x75c978;
+            assignRarityChances(0, 32, 87); // 0% 32% 55% 13%
             break;
         case STAGE.FINALE:
             Game.BGColor = 0xcc76cc;
+            assignRarityChances(0, 10, 75); // 0% 10% 65% 25%
             break;
     }
+}
+
+function assignRarityChances(c1, c2, c3) {
+    RARITY.C.chanceFrom = 0;
+    RARITY.C.chanceTo = RARITY.B.chanceFrom = c1;
+    RARITY.B.chanceTo = RARITY.A.chanceFrom = c2;
+    RARITY.A.chanceTo = RARITY.S.chanceFrom = c3;
+    RARITY.S.chanceTo = 100;
 }
