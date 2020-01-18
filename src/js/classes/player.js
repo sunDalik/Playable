@@ -166,9 +166,7 @@ export class Player extends AnimatedTileElement {
             const magicResult = magic.cast(this);
             if (magicResult === false) return false;
             for (const eq of this.getEquipment()) {
-                if (eq && eq.onMagicCast) {
-                    eq.onMagicCast(this);
-                }
+                if (eq && eq.onMagicCast) eq.onMagicCast(this);
             }
             const pn = this.getPropertyNameOfItem(magic);
             if (pn) redrawSlotContents(this, pn);
@@ -414,12 +412,11 @@ export class Player extends AnimatedTileElement {
         }
         camera.moveToCenter(this.STEP_ANIMATION_TIME);
         for (const eq of this.getEquipment()) {
-            if (eq && eq.onDeath) {
-                eq.onDeath(this);
-            }
+            if (eq && eq.onDeath) eq.onDeath(this);
         }
         redrawWeaponAndSecondHand(this);
         redrawAllMagicSlots(this);
+        redrawBag(this);
         this.removeHealthContainers(1);
         otherPlayer(this).removeHealthContainers(1);
         drawOtherHUD();
@@ -491,9 +488,7 @@ export class Player extends AnimatedTileElement {
         else if (this.magic3 === null) this.magic3 = magic;
         else return;
         for (const eq of this.getEquipment()) {
-            if (eq && eq.onEquipmentReceive) {
-                eq.onEquipmentReceive(this, magic);
-            }
+            if (eq && eq.onEquipmentReceive) eq.onEquipmentReceive(this, magic);
         }
         redrawSlotContents(this, this.getPropertyNameOfItem(magic));
         if (showHelp) showHelpBox(magic);
@@ -501,9 +496,7 @@ export class Player extends AnimatedTileElement {
 
     applyNextLevelMethods() {
         for (const eq of this.getEquipment()) {
-            if (eq && eq.onNextLevel) {
-                eq.onNextLevel(this);
-            }
+            if (eq && eq.onNextLevel) eq.onNextLevel(this);
         }
         for (const mg of this.getMagic()) {
             if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) {

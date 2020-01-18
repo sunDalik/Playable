@@ -99,6 +99,14 @@ export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
 
 export const HAZARD_TYPE = Object.freeze({POISON: 0, FIRE: 1, DARK_POISON: 2, DARK_FIRE: 3});
 
+export const RARITY = Object.freeze({
+    C: {label: "C", color: 0xffffff, chance: 0},
+    B: {label: "B", color: 0x9bc1de, chance: 0},
+    A: {label: "A", color: 0x9cf274, chance: 0},
+    S: {label: "S", color: 0xf5e476, chance: 0},
+    UNIQUE: {label: "Unique", color: 0xffffff, chance: 0},
+});
+
 export const MAP_SYMBOLS = Object.freeze({
     NONE: "",
     WALL: "w",
