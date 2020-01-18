@@ -1,9 +1,9 @@
 import {Game} from "../../game"
 import {TallTileElement} from "../tile_elements/tall_tile_element"
-import {ROLE, INANIMATE_TYPE, WEAPON_TYPE, EQUIPMENT_TYPE} from "../../enums";
+import {EQUIPMENT_TYPE, INANIMATE_TYPE, ROLE, WEAPON_TYPE} from "../../enums";
 import {createFadingText, longShakeScreen} from "../../animations";
 import {randomChoice} from "../../utils/random_utils";
-import {HUDTextStyle} from "../../drawing/draw_constants";
+import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
@@ -15,7 +15,7 @@ export class Statue extends TallTileElement {
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.STATUE;
         this.marauded = false;
-        this.textObj = new PIXI.Text("", Object.assign({}, HUDTextStyle, {fontSize: Game.TILESIZE / 3.2}));
+        this.textObj = new PIXI.Text("", getInanimateItemLabelTextStyle());
         this.textObj.anchor.set(0.5, 0.5);
         this.textObj.position.set(this.position.x, this.position.y - this.height / 4);
         this.textObj.visible = false;

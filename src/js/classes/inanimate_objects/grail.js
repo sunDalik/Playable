@@ -4,7 +4,7 @@ import {createFadingText, createFloatingItemAnimation} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
 import {removeItemFromPool} from "../../game_changer";
 import * as PIXI from "pixi.js";
-import {HUDTextStyle} from "../../drawing/draw_constants";
+import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
@@ -25,7 +25,7 @@ export class Grail extends TileElement {
         this.magicSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(this.magicSprite);
 
-        this.textObj = new PIXI.Text("", Object.assign({}, HUDTextStyle, {fontSize: Game.TILESIZE / 3.2}));
+        this.textObj = new PIXI.Text("", getInanimateItemLabelTextStyle());
         this.textObj.anchor.set(0.5, 0.5);
         this.textObj.visible = false;
         this.textObj.zIndex = 99;

@@ -403,6 +403,7 @@ export class Player extends AnimatedTileElement {
         updateChain();
         drawInteractionKeys();
         this.removeFromMap();
+        //doesn't drop sometimes???
         if (Game.stage === STAGE.DARK_TUNNEL) {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.TORCH) {
                 const item = new LyingItem(this.tilePosition.x, this.tilePosition.y, this.secondHand);

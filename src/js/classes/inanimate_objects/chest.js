@@ -4,7 +4,7 @@ import {createFloatingItemAnimation} from "../../animations";
 import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import {TileElement} from "../tile_elements/tile_element";
 import * as PIXI from "pixi.js";
-import {HUDTextStyle} from "../../drawing/draw_constants";
+import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 
@@ -25,7 +25,7 @@ export class Chest extends TileElement {
         this.contentsSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(this.contentsSprite);
 
-        this.textObj = new PIXI.Text(this.contents.name, Object.assign({}, HUDTextStyle, {fontSize: Game.TILESIZE / 3.2}));
+        this.textObj = new PIXI.Text(this.contents.name, getInanimateItemLabelTextStyle());
         this.textObj.anchor.set(0.5, 0.5);
         this.textObj.position.set(this.position.x, this.position.y - this.height * 5 / 4);
         this.textObj.visible = false;
