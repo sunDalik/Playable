@@ -102,7 +102,7 @@ export const HAZARD_TYPE = Object.freeze({POISON: 0, FIRE: 1, DARK_POISON: 2, DA
 export const RARITY = Object.freeze({
     C: {label: "C", color: 0xffffff, chanceFrom: 0, chanceTo: 0},
     B: {label: "B", color: 0x94c9f2, chanceFrom: 0, chanceTo: 0},
-    A: {label: "A", color: 0x9cf274, chanceFrom: 0, chanceTo: 0},
+    A: {label: "A", color: 0x84f081, chanceFrom: 0, chanceTo: 0},
     S: {label: "S", color: 0xf5e476, chanceFrom: 0, chanceTo: 0},
     UNIQUE: {label: "Unique", color: 0xffffff, chanceFrom: 0, chanceTo: 0},
 });
