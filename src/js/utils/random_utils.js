@@ -47,21 +47,18 @@ export function getRandomValue(obj) {
 export function getRandomWeapon() {
     if (Game.weaponPool.length === 0) return null;
     const constructor = getItemFromPoolByRarity(Game.weaponPool);
-    if (constructor === null) return null;
     return new constructor();
 }
 
 export function getRandomSpell() {
     if (Game.magicPool.length === 0) return null;
     const constructor = getItemFromPoolByRarity(Game.magicPool);
-    if (constructor === null) return null;
     return new constructor();
 }
 
 export function getRandomChestDrop() {
     if (Game.chestItemPool.length === 0) return new Bomb();
     const constructor = getItemFromPoolByRarity(Game.chestItemPool);
-    if (constructor === null) return new Bomb();
     const item = new constructor();
     removeItemFromPool(item, Game.chestItemPool);
     return item;
@@ -82,5 +79,6 @@ function getItemFromPoolByRarity(pool) {
             }
         }
     }
-    return item;
+    if (item === null) return randomChoice(pool);
+    else return item;
 }
