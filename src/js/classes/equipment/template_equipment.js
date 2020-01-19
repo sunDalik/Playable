@@ -12,6 +12,10 @@ export class TemplateEquipment {
         //for bag items
         this.amount = 1;
 
+        //for magic
+        this.maxUses = 0;
+        this.uses = this.maxUses;
+
         //optional
         this.def = 0;
         this.atk = 0;
