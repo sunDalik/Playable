@@ -1,8 +1,8 @@
-import {Game} from "../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../../enums";
-import {isNotAWall, getPlayerOnTile, isEnemy, isObelisk} from "../../map_checks";
-import {createFadingAttack, rotate} from "../../animations";
-import {TileElement} from "../tile_elements/tile_element";
+import {Game} from "../../../game"
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../../../enums";
+import {isNotAWall, getPlayerOnTile, isEnemy, isObelisk} from "../../../map_checks";
+import {createFadingAttack, rotate} from "../../../animations";
+import {TileElement} from "../../tile_elements/tile_element";
 
 export class Aura {
     constructor() {

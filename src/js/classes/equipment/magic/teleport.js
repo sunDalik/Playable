@@ -1,9 +1,9 @@
-import {Game} from "../../game"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../enums";
-import {drawInteractionKeys, drawMovementKeyBindings} from "../../drawing/draw_hud";
-import {otherPlayer} from "../../utils/game_utils";
-import {camera} from "../game/camera";
-import {updateChain} from "../../drawing/draw_dunno";
+import {Game} from "../../../game"
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
+import {drawInteractionKeys, drawMovementKeyBindings} from "../../../drawing/draw_hud";
+import {otherPlayer} from "../../../utils/game_utils";
+import {camera} from "../../game/camera";
+import {updateChain} from "../../../drawing/draw_dunno";
 
 export class Teleport {
     constructor() {

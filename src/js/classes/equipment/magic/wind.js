@@ -1,6 +1,6 @@
-import {Game} from "../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, HAZARD_TYPE, RARITY,} from "../../enums";
-import {isEmpty, isEnemy} from "../../map_checks";
+import {Game} from "../../../game"
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, HAZARD_TYPE, RARITY,} from "../../../enums";
+import {isEmpty, isEnemy} from "../../../map_checks";
 
 export class Wind {
     constructor() {

@@ -36,6 +36,7 @@ export function randomArrayIndex(array) {
 }
 
 // random: [min; max)
+// todo change to [min;max]
 export function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }

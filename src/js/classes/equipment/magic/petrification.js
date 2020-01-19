@@ -1,5 +1,5 @@
-import {Game} from "../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, RARITY,} from "../../enums";
+import {Game} from "../../../game"
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, RARITY,} from "../../../enums";
 
 export class Petrification {
     constructor() {

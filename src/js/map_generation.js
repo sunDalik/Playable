@@ -43,7 +43,7 @@ import {BalletSpider} from "./classes/enemies/bosses/ballet_spider";
 import {tileInsideTheBossRoom} from "./game_logic";
 import {GuardianOfTheLight} from "./classes/enemies/bosses/guardian_of_the_light";
 import {FireGoblet} from "./classes/inanimate_objects/fire_goblet";
-import {Necromancy} from "./classes/magic/necromancy";
+import {Necromancy} from "./classes/equipment/magic/necromancy";
 import {Bomb} from "./classes/equipment/bag/bomb";
 import {SmallHealingPotion} from "./classes/equipment/bag/small_healing_potion";
 import {TileElement} from "./classes/tile_elements/tile_element";
@@ -142,9 +142,7 @@ export function generateMap(level) {
                     mapCell.entity = new Statue(j, i, getRandomWeapon());
                 }
             } else if (map[i][j] === MAP_SYMBOLS.CHEST) {
-                if (Game.chestItemPool.length > 0) {
-                    mapCell.entity = new Chest(j, i, getRandomChestDrop());
-                }
+                mapCell.entity = new Chest(j, i, getRandomChestDrop());
             } else if (map[i][j] === MAP_SYMBOLS.OBELISK) {
                 if (Game.magicPool.length >= 4) {
                     let necromancyIndex = -1;
@@ -162,6 +160,7 @@ export function generateMap(level) {
                         if (i === necromancyIndex) {
                             magicPool.push(new Necromancy());
                         } else {
+                            //todo: add attempts and stuff because now it breaks on the 4th floor with only C-magic in the pool
                             while (true) {
                                 const randomSpell = getRandomSpell();
                                 if (!magicPool.some(magic => magic.type === randomSpell.type)) {

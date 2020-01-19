@@ -1,14 +1,14 @@
-import {Game} from "../../game"
-import {camera} from "../game/camera"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../enums";
+import {Game} from "../../../game"
+import {camera} from "../../game/camera"
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
     redrawAllMagicSlots,
     redrawHealthForPlayer,
     redrawWeaponAndSecondHand
-} from "../../drawing/draw_hud";
-import {otherPlayer} from "../../utils/game_utils";
+} from "../../../drawing/draw_hud";
+import {otherPlayer} from "../../../utils/game_utils";
 
 export class Necromancy {
     constructor() {

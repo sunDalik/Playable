@@ -1,7 +1,7 @@
-import {Game} from "../../game"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../enums";
-import {isNotAWall} from "../../map_checks";
-import {DarkPoisonHazard} from "../hazards/poison";
+import {Game} from "../../../game"
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
+import {isNotAWall} from "../../../map_checks";
+import {DarkPoisonHazard} from "../../hazards/poison";
 
 export class AbyssalSpit {
     constructor() {

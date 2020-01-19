@@ -1,9 +1,9 @@
-import {Game} from "../../game"
+import {Game} from "../../../game"
 import * as PIXI from "pixi.js"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../../enums";
-import {collisionCheck} from "../../collision_check";
-import {createFadingAttack} from "../../animations";
-import {redrawSlotContents} from "../../drawing/draw_hud";
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../../../enums";
+import {collisionCheck} from "../../../collision_check";
+import {createFadingAttack} from "../../../animations";
+import {redrawSlotContents} from "../../../drawing/draw_hud";
 
 export class Fireball {
     constructor() {

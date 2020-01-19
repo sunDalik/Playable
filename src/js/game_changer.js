@@ -1,10 +1,10 @@
-import {Aura} from "./classes/magic/aura";
-import {Spikes} from "./classes/magic/spikes";
-import {Fireball} from "./classes/magic/fireball";
-import {Necromancy} from "./classes/magic/necromancy";
-import {Petrification} from "./classes/magic/petrification";
-import {Teleport} from "./classes/magic/teleport";
-import {Wind} from "./classes/magic/wind";
+import {Aura} from "./classes/equipment/magic/aura";
+import {Spikes} from "./classes/equipment/magic/spikes";
+import {Fireball} from "./classes/equipment/magic/fireball";
+import {Necromancy} from "./classes/equipment/magic/necromancy";
+import {Petrification} from "./classes/equipment/magic/petrification";
+import {Teleport} from "./classes/equipment/magic/teleport";
+import {Wind} from "./classes/equipment/magic/wind";
 import {BasicArmor} from "./classes/equipment/armor/basic";
 import {WizardRobe} from "./classes/equipment/armor/wizard_robe";
 import {HeavyArmor} from "./classes/equipment/armor/heavy";
@@ -31,7 +31,7 @@ import {StunningShield} from "./classes/equipment/shields/stunning";
 import {Game} from "./game";
 import {RARITY, STAGE} from "./enums";
 import * as rooms from "./rooms";
-import {AbyssalSpit} from "./classes/magic/abyssal_spit";
+import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
 
 export function initPools() {
