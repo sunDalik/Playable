@@ -61,7 +61,7 @@ export class Bomb {
                 }
                 const player = getPlayerOnTile(posX, posY);
                 if (player) {
-                    player.damage(this.friendlyFire, this, false, true);
+                    player.damage(this.friendlyFire, sprite, false, true);
                 }
                 createFadingAttack(sprite, 9);
                 shakeScreen(5, 1, 40);

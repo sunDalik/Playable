@@ -364,6 +364,7 @@ export class Player extends AnimatedTileElement {
         Game.world.filters.push(DEATH_FILTER);
         HUD.filters.push(DEATH_FILTER);
         Game.paused = true;
+        let sourceVisibility;
         camera.centerOnPlayer(this, 6);
 
         Game.world.upWorld.position = Game.world.position;
@@ -371,8 +372,8 @@ export class Player extends AnimatedTileElement {
         if (source) {
             Game.world.removeChild(source);
             Game.world.upWorld.addChild(source);
+            sourceVisibility = source.visible;
             source.visible = true;
-            if (source === Game.limitChain) source.visible = true;
         }
 
         setTickTimeout(() => {
@@ -386,7 +387,7 @@ export class Player extends AnimatedTileElement {
             if (source) {
                 Game.world.upWorld.removeChild(source);
                 Game.world.addChild(source);
-                if (source.dead) source.visible = false;
+                source.visible = sourceVisibility;
                 if (source === Game.limitChain) source.visible = false;
             }
 
