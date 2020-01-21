@@ -10,5 +10,6 @@ export class SpikySnail extends Snail {
         this.turnDelay = 2;
         this.atk = 1.5;
         this.type = ENEMY_TYPE.SNAIL_SPIKY;
+        this.currentTurnDelay = this.turnDelay;
     }
 }

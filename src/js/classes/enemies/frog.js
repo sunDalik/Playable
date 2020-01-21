@@ -15,7 +15,7 @@ export class Frog extends Enemy {
         this.type = ENEMY_TYPE.FROG;
         this.atk = 1;
         this.turnDelay = 1;
-        this.currentTurnDelay = 0;
+        this.currentTurnDelay = this.turnDelay;
         this.triggered = false;
         this.triggeredTile = null;
         this.scaleModifier = 0.8;

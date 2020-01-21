@@ -2,19 +2,20 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile, isEmpty} from "../../map_checks";
-import {closestPlayer} from "../../utils/game_utils";
-import {getChasingOptions} from "../../utils/map_utils";
+import {closestPlayer, tileDistance} from "../../utils/game_utils";
+import {getChasingOptions, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 
 export class Spider extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/spider.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 1.5;
+        this.maxHealth = 2;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.SPIDER;
         this.atk = 1;
-        this.chase = false;
+        this.stun = 1;
         this.thrown = false;
+        this.noticeDistance = 4;
         this.STEP_ANIMATION_TIME = 6;
         this.BUMP_ANIMATION_TIME = 12;
         this.scaleModifier = 0.8;
@@ -23,7 +24,7 @@ export class Spider extends Enemy {
 
     move() {
         if (!this.thrown) {
-            if (this.chase) {
+            if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
                 const movementOptions = getChasingOptions(this, closestPlayer(this));
                 if (movementOptions.length !== 0) {
                     const dir = randomChoice(movementOptions);
@@ -36,9 +37,10 @@ export class Spider extends Enemy {
                     }
                 } else this.bump(Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x), Math.sign(closestPlayer(this).tilePosition.y - this.tilePosition.y));
             } else {
-                if (this.canSeePlayers()) {
-                    this.chase = true;
-                    this.move();
+                const movementOptions = getRelativelyEmptyCardinalDirections(this);
+                if (movementOptions.length !== 0) {
+                    const dir = randomChoice(movementOptions);
+                    this.step(dir.x, dir.y);
                 }
             }
         } else this.thrown = false;
@@ -70,7 +72,12 @@ export class Spider extends Enemy {
 
     updateIntentIcon() {
         super.updateIntentIcon();
-        if (this.thrown) this.intentIcon.texture = Game.resources["src/images/icons/intents/stun.png"].texture;
-        else this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+        if (this.thrown) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/stun.png"].texture;
+        } else if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/neutral.png"].texture;
+        }
     }
 }

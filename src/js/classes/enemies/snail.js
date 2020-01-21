@@ -3,8 +3,8 @@ import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {PoisonHazard} from "../hazards/poison";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
-import {closestPlayer} from "../../utils/game_utils";
-import {getChasingOptions} from "../../utils/map_utils";
+import {closestPlayer, tileDistance} from "../../utils/game_utils";
+import {getChasingOptions, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 
 export class Snail extends Enemy {
@@ -15,8 +15,8 @@ export class Snail extends Enemy {
         this.type = ENEMY_TYPE.SNAIL;
         this.atk = 1;
         this.turnDelay = 1;
-        this.currentTurnDelay = 0;
-        this.chase = false;
+        this.currentTurnDelay = this.turnDelay;
+        this.noticeDistance = 5;
         this.scaleModifier = 0.8;
         this.fitToTile();
     }
@@ -30,7 +30,7 @@ export class Snail extends Enemy {
 
     move() {
         if (this.currentTurnDelay === 0) {
-            if (this.chase) {
+            if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
                 const movementOptions = getChasingOptions(this, closestPlayer(this));
                 if (movementOptions.length !== 0) {
                     const dir = randomChoice(movementOptions);
@@ -39,14 +39,19 @@ export class Snail extends Enemy {
                         this.slideBump(dir.x, dir.y);
                         player.damage(this.atk, this, true);
                     } else {
+                        Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
                         this.slide(dir.x, dir.y);
                     }
                 } else this.slideBump(Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x), Math.sign(closestPlayer(this).tilePosition.y - this.tilePosition.y));
-                this.currentTurnDelay = this.turnDelay;
             } else {
-                if (this.canSeePlayers()) this.chase = true;
+                const movementOptions = getRelativelyEmptyCardinalDirections(this);
+                if (movementOptions.length !== 0) {
+                    const dir = randomChoice(movementOptions);
+                    Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
+                    this.slide(dir.x, dir.y);
+                }
             }
-            Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
+            this.currentTurnDelay = this.turnDelay;
         } else this.currentTurnDelay--;
     }
 
@@ -71,8 +76,10 @@ export class Snail extends Enemy {
         super.updateIntentIcon();
         if (this.currentTurnDelay > 0) {
             this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
-        } else {
+        } else if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
             this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/neutral.png"].texture;
         }
     }
 }

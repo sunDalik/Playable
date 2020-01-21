@@ -9,7 +9,7 @@ export class Eel extends Enemy {
         this.maxHealth = 2;
         this.health = this.maxHealth;
         this.atk = 1;
-        this.turnDelay = 0;
+        this.turnDelay = 1;
         this.angle = 0;
         this.inMemoryAngle = this.angle;
         this.SLIDE_ANIMATION_TIME = 10;
