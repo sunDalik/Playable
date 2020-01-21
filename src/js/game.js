@@ -8,7 +8,7 @@ Game.resources = null;
 
 Game.world = null;
 
-Game.TILESIZE = 62;
+Game.TILESIZE = 70;
 
 Game.followMode = false;
 Game.chainLength = 10;

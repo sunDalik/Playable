@@ -21,7 +21,7 @@ export const bossHeartOffset = -16;
 export const bottomBossHeartOffset = 25;
 
 export const HUDFontSize = 16;
-export const HUDSlotFontSize = 12;
+export const HUDSlotFontSize = 13;
 export const HUDGameOverFontSize = 26;
 export const HUDTitleFontSize = 20;
 export const HUDTextStyle = {
