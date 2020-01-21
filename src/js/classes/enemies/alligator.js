@@ -328,7 +328,7 @@ export class Alligator extends Enemy {
         } else if (this.triggeredDirection) {
             this.intentIcon.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
             this.intentIcon.angle = this.getArrowRightAngleForDirection(this.triggeredDirection);
-        } else if (tileDistance(this, closestPlayer(this)) <= 2) {
+        } else if (tileDistance(this, closestPlayer(this)) <= 2 && this.alligatorType !== RABBIT_TYPE.ENERGY) {
             this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
         } else if (this.alligatorType === RABBIT_TYPE.ENERGY) {
             this.intentIcon.texture = Game.resources["src/images/icons/intents/question_mark.png"].texture;

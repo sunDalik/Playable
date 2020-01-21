@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
+import {ENEMY_TYPE, STAGE} from "../../enums";
 import {getPlayerOnTile, isEmpty} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {getChasingOptions, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
@@ -13,7 +13,9 @@ export class Spider extends Enemy {
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.SPIDER;
         this.atk = 1;
-        this.stun = 1;
+        if (Game.stage !== STAGE.DARK_TUNNEL) {
+            this.stun = 1;
+        }
         this.thrown = false;
         this.noticeDistance = 4;
         this.STEP_ANIMATION_TIME = 6;
