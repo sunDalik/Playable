@@ -150,9 +150,9 @@ export function generateMap(level) {
                     if (Game.player.dead) alivePlayer = Game.player2;
                     else if (Game.player2.dead) alivePlayer = Game.player;
                     if (alivePlayer !== null) {
-                        if (alivePlayer.health >= 3.5) necromancyIndex = getRandomInt(0, 4);
-                        else if (alivePlayer.health >= 2.5) necromancyIndex = getRandomInt(0, 3);
-                        else necromancyIndex = getRandomInt(0, 2);
+                        if (alivePlayer.health >= 3.5) necromancyIndex = getRandomInt(0, 3);
+                        else if (alivePlayer.health >= 2.5) necromancyIndex = getRandomInt(0, 2);
+                        else necromancyIndex = getRandomInt(0, 1);
                     }
 
                     let magicPool = [];
@@ -267,8 +267,8 @@ export function assignDrops() {
     randomShuffle(Game.enemies);
     let enemyIndex = 0;
 
-    distributeDrops(Bomb, getRandomInt(3, 5));
-    distributeDrops(SmallHealingPotion, getRandomInt(1, 3));
+    distributeDrops(Bomb, getRandomInt(3, 4));
+    distributeDrops(SmallHealingPotion, getRandomInt(1, 2));
 
     function distributeDrops(dropConstructor, amount) {
         while (amount > 0) {

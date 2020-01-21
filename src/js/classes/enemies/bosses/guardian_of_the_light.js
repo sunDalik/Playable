@@ -196,11 +196,11 @@ export class GuardianOfTheLight extends Boss {
             this.texture = Game.resources["src/images/bosses/guardian_of_the_light/after_electric.png"].texture;
             if (this.electricDoomWearOff) {
                 this.electricDoomWearOff = false;
-                this.electricityDelay = getRandomInt(11, 14);
+                this.electricityDelay = getRandomInt(11, 13);
             } else {
-                if (this.phase === 1) this.electricityDelay = getRandomInt(8, 13);
-                else if (this.phase === 2) this.electricityDelay = getRandomInt(8, 12);
-                else if (this.phase === 3) this.electricityDelay = getRandomInt(10, 14);
+                if (this.phase === 1) this.electricityDelay = getRandomInt(8, 12);
+                else if (this.phase === 2) this.electricityDelay = getRandomInt(8, 11);
+                else if (this.phase === 3) this.electricityDelay = getRandomInt(10, 13);
             }
 
         } else if (this.triggeredElectricDoom) {
@@ -426,8 +426,8 @@ export class GuardianOfTheLight extends Boss {
     }
 
     updatePatience() {
-        this.patience.turns = getRandomInt(24, 32) - this.phase * 2;
-        this.patience.damage = getRandomInt(3, 5);
+        this.patience.turns = getRandomInt(24, 31) - this.phase * 2;
+        this.patience.damage = getRandomInt(3, 4);
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {

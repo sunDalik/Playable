@@ -113,7 +113,7 @@ export class Mushroom extends Enemy {
 
 
     getWalkDelay() {
-        return getRandomInt(8, 15);
+        return getRandomInt(8, 14);
     }
 
     moveHealthContainer() {

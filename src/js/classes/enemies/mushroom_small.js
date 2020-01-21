@@ -19,7 +19,7 @@ export class SmallMushroom extends Mushroom {
     }
 
     getWalkDelay() {
-        return getRandomInt(4, 9);
+        return getRandomInt(4, 8);
     }
 
     getDirections() {

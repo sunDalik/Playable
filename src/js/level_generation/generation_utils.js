@@ -96,14 +96,14 @@ export function connectDiagonalPaths(level) {
         for (let j = 0; j < level[0].length - 1; ++j) {
             if (level[i][j] === MAP_SYMBOLS.PATH) {
                 if (level[i - 1][j + 1] === MAP_SYMBOLS.PATH) {
-                    let randomWall = getRandomInt(0, 2);
+                    let randomWall = getRandomInt(0, 1);
                     if (level[i - 1][j] === MAP_SYMBOLS.WALL && level[i][j + 1] === MAP_SYMBOLS.WALL) {
                         if (randomWall === 0) level[i - 1][j] = MAP_SYMBOLS.PATH;
                         else level[i][j + 1] = MAP_SYMBOLS.PATH;
                     }
                 }
                 if (level[i + 1][j + 1] === MAP_SYMBOLS.PATH) {
-                    let randomWall = getRandomInt(0, 2);
+                    let randomWall = getRandomInt(0, 1);
                     if (level[i + 1][j] === MAP_SYMBOLS.WALL && level[i][j + 1] === MAP_SYMBOLS.WALL) {
                         if (randomWall === 0) level[i + 1][j] = MAP_SYMBOLS.PATH;
                         else level[i][j + 1] = MAP_SYMBOLS.PATH;
