@@ -2,14 +2,7 @@ import {Game} from "./game";
 import {ENEMY_TYPE, MAP_SYMBOLS, RABBIT_TYPE, ROLE, STAGE, TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {copy2dArray} from "./utils/basic_utils";
-import {
-    getRandomChestDrop,
-    getRandomInt,
-    getRandomSpell,
-    getRandomValue,
-    getRandomWeapon,
-    randomShuffle
-} from "./utils/random_utils";
+import {getRandomInt, getRandomValue, randomShuffle} from "./utils/random_utils";
 import {Roller} from "./classes/enemies/roller";
 import {RedRoller} from "./classes/enemies/roller_red";
 import {Snail} from "./classes/enemies/snail";
@@ -47,6 +40,7 @@ import {Necromancy} from "./classes/equipment/magic/necromancy";
 import {Bomb} from "./classes/equipment/bag/bomb";
 import {SmallHealingPotion} from "./classes/equipment/bag/small_healing_potion";
 import {TileElement} from "./classes/tile_elements/tile_element";
+import {getRandomChestDrop, getRandomSpell, getRandomWeapon} from "./utils/pool_utils";
 
 export function generateMap(level) {
     const map = copy2dArray(level);
