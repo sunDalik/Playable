@@ -1,7 +1,7 @@
 import {Game} from "../../game";
 import {getEffectivePlayerCenter} from "../../utils/game_utils";
-import {areWeInTheBossRoom} from "../../game_logic";
 import {centerMiniMap} from "../../drawing/minimap";
+import {areWeInTheBossRoom} from "../../map_checks";
 
 export const camera = {
     animation: null,

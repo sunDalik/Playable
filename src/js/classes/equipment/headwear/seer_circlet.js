@@ -2,7 +2,7 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY, TILE_TYPE} from "../../../enums";
 import {darkenTile, lightTile} from "../../../drawing/lighting";
 import {otherPlayer} from "../../../utils/game_utils";
-import {tileInsideTheBossRoom} from "../../../game_logic";
+import {tileInsideTheBossRoom} from "../../../map_checks";
 
 export class SeerCirclet {
     constructor() {

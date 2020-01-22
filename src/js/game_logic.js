@@ -403,22 +403,3 @@ export function deactivateBossMode() {
     lightPosition(Game.bossExit);
     camera.moveToCenter(15);
 }
-
-export function areWeInTheBossRoom() {
-    return (Game.player.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player.tilePosition.y >= Game.endRoomBoundaries[0].y
-        && Game.player.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player.dead)
-        && (Game.player2.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player2.tilePosition.y >= Game.endRoomBoundaries[0].y
-            && Game.player2.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player2.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player2.dead)
-        && (!Game.player.dead || !Game.player2.dead);
-}
-
-export function amIInTheBossRoom(player) {
-    return player.tilePosition.x >= Game.endRoomBoundaries[0].x && player.tilePosition.y >= Game.endRoomBoundaries[0].y
-        && player.tilePosition.x <= Game.endRoomBoundaries[1].x && player.tilePosition.y <= Game.endRoomBoundaries[1].y
-        && !player.dead;
-}
-
-export function tileInsideTheBossRoom(x, y) {
-    return x >= Game.endRoomBoundaries[0].x && y >= Game.endRoomBoundaries[0].y
-        && x <= Game.endRoomBoundaries[1].x && y <= Game.endRoomBoundaries[1].y;
-}

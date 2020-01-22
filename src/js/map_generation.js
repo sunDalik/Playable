@@ -33,7 +33,6 @@ import {LaserTurret} from "./classes/enemies/laser_turret";
 import {SpikyWallTrap} from "./classes/enemies/spiky_wall_trap";
 import {ParanoidEel} from "./classes/enemies/bosses/paranoid_eel";
 import {BalletSpider} from "./classes/enemies/bosses/ballet_spider";
-import {tileInsideTheBossRoom} from "./game_logic";
 import {GuardianOfTheLight} from "./classes/enemies/bosses/guardian_of_the_light";
 import {FireGoblet} from "./classes/inanimate_objects/fire_goblet";
 import {Necromancy} from "./classes/equipment/magic/necromancy";
@@ -41,6 +40,7 @@ import {Bomb} from "./classes/equipment/bag/bomb";
 import {SmallHealingPotion} from "./classes/equipment/bag/small_healing_potion";
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {getRandomChestDrop, getRandomSpell, getRandomWeapon} from "./utils/pool_utils";
+import {tileInsideTheBossRoom} from "./map_checks";
 
 export function generateMap(level) {
     const map = copy2dArray(level);

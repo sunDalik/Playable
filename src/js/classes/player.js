@@ -25,10 +25,9 @@ import {
     redrawSlotContentsForPlayer,
     redrawWeaponAndSecondHand
 } from "../drawing/draw_hud";
-import {isInanimate, isRelativelyEmpty} from "../map_checks";
+import {amIInTheBossRoom, isInanimate, isRelativelyEmpty} from "../map_checks";
 import {
     activateBossMode,
-    amIInTheBossRoom,
     gotoNextLevel,
     removeEquipmentFromPlayer,
     swapEquipmentWithPlayer,
