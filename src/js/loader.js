@@ -101,6 +101,7 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/spiky_wall_trap_attacked.png")
         .add("src/images/enemies/spiky_wall_trap_triggered.png")
         .add("src/images/enemies/spikes_right.png")
+        .add("src/images/enemies/cocoon.png")
 
         .add("src/images/bosses/paranoid_eel/neutral.png")
         .add("src/images/bosses/paranoid_eel/neutral_2.png")

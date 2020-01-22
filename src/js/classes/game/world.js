@@ -72,6 +72,13 @@ export class World extends PIXI.Container {
         }
     }
 
+    addEnemy(enemy) {
+        enemy.placeOnMap();
+        Game.world.addChild(enemy);
+        enemy.updateIntentIcon();
+        Game.enemies.push(enemy);
+    }
+
     clean() {
         removeAllChildrenFromContainer(this);
         for (const animation of Game.infiniteAnimations) {

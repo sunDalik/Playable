@@ -63,6 +63,10 @@ export function getRelativelyEmptyCardinalDirections(tileElement, range = 1) {
     return directions;
 }
 
+export function getEmptyCardinalDirections(entity) {
+    return getDirectionsWithConditions(entity, getCardinalDirections(), isEmpty);
+}
+
 export function getRelativelyEmptyLitCardinalDirections(entity) {
     return getDirectionsWithConditions(entity, getCardinalDirections(), isRelativelyEmpty, isLit);
 }
