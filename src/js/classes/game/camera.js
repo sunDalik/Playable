@@ -54,13 +54,36 @@ camera.moveToCenter = (animationTime) => {
     const endRoomTime = animationTime === 0 ? 0 : 15;
     if (Game.player.dead && Game.player2.dead) return;
     if (areWeInTheBossRoom()) {
-        const newPoint = {
-            x: (Game.endRoomBoundaries[0].x + Game.endRoomBoundaries[1].x) / 2 * Game.TILESIZE + Game.TILESIZE / 2,
-            y: (Game.endRoomBoundaries[0].y + Game.endRoomBoundaries[1].y) / 2 * Game.TILESIZE + Game.TILESIZE / 2
-        };
         //add Game.TILESIZE/3 to y coord because it feels too low with boss healthbar at the bottom
         if (Game.boss && !Game.boss.dead) {
-            camera.setNewPoint(newPoint.x, newPoint.y + Game.TILESIZE / 3, endRoomTime);
+            const bossRoomCenterPoint = {
+                x: (Game.endRoomBoundaries[0].x + Game.endRoomBoundaries[1].x) / 2 * Game.TILESIZE + Game.TILESIZE / 2,
+                y: (Game.endRoomBoundaries[0].y + Game.endRoomBoundaries[1].y) / 2 * Game.TILESIZE + Game.TILESIZE / 2
+            };
+            const consideredPoint = {
+                x: bossRoomCenterPoint.x,
+                y: bossRoomCenterPoint.y + Game.TILESIZE / 3
+            };
+            const voidVis = 2;
+            if ((Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x + voidVis * 2) * Game.TILESIZE > Game.app.renderer.screen.width) {
+                consideredPoint.x = (bossRoomCenterPoint.x + getEffectivePlayerCenter().x) / 2;
+                if (consideredPoint.x - (Game.endRoomBoundaries[0].x - voidVis + 0.5) * Game.TILESIZE < Game.app.renderer.screen.width / 2) {
+                    consideredPoint.x += (Game.app.renderer.screen.width / 2 - (consideredPoint.x - (Game.endRoomBoundaries[0].x - voidVis + 0.5) * Game.TILESIZE));
+                }
+                if ((Game.endRoomBoundaries[1].x + voidVis + 0.5) * Game.TILESIZE - consideredPoint.x < Game.app.renderer.screen.width / 2) {
+                    consideredPoint.x -= (Game.app.renderer.screen.width / 2 - ((Game.endRoomBoundaries[1].x + voidVis + 0.5) * Game.TILESIZE - consideredPoint.x));
+                }
+            }
+            if ((Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y + voidVis * 2) * Game.TILESIZE > Game.app.renderer.screen.height) {
+                consideredPoint.y = (bossRoomCenterPoint.y + getEffectivePlayerCenter().y) / 2;
+                if (consideredPoint.y - (Game.endRoomBoundaries[0].y - voidVis + 0.5) * Game.TILESIZE < Game.app.renderer.screen.height / 2) {
+                    consideredPoint.y += (Game.app.renderer.screen.height / 2 - (consideredPoint.y - (Game.endRoomBoundaries[0].y - voidVis + 0.5) * Game.TILESIZE));
+                }
+                if ((Game.endRoomBoundaries[1].y + voidVis + 0.5) * Game.TILESIZE - consideredPoint.y < Game.app.renderer.screen.height / 2) {
+                    consideredPoint.y -= (Game.app.renderer.screen.height / 2 - ((Game.endRoomBoundaries[1].y + voidVis + 0.5) * Game.TILESIZE - consideredPoint.y));
+                }
+            }
+            camera.setNewPoint(consideredPoint.x, consideredPoint.y + Game.TILESIZE / 3, endRoomTime);
         } else {
             camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
         }

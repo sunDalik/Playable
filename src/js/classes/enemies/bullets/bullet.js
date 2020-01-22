@@ -120,6 +120,7 @@ export class Bullet extends TileElement {
 
         Game.app.ticker.remove(this.animation);
         const animation = (delta) => {
+            if (Game.paused) return;
             this.position.x += stepX * delta;
             this.position.y += stepY * delta;
             counter += delta;
@@ -139,6 +140,7 @@ export class Bullet extends TileElement {
         let counter = 0;
         Game.app.ticker.remove(this.animation);
         const animation = (delta) => {
+            if (Game.paused) return;
             this.position.x += stepX * delta;
             this.position.y += stepY * delta;
             counter += delta;

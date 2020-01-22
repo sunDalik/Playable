@@ -371,7 +371,7 @@ export class Player extends AnimatedTileElement {
         if (source) {
             Game.world.removeChild(source);
             Game.world.upWorld.addChild(source);
-            sourceVisibility = source.visible;
+            sourceVisibility = source.visible && source.parent !== null;
             source.visible = true;
         }
 

@@ -46,10 +46,10 @@ export function generateEntryBasedLevel() {
     let levelRooms = [];
 
     //generate starting room position
-    const startRoomY = getRandomInt(0, levelRoomHeight-1);
+    const startRoomY = getRandomInt(0, levelRoomHeight - 1);
     let startRoomX;
     if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) {
-        startRoomX = getRandomInt(0, levelRoomWidth-1);
+        startRoomX = getRandomInt(0, levelRoomWidth - 1);
         if (Game.stage === STAGE.DARK_TUNNEL) {
             startRoomX = randomChoice([0, 1, levelRoomWidth - 2, levelRoomWidth - 1]);
         }
@@ -88,7 +88,7 @@ export function generateEntryBasedLevel() {
     let statueRoomIs = [];
     for (let i = 0; i < statueRoomsNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber-1);
+            const randomI = getRandomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && randomI !== endingRoomI && !statueRoomIs.includes(randomI)) {
                 statueRoomIs[i] = randomI;
                 break;
@@ -105,7 +105,7 @@ export function generateEntryBasedLevel() {
     let chestRoomIs = [];
     for (let i = 0; i < chestRoomNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber-1);
+            const randomI = getRandomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && !chestRoomIs.includes(randomI) && randomI !== endingRoomI
                 && !statueRoomIs.includes(randomI)) {
                 chestRoomIs[i] = randomI;
@@ -119,7 +119,7 @@ export function generateEntryBasedLevel() {
     let obeliskRoomIs = []; //this is for testing purposes. Actually there will always be only one obelisk
     for (let i = 0; i < obeliskRoomNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber-1);
+            const randomI = getRandomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && !statueRoomIs.includes(randomI) && randomI !== endingRoomI
                 && !chestRoomIs.includes(randomI) && !obeliskRoomIs.includes(randomI)) {
                 obeliskRoomIs[i] = randomI;
