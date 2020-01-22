@@ -102,7 +102,9 @@ export function isEmpty(tilePosX, tilePosY) {
 
 export function isLit(tilePosX, tilePosY) {
     if (isNotOutOfMap(tilePosX, tilePosY)) {
-        return Game.map[tilePosY][tilePosX].lit;
+        if (Game.darkTiles[tilePosY][tilePosX].visible === false || Game.darkTiles[tilePosY][tilePosX].alpha < 1) {
+            return true;
+        }
     }
     return false;
 }

@@ -7,72 +7,23 @@ export function get8Directions() {
         {x: -1, y: 1}, {x: 0, y: 1}, {x: 1, y: 1}]
 }
 
+export function get8DirectionsInRadius(radius, excludeZero = true) {
+    const directions = [];
+    for (let x = -radius; x <= radius; x++) {
+        for (let y = -radius; y <= radius; y++) {
+            if (x === 0 && y === 0 && excludeZero) continue;
+            directions.push({x: x, y: y});
+        }
+    }
+    return directions;
+}
+
 export function getCardinalDirections() {
     return [{x: 0, y: -1}, {x: -1, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}]
 }
 
 export function getHorizontalDirections() {
     return [{x: -1, y: 0}, {x: 1, y: 0}]
-}
-
-export function getRelativelyEmptyDirections(tileElement, givenDirections) {
-    const directions = [];
-    for (const dir of givenDirections) {
-        if (isRelativelyEmpty(tileElement.tilePosition.x + dir.x, tileElement.tilePosition.y + dir.y)) {
-            directions.push(dir);
-        }
-    }
-    return directions;
-}
-
-export function getRelativelyEmptyCardinalDirections(tileElement, range = 1) {
-    const directions = [];
-    for (const dir of getCardinalDirections()) {
-        if (isRelativelyEmpty(tileElement.tilePosition.x + dir.x * range, tileElement.tilePosition.y + dir.y * range)) {
-            directions.push({x: dir.x * range, y: dir.y * range});
-        }
-    }
-    return directions;
-}
-
-export function getRelativelyEmptyHorizontalDirections(tileElement) {
-    const directions = [];
-    for (const dir of getHorizontalDirections()) {
-        if (isRelativelyEmpty(tileElement.tilePosition.x + dir.x, tileElement.tilePosition.y + dir.y)) {
-            directions.push(dir);
-        }
-    }
-    return directions;
-}
-
-export function get8DirectionsWithoutItems(tileElement) {
-    const directions = [];
-    for (const dir of get8Directions()) {
-        if (Game.map[tileElement.tilePosition.y + dir.y][tileElement.tilePosition.x + dir.x].item === null) {
-            directions.push(dir);
-        }
-    }
-    return directions;
-}
-
-export function getCardinalDirectionsWithoutItems(tileElement) {
-    const directions = [];
-    for (const dir of getCardinalDirections()) {
-        if (Game.map[tileElement.tilePosition.y + dir.y][tileElement.tilePosition.x + dir.x].item === null) {
-            directions.push(dir);
-        }
-    }
-    return directions;
-}
-
-export function getCardinalDirectionsWithNoWallsOrInanimates(tileElement) {
-    const directions = [];
-    for (const dir of getCardinalDirections()) {
-        if (!isAnyWallOrInanimate(tileElement.tilePosition.x + dir.x, tileElement.tilePosition.y + dir.y)) {
-            directions.push(dir);
-        }
-    }
-    return directions;
 }
 
 export function getChasingDirections(chaser, runner) {
@@ -102,43 +53,59 @@ export function getRunAwayDirections(runner, chaser) {
     return directions;
 }
 
-export function getChasingOptions(chaser, runner) {
+export function getRelativelyEmptyCardinalDirections(tileElement, range = 1) {
     const directions = [];
-    for (const dir of getChasingDirections(chaser, runner)) {
-        if (isRelativelyEmpty(chaser.tilePosition.x + dir.x, chaser.tilePosition.y + dir.y)) {
-            directions.push(dir);
+    for (const dir of getCardinalDirections()) {
+        if (isRelativelyEmpty(tileElement.tilePosition.x + dir.x * range, tileElement.tilePosition.y + dir.y * range)) {
+            directions.push({x: dir.x * range, y: dir.y * range});
         }
     }
     return directions;
+}
+
+export function getRelativelyEmptyHorizontalDirections(tileElement) {
+    return getDirectionsWithConditions(tileElement, getHorizontalDirections(), isRelativelyEmpty);
+}
+
+export function get8DirectionsWithoutItems(tileElement) {
+    return getDirectionsWithConditions(tileElement, get8Directions(),
+        (tilePosX, tilePosY) => Game.map[tilePosY][tilePosX].item === null);
+}
+
+export function getCardinalDirectionsWithoutItems(tileElement) {
+    return getDirectionsWithConditions(tileElement, getCardinalDirections(),
+        (tilePosX, tilePosY) => Game.map[tilePosY][tilePosX].item === null);
+}
+
+export function getCardinalDirectionsWithNoWallsOrInanimates(tileElement) {
+    return getDirectionsWithConditions(tileElement, getCardinalDirections(), (...args) => !isAnyWallOrInanimate(...args));
+}
+
+export function getChasingOptions(chaser, runner) {
+    return getDirectionsWithConditions(chaser, getChasingDirections(chaser, runner), isRelativelyEmpty);
 }
 
 export function getRunAwayOptions(runner, chaser) {
-    const directions = [];
-    for (const dir of getRunAwayDirections(runner, chaser)) {
-        if (isRelativelyEmpty(runner.tilePosition.x + dir.x, runner.tilePosition.y + dir.y)) {
-            directions.push(dir);
-        }
-    }
-    return directions;
+    return getDirectionsWithConditions(runner, getRunAwayDirections(runner, chaser), isRelativelyEmpty);
 }
 
 export function getEmptyRunAwayOptions(runner, chaser) {
-    const directions = [];
-    for (const dir of getRunAwayDirections(runner, chaser)) {
-        if (isEmpty(runner.tilePosition.x + dir.x, runner.tilePosition.y + dir.y)) {
-            directions.push(dir);
-        }
-    }
-    return directions;
+    return getDirectionsWithConditions(runner, getRunAwayDirections(runner, chaser), isEmpty);
 }
 
-export function get8DirectionsInRadius(radius, excludeZero = true) {
-    const directions = [];
-    for (let x = -radius; x <= radius; x++) {
-        for (let y = -radius; y <= radius; y++) {
-            if (x === 0 && y === 0 && excludeZero) continue;
-            directions.push({x: x, y: y});
+/**
+ * Checks all the directions for given conditions and returns only valid ones.
+ * @param entity        entity that has tilePosition
+ * @param directions    array that looks like this [{x: 0, y: 0}, {x: 1, y: 0}...]
+ * @param conditions    condition is a function that accepts (tilePosX, tilePosY) and returns true/false
+ * @returns {[]}        valid directions for given entity with given conditions
+ */
+export function getDirectionsWithConditions(entity, directions, ...conditions) {
+    const validDirections = [];
+    for (const dir of directions) {
+        if (conditions.reduce((acc, condition) => acc && condition(entity.tilePosition.x + dir.x, entity.tilePosition.y + dir.y), true)) {
+            validDirections.push(dir);
         }
     }
-    return directions;
+    return validDirections;
 }
