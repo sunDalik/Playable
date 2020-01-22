@@ -27,11 +27,29 @@ import {removeObjectFromArray} from "./utils/basic_utils";
 import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "./filters";
 import {drawMiniMap} from "./drawing/minimap";
 import {Spear} from "./classes/equipment/weapons/spear";
+import {HUDTextStyleTitle} from "./drawing/draw_constants";
 
 PIXI.utils.skipHello();
 Game.app = initApplication();
 Game.loader = Game.app.loader;
 Game.resources = Game.app.loader.resources;
+
+const loadingText = new PIXI.Text("Loading...", HUDTextStyleTitle);
+Game.app.stage.addChild(loadingText);
+loadingText.anchor.set(0.5, 0.5);
+loadingText.position.set(Game.app.renderer.screen.width / 2, 200);
+let counter = 0;
+const loadingTextAnimation = delta => {
+    counter += delta;
+    if (counter > 20) {
+        counter = 0;
+        if (loadingText.text === "Loading.") loadingText.text = "Loading..";
+        else if (loadingText.text === "Loading..") loadingText.text = "Loading...";
+        else if (loadingText.text === "Loading...") loadingText.text = "Loading.";
+    }
+};
+Game.app.ticker.add(loadingTextAnimation);
+
 loadAll(setup);
 
 function initApplication() {
@@ -50,6 +68,9 @@ window.addEventListener("resize", () => {
 });
 
 function setup() {
+    Game.app.stage.removeChild(loadingText);
+    Game.app.ticker.remove(loadingTextAnimation);
+
     //Game.TILESIZE = 40;
     Game.world = new World();
     Game.app.stage.addChild(Game.world);
