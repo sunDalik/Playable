@@ -16,7 +16,7 @@ import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
-import {cleanGameState, kiss, swapEquipmentWithPlayer} from "./game_logic";
+import {cleanGameState, gotoNextLevel, kiss, swapEquipmentWithPlayer} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";

@@ -1,7 +1,12 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE, RABBIT_TYPE} from "../../enums";
-import {getEmptyRunAwayOptions, getRelativelyEmptyCardinalDirections, getRunAwayOptions} from "../../utils/map_utils";
+import {
+    getEmptyRunAwayOptions,
+    getRelativelyEmptyCardinalDirections,
+    getRelativelyEmptyLitCardinalDirections,
+    getRunAwayOptions
+} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {FireHazard} from "../hazards/fire";
@@ -50,7 +55,7 @@ export class Rabbit extends Enemy {
                     movementOptions = getEmptyRunAwayOptions(this, closestPlayer(this));
                     if (movementOptions.length === 0) movementOptions = getRunAwayOptions(this, closestPlayer(this));
                     if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
-                } else movementOptions = getRelativelyEmptyCardinalDirections(this);
+                } else movementOptions = getRelativelyEmptyLitCardinalDirections(this);
             }
             if (movementOptions.length !== 0) {
                 const moveDir = randomChoice(movementOptions);

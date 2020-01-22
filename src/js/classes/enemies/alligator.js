@@ -2,7 +2,11 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../enums";
 import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall, isRelativelyEmpty} from "../../map_checks";
-import {getChasingOptions, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
+import {
+    getChasingOptions,
+    getRelativelyEmptyCardinalDirections,
+    getRelativelyEmptyLitCardinalDirections
+} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 import {PoisonHazard} from "../hazards/poison";
 import {ElectricBullet} from "./bullets/electric";
@@ -204,8 +208,8 @@ export class Alligator extends Enemy {
                 } else {
                     if (tileDistance(this, closestPlayer(this)) <= 2) {
                         movementOptions = getChasingOptions(this, closestPlayer(this));
-                        if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
-                    } else movementOptions = getRelativelyEmptyCardinalDirections(this);
+                        if (movementOptions.length === 0) movementOptions = getRelativelyEmptyLitCardinalDirections(this);
+                    } else movementOptions = getRelativelyEmptyLitCardinalDirections(this);
                 }
             }
             this.triggeredDirection = null;

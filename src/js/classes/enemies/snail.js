@@ -4,7 +4,7 @@ import {ENEMY_TYPE} from "../../enums";
 import {PoisonHazard} from "../hazards/poison";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {getChasingOptions, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
+import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 
 export class Snail extends Enemy {
@@ -44,7 +44,7 @@ export class Snail extends Enemy {
                     }
                 } else this.slideBump(Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x), Math.sign(closestPlayer(this).tilePosition.y - this.tilePosition.y));
             } else {
-                const movementOptions = getRelativelyEmptyCardinalDirections(this);
+                const movementOptions = getRelativelyEmptyLitCardinalDirections(this);
                 if (movementOptions.length !== 0) {
                     const dir = randomChoice(movementOptions);
                     Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));

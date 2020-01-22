@@ -1,4 +1,4 @@
-import {isAnyWallOrInanimate, isEmpty, isRelativelyEmpty} from "../map_checks";
+import {isAnyWallOrInanimate, isEmpty, isLit, isRelativelyEmpty} from "../map_checks";
 import {Game} from "../game";
 
 export function get8Directions() {
@@ -61,6 +61,10 @@ export function getRelativelyEmptyCardinalDirections(tileElement, range = 1) {
         }
     }
     return directions;
+}
+
+export function getRelativelyEmptyLitCardinalDirections(entity) {
+    return getDirectionsWithConditions(entity, getCardinalDirections(), isRelativelyEmpty, isLit);
 }
 
 export function getRelativelyEmptyHorizontalDirections(tileElement) {

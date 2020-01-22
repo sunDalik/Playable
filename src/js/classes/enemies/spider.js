@@ -3,7 +3,7 @@ import {Enemy} from "./enemy"
 import {ENEMY_TYPE, STAGE} from "../../enums";
 import {getPlayerOnTile, isEmpty} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {getChasingOptions, getRelativelyEmptyCardinalDirections} from "../../utils/map_utils";
+import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 
 export class Spider extends Enemy {
@@ -39,7 +39,7 @@ export class Spider extends Enemy {
                     }
                 } else this.bump(Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x), Math.sign(closestPlayer(this).tilePosition.y - this.tilePosition.y));
             } else {
-                const movementOptions = getRelativelyEmptyCardinalDirections(this);
+                const movementOptions = getRelativelyEmptyLitCardinalDirections(this);
                 if (movementOptions.length !== 0) {
                     const dir = randomChoice(movementOptions);
                     this.step(dir.x, dir.y);
