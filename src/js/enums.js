@@ -90,7 +90,7 @@ export const WEAPON_TYPE = Object.freeze({
     PICKAXE: 8,
     SPEAR: 9,
     PAWN_SWORDS: 10,
-    RUSTY_SWORD: 11,
+    RUSTY_SWORD: 11
 });
 export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1, VAMPIRE_CROWN: 2});
 export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4});
@@ -152,6 +152,7 @@ export const MAP_SYMBOLS = Object.freeze({
     LASER_TURRET: "laser_turret",
     SPIKY_WALL_TRAP: "swt",
     COCOON: "cocoon",
+    LIZARD_WARRIOR: "liz_war",
     PARANOID_EEL: "paranoid_eel",
     BALLET_SPIDER: "ballet_spider",
     GUARDIAN_OF_THE_LIGHT: "guardian_of_the_light",

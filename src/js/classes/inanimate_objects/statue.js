@@ -72,6 +72,9 @@ export class Statue extends TallTileElement {
             case WEAPON_TYPE.PAWN_SWORDS:
                 this.texture = Game.resources["src/images/other/statue_pawn_swords.png"].texture;
                 break;
+            case WEAPON_TYPE.RUSTY_SWORD:
+                this.texture = Game.resources["src/images/other/statue_rusty_sword.png"].texture;
+                break;
         }
     }
 

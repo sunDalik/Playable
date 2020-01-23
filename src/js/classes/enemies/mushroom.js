@@ -24,7 +24,7 @@ export class Mushroom extends Enemy {
         this.normalTexture = Game.resources["src/images/enemies/mushroom.png"].texture;
         this.standing = false;
         this.direction = {x: 1, y: 0}; //just a default value
-        this.zIndex = 1;
+        this.zIndex = Game.primaryPlayer.zIndex + 1;
         this.scaleModifier = 0.9;
         this.fitToTile();
         this.spillAreas = [];

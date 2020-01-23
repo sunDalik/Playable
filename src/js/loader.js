@@ -38,6 +38,8 @@ export function loadAll(afterLoad) {
         .add("src/images/icons/intents/spikes.png")
         .add("src/images/icons/intents/laser.png")
         .add("src/images/icons/intents/stun.png")
+        .add("src/images/icons/intents/two_tiles_forward.png")
+        .add("src/images/icons/intents/three_tiles_front.png")
 
         .add("src/images/hazards/poison.png")
         .add("src/images/hazards/fire.png")

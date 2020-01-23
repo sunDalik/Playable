@@ -156,7 +156,7 @@ export function initializeLevel() {
     }, 8, 2.5);
 
     if (Game.stage === STAGE.RUINS) {
-        lightAll();
+        //lightAll();
     }
 }
 

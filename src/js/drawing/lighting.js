@@ -38,8 +38,8 @@ export function lightPlayerPosition(player) {
             lightWorld(px, py, 1, true);
         }
     } else if (Game.stage === STAGE.RUINS) {
-        return;
-        const roomDist = 10;
+        //return;
+        const roomDist = 12;
         lightWorld(px, py, roomDist);
     } else {
         const pathDist = 5;

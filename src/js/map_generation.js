@@ -42,6 +42,7 @@ import {TileElement} from "./classes/tile_elements/tile_element";
 import {getRandomChestDrop, getRandomSpell, getRandomWeapon} from "./utils/pool_utils";
 import {tileInsideTheBossRoom} from "./map_checks";
 import {Cocoon} from "./classes/enemies/cocoon";
+import {LizardWarrior} from "./classes/enemies/lizard_warrior";
 
 export function generateMap(level) {
     const map = copy2dArray(level);
@@ -130,6 +131,7 @@ export function generateMap(level) {
             else if (map[i][j] === MAP_SYMBOLS.LASER_TURRET) mapCell.entity = new LaserTurret(j, i);
             else if (map[i][j] === MAP_SYMBOLS.SPIKY_WALL_TRAP) mapCell.entity = new SpikyWallTrap(j, i);
             else if (map[i][j] === MAP_SYMBOLS.COCOON) mapCell.entity = new Cocoon(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.LIZARD_WARRIOR) mapCell.entity = new LizardWarrior(j, i);
             else if (map[i][j] === MAP_SYMBOLS.PARANOID_EEL) mapCell.entity = new ParanoidEel(j, i);
             else if (map[i][j] === MAP_SYMBOLS.BALLET_SPIDER) mapCell.entity = new BalletSpider(j, i);
             else if (map[i][j] === MAP_SYMBOLS.GUARDIAN_OF_THE_LIGHT) mapCell.entity = new GuardianOfTheLight(j, i);
