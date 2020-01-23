@@ -6,6 +6,10 @@ export function isNotOutOfMap(tilePosX, tilePosY) {
         tilePosY <= Game.map.length - 1 && tilePosY >= 0;
 }
 
+export function isOutOfMap(tilePosX, tilePosY) {
+    return !isNotOutOfMap(tilePosX, tilePosY);
+}
+
 export function isDiggable(tilePosX, tilePosY) {
     if (isNotOutOfMap(tilePosX, tilePosY)) {
         if (Game.map[tilePosY][tilePosX].tileType === TILE_TYPE.WALL) {
@@ -26,15 +30,12 @@ export function isAnyWall(tilePosX, tilePosY, wallTrapIncluded = true) {
     return false;
 }
 
-export function isNotAWall(tilePosX, tilePosY) {
-    if (isNotOutOfMap(tilePosX, tilePosY)) {
-        if (Game.map[tilePosY][tilePosX].tileType !== TILE_TYPE.WALL
-            && Game.map[tilePosY][tilePosX].tileType !== TILE_TYPE.SUPER_WALL
-            && !(Game.map[tilePosY][tilePosX].entity && Game.map[tilePosY][tilePosX].entity.role === ROLE.WALL_TRAP)) {
-            return true
-        }
-    }
-    return false;
+export function isNotAWall(tilePosX, tilePosY, wallTrapsIncluded = true) {
+    return !isAnyWall(tilePosX, tilePosY, wallTrapsIncluded);
+}
+
+export function isImpassable(tilePosX, tilePosY) {
+    return isOutOfMap(tilePosX, tilePosY) || Game.map[tilePosY][tilePosX].tileType === TILE_TYPE.SUPER_WALL;
 }
 
 export function isEnemy(tilePosX, tilePosY) {
