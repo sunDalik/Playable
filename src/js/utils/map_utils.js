@@ -75,6 +75,10 @@ export function getRelativelyEmptyHorizontalDirections(tileElement) {
     return getDirectionsWithConditions(tileElement, getHorizontalDirections(), isRelativelyEmpty);
 }
 
+export function getEmptyHorizontalDirections(tileElement) {
+    return getDirectionsWithConditions(tileElement, getHorizontalDirections(), isEmpty);
+}
+
 export function get8DirectionsWithoutItems(tileElement) {
     return getDirectionsWithConditions(tileElement, get8Directions(),
         (tilePosX, tilePosY) => Game.map[tilePosY][tilePosX].item === null);

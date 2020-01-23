@@ -70,8 +70,8 @@ export class Player extends AnimatedTileElement {
         this.shielded = false;
         this.canDoubleAttack = false;
         this.attackTimeout = null;
-        this.savedTileStepX = 0;
-        this.savedTileStepY = 0;
+        this.lastTileStepX = 0;
+        this.lastTileStepY = 0;
         this.animationSubSprites = [];
         this.cancellable = true;
         this.fireImmunity = 0;
@@ -79,6 +79,8 @@ export class Player extends AnimatedTileElement {
         this.electricityImmunity = 0;
         this.charging = false;
         this.chargingMagic = null;
+        this.doubleAttackCallback = () => {
+        };
         this.scaleModifier = 0.8;
         this.fitToTile();
     }
@@ -95,8 +97,8 @@ export class Player extends AnimatedTileElement {
         }
         if (this.attackTimeout) {
             Game.app.ticker.remove(this.attackTimeout);
-            this.doubleAttack();
-            Game.app.ticker.remove(this.animation);
+            this.doubleAttackCallback();
+            //Game.app.ticker.remove(this.animation);
             this.place();
         }
         this.animationSubSprites = [];
@@ -108,14 +110,14 @@ export class Player extends AnimatedTileElement {
         if (this.charging) {
             return this.releaseMagic(tileStepX, tileStepY);
         }
+        this.lastTileStepX = tileStepX;
+        this.lastTileStepY = tileStepY;
 
         let attackResult = false;
         if (!event.shiftKey && this.weapon !== null) {
             attackResult = this.weapon.attack(this, tileStepX, tileStepY);
             if (attackResult) {
                 this.canDoubleAttack = true;
-                this.savedTileStepX = tileStepX;
-                this.savedTileStepY = tileStepY;
             } else if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type
                 && this.weapon.uses !== undefined && this.weapon.uses === 0 && this.secondHand.uses !== 0) {
                 attackResult = this.secondHand.attack(this, tileStepX, tileStepY);
@@ -564,28 +566,33 @@ export class Player extends AnimatedTileElement {
         if (this.secondHand) {
             if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type && this.weapon.type !== WEAPON_TYPE.MAIDEN_DAGGER) {
                 if (this.canDoubleAttack) {
+                    const dirX = this.lastTileStepX;
+                    const dirY = this.lastTileStepY;
+                    this.doubleAttackCallback = () => this.doubleAttack(dirX, dirY);
                     this.attackTimeout = setTickTimeout(() => {
                         for (const subSprite of this.animationSubSprites) {
                             Game.world.removeChild(subSprite);
                         }
-                        this.doubleAttack();
+                        this.doubleAttackCallback();
                     }, 6);
                 }
             }
         }
+        this.lastTileStepX = 0;
+        this.lastTileStepY = 0;
         this.canDoubleAttack = false;
     }
 
-    doubleAttack() {
+    doubleAttack(dirX, dirY) {
         this.attackTimeout = null;
         if (this.dead) return;
         if (this.weapon.type === WEAPON_TYPE.NINJA_KNIFE) {
-            this.savedTileStepX *= -1;
-            this.savedTileStepY *= -1;
+            dirX *= -1;
+            dirY *= -1;
         }
         Game.app.ticker.remove(this.animation);
         this.rotation = 0; //added because of wings. But what if we want the player to rotate when he is attacking with some weapon?...
-        this.secondHand.attack(this, this.savedTileStepX, this.savedTileStepY);
+        this.secondHand.attack(this, dirX, dirY);
         redrawSecondHand(this);
     }
 
