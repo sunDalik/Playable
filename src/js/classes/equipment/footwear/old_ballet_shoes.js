@@ -7,8 +7,8 @@ export class OldBalletShoes {
         this.type = FOOTWEAR_TYPE.OLD_BALLET_SHOES;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
         this.name = "Old Ballet Shoes";
-        this.description = "They are covered in web";
-        this.rarity = RARITY.B;
+        this.description = "Spiders don't move when you move";
+        this.rarity = RARITY.C;
     }
 
     //not sure if the effect should activate when the wielder has flight...
@@ -16,7 +16,7 @@ export class OldBalletShoes {
     //not sure if the effect should activate when moving because of the maiden dagger...
     onMove(wielder) {
         for (const enemy of Game.enemies) {
-            if (!enemy.dead) {
+            if (enemy.visible) {
                 if (enemy.type === ENEMY_TYPE.SPIDER || enemy.type === ENEMY_TYPE.SPIDER_GRAY
                     || enemy.type === ENEMY_TYPE.SPIDER_GREEN || enemy.type === ENEMY_TYPE.SPIDER_RED) {
                     enemy.stun++;

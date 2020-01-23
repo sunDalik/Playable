@@ -39,6 +39,7 @@ import {Immortality} from "./classes/equipment/magic/immortality";
 import {Heart} from "./classes/equipment/one_time/heart";
 import {BattleHelmet} from "./classes/equipment/headwear/battle_helmet";
 import {FellStarShield} from "./classes/equipment/shields/fell_star_shield";
+import {OldBalletShoes} from "./classes/equipment/footwear/old_ballet_shoes";
 
 export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
@@ -47,7 +48,7 @@ export function initPools() {
         BasicShield, PassiveShield, SpikyShield, StunningShield, FellStarShield,
         SeerCirclet, WizardHat, VampireCrown, BattleHelmet,
         BasicArmor, WizardRobe, HeavyArmor, ElectricArmor, Wings,
-        AdventurerBoots, DamagingBoots, DarkBoots,
+        AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes,
         Heart];
 }
 

@@ -175,6 +175,7 @@ export function loadAll(afterLoad) {
         .add("src/images/footwear/adventurer.png")
         .add("src/images/footwear/damaging.png")
         .add("src/images/footwear/dark.png")
+        .add("src/images/footwear/old_ballet_shoes.png")
 
         .add("src/images/headwear/seer_circlet.png")
         .add("src/images/headwear/wizard_hat.png")

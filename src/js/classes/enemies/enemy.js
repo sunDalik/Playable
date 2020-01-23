@@ -285,6 +285,7 @@ export class Enemy extends AnimatedTileElement {
     }
 
     setStunIcon() {
+        this.intentIcon.visible = !this.dead;
         this.intentIcon.texture = Game.resources["src/images/icons/intents/stun.png"].texture;
         this.intentIcon.angle = 0;
     }
