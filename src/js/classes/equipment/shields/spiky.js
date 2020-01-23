@@ -9,11 +9,11 @@ export class SpikyShield extends Shield {
         this.type = SHIELD_TYPE.SPIKY;
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
         this.shieldAtk = 1;
-        this.maxUses = 6;
+        this.maxUses = 12;
         this.uses = this.maxUses;
         this.name = "Spiky Shield";
-        this.description = "Activate to block all damage and hurt your opponents";
-        this.rarity = RARITY.C;
+        this.description = "Activate to block all attacks and hurt your opponents";
+        this.rarity = RARITY.B;
     }
 
     onBlock(source, wielder, directHit) {

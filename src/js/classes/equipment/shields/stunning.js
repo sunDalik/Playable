@@ -8,10 +8,10 @@ export class StunningShield extends Shield {
         this.texture = Game.resources["src/images/shields/stunning.png"].texture;
         this.type = SHIELD_TYPE.STUNNING;
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
-        this.maxUses = 6;
+        this.maxUses = 12;
         this.uses = this.maxUses;
         this.name = "Stunning Shield";
-        this.description = "Activate to block all damage and stun your opponents";
+        this.description = "Activate to block all attacks and stun your opponents";
         this.rarity = RARITY.C;
     }
 

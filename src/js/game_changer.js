@@ -33,12 +33,13 @@ import {RARITY, STAGE} from "./enums";
 import * as rooms from "./rooms";
 import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
+import {BasicShield} from "./classes/equipment/shields/basic_shield";
 
 export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit];
     Game.chestItemPool = [Pickaxe, BasicArmor, WizardRobe, SeerCirclet, WizardHat, AdventurerBoots,
-        DamagingBoots, DarkBoots, PassiveShield, SpikyShield, StunningShield, HeavyArmor, ElectricArmor, VampireCrown, Wings];
+        DamagingBoots, DarkBoots, BasicShield, PassiveShield, SpikyShield, StunningShield, HeavyArmor, ElectricArmor, VampireCrown, Wings];
 }
 
 export function removeItemFromPool(item, pool) {

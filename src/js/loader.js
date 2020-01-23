@@ -163,6 +163,7 @@ export function loadAll(afterLoad) {
         .add("src/images/shields/stunning.png")
         .add("src/images/shields/passive.png")
         .add("src/images/shields/spiky.png")
+        .add("src/images/shields/basic.png")
 
         .add("src/images/armor/basic.png")
         .add("src/images/armor/wizard_robe.png")

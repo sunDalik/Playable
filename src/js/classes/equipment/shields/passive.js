@@ -9,7 +9,7 @@ export class PassiveShield extends Shield {
         this.texture = Game.resources["src/images/shields/passive.png"].texture;
         this.type = SHIELD_TYPE.PASSIVE;
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
-        this.maxUses = 5;
+        this.maxUses = 6;
         this.uses = this.maxUses;
         this.usedOnThisTurn = false;
         this.name = "Passive Shield";
