@@ -35,10 +35,11 @@ import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
 import {BasicShield} from "./classes/equipment/shields/basic_shield";
 import {EternalCross} from "./classes/equipment/magic/eternal_cross";
+import {Immortality} from "./classes/equipment/magic/immortality";
 
 export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
-    Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross];
+    Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross, Immortality];
     Game.chestItemPool = [Pickaxe,
         BasicShield, PassiveShield, SpikyShield, StunningShield,
         SeerCirclet, WizardHat, VampireCrown,

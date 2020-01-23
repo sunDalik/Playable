@@ -228,7 +228,7 @@ export function redrawSlotContents(player, slot) {
             text = new PIXI.Text("x" + item.amount, HUDTextStyle);
             text.position.set(slotSize - text.width, 0);
         } else {
-            if (item.uses == null || item.maxUses == null) return false;
+            if (item.uses == null || item.maxUses == null || item.infinite) return false;
             text = new PIXI.Text(item.uses + "/" + item.maxUses, HUDTextStyle);
         }
 
@@ -272,7 +272,7 @@ export function redrawSlotContents(player, slot) {
         } else if (slot === "bag" && item.amount > 0) {
             if (player === Game.player) return "F";
             else return "H";
-        } else if (item.uses > 0) {
+        } else if (item.uses > 0 && !item.passive) {
             if (item.equipmentType === EQUIPMENT_TYPE.SHIELD && item.type !== SHIELD_TYPE.PASSIVE) {
                 if (player === Game.player) return "E";
                 else return "O"; // bruh should do some keyBindings file with all the values

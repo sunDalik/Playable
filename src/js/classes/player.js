@@ -18,7 +18,8 @@ import {
     drawInteractionKeys,
     drawMovementKeyBindings,
     drawOtherHUD,
-    redrawAllMagicSlots, redrawBag,
+    redrawAllMagicSlots,
+    redrawBag,
     redrawHealthForPlayer,
     redrawSecondHand,
     redrawSlotContents,
@@ -421,8 +422,6 @@ export class Player extends AnimatedTileElement {
         redrawBag(this);
         this.removeHealthContainers(1);
         otherPlayer(this).removeHealthContainers(1);
-        drawOtherHUD();
-        drawMovementKeyBindings();
         updateInanimates();
     }
 
@@ -431,6 +430,18 @@ export class Player extends AnimatedTileElement {
         if (this.maxHealth < 1) this.maxHealth = 1;
         if (this.health > this.maxHealth) this.health = this.maxHealth;
         redrawHealthForPlayer(this);
+        drawOtherHUD();
+        drawMovementKeyBindings();
+    }
+
+    addHealthContainers(num, heal = true) {
+        this.maxHealth += num;
+        if (heal) this.heal(num);
+        else redrawHealthForPlayer(this);
+        //might need to expand it to unlimited amount of heart containers later
+        if (num === 2) setTickTimeout(() => createHeartAnimation(this.position.x, this.position.y), 20);
+        drawOtherHUD();
+        drawMovementKeyBindings();
     }
 
     heal(healHP, showHeart = true) {
@@ -492,6 +503,7 @@ export class Player extends AnimatedTileElement {
         for (const eq of this.getEquipment()) {
             if (eq && eq.onEquipmentReceive) eq.onEquipmentReceive(this, magic);
         }
+        if (magic.onWear) magic.onWear(this);
         redrawSlotContents(this, this.getPropertyNameOfItem(magic));
         if (showHelp) showHelpBox(magic);
     }
