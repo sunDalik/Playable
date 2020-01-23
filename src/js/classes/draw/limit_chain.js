@@ -6,7 +6,8 @@ export class LimitChain extends PIXI.Container {
     constructor() {
         super();
         this.chainVisRadius = 3.5;
-        this.zIndex = otherPlayer(Game.primaryPlayer).zIndex + 1;
+        //this.zIndex = otherPlayer(Game.primaryPlayer).zIndex + 1;
+        this.zIndex = 11;
         this.visible = false;
         this.elements = [];
         this.elementSize = Game.TILESIZE;
@@ -19,12 +20,15 @@ export class LimitChain extends PIXI.Container {
             if (Game.player2.x < Game.player.x) rotation += Math.PI;
 
             this.visible = true;
-            const distDiff = distance(Game.player, Game.player2) - Math.floor(distance(Game.player, Game.player2) / this.elementSize) * this.elementSize;
+            //const distDiff = distance(Game.player, Game.player2) - Math.floor(distance(Game.player, Game.player2) / this.elementSize) * this.elementSize;
             for (let i = 0; i < distance(Game.player, Game.player2) / this.elementSize; i++) {
                 //I do NOT understand why it works!
                 const posX = Game.player.position.x + i * this.elementSize * Math.sin(rotation);
                 const posY = Game.player.position.y - i * this.elementSize * Math.cos(rotation);
                 this.updateElement(i, false, alpha, rotation, posX, posY);
+                //if (i === 0 || i + 2 >= distance(Game.player, Game.player2) / this.elementSize) this.elements[i].zIndex = otherPlayer(Game.primaryPlayer).zIndex + 1;
+                //else this.elements[i].zIndex = 11;
+
             }
             for (let i = Math.floor(distance(Game.player, Game.player2) / this.elementSize); i < this.elements.length; i++) {
                 this.updateElement(i, true);
