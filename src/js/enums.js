@@ -45,7 +45,8 @@ export const MAGIC_TYPE = Object.freeze({
     NECROMANCY: 4,
     PETRIFICATION: 5,
     WIND: 6,
-    ABYSSAL_SPIT: 7
+    ABYSSAL_SPIT: 7,
+    ETERNAL_CROSS: 8
 });
 
 export const STAGE = Object.freeze({

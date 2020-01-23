@@ -214,6 +214,7 @@ export function loadAll(afterLoad) {
         .add("src/images/other/obelisk_used_damaged.png")
 
         .add("src/images/magic/aura.png")
+        .add("src/images/magic/eternal_cross.png")
         .add("src/images/magic/fireball.png")
         .add("src/images/magic/fireball_1.png")
         .add("src/images/magic/fireball_2.png")

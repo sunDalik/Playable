@@ -15,11 +15,11 @@ export function isDiggable(tilePosX, tilePosY) {
     return false;
 }
 
-export function isAnyWall(tilePosX, tilePosY) {
+export function isAnyWall(tilePosX, tilePosY, wallTrapIncluded = true) {
     if (isNotOutOfMap(tilePosX, tilePosY)) {
         if (Game.map[tilePosY][tilePosX].tileType === TILE_TYPE.WALL
             || Game.map[tilePosY][tilePosX].tileType === TILE_TYPE.SUPER_WALL
-            || Game.map[tilePosY][tilePosX].entity && Game.map[tilePosY][tilePosX].entity.role === ROLE.WALL_TRAP) {
+            || Game.map[tilePosY][tilePosX].entity && Game.map[tilePosY][tilePosX].entity.role === ROLE.WALL_TRAP && wallTrapIncluded) {
             return true
         }
     }

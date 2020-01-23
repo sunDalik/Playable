@@ -34,12 +34,16 @@ import * as rooms from "./rooms";
 import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
 import {BasicShield} from "./classes/equipment/shields/basic_shield";
+import {EternalCross} from "./classes/equipment/magic/eternal_cross";
 
 export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
-    Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit];
-    Game.chestItemPool = [Pickaxe, BasicArmor, WizardRobe, SeerCirclet, WizardHat, AdventurerBoots,
-        DamagingBoots, DarkBoots, BasicShield, PassiveShield, SpikyShield, StunningShield, HeavyArmor, ElectricArmor, VampireCrown, Wings];
+    Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross];
+    Game.chestItemPool = [Pickaxe,
+        BasicShield, PassiveShield, SpikyShield, StunningShield,
+        SeerCirclet, WizardHat, VampireCrown,
+        BasicArmor, WizardRobe, HeavyArmor, ElectricArmor, Wings,
+        AdventurerBoots, DamagingBoots, DarkBoots];
 }
 
 export function removeItemFromPool(item, pool) {
