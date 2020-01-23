@@ -15,10 +15,7 @@ import {
 } from "../enums";
 import {createHeartAnimation, rotate, runDestroyAnimation, shakeScreen, showHelpBox} from "../animations";
 import {
-    drawInteractionKeys,
-    drawMovementKeyBindings,
-    drawOtherHUD,
-    redrawAllMagicSlots,
+    drawHUD,
     redrawBag,
     redrawHealthForPlayer,
     redrawSecondHand,
@@ -402,7 +399,6 @@ export class Player extends AnimatedTileElement {
         this.visible = false;
         Game.followMode = false;
         updateChain();
-        drawInteractionKeys();
         this.removeFromMap();
         //doesn't drop sometimes???
         if (Game.stage === STAGE.DARK_TUNNEL) {
@@ -417,9 +413,6 @@ export class Player extends AnimatedTileElement {
         for (const eq of this.getEquipment()) {
             if (eq && eq.onDeath) eq.onDeath(this);
         }
-        redrawWeaponAndSecondHand(this);
-        redrawAllMagicSlots(this);
-        redrawBag(this);
         this.removeHealthContainers(1);
         otherPlayer(this).removeHealthContainers(1);
         updateInanimates();
@@ -429,19 +422,15 @@ export class Player extends AnimatedTileElement {
         this.maxHealth -= num;
         if (this.maxHealth < 1) this.maxHealth = 1;
         if (this.health > this.maxHealth) this.health = this.maxHealth;
-        redrawHealthForPlayer(this);
-        drawOtherHUD();
-        drawMovementKeyBindings();
+        drawHUD()
     }
 
     addHealthContainers(num, heal = true) {
         this.maxHealth += num;
         if (heal) this.heal(num);
-        else redrawHealthForPlayer(this);
         //might need to expand it to unlimited amount of heart containers later
         if (num === 2) setTickTimeout(() => createHeartAnimation(this.position.x, this.position.y), 20);
-        drawOtherHUD();
-        drawMovementKeyBindings();
+        drawHUD();
     }
 
     heal(healHP, showHeart = true) {

@@ -272,6 +272,12 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
                 redrawBag(player);
                 return swappedItem;
             }
+
+        //todo: remove this and implement passive item mechanic
+        case EQUIPMENT_TYPE.ONE_TIME:
+            if (equipment.useItem) equipment.useItem(player);
+            if (showHelp) showHelpBox(equipment);
+            break;
     }
     if (!slot) return null;
     if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);

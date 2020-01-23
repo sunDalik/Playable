@@ -36,6 +36,7 @@ import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
 import {BasicShield} from "./classes/equipment/shields/basic_shield";
 import {EternalCross} from "./classes/equipment/magic/eternal_cross";
 import {Immortality} from "./classes/equipment/magic/immortality";
+import {Heart} from "./classes/equipment/one_time/heart";
 
 export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
@@ -44,7 +45,8 @@ export function initPools() {
         BasicShield, PassiveShield, SpikyShield, StunningShield,
         SeerCirclet, WizardHat, VampireCrown,
         BasicArmor, WizardRobe, HeavyArmor, ElectricArmor, Wings,
-        AdventurerBoots, DamagingBoots, DarkBoots];
+        AdventurerBoots, DamagingBoots, DarkBoots,
+        Heart];
 }
 
 export function removeItemFromPool(item, pool) {

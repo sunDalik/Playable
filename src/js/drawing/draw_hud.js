@@ -157,7 +157,8 @@ export function redrawSlotsForPlayer(player) {
     else if (player === Game.player2) HUD.bagSlot2 = bagSlot;
     if (player.bag === null) bagSlot.visible = false;
 
-    HUD.energy.position.set(slotBorderOffsetX, slotsYOffset + (slotSize + slotsRowOffset) * 5);
+    if (player === Game.player)
+        HUD.energy.position.set(slotBorderOffsetX, slotsYOffset + (slotSize + slotsRowOffset) * 5);
 
     function drawSlot(x, y, slot) {
         slot.position.x = x;
