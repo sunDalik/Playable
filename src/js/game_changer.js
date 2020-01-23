@@ -38,12 +38,13 @@ import {EternalCross} from "./classes/equipment/magic/eternal_cross";
 import {Immortality} from "./classes/equipment/magic/immortality";
 import {Heart} from "./classes/equipment/one_time/heart";
 import {BattleHelmet} from "./classes/equipment/headwear/battle_helmet";
+import {FellStarShield} from "./classes/equipment/shields/fell_star_shield";
 
 export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross, Immortality];
     Game.chestItemPool = [Pickaxe,
-        BasicShield, PassiveShield, SpikyShield, StunningShield,
+        BasicShield, PassiveShield, SpikyShield, StunningShield, FellStarShield,
         SeerCirclet, WizardHat, VampireCrown, BattleHelmet,
         BasicArmor, WizardRobe, HeavyArmor, ElectricArmor, Wings,
         AdventurerBoots, DamagingBoots, DarkBoots,
