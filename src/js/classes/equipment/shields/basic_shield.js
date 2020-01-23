@@ -14,8 +14,4 @@ export class BasicShield extends Shield {
         this.description = "Activate to block all attacks";
         this.rarity = RARITY.C;
     }
-
-    onBlock(source, wielder, directHit) {
-        return this.uses > 0;
-    }
 }

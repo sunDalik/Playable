@@ -18,18 +18,16 @@ export class PassiveShield extends Shield {
     }
 
     activate() {
-        return false;
+        return this.uses > 0;
     }
 
     onBlock(source, wielder) {
-        if (this.uses <= 0) return false;
         if (!this.usedOnThisTurn) {
             this.uses--;
             this.usedOnThisTurn = true;
             wielder.spinItem(this);
             redrawSecondHand(wielder);
         }
-        return true;
     }
 
     onNewTurn() {

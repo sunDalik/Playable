@@ -16,10 +16,8 @@ export class StunningShield extends Shield {
     }
 
     onBlock(source, wielder, directHit) {
-        if (this.uses <= 0) return false;
         if (directHit) {
             source.stun += 2;
         }
-        return true;
     }
 }

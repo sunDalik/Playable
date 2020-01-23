@@ -311,11 +311,15 @@ export class Player extends AnimatedTileElement {
             if (canBeShielded) {
                 const ally = otherPlayer(this);
                 if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
-                    && (this.shielded || this.secondHand.type === SHIELD_TYPE.PASSIVE) && this.secondHand.onBlock(source, this, directHit)) {
+                    && (this.shielded || this.secondHand.type === SHIELD_TYPE.PASSIVE && this.secondHand.activate())) {
+                    this.secondHand.onBlock(source, this, directHit);
+                    this.shielded = true;
                     blocked = true;
                 } else if (ally.tilePosition.x === this.tilePosition.x && ally.tilePosition.y === this.tilePosition.y
                     && ally.secondHand && ally.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
-                    && (ally.shielded || ally.secondHand.type === SHIELD_TYPE.PASSIVE) && ally.secondHand.onBlock(source, ally, directHit)) {
+                    && (ally.shielded || ally.secondHand.type === SHIELD_TYPE.PASSIVE && ally.secondHand.activate())) {
+                    ally.secondHand.onBlock(source, ally, directHit);
+                    ally.shielded = true;
                     blocked = true;
                 } else if (this.armor && this.armor.type === ARMOR_TYPE.WINGS && Math.random() < this.armor.dodgeChance) {
                     rotate(this, randomChoice([true, false]));
