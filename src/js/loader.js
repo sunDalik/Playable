@@ -102,6 +102,7 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/spiky_wall_trap_triggered.png")
         .add("src/images/enemies/spikes_right.png")
         .add("src/images/enemies/cocoon.png")
+        .add("src/images/enemies/lizard_warrior.png")
 
         .add("src/images/bosses/paranoid_eel/neutral.png")
         .add("src/images/bosses/paranoid_eel/neutral_2.png")
@@ -152,6 +153,7 @@ export function loadAll(afterLoad) {
         .add("src/images/weapons/maiden_dagger.png")
         .add("src/images/weapons/hammer.png")
         .add("src/images/weapons/pawn_swords.png")
+        .add("src/images/weapons/rusty_sword.png")
 
         .add("src/images/tools/pickaxe.png")
         .add("src/images/tools/torch.png")
@@ -193,6 +195,7 @@ export function loadAll(afterLoad) {
         .add("src/images/other/statue_shield.png")
         .add("src/images/other/statue_tool.png")
         .add("src/images/other/statue_pawn_swords.png")
+        .add("src/images/other/statue_rusty_sword.png")
 
         .add("src/images/other/fire_goblet.png")
         .add("src/images/other/fire_goblet_fallen.png")

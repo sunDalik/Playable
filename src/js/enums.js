@@ -25,7 +25,8 @@ export const ENEMY_TYPE = Object.freeze({
     BALLET_SPIDER: 23,
     PARANOID_EEL: 24,
     GUARDIAN_OF_THE_LIGHT: 25,
-    COCOON: 26
+    COCOON: 26,
+    LIZARD_WARRIOR: 27
 });
 
 export const RABBIT_TYPE = Object.freeze({
@@ -88,7 +89,8 @@ export const WEAPON_TYPE = Object.freeze({
     HAMMER: 7,
     PICKAXE: 8,
     SPEAR: 9,
-    PAWN_SWORDS: 10
+    PAWN_SWORDS: 10,
+    RUSTY_SWORD: 11,
 });
 export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1, VAMPIRE_CROWN: 2});
 export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4});
