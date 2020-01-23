@@ -97,7 +97,7 @@ export const WEAPON_TYPE = Object.freeze({
     PAWN_SWORDS: 10,
     RUSTY_SWORD: 11
 });
-export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1, VAMPIRE_CROWN: 2});
+export const HEAD_TYPE = Object.freeze({WIZARD_HAT: 0, SEER_CIRCLET: 1, VAMPIRE_CROWN: 2, BATTLE_HELMET: 3});
 export const ARMOR_TYPE = Object.freeze({BASIC: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4});
 export const FOOTWEAR_TYPE = Object.freeze({ADVENTURER: 0, DAMAGING: 1, DARK: 2, OLD_BALLET_SHOES: 3});
 export const SHIELD_TYPE = Object.freeze({PASSIVE: 0, STUNNING: 1, SPIKY: 2, BASIC: 3});

@@ -37,13 +37,14 @@ import {BasicShield} from "./classes/equipment/shields/basic_shield";
 import {EternalCross} from "./classes/equipment/magic/eternal_cross";
 import {Immortality} from "./classes/equipment/magic/immortality";
 import {Heart} from "./classes/equipment/one_time/heart";
+import {BattleHelmet} from "./classes/equipment/headwear/battle_helmet";
 
 export function initPools() {
     Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross, Immortality];
     Game.chestItemPool = [Pickaxe,
         BasicShield, PassiveShield, SpikyShield, StunningShield,
-        SeerCirclet, WizardHat, VampireCrown,
+        SeerCirclet, WizardHat, VampireCrown, BattleHelmet,
         BasicArmor, WizardRobe, HeavyArmor, ElectricArmor, Wings,
         AdventurerBoots, DamagingBoots, DarkBoots,
         Heart];
@@ -101,7 +102,7 @@ export function setVariablesForStage() {
             break;
         case STAGE.LABYRINTH:
             Game.BGColor = 0x75c978;
-            assignRarityChances(0, 32, 87); // 0% 32% 55% 13%
+            assignRarityChances(2, 36, 87); // 2% 34% 51% 13%
             break;
         case STAGE.FINALE:
             Game.BGColor = 0xcc76cc;
