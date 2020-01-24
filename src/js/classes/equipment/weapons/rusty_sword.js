@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
-import {createPlayerAttackTile, createPlayerWeaponAnimationSwing} from "../../../animations";
+import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 
 export class RustySword {
@@ -33,13 +33,11 @@ export class RustySword {
         if (isEnemy(attackTiles[0].x, attackTiles[0].y)
             || isEnemy(attackTiles[1].x, attackTiles[1].y) && isLit(attackTiles[1].x, attackTiles[1].y)
             || isEnemy(attackTiles[2].x, attackTiles[2].y) && isLit(attackTiles[2].x, attackTiles[2].y)) {
-            createPlayerWeaponAnimationSwing(wielder, this, tileDirX, tileDirY);
+            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY);
             const atk = wielder.getAtkWithWeapon(this);
             const enemiesToAttack = [];
             for (const attackTile of attackTiles) {
-                if (isNotAWall(attackTile.x, attackTile.y)) {
-                    createPlayerAttackTile(attackTile);
-                }
+                createPlayerAttackTile(attackTile);
                 if (isEnemy(attackTile.x, attackTile.y) && isLit(attackTile.x, attackTile.y)) {
                     enemiesToAttack.push(Game.map[attackTile.y][attackTile.x].entity);
                 }

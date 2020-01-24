@@ -64,7 +64,7 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, size = Game.
 }
 
 // the picture is directed to the top left!
-export function createPlayerWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1) {
+export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1) {
     const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);

@@ -1,9 +1,7 @@
 import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
-import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
-import {createFadingAttack} from "../../../animations";
-import * as PIXI from "pixi.js";
-import {TileElement} from "../../tile_elements/tile_element";
+import {isEnemy, isLit} from "../../../map_checks";
+import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 
 export class Scythe {
     constructor() {
@@ -41,9 +39,7 @@ export class Scythe {
             const atk = wielder.getAtkWithWeapon(this);
             const enemiesToAttack = [];
             for (const attackTile of attackTiles) {
-                if (isNotAWall(attackTile.x, attackTile.y)) {
-                    createFadingAttack(new TileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y), 10);
-                }
+                createPlayerAttackTile(attackTile);
                 if (isEnemy(attackTile.x, attackTile.y) && isLit(attackTile.x, attackTile.y)) {
                     enemiesToAttack.push(Game.map[attackTile.y][attackTile.x].entity); //this is to avoid side effects of spiders' jumps
                 }
@@ -51,6 +47,7 @@ export class Scythe {
             for (const enemy of enemiesToAttack) {
                 enemy.damage(wielder, atk, tileDirX, tileDirY, false);
             }
+            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, 180, 1.2);
             return true;
         } else return false;
     }

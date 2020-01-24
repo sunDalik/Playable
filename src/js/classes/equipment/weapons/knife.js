@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
-import {createPlayerAttackTile, createPlayerWeaponAnimationSwing} from "../../../animations";
+import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 
 export class Knife {
     constructor() {
@@ -19,7 +19,7 @@ export class Knife {
         const attackTileY = wielder.tilePosition.y + tileDirY;
         if (isEnemy(attackTileX, attackTileY)) {
             const atk = wielder.getAtkWithWeapon(this);
-            createPlayerWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4, 35, 1);
+            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4, 35, 1);
             createPlayerAttackTile({x: attackTileX, y: attackTileY});
             Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);
             return true;
