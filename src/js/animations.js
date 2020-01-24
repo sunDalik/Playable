@@ -63,7 +63,42 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, size = Game.
     Game.app.ticker.add(animation);
 }
 
-export function createEnemyAttackTile(tile, animationTime = 6, alpha = 0.5) {
+// the picture is directed to the top left!
+export function createPlayerWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1) {
+    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
+    Game.world.addChild(weaponSprite);
+    player.animationSubSprites.push(weaponSprite);
+    weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+    weaponSprite.scaleModifier = scaleMod;
+    weaponSprite.fitToTile();
+    weaponSprite.anchor.set(1, 1);
+    const sign = randomChoice([-1, 1]);
+    if (dirX === 1) weaponSprite.angle = 135 + angleAmplitude / 2 * sign;
+    else if (dirX === -1) weaponSprite.angle = -45 + angleAmplitude / 2 * sign;
+    else if (dirY === 1) weaponSprite.angle = -135 + angleAmplitude / 2 * sign;
+    else if (dirY === -1) weaponSprite.angle = 45 + angleAmplitude / 2 * sign;
+    const endChange = -angleAmplitude * sign;
+    const startStayTime = 1;
+    const endStayTime = 1;
+    const startVal = weaponSprite.angle;
+    let counter = 0;
+
+    const animation = delta => {
+        if (Game.paused) return;
+        counter += delta;
+        if (counter >= startStayTime && counter < animationTime + startStayTime) {
+            weaponSprite.angle = startVal + endChange * (counter - startStayTime) / animationTime;
+        }
+        if (counter >= startStayTime + animationTime + endStayTime) {
+            Game.app.ticker.remove(animation);
+            Game.world.removeChild(weaponSprite);
+        }
+    };
+    player.animation = animation;
+    Game.app.ticker.add(animation);
+}
+
+export function createEnemyAttackTile(tile, animationTime = 8, alpha = 0.5) {
     const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y);
     fadingTile.tint = 0xf4524a;
     fadingTile.alpha = alpha;
@@ -71,9 +106,8 @@ export function createEnemyAttackTile(tile, animationTime = 6, alpha = 0.5) {
     createFadingAttack(fadingTile, animationTime);
 }
 
-export function createPlayerAttackTile(tile, animationTime = 6) {
+export function createPlayerAttackTile(tile, animationTime = 8) {
     const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y);
-    fadingTile.tint = 0xffffff;
     fadingTile.alpha = 0.5;
     fadingTile.zIndex = -2;
     createFadingAttack(fadingTile, animationTime);
