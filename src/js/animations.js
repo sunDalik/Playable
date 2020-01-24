@@ -72,12 +72,18 @@ export function createPlayerWeaponAnimationSwing(player, weapon, dirX, dirY, ani
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
     weaponSprite.anchor.set(1, 1);
-    const sign = randomChoice([-1, 1]);
-    if (dirX === 1) weaponSprite.angle = 135 + angleAmplitude / 2 * sign;
-    else if (dirX === -1) weaponSprite.angle = -45 + angleAmplitude / 2 * sign;
-    else if (dirY === 1) weaponSprite.angle = -135 + angleAmplitude / 2 * sign;
-    else if (dirY === -1) weaponSprite.angle = 45 + angleAmplitude / 2 * sign;
-    const endChange = -angleAmplitude * sign;
+    const swingDir = randomChoice([-1, 1]);
+    if (dirX === 1) weaponSprite.angle = 135 - angleAmplitude / 2 * swingDir;
+    else if (dirX === -1) weaponSprite.angle = -45 - angleAmplitude / 2 * swingDir;
+    else if (dirY === 1) weaponSprite.angle = -135 - angleAmplitude / 2 * swingDir;
+    else if (dirY === -1) weaponSprite.angle = 45 - angleAmplitude / 2 * swingDir;
+
+    //assuming that the blade looks to the left on the picture
+    if (swingDir === 1) {
+        weaponSprite.scale.x *= -1;
+        weaponSprite.angle -= 90;
+    }
+    const endChange = angleAmplitude * swingDir;
     const startStayTime = 1;
     const endStayTime = 1;
     const startVal = weaponSprite.angle;
