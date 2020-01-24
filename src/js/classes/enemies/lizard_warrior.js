@@ -7,6 +7,8 @@ import {randomChoice} from "../../utils/random_utils";
 import {getPlayerOnTile, isEmpty} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
 import {TileElement} from "../tile_elements/tile_element";
+import {createFadingAttack} from "../../animations";
+import * as PIXI from "pixi.js";
 
 export class LizardWarrior extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/lizard_warrior.png"].texture) {
@@ -111,6 +113,7 @@ export class LizardWarrior extends Enemy {
     animateSwordBottom(direction) {
         const sword = new TileElement(Game.resources["src/images/weapons/rusty_sword.png"].texture, this.tilePosition.x + direction.x, this.tilePosition.y - 1);
         Game.world.addChild(sword);
+        sword.zIndex = Game.primaryPlayer.zIndex + 1;
         if (direction.x === 1) sword.angle = 135; // the picture is directed to the top left!!
         else if (direction.x === -1) sword.angle = -45;
 
@@ -120,6 +123,7 @@ export class LizardWarrior extends Enemy {
         const startVal = sword.position.y;
         const endChange = Game.TILESIZE * 2;
         let counter = 0;
+
         const animation = delta => {
             if (Game.paused) return;
             counter += delta;
@@ -132,6 +136,10 @@ export class LizardWarrior extends Enemy {
             }
         };
         Game.app.ticker.add(animation);
+
+        this.createRedAttackTiles([{x: this.tilePosition.x + direction.x, y: this.tilePosition.y - 1},
+            {x: this.tilePosition.x + direction.x, y: this.tilePosition.y},
+            {x: this.tilePosition.x + direction.x, y: this.tilePosition.y + 1}]);
     }
 
     animateSwordForward(direction) {
@@ -158,6 +166,18 @@ export class LizardWarrior extends Enemy {
             }
         };
         Game.app.ticker.add(animation);
+
+        this.createRedAttackTiles([{x: this.tilePosition.x + direction.x, y: this.tilePosition.y},
+            {x: this.tilePosition.x + direction.x * 2, y: this.tilePosition.y}]);
+    }
+
+    createRedAttackTiles(tiles) {
+        for (const tile of tiles) {
+            const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y);
+            fadingTile.tint = 0xf4524a;
+            fadingTile.alpha = 0.5;
+            createFadingAttack(fadingTile, 8);
+        }
     }
 
     updateIntentIcon() {

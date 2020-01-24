@@ -70,6 +70,7 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
             Game.darkTiles[attack.tilePosition.y][attack.tilePosition.x].addLightSource(attack.maskLayer);
         }
     }
+    const initAlpha = attack.alpha;
     const delay = animationTime * 3 / 5;
     let counter = 0;
 
@@ -77,7 +78,7 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
         if (Game.paused) return;
         counter += delta;
         if (counter >= delay) {
-            attack.alpha = 1 - easeInQuad((counter - delay) / (animationTime - delay));
+            attack.alpha = initAlpha - easeInQuad((counter - delay) / (animationTime - delay));
         }
         if (counter >= animationTime) {
             Game.app.ticker.remove(animation);
