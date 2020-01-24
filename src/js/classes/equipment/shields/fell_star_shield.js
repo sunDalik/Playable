@@ -12,7 +12,7 @@ export class FellStarShield extends Shield {
         this.texture = Game.resources["src/images/shields/fell_star_shield.png"].texture;
         this.type = SHIELD_TYPE.FELL_STAR_SHIELD;
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
-        this.maxUses = 5;
+        this.maxUses = 6;
         this.uses = this.maxUses;
         this.magAtk = 3;
         this.usedOnThisTurn = false;

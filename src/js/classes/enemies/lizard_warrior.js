@@ -4,8 +4,9 @@ import {ENEMY_TYPE} from "../../enums";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {getDirectionsWithConditions, getEmptyHorizontalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
-import {isEmpty} from "../../map_checks";
+import {getPlayerOnTile, isEmpty} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
+import {TileElement} from "../tile_elements/tile_element";
 
 export class LizardWarrior extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/lizard_warrior.png"].texture) {
@@ -36,10 +37,27 @@ export class LizardWarrior extends Enemy {
             if (isEmpty(this.tilePosition.x + this.attackDirection.x, this.tilePosition.y + this.attackDirection.y)) {
                 this.slide(this.attackDirection.x, this.attackDirection.y);
             }
-            //todo: attack
+            this.animateSwordBottom(this.attackDirection);
+            for (const attackTile of [{x: this.attackDirection.x, y: 0},
+                {x: this.attackDirection.x, y: -1},
+                {x: this.attackDirection.x, y: 1}]) {
+                const player = getPlayerOnTile(this.tilePosition.x + attackTile.x, this.tilePosition.y + attackTile.y);
+                if (player) {
+                    if (attackTile.y === 0) player.damage(this.atk, this, true, true);
+                    else player.damage(this.atk, this, false, true);
+                }
+            }
             this.triggeredForwardPierce = true;
         } else if (this.triggeredForwardPierce) {
             this.triggeredForwardPierce = false;
+            this.animateSwordForward(this.attackDirection);
+            for (const attackTile of [{x: this.attackDirection.x, y: 0}, {x: this.attackDirection.x * 2, y: 0}]) {
+                const player = getPlayerOnTile(this.tilePosition.x + attackTile.x, this.tilePosition.y + attackTile.y);
+                if (player) {
+                    if (attackTile.x === this.attackDirection.x) player.damage(this.atk, this, true, true);
+                    else player.damage(this.atk, this, false, true);
+                }
+            }
         } else if (this.tilePosition.x === this.lockedPlayer.tilePosition.x) {
             const direction = randomChoice(getEmptyHorizontalDirections(this));
             if (direction !== undefined) {
@@ -82,7 +100,58 @@ export class LizardWarrior extends Enemy {
                 }
             }
         }
+    }
 
+    animateSwordBottom(direction) {
+        const sword = new TileElement(Game.resources["src/images/weapons/rusty_sword.png"].texture, this.tilePosition.x + direction.x, this.tilePosition.y - 1);
+        Game.world.addChild(sword);
+        if (direction.x === 1) sword.angle = 135; // the picture is directed to the top left!!
+        else if (direction.x === -1) sword.angle = -45;
+
+        const animationTime = 6;
+        const startStayTime = 3;
+        const endStayTime = 5;
+        const startVal = sword.position.y;
+        const endChange = Game.TILESIZE * 2;
+        let counter = 0;
+        const animation = delta => {
+            if (Game.paused) return;
+            counter += delta;
+            if (counter >= startStayTime && counter < animationTime + startStayTime) {
+                sword.position.y = startVal + (counter - startStayTime) / animationTime * endChange;
+            }
+            if (counter >= startStayTime + animationTime + endStayTime) {
+                Game.app.ticker.remove(animation);
+                Game.world.removeChild(sword);
+            }
+        };
+        Game.app.ticker.add(animation);
+    }
+
+    animateSwordForward(direction) {
+        const sword = new TileElement(Game.resources["src/images/weapons/rusty_sword.png"].texture, this.tilePosition.x, this.tilePosition.y);
+        Game.world.addChild(sword);
+        if (direction.x === 1) sword.angle = 135;
+        else if (direction.x === -1) sword.angle = -45;
+
+        const animationTime = 4;
+        const startStayTime = 3;
+        const endStayTime = 7;
+        const startVal = sword.position.x;
+        const endChange = Game.TILESIZE * 2 * direction.x;
+        let counter = 0;
+        const animation = delta => {
+            if (Game.paused) return;
+            counter += delta;
+            if (counter >= startStayTime && counter < animationTime + startStayTime) {
+                sword.position.x = startVal + (counter - startStayTime) / animationTime * endChange;
+            }
+            if (counter >= startStayTime + animationTime + endStayTime) {
+                Game.app.ticker.remove(animation);
+                Game.world.removeChild(sword);
+            }
+        };
+        Game.app.ticker.add(animation);
     }
 
     updateIntentIcon() {
