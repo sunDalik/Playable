@@ -5,7 +5,7 @@ import {
     heartColOffset,
     heartRowOffset,
     heartSize,
-    heartYOffset, HUDFontSize,
+    heartYOffset,
     HUDGuideKeyOffsetX,
     HUDGuideKeyOffsetY,
     HUDGuideOffsetX,
@@ -234,7 +234,7 @@ export function redrawSlotContents(player, slot) {
         }
 
         if (item.equipmentType !== EQUIPMENT_TYPE.BAG_ITEM) {
-            text.position.set(slotSize - text.width / 2, 0);
+            text.position.set(slotSize - text.width * 2 / 3, 0);
         }
         container.meta.addChild(text);
     }
