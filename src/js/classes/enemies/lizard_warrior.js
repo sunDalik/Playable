@@ -163,11 +163,25 @@ export class LizardWarrior extends Enemy {
         this.createRedAttackTiles([{x: this.tilePosition.x + direction.x, y: this.tilePosition.y - 1},
             {x: this.tilePosition.x + direction.x, y: this.tilePosition.y},
             {x: this.tilePosition.x + direction.x, y: this.tilePosition.y + 1}]);
+
+        /*
+        ANGLE VERSION
+          const sword = new TileElement(Game.resources["src/images/weapons/rusty_sword.png"].texture, this.tilePosition.x, this.tilePosition.y);
+        sword.anchor.set(1, 1);
+        if (direction.x === 1) sword.angle = 90;
+        const startVal = sword.angle;
+        const endChange = 90;
+
+                //sword.position.y = startVal + (counter - startStayTime) / animationTime * endChange;
+                if (direction.x === 1) sword.angle = startVal + endChange * (counter - startStayTime) / animationTime; // the picture is directed to the top left!!
+                else if (direction.x === -1) sword.angle = startVal - endChange * (counter - startStayTime) / animationTime;
+         */
     }
 
     animateSwordForward(direction) {
         const sword = new TileElement(Game.resources["src/images/weapons/rusty_sword.png"].texture, this.tilePosition.x, this.tilePosition.y);
         Game.world.addChild(sword);
+        sword.zIndex = Game.primaryPlayer.zIndex + 1;
         if (direction.x === 1) sword.angle = 135;
         else if (direction.x === -1) sword.angle = -45;
 

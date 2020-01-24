@@ -43,6 +43,7 @@ import {getRandomChestDrop, getRandomSpell, getRandomWeapon} from "./utils/pool_
 import {tileInsideTheBossRoom} from "./map_checks";
 import {Cocoon} from "./classes/enemies/cocoon";
 import {LizardWarrior} from "./classes/enemies/lizard_warrior";
+import {RustySword} from "./classes/equipment/weapons/rusty_sword";
 
 export function generateMap(level) {
     const map = copy2dArray(level);
@@ -268,7 +269,14 @@ export function assignDrops() {
     distributeDrops(Bomb, getRandomInt(3, 4));
     distributeDrops(SmallHealingPotion, getRandomInt(1, 2));
 
-    function distributeDrops(dropConstructor, amount) {
+    if (Game.stage === STAGE.RUINS) {
+        if (Math.random() < 0.5) {
+            distributeDrops(RustySword, 1, ENEMY_TYPE.LIZARD_WARRIOR);
+        }
+    }
+
+    function distributeDrops(dropConstructor, amount, enemyType = undefined) {
+        //todo: change the function so that whenever its called it reshuffles the array and checks for enemy.drop
         while (amount > 0) {
             if (enemyIndex >= Game.enemies.length) {
                 if (Game.boss) {
@@ -278,7 +286,8 @@ export function assignDrops() {
             } else {
                 const enemy = Game.enemies[enemyIndex];
                 if (enemy.boss || enemy.role === ROLE.WALL_TRAP || enemy.type === ENEMY_TYPE.MUSHROOM || enemy.type === ENEMY_TYPE.RABBIT && enemy.predator
-                    || tileInsideTheBossRoom(enemy.tilePosition.x, enemy.tilePosition.y)) {
+                    || tileInsideTheBossRoom(enemy.tilePosition.x, enemy.tilePosition.y)
+                    || (enemyType !== undefined && enemy.type !== enemyType)) {
                     enemyIndex++;
                 } else {
                     enemy.drop = new dropConstructor();

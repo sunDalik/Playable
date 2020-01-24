@@ -159,6 +159,7 @@ export function loadAll(afterLoad) {
         .add("src/images/weapons/hammer.png")
         .add("src/images/weapons/pawn_swords.png")
         .add("src/images/weapons/rusty_sword.png")
+        .add("src/images/weapons/rusty_sword_broken.png")
 
         .add("src/images/tools/pickaxe.png")
         .add("src/images/tools/torch.png")
