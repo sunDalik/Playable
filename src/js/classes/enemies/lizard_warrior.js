@@ -25,6 +25,7 @@ export class LizardWarrior extends Enemy {
         this.scaleModifier = 1.1;
         this.fitToTile();
         this.place();
+        this.intentIcon2 = this.createIntentIcon();
     }
 
     move() {
@@ -84,6 +85,11 @@ export class LizardWarrior extends Enemy {
                     directions.push({x: -forward.x, y: 0});
                 } else if (tileDistance(this, this.lockedPlayer) === 2 && this.lockedPlayer.lastTileStepX === -forward.x) {
                     directions.push({x: -forward.x, y: 0});
+                } else if (tileDistance(this, this.lockedPlayer) === 2) {
+                    if (!isEmpty(this.tilePosition.x + forward.x, this.tilePosition.y + forward.y)) {
+                        directions.push({x: 0, y: 1});
+                        directions.push({x: 0, y: -1});
+                    }
                 } else if (tileDistance(this, this.lockedPlayer) === 1) {
                     directions.push({x: 0, y: 1});
                     directions.push({x: 0, y: -1});
@@ -157,10 +163,14 @@ export class LizardWarrior extends Enemy {
     updateIntentIcon() {
         super.updateIntentIcon();
         this.intentIcon.height = this.intentIcon.width;
+        this.intentIcon2.visible = false;
         if (this.triggeredWideSlash) {
             this.intentIcon.filters = [];
             this.intentIcon.texture = Game.resources["src/images/icons/intents/three_tiles_front.png"].texture;
             this.intentIcon.height = this.intentIcon.texture.height / this.intentIcon.texture.width * this.intentIcon.width;
+            this.intentIcon2.visible = true;
+            this.intentIcon2.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+            this.intentIcon2.angle = this.getArrowRightAngleForDirection(this.attackDirection);
         } else if (this.triggeredForwardPierce) {
             this.intentIcon.filters = [];
             this.intentIcon.texture = Game.resources["src/images/icons/intents/two_tiles_forward.png"].texture;
@@ -170,6 +180,20 @@ export class LizardWarrior extends Enemy {
                 this.intentIcon.filters = [GRAIL_TEXT_WHITE_FILTER];
             else if (this.lockedPlayer === Game.player2)
                 this.intentIcon.filters = [GRAIL_TEXT_DARK_FILTER];
+        }
+    }
+
+
+    moveHealthContainer() {
+        super.moveHealthContainer();
+        if (this.triggeredWideSlash) {
+            if (this.attackDirection.x === 1) this.intentIcon.position.x += this.intentIcon.width / 2;
+            else if (this.attackDirection.x === -1) this.intentIcon.position.x -= this.intentIcon.width / 2;
+
+            if (this.intentIcon2) {
+                if (this.attackDirection.x === 1) this.intentIcon2.position.x = this.intentIcon.position.x - this.intentIcon.width;
+                else if (this.attackDirection.x === -1) this.intentIcon2.position.x = this.intentIcon.position.x + this.intentIcon.width;
+            }
         }
     }
 

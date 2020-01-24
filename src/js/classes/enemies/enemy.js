@@ -288,6 +288,7 @@ export class Enemy extends AnimatedTileElement {
         this.intentIcon.visible = !this.dead;
         this.intentIcon.texture = Game.resources["src/images/icons/intents/stun.png"].texture;
         this.intentIcon.angle = 0;
+        if (this.intentIcon2) this.intentIcon2.visible = false;
     }
 
     getArrowRightAngleForDirection(direction) {
