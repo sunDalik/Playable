@@ -108,10 +108,10 @@ export class LizardWarrior extends Enemy {
                     directions.push({x: 0, y: 1});
                     directions.push({x: 0, y: -1});
                     directions.push({x: -forward.x, y: 0});
-                } else if (tileDistance(this, this.lockedPlayer) === 2 && this.lockedPlayer.lastTileStepX === -forward.x) {
-                    directions.push({x: -forward.x, y: 0});
                 } else if (tileDistance(this, this.lockedPlayer) === 2) {
-                    if (!isEmpty(this.tilePosition.x + forward.x, this.tilePosition.y + forward.y)) {
+                    if (this.lockedPlayer.lastTileStepX === -forward.x && isEmpty(this.tilePosition.x - forward.x, this.tilePosition.y)) {
+                        directions.push({x: -forward.x, y: 0});
+                    } else if (!isEmpty(this.tilePosition.x + forward.x, this.tilePosition.y + forward.y)) {
                         directions.push({x: 0, y: 1});
                         directions.push({x: 0, y: -1});
                     }
