@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {ENEMY_TYPE, EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
-import {createPlayerWeaponAnimation} from "../../../animations";
+import {createPlayerAttackTile, createPlayerWeaponAnimation, createWeaponAnimationStab} from "../../../animations";
 
 export class Spear {
     constructor() {
@@ -21,7 +21,8 @@ export class Spear {
         const attackTileY2 = wielder.tilePosition.y + dirY * 2;
         const atk = wielder.getAtkWithWeapon(this);
         if (isEnemy(attackTileX2, attackTileY2) && isRelativelyEmpty(tileX1, tileY1) && isLit(attackTileX2, attackTileY2)) {
-            createPlayerWeaponAnimation(wielder, attackTileX2, attackTileY2, Game.TILESIZE / 4);
+            createWeaponAnimationStab(wielder, this, dirX * 2, dirY * 2, 8, 4, 1.1, true);
+            createPlayerAttackTile({x: attackTileX2, y: attackTileY2});
             Game.map[attackTileY2][attackTileX2].entity.damage(wielder, atk, dirX, dirY, false);
             return true;
         } else if (isEnemy(tileX1, tileY1)) {
@@ -30,6 +31,7 @@ export class Spear {
                 || enemy.type === ENEMY_TYPE.SPIDER_GREEN || enemy.type === ENEMY_TYPE.SPIDER_RED
                 || enemy.type === ENEMY_TYPE.ROLLER_RED && dirX !== 0) {
                 if (enemy.stun < 2) {
+                    //todo: add clubbing animation
                     createPlayerWeaponAnimation(wielder, tileX1, tileY1, Game.TILESIZE / 3);
                     enemy.stun = 2;
                     return true

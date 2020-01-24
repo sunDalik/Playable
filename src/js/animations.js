@@ -64,6 +64,65 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, size = Game.
 }
 
 // the picture is directed to the top left!
+export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {
+    let playerOffsetX, playerOffsetY;
+    if (Math.abs(offsetX) + Math.abs(offsetY) === 1) {
+        playerOffsetX = Math.sign(offsetX) * 0.5;
+        playerOffsetY = Math.sign(offsetY) * 0.5;
+    } else {
+        playerOffsetX = Math.sign(offsetX);
+        playerOffsetY = Math.sign(offsetY);
+    }
+    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x + playerOffsetX, player.tilePosition.y + playerOffsetY);
+    Game.world.addChild(weaponSprite);
+    player.animationSubSprites.push(weaponSprite);
+    weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+    weaponSprite.scaleModifier = scaleMod;
+    weaponSprite.fitToTile();
+    weaponSprite.anchor.set(0.5, 0.5);
+    offsetX -= Math.sign(offsetX);
+    offsetY -= Math.sign(offsetY);
+    if (Math.sign(offsetX) === 1) weaponSprite.angle = 135;
+    else if (Math.sign(offsetX) === -1) weaponSprite.angle = -45;
+    else if (Math.sign(offsetY) === 1) weaponSprite.angle = -135;
+    else if (Math.sign(offsetY) === -1) weaponSprite.angle = 45;
+    if (lookingRight) {
+        weaponSprite.scale.x *= -1;
+    }
+
+    const startValX = weaponSprite.position.x;
+    const endChangeX = offsetX * Game.TILESIZE;
+    const startValY = weaponSprite.position.y;
+    const endChangeY = offsetY * Game.TILESIZE;
+    const endStayTime = 2;
+    let halfReached = false;
+    let counter = 0;
+
+    const animation = delta => {
+        if (Game.paused) return;
+        counter += delta;
+        if (counter < animationTime / 2) {
+            weaponSprite.position.x = startValX + endChangeX * counter / (animationTime / 2);
+            weaponSprite.position.y = startValY + endChangeY * counter / (animationTime / 2);
+        } else if (counter < animationTime / 2 + delay) {
+            if (!halfReached) {
+                halfReached = true;
+                weaponSprite.position.x = startValX + endChangeX;
+                weaponSprite.position.y = startValY + endChangeY;
+            }
+        } else if (counter < animationTime + delay) {
+            weaponSprite.position.x = startValX + endChangeX - endChangeX * (counter - delay - animationTime / 2) / (animationTime / 2);
+            weaponSprite.position.y = startValY + endChangeY - endChangeY * (counter - delay - animationTime / 2) / (animationTime / 2);
+        }
+        if (counter >= animationTime + delay + endStayTime) {
+            Game.app.ticker.remove(animation);
+            Game.world.removeChild(weaponSprite);
+        }
+    };
+    player.animation = animation;
+    Game.app.ticker.add(animation);
+}
+
 export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1) {
     const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
     Game.world.addChild(weaponSprite);
