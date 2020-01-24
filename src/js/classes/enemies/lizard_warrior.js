@@ -11,7 +11,7 @@ import {randomChoice} from "../../utils/random_utils";
 import {getPlayerOnTile, isEmpty} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
 import {TileElement} from "../tile_elements/tile_element";
-import {createFadingAttack} from "../../animations";
+import {createEnemyAttackTile, createFadingAttack} from "../../animations";
 import * as PIXI from "pixi.js";
 
 export class LizardWarrior extends Enemy {
@@ -160,9 +160,11 @@ export class LizardWarrior extends Enemy {
         };
         Game.app.ticker.add(animation);
 
-        this.createRedAttackTiles([{x: this.tilePosition.x + direction.x, y: this.tilePosition.y - 1},
+        for (const tile of [{x: this.tilePosition.x + direction.x, y: this.tilePosition.y - 1},
             {x: this.tilePosition.x + direction.x, y: this.tilePosition.y},
-            {x: this.tilePosition.x + direction.x, y: this.tilePosition.y + 1}]);
+            {x: this.tilePosition.x + direction.x, y: this.tilePosition.y + 1}]) {
+            createEnemyAttackTile(tile, 8);
+        }
 
         /*
         ANGLE VERSION
@@ -204,16 +206,9 @@ export class LizardWarrior extends Enemy {
         };
         Game.app.ticker.add(animation);
 
-        this.createRedAttackTiles([{x: this.tilePosition.x + direction.x, y: this.tilePosition.y},
-            {x: this.tilePosition.x + direction.x * 2, y: this.tilePosition.y}]);
-    }
-
-    createRedAttackTiles(tiles) {
-        for (const tile of tiles) {
-            const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y);
-            fadingTile.tint = 0xf4524a;
-            fadingTile.alpha = 0.5;
-            createFadingAttack(fadingTile, 8);
+        for (const tile of [{x: this.tilePosition.x + direction.x, y: this.tilePosition.y},
+            {x: this.tilePosition.x + direction.x * 2, y: this.tilePosition.y}]) {
+            createEnemyAttackTile(tile, 8);
         }
     }
 

@@ -292,10 +292,14 @@ export class Enemy extends AnimatedTileElement {
     }
 
     getArrowRightAngleForDirection(direction) {
-        if (direction.x === -1) return 180;
-        else if (direction.x === 1) return 0;
-        else if (direction.y === -1) return -90;
-        else if (direction.y === 1) return 90;
+        if (direction.x === -1 && direction.y === 0) return 180;
+        else if (direction.x === 1 && direction.y === 0) return 0;
+        else if (direction.x === 0 && direction.y === -1) return -90;
+        else if (direction.x === 0 && direction.y === 1) return 90;
+        else if (direction.x === 1 && direction.y === 1) return 45;
+        else if (direction.x === 1 && direction.y === -1) return -45;
+        else if (direction.x === -1 && direction.y === 1) return 135;
+        else if (direction.x === -1 && direction.y === -1) return -135;
     }
 
     createIntentIcon() {

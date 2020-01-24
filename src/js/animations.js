@@ -7,6 +7,7 @@ import {HUD} from "./drawing/hud_object";
 import {camera} from "./classes/game/camera";
 import {ROLE, STAGE} from "./enums";
 import {easeInOutQuad, easeInQuad, easeOutQuad, quadraticBezier} from "./utils/math_utils";
+import {TileElement} from "./classes/tile_elements/tile_element";
 
 export function createPlayerWeaponAnimation(player, tileX2, tileY2, size = Game.TILESIZE / 3) {
     const tileX1 = player.tilePosition.x;
@@ -60,6 +61,22 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, size = Game.
     };
     player.animation = animation;
     Game.app.ticker.add(animation);
+}
+
+export function createEnemyAttackTile(tile, animationTime = 6, alpha = 0.5) {
+    const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y);
+    fadingTile.tint = 0xf4524a;
+    fadingTile.alpha = alpha;
+    fadingTile.zIndex = -2;
+    createFadingAttack(fadingTile, animationTime);
+}
+
+export function createPlayerAttackTile(tile, animationTime = 6) {
+    const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y);
+    fadingTile.tint = 0xffffff;
+    fadingTile.alpha = 0.5;
+    fadingTile.zIndex = -2;
+    createFadingAttack(fadingTile, animationTime);
 }
 
 export function createFadingAttack(attack, animationTime = Game.TURNTIME) {

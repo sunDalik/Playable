@@ -1,10 +1,9 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {DIRECTIONS, ENEMY_TYPE} from "../../enums";
-import {getPlayerOnTile, isRelativelyEmpty} from "../../map_checks";
-import {createFadingAttack} from "../../animations";
+import {getPlayerOnTile} from "../../map_checks";
+import {createEnemyAttackTile} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
-import * as PIXI from "pixi.js";
 
 export class Star extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/star.png"].texture) {
@@ -82,19 +81,62 @@ export class Star extends Enemy {
         this.attackTileAtOffset(-1, 1);
         this.attackTileAtOffset(2, -2);
         this.attackTileAtOffset(1, -1);
+
+        this.createSpikeAnimation(-2, -2);
+        this.createSpikeAnimation(2, -2);
+        this.createSpikeAnimation(-2, 2);
+        this.createSpikeAnimation(2, 2);
     }
 
     attackTileAtOffset(tileOffsetX, tileOffsetY) {
         const attackPositionX = this.tilePosition.x + tileOffsetX;
         const attackPositionY = this.tilePosition.y + tileOffsetY;
-        if (isRelativelyEmpty(attackPositionX, attackPositionY)) {
-            const attack = new TileElement(PIXI.Texture.WHITE, attackPositionX, attackPositionY);
-            attack.tint = 0x888888;
-            attack.width = attack.height = Game.TILESIZE * 0.6;
-            createFadingAttack(attack);
-            const player = getPlayerOnTile(attackPositionX, attackPositionY);
-            if (player) player.damage(this.atk, this, false, true);
-        }
+
+        const player = getPlayerOnTile(attackPositionX, attackPositionY);
+        if (player) player.damage(this.atk, this, false, true);
+
+        createEnemyAttackTile({x: attackPositionX, y: attackPositionY}, 16, 0.3);
+        if (Math.abs(tileOffsetX) + Math.abs(tileOffsetY) >= 2) return;
+        this.createSpikeAnimation(tileOffsetX, tileOffsetY)
+    }
+
+    createSpikeAnimation(offsetX, offsetY) {
+        let prefix = this.type === ENEMY_TYPE.STAR ? "star" : "star_b";
+        const attack = new TileElement(Game.resources[`src/images/enemies/${prefix}_spike.png`].texture, this.tilePosition.x, this.tilePosition.y);
+        attack.zIndex = -1;
+        attack.anchor.set(0, 0.5);
+        attack.angle = this.getArrowRightAngleForDirection({x: Math.sign(offsetX), y: Math.sign(offsetY)});
+        Game.world.addChild(attack);
+        const animationTime = 10;
+        let sizeMod;
+        if (Math.max(Math.abs(offsetX), Math.abs(offsetY)) === 1) sizeMod = 1.5;
+        else sizeMod = 3.5;
+        const widthStep = attack.width * sizeMod / (animationTime / 2);
+        attack.width = 1;
+        const delay = 6;
+        let counter = 0;
+        let halfReached = false;
+
+        const animation = (delta) => {
+            if (Game.paused) return;
+            counter += delta;
+            if (counter < animationTime / 2) {
+                attack.width += widthStep;
+            } else if (counter < animationTime / 2 + delay) {
+                if (!halfReached) {
+                    halfReached = true;
+                    attack.width = widthStep * animationTime / 2;
+                }
+            } else if (counter >= animationTime / 2 + delay) {
+                attack.width -= widthStep;
+                if (attack.width <= 0) attack.width = 1;
+            }
+            if (counter >= animationTime + delay) {
+                Game.app.ticker.remove(animation);
+                Game.world.removeChild(attack);
+            }
+        };
+        Game.app.ticker.add(animation);
     }
 
     updateIntentIcon() {

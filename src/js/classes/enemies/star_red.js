@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import {Star} from "./star"
-import {DIRECTIONS, ENEMY_TYPE} from "../../enums";
+import {ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile} from "../../map_checks";
 
 export class RedStar extends Star {

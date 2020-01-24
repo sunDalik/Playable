@@ -53,6 +53,8 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/roller_b.png")
         .add("src/images/enemies/star.png")
         .add("src/images/enemies/star_b.png")
+        .add("src/images/enemies/star_spike.png")
+        .add("src/images/enemies/star_b_spike.png")
         .add("src/images/enemies/spider.png")
         .add("src/images/enemies/spider_b.png")
         .add("src/images/enemies/spider_green.png")
