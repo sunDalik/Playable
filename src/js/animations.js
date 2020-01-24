@@ -63,15 +63,18 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, size = Game.
     Game.app.ticker.add(animation);
 }
 
-// the picture is directed to the top left!
 export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {
     let playerOffsetX, playerOffsetY;
     if (Math.abs(offsetX) + Math.abs(offsetY) === 1) {
-        playerOffsetX = Math.sign(offsetX) * 0.5;
-        playerOffsetY = Math.sign(offsetY) * 0.5;
+        playerOffsetX = 0;
+        playerOffsetY = 0;
+        offsetX -= Math.sign(offsetX) * 0.25;
+        offsetY -= Math.sign(offsetY) * 0.25;
     } else {
-        playerOffsetX = Math.sign(offsetX);
-        playerOffsetY = Math.sign(offsetY);
+        playerOffsetX = Math.sign(offsetX) * 0.25;
+        playerOffsetY = Math.sign(offsetY) * 0.25;
+        offsetX -= Math.sign(offsetX) * 0.5;
+        offsetY -= Math.sign(offsetY) * 0.5;
     }
     const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x + playerOffsetX, player.tilePosition.y + playerOffsetY);
     Game.world.addChild(weaponSprite);
@@ -80,8 +83,6 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
     weaponSprite.anchor.set(0.5, 0.5);
-    offsetX -= Math.sign(offsetX);
-    offsetY -= Math.sign(offsetY);
     if (Math.sign(offsetX) === 1) weaponSprite.angle = 135;
     else if (Math.sign(offsetX) === -1) weaponSprite.angle = -45;
     else if (Math.sign(offsetY) === 1) weaponSprite.angle = -135;
@@ -95,7 +96,6 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
     const startValY = weaponSprite.position.y;
     const endChangeY = offsetY * Game.TILESIZE;
     const endStayTime = 2;
-    let halfReached = false;
     let counter = 0;
 
     const animation = delta => {
@@ -105,11 +105,8 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
             weaponSprite.position.x = startValX + endChangeX * counter / (animationTime / 2);
             weaponSprite.position.y = startValY + endChangeY * counter / (animationTime / 2);
         } else if (counter < animationTime / 2 + delay) {
-            if (!halfReached) {
-                halfReached = true;
-                weaponSprite.position.x = startValX + endChangeX;
-                weaponSprite.position.y = startValY + endChangeY;
-            }
+            weaponSprite.position.x = startValX + endChangeX;
+            weaponSprite.position.y = startValY + endChangeY;
         } else if (counter < animationTime + delay) {
             weaponSprite.position.x = startValX + endChangeX - endChangeX * (counter - delay - animationTime / 2) / (animationTime / 2);
             weaponSprite.position.y = startValY + endChangeY - endChangeY * (counter - delay - animationTime / 2) / (animationTime / 2);
@@ -123,6 +120,7 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
     Game.app.ticker.add(animation);
 }
 
+// the picture is directed to the top left!
 export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1) {
     const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
     Game.world.addChild(weaponSprite);

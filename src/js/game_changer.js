@@ -18,7 +18,7 @@ import {DamagingBoots} from "./classes/equipment/footwear/damaging";
 import {DarkBoots} from "./classes/equipment/footwear/dark";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {NinjaKnife} from "./classes/equipment/weapons/ninja_knife";
-import {Sword} from "./classes/equipment/weapons/sword";
+import {Rapier} from "./classes/equipment/weapons/rapier";
 import {Bow} from "./classes/equipment/weapons/bow";
 import {Scythe} from "./classes/equipment/weapons/scythe";
 import {MaidenDagger} from "./classes/equipment/weapons/maiden_dagger";
@@ -42,7 +42,7 @@ import {FellStarShield} from "./classes/equipment/shields/fell_star_shield";
 import {OldBalletShoes} from "./classes/equipment/footwear/old_ballet_shoes";
 
 export function initPools() {
-    Game.weaponPool = [Knife, NinjaKnife, Sword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
+    Game.weaponPool = [Knife, NinjaKnife, Rapier, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross, Immortality];
     Game.chestItemPool = [Pickaxe,
         BasicShield, PassiveShield, SpikyShield, StunningShield, FellStarShield,

@@ -39,7 +39,7 @@ export class Statue extends TallTileElement {
             case WEAPON_TYPE.KNIFE:
                 this.texture = Game.resources["src/images/other/statue_knife.png"].texture;
                 break;
-            case WEAPON_TYPE.SWORD:
+            case WEAPON_TYPE.RAPIER:
                 this.texture = Game.resources["src/images/other/statue_sword.png"].texture;
                 break;
             case WEAPON_TYPE.NINJA_KNIFE:
