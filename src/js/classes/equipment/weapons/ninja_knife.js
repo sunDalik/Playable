@@ -2,14 +2,14 @@ import {Game} from "../../../game"
 import * as PIXI from "pixi.js"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
-import {createPlayerWeaponAnimation} from "../../../animations";
+import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 
 export class NinjaKnife {
     constructor() {
         this.texture = Game.resources["src/images/weapons/ninja_knife.png"].texture;
         this.type = WEAPON_TYPE.NINJA_KNIFE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
-        this.SLIDE_ANIMATION_TIME = 4;
+        this.SLIDE_ANIMATION_TIME = 5;
         this.FINISH_SLIDE_TIME = 2;
         this.atk = 1.25;
         this.name = "Ninja Knife";
@@ -27,16 +27,17 @@ export class NinjaKnife {
                 wielder.slide(tileDirX * 2, tileDirY * 2, null, null, this.SLIDE_ANIMATION_TIME);
                 if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun = 1;
             } else {
-                createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
+                createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4, 35, 1);
             }
+            createPlayerAttackTile({x: attackTileX, y: attackTileY});
             Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);
             return true;
         } else return false;
 
+        //todo refactor
         function createNinjaKnifeAnimation(context) {
             let attackParticle = new PIXI.Sprite(PIXI.Texture.WHITE);
-            attackParticle.width = Game.TILESIZE / 3;
-            attackParticle.height = Game.TILESIZE / 3;
+            attackParticle.width = attackParticle.height = Game.TILESIZE / 2.5;
             let newAnchor;
             if (tileDirX > 0) {
                 attackParticle.anchor.set(0, 0.5);
