@@ -2,7 +2,11 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {getDirectionsWithConditions, getEmptyHorizontalDirections} from "../../utils/map_utils";
+import {
+    getDirectionsWithConditions,
+    getEmptyCardinalDirections,
+    getEmptyHorizontalDirections
+} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
 import {getPlayerOnTile, isEmpty} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
@@ -22,6 +26,7 @@ export class LizardWarrior extends Enemy {
 
         this.triggeredWideSlash = false;
         this.triggeredForwardPierce = false;
+        this.attackedLastTurn = false;
         this.attackDirection = {x: 0, y: 0};
         this.lockedPlayer = null;
         this.scaleModifier = 1.1;
@@ -32,13 +37,25 @@ export class LizardWarrior extends Enemy {
 
     move() {
         if (this.lockedPlayer === null || this.lockedPlayer.dead) {
-            this.lockedPlayer = closestPlayer(this);
+            if (tileDistance(this, closestPlayer(this)) < 12) {
+                this.lockedPlayer = closestPlayer(this);
+            } else {
+                const direction = randomChoice(getEmptyCardinalDirections(this));
+                if (direction !== undefined) {
+                    this.step(direction.x, direction.y);
+                }
+                return;
+            }
+        }
+        if (!this.triggeredWideSlash && !this.triggeredForwardPierce) {
+            this.texture = Game.resources["src/images/enemies/lizard_warrior.png"].texture;
         }
         this.correctScale();
         if (this.triggeredWideSlash) {
             this.triggeredWideSlash = false;
+            this.attackedLastTurn = true;
             if (isEmpty(this.tilePosition.x + this.attackDirection.x, this.tilePosition.y + this.attackDirection.y)) {
-                this.slide(this.attackDirection.x, this.attackDirection.y);
+                this.slide(this.attackDirection.x, this.attackDirection.y, null, () => this.shake(0.7, 0));
             }
             this.animateSwordBottom(this.attackDirection);
             for (const attackTile of [{x: this.attackDirection.x, y: 0},
@@ -51,8 +68,11 @@ export class LizardWarrior extends Enemy {
                 }
             }
             this.triggeredForwardPierce = true;
+            this.texture = Game.resources["src/images/enemies/lizard_warrior_triggered_forward_pierce.png"].texture;
         } else if (this.triggeredForwardPierce) {
             this.triggeredForwardPierce = false;
+            this.texture = Game.resources["src/images/enemies/lizard_warrior_after_attack.png"].texture;
+            this.attackedLastTurn = true;
             this.animateSwordForward(this.attackDirection);
             for (const attackTile of [{x: this.attackDirection.x, y: 0}, {x: this.attackDirection.x * 2, y: 0}]) {
                 const player = getPlayerOnTile(this.tilePosition.x + attackTile.x, this.tilePosition.y + attackTile.y);
@@ -62,6 +82,7 @@ export class LizardWarrior extends Enemy {
                 }
             }
         } else if (this.tilePosition.x === this.lockedPlayer.tilePosition.x) {
+            this.attackedLastTurn = false;
             const direction = randomChoice(getEmptyHorizontalDirections(this));
             if (direction !== undefined) {
                 this.step(direction.x, direction.y);
@@ -71,11 +92,13 @@ export class LizardWarrior extends Enemy {
             } else if (isEmpty(this.tilePosition.x, this.tilePosition.y + Math.sign(this.lockedPlayer.tilePosition.y - this.tilePosition.y))) {
                 this.step(0, Math.sign(this.lockedPlayer.tilePosition.y - this.tilePosition.y));
             }
-        } else if (this.tilePosition.y === this.lockedPlayer.tilePosition.y && tileDistance(this, this.lockedPlayer) === 1 && isEmpty(this.tilePosition.x + Math.sign(this.tilePosition.x - this.lockedPlayer.tilePosition.x), this.tilePosition.y)) {
+        } else if (!this.attackedLastTurn && this.tilePosition.y === this.lockedPlayer.tilePosition.y && tileDistance(this, this.lockedPlayer) === 1 && isEmpty(this.tilePosition.x + Math.sign(this.tilePosition.x - this.lockedPlayer.tilePosition.x), this.tilePosition.y)) {
             this.triggeredWideSlash = true;
-            this.slide(Math.sign(this.tilePosition.x - this.lockedPlayer.tilePosition.x), 0, null, () => this.shake(1, 0));
+            this.slide(Math.sign(this.tilePosition.x - this.lockedPlayer.tilePosition.x), 0, null, () => this.shake(0.7, 0));
+            this.texture = Game.resources["src/images/enemies/lizard_warrior_triggered_wide_slash.png"].texture;
             this.attackDirection = {x: Math.sign(this.lockedPlayer.tilePosition.x - this.tilePosition.x), y: 0};
         } else {
+            this.attackedLastTurn = false;
             const forward = {x: Math.sign(this.lockedPlayer.tilePosition.x - this.tilePosition.x), y: 0};
             const align = {x: 0, y: Math.sign(this.lockedPlayer.tilePosition.y - this.tilePosition.y)};
             if (this.tilePosition.y === this.lockedPlayer.tilePosition.y) {

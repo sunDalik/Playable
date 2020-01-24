@@ -105,6 +105,9 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/spikes_right.png")
         .add("src/images/enemies/cocoon.png")
         .add("src/images/enemies/lizard_warrior.png")
+        .add("src/images/enemies/lizard_warrior_triggered_wide_slash.png")
+        .add("src/images/enemies/lizard_warrior_triggered_forward_pierce.png")
+        .add("src/images/enemies/lizard_warrior_after_attack.png")
 
         .add("src/images/bosses/paranoid_eel/neutral.png")
         .add("src/images/bosses/paranoid_eel/neutral_2.png")
