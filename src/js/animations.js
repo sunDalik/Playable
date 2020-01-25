@@ -173,8 +173,8 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
 }
 
 // the picture is directed to the top left!
-export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationTime = 8, delay = 4, angleAmplitude = 90, scaleMod = 1.1) {
-    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
+export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationTime = 8, delay = 4, angleAmplitude = 90, scaleMod = 1.1, offset = 0) {
+    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x + offset * Math.sign(dirX), player.tilePosition.y + offset * Math.sign(dirY));
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
     weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;

@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isDiggable, isEnemy} from "../../../map_checks";
-import {createPlayerWeaponAnimation} from "../../../animations";
+import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 
 export class Pickaxe {
     constructor() {
@@ -14,24 +14,29 @@ export class Pickaxe {
         this.rarity = RARITY.B;
     }
 
-    attack(wielder, tileDirX, tileDirY) {
-        const attackTileX = wielder.tilePosition.x + tileDirX;
-        const attackTileY = wielder.tilePosition.y + tileDirY;
-        if (isEnemy(attackTileX, attackTileY)) {
+    attack(wielder, dirX, dirY) {
+        const attackTile = {x: wielder.tilePosition.x + dirX, y: wielder.tilePosition.y + dirY};
+        if (isEnemy(attackTile.x, attackTile.y)) {
             const atk = wielder.getAtkWithWeapon(this);
-            createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
-            Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);
+            createWeaponAnimationClub(wielder, this, dirX, dirY, 8, 3, 90, 1);
+            createPlayerAttackTile(attackTile);
+            Game.map[attackTile.y][attackTile.x].entity.damage(wielder, atk, dirX, dirY, false);
             return true;
         } else return false;
     }
 
-    use(wielder, tileDirX, tileDirY) {
-        if (isDiggable(wielder.tilePosition.x + tileDirX, wielder.tilePosition.y + tileDirY)) {
-            Game.world.removeTile(wielder.tilePosition.x + tileDirX, wielder.tilePosition.y + tileDirY, wielder);
+    use(wielder, dirX, dirY) {
+        const digTile = {x: wielder.tilePosition.x + dirX, y: wielder.tilePosition.y + dirY};
+        if (isDiggable(digTile.x, digTile.y)) {
+            Game.world.removeTile(digTile.x, digTile.y, wielder);
             if (wielder.weapon && wielder.weapon.equipmentType === this.equipmentType && wielder.weapon.type === this.type
                 && wielder.secondHand && wielder.secondHand.equipmentType === this.equipmentType && wielder.secondHand.type === this.type) {
-                wielder.step(tileDirX, tileDirY);
-            } else wielder.bump(tileDirX, tileDirY);
+                createWeaponAnimationClub(wielder, this, dirX, dirY, 8, 3, 90, 1, 0.5);
+                wielder.step(dirX, dirY);
+            } else {
+                createWeaponAnimationClub(wielder, this, dirX, dirY, 8, 3, 90, 1);
+            }
+            createPlayerAttackTile(digTile);
             return true;
         } else return false;
     }
