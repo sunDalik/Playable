@@ -544,7 +544,7 @@ export function showHelpBox(item) {
     Game.app.ticker.add(animation);
 }
 
-export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul = 0.1) {
+export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul = 0.1, scaleMod = undefined) {
     //todo: fix angle
     const YBorders = [0, undefined, undefined, tileElement.texture.height];
     const XBorders = [0, undefined, undefined, tileElement.texture.width];
@@ -558,7 +558,8 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         {x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}]) {
         const particle = new PIXI.Sprite(tileElement.texture.clone());
         let scaleMul = 1;
-        if (playerDeath) scaleMul = 1.2;
+        if (scaleMod !== undefined) scaleMul = scaleMod;
+        else if (playerDeath) scaleMul = 1.2;
         else if (tileElement.role === ROLE.INANIMATE) scaleMul = 1;
         else if (tileElement.role !== undefined) scaleMul = 0.8;
         else scaleMul = 0.4;

@@ -148,6 +148,7 @@ export function loadAll(afterLoad) {
         .add("src/images/weapons/ninja_knife.png")
         .add("src/images/weapons/sword.png")
         .add("src/images/weapons/bow.png")
+        .add("src/images/weapons/arrow.png")
         .add("src/images/weapons/book_of_flames.png")
         .add("src/images/weapons/book_of_flames_used_0.png")
         .add("src/images/weapons/book_of_flames_used_1.png")
