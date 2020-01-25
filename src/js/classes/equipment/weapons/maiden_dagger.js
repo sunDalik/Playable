@@ -1,8 +1,7 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isAnyWall, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
-import {createPlayerWeaponAnimation} from "../../../animations";
-import * as PIXI from "pixi.js";
+import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 
 export class MaidenDagger {
     constructor() {
@@ -57,10 +56,15 @@ export class MaidenDagger {
             } else {
                 wielder.bump(tileDirX, tileDirY);
             }
-            this.createMaidenDaggersAnimation(wielder, tileDirX, tileDirY);
+            const amplitude = 180;
+            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1, true, 1, amplitude / 2 + 30);
+            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1, true, -1, amplitude / 2 + 30);
             for (let i = 0; i < enemiesToAttack.length; i++) {
                 if (enemiesToAttack[i] === null) continue;
                 enemiesToAttack[i].damage(wielder, wielder.getAtkWithWeapon(null, enemyDmgValues[i]), tileDirX, tileDirY, false);
+            }
+            for (const attackTile of atkPositions) {
+                createPlayerAttackTile(attackTile);
             }
             return true;
         } else {
@@ -68,90 +72,11 @@ export class MaidenDagger {
             const attackTileY = wielder.tilePosition.y + tileDirY;
             const atk = wielder.getAtkWithWeapon(this);
             if (isEnemy(attackTileX, attackTileY)) {
-                createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
+                createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4.5, 40, 1, true);
+                createPlayerAttackTile({x: attackTileX, y: attackTileY});
                 Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);
                 return true;
             } else return false;
         }
-    }
-
-    createMaidenDaggersAnimation(player, tileDirX, tileDirY) {
-        let attackSprite = new PIXI.Sprite(PIXI.Texture.WHITE);
-        let attackSprite2 = new PIXI.Sprite(PIXI.Texture.WHITE);
-        const px = player.tilePosition.x * Game.TILESIZE + (Game.TILESIZE - Game.player.width) / 2 + Game.player.width / 2;
-        const py = player.tilePosition.y * Game.TILESIZE + (Game.TILESIZE - Game.player.height) / 2 + Game.player.height / 2;
-        player.animationSubSprites.push(attackSprite);
-        player.animationSubSprites.push(attackSprite2);
-        const size = Game.TILESIZE / 2.5;
-        attackSprite.width = size;
-        attackSprite.height = size;
-        attackSprite2.width = size;
-        attackSprite2.height = size;
-        const angle = 60;
-        if (tileDirX > 0) {
-            attackSprite.anchor.set(0, 0.5);
-            attackSprite2.anchor.set(0, 0.5);
-            attackSprite.position.set(px, py - Game.TILESIZE);
-            attackSprite2.position.set(px, py + Game.TILESIZE);
-            attackSprite.angle = angle;
-            attackSprite2.angle = -angle;
-        } else if (tileDirX < 0) {
-            attackSprite.anchor.set(1, 0.5);
-            attackSprite2.anchor.set(1, 0.5);
-            attackSprite.position.set(px, py - Game.TILESIZE);
-            attackSprite2.position.set(px, py + Game.TILESIZE);
-            attackSprite.angle = -angle;
-            attackSprite2.angle = angle;
-        } else if (tileDirY > 0) {
-            attackSprite.anchor.set(0.5, 0);
-            attackSprite2.anchor.set(0.5, 0);
-            attackSprite.position.set(px - Game.TILESIZE, py);
-            attackSprite2.position.set(px + Game.TILESIZE, py);
-            attackSprite.angle = -angle;
-            attackSprite2.angle = angle;
-        } else if (tileDirY < 0) {
-            attackSprite.anchor.set(0.5, 1);
-            attackSprite2.anchor.set(0.5, 1);
-            attackSprite.position.set(px - Game.TILESIZE, py);
-            attackSprite2.position.set(px + Game.TILESIZE, py);
-            attackSprite.angle = angle;
-            attackSprite2.angle = -angle;
-        }
-        Game.world.addChild(attackSprite);
-        Game.world.addChild(attackSprite2);
-
-        const animationTime = Game.WEAPON_ATTACK_TIME + 2;
-        const stepX = Math.abs(tileDirX * 1.5) * Game.TILESIZE / (animationTime / 2);
-        const stepY = Math.abs(tileDirY * 1.5) * Game.TILESIZE / (animationTime / 2);
-        if (stepX === 0) {
-            attackSprite.height = 0;
-            attackSprite2.height = 0;
-        }
-        if (stepY === 0) {
-            attackSprite.width = 0;
-            attackSprite2.width = 0;
-        }
-
-        let counter = 0;
-        const animation = (delta) => {
-            if (counter < animationTime / 2) {
-                attackSprite.width += stepX * delta;
-                attackSprite.height += stepY * delta;
-                attackSprite2.width += stepX * delta;
-                attackSprite2.height += stepY * delta;
-            } else {
-                attackSprite.width -= stepX * delta;
-                attackSprite.height -= stepY * delta;
-                attackSprite2.width -= stepX * delta;
-                attackSprite2.height -= stepY * delta;
-            }
-            counter += delta;
-            if (counter >= animationTime) {
-                Game.world.removeChild(attackSprite);
-                Game.world.removeChild(attackSprite2);
-                Game.app.ticker.remove(animation);
-            }
-        };
-        Game.app.ticker.add(animation);
     }
 }

@@ -125,7 +125,7 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
 }
 
 // the picture is directed to the top left!
-export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1) {
+export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1, lookingBottom = false, forceSwing = undefined, endAmplitude = angleAmplitude) {
     const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
@@ -133,18 +133,24 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
     weaponSprite.anchor.set(1, 1);
-    const swingDir = randomChoice([-1, 1]);
-    if (dirX === 1) weaponSprite.angle = 135 - angleAmplitude / 2 * swingDir;
-    else if (dirX === -1) weaponSprite.angle = -45 - angleAmplitude / 2 * swingDir;
-    else if (dirY === 1) weaponSprite.angle = -135 - angleAmplitude / 2 * swingDir;
-    else if (dirY === -1) weaponSprite.angle = 45 - angleAmplitude / 2 * swingDir;
+    let baseAngle = 0;
+    if (lookingBottom) {
+        weaponSprite.anchor.set(1, 0);
+        baseAngle = 90;
+    }
+    let swingDir = forceSwing === 1 || forceSwing === -1 ? forceSwing : randomChoice([-1, 1]);
+    if (dirX === 1) weaponSprite.angle = baseAngle + 135 - angleAmplitude / 2 * swingDir;
+    else if (dirX === -1) weaponSprite.angle = baseAngle - 45 - angleAmplitude / 2 * swingDir;
+    else if (dirY === 1) weaponSprite.angle = baseAngle - 135 - angleAmplitude / 2 * swingDir;
+    else if (dirY === -1) weaponSprite.angle = baseAngle + 45 - angleAmplitude / 2 * swingDir;
 
     //assuming that the blade looks to the left on the picture
-    if (swingDir === 1) {
+    if (swingDir === 1 && !lookingBottom) {
         weaponSprite.scale.x *= -1;
         weaponSprite.angle -= 90;
     }
-    const endChange = angleAmplitude * swingDir;
+
+    const endChange = endAmplitude * swingDir;
     const startStayTime = 1;
     const endStayTime = 1;
     const startVal = weaponSprite.angle;
