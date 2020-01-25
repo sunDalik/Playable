@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {ENEMY_TYPE, EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
-import {createPlayerAttackTile, createPlayerWeaponAnimation, createWeaponAnimationStab} from "../../../animations";
+import {createPlayerAttackTile, createWeaponAnimationClub, createWeaponAnimationStab} from "../../../animations";
 
 export class Spear {
     constructor() {
@@ -31,8 +31,8 @@ export class Spear {
                 || enemy.type === ENEMY_TYPE.SPIDER_GREEN || enemy.type === ENEMY_TYPE.SPIDER_RED
                 || enemy.type === ENEMY_TYPE.ROLLER_RED && dirX !== 0) {
                 if (enemy.stun < 2) {
-                    //todo: add clubbing animation
-                    createPlayerWeaponAnimation(wielder, tileX1, tileY1, Game.TILESIZE / 3);
+                    createWeaponAnimationClub(wielder, this, dirX, dirY, 8, 4, 60, 1.1, 0, true);
+                    createPlayerAttackTile({x: tileX1, y: tileY1}, 8, 0.25);
                     enemy.stun = 2;
                     return true
                 }

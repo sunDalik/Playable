@@ -64,7 +64,7 @@ export class Bow {
 
         const bowAnimation = delta => {
             counterB += delta;
-            if (counterB >= animationTime) {
+            if (counterB >= animationTime + 1) {
                 Game.world.removeChild(weaponSprite);
                 Game.app.ticker.remove(bowAnimation);
             }

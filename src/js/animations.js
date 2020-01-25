@@ -9,60 +9,6 @@ import {ROLE, STAGE} from "./enums";
 import {easeInOutQuad, easeInQuad, easeOutQuad, quadraticBezier} from "./utils/math_utils";
 import {TileElement} from "./classes/tile_elements/tile_element";
 
-export function createPlayerWeaponAnimation(player, tileX2, tileY2, size = Game.TILESIZE / 3) {
-    const tileX1 = player.tilePosition.x;
-    const tileY1 = player.tilePosition.y;
-    let attackParticle = new PIXI.Sprite(PIXI.Texture.WHITE);
-    player.animationSubSprites.push(attackParticle);
-    attackParticle.width = attackParticle.height = size;
-    if (tileX2 > tileX1) attackParticle.anchor.set(0, 0.5);
-    else if (tileX2 < tileX1) attackParticle.anchor.set(1, 0.5);
-    else if (tileY2 > tileY1) attackParticle.anchor.set(0.5, 0);
-    else if (tileY2 < tileY1) attackParticle.anchor.set(0.5, 1);
-    attackParticle.position.x = Game.TILESIZE * tileX1 + (Game.TILESIZE - Game.player.width) / 2 + Game.player.width / 2;
-    attackParticle.position.y = Game.TILESIZE * tileY1 + (Game.TILESIZE - Game.player.height) / 2 + Game.player.height / 2;
-    Game.world.addChild(attackParticle);
-    const stepX = Math.abs(tileX2 - tileX1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
-    const stepY = Math.abs(tileY2 - tileY1) * Game.TILESIZE / (Game.WEAPON_ATTACK_TIME / 2);
-    if (stepX === 0) attackParticle.height = 0;
-    if (stepY === 0) attackParticle.width = 0;
-
-    attackParticle.zIndex = Game.primaryPlayer.zIndex + 1;
-    let counter = 0;
-    //big hack
-    let goBack = false;
-    const oldW = attackParticle.width;
-    const oldH = attackParticle.height;
-
-    //shakeDirectional(-Math.sign(tileX2 - tileX1), -Math.sign(tileY2 - tileY1), 2, 3);
-
-    const animation = (delta) => {
-        if (Game.paused) return;
-        if (counter < Game.WEAPON_ATTACK_TIME / 2) {
-            attackParticle.width += stepX * delta;
-            attackParticle.height += stepY * delta;
-        } else {
-            attackParticle.width -= stepX * delta;
-            attackParticle.height -= stepY * delta;
-        }
-        counter += delta;
-        //big hack
-        if (!goBack && counter >= Game.WEAPON_ATTACK_TIME / 2) {
-            goBack = true;
-            counter = Game.WEAPON_ATTACK_TIME / 2;
-            attackParticle.width = oldW + stepX * Game.WEAPON_ATTACK_TIME / 2;
-            attackParticle.height = oldH + stepY * Game.WEAPON_ATTACK_TIME / 2;
-        }
-
-        if (counter >= Game.WEAPON_ATTACK_TIME) {
-            Game.world.removeChild(attackParticle);
-            Game.app.ticker.remove(animation);
-        }
-    };
-    player.animation = animation;
-    Game.app.ticker.add(animation);
-}
-
 // the picture is directed to the top left!
 export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {
     let playerOffsetX, playerOffsetY;
@@ -173,7 +119,7 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
 }
 
 // the picture is directed to the top left!
-export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationTime = 8, delay = 4, angleAmplitude = 90, scaleMod = 1.1, offset = 0) {
+export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationTime = 8, delay = 4, angleAmplitude = 90, scaleMod = 1.1, offset = 0, lookingRight = false) {
     const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x + offset * Math.sign(dirX), player.tilePosition.y + offset * Math.sign(dirY));
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
@@ -181,17 +127,21 @@ export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationT
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
     weaponSprite.anchor.set(1, 1);
+    let baseAngle = 0;
+    if (lookingRight) {
+        weaponSprite.anchor.set(0, 1);
+        baseAngle = -90;
+    }
     let swingDir = randomChoice([-1, 1]);
     if (Math.sign(dirX) === 1) swingDir = 1;
     else if (Math.sign(dirX) === -1) swingDir = -1;
-    const baseAngle = 0;
     if (dirX === 1) weaponSprite.angle = baseAngle + 135 - angleAmplitude * swingDir;
     else if (dirX === -1) weaponSprite.angle = baseAngle - 45 - angleAmplitude * swingDir;
     else if (dirY === 1) weaponSprite.angle = baseAngle - 135 - angleAmplitude * swingDir;
     else if (dirY === -1) weaponSprite.angle = baseAngle + 45 - angleAmplitude * swingDir;
 
     //assuming that the "blade" looks to the left on the picture
-    if (swingDir === 1) {
+    if (swingDir === 1 && !lookingRight) {
         weaponSprite.scale.x *= -1;
         weaponSprite.angle -= 90;
     }
@@ -228,9 +178,9 @@ export function createEnemyAttackTile(tile, animationTime = 8, alpha = 0.5) {
     createFadingAttack(fadingTile, animationTime);
 }
 
-export function createPlayerAttackTile(tile, animationTime = 8) {
+export function createPlayerAttackTile(tile, animationTime = 8, alpha = 0.5) {
     const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y);
-    fadingTile.alpha = 0.5;
+    fadingTile.alpha = alpha;
     fadingTile.zIndex = -2;
     createFadingAttack(fadingTile, animationTime);
 }
