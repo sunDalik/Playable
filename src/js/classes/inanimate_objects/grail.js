@@ -94,9 +94,9 @@ export class Grail extends TileElement {
             this.obelisk.deactivate(this);
         }
         if (this.magic && this.magic.alignment === MAGIC_ALIGNMENT.DARK && player === Game.player) {
-            createFadingText("I cannot use dark magic", player.position.x, player.position.y, Game.TILESIZE / 65 * 22, 60);
+            createFadingText("I cannot use dark magic", player.position.x, player.position.y, Game.TILESIZE / 65 * 22, 50);
         } else if (this.magic && this.magic.alignment === MAGIC_ALIGNMENT.WHITE && player === Game.player2) {
-            createFadingText("I cannot use white magic", player.position.x, player.position.y, Game.TILESIZE / 65 * 22, 60);
+            createFadingText("I cannot use white magic", player.position.x, player.position.y, Game.TILESIZE / 65 * 22, 50);
         }
     }
 

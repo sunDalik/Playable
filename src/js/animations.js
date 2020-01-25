@@ -211,7 +211,7 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
     Game.app.ticker.add(animation);
 }
 
-export function createFadingText(caption, positionX, positionY, fontSize = Game.TILESIZE / 65 * 26, TEXT_ANIMATION_TIME = 80) {
+export function createFadingText(caption, positionX, positionY, fontSize = Game.TILESIZE / 65 * 26, animationTime = 70) {
     let counter = 0;
     const text = new PIXI.Text(caption, {
         fontSize: fontSize,
@@ -223,17 +223,17 @@ export function createFadingText(caption, positionX, positionY, fontSize = Game.
     text.position.set(positionX - text.width / 2, positionY - text.height * 1.5);
     text.zIndex = 99;
     Game.world.addChild(text);
-    const stepY = Game.TILESIZE / 65 * 30 / TEXT_ANIMATION_TIME;
-    const alphaStep = 1 / TEXT_ANIMATION_TIME;
+    const stepY = Game.TILESIZE / 65 * 30 / animationTime;
+    const delay = animationTime * 3 / 5;
 
     const animation = (delta) => {
         if (Game.paused) return;
-        text.position.y -= stepY * delta;
-        if (counter >= TEXT_ANIMATION_TIME / 2) {
-            text.alpha -= alphaStep * delta;
-        }
         counter += delta;
-        if (counter >= TEXT_ANIMATION_TIME) {
+        text.position.y -= stepY * delta;
+        if (counter >= delay) {
+            text.alpha = 1 - easeInQuad((counter - delay) / (animationTime - delay));
+        }
+        if (counter >= animationTime + delay) {
             Game.world.removeChild(text);
             Game.app.ticker.remove(animation);
         }

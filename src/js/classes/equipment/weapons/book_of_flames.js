@@ -84,10 +84,10 @@ export class BookOfFlames {
                 this.concentration = 0;
                 this.uses = this.maxUses;
                 this.updateTexture();
-                if (createText) createFadingText("Clear mind!", wielder.position.x, wielder.position.y);
+                if (createText) createFadingText("Clear mind!", wielder.position.x, wielder.position.y, Game.TILESIZE / 65 * 22, 30);
             } else {
                 this.updateTexture();
-                if (createText) createFadingText("Concentrating", wielder.position.x, wielder.position.y);
+                if (createText) createFadingText("Concentrating", wielder.position.x, wielder.position.y, Game.TILESIZE / 65 * 22, 30);
             }
             redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
             return true;
