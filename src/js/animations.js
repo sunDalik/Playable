@@ -63,6 +63,7 @@ export function createPlayerWeaponAnimation(player, tileX2, tileY2, size = Game.
     Game.app.ticker.add(animation);
 }
 
+// the picture is directed to the top left!
 export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {
     let playerOffsetX, playerOffsetY;
     if (Math.abs(offsetX) + Math.abs(offsetY) === 1) {
@@ -163,6 +164,54 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
             weaponSprite.angle = startVal + endChange * (counter - startStayTime) / animationTime;
         }
         if (counter >= startStayTime + animationTime + endStayTime) {
+            Game.app.ticker.remove(animation);
+            Game.world.removeChild(weaponSprite);
+        }
+    };
+    player.animation = animation;
+    Game.app.ticker.add(animation);
+}
+
+// the picture is directed to the top left!
+export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationTime = 8, delay = 4, angleAmplitude = 90, scaleMod = 1.1) {
+    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
+    Game.world.addChild(weaponSprite);
+    player.animationSubSprites.push(weaponSprite);
+    weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+    weaponSprite.scaleModifier = scaleMod;
+    weaponSprite.fitToTile();
+    weaponSprite.anchor.set(1, 1);
+    let swingDir = randomChoice([-1, 1]);
+    if (Math.sign(dirX) === 1) swingDir = 1;
+    else if (Math.sign(dirX) === -1) swingDir = -1;
+    const baseAngle = 0;
+    if (dirX === 1) weaponSprite.angle = baseAngle + 135 - angleAmplitude * swingDir;
+    else if (dirX === -1) weaponSprite.angle = baseAngle - 45 - angleAmplitude * swingDir;
+    else if (dirY === 1) weaponSprite.angle = baseAngle - 135 - angleAmplitude * swingDir;
+    else if (dirY === -1) weaponSprite.angle = baseAngle + 45 - angleAmplitude * swingDir;
+
+    //assuming that the "blade" looks to the left on the picture
+    if (swingDir === 1) {
+        weaponSprite.scale.x *= -1;
+        weaponSprite.angle -= 90;
+    }
+
+    const endChange = angleAmplitude * swingDir;
+    const endStayTime = 2;
+    const startVal = weaponSprite.angle;
+    let counter = 0;
+
+    const animation = delta => {
+        if (Game.paused) return;
+        counter += delta;
+        if (counter < animationTime / 2) {
+            weaponSprite.angle = startVal + endChange * counter / (animationTime / 2);
+        } else if (counter < animationTime / 2 + delay) {
+            weaponSprite.angle = startVal + endChange;
+        } else if (counter < animationTime + delay) {
+            weaponSprite.angle = startVal + endChange - endChange * (counter - delay - animationTime / 2) / (animationTime / 2);
+        }
+        if (counter >= animationTime + delay + endStayTime) {
             Game.app.ticker.remove(animation);
             Game.world.removeChild(weaponSprite);
         }

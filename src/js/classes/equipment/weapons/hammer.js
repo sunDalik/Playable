@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
-import {createPlayerWeaponAnimation} from "../../../animations";
+import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 
 export class Hammer {
     constructor() {
@@ -14,20 +14,17 @@ export class Hammer {
         this.rarity = RARITY.C;
     }
 
-    attack(wielder, tileDirX, tileDirY) {
-        const attackTileX = wielder.tilePosition.x + tileDirX;
-        const attackTileY = wielder.tilePosition.y + tileDirY;
+    attack(wielder, dirX, dirY) {
+        const attackTileX = wielder.tilePosition.x + dirX;
+        const attackTileY = wielder.tilePosition.y + dirY;
         if (isEnemy(attackTileX, attackTileY)) {
             const atk = wielder.getAtkWithWeapon(this);
-            createHammerAnimation();
+            createWeaponAnimationClub(wielder, this, dirX, dirY, 6, 5, 90, 1);
+            createPlayerAttackTile({x: attackTileX, y: attackTileY});
             const enemy = Game.map[attackTileY][attackTileX].entity;
-            enemy.damage(wielder, atk, tileDirX, tileDirY, false);
-            enemy.stun += 1;
+            enemy.damage(wielder, atk, dirX, dirY, false);
+            enemy.stun++;
             return true;
         } else return false;
-
-        function createHammerAnimation() {
-            createPlayerWeaponAnimation(wielder, attackTileX, attackTileY);
-        }
     }
 }
