@@ -160,6 +160,7 @@ export function loadAll(afterLoad) {
         .add("src/images/weapons/maiden_dagger.png")
         .add("src/images/weapons/hammer.png")
         .add("src/images/weapons/pawn_swords.png")
+        .add("src/images/weapons/pawn_sword_separate.png")
         .add("src/images/weapons/rusty_sword.png")
         .add("src/images/weapons/rusty_sword_broken.png")
 

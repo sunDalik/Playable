@@ -83,10 +83,14 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
     weaponSprite.anchor.set(0.5, 0.5);
-    if (Math.sign(offsetX) === 1) weaponSprite.angle = 135;
-    else if (Math.sign(offsetX) === -1) weaponSprite.angle = -45;
-    else if (Math.sign(offsetY) === 1) weaponSprite.angle = -135;
-    else if (Math.sign(offsetY) === -1) weaponSprite.angle = 45;
+    if (Math.sign(offsetX) === 1 && Math.sign(offsetY) === 0) weaponSprite.angle = 135;
+    else if (Math.sign(offsetX) === -1 && Math.sign(offsetY) === 0) weaponSprite.angle = -45;
+    else if (Math.sign(offsetX) === 0 && Math.sign(offsetY) === 1) weaponSprite.angle = -135;
+    else if (Math.sign(offsetX) === 0 && Math.sign(offsetY) === -1) weaponSprite.angle = 45;
+    else if (Math.sign(offsetX) === -1 && Math.sign(offsetY) === -1) weaponSprite.angle = 0;
+    else if (Math.sign(offsetX) === -1 && Math.sign(offsetY) === 1) weaponSprite.angle = -90;
+    else if (Math.sign(offsetX) === 1 && Math.sign(offsetY) === -1) weaponSprite.angle = 90;
+    else if (Math.sign(offsetX) === 1 && Math.sign(offsetY) === 1) weaponSprite.angle = 180;
     if (lookingRight) {
         weaponSprite.scale.x *= -1;
     }
