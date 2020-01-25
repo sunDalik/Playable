@@ -5,6 +5,7 @@ import {createFadingAttack, createFadingText} from "../../../animations";
 import * as PIXI from "pixi.js";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {TileElement} from "../../tile_elements/tile_element";
+import {randomChoice} from "../../../utils/random_utils";
 
 export class BookOfFlames {
     constructor() {
@@ -22,21 +23,21 @@ export class BookOfFlames {
         this.rarity = RARITY.S;
     }
 
-    attack(wielder, tileDirX, tileDirY) {
+    attack(wielder, dirX, dirY) {
         if (this.uses <= 0) return false;
         let attackTiles = [];
-        if (tileDirX !== 0) {
-            attackTiles = [{x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y},
-                {x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y - 1},
-                {x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y + 1},
-                {x: wielder.tilePosition.x + tileDirX * 2, y: wielder.tilePosition.y},
-                {x: wielder.tilePosition.x + tileDirX * 3, y: wielder.tilePosition.y}];
-        } else if (tileDirY !== 0) {
-            attackTiles = [{x: wielder.tilePosition.x, y: wielder.tilePosition.y + tileDirY},
-                {x: wielder.tilePosition.x - 1, y: wielder.tilePosition.y + tileDirY},
-                {x: wielder.tilePosition.x + 1, y: wielder.tilePosition.y + tileDirY},
-                {x: wielder.tilePosition.x, y: wielder.tilePosition.y + tileDirY * 2},
-                {x: wielder.tilePosition.x, y: wielder.tilePosition.y + tileDirY * 3}];
+        if (dirX !== 0) {
+            attackTiles = [{x: wielder.tilePosition.x + dirX, y: wielder.tilePosition.y},
+                {x: wielder.tilePosition.x + dirX, y: wielder.tilePosition.y - 1},
+                {x: wielder.tilePosition.x + dirX, y: wielder.tilePosition.y + 1},
+                {x: wielder.tilePosition.x + dirX * 2, y: wielder.tilePosition.y},
+                {x: wielder.tilePosition.x + dirX * 3, y: wielder.tilePosition.y}];
+        } else if (dirY !== 0) {
+            attackTiles = [{x: wielder.tilePosition.x, y: wielder.tilePosition.y + dirY},
+                {x: wielder.tilePosition.x - 1, y: wielder.tilePosition.y + dirY},
+                {x: wielder.tilePosition.x + 1, y: wielder.tilePosition.y + dirY},
+                {x: wielder.tilePosition.x, y: wielder.tilePosition.y + dirY * 2},
+                {x: wielder.tilePosition.x, y: wielder.tilePosition.y + dirY * 3}];
         }
         if (attackTiles.length !== 5) return false;
         //maybe ranged attacks should be blocked by chests and statues? who knows...
@@ -67,11 +68,12 @@ export class BookOfFlames {
             }
 
             for (const enemy of enemiesToAttack) {
-                enemy.damage(wielder, atk, tileDirX, tileDirY, this.magical);
+                enemy.damage(wielder, atk, dirX, dirY, this.magical);
             }
             this.uses--;
             this.updateTexture();
             redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
+            this.holdBookAnimation(wielder, dirX, dirY);
             return true;
         } else return false;
     }
@@ -79,6 +81,7 @@ export class BookOfFlames {
     concentrate(wielder, createText = true) {
         if (this.uses < this.maxUses) {
             this.concentration++;
+            this.holdBookAnimation(wielder, 1, 0);
             this.concentratedThisTurn = true;
             if (this.concentration >= this.concentrationLimit) {
                 this.concentration = 0;
@@ -109,5 +112,30 @@ export class BookOfFlames {
             redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
         }
         this.concentratedThisTurn = false;
+    }
+
+    holdBookAnimation(wielder, dirX, dirY) {
+        const offsetMod = 0.3;
+        const offsetX = dirX !== 0 ? dirX * offsetMod : randomChoice([offsetMod, -offsetMod]);
+        const bookSprite = new TileElement(Game.resources["src/images/weapons/book_of_flames.png"].texture, wielder.tilePosition.x + offsetX, wielder.tilePosition.y);
+        Game.world.addChild(bookSprite);
+        wielder.animationSubSprites.push(bookSprite);
+        bookSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+        bookSprite.scaleModifier = 0.85;
+        bookSprite.fitToTile();
+        if (Math.sign(offsetX) === -1) bookSprite.scale.x *= -1;
+
+        const animationTime = 20;
+        let counter = 0;
+        const animation = delta => {
+            counter += delta;
+            if (counter >= animationTime) {
+                Game.world.removeChild(bookSprite);
+                Game.app.ticker.remove(animation);
+            }
+        };
+
+        wielder.animation = animation;
+        Game.app.ticker.add(animation);
     }
 }
