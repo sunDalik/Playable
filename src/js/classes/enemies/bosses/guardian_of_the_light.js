@@ -14,6 +14,7 @@ import {removeEquipmentFromPlayer} from "../../../game_logic";
 import {LyingItem} from "../../equipment/lying_item";
 import {Torch} from "../../equipment/tools/torch";
 import {extinguishTorch, lightPosition} from "../../../drawing/lighting";
+import {updateChain} from "../../../drawing/draw_dunno";
 
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/bosses/guardian_of_the_light/neutral.png"].texture) {
@@ -83,7 +84,6 @@ export class GuardianOfTheLight extends Boss {
                 }
             }
         }
-
     }
 
     teleportPlayer(player, tilePosX, tilePosY) {
@@ -103,6 +103,7 @@ export class GuardianOfTheLight extends Boss {
                 player.zIndex = Game.darkTiles[0][0].zIndex + 1;
                 player.alpha -= alphaStep1;
             } else {
+                updateChain();
                 player.place();
                 player.alpha += alphaStep2;
             }
