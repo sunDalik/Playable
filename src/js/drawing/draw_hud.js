@@ -332,10 +332,10 @@ export function drawMovementKeyBindings() {
     removeAllChildrenFromContainer(container);
     if (!Game.player.dead) {
         const heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
-        const topKey = window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_1].slice(-1);
-        const bottomRowKeys = [window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_1],
-            window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_1],
-            window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_1]].map(key => key.slice(-1));
+        const topKey = getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_1]);
+        const bottomRowKeys = [getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_1]),
+            getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_1]),
+            getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_1])];
         drawKey(container, topKey, heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
@@ -347,10 +347,10 @@ export function drawMovementKeyBindings() {
 
     if (!Game.player2.dead) {
         const heartXOffset = Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * getHealthBarLength(Game.player2) - HUDGuideOffsetX;
-        const topKey = window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_2].slice(-1);
-        const bottomRowKeys = [window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_2],
-            window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_2],
-            window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_2]].map(key => key.slice(-1));
+        const topKey = getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_2]);
+        const bottomRowKeys = [getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_2]),
+            getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_2]),
+            getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_2])];
         drawKey(container, topKey, heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
@@ -445,4 +445,12 @@ export function drawOtherHUD() {
 
 function getHealthBarLength(player) {
     return Math.min(player.maxHealth, healthBarLength);
+}
+
+function getKeyBindSymbol(keyBind) {
+    if (keyBind === "ArrowUp") return "🡱";
+    else if (keyBind === "ArrowLeft") return "🡰";
+    else if (keyBind === "ArrowDown") return "🡳";
+    else if (keyBind === "ArrowRight") return "🡲";
+    else return keyBind.slice(-1);
 }
