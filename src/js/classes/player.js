@@ -104,7 +104,7 @@ export class Player extends AnimatedTileElement {
     }
 
     move(tileStepX, tileStepY, event) {
-        if (otherPlayer(this).charging) return false;
+        if (otherPlayer(this).charging) return false; //???????????????????
         if (this.charging) {
             return this.releaseMagic(tileStepX, tileStepY);
         }
@@ -119,6 +119,11 @@ export class Player extends AnimatedTileElement {
             } else if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type
                 && this.weapon.uses !== undefined && this.weapon.uses === 0 && this.secondHand.uses !== 0) {
                 attackResult = this.secondHand.attack(this, tileStepX, tileStepY);
+            }
+        }
+        if (attackResult) {
+            for (const eq of this.getEquipmentAndMagic()) {
+                if (eq && eq.afterAttack) eq.afterAttack(this, tileStepX, tileStepY);
             }
         }
         if (!attackResult) {
@@ -156,6 +161,7 @@ export class Player extends AnimatedTileElement {
                 this.bump(tileStepX, tileStepY);
             }
         }
+        return true;
     }
 
 

@@ -19,6 +19,8 @@ export class TemplateEquipment {
         //optional
         this.def = 0;
         this.atk = 0;
+        this.nonremoveable = true;
+        this.infinite = true
     }
 
     //for weapons
@@ -49,6 +51,10 @@ export class TemplateEquipment {
 
     //executes when wielder changes his tilePosition (does step or slide)
     onMove(wielder) {
+    }
+
+    //executes after wielder attacks (double attacks don't count... or should they?)
+    afterAttack(wielder, dirX, dirY) {
     }
 
     //executes whenever wielder kills an enemy

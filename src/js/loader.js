@@ -189,6 +189,8 @@ export function loadAll(afterLoad) {
         .add("src/images/headwear/wizard_hat.png")
         .add("src/images/headwear/vampire_crown.png")
         .add("src/images/headwear/battle_helmet.png")
+        .add("src/images/headwear/blade_crown.png")
+        .add("src/images/headwear/blade_crown_blade.png")
 
         .add("src/images/bag/bomb.png")
         .add("src/images/bag/bomb_ticking.png")

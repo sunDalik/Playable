@@ -178,8 +178,9 @@ export function createEnemyAttackTile(tile, animationTime = 8, alpha = 0.5) {
     createFadingAttack(fadingTile, animationTime);
 }
 
-export function createPlayerAttackTile(tile, animationTime = 8, alpha = 0.5) {
+export function createPlayerAttackTile(tile, animationTime = 8, alpha = 0.5, tint = 0xffffff) {
     const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y);
+    fadingTile.tint = tint;
     fadingTile.alpha = alpha;
     fadingTile.zIndex = -2;
     createFadingAttack(fadingTile, animationTime);
