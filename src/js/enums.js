@@ -175,3 +175,14 @@ export const MAP_SYMBOLS = Object.freeze({
     TORCH: "torch",
     END_ROOM_BOUNDARY: "end_bound"
 });
+
+export const LOCAL_STORAGE = Object.freeze({
+    KEY_MOVE_UP_1: "KeyMoveUp1",
+    KEY_MOVE_LEFT_1: "KeyMoveLeft1",
+    KEY_MOVE_DOWN_1: "KeyMoveDown1",
+    KEY_MOVE_RIGHT_1: "KeyMoveRight1",
+    KEY_MOVE_UP_2: "KeyMoveUp2",
+    KEY_MOVE_LEFT_2: "KeyMoveLeft2",
+    KEY_MOVE_DOWN_2: "KeyMoveDown2",
+    KEY_MOVE_RIGHT_2: "KeyMoveRight2",
+});

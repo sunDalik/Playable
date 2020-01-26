@@ -2,6 +2,7 @@ import {Game} from "../game";
 import {keyboard} from "./keyboard_handler";
 import {gotoNextLevel, playerTurn, switchPlayers} from "../game_logic";
 import {toggleMiniMap} from "../drawing/minimap";
+import {LOCAL_STORAGE} from "../enums";
 
 const switchKey = keyboard("KeyZ");
 const secondHandKeyP1 = keyboard("KeyE");
@@ -20,8 +21,18 @@ export function bindKeys() {
     }
     keys = [];
 
-    bindMovement(Game.player, {upCode: "KeyW", leftCode: "KeyA", downCode: "KeyS", rightCode: "KeyD"});
-    bindMovement(Game.player2, {upCode: "KeyI", leftCode: "KeyJ", downCode: "KeyK", rightCode: "KeyL"});
+    bindMovement(Game.player, {
+        upCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_1],
+        leftCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_1],
+        downCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_1],
+        rightCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_1]
+    });
+    bindMovement(Game.player2, {
+        upCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_2],
+        leftCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_2],
+        downCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_2],
+        rightCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_2]
+    });
     bindMagic(Game.player, {oneCode: "Digit1", twoCode: "Digit2", threeCode: "Digit3"});
     bindMagic(Game.player2, {oneCode: "Digit8", twoCode: "Digit9", threeCode: "Digit0"});
 

@@ -25,7 +25,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, LOCAL_STORAGE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
 
 export function drawHUD() {
@@ -332,8 +332,10 @@ export function drawMovementKeyBindings() {
     removeAllChildrenFromContainer(container);
     if (!Game.player.dead) {
         const heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
-        const topKey = "W";
-        const bottomRowKeys = ["A", "S", "D"];
+        const topKey = window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_1].slice(-1);
+        const bottomRowKeys = [window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_1],
+            window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_1],
+            window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_1]].map(key => key.slice(-1));
         drawKey(container, topKey, heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
@@ -345,8 +347,10 @@ export function drawMovementKeyBindings() {
 
     if (!Game.player2.dead) {
         const heartXOffset = Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * getHealthBarLength(Game.player2) - HUDGuideOffsetX;
-        let topKey = "I";
-        const bottomRowKeys = ["L", "K", "J"];
+        const topKey = window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_2].slice(-1);
+        const bottomRowKeys = [window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_2],
+            window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_2],
+            window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_2]].map(key => key.slice(-1));
         drawKey(container, topKey, heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {

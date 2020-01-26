@@ -5,7 +5,7 @@ import {loadAll} from "./loader";
 import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
-import {STAGE, TILE_TYPE} from "./enums";
+import {LOCAL_STORAGE, STAGE, TILE_TYPE} from "./enums";
 import {generateLevel} from "./level_generation/level_generation";
 import {assignDrops, calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
@@ -71,6 +71,7 @@ function setup() {
     Game.app.stage.removeChild(loadingText);
     Game.app.ticker.remove(loadingTextAnimation);
 
+    initLocalStorage();
     //Game.TILESIZE = 40;
     Game.world = new World();
     Game.app.stage.addChild(Game.world);
@@ -225,4 +226,16 @@ function lightRandom() {
                 lightTile(j, i);
         }
     }
+}
+
+function initLocalStorage() {
+    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_1]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_1] = "KeyW";
+    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_1]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_1] = "KeyA";
+    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_1]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_1] = "KeyS";
+    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_1]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_1] = "KeyD";
+
+    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_2]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_2] = "KeyI";
+    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_2]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_2] = "KeyJ";
+    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_2]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_2] = "KeyK";
+    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_2]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_2] = "KeyL";
 }
