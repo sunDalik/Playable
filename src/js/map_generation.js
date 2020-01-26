@@ -263,9 +263,6 @@ export function recalculateTileInDetectionGraph(tileX, tileY) {
 }
 
 export function assignDrops() {
-    randomShuffle(Game.enemies);
-    let enemyIndex = 0;
-
     distributeDrops(Bomb, getRandomInt(3, 4));
     distributeDrops(SmallHealingPotion, getRandomInt(1, 2));
 
@@ -274,27 +271,32 @@ export function assignDrops() {
             distributeDrops(RustySword, 1, ENEMY_TYPE.LIZARD_WARRIOR);
         }
     }
+}
 
-    function distributeDrops(dropConstructor, amount, enemyType = undefined) {
-        //todo: change the function so that whenever its called it reshuffles the array and checks for enemy.drop
-        while (amount > 0) {
-            if (enemyIndex >= Game.enemies.length) {
-                if (Game.boss) {
-                    Game.boss.drops.push(new dropConstructor());
-                    amount--;
-                } else break;
+function distributeDrops(dropConstructor, amount, enemyType = undefined) {
+    randomShuffle(Game.enemies);
+    let enemyIndex = 0;
+    while (amount > 0) {
+        if (enemyIndex >= Game.enemies.length) {
+            if (Game.boss) {
+                Game.boss.drops.push(new dropConstructor());
+                amount--;
+            } else break;
+        } else {
+            const enemy = Game.enemies[enemyIndex];
+            if (enemy.drop !== null
+                || enemy.boss
+                || enemy.role === ROLE.WALL_TRAP
+                || enemy.type === ENEMY_TYPE.MUSHROOM
+                || enemy.type === ENEMY_TYPE.RABBIT && enemy.predator
+                || tileInsideTheBossRoom(enemy.tilePosition.x, enemy.tilePosition.y)
+                || (enemyType !== undefined && enemy.type !== enemyType)) {
+                enemyIndex++;
             } else {
-                const enemy = Game.enemies[enemyIndex];
-                if (enemy.boss || enemy.role === ROLE.WALL_TRAP || enemy.type === ENEMY_TYPE.MUSHROOM || enemy.type === ENEMY_TYPE.RABBIT && enemy.predator
-                    || tileInsideTheBossRoom(enemy.tilePosition.x, enemy.tilePosition.y)
-                    || (enemyType !== undefined && enemy.type !== enemyType)) {
-                    enemyIndex++;
-                } else {
-                    enemy.drop = new dropConstructor();
-                    enemy.energyDrop = 0;
-                    amount--;
-                    enemyIndex++;
-                }
+                enemy.drop = new dropConstructor();
+                enemy.energyDrop = 0;
+                amount--;
+                enemyIndex++;
             }
         }
     }

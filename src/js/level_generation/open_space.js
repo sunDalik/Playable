@@ -1,4 +1,3 @@
-import {generateEntryBasedLevel} from "./entry_based";
 import {Game} from "../game";
 import {MAP_SYMBOLS} from "../enums";
 import {getRandomInt, randomArrayIndex, randomChoice} from "../utils/random_utils";
@@ -9,16 +8,12 @@ import {
     flipVertically,
     mergeRoomIntoLevel,
     outlineWallsWithSuperWalls,
-    outlineWallsWithWalls,
     removeGarbage
 } from "./generation_utils";
 import {arraySum, copy2dArray, init2dArray} from "../utils/basic_utils";
 import {get8Directions} from "../utils/map_utils";
 
 export function generateOpenSpaceLevel() {
-    //return generateEntryBasedLevel();
-
-
     let level = [[]];
     const roomNumber = randomChoice([15, 20]);
     const levelRoomWidth = 5;

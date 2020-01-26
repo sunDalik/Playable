@@ -2,7 +2,7 @@ import {Game} from "../game";
 import {Bomb} from "../classes/equipment/bag/bomb";
 import {removeItemFromPool} from "../game_changer";
 import {RARITY} from "../enums";
-import {randomChoice} from "./random_utils";
+import {randomChoice, randomShuffle} from "./random_utils";
 
 export function getRandomWeapon() {
     if (Game.weaponPool.length === 0) return null;
@@ -31,6 +31,7 @@ export function getRandomChestDrop() {
  */
 function getItemFromPool(pool) {
     if (pool.length === 0) return null;
+    randomShuffle(pool);
     let attempt = 0;
     let item = null;
     while (attempt++ < 200 && item === null) {
