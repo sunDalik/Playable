@@ -436,6 +436,7 @@ export class ParanoidEel extends Boss {
                 && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit) this.waitingToMove = true;
 
             const triggerSpinAttack = () => {
+                if (this.triggeredStraightPoisonAttack || this.triggeredEelSpit || this.triggeredPoisonEelSpit) return;
                 this.triggeredSpinAttack = true;
                 this.correctLook();
                 if (!Game.afterTurn) this.waitingToMove = true;

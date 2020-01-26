@@ -1,5 +1,5 @@
 import {Bullet} from "./bullet";
-import {STAGE} from "../../../enums";
+import {ROLE, STAGE} from "../../../enums";
 import {Game} from "../../../game";
 
 export class ElectricBullet extends Bullet {
@@ -12,8 +12,13 @@ export class ElectricBullet extends Bullet {
 
     attack(entity) {
         if (entity.electricityImmunity > 0) {
-            this.die(false);
-            this.dieFly(entity.tilePosition.x - this.tilePosition.x, entity.tilePosition.y - this.tilePosition.y);
+            if (entity.role === ROLE.PLAYER) {
+                this.atk /= 2;
+                super.attack(entity);
+            } else {
+                this.die(false);
+                this.dieFly(entity.tilePosition.x - this.tilePosition.x, entity.tilePosition.y - this.tilePosition.y);
+            }
         } else super.attack(entity);
     }
 }
