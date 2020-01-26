@@ -275,7 +275,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
         case EQUIPMENT_TYPE.ONE_TIME:
             if (equipment.useItem) equipment.useItem(player);
             if (showHelp) showHelpBox(equipment);
-            break;
+            return null;
     }
     if (!slot) return equipment;
     if (player[slot] && player[slot].nonremoveable) return equipment;
