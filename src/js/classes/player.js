@@ -603,7 +603,12 @@ export class Player extends AnimatedTileElement {
         }
         Game.app.ticker.remove(this.animation);
         this.rotation = 0; //added because of wings. But what if we want the player to rotate when he is attacking with some weapon?...
-        this.secondHand.attack(this, dirX, dirY);
+        const atkRes = this.secondHand.attack(this, dirX, dirY);
+        if (atkRes) {
+            for (const eq of this.getEquipmentAndMagic()) {
+                if (eq && eq.afterAttack) eq.afterAttack(this, dirX, dirY);
+            }
+        }
         redrawSecondHand(this);
     }
 

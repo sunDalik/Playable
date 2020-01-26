@@ -44,10 +44,10 @@ export class BladeCrown {
         //if blade is looking to the right
         const flyDir = randomChoice([-1, 1]);
         const baseAngle = 0;
-        if (dirX === 1) bladeSprite.angle = baseAngle + 90;
-        else if (dirX === -1) bladeSprite.angle = baseAngle - 90;
-        else if (dirY === 1) bladeSprite.angle = baseAngle + 180;
-        else if (dirY === -1) bladeSprite.angle = baseAngle;
+        if (-dirX === 1) bladeSprite.angle = baseAngle + 90;
+        else if (-dirX === -1) bladeSprite.angle = baseAngle - 90;
+        else if (-dirY === 1) bladeSprite.angle = baseAngle + 180;
+        else if (-dirY === -1) bladeSprite.angle = baseAngle;
 
         //the blade points to the right
         if (flyDir === -1) bladeSprite.scale.x *= -1;

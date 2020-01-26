@@ -279,7 +279,8 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
             if (showHelp) showHelpBox(equipment);
             break;
     }
-    if (!slot) return null;
+    if (!slot) return equipment;
+    if (player[slot] && player[slot].nonremoveable) return equipment;
     if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);
     for (const eq of player.getEquipment()) {
         if (eq && eq.onEquipmentDrop) eq.onEquipmentDrop(player, player[slot]);
@@ -317,6 +318,7 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
             break;
     }
     if (!slot) return null;
+    if (player[slot] && player[slot].nonremoveable) return null;
     if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);
     for (const eq of player.getEquipment()) {
         if (eq && eq.onEquipmentDrop) eq.onEquipmentDrop(player, player[slot]);
