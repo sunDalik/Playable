@@ -24,6 +24,7 @@ export function setupMenu() {
     if (Game.loadingTextAnimation) Game.app.ticker.remove(Game.loadingTextAnimation);
     Game.menu = new PIXI.Container();
     Game.menu.sortableChildren = true;
+    Game.menu.choosable = true;
     Game.app.stage.addChild(Game.menu);
     Game.menu.bg = createMenuBG(randomChoice([BG_COLORS.FLOODED_CAVE, BG_COLORS.DARK_TUNNEL]), -10);
     Game.menu.blackBG = createMenuBG(0x000000, -9);
@@ -177,10 +178,15 @@ function createButtons() {
     players[0].scale.set(1, 1);
     players[0].width = players[0].height = players[1].width = players[1].height = buttonHeight;
 
-    const redrawSelection = (button) => {
-        players[0].position.y = players[1].position.y = button.position.y + (buttonHeight + lineWidth / 2) / 2;
-        players[0].position.x = button.position.x - playerOffsetX - players[0].width / 2;
-        players[1].position.x = button.position.x + buttonWidth + playerOffsetX + players[1].width / 2;
+    const redrawSelection = () => {
+        for (const button of buttons) {
+            if (button.chosen) {
+                players[0].position.y = players[1].position.y = button.position.y + (buttonHeight + lineWidth / 2) / 2;
+                players[0].position.x = button.position.x - playerOffsetX - players[0].width / 2;
+                players[1].position.x = button.position.x + buttonWidth + playerOffsetX + players[1].width / 2;
+                break;
+            }
+        }
     };
 
     for (let i = 0; i < buttonTexts.length; i++) {
@@ -217,20 +223,24 @@ function createButtons() {
                 for (const bt of buttons) {
                     bt.rect = bt.redrawRect(topColor, bottomColor);
                     bt.text = bt.redrawText(bottomColor);
+                    bt.chosen = false;
                 }
             };
 
-            const chooseButton = () => {
+            button.chooseButton = () => {
                 unchooseAll();
                 button.rect = button.redrawRect(bottomColor, topColor);
                 button.text = button.redrawText(topColor);
-                redrawSelection(button);
+                button.chosen = true;
+                redrawSelection();
             };
 
-            button.on("mouseover", chooseButton);
+            button.on("mouseover", button.chooseButton);
 
-            const clickButton = () => {
+            button.clickButton = () => {
+                if (!Game.menu.choosable) return;
                 if (i === 0) {
+                    Game.menu.choosable = false;
                     closeBlackBars(() => {
                         Game.menu.visible = false;
                         createLoadingText();
@@ -259,7 +269,7 @@ function createButtons() {
                 }
             };
 
-            button.on("click", clickButton);
+            button.on("click", button.clickButton);
 
             button.scale.x = button.scale.y = 0;
             button.position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
@@ -273,7 +283,7 @@ function createButtons() {
                 players[0].position.y = players[1].position.y = playerOffset + playerSize + playerOffset + (buttonHeight + buttonOffset) * i;
                 Game.menu.addChild(players[0]);
                 Game.menu.addChild(players[1]);
-                chooseButton();
+                button.chooseButton();
             }
 
             let counter = 0;
@@ -284,7 +294,7 @@ function createButtons() {
                 button.position.y = playerOffset + playerSize + playerOffset + (buttonHeight + buttonOffset) * i;
                 if (i === 0) {
                     players[0].scale.x = players[0].scale.y = players[1].scale.x = players[1].scale.y = startScale * easeOutQuad(counter / animationTime);
-                    redrawSelection(button);
+                    redrawSelection();
                 }
                 if (counter >= animationTime) {
                     button.scale.x = button.scale.y = 1;
@@ -298,11 +308,42 @@ function createButtons() {
         }, i * 5);
     }
 
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]);
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P]);
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_UP_1P]);
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_UP_2P]);
+    const keyboardClickButton = () => {
+        if (!Game.menu.visible || !Game.menu.choosable) return;
+        for (const button of buttons) {
+            if (button.chosen) {
+                button.clickButton();
+                break;
+            }
+        }
+    };
 
-    keyboard("Space");
-    keyboard("Enter");
+    const moveDownButton = () => {
+        if (!Game.menu.visible || !Game.menu.choosable) return;
+        for (let i = 0; i < buttons.length; i++) {
+            if (buttons[i].chosen) {
+                buttons[(i + 1) % buttons.length].chooseButton();
+                break;
+            }
+        }
+    };
+
+    const moveUpButton = () => {
+        if (!Game.menu.visible || !Game.menu.choosable) return;
+        for (let i = 0; i < buttons.length; i++) {
+            if (buttons[i].chosen) {
+                if (i - 1 < 0) i = buttons.length;
+                buttons[i - 1].chooseButton();
+                break;
+            }
+        }
+    };
+
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]).press = moveDownButton;
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P]).press = moveDownButton;
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_UP_1P]).press = moveUpButton;
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_UP_2P]).press = moveUpButton;
+
+    keyboard("Space").press = keyboardClickButton;
+    keyboard("Enter").press = keyboardClickButton;
 }
