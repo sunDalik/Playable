@@ -28,7 +28,7 @@ export class FireGoblet extends AnimatedTileElement {
         this.relight();
     }
 
-    push(tileStepX, tileStepY) {
+    interact(player, tileStepX, tileStepY) {
         if (tileStepX === this.direction.x && tileStepY === this.direction.y
             || isBullet(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)
             || isBullet(this.tilePosition.x, this.tilePosition.y)) {

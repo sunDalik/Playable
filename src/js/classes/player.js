@@ -4,7 +4,6 @@ import {AnimatedTileElement} from "./tile_elements/animated_tile_element";
 import {
     ARMOR_TYPE,
     EQUIPMENT_TYPE,
-    INANIMATE_TYPE,
     MAGIC_TYPE,
     ROLE,
     SHIELD_TYPE,
@@ -24,13 +23,7 @@ import {
     redrawWeaponAndSecondHand
 } from "../drawing/draw_hud";
 import {amIInTheBossRoom, isInanimate, isRelativelyEmpty} from "../map_checks";
-import {
-    activateBossMode,
-    gotoNextLevel,
-    removeEquipmentFromPlayer,
-    swapEquipmentWithPlayer,
-    updateInanimates
-} from "../game_logic";
+import {activateBossMode, gotoNextLevel, updateInanimates} from "../game_logic";
 import {lightPlayerPosition} from "../drawing/lighting";
 import {LyingItem} from "./equipment/lying_item";
 import {randomChoice} from "../utils/random_utils";
@@ -129,7 +122,7 @@ export class Player extends AnimatedTileElement {
         if (!attackResult) {
             if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
                 this.bump(tileStepX, tileStepY);
-                this.interactWithInanimateEntity(Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity, tileStepX, tileStepY);
+                Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity.interact(this, tileStepX, tileStepY);
             } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
                 if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
                     Game.unplayable = true;
@@ -462,36 +455,6 @@ export class Player extends AnimatedTileElement {
     setUnmovedTexture() {
         if (this === Game.player) this.texture = Game.resources["src/images/player.png"].texture;
         else this.texture = Game.resources["src/images/player2.png"].texture;
-    }
-
-    //maybe we should make uniform method to interact with inanimates? like... inanimate.interact() ?
-    interactWithInanimateEntity(entity, tileStepX, tileStepY) {
-        switch (entity.type) {
-            case INANIMATE_TYPE.STATUE:
-                if (!entity.marauded) Game.maraudedStatues.push(entity.weapon);
-                if (entity.weapon === null) entity.weapon = removeEquipmentFromPlayer(this, EQUIPMENT_TYPE.WEAPON);
-                else entity.weapon = swapEquipmentWithPlayer(this, entity.weapon);
-                entity.updateTexture();
-                entity.maraud();
-                break;
-            case INANIMATE_TYPE.OBELISK:
-                if (entity.working) {
-                    if (!entity.activated) entity.activate();
-                    else entity.donate(this);
-                }
-                break;
-            case INANIMATE_TYPE.GRAIL:
-                if (entity.magic) {
-                    entity.choose(this);
-                }
-                break;
-            case INANIMATE_TYPE.CHEST:
-                entity.interact(this);
-                break;
-            case INANIMATE_TYPE.FIRE_GOBLET:
-                entity.push(tileStepX, tileStepY);
-                break;
-        }
     }
 
     giveNewMagic(magic, showHelp = true) {

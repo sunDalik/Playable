@@ -37,6 +37,12 @@ export class Grail extends TileElement {
         this.magicSprite.place();
     }
 
+    interact(player) {
+        if (this.magic) {
+            this.choose(player);
+        }
+    }
+
     setMagic(magic) {
         this.magic = magic;
         if (this.magic) {

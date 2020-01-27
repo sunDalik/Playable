@@ -43,6 +43,13 @@ export class Obelisk extends TileElement {
         }
     }
 
+    interact(player) {
+        if (this.working) {
+            if (!this.activated) this.activate();
+            else this.donate(player);
+        }
+    }
+
     activate() {
         if (!this.activated && this.working) {
             this.grail1.setMagic(this.magic1);
@@ -112,6 +119,7 @@ export class Obelisk extends TileElement {
             //createFadingText("Live with it... you will not...", this.position.x, this.position.y);
             longShakeScreen();
         }
+        this.onUpdate();
     }
 
     damage() {

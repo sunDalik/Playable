@@ -7,6 +7,7 @@ import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
+import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 
 export class Statue extends TallTileElement {
     constructor(tilePositionX, tilePositionY, weapon) {
@@ -78,12 +79,18 @@ export class Statue extends TallTileElement {
         }
     }
 
+    interact(player) {
+        if (!this.marauded) this.maraud();
+        if (this.weapon === null) this.weapon = removeEquipmentFromPlayer(player, EQUIPMENT_TYPE.WEAPON);
+        else this.weapon = swapEquipmentWithPlayer(player, this.weapon);
+        this.updateTexture();
+    }
+
     maraud() {
-        if (!this.marauded) {
-            createFadingText("Marauder!", this.position.x, this.position.y);
-            longShakeScreen();
-            this.marauded = true;
-        }
+        this.marauded = true;
+        createFadingText("Marauder!", this.position.x, this.position.y);
+        //longShakeScreen();
+        Game.maraudedStatues.push(this.weapon);
     }
 
     onUpdate() {
