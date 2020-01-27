@@ -25,7 +25,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, HEAD_TYPE, STORAGE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, SHIELD_TYPE, STORAGE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
 
 export function drawHUD() {
@@ -203,7 +203,7 @@ export function redrawSlotContents(player, slot) {
         drawUses();
         if (!player.dead) {
             const keyBind = getKeyBind(player, slot);
-            if (keyBind !== false) drawKey(keyBind);
+            if (keyBind !== false) drawKey(keyBind, container.meta);
         }
     }
     drawStatsForPlayer(player);
@@ -239,24 +239,6 @@ export function redrawSlotContents(player, slot) {
         container.meta.addChild(text);
     }
 
-    //todo: make ONE function that draws key binds!!!!!!!!!!!
-    function drawKey(keyBind) {
-        const key = new PIXI.Container();
-        const text = new PIXI.Text(keyBind, HUDKeyBindTextStyle);
-        const rect = new PIXI.Graphics();
-        rect.beginFill(0xffffff);
-        rect.lineStyle(2, 0x666666, 0.5);
-        const rectHeight = HUDKeyBindSize;
-        let rectWidth = rectHeight;
-        if (keyBind.length > 1) rectWidth = text.width + 10; //hmmm
-        rect.drawRect(0, 0, rectWidth, rectHeight);
-        rect.endFill();
-        text.position.set((rectWidth - text.width) / 2, (rectHeight - text.height) / 2);
-        key.addChild(rect);
-        key.addChild(text);
-        container.meta.addChild(key);
-    }
-
     function getKeyBind(player, slot) {
         const item = player[slot];
         if (slot === "secondHand" && player["secondHand"].equipmentType === EQUIPMENT_TYPE.WEAPON
@@ -288,6 +270,24 @@ export function redrawSlotContents(player, slot) {
             }
         } else return false;
     }
+}
+
+export function drawKey(keyBind, container, posX = 0, posY = 0) {
+    const key = new PIXI.Container();
+    const text = new PIXI.Text(keyBind, HUDKeyBindTextStyle);
+    const rect = new PIXI.Graphics();
+    rect.beginFill(0xffffff);
+    rect.lineStyle(2, 0x666666, 0.5);
+    const rectHeight = HUDKeyBindSize;
+    let rectWidth = rectHeight;
+    if (keyBind.length > 1) rectWidth = text.width + 10; //hmmm
+    rect.drawRect(posX, posY, rectWidth, rectHeight);
+    rect.endFill();
+    text.position.set(posX + (rectWidth - text.width) / 2, posY + (rectHeight - text.height) / 2);
+    key.addChild(rect);
+    key.addChild(text);
+    container.addChild(key);
+    return key;
 }
 
 //should I do enum for all those symbolic values as well? e.g. headwear, secondHand etc...
@@ -335,10 +335,10 @@ export function drawMovementKeyBindings() {
         const bottomRowKeys = [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_1P]),
             getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]),
             getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_1P])];
-        drawKey(container, topKey, heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+        drawKey(topKey, container, heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
-                drawKey(container, bottomRowKeys[i], heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
+                drawKey(bottomRowKeys[i], container, heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize * i + i * HUDGuideKeyOffsetX,
                     heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
             }
         }
@@ -350,31 +350,14 @@ export function drawMovementKeyBindings() {
         const bottomRowKeys = [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P]),
             getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P]),
             getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_2P])];
-        drawKey(container, topKey, heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
+        drawKey(topKey, container, heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
-                drawKey(container, bottomRowKeys[i], heartXOffset - HUDKeyBindSize * (i + 1) - i * HUDGuideKeyOffsetX,
+                drawKey(bottomRowKeys[i], container, heartXOffset - HUDKeyBindSize * (i + 1) - i * HUDGuideKeyOffsetX,
                     heartYOffset + HUDGuideOffsetY + HUDKeyBindSize + HUDGuideKeyOffsetY);
             }
         }
     }
-}
-
-//todo: make ONE function that draws key binds!!!!!!!!!!!
-function drawKey(container, keyText, posX, posY) {
-    const key = new PIXI.Container();
-    const text = new PIXI.Text(keyText, HUDKeyBindTextStyle);
-    const rect = new PIXI.Graphics();
-    rect.beginFill(0xffffff);
-    rect.lineStyle(2, 0x666666, 0.5);
-    const rectSize = HUDKeyBindSize;
-    rect.drawRect(posX, posY, rectSize, rectSize);
-    rect.endFill();
-    text.position.set(posX + (rectSize - text.width) / 2, posY + (rectSize - text.height) / 2);
-    key.addChild(rect);
-    key.addChild(text);
-    container.addChild(key);
-    return key;
 }
 
 export function drawInteractionKeys() {
@@ -387,7 +370,7 @@ export function drawInteractionKeys() {
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
         drawPlayer(Game.player);
         drawPlayer(Game.player2);
-        const ZKey = drawKey(container, getKeyBindSymbol(window.localStorage[STORAGE.KEY_Z_SWITCH]),
+        const ZKey = drawKey(getKeyBindSymbol(window.localStorage[STORAGE.KEY_Z_SWITCH]), container,
             Game.app.renderer.screen.width / 2 - HUDKeyBindSize / 2, offsetY + playerSize / 2 - HUDKeyBindSize / 2);
         ZKey.zIndex = Game.primaryPlayer.zIndex + 1;
 
@@ -408,7 +391,7 @@ export function drawInteractionKeys() {
             icon.width = icon.height = iconSize;
             icon.position.set(posX - iconSize / 2, posY);
             container.addChild(icon);
-            drawKey(container, keyText, posX - HUDKeyBindSize / 2, posY + iconSize + 5);
+            drawKey(keyText, container, posX - HUDKeyBindSize / 2, posY + iconSize + 5);
         }
     }
 }

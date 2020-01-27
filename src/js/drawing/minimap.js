@@ -139,6 +139,7 @@ function getMiniMapHeight() {
 }
 
 //todo: make ONE function that draws key binds!!!!!!!!!!!
+//how doe?
 function initKeyBind() {
     const key = new PIXI.Container();
     const text = new PIXI.Text(getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAP]), HUDKeyBindTextStyle);
