@@ -1,18 +1,17 @@
 import {Game} from "../game";
 import {keyboard} from "./keyboard_handler";
-import {gotoNextLevel, playerTurn, switchPlayers} from "../game_logic";
+import {playerTurn, switchPlayers} from "../game_logic";
 import {toggleMiniMap} from "../drawing/minimap";
-import {LOCAL_STORAGE} from "../enums";
+import {STORAGE} from "../enums";
 
-const switchKey = keyboard("KeyZ");
-const secondHandKeyP1 = keyboard("KeyE");
-const secondHandKeyP2 = keyboard("KeyO");
-const weaponKeyP1 = keyboard("KeyQ");
-const weaponKeyP2 = keyboard("KeyU");
-const bagKeyP1 = keyboard("KeyF");
-const bagKeyP2 = keyboard("KeyH");
-const releaseKey = keyboard("Space");
-const mapKey = keyboard("KeyM");
+const switchKey = keyboard(window.localStorage[STORAGE.KEY_Z_SWITCH]);
+const secondHandKeyP1 = keyboard(window.localStorage[STORAGE.KEY_EXTRA_1P]);
+const secondHandKeyP2 = keyboard(window.localStorage[STORAGE.KEY_EXTRA_2P]);
+const weaponKeyP1 = keyboard(window.localStorage[STORAGE.KEY_WEAPON_1P]);
+const weaponKeyP2 = keyboard(window.localStorage[STORAGE.KEY_WEAPON_2P]);
+const bagKeyP1 = keyboard(window.localStorage[STORAGE.KEY_BAG_1P]);
+const bagKeyP2 = keyboard(window.localStorage[STORAGE.KEY_BAG_2P]);
+const mapKey = keyboard(window.localStorage[STORAGE.KEY_MAP]);
 let keys = [];
 
 export function bindKeys() {
@@ -22,19 +21,27 @@ export function bindKeys() {
     keys = [];
 
     bindMovement(Game.player, {
-        upCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_1],
-        leftCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_1],
-        downCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_1],
-        rightCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_1]
+        upCode: window.localStorage[STORAGE.KEY_MOVE_UP_1P],
+        leftCode: window.localStorage[STORAGE.KEY_MOVE_LEFT_1P],
+        downCode: window.localStorage[STORAGE.KEY_MOVE_DOWN_1P],
+        rightCode: window.localStorage[STORAGE.KEY_MOVE_RIGHT_1P]
     });
     bindMovement(Game.player2, {
-        upCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_2],
-        leftCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_2],
-        downCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_2],
-        rightCode: window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_2]
+        upCode: window.localStorage[STORAGE.KEY_MOVE_UP_2P],
+        leftCode: window.localStorage[STORAGE.KEY_MOVE_LEFT_2P],
+        downCode: window.localStorage[STORAGE.KEY_MOVE_DOWN_2P],
+        rightCode: window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P]
     });
-    bindMagic(Game.player, {oneCode: "Digit1", twoCode: "Digit2", threeCode: "Digit3"});
-    bindMagic(Game.player2, {oneCode: "Digit8", twoCode: "Digit9", threeCode: "Digit0"});
+    bindMagic(Game.player, {
+        oneCode: window.localStorage[STORAGE.KEY_MAGIC_1_1P],
+        twoCode: window.localStorage[STORAGE.KEY_MAGIC_2_1P],
+        threeCode: window.localStorage[STORAGE.KEY_MAGIC_3_1P]
+    });
+    bindMagic(Game.player2, {
+        oneCode: window.localStorage[STORAGE.KEY_MAGIC_1_2P],
+        twoCode: window.localStorage[STORAGE.KEY_MAGIC_2_2P],
+        threeCode: window.localStorage[STORAGE.KEY_MAGIC_3_2P]
+    });
 
     switchKey.press = () => {
         playerTurn(null, switchPlayers, true)
@@ -66,13 +73,6 @@ export function bindKeys() {
 
     mapKey.press = () => {
         toggleMiniMap();
-    };
-
-    releaseKey.press = () => {
-        playerTurn(null, () => {
-            if (Game.player.releaseMagic()) return true;
-            else return Game.player2.releaseMagic();
-        }, true);
     };
 
     //keyboard("KeyN").press = gotoNextLevel;

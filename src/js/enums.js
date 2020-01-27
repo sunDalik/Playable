@@ -176,13 +176,32 @@ export const MAP_SYMBOLS = Object.freeze({
     END_ROOM_BOUNDARY: "end_bound"
 });
 
-export const LOCAL_STORAGE = Object.freeze({
-    KEY_MOVE_UP_1: "KeyMoveUp1",
-    KEY_MOVE_LEFT_1: "KeyMoveLeft1",
-    KEY_MOVE_DOWN_1: "KeyMoveDown1",
-    KEY_MOVE_RIGHT_1: "KeyMoveRight1",
-    KEY_MOVE_UP_2: "KeyMoveUp2",
-    KEY_MOVE_LEFT_2: "KeyMoveLeft2",
-    KEY_MOVE_DOWN_2: "KeyMoveDown2",
-    KEY_MOVE_RIGHT_2: "KeyMoveRight2",
+export const STORAGE = Object.freeze({
+    KEY_MOVE_UP_1P: "KeyMoveUp1",
+    KEY_MOVE_LEFT_1P: "KeyMoveLeft1",
+    KEY_MOVE_DOWN_1P: "KeyMoveDown1",
+    KEY_MOVE_RIGHT_1P: "KeyMoveRight1",
+
+    KEY_MOVE_UP_2P: "KeyMoveUp2",
+    KEY_MOVE_LEFT_2P: "KeyMoveLeft2",
+    KEY_MOVE_DOWN_2P: "KeyMoveDown2",
+    KEY_MOVE_RIGHT_2P: "KeyMoveRight2",
+
+    KEY_MAGIC_1_1P: "KeyMagic1Player1",
+    KEY_MAGIC_2_1P: "KeyMagic2Player1",
+    KEY_MAGIC_3_1P: "KeyMagic3Player1",
+
+    KEY_MAGIC_1_2P: "KeyMagic1Player2",
+    KEY_MAGIC_2_2P: "KeyMagic2Player2",
+    KEY_MAGIC_3_2P: "KeyMagic3Player2",
+
+    KEY_WEAPON_1P: "KeyWeaponPlayer1",
+    KEY_WEAPON_2P: "KeyWeaponPlayer2",
+    KEY_EXTRA_1P: "KeyExtraPlayer1",
+    KEY_EXTRA_2P: "KeyExtraPlayer2",
+    KEY_BAG_1P: "KeyBagPlayer1",
+    KEY_BAG_2P: "KeyBagPlayer2",
+
+    KEY_Z_SWITCH: "KeyZSwitch",
+    KEY_MAP: "KeyMap"
 });

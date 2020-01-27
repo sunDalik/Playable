@@ -25,7 +25,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, HEAD_TYPE, LOCAL_STORAGE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, STORAGE, MAGIC_TYPE, SHIELD_TYPE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
 
 export function drawHUD() {
@@ -239,19 +239,19 @@ export function redrawSlotContents(player, slot) {
         container.meta.addChild(text);
     }
 
+    //todo: make ONE function that draws key binds!!!!!!!!!!!
     function drawKey(keyBind) {
         const key = new PIXI.Container();
         const text = new PIXI.Text(keyBind, HUDKeyBindTextStyle);
         const rect = new PIXI.Graphics();
         rect.beginFill(0xffffff);
         rect.lineStyle(2, 0x666666, 0.5);
-        const newLines = (keyBind.match(/\n/g) || '').length + 1;
-        const rectHeight = HUDKeyBindSize * newLines;
+        const rectHeight = HUDKeyBindSize;
         let rectWidth = rectHeight;
-        if (keyBind.length > 1) rectWidth = text.width + 10;
-        rect.drawRect(0, -(newLines - 1) * rectHeight / 2, rectWidth, rectHeight);
+        if (keyBind.length > 1) rectWidth = text.width + 10; //hmmm
+        rect.drawRect(0, 0, rectWidth, rectHeight);
         rect.endFill();
-        text.position.set((rectWidth - text.width) / 2, (rectHeight - text.height) / 2 - ((newLines - 1) * rectHeight / 2));
+        text.position.set((rectWidth - text.width) / 2, (rectHeight - text.height) / 2);
         key.addChild(rect);
         key.addChild(text);
         container.meta.addChild(key);
@@ -259,39 +259,38 @@ export function redrawSlotContents(player, slot) {
 
     function getKeyBind(player, slot) {
         const item = player[slot];
-        let release = "";
-        if (item.equipmentType === EQUIPMENT_TYPE.MAGIC && item.type === MAGIC_TYPE.FIREBALL && item.multiplier > 0) release = " or\nspace";
         if (slot === "secondHand" && player["secondHand"].equipmentType === EQUIPMENT_TYPE.WEAPON
             && ((player["weapon"] === null || player["weapon"].type !== player["secondHand"].type)
                 || player["weapon"] && player["weapon"].type === player["secondHand"].type && player["secondHand"].uses < player["weapon"].uses && player["weapon"].uses === player["weapon"].maxUses)) {
-            if (player === Game.player) return "E";
-            else return "O";
+            if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_1P]);
+            else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_2P]);
 
         } else if (slot === "weapon" && item.concentrate && item.uses < item.maxUses) {
-            if (player === Game.player) return "Q";
-            else return "U";
+            if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_WEAPON_1P]);
+            else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_WEAPON_2P]);
         } else if (slot === "bag" && item.amount > 0) {
-            if (player === Game.player) return "F";
-            else return "H";
+            if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_BAG_1P]);
+            else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_BAG_2P]);
         } else if (item.uses > 0 && !item.passive) {
             if (item.equipmentType === EQUIPMENT_TYPE.SHIELD && item.type !== SHIELD_TYPE.PASSIVE) {
-                if (player === Game.player) return "E";
-                else return "O"; // bruh should do some keyBindings file with all the values
+                if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_1P]);
+                else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_2P]);
             } else if (player === Game.player) {
-                if (item === player.magic1) return "1" + release;
-                else if (item === player.magic2) return "2" + release;
-                else if (item === player.magic3) return "3" + release;
+                if (item === player.magic1) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_1_1P]);
+                else if (item === player.magic2) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_2_1P]);
+                else if (item === player.magic3) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_3_1P]);
                 else return false;
             } else {
-                if (item === player.magic1) return "8" + release;
-                else if (item === player.magic2) return "9" + release;
-                else if (item === player.magic3) return "0" + release;
+                if (item === player.magic1) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_1_2P]);
+                else if (item === player.magic2) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_2_2P]);
+                else if (item === player.magic3) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_3_2P]);
                 else return false;
             }
         } else return false;
     }
 }
 
+//should I do enum for all those symbolic values as well? e.g. headwear, secondHand etc...
 export function redrawAllMagicSlots(player) {
     redrawSlotContents(player, "magic1");
     redrawSlotContents(player, "magic2");
@@ -332,10 +331,10 @@ export function drawMovementKeyBindings() {
     removeAllChildrenFromContainer(container);
     if (!Game.player.dead) {
         const heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
-        const topKey = getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_1]);
-        const bottomRowKeys = [getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_1]),
-            getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_1]),
-            getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_1])];
+        const topKey = getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_UP_1P]);
+        const bottomRowKeys = [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_1P]),
+            getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]),
+            getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_1P])];
         drawKey(container, topKey, heartXOffset + getHealthBarLength(Game.player) * (heartColOffset + heartSize) + HUDKeyBindSize + HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
@@ -347,10 +346,10 @@ export function drawMovementKeyBindings() {
 
     if (!Game.player2.dead) {
         const heartXOffset = Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * getHealthBarLength(Game.player2) - HUDGuideOffsetX;
-        const topKey = getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_2]);
-        const bottomRowKeys = [getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_2]),
-            getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_2]),
-            getKeyBindSymbol(window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_2])];
+        const topKey = getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_UP_2P]);
+        const bottomRowKeys = [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P]),
+            getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P]),
+            getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_2P])];
         drawKey(container, topKey, heartXOffset - HUDKeyBindSize * 2 - HUDGuideKeyOffsetX, heartYOffset + HUDGuideOffsetY);
         for (let i = 0; i < bottomRowKeys.length; i++) {
             if (bottomRowKeys[i] !== "") {
@@ -361,6 +360,7 @@ export function drawMovementKeyBindings() {
     }
 }
 
+//todo: make ONE function that draws key binds!!!!!!!!!!!
 function drawKey(container, keyText, posX, posY) {
     const key = new PIXI.Container();
     const text = new PIXI.Text(keyText, HUDKeyBindTextStyle);
@@ -387,7 +387,7 @@ export function drawInteractionKeys() {
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
         drawPlayer(Game.player);
         drawPlayer(Game.player2);
-        const ZKey = drawKey(container, "Z",
+        const ZKey = drawKey(container, getKeyBindSymbol(window.localStorage[STORAGE.KEY_Z_SWITCH]),
             Game.app.renderer.screen.width / 2 - HUDKeyBindSize / 2, offsetY + playerSize / 2 - HUDKeyBindSize / 2);
         ZKey.zIndex = Game.primaryPlayer.zIndex + 1;
 
@@ -447,7 +447,7 @@ function getHealthBarLength(player) {
     return Math.min(player.maxHealth, healthBarLength);
 }
 
-function getKeyBindSymbol(keyBind) {
+export function getKeyBindSymbol(keyBind) {
     if (keyBind === "ArrowUp") return "🡱";
     else if (keyBind === "ArrowLeft") return "🡰";
     else if (keyBind === "ArrowDown") return "🡳";

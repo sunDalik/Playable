@@ -8,9 +8,10 @@ import {
     slotBorderOffsetX
 } from "./draw_constants";
 import * as PIXI from "pixi.js";
-import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "../enums";
+import {INANIMATE_TYPE, ROLE, STORAGE, TILE_TYPE} from "../enums";
 import {camera} from "../classes/game/camera";
 import {removeAllChildrenFromContainer} from "./draw_utils";
+import {getKeyBindSymbol} from "./draw_hud";
 
 let mapCollapsed = true;
 let mapMask = new PIXI.Graphics();
@@ -137,9 +138,10 @@ function getMiniMapHeight() {
     return Game.map.length * miniMapPixelSize * HUD.minimap.scale.y;
 }
 
+//todo: make ONE function that draws key binds!!!!!!!!!!!
 function initKeyBind() {
     const key = new PIXI.Container();
-    const text = new PIXI.Text("M", HUDKeyBindTextStyle);
+    const text = new PIXI.Text(getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAP]), HUDKeyBindTextStyle);
     const rect = new PIXI.Graphics();
     rect.beginFill(0xffffff);
     rect.lineStyle(2, 0x666666, 0.5);

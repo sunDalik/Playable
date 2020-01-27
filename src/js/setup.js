@@ -5,7 +5,7 @@ import {loadAll} from "./loader";
 import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
-import {LOCAL_STORAGE, STAGE, TILE_TYPE} from "./enums";
+import {STAGE, STORAGE, TILE_TYPE} from "./enums";
 import {generateLevel} from "./level_generation/level_generation";
 import {assignDrops, calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
@@ -228,14 +228,32 @@ function lightRandom() {
     }
 }
 
-function initLocalStorage() {
-    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_1]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_1] = "KeyW";
-    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_1]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_1] = "KeyA";
-    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_1]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_1] = "KeyS";
-    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_1]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_1] = "KeyD";
+function initLocalStorage(reset = false) {
+    if (reset || !window.localStorage[STORAGE.KEY_MOVE_UP_1P]) window.localStorage[STORAGE.KEY_MOVE_UP_1P] = "KeyW";
+    if (reset || !window.localStorage[STORAGE.KEY_MOVE_LEFT_1P]) window.localStorage[STORAGE.KEY_MOVE_LEFT_1P] = "KeyA";
+    if (reset || !window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]) window.localStorage[STORAGE.KEY_MOVE_DOWN_1P] = "KeyS";
+    if (reset || !window.localStorage[STORAGE.KEY_MOVE_RIGHT_1P]) window.localStorage[STORAGE.KEY_MOVE_RIGHT_1P] = "KeyD";
 
-    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_2]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_UP_2] = "KeyI";
-    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_2]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_LEFT_2] = "KeyJ";
-    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_2]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_DOWN_2] = "KeyK";
-    if (!window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_2]) window.localStorage[LOCAL_STORAGE.KEY_MOVE_RIGHT_2] = "KeyL";
+    if (reset || !window.localStorage[STORAGE.KEY_MOVE_UP_2P]) window.localStorage[STORAGE.KEY_MOVE_UP_2P] = "KeyI";
+    if (reset || !window.localStorage[STORAGE.KEY_MOVE_LEFT_2P]) window.localStorage[STORAGE.KEY_MOVE_LEFT_2P] = "KeyJ";
+    if (reset || !window.localStorage[STORAGE.KEY_MOVE_DOWN_2P]) window.localStorage[STORAGE.KEY_MOVE_DOWN_2P] = "KeyK";
+    if (reset || !window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P]) window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P] = "KeyL";
+
+    if (reset || !window.localStorage[STORAGE.KEY_MAGIC_1_1P]) window.localStorage[STORAGE.KEY_MAGIC_1_1P] = "Digit1";
+    if (reset || !window.localStorage[STORAGE.KEY_MAGIC_2_1P]) window.localStorage[STORAGE.KEY_MAGIC_2_1P] = "Digit2";
+    if (reset || !window.localStorage[STORAGE.KEY_MAGIC_3_1P]) window.localStorage[STORAGE.KEY_MAGIC_3_1P] = "Digit3";
+
+    if (reset || !window.localStorage[STORAGE.KEY_MAGIC_1_2P]) window.localStorage[STORAGE.KEY_MAGIC_1_2P] = "Digit8";
+    if (reset || !window.localStorage[STORAGE.KEY_MAGIC_2_2P]) window.localStorage[STORAGE.KEY_MAGIC_2_2P] = "Digit9";
+    if (reset || !window.localStorage[STORAGE.KEY_MAGIC_3_2P]) window.localStorage[STORAGE.KEY_MAGIC_3_2P] = "Digit0";
+
+    if (reset || !window.localStorage[STORAGE.KEY_WEAPON_1P]) window.localStorage[STORAGE.KEY_WEAPON_1P] = "KeyQ";
+    if (reset || !window.localStorage[STORAGE.KEY_WEAPON_2P]) window.localStorage[STORAGE.KEY_WEAPON_2P] = "KeyU";
+    if (reset || !window.localStorage[STORAGE.KEY_EXTRA_1P]) window.localStorage[STORAGE.KEY_EXTRA_1P] = "KeyE";
+    if (reset || !window.localStorage[STORAGE.KEY_EXTRA_2P]) window.localStorage[STORAGE.KEY_EXTRA_2P] = "KeyO";
+    if (reset || !window.localStorage[STORAGE.KEY_BAG_1P]) window.localStorage[STORAGE.KEY_BAG_1P] = "KeyF";
+    if (reset || !window.localStorage[STORAGE.KEY_BAG_2P]) window.localStorage[STORAGE.KEY_BAG_2P] = "KeyH";
+
+    if (reset || !window.localStorage[STORAGE.KEY_Z_SWITCH]) window.localStorage[STORAGE.KEY_Z_SWITCH] = "KeyZ";
+    if (reset || !window.localStorage[STORAGE.KEY_MAP]) window.localStorage[STORAGE.KEY_MAP] = "KeyM";
 }
