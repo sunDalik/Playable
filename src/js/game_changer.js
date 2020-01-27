@@ -79,6 +79,14 @@ export function incrementStage() {
     }
 }
 
+export const BG_COLORS = {
+    FLOODED_CAVE: 0xabcfd1,
+    DARK_TUNNEL: 0x666666,
+    RUINS: 0xd8d9d7,
+    DUNNO: 0x75c978,
+    FINALE: 0xcc76cc
+};
+
 export function setVariablesForStage() {
     switch (Game.stage) {
         case STAGE.FLOODED_CAVE:
@@ -87,7 +95,7 @@ export function setVariablesForStage() {
             Game.obeliskRooms = rooms.FCObeliskRooms;
             Game.chestRooms = rooms.FCChestRooms;
             Game.bossRooms = rooms.FCBossRooms;
-            Game.BGColor = 0xabcfd1;
+            Game.BGColor = BG_COLORS.FLOODED_CAVE;
             assignRarityChances(55, 88, 97); // 55% 33% 9% 3%
             break;
         case STAGE.DARK_TUNNEL:
@@ -96,19 +104,19 @@ export function setVariablesForStage() {
             Game.obeliskRooms = rooms.DTObeliskRooms;
             Game.chestRooms = rooms.DTChestRooms;
             Game.bossRooms = rooms.DTBossRooms;
-            Game.BGColor = 0x666666;
+            Game.BGColor = BG_COLORS.DARK_TUNNEL;
             assignRarityChances(22, 78, 94); // 22% 56% 16% 6%
             break;
         case STAGE.RUINS:
-            Game.BGColor = 0xd8d9d7;
+            Game.BGColor = BG_COLORS.RUINS;
             assignRarityChances(10, 55, 91); // 10% 45% 36% 9%
             break;
         case STAGE.LABYRINTH:
-            Game.BGColor = 0x75c978;
+            Game.BGColor = BG_COLORS.DUNNO;
             assignRarityChances(2, 36, 87); // 2% 34% 51% 13%
             break;
         case STAGE.FINALE:
-            Game.BGColor = 0xcc76cc;
+            Game.BGColor = BG_COLORS.FINALE;
             assignRarityChances(0, 10, 75); // 0% 10% 65% 25%
             break;
     }

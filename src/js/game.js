@@ -83,3 +83,6 @@ Game.bossExit = null;
 Game.bossEntry = null;
 Game.bossEntryOpened = false;
 Game.savedTiles = [];
+
+Game.loadingText = null;
+Game.loadingTextAnimation = null;

@@ -38,8 +38,10 @@ export function closeBlackBars(callback) {
         if (counter >= blackBarMoveAnimationTime) {
             blackBarLeft.position.x = 0;
             blackBarRight.position.x = Game.app.renderer.screen.width / 2;
-            Game.player.cancelAnimation();
-            Game.player2.cancelAnimation();
+            if (Game.player) {
+                Game.player.cancelAnimation();
+                Game.player2.cancelAnimation();
+            }
             Game.app.ticker.remove(animation);
             setTickTimeout(callback, 0);
         }

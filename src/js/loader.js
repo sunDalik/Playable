@@ -4,6 +4,8 @@ export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/player.png")
         .add("src/images/player2.png")
+        .add("src/images/player_hd.png")
+        .add("src/images/player2_hd.png")
         .add("src/images/player_moved.png")
         .add("src/images/player2_moved.png")
         .add("src/images/fire.png")
