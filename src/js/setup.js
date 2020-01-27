@@ -98,7 +98,7 @@ export function setupGame() {
     initializeLevel();
     //test();
     //Game.world.scale.set(0.5, 0.5); //it works!
-    //camera.center()();
+    //camera.center();
 }
 
 export function initializeLevel() {

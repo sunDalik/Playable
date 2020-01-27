@@ -6,6 +6,8 @@ import {BG_COLORS} from "./game_changer";
 import {setTickTimeout} from "./utils/game_utils";
 import {createLoadingText, setupGame} from "./setup";
 import {closeBlackBars} from "./drawing/hud_animations";
+import {keyboard} from "./keyboard/keyboard_handler";
+import {STORAGE} from "./enums";
 
 const ppAnimationTime1 = 35;
 const ppAnimationTime2 = 35;
@@ -15,6 +17,7 @@ const playerSize = 300;
 const playerOffset = 75;
 let topColor = 0x000000;
 let bottomColor = 0xffffff;
+let player1, player2;
 
 export function setupMenu() {
     if (Game.loadingText) Game.app.stage.removeChild(Game.loadingText);
@@ -24,7 +27,7 @@ export function setupMenu() {
     Game.app.stage.addChild(Game.menu);
     Game.menu.bg = createMenuBG(randomChoice([BG_COLORS.FLOODED_CAVE, BG_COLORS.DARK_TUNNEL]), -10);
     Game.menu.blackBG = createMenuBG(0x000000, -9);
-    let [player1, player2] = createMenuTrianglesAnimation();
+    [player1, player2] = createMenuTrianglesAnimation();
     setTickTimeout(() => {
         movePlayersUp([player1, player2]);
         setTickTimeout(() => {
@@ -46,6 +49,8 @@ function createMenuBG(color = 0x666666, zIndex = -10) {
 function createMenuTrianglesAnimation() {
     const p1 = new PIXI.Sprite(Game.resources["src/images/player_hd.png"].texture);
     const p2 = new PIXI.Sprite(Game.resources["src/images/player2_hd.png"].texture);
+    p1.anchor.set(0.5, 0.5);
+    p2.anchor.set(0.5, 0.5);
     if (Math.random() < 0.5) {
         p1.zIndex = -1;
         p2.zIndex = -2;
@@ -58,16 +63,16 @@ function createMenuTrianglesAnimation() {
         bottomColor = 0xffffff;
     }
     p1.width = p1.height = p2.width = p2.height = playerSize;
-    p1.position.x = p2.position.x = Game.app.renderer.screen.width / 2 - p1.width / 2;
+    p1.position.x = p2.position.x = Game.app.renderer.screen.width / 2;
     let p1MoveSign;
     if (Math.random() < 0.5) {
-        p1.position.y = -p1.height;
+        p1.position.y = -p1.height / 2;
         p1MoveSign = 1;
-        p2.position.y = Game.app.renderer.screen.height;
+        p2.position.y = Game.app.renderer.screen.height + p1.height / 2;
     } else {
-        p1.position.y = Game.app.renderer.screen.height;
+        p1.position.y = Game.app.renderer.screen.height + p1.height / 2;
         p1MoveSign = -1;
-        p2.position.y = -p1.height;
+        p2.position.y = -p1.height / 2;
     }
     Game.menu.addChild(p1);
     Game.menu.addChild(p2);
@@ -107,9 +112,9 @@ function createMenuTrianglesAnimation() {
                 p1.position.y = p1StartVal + p1MoveSign * moveEndChange;
                 p2.position.y = p2StartVal - p1MoveSign * moveEndChange;
                 p1A.visible = p2A.visible = true;
-                p1A.position.x = p2A.position.x = p1.position.x + p1A.width / 2;
-                p1A.position.y = p1.position.y + p1.height / 2;
-                p2A.position.y = p2.position.y + p2.height / 2;
+                p1A.position.x = p2A.position.x = p1.position.x;
+                p1A.position.y = p1.position.y;
+                p2A.position.y = p2.position.y;
             }
             Game.menu.blackBG.alpha = 1 - (counter - animationTime) / animationTime2 * 3;
             p1A.alpha = p2A.alpha = alphaStartVal - alphaStartVal * easeOutQuad((counter - animationTime) / animationTime2);
@@ -128,7 +133,7 @@ function createMenuTrianglesAnimation() {
 
 function movePlayersUp(players) {
     const animationTime = ppUpAnimationTime;
-    const endChange = -players[0].position.y + playerOffset;
+    const endChange = -players[0].position.y + players[0].height / 2 + playerOffset;
     const startValues = players.map(player => player.position.y);
     let counter = 0;
     const animation = delta => {
@@ -147,20 +152,45 @@ function movePlayersUp(players) {
 }
 
 function createButtons() {
-    const buttons = ["PLAY", "SETTINGS"];
+    const buttonTexts = ["PLAY", "SETTINGS", "SPIN"];
+    const buttons = [];
+    const buttonWidth = 220;
+    const buttonHeight = 66;
+    const buttonOffset = 25;
+    const playerOffsetX = 20;
+    const lineWidth = 4;
     const animationTime = 20;
+    let players;
+    if (Math.random() < 0.5) {
+        players = [new PIXI.Sprite(Game.resources["src/images/player_hd.png"].texture),
+            new PIXI.Sprite(Game.resources["src/images/player2_hd.png"].texture)];
+        players[0].angle = 90;
+        players[1].angle = 90;
+    } else {
+        players = [new PIXI.Sprite(Game.resources["src/images/player2_hd.png"].texture),
+            new PIXI.Sprite(Game.resources["src/images/player_hd.png"].texture)];
+        players[0].angle = -90;
+        players[1].angle = -90;
+    }
+    players[0].anchor.set(0.5, 0.5);
+    players[1].anchor.set(0.5, 0.5);
+    players[0].scale.set(1, 1);
+    players[0].width = players[0].height = players[1].width = players[1].height = buttonHeight;
 
-    for (let i = 0; i < buttons.length; i++) {
+    const redrawSelection = (button) => {
+        players[0].position.y = players[1].position.y = button.position.y + (buttonHeight + lineWidth / 2) / 2;
+        players[0].position.x = button.position.x - playerOffsetX - players[0].width / 2;
+        players[1].position.x = button.position.x + buttonWidth + playerOffsetX + players[1].width / 2;
+    };
+
+    for (let i = 0; i < buttonTexts.length; i++) {
         setTickTimeout(() => {
             const button = new PIXI.Container();
             button.interactive = true;
             button.buttonMode = true;
-            const buttonWidth = 220;
-            const buttonHeight = 66;
-            const buttonOffset = 25;
-            const lineWidth = 4;
 
-            const redrawRect = (color1, color2) => {
+            button.redrawRect = (color1, color2) => {
+                if (button.rect) button.removeChild(button.rect);
                 const rect = new PIXI.Graphics();
                 rect.lineStyle(lineWidth, color2);
                 rect.beginFill(color1);
@@ -169,35 +199,82 @@ function createButtons() {
                 return rect;
             };
 
-            const redrawText = color => {
-                const text = new PIXI.Text(buttons[i], {fontSize: 30, fill: color, fontWeight: "bold"});
+            button.redrawText = color => {
+                if (button.text) button.removeChild(button.text);
+                const text = new PIXI.Text(buttonTexts[i], {fontSize: 30, fill: color, fontWeight: "bold"});
                 text.position.set(button.rect.width / 2 - text.width / 2 - lineWidth / 2, button.rect.height / 2 - text.height / 2 - lineWidth / 2);
                 button.addChild(text);
                 return text;
             };
 
-            button.rect = redrawRect(topColor, bottomColor);
-            button.text = redrawText(bottomColor);
+            button.rect = button.redrawRect(topColor, bottomColor);
+            button.text = button.redrawText(bottomColor);
 
             Game.menu.addChild(button);
-            button.scale.x = button.scale.y = 0;
-            button.on("mouseover", () => {
-                button.rect = redrawRect(bottomColor, topColor);
-                button.text = redrawText(topColor);
-            });
-            button.on("mouseout", () => {
-                button.rect = redrawRect(topColor, bottomColor);
-                button.text = redrawText(bottomColor);
-            });
-            button.on("click", () => {
+            buttons.push(button);
+
+            const unchooseAll = () => {
+                for (const bt of buttons) {
+                    bt.rect = bt.redrawRect(topColor, bottomColor);
+                    bt.text = bt.redrawText(bottomColor);
+                }
+            };
+
+            const chooseButton = () => {
+                unchooseAll();
+                button.rect = button.redrawRect(bottomColor, topColor);
+                button.text = button.redrawText(topColor);
+                redrawSelection(button);
+            };
+
+            button.on("mouseover", chooseButton);
+
+            const clickButton = () => {
                 if (i === 0) {
                     closeBlackBars(() => {
                         Game.menu.visible = false;
                         createLoadingText();
                         setupGame();
                     });
+                } else if (i === 1) {
+
+                } else if (i === 2) {
+                    let sign = randomChoice([-1, 1]);
+                    for (const player of [player1, player2]) {
+                        let counter = 0;
+                        const spinSign = sign;
+                        sign *= -1;
+                        const animationTime = 30;
+
+                        const animation = delta => {
+                            counter += delta;
+                            player.angle = easeOutQuad(counter / animationTime) * 360 * spinSign;
+                            if (counter >= animationTime) {
+                                player.angle = 0;
+                                Game.app.ticker.remove(animation);
+                            }
+                        };
+                        Game.app.ticker.add(animation);
+                    }
                 }
-            });
+            };
+
+            button.on("click", clickButton);
+
+            button.scale.x = button.scale.y = 0;
+            button.position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
+            button.position.y = playerOffset + playerSize + playerOffset + (buttonHeight + buttonOffset) * i;
+
+            const startScale = players[0].scale.x;
+            if (i === 0) {
+                players[0].scale.x = players[0].scale.y = players[1].scale.x = players[1].scale.y = 0;
+                players[0].position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
+                players[1].position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
+                players[0].position.y = players[1].position.y = playerOffset + playerSize + playerOffset + (buttonHeight + buttonOffset) * i;
+                Game.menu.addChild(players[0]);
+                Game.menu.addChild(players[1]);
+                chooseButton();
+            }
 
             let counter = 0;
             const animation = delta => {
@@ -205,12 +282,27 @@ function createButtons() {
                 button.scale.x = button.scale.y = easeOutQuad(counter / animationTime);
                 button.position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
                 button.position.y = playerOffset + playerSize + playerOffset + (buttonHeight + buttonOffset) * i;
+                if (i === 0) {
+                    players[0].scale.x = players[0].scale.y = players[1].scale.x = players[1].scale.y = startScale * easeOutQuad(counter / animationTime);
+                    redrawSelection(button);
+                }
                 if (counter >= animationTime) {
                     button.scale.x = button.scale.y = 1;
+                    if (i === 0) {
+                        players[0].scale.x = players[0].scale.y = players[1].scale.x = players[1].scale.y = startScale;
+                    }
                     Game.app.ticker.remove(animation);
                 }
             };
             Game.app.ticker.add(animation);
         }, i * 5);
     }
+
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]);
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P]);
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_UP_1P]);
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_UP_2P]);
+
+    keyboard("Space");
+    keyboard("Enter");
 }
