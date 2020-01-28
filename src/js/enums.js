@@ -208,3 +208,5 @@ export const STORAGE = Object.freeze({
 
     SHOW_TIMER: "ShowTimer"
 });
+
+export const GAME_STATE = Object.freeze({MENU: 0, PLAYING: 1});

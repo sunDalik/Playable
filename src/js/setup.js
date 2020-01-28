@@ -5,7 +5,7 @@ import {loadAll} from "./loader";
 import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
-import {STAGE, STORAGE, TILE_TYPE} from "./enums";
+import {GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums";
 import {generateLevel} from "./level_generation/level_generation";
 import {assignDrops, calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
@@ -28,7 +28,7 @@ import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "./filters";
 import {drawMiniMap} from "./drawing/minimap";
 import {Spear} from "./classes/equipment/weapons/spear";
 import {HUDTextStyleTitle} from "./drawing/draw_constants";
-import {setupMenu} from "./menu";
+import {setupMenu} from "./menu/menu";
 
 PIXI.utils.skipHello();
 initLocalStorage();
@@ -81,6 +81,7 @@ export function setupGame() {
     if (Game.loadingText) Game.app.stage.removeChild(Game.loadingText);
     if (Game.loadingTextAnimation) Game.app.ticker.remove(Game.loadingTextAnimation);
     //Game.TILESIZE = 40;
+    Game.state = GAME_STATE.PLAYING;
     Game.world = new World();
     Game.app.stage.addChild(Game.world);
     Game.app.stage.addChild(HUD);
