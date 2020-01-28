@@ -358,6 +358,7 @@ function setButtonClickHandlers() {
         if (!Game.mainMenu.choosable) return;
         Game.mainMenu.visible = false;
         Game.subSettingsInterface.visible = true;
+        Game.subSettingsInterface.buttons[1].chooseButton();
         changeBGColor(settingsMenuColor);
     };
     Game.mainMenu.buttons[2].clickButton = () => {

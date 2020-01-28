@@ -42,6 +42,7 @@ export function setupControlSettings() {
     backButton.clickButton = () => {
         Game.subSettingsInterface.visible = true;
         Game.controlsInterface.visible = false;
+        Game.subSettingsInterface.buttons[1].chooseButton();
     };
     backButton.on("click", backButton.clickButton);
     backButton.downButton = backButton.rightButton = Game.controlsInterface.buttons[1];
