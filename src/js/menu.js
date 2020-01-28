@@ -8,6 +8,7 @@ import {createLoadingText, setupGame} from "./setup";
 import {closeBlackBars} from "./drawing/hud_animations";
 import {keyboard} from "./keyboard/keyboard_handler";
 import {STORAGE} from "./enums";
+import {setupSettings} from "./settings";
 
 const ppAnimationTime1 = 35;
 const ppAnimationTime2 = 35;
@@ -23,11 +24,19 @@ export function setupMenu() {
     if (Game.loadingText) Game.app.stage.removeChild(Game.loadingText);
     if (Game.loadingTextAnimation) Game.app.ticker.remove(Game.loadingTextAnimation);
     Game.menu = new PIXI.Container();
+    setupSettings();
     Game.menu.sortableChildren = true;
     Game.menu.choosable = true;
+    Game.menu.zIndex = 1;
     Game.app.stage.addChild(Game.menu);
-    Game.menu.bg = createMenuBG(randomChoice([BG_COLORS.FLOODED_CAVE, BG_COLORS.DARK_TUNNEL]), -10);
+    const bgColor = randomChoice([BG_COLORS.FLOODED_CAVE, BG_COLORS.DARK_TUNNEL]);
+    Game.menu.bg = createMenuBG(bgColor, -10);
     Game.menu.blackBG = createMenuBG(0x000000, -9);
+    window.addEventListener("resize", () => {
+        Game.menu.removeChild(Game.menu.bg);
+        Game.menu.bg = createMenuBG(bgColor, -10);
+    });
+
     [player1, player2] = createMenuTrianglesAnimation();
     setTickTimeout(() => {
         movePlayersUp([player1, player2]);
@@ -43,7 +52,6 @@ function createMenuBG(color = 0x666666, zIndex = -10) {
     bg.drawRect(0, 0, Game.app.renderer.screen.width, Game.app.renderer.screen.height);
     bg.zIndex = zIndex;
     Game.menu.addChild(bg);
-    bg.endFill();
     return bg;
 }
 

@@ -12,7 +12,7 @@ export function keyboard(code) {
             if (key.isUp && key.press) key.press(event);
             key.isDown = true;
             key.isUp = false;
-            //event.preventDefault();
+            event.preventDefault();
         }
     };
 
@@ -21,7 +21,7 @@ export function keyboard(code) {
             if (key.isDown && key.release) key.release(event);
             key.isDown = false;
             key.isUp = true;
-            //event.preventDefault();
+            event.preventDefault();
         }
     };
 

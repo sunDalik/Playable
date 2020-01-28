@@ -235,6 +235,11 @@ function lightRandom() {
 }
 
 function initLocalStorage(reset = false) {
+    initLocalStorageKeys(reset);
+    initLocalStorageOther(reset);
+}
+
+export function initLocalStorageKeys(reset = false) {
     if (reset || !window.localStorage[STORAGE.KEY_MOVE_UP_1P]) window.localStorage[STORAGE.KEY_MOVE_UP_1P] = "KeyW";
     if (reset || !window.localStorage[STORAGE.KEY_MOVE_LEFT_1P]) window.localStorage[STORAGE.KEY_MOVE_LEFT_1P] = "KeyA";
     if (reset || !window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]) window.localStorage[STORAGE.KEY_MOVE_DOWN_1P] = "KeyS";
@@ -262,4 +267,10 @@ function initLocalStorage(reset = false) {
 
     if (reset || !window.localStorage[STORAGE.KEY_Z_SWITCH]) window.localStorage[STORAGE.KEY_Z_SWITCH] = "KeyZ";
     if (reset || !window.localStorage[STORAGE.KEY_MAP]) window.localStorage[STORAGE.KEY_MAP] = "KeyM";
+    if (reset || !window.localStorage[STORAGE.KEY_PAUSE]) window.localStorage[STORAGE.KEY_PAUSE] = "Escape";
+}
+
+export function initLocalStorageOther(reset = false) {
+    //use JSON.parse to parse string boolean values
+    if (reset || !window.localStorage[STORAGE.SHOW_TIMER]) window.localStorage[STORAGE.SHOW_TIMER] = false;
 }

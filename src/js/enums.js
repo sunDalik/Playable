@@ -203,5 +203,8 @@ export const STORAGE = Object.freeze({
     KEY_BAG_2P: "KeyBagPlayer2",
 
     KEY_Z_SWITCH: "KeyZSwitch",
-    KEY_MAP: "KeyMap"
+    KEY_MAP: "KeyMap",
+    KEY_PAUSE: "KeyPause",
+
+    SHOW_TIMER: "ShowTimer"
 });
