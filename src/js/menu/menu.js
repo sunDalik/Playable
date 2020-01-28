@@ -28,6 +28,7 @@ let stopTilingAnimation = false;
 const buttonWidth = 250;
 const buttonHeight = 70;
 const buttonOffset = 25;
+const buttonFontSize = 28;
 const playerSelectorOffsetX = 20;
 const buttonLineWidth = 4;
 const buttonAnimationTime = 20;
@@ -250,7 +251,7 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY) {
 
             button.redrawText = color => {
                 if (button.text) button.removeChild(button.text);
-                const text = new PIXI.Text(buttonTexts[i], {fontSize: 30, fill: color, fontWeight: "bold"});
+                const text = new PIXI.Text(buttonTexts[i], {fontSize: buttonFontSize, fill: color, fontWeight: "bold"});
                 text.position.set(button.rect.width / 2 - text.width / 2 - buttonLineWidth / 2, button.rect.height / 2 - text.height / 2 - buttonLineWidth / 2);
                 button.addChild(text);
                 return text;
@@ -316,6 +317,13 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY) {
             Game.app.ticker.add(animation);
         }, i * 5);
     }
+    for (let i = 0; i < buttons.length; i++) {
+        if (i + 1 >= buttons.length) buttons[i].downButton = buttons[0];
+        else buttons[i].downButton = buttons[i + 1];
+
+        if (i - 1 < 0) buttons[i].upButton = buttons[buttons.length - 1];
+        else buttons[i].upButton = buttons[i - 1];
+    }
     return buttons;
 }
 
@@ -378,37 +386,32 @@ function initMenuKeyBinding() {
         }
     };
 
-    const moveDownButton = () => {
+    const moveButton = (nextButton) => {
         let activeButtons;
         if (Game.mainMenu.visible && Game.mainMenu.choosable) activeButtons = Game.mainMenu.buttons;
         else if (Game.subSettingsInterface.visible) activeButtons = Game.subSettingsInterface.buttons;
         else return;
         for (let i = 0; i < activeButtons.length; i++) {
-            if (activeButtons[i].chosen) {
-                activeButtons[(i + 1) % activeButtons.length].chooseButton();
+            if (activeButtons[i].chosen && activeButtons[i][nextButton]) {
+                activeButtons[i][nextButton].chooseButton();
                 break;
             }
         }
     };
 
-    const moveUpButton = () => {
-        let activeButtons;
-        if (Game.mainMenu.visible && Game.mainMenu.choosable) activeButtons = Game.mainMenu.buttons;
-        else if (Game.subSettingsInterface.visible) activeButtons = Game.subSettingsInterface.buttons;
-        else return;
-        for (let i = 0; i < activeButtons.length; i++) {
-            if (activeButtons[i].chosen) {
-                if (i - 1 < 0) i = activeButtons.length;
-                activeButtons[i - 1].chooseButton();
-                break;
-            }
-        }
-    };
+    const moveDownButton = () => moveButton("downButton");
+    const moveUpButton = () => moveButton("upButton");
+    const moveLeftButton = () => moveButton("leftButton");
+    const moveRightButton = () => moveButton("rightButton");
 
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]).press = moveDownButton;
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P]).press = moveDownButton;
     keyboard(window.localStorage[STORAGE.KEY_MOVE_UP_1P]).press = moveUpButton;
     keyboard(window.localStorage[STORAGE.KEY_MOVE_UP_2P]).press = moveUpButton;
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_LEFT_1P]).press = moveLeftButton;
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_LEFT_2P]).press = moveLeftButton;
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]).press = moveDownButton;
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P]).press = moveDownButton;
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_RIGHT_1P]).press = moveRightButton;
+    keyboard(window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P]).press = moveRightButton;
 
     keyboard("Space").press = keyboardClickButton;
     keyboard("Enter").press = keyboardClickButton;
