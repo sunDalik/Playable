@@ -210,6 +210,7 @@ function movePlayersUp(players) {
 }
 
 export function createSimpleButtonSet(buttonTexts, container, startOffsetY, chooseFirst = true) {
+    if (!container.buttons) container.buttons = [];
     const buttons = [];
     const playerSelectors = [new PIXI.Sprite(Game.resources["src/images/player_hd.png"].texture),
         new PIXI.Sprite(Game.resources["src/images/player2_hd.png"].texture)];
@@ -267,12 +268,16 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
             container.addChild(button);
 
             const unchooseAll = () => {
-                for (const bt of buttons) {
-                    if (!bt.redrawRect) continue;
-                    bt.rect = bt.redrawRect(topColor, bottomColor);
-                    bt.text = bt.redrawText(bottomColor);
-                    bt.chosen = false;
+                for (const bt of container.buttons) {
+                    if (bt.unchooseButton) bt.unchooseButton();
                 }
+            };
+
+            button.unchooseButton = () => {
+                button.rect = button.redrawRect(topColor, bottomColor);
+                button.text = button.redrawText(bottomColor);
+                button.chosen = false;
+                redrawSelection();
             };
 
             button.chooseButton = () => {

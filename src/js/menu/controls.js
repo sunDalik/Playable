@@ -3,6 +3,7 @@ import * as PIXI from "pixi.js";
 import {getKeyBindSymbol} from "../drawing/draw_hud";
 import {STORAGE} from "../enums";
 import {createSimpleButtonSet} from "./menu";
+import {initLocalStorageKeys} from "../setup";
 
 export function setupControlSettings() {
     Game.controlsInterface = new PIXI.Container();
@@ -13,10 +14,32 @@ export function setupControlSettings() {
     Game.app.stage.addChild(Game.controlsInterface);
     Game.controlsInterface.buttons = createControlsButtonSet();
     setButtonClickHandlers();
-    Game.controlsInterface.buttons.push(createSimpleButtonSet(["Reset to default"], Game.controlsInterface, 650, false));
+    const resetButton = createSimpleButtonSet(["Reset to default"], Game.controlsInterface, 650, false)[0];
+    resetButton.clickButton = () => {
+        if (!Game.controlsInterface.choosable) return;
+        initLocalStorageKeys(true);
+        for (const key of Game.keys) {
+            if (key.storageSource !== null) {
+                key.isUp = true;
+                key.isDown = false;
+                key.code = window.localStorage[key.storageSource];
+            }
+        }
+        for (const button of Game.controlsInterface.buttons) {
+            if (button.textBinding) {
+                button.textBinding.text = getKeyBindSymbol(window.localStorage[button.storageIdentifier]);
+            }
+        }
+    };
+    resetButton.on("click", resetButton.clickButton);
+    Game.controlsInterface.buttons.push(resetButton);
+    Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 3].downButton = Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 1];
+    Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 2].downButton = Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 1];
+    Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 1].upButton = Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 3];
 }
 
 function createControlsButtonSet() {
+    Game.controlsInterface.buttons = [];
     const buttonTexts = [
         [STORAGE.KEY_MOVE_UP_1P, "UP", STORAGE.KEY_MOVE_UP_2P],
         [STORAGE.KEY_MOVE_LEFT_1P, "LEFT", STORAGE.KEY_MOVE_LEFT_2P],
@@ -111,14 +134,9 @@ function createControlsButtonSet() {
             }
         };
 
-        const unchoose = () => {
-            for (const bt of buttons) {
-                if (bt.chosen) {
-                    bt.chosen = false;
-                    bt.redrawRect(false);
-                    bt.redrawText(false);
-                    break;
-                }
+        const unchooseAll = () => {
+            for (const bt of Game.controlsInterface.buttons) {
+                if (bt.unchooseButton) bt.unchooseButton();
             }
         };
 
@@ -127,10 +145,15 @@ function createControlsButtonSet() {
             bt.redrawText = (selected) => redrawText(bt, selected);
             bt.chooseButton = () => {
                 if (!Game.controlsInterface.choosable) return;
-                unchoose();
+                unchooseAll();
                 bt.chosen = true;
                 bt.redrawRect(true);
                 bt.redrawText(true);
+            };
+            bt.unchooseButton = () => {
+                bt.chosen = false;
+                bt.redrawRect(false);
+                bt.redrawText(false);
             };
             bt.on("mouseover", bt.chooseButton);
             bt.buttonMode = true;
