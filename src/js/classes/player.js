@@ -168,7 +168,8 @@ export class Player extends AnimatedTileElement {
             }
             const pn = this.getPropertyNameOfItem(magic);
             if (pn) redrawSlotContents(this, pn);
-        }
+            return true;
+        } else return false;
     }
 
     getMagicById(i) {

@@ -446,5 +446,21 @@ export function getKeyBindSymbol(keyBind) {
     else if (keyBind === "Space") return "␣";
     else if (keyBind === "AltLeft") return "Alt";
     else if (keyBind === "AltRight") return "Alt";
+    else if (keyBind === "Backslash") return "\\";
+    else if (keyBind === "Slash") return "/";
+    else if (keyBind === "Period") return ".";
+    else if (keyBind === "Comma") return ",";
+    else if (keyBind === "Equal") return "=";
+    else if (keyBind === "Minus") return "-";
+    else if (keyBind === "Backquote") return "`";
+    else if (keyBind === "CapsLock") return "Caps";
+    else if ((keyBind.length === 2 || keyBind.length === 3) && keyBind[0] === "F") return keyBind;
+    else if (keyBind === "BracketRight") return "]";
+    else if (keyBind === "BracketLeft") return "[";
+    else if (keyBind === "Quote") return "'";
+    else if (keyBind === "Semicolon") return ";";
+    else if (keyBind === "Home") return "Home";
+    else if (keyBind === "End") return "End";
+    else if (keyBind === "Delete") return "Delete";
     else return keyBind.slice(-1);
 }

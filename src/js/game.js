@@ -87,3 +87,4 @@ Game.savedTiles = [];
 Game.loadingText = null;
 Game.loadingTextAnimation = null;
 Game.state = null;
+Game.keys = [];

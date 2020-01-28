@@ -1,11 +1,15 @@
-export function keyboard(code) {
-    let key = {
+import {Game} from "../game";
+
+export function keyboard(code, storageSource = null) {
+    const key = {
         code: code,
         isDown: false,
         isUp: true,
         press: undefined,
-        release: undefined
+        release: undefined,
+        storageSource: storageSource
     };
+    Game.keys.push(key);
 
     key.downHandler = event => {
         if (event.code === key.code) {
@@ -37,4 +41,8 @@ export function keyboard(code) {
     };
 
     return key;
+}
+
+export function keyboardS(storageSource) {
+    return keyboard(window.localStorage[storageSource], storageSource);
 }

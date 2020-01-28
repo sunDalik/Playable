@@ -2,6 +2,7 @@ import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {getKeyBindSymbol} from "../drawing/draw_hud";
 import {STORAGE} from "../enums";
+import {createSimpleButtonSet} from "./menu";
 
 export function setupControlSettings() {
     Game.controlsInterface = new PIXI.Container();
@@ -12,6 +13,7 @@ export function setupControlSettings() {
     Game.app.stage.addChild(Game.controlsInterface);
     Game.controlsInterface.buttons = createControlsButtonSet();
     setButtonClickHandlers();
+    Game.controlsInterface.buttons.push(createSimpleButtonSet(["Reset to default"], Game.controlsInterface, 650, false));
 }
 
 function createControlsButtonSet() {
@@ -153,18 +155,28 @@ function createControlsButtonSet() {
 
 function setButtonClickHandlers() {
     for (let i = 0; i < Game.controlsInterface.buttons.length; i++) {
-        Game.controlsInterface.buttons[i].clickButton = () => {
+        const button = Game.controlsInterface.buttons[i];
+        button.clickButton = () => {
             if (!Game.controlsInterface.choosable) return;
             Game.controlsInterface.choosable = false;
-            Game.controlsInterface.buttons[i].textBinding.text = "--";
+            button.textBinding.text = "--";
             const handler = (e) => {
+                e.preventDefault();
                 Game.controlsInterface.choosable = true;
-                Game.controlsInterface.buttons[i].textBinding.text = getKeyBindSymbol(e.code);
+                button.textBinding.text = getKeyBindSymbol(e.code);
+                for (const key of Game.keys) {
+                    if (key.storageSource === button.storageIdentifier) {
+                        key.isUp = true;
+                        key.isDown = false;
+                        key.code = e.code;
+                    }
+                }
+                window.localStorage[button.storageIdentifier] = e.code;
                 window.removeEventListener("keydown", handler);
             };
             window.addEventListener("keydown", handler);
         };
 
-        Game.controlsInterface.buttons[i].on("click", Game.controlsInterface.buttons[i].clickButton);
+        button.on("click", button.clickButton);
     }
 }

@@ -6,7 +6,7 @@ import {BG_COLORS} from "../game_changer";
 import {setTickTimeout} from "../utils/game_utils";
 import {createLoadingText, setupGame} from "../setup";
 import {closeBlackBars} from "../drawing/hud_animations";
-import {keyboard} from "../keyboard/keyboard_handler";
+import {keyboard, keyboardS} from "../keyboard/keyboard_handler";
 import {GAME_STATE, STORAGE} from "../enums";
 import {setupSubSettings} from "./subsettings";
 
@@ -209,7 +209,7 @@ function movePlayersUp(players) {
     Game.app.ticker.add(animation);
 }
 
-export function createSimpleButtonSet(buttonTexts, container, startOffsetY) {
+export function createSimpleButtonSet(buttonTexts, container, startOffsetY, chooseFirst = true) {
     const buttons = [];
     const playerSelectors = [new PIXI.Sprite(Game.resources["src/images/player_hd.png"].texture),
         new PIXI.Sprite(Game.resources["src/images/player2_hd.png"].texture)];
@@ -221,14 +221,18 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY) {
     playerSelectors[0].width = playerSelectors[0].height = playerSelectors[1].width = playerSelectors[1].height = buttonHeight;
 
     const redrawSelection = () => {
+        let buttonFound = false;
         for (const button of buttons) {
             if (button.chosen) {
+                buttonFound = true;
+                playerSelectors[0].visible = playerSelectors[1].visible = true;
                 playerSelectors[0].position.y = playerSelectors[1].position.y = button.position.y + (buttonHeight + buttonLineWidth / 2) / 2;
                 playerSelectors[0].position.x = button.position.x - playerSelectorOffsetX - playerSelectors[0].width / 2;
                 playerSelectors[1].position.x = button.position.x + buttonWidth + playerSelectorOffsetX + playerSelectors[1].width / 2;
                 break;
             }
         }
+        if (!buttonFound) playerSelectors[0].visible = playerSelectors[1].visible = false;
     };
 
     for (let i = 0; i < buttonTexts.length; i++) {
@@ -294,7 +298,7 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY) {
                 playerSelectors[0].position.y = playerSelectors[1].position.y = startOffsetY + (buttonHeight + buttonOffset) * i;
                 container.addChild(playerSelectors[0]);
                 container.addChild(playerSelectors[1]);
-                button.chooseButton();
+                if (chooseFirst) button.chooseButton();
             }
 
             let counter = 0;
@@ -408,14 +412,14 @@ function initMenuKeyBinding() {
     const moveLeftButton = () => moveButton("leftButton");
     const moveRightButton = () => moveButton("rightButton");
 
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_UP_1P]).press = moveUpButton;
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_UP_2P]).press = moveUpButton;
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_LEFT_1P]).press = moveLeftButton;
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_LEFT_2P]).press = moveLeftButton;
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]).press = moveDownButton;
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P]).press = moveDownButton;
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_RIGHT_1P]).press = moveRightButton;
-    keyboard(window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P]).press = moveRightButton;
+    keyboardS(STORAGE.KEY_MOVE_UP_1P).press = moveUpButton;
+    keyboardS(STORAGE.KEY_MOVE_UP_2P).press = moveUpButton;
+    keyboardS(STORAGE.KEY_MOVE_LEFT_1P).press = moveLeftButton;
+    keyboardS(STORAGE.KEY_MOVE_LEFT_2P).press = moveLeftButton;
+    keyboardS(STORAGE.KEY_MOVE_DOWN_1P).press = moveDownButton;
+    keyboardS(STORAGE.KEY_MOVE_DOWN_2P).press = moveDownButton;
+    keyboardS(STORAGE.KEY_MOVE_RIGHT_1P).press = moveRightButton;
+    keyboardS(STORAGE.KEY_MOVE_RIGHT_2P).press = moveRightButton;
 
     keyboard("Space").press = keyboardClickButton;
     keyboard("Enter").press = keyboardClickButton;
