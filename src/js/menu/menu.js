@@ -373,11 +373,16 @@ function setButtonClickHandlers() {
 }
 
 function initMenuKeyBinding() {
+    const getActiveButtonSet = () => {
+        if (Game.mainMenu.visible && Game.mainMenu.choosable) return Game.mainMenu.buttons;
+        else if (Game.subSettingsInterface.visible) return Game.subSettingsInterface.buttons;
+        else if (Game.controlsInterface.visible) return Game.controlsInterface.buttons;
+        else return null;
+    };
+
     const keyboardClickButton = () => {
-        let activeButtons;
-        if (Game.mainMenu.visible && Game.mainMenu.choosable) activeButtons = Game.mainMenu.buttons;
-        else if (Game.subSettingsInterface.visible) activeButtons = Game.subSettingsInterface.buttons;
-        else return;
+        const activeButtons = getActiveButtonSet();
+        if (activeButtons === null) return;
         for (const button of activeButtons) {
             if (button.chosen && button.clickButton) {
                 button.clickButton();
@@ -387,10 +392,8 @@ function initMenuKeyBinding() {
     };
 
     const moveButton = (nextButton) => {
-        let activeButtons;
-        if (Game.mainMenu.visible && Game.mainMenu.choosable) activeButtons = Game.mainMenu.buttons;
-        else if (Game.subSettingsInterface.visible) activeButtons = Game.subSettingsInterface.buttons;
-        else return;
+        const activeButtons = getActiveButtonSet();
+        if (activeButtons === null) return;
         for (let i = 0; i < activeButtons.length; i++) {
             if (activeButtons[i].chosen && activeButtons[i][nextButton]) {
                 activeButtons[i][nextButton].chooseButton();

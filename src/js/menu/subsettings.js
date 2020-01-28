@@ -10,7 +10,7 @@ export function setupSubSettings() {
     Game.subSettingsInterface.visible = false;
     Game.subSettingsInterface.zIndex = 4;
     Game.app.stage.addChild(Game.subSettingsInterface);
-    Game.subSettingsInterface.buttons = createSimpleButtonSet(["CONTROLS", "OTHER"], Game.subSettingsInterface, 200);
+    Game.subSettingsInterface.buttons = createSimpleButtonSet(["CONTROLS(wip)", "OTHER(wip)"], Game.subSettingsInterface, 200);
     setButtonClickHandlers();
 }
 
