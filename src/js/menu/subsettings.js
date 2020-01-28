@@ -9,6 +9,7 @@ export function setupSubSettings() {
     Game.subSettingsInterface.sortableChildren = true;
     Game.subSettingsInterface.visible = false;
     Game.subSettingsInterface.zIndex = 4;
+    Game.subSettingsInterface.choosable = true;
     Game.app.stage.addChild(Game.subSettingsInterface);
     Game.subSettingsInterface.buttons = createSimpleButtonSet(["CONTROLS(wip)", "OTHER(wip)"], Game.subSettingsInterface, 200);
     setButtonClickHandlers();

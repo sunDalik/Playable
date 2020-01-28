@@ -435,5 +435,16 @@ export function getKeyBindSymbol(keyBind) {
     else if (keyBind === "ArrowLeft") return "🡰";
     else if (keyBind === "ArrowDown") return "🡳";
     else if (keyBind === "ArrowRight") return "🡲";
+    else if (keyBind === "Escape") return "Esc";
+    else if (keyBind === "ControlLeft") return "Ctrl";
+    else if (keyBind === "ControlRight") return "Ctrl";
+    else if (keyBind === "Tab") return "↹";
+    else if (keyBind === "PageDown") return "PgDn";
+    else if (keyBind === "PageUp") return "PgUp";
+    else if (keyBind === "Backspace") return "⟵";
+    else if (keyBind === "Enter") return "↵";
+    else if (keyBind === "Space") return "␣";
+    else if (keyBind === "AltLeft") return "Alt";
+    else if (keyBind === "AltRight") return "Alt";
     else return keyBind.slice(-1);
 }

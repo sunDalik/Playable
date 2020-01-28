@@ -272,6 +272,7 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY) {
             };
 
             button.chooseButton = () => {
+                if (!container.choosable) return;
                 unchooseAll();
                 button.rect = button.redrawRect(bottomColor, topColor);
                 button.text = button.redrawText(topColor);
@@ -376,7 +377,7 @@ function initMenuKeyBinding() {
     const getActiveButtonSet = () => {
         if (Game.mainMenu.visible && Game.mainMenu.choosable) return Game.mainMenu.buttons;
         else if (Game.subSettingsInterface.visible) return Game.subSettingsInterface.buttons;
-        else if (Game.controlsInterface.visible) return Game.controlsInterface.buttons;
+        else if (Game.controlsInterface.visible && Game.controlsInterface.choosable) return Game.controlsInterface.buttons;
         else return null;
     };
 

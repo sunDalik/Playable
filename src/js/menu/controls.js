@@ -8,48 +8,47 @@ export function setupControlSettings() {
     Game.controlsInterface.sortableChildren = true;
     Game.controlsInterface.visible = false;
     Game.controlsInterface.zIndex = 4;
+    Game.controlsInterface.choosable = true;
     Game.app.stage.addChild(Game.controlsInterface);
     Game.controlsInterface.buttons = createControlsButtonSet();
-    return;
     setButtonClickHandlers();
 }
 
 function createControlsButtonSet() {
     const buttonTexts = [
-        [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_UP_1P]), "UP", getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_UP_2P])],
-        [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_1P]), "LEFT", getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_2P])],
-        [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P]), "DOWN", getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P])],
-        [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_1P]), "RIGHT", getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P])],
-        [getKeyBindSymbol(window.localStorage[STORAGE.KEY_WEAPON_1P]), "WEAPON", getKeyBindSymbol(window.localStorage[STORAGE.KEY_WEAPON_2P])],
-        [getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_1P]), "EXTRA", getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_2P])],
-        [getKeyBindSymbol(window.localStorage[STORAGE.KEY_BAG_1P]), "BAG", getKeyBindSymbol(window.localStorage[STORAGE.KEY_BAG_2P])],
-        [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_1_1P]), "MAGIC 1", getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_1_2P])],
-        [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_2_1P]), "MAGIC 2", getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_2_2P])],
-        [getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_3_1P]), "MAGIC 3", getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_3_2P])],
-    ];
+        [STORAGE.KEY_MOVE_UP_1P, "UP", STORAGE.KEY_MOVE_UP_2P],
+        [STORAGE.KEY_MOVE_LEFT_1P, "LEFT", STORAGE.KEY_MOVE_LEFT_2P],
+        [STORAGE.KEY_MOVE_DOWN_1P, "DOWN", STORAGE.KEY_MOVE_DOWN_2P],
+        [STORAGE.KEY_MOVE_RIGHT_1P, "RIGHT", STORAGE.KEY_MOVE_RIGHT_2P],
+        [STORAGE.KEY_WEAPON_1P, "WEAPON", STORAGE.KEY_WEAPON_2P],
+        [STORAGE.KEY_EXTRA_1P, "EXTRA", STORAGE.KEY_EXTRA_2P],
+        [STORAGE.KEY_BAG_1P, "BAG", STORAGE.KEY_BAG_2P],
+        [STORAGE.KEY_MAGIC_1_1P, "MAGIC 1", STORAGE.KEY_MAGIC_1_2P],
+        [STORAGE.KEY_MAGIC_2_1P, "MAGIC 2", STORAGE.KEY_MAGIC_2_2P],
+        [STORAGE.KEY_MAGIC_3_1P, "MAGIC 3", STORAGE.KEY_MAGIC_3_2P]];
     const buttons = [];
     const textWidth = 160;
     const keyBindWidth = 100;
     const buttonHeight = 45;
     const buttonOffsetX = 40;
-    const buttonOffsetY = 15;
+    const buttonOffsetY = 10;
     const overallWidth = keyBindWidth * 2 + textWidth + buttonOffsetX * 2;
     const initialButtonOffsetX = Game.app.renderer.screen.width / 2 - overallWidth / 2;
     const playerIconSize = 50;
     const playerIconOffsetY = 20;
     const initialButtonOffsetY = playerIconSize + playerIconOffsetY * 2;
     const bg = new PIXI.Graphics();
-    bg.beginFill(0x7b74c4, 0.85);
+    bg.beginFill(0x494470, 0.85);
     const bgPadding = 100;
     bg.drawRect(initialButtonOffsetX - bgPadding, 0, overallWidth + bgPadding * 2, Game.app.renderer.screen.height);
     bg.zIndex = -3;
     Game.controlsInterface.addChild(bg);
     for (let i = 0; i < buttonTexts.length; i++) {
         const buttonSet = buttonTexts[i];
-        const textStyle = {fill: 0xffffff, fontWeight: "bold", fontSize: 22};
-        const keyBindP1 = new PIXI.Text(buttonSet[0], textStyle);
+        const textStyle = {fill: 0xffffff, fontWeight: "bold", fontSize: 22, stroke: 0x000000, strokeThickness: 4};
+        const keyBindP1 = new PIXI.Text(getKeyBindSymbol(window.localStorage[buttonSet[0]]), textStyle);
         const keyBindName = new PIXI.Text(buttonSet[1], textStyle);
-        const keyBindP2 = new PIXI.Text(buttonSet[2], textStyle);
+        const keyBindP2 = new PIXI.Text(getKeyBindSymbol(window.localStorage[buttonSet[2]]), textStyle);
         keyBindP1.position.set(initialButtonOffsetX + keyBindWidth / 2 - keyBindP1.width / 2, initialButtonOffsetY + i * (buttonHeight + buttonOffsetY) + buttonHeight / 2 - keyBindP1.height / 2);
         keyBindName.position.set(initialButtonOffsetX + keyBindWidth + buttonOffsetX + textWidth / 2 - keyBindName.width / 2, initialButtonOffsetY + i * (buttonHeight + buttonOffsetY) + buttonHeight / 2 - keyBindName.height / 2);
         keyBindP2.position.set(initialButtonOffsetX + (keyBindWidth + buttonOffsetX) + (textWidth + buttonOffsetX) + keyBindWidth / 2 - keyBindP2.width / 2, initialButtonOffsetY + i * (buttonHeight + buttonOffsetY) + buttonHeight / 2 - keyBindP2.height / 2);
@@ -77,14 +76,15 @@ function createControlsButtonSet() {
             x: Game.app.renderer.screen.width - initialButtonOffsetX - buttonOffsetX - keyBindWidth - textWidth,
             y: initialButtonOffsetY + i * (buttonHeight + buttonOffsetY)
         };
-        buttonL.text1 = keyBindP1;
-        buttonL.text2 = keyBindName;
+        buttonL.textBinding = keyBindP1;
+        buttonR.textBinding = keyBindP2;
+        buttonL.textName = buttonR.textName = keyBindName;
         buttonL.selectFillColor = 0xffffff;
         buttonL.selectLineColor = 0x000000;
-        buttonR.text1 = keyBindName;
-        buttonR.text2 = keyBindP2;
         buttonR.selectFillColor = 0x000000;
         buttonR.selectLineColor = 0xffffff;
+        buttonL.storageIdentifier = buttonSet[0];
+        buttonR.storageIdentifier = buttonSet[2];
 
         const redrawRect = (button, show) => {
             if (button.rect) Game.controlsInterface.removeChild(button.rect);
@@ -92,16 +92,21 @@ function createControlsButtonSet() {
                 const rect = new PIXI.Graphics();
                 rect.lineStyle(4, button.selectLineColor);
                 rect.beginFill(button.selectFillColor);
-                rect.drawRoundedRect(button.rectCoords.x, button.rectCoords.y - 2, keyBindWidth + textWidth + buttonOffsetX, buttonHeight + buttonOffsetY / 2, 5);
+                rect.drawRoundedRect(button.rectCoords.x, button.rectCoords.y - 2 - buttonOffsetY / 4, keyBindWidth + textWidth + buttonOffsetX, buttonHeight + buttonOffsetY / 2, 5);
                 rect.zIndex = -2;
                 Game.controlsInterface.addChild(rect);
                 button.rect = rect;
             }
         };
 
-        const redrawText = (button, color) => {
-            button.text1.style.fill = color;
-            button.text2.style.fill = color;
+        const redrawText = (button, selected) => {
+            if (selected) {
+                button.textBinding.style.fill = button.textName.style.fill = button.selectLineColor;
+                button.textBinding.style.strokeThickness = button.textName.style.strokeThickness = 0;
+            } else {
+                button.textBinding.style.fill = button.textName.style.fill = 0xffffff;
+                button.textBinding.style.strokeThickness = button.textName.style.strokeThickness = 4;
+            }
         };
 
         const unchoose = () => {
@@ -109,7 +114,7 @@ function createControlsButtonSet() {
                 if (bt.chosen) {
                     bt.chosen = false;
                     bt.redrawRect(false);
-                    bt.redrawText(0xffffff);
+                    bt.redrawText(false);
                     break;
                 }
             }
@@ -117,12 +122,13 @@ function createControlsButtonSet() {
 
         for (const bt of [buttonL, buttonR]) {
             bt.redrawRect = (show) => redrawRect(bt, show);
-            bt.redrawText = (color) => redrawText(bt, color);
+            bt.redrawText = (selected) => redrawText(bt, selected);
             bt.chooseButton = () => {
+                if (!Game.controlsInterface.choosable) return;
                 unchoose();
                 bt.chosen = true;
                 bt.redrawRect(true);
-                bt.redrawText(bt.selectLineColor);
+                bt.redrawText(true);
             };
             bt.on("mouseover", bt.chooseButton);
             bt.buttonMode = true;
@@ -146,11 +152,19 @@ function createControlsButtonSet() {
 }
 
 function setButtonClickHandlers() {
-    Game.controlsInterface.buttons[0].clickButton = () => {
-        Game.controlsInterface.visible = false;
-    };
-
     for (let i = 0; i < Game.controlsInterface.buttons.length; i++) {
+        Game.controlsInterface.buttons[i].clickButton = () => {
+            if (!Game.controlsInterface.choosable) return;
+            Game.controlsInterface.choosable = false;
+            Game.controlsInterface.buttons[i].textBinding.text = "--";
+            const handler = (e) => {
+                Game.controlsInterface.choosable = true;
+                Game.controlsInterface.buttons[i].textBinding.text = getKeyBindSymbol(e.code);
+                window.removeEventListener("keydown", handler);
+            };
+            window.addEventListener("keydown", handler);
+        };
+
         Game.controlsInterface.buttons[i].on("click", Game.controlsInterface.buttons[i].clickButton);
     }
 }
