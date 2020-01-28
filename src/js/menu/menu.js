@@ -25,8 +25,8 @@ export const settingsMenuColor = 0x2c293d;
 export let currentMenuBgColor = menuBgColor;
 let stopTilingAnimation = false;
 
-const buttonWidth = 250;
-const buttonHeight = 70;
+const menuButtonWidth = 250;
+const menuButtonHeight = 70;
 const buttonOffset = 25;
 const buttonFontSize = 28;
 const playerSelectorOffsetX = 20;
@@ -61,14 +61,19 @@ export function setupMenu() {
     setTickTimeout(() => {
         movePlayersUp([player1, player2]);
         setTickTimeout(() => {
-            Game.mainMenu.buttons = createSimpleButtonSet(["PLAY", "SETTINGS(wip)", "SPIN"], Game.mainMenu, playerOffset + playerSize + playerOffset);
+            Game.mainMenu.buttons = createSimpleButtonSet(["PLAY", "SETTINGS", "SPIN"], Game.mainMenu, playerOffset + playerSize + playerOffset);
             setButtonClickHandlers();
             initMenuKeyBinding();
         }, ppUpAnimationTime * 2 / 3);
     }, ppAnimationTime1 + ppAnimationTime2 * 2 / 3);
 }
 
-function createMenuBG(color = 0x666666, zIndex = -10) {
+export function changeBGColor(color) {
+    currentMenuBgColor = color;
+    createMenuBG(color, -10);
+}
+
+export function createMenuBG(color = 0x666666, zIndex = -10) {
     const bg = new PIXI.Graphics();
     bg.beginFill(color);
     bg.drawRect(0, 0, Game.app.renderer.screen.width, Game.app.renderer.screen.height);
@@ -209,7 +214,7 @@ function movePlayersUp(players) {
     Game.app.ticker.add(animation);
 }
 
-export function createSimpleButtonSet(buttonTexts, container, startOffsetY, chooseFirst = true) {
+export function createSimpleButtonSet(buttonTexts, container, startOffsetY, chooseFirst = true, fontSize = buttonFontSize, buttonWidth = menuButtonWidth, buttonHeight = menuButtonHeight) {
     if (!container.buttons) container.buttons = [];
     const buttons = [];
     const playerSelectors = [new PIXI.Sprite(Game.resources["src/images/player_hd.png"].texture),
@@ -256,7 +261,7 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
 
             button.redrawText = color => {
                 if (button.text) button.removeChild(button.text);
-                const text = new PIXI.Text(buttonTexts[i], {fontSize: buttonFontSize, fill: color, fontWeight: "bold"});
+                const text = new PIXI.Text(buttonTexts[i], {fontSize: fontSize, fill: color, fontWeight: "bold"});
                 text.position.set(button.rect.width / 2 - text.width / 2 - buttonLineWidth / 2, button.rect.height / 2 - text.height / 2 - buttonLineWidth / 2);
                 button.addChild(text);
                 return text;
@@ -353,8 +358,7 @@ function setButtonClickHandlers() {
         if (!Game.mainMenu.choosable) return;
         Game.mainMenu.visible = false;
         Game.subSettingsInterface.visible = true;
-        currentMenuBgColor = settingsMenuColor;
-        createMenuBG(settingsMenuColor, -10);
+        changeBGColor(settingsMenuColor);
     };
     Game.mainMenu.buttons[2].clickButton = () => {
         if (!Game.mainMenu.choosable) return;
@@ -428,4 +432,64 @@ function initMenuKeyBinding() {
 
     keyboard("Space").press = keyboardClickButton;
     keyboard("Enter").press = keyboardClickButton;
+}
+
+//double cooooooooooooooode
+export function createBackButton(container) {
+    const buttonHeight = 55;
+    const buttonWidth = 120;
+    const arrowOffset = buttonWidth / 4;
+    const button = new PIXI.Container();
+
+    button.interactive = true;
+    button.buttonMode = true;
+
+    button.redrawRect = (color1, color2) => {
+        if (button.rect) button.removeChild(button.rect);
+        const rect = new PIXI.Graphics();
+        rect.lineStyle(buttonLineWidth, color2);
+        rect.beginFill(color1);
+        rect.drawPolygon([0, buttonHeight / 2, arrowOffset, buttonHeight, buttonWidth, buttonHeight, buttonWidth, 0, arrowOffset, 0]);
+        button.addChild(rect);
+        return rect;
+    };
+
+    button.redrawText = color => {
+        if (button.text) button.removeChild(button.text);
+        const text = new PIXI.Text("BACK", {fontSize: 22, fill: color, fontWeight: "bold"});
+        text.position.set((button.rect.width - arrowOffset) / 2 + arrowOffset - text.width / 2 - buttonLineWidth / 2, button.rect.height / 2 - text.height / 2 - buttonLineWidth / 2);
+        button.addChild(text);
+        return text;
+    };
+
+    button.rect = button.redrawRect(topColor, bottomColor);
+    button.text = button.redrawText(bottomColor);
+
+    container.addChild(button);
+
+    const unchooseAll = () => {
+        for (const bt of container.buttons) {
+            if (bt.unchooseButton) bt.unchooseButton();
+        }
+    };
+
+    button.unchooseButton = () => {
+        button.rect = button.redrawRect(topColor, bottomColor);
+        button.text = button.redrawText(bottomColor);
+        button.chosen = false;
+    };
+
+    button.chooseButton = () => {
+        if (!container.choosable) return;
+        unchooseAll();
+        button.rect = button.redrawRect(bottomColor, topColor);
+        button.text = button.redrawText(topColor);
+        button.chosen = true;
+    };
+
+    button.on("mouseover", button.chooseButton);
+
+    button.position.x = 50;
+    button.position.y = 40;
+    return button;
 }

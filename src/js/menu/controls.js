@@ -2,7 +2,7 @@ import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {getKeyBindSymbol} from "../drawing/draw_hud";
 import {STORAGE} from "../enums";
-import {createSimpleButtonSet} from "./menu";
+import {createBackButton, createSimpleButtonSet} from "./menu";
 import {initLocalStorageKeys} from "../setup";
 
 export function setupControlSettings() {
@@ -14,7 +14,7 @@ export function setupControlSettings() {
     Game.app.stage.addChild(Game.controlsInterface);
     Game.controlsInterface.buttons = createControlsButtonSet();
     setButtonClickHandlers();
-    const resetButton = createSimpleButtonSet(["Reset to default"], Game.controlsInterface, 650, false)[0];
+    const resetButton = createSimpleButtonSet(["Reset to default"], Game.controlsInterface, 670, false, 22, 225, 65)[0];
     resetButton.clickButton = () => {
         if (!Game.controlsInterface.choosable) return;
         initLocalStorageKeys(true);
@@ -36,6 +36,17 @@ export function setupControlSettings() {
     Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 3].downButton = Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 1];
     Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 2].downButton = Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 1];
     Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 1].upButton = Game.controlsInterface.buttons[Game.controlsInterface.buttons.length - 3];
+
+    const backButton = createBackButton(Game.controlsInterface);
+    Game.controlsInterface.buttons.unshift(backButton);
+    backButton.clickButton = () => {
+        Game.subSettingsInterface.visible = true;
+        Game.controlsInterface.visible = false;
+    };
+    backButton.on("click", backButton.clickButton);
+    backButton.downButton = backButton.rightButton = Game.controlsInterface.buttons[1];
+    Game.controlsInterface.buttons[1].leftButton = Game.controlsInterface.buttons[1].upButton = backButton;
+    Game.controlsInterface.buttons[2].upButton = backButton;
 }
 
 function createControlsButtonSet() {
