@@ -77,12 +77,12 @@ export function collapseMiniMap() {
     mapCollapsed = true;
     HUD.minimap.scale.set(1, 1);
     HUD.removeChild(mapMask);
-    mapMask = new PIXI.Graphics();
+    mapMask = new PIXI.Sprite(PIXI.Texture.WHITE);
     const mapMaskX = Game.app.renderer.screen.width - miniMapCollapsedWidth - slotBorderOffsetX - outlineWidth / 2;
     const mapMaskY = Game.app.renderer.screen.height - miniMapCollapsedHeight - bottomOffset - outlineWidth / 2;
-    mapMask.beginFill(0xFFFFFF);
-    mapMask.drawRect(mapMaskX, mapMaskY, miniMapCollapsedWidth, miniMapCollapsedHeight);
-    mapMask.endFill();
+    mapMask.position.set(mapMaskX, mapMaskY);
+    mapMask.width = miniMapCollapsedWidth;
+    mapMask.height = miniMapCollapsedHeight;
     HUD.addChild(mapMask);
     HUD.minimap.mask = mapMask;
 

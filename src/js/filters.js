@@ -1,4 +1,4 @@
-import {ColorReplaceFilter, OutlineFilter, DotFilter, KawaseBlurFilter, GlowFilter} from "pixi-filters";
+import {ColorReplaceFilter, DotFilter, GlowFilter, KawaseBlurFilter, OutlineFilter} from "pixi-filters";
 import * as PIXI from "pixi.js";
 
 export const ITEM_OUTLINE_FILTER = new OutlineFilter(2, 0xFFFFFF);
