@@ -1,6 +1,6 @@
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
-import {changeBGColor, menuBgColor} from "./menu";
+import {changeBGColor, menuBgColor} from "./main_menu";
 import {setupControlSettings} from "./controls";
 import {createBackButton, createSimpleButtonSet} from "./menu_common";
 

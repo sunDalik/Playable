@@ -28,7 +28,7 @@ import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "./filters";
 import {drawMiniMap} from "./drawing/minimap";
 import {Spear} from "./classes/equipment/weapons/spear";
 import {HUDTextStyleTitle} from "./drawing/draw_constants";
-import {setupMenu} from "./menu/menu";
+import {setupMenu} from "./menu/main_menu";
 
 PIXI.utils.skipHello();
 initLocalStorage();

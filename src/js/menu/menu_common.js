@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import {Game} from "../game";
 import {setTickTimeout} from "../utils/game_utils";
 import {easeOutQuad} from "../utils/math_utils";
-import {bottomColor, topColor} from "./menu";
+import {bottomColor, topColor} from "./main_menu";
 
 const menuButtonWidth = 250;
 const menuButtonHeight = 70;
