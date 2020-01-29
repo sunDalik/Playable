@@ -2,8 +2,8 @@ import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {getKeyBindSymbol} from "../drawing/draw_hud";
 import {STORAGE} from "../enums";
-import {createBackButton, createSimpleButtonSet} from "./menu";
 import {initLocalStorageKeys} from "../setup";
+import {createBackButton, createSimpleButtonSet} from "./menu_common";
 
 export function setupControlSettings() {
     Game.controlsInterface = new PIXI.Container();

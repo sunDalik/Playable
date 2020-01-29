@@ -1,7 +1,8 @@
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
-import {changeBGColor, createBackButton, createSimpleButtonSet, menuBgColor} from "./menu";
+import {changeBGColor, menuBgColor} from "./menu";
 import {setupControlSettings} from "./controls";
+import {createBackButton, createSimpleButtonSet} from "./menu_common";
 
 export function setupSubSettings() {
     Game.subSettingsInterface = new PIXI.Container();
