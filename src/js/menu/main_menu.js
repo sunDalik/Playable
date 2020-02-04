@@ -4,12 +4,13 @@ import {easeInQuad, easeOutQuad} from "../utils/math_utils";
 import {randomChoice} from "../utils/random_utils";
 import {BG_COLORS} from "../game_changer";
 import {setTickTimeout} from "../utils/game_utils";
-import {createLoadingText, setupGame} from "../setup";
+import {createLoadingText, retry, setupGame} from "../setup";
 import {closeBlackBars} from "../drawing/hud_animations";
 import {keyboard, keyboardS} from "../keyboard/keyboard_handler";
 import {GAME_STATE, STORAGE} from "../enums";
 import {setupSubSettings} from "./subsettings";
 import {createSimpleButtonSet} from "./menu_common";
+import {SUPER_HUD} from "../drawing/super_hud";
 
 const ppAnimationTime1 = 35;
 const ppAnimationTime2 = 35;
@@ -41,7 +42,7 @@ export function setupMenu() {
     Game.menuCommon.bg = createMenuBG(menuBgColor, -10);
     Game.menuCommon.blackBG = createMenuBG(0x000000, -8);
     Game.menuCommon.tilingBG = createTilingBG();
-    animateTilingBG();
+    animateMenuTilingBG();
     window.addEventListener("resize", () => {
         Game.menuCommon.removeChild(Game.menuCommon.bg);
         Game.menuCommon.bg = createMenuBG(currentMenuBgColor, -10);
@@ -91,7 +92,7 @@ function createTilingBG() {
     return bg;
 }
 
-function animateTilingBG() {
+function animateMenuTilingBG() {
     const stepX = 0.5;
     const stepY = 0.2;
     const animation = delta => {
@@ -100,6 +101,11 @@ function animateTilingBG() {
         if (stopTilingAnimation) Game.app.ticker.remove(animation);
     };
     Game.app.ticker.add(animation);
+}
+
+export function bringMenuBackToLife() {
+    stopTilingAnimation = false;
+    animateMenuTilingBG();
 }
 
 function createMenuTrianglesAnimation() {
@@ -216,7 +222,8 @@ function setButtonClickHandlers() {
             Game.mainMenu.visible = false;
             Game.menuCommon.visible = false;
             createLoadingText();
-            setupGame();
+            if (Game.world) retry();
+            else setupGame();
         });
     };
     Game.mainMenu.buttons[1].clickButton = () => {
@@ -258,6 +265,7 @@ function initMenuKeyBinding() {
         else if (Game.subSettingsInterface.visible) return Game.subSettingsInterface.buttons;
         else if (Game.controlsInterface.visible && Game.controlsInterface.choosable) return Game.controlsInterface.buttons;
         else if (Game.otherSettingsInterface.visible) return Game.otherSettingsInterface.buttons;
+        else if (SUPER_HUD.pauseScreen.visible) return SUPER_HUD.pauseScreen.buttons;
         else return null;
     };
 
@@ -276,7 +284,7 @@ function initMenuKeyBinding() {
         const activeButtons = getActiveButtonSet();
         if (activeButtons === null) return;
         for (let i = 0; i < activeButtons.length; i++) {
-            if (activeButtons[i].chosen && activeButtons[i][nextButton]) {
+            if (activeButtons[i].chosen && activeButtons[i][nextButton] && activeButtons[i][nextButton].chooseButton) {
                 activeButtons[i][nextButton].chooseButton();
                 break;
             }

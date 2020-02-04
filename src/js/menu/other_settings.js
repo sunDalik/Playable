@@ -2,6 +2,8 @@ import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {createBackButton, createCheckboxSet} from "./menu_common";
 import {STORAGE} from "../enums";
+import {redrawSpeedRunTimer} from "../drawing/draw_hud";
+import {HUD} from "../drawing/hud_object";
 
 export function setupOtherSettings() {
     Game.otherSettingsInterface = new PIXI.Container();
@@ -32,6 +34,7 @@ function setButtonClickHandlers() {
         Game.otherSettingsInterface.buttons[1].check();
         window.localStorage[STORAGE.SHOW_TIMER] = Game.otherSettingsInterface.buttons[1].checked;
         Game.showTimer = JSON.parse(window.localStorage[STORAGE.SHOW_TIMER]);
+        if (HUD.speedrunTimer) redrawSpeedRunTimer();
     };
 
     for (let i = 1; i < Game.otherSettingsInterface.buttons.length; i++) {

@@ -4,6 +4,8 @@ import {changeBGColor, menuBgColor} from "./main_menu";
 import {setupControlSettings} from "./controls";
 import {createBackButton, createSimpleButtonSet} from "./menu_common";
 import {setupOtherSettings} from "./other_settings";
+import {GAME_STATE} from "../enums";
+import {SUPER_HUD} from "../drawing/super_hud";
 
 export function setupSubSettings() {
     Game.subSettingsInterface = new PIXI.Container();
@@ -19,10 +21,15 @@ export function setupSubSettings() {
     const backButton = createBackButton(Game.subSettingsInterface);
     Game.subSettingsInterface.buttons.unshift(backButton);
     backButton.clickButton = () => {
-        Game.mainMenu.visible = true;
         Game.subSettingsInterface.visible = false;
-        Game.mainMenu.buttons[0].chooseButton();
-        changeBGColor(menuBgColor);
+        if (Game.state === GAME_STATE.MENU) {
+            Game.mainMenu.visible = true;
+            Game.mainMenu.buttons[0].chooseButton();
+            changeBGColor(menuBgColor);
+        } else if (Game.state === GAME_STATE.PLAYING) {
+            SUPER_HUD.pauseScreen.visible = true;
+            SUPER_HUD.pauseScreen.buttons[0].chooseButton();
+        }
     };
     backButton.on("click", backButton.clickButton);
     backButton.downButton = backButton.rightButton = Game.subSettingsInterface.buttons[1];

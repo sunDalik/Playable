@@ -1,7 +1,7 @@
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
-import {getKeyBindSymbol} from "../drawing/draw_hud";
-import {STORAGE} from "../enums";
+import {drawHUD, getKeyBindSymbol} from "../drawing/draw_hud";
+import {GAME_STATE, STORAGE} from "../enums";
 import {initLocalStorageKeys} from "../setup";
 import {createBackButton, createSimpleButtonSet} from "./menu_common";
 
@@ -30,6 +30,7 @@ export function setupControlSettings() {
                 button.textBinding.text = getKeyBindSymbol(window.localStorage[button.storageIdentifier]);
             }
         }
+        if (Game.state === GAME_STATE.PLAYING) drawHUD();
     };
     resetButton.on("click", resetButton.clickButton);
     Game.controlsInterface.buttons.push(resetButton);
@@ -207,6 +208,7 @@ function setButtonClickHandlers() {
                     }
                 }
                 window.localStorage[button.storageIdentifier] = e.code;
+                if (Game.state === GAME_STATE.PLAYING) drawHUD();
                 window.removeEventListener("keydown", handler);
             };
             window.addEventListener("keydown", handler);

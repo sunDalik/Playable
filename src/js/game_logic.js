@@ -157,7 +157,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
             setEnemyTurnTimeout();
             Game.player.cancellable = true;
             Game.player2.cancellable = true;
-            if (Game.showTimer && Game.timer === 0) {
+            if (Game.timer === 0) {
                 Game.app.ticker.remove(speedrunTimer);
                 Game.app.ticker.add(speedrunTimer);
             }

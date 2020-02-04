@@ -22,7 +22,7 @@ import {setTickTimeout} from "./utils/game_utils";
 import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";
 import {getLevelPlayerGraph} from "./level_generation/generation_utils";
 import {Torch} from "./classes/equipment/tools/torch";
-import {SUPER_HUD} from "./drawing/super_hud";
+import {setupSuperHud, SUPER_HUD} from "./drawing/super_hud";
 import {removeObjectFromArray} from "./utils/basic_utils";
 import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "./filters";
 import {drawMiniMap} from "./drawing/minimap";
@@ -85,6 +85,7 @@ export function setupGame() {
     Game.world = new World();
     Game.app.stage.addChild(Game.world);
     Game.app.stage.addChild(HUD);
+    setupSuperHud();
     initPlayers();
     drawHUD();
     bindKeys();
@@ -187,6 +188,8 @@ function initPlayers() {
 }
 
 export function retry() {
+    if (Game.loadingText) Game.app.stage.removeChild(Game.loadingText);
+    if (Game.loadingTextAnimation) Game.app.ticker.remove(Game.loadingTextAnimation);
     closeBlackBars(() => {
         for (let i = 0; i < 2; i++) {
             //two times. In case two players die simultaneously
@@ -197,7 +200,8 @@ export function retry() {
         }
 
         SUPER_HUD.gameOverScreen.visible = false;
-
+        Game.world.visible = true;
+        HUD.visible = true;
         Game.world.clean();
         cleanGameState();
         initPlayers();
