@@ -11,12 +11,12 @@ import {assignDrops, calculateDetectionGraph, generateMap} from "./map_generatio
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
-import {drawHUD, drawInteractionKeys, drawMovementKeyBindings} from "./drawing/draw_hud";
+import {drawHUD, drawInteractionKeys, drawMovementKeyBindings, redrawSpeedRunTimer} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
-import {cleanGameState, kiss, swapEquipmentWithPlayer} from "./game_logic";
+import {cleanGameState, kiss, speedrunTimer, swapEquipmentWithPlayer} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";
@@ -94,7 +94,7 @@ export function setupGame() {
         drawMiniMap();
     });
 
-    Game.stage = STAGE.FLOODED_CAVE;
+    initGameState();
     initPools();
     initializeLevel();
     //test();
@@ -187,28 +187,34 @@ function initPlayers() {
 }
 
 export function retry() {
-    closeBlackBars(retryAfterBlackBars);
+    closeBlackBars(() => {
+        for (let i = 0; i < 2; i++) {
+            //two times. In case two players die simultaneously
+            removeObjectFromArray(DEATH_FILTER, Game.world.filters);
+            removeObjectFromArray(DEATH_FILTER, HUD.filters);
+            removeObjectFromArray(GAME_OVER_BLUR_FILTER, Game.world.filters);
+            removeObjectFromArray(GAME_OVER_BLUR_FILTER, HUD.filters);
+        }
+
+        SUPER_HUD.gameOverScreen.visible = false;
+
+        Game.world.clean();
+        cleanGameState();
+        initPlayers();
+        drawHUD();
+        bindKeys();
+        initGameState();
+        initPools();
+        initializeLevel();
+        Game.state = GAME_STATE.PLAYING;
+    });
 }
 
-function retryAfterBlackBars() {
-    for (let i = 0; i < 2; i++) {
-        //two times. In case two players die simultaneously
-        removeObjectFromArray(DEATH_FILTER, Game.world.filters);
-        removeObjectFromArray(DEATH_FILTER, HUD.filters);
-        removeObjectFromArray(GAME_OVER_BLUR_FILTER, Game.world.filters);
-        removeObjectFromArray(GAME_OVER_BLUR_FILTER, HUD.filters);
-    }
-
-    SUPER_HUD.gameOverScreen.visible = false;
-
-    Game.world.clean();
-    cleanGameState();
-    initPlayers();
-    drawHUD();
-    bindKeys();
+function initGameState() {
     Game.stage = STAGE.FLOODED_CAVE;
-    initPools();
-    initializeLevel();
+    Game.timer = 0;
+    Game.app.ticker.remove(speedrunTimer);
+    redrawSpeedRunTimer();
 }
 
 function test() {

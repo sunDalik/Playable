@@ -13,7 +13,7 @@ import {
     HUDKeyBindSize,
     HUDKeyBindTextStyle,
     HUDTextStyle,
-    HUDTextStyleSlot,
+    HUDTextStyleSlot, HUDTextStyleTitle, miniMapBottomOffset,
     slotBorderOffsetX,
     slotContentSizeMargin,
     slotOffsetFromHeartsY,
@@ -27,6 +27,7 @@ import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from ".
 import {HUD} from "./hud_object";
 import {EQUIPMENT_TYPE, HEAD_TYPE, SHIELD_TYPE, STORAGE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
+import {getTimeFromMs} from "../utils/game_utils";
 
 export function drawHUD() {
     drawHealth();
@@ -36,6 +37,7 @@ export function drawHUD() {
     drawInteractionKeys();
     redrawEnergy();
     drawSlotsContents();
+    redrawSpeedRunTimer();
     if (Game.bossFight) Game.boss.redrawHealth();
 }
 
@@ -463,4 +465,23 @@ export function getKeyBindSymbol(keyBind) {
     else if (keyBind === "End") return "End";
     else if (keyBind === "Delete") return "Delete";
     else return keyBind.slice(-1);
+}
+
+export function redrawSpeedRunTimer() {
+    const container = HUD.speedrunTimer;
+    removeAllChildrenFromContainer(container);
+    if (Game.showTimer) {
+        const time = getTimeFromMs(Game.timer);
+        const text = new PIXI.Text(`Timer: ${padTime(time.minutes, 2)}:${padTime(time.seconds, 2)}.${padTime(time.ms, 3)}`, HUDTextStyleTitle);
+        text.position.set(slotBorderOffsetX, Game.app.renderer.screen.height - text.height - miniMapBottomOffset);
+        container.addChild(text);
+    }
+}
+
+function padTime(time, digits) {
+    let paddedTime = time.toString();
+    for (let i = 0; i < digits - time.toString().length; i++) {
+        paddedTime = "0" + paddedTime;
+    }
+    return paddedTime;
 }

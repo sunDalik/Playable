@@ -88,3 +88,6 @@ Game.loadingText = null;
 Game.loadingTextAnimation = null;
 Game.state = null;
 Game.keys = [];
+
+Game.showTimer = false;
+Game.timer = 0; //MS

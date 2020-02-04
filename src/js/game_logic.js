@@ -2,7 +2,7 @@ import {Game} from "./game"
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "./enums"
-import {drawInteractionKeys, redrawBag, redrawSlotContents} from "./drawing/draw_hud";
+import {drawInteractionKeys, redrawBag, redrawSlotContents, redrawSpeedRunTimer} from "./drawing/draw_hud";
 import {createKissHeartAnimation, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
 import {updateChain} from "./drawing/draw_dunno";
@@ -157,7 +157,18 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
             setEnemyTurnTimeout();
             Game.player.cancellable = true;
             Game.player2.cancellable = true;
+            if (Game.showTimer && Game.timer === 0) {
+                Game.app.ticker.remove(speedrunTimer);
+                Game.app.ticker.add(speedrunTimer);
+            }
         }
+    }
+}
+
+export function speedrunTimer() {
+    if (!Game.paused && !Game.unplayable && !(Game.player.dead && Game.player2.dead)) {
+        Game.timer += Game.app.ticker.elapsedMS;
+        redrawSpeedRunTimer();
     }
 }
 

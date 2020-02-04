@@ -57,3 +57,11 @@ export function getEffectivePlayerCenter() {
             y: Game.player.getTilePositionY() + (Game.player2.getTilePositionY() - Game.player.getTilePositionY()) / 2
         };
 }
+
+export function getTimeFromMs(ms) {
+    let seconds = Math.floor(ms / 1000);
+    let minutes = Math.floor(seconds / 60);
+    ms -= seconds * 1000;
+    seconds -= minutes * 60;
+    return {minutes: minutes, seconds: seconds, ms: Math.floor(ms)};
+}
