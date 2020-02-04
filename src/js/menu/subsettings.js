@@ -3,16 +3,18 @@ import * as PIXI from "pixi.js";
 import {changeBGColor, menuBgColor} from "./main_menu";
 import {setupControlSettings} from "./controls";
 import {createBackButton, createSimpleButtonSet} from "./menu_common";
+import {setupOtherSettings} from "./other_settings";
 
 export function setupSubSettings() {
     Game.subSettingsInterface = new PIXI.Container();
     setupControlSettings();
+    setupOtherSettings();
     Game.subSettingsInterface.sortableChildren = true;
     Game.subSettingsInterface.visible = false;
     Game.subSettingsInterface.zIndex = 4;
     Game.subSettingsInterface.choosable = true;
     Game.app.stage.addChild(Game.subSettingsInterface);
-    Game.subSettingsInterface.buttons = createSimpleButtonSet(["CONTROLS", "OTHER(wip)"], Game.subSettingsInterface, 200).slice();
+    Game.subSettingsInterface.buttons = createSimpleButtonSet(["CONTROLS", "OTHER"], Game.subSettingsInterface, 200).slice();
     setButtonClickHandlers();
     const backButton = createBackButton(Game.subSettingsInterface);
     Game.subSettingsInterface.buttons.unshift(backButton);
@@ -34,7 +36,9 @@ function setButtonClickHandlers() {
         Game.controlsInterface.buttons[1].chooseButton();
     };
     Game.subSettingsInterface.buttons[1].clickButton = () => {
-        //Game.subSettingsInterface.visible = false;
+        Game.subSettingsInterface.visible = false;
+        Game.otherSettingsInterface.visible = true;
+        Game.otherSettingsInterface.buttons[1].chooseButton();
     };
 
     for (let i = 0; i < Game.subSettingsInterface.buttons.length; i++) {

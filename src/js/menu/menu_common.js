@@ -199,3 +199,132 @@ export function createBackButton(container) {
     button.position.y = 40;
     return button;
 }
+
+export function createCheckboxSet(givenButtons, container, startOffsetY, chooseFirst = true, fontSize = buttonFontSize, buttonWidth = menuButtonWidth + 150, buttonHeight = menuButtonHeight) {
+    if (!container.buttons) container.buttons = [];
+    const buttons = [];
+    const checkBoxSize = buttonHeight - 30;
+    const checkBoxOffsetX = (buttonHeight - checkBoxSize) / 2;
+    const playerSelectors = [new PIXI.Sprite(Game.resources["src/images/player_hd.png"].texture),
+        new PIXI.Sprite(Game.resources["src/images/player2_hd.png"].texture)];
+    playerSelectors[0].angle = 90;
+    playerSelectors[1].angle = 90;
+    playerSelectors[0].anchor.set(0.5, 0.5);
+    playerSelectors[1].anchor.set(0.5, 0.5);
+    playerSelectors[0].scale.set(1, 1);
+    playerSelectors[0].width = playerSelectors[0].height = playerSelectors[1].width = playerSelectors[1].height = buttonHeight;
+
+    const redrawSelection = () => {
+        let buttonFound = false;
+        for (const button of buttons) {
+            if (button.chosen) {
+                buttonFound = true;
+                playerSelectors[0].visible = playerSelectors[1].visible = true;
+                playerSelectors[0].position.y = playerSelectors[1].position.y = button.position.y + (buttonHeight + buttonLineWidth / 2) / 2;
+                playerSelectors[0].position.x = button.position.x - playerSelectorOffsetX - playerSelectors[0].width / 2;
+                playerSelectors[1].position.x = button.position.x + buttonWidth + playerSelectorOffsetX + playerSelectors[1].width / 2;
+                break;
+            }
+        }
+        if (!buttonFound) playerSelectors[0].visible = playerSelectors[1].visible = false;
+    };
+
+    for (let i = 0; i < givenButtons.length; i++) {
+        const button = new PIXI.Container();
+        buttons.push(button);
+        button.checked = givenButtons[i].checked;
+        button.interactive = true;
+        button.buttonMode = true;
+
+        button.redrawRect = (color1, color2) => {
+            if (button.rect) button.removeChild(button.rect);
+            const rect = new PIXI.Graphics();
+            rect.lineStyle(buttonLineWidth, color2);
+            rect.beginFill(color1);
+            rect.drawRoundedRect(0, 0, buttonWidth, buttonHeight, 5);
+            button.addChild(rect);
+            return rect;
+        };
+
+        button.redrawText = color => {
+            if (button.text) button.removeChild(button.text);
+            const text = new PIXI.Text(givenButtons[i].text, {fontSize: fontSize, fill: color, fontWeight: "bold"});
+            text.position.set((buttonWidth - checkBoxSize - checkBoxOffsetX * 2) / 2 - text.width / 2 - buttonLineWidth / 2, button.rect.height / 2 - text.height / 2 - buttonLineWidth / 2);
+            button.addChild(text);
+            return text;
+        };
+
+        button.redrawCheckBox = (color1, color2) => {
+            if (button.checkBox) button.removeChild(button.checkBox);
+            const checkBox = new PIXI.Container();
+            const frame = new PIXI.Graphics();
+            frame.lineStyle(buttonLineWidth, color2);
+            frame.beginFill(color1);
+            frame.drawRoundedRect(buttonWidth - checkBoxSize - checkBoxOffsetX, (buttonHeight - checkBoxSize) / 2, checkBoxSize, checkBoxSize, 5);
+            const checkMark = new PIXI.Text("✔", {fontSize: fontSize + 7, fill: color2, fontWeight: "bold"});
+            checkMark.position.set(buttonWidth - checkBoxOffsetX - checkBoxSize / 2 - checkMark.width / 2, (buttonHeight - checkBoxSize) / 2);
+            checkBox.addChild(frame);
+            if (button.checked) checkBox.addChild(checkMark);
+            button.addChild(checkBox);
+            return checkBox;
+        };
+
+        button.rect = button.redrawRect(topColor, bottomColor);
+        button.text = button.redrawText(bottomColor);
+        button.checkBox = button.redrawCheckBox();
+
+        container.addChild(button);
+
+        const unchooseAll = () => {
+            for (const bt of container.buttons) {
+                if (bt.unchooseButton) bt.unchooseButton();
+            }
+        };
+
+        button.unchooseButton = () => {
+            button.rect = button.redrawRect(topColor, bottomColor);
+            button.checkBox = button.redrawCheckBox(topColor, bottomColor);
+            button.text = button.redrawText(bottomColor);
+            button.chosen = false;
+            redrawSelection();
+        };
+
+        button.chooseButton = () => {
+            if (!container.choosable) return;
+            unchooseAll();
+            button.rect = button.redrawRect(bottomColor, topColor);
+            button.checkBox = button.redrawCheckBox(bottomColor, topColor);
+            button.text = button.redrawText(topColor);
+            button.chosen = true;
+            redrawSelection();
+        };
+
+        button.on("mouseover", button.chooseButton);
+
+        button.check = () => {
+            button.checked = !button.checked;
+            button.checkBox = button.redrawCheckBox(bottomColor, topColor);
+        };
+
+        button.position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
+        button.position.y = startOffsetY + (buttonHeight + buttonOffset) * i;
+
+        if (i === 0) {
+            playerSelectors[0].position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
+            playerSelectors[1].position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
+            playerSelectors[0].position.y = playerSelectors[1].position.y = startOffsetY + (buttonHeight + buttonOffset) * i;
+            container.addChild(playerSelectors[0]);
+            container.addChild(playerSelectors[1]);
+            button.chooseButton();
+        }
+
+    }
+    for (let i = 0; i < buttons.length; i++) {
+        if (i + 1 >= buttons.length) buttons[i].downButton = buttons[0];
+        else buttons[i].downButton = buttons[i + 1];
+
+        if (i - 1 < 0) buttons[i].upButton = buttons[buttons.length - 1];
+        else buttons[i].upButton = buttons[i - 1];
+    }
+    return buttons;
+}

@@ -257,6 +257,7 @@ function initMenuKeyBinding() {
         if (Game.mainMenu.visible && Game.mainMenu.choosable) return Game.mainMenu.buttons;
         else if (Game.subSettingsInterface.visible) return Game.subSettingsInterface.buttons;
         else if (Game.controlsInterface.visible && Game.controlsInterface.choosable) return Game.controlsInterface.buttons;
+        else if (Game.otherSettingsInterface.visible) return Game.otherSettingsInterface.buttons;
         else return null;
     };
 
