@@ -30,6 +30,12 @@ const bagKeyP2 = keyboardS(STORAGE.KEY_BAG_2P);
 const mapKey = keyboardS(STORAGE.KEY_MAP);
 
 export function bindKeys() {
+    for (const key of Game.keys) {
+        if (key.storageSource !== null) {
+            key.code = window.localStorage[key.storageSource];
+        }
+    }
+
     upKeyP1.press = (e) => playerTurn(Game.player, () => Game.player.move(0, -1, e));
     leftKeyP1.press = (e) => playerTurn(Game.player, () => Game.player.move(-1, 0, e));
     downKeyP1.press = (e) => playerTurn(Game.player, () => Game.player.move(0, 1, e));
