@@ -17,6 +17,7 @@ export class MudMage extends Enemy {
         this.cooldown = 10;
         this.currentCooldown = 0;
         this.castDistance = 10;
+        this.dangerDistance = 3;
         this.castTime = 2;
         this.currentCastTime = this.castTime;
     }

@@ -1,6 +1,7 @@
 import {Game} from "../../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, HAZARD_TYPE, RARITY,} from "../../../enums";
-import {isEmpty, isEnemy} from "../../../map_checks";
+import {EQUIPMENT_TYPE, HAZARD_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
+import {isEnemy} from "../../../map_checks";
+import {blowAwayInDirection} from "../../../special_move_logic";
 
 export class Wind {
     constructor() {
@@ -30,36 +31,7 @@ export class Wind {
                         }
                         if (isEnemy(wielder.tilePosition.x + x, wielder.tilePosition.y + y)) {
                             Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.stun++;
-                            if (isEmpty(wielder.tilePosition.x + x + Math.sign(x), wielder.tilePosition.y + y + Math.sign(y))) {
-                                Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.slide(Math.sign(x), Math.sign(y), null, null, this.slideTime);
-                            } else {
-                                if (x === 0) {
-                                    if (isEmpty(wielder.tilePosition.x + x - 1, wielder.tilePosition.y + y)) {
-                                        Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.slide(-1, 0, null, null, this.slideTime);
-                                    } else if (isEmpty(wielder.tilePosition.x + x + 1, wielder.tilePosition.y + y)) {
-                                        Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.slide(1, 0, null, null, this.slideTime);
-                                    } else {
-                                        Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.slideBump(0, Math.sign(y), null, null, this.slideTime);
-                                    }
-                                } else if (y === 0) {
-                                    if (isEmpty(wielder.tilePosition.x + x, wielder.tilePosition.y + y - 1)) {
-                                        Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.slide(0, -1, null, null, this.slideTime);
-                                    } else if (isEmpty(wielder.tilePosition.x + x, wielder.tilePosition.y + y + 1)) {
-                                        Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.slide(0, 1, null, null, this.slideTime);
-                                    } else {
-                                        Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.slideBump(Math.sign(x), 0, null, null, this.slideTime);
-                                    }
-                                } else {
-                                    if (isEmpty(wielder.tilePosition.x + x, wielder.tilePosition.y + y + Math.sign(y))) {
-                                        Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.slide(0, Math.sign(y), null, null, this.slideTime);
-                                    } else if (isEmpty(wielder.tilePosition.x + x + Math.sign(x), wielder.tilePosition.y + y)) {
-                                        Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.slide(Math.sign(x), 0, null, null, this.slideTime);
-                                    } else {
-                                        Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.slideBump(Math.sign(x), 0, null, null, this.slideTime);
-                                    }
-                                }
-                            }
-
+                            blowAwayInDirection(wielder.tilePosition, {x: x, y: y}, this.slideTime)
                         }
                     }
                 }

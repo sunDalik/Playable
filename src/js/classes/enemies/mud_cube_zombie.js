@@ -9,7 +9,6 @@ export class MudCubeZombie extends Enemy {
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.MUD_CUBE_ZOMBIE;
         this.atk = 0;
-
         this.movable = false;
         this.energyDrop = 0;
     }
