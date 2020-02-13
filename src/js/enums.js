@@ -26,7 +26,10 @@ export const ENEMY_TYPE = Object.freeze({
     PARANOID_EEL: 24,
     GUARDIAN_OF_THE_LIGHT: 25,
     COCOON: 26,
-    LIZARD_WARRIOR: 27
+    LIZARD_WARRIOR: 27,
+    MUD_CUBE_ZOMBIE: 28,
+    MUD_MAGE: 29,
+    TELEPORT_MAGE: 30
 });
 
 export const RABBIT_TYPE = Object.freeze({

@@ -54,37 +54,17 @@ export function bindKeys() {
     magicTwoKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.castMagic(Game.player2.magic2));
     magicThreeKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.castMagic(Game.player2.magic3));
 
-    switchKey.press = () => {
-        playerTurn(null, switchPlayers, true)
-    };
+    secondHandKeyP1.press = () => playerTurn(Game.player, () => Game.player.useSecondHand());
+    secondHandKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.useSecondHand());
 
-    secondHandKeyP1.press = () => {
-        playerTurn(Game.player, () => Game.player.useSecondHand())
-    };
+    weaponKeyP1.press = () => playerTurn(Game.player, () => Game.player.concentrateWeapon());
+    weaponKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.concentrateWeapon());
 
-    secondHandKeyP2.press = () => {
-        playerTurn(Game.player2, () => Game.player2.useSecondHand())
-    };
+    bagKeyP1.press = () => playerTurn(Game.player, () => Game.player.useBag());
+    bagKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.useBag());
 
-    weaponKeyP1.press = () => {
-        playerTurn(Game.player, () => Game.player.concentrateWeapon())
-    };
-
-    weaponKeyP2.press = () => {
-        playerTurn(Game.player2, () => Game.player2.concentrateWeapon())
-    };
-
-    bagKeyP1.press = () => {
-        playerTurn(Game.player, () => Game.player.useBag())
-    };
-
-    bagKeyP2.press = () => {
-        playerTurn(Game.player2, () => Game.player2.useBag())
-    };
-
-    mapKey.press = () => {
-        toggleMiniMap();
-    };
+    switchKey.press = () => playerTurn(null, switchPlayers, true);
+    mapKey.press = () => toggleMiniMap();
 
     //keyboard("KeyN").press = gotoNextLevel;
 }
