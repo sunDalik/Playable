@@ -29,7 +29,9 @@ export const ENEMY_TYPE = Object.freeze({
     LIZARD_WARRIOR: 27,
     MUD_CUBE_ZOMBIE: 28,
     MUD_MAGE: 29,
-    TELEPORT_MAGE: 30
+    TELEPORT_MAGE: 30,
+    WALL_SLIME: 31,
+    PING_PONG_BUDDY: 32
 });
 
 export const RABBIT_TYPE = Object.freeze({
