@@ -18,6 +18,14 @@ export const GRAIL_TEXT_DARK_FILTER = new GlowFilter(8, 3, 0, 0x000000, 0.3);
 GRAIL_TEXT_DARK_FILTER.padding = 8;
 GRAIL_TEXT_DARK_FILTER.resolution = 2;
 
+export const MILD_DARK_GLOW_FILTER = new GlowFilter(4, 2, 0, 0x000000, 0.3);
+MILD_DARK_GLOW_FILTER.padding = 4;
+MILD_DARK_GLOW_FILTER.resolution = 2;
+
+export const MILD_WHITE_GLOW_FILTER = new GlowFilter(5, 3, 0, 0xffffff, 0.3);
+MILD_WHITE_GLOW_FILTER.padding = 5;
+MILD_WHITE_GLOW_FILTER.resolution = 2;
+
 export const WARNING_BULLET_OUTLINE_FILTER = new OutlineFilter(1, 0x81D0DA);
 WARNING_BULLET_OUTLINE_FILTER.resolution = 2;
 

@@ -11,8 +11,7 @@ import {randomChoice} from "../../utils/random_utils";
 import {getPlayerOnTile, isEmpty} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
 import {TileElement} from "../tile_elements/tile_element";
-import {createEnemyAttackTile, createFadingAttack} from "../../animations";
-import * as PIXI from "pixi.js";
+import {createEnemyAttackTile} from "../../animations";
 
 export class LizardWarrior extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/lizard_warrior.png"].texture) {

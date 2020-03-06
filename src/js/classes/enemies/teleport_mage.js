@@ -2,12 +2,13 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {closestPlayer, otherPlayer, tileDistance} from "../../utils/game_utils";
-import {getCardinalDirections} from "../../utils/map_utils";
+import {getCardinalDirections, getEmptyCardinalDirections, getEmptyRunAwayOptions} from "../../utils/map_utils";
 import {blowAwayInDirection} from "../../special_move_logic";
 import {isEnemy} from "../../map_checks";
 import {createPlayerAttackTile, rotate} from "../../animations";
 import {randomChoice} from "../../utils/random_utils";
 import {camera} from "../game/camera";
+import {MILD_DARK_GLOW_FILTER, MILD_WHITE_GLOW_FILTER} from "../../filters";
 
 export class TeleportMage extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/teleport_mage.png"].texture) {
@@ -22,9 +23,9 @@ export class TeleportMage extends Enemy {
         this.casting = false;
         this.cooldown = 10;
         this.currentCooldown = Math.floor(this.cooldown / 3);
-        this.castDistance = 8;
+        this.castDistance = 6;
         this.dangerDistance = 3;
-        this.castTime = 3;
+        this.castTime = 2;
         this.currentCastTime = this.castTime;
         this.targetedPlayer = null;
         this.scaleModifier = 1.1;
@@ -32,6 +33,7 @@ export class TeleportMage extends Enemy {
     }
 
     move() {
+        this.correctScale();
         if (this.casting) {
             this.currentCooldown = this.cooldown;
             this.currentCastTime--;
@@ -61,8 +63,18 @@ export class TeleportMage extends Enemy {
             this.targetedPlayer = closestPlayer(this);
             this.texture = Game.resources["src/images/enemies/teleport_mage_prepare.png"].texture;
         } else if (this.currentTurnDelay <= 0) {
-            //move
-            this.currentTurnDelay = this.turnDelay
+            let movementOptions;
+            if (tileDistance(this, closestPlayer(this)) <= this.dangerDistance) {
+                movementOptions = getEmptyRunAwayOptions(this, closestPlayer(this));
+                if (movementOptions.length === 0) movementOptions = getEmptyCardinalDirections(this);
+            } else {
+                movementOptions = getEmptyCardinalDirections(this);
+            }
+            if (movementOptions.length !== 0) {
+                const moveDir = randomChoice(movementOptions);
+                this.slide(moveDir.x, moveDir.y);
+                this.currentTurnDelay = this.turnDelay;
+            }
         } else {
             this.currentTurnDelay--;
         }
@@ -71,12 +83,15 @@ export class TeleportMage extends Enemy {
 
     updateIntentIcon() {
         super.updateIntentIcon();
+        this.intentIcon.filters = [];
         if (this.casting) {
             if (this.currentCastTime === 1) {
                 this.intentIcon.texture = Game.resources["src/images/icons/intents/magic.png"].texture;
             } else {
                 this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
             }
+            if (this.targetedPlayer === Game.player) this.intentIcon.filters = [MILD_WHITE_GLOW_FILTER];
+            else this.intentIcon.filters = [MILD_DARK_GLOW_FILTER];
         } else if (this.currentTurnDelay <= 0) {
             this.intentIcon.texture = Game.resources["src/images/icons/intents/question_mark.png"].texture;
         } else {
@@ -89,6 +104,19 @@ export class TeleportMage extends Enemy {
             if (isEnemy(player.tilePosition.x + dir.x, player.tilePosition.y + dir.y)) {
                 Game.map[player.tilePosition.y + dir.y][player.tilePosition.x + dir.x].entity.stun++;
                 blowAwayInDirection(player.tilePosition, dir);
+            }
+        }
+    }
+
+    correctScale() {
+        if (this.casting) {
+            if (this.targetedPlayer.tilePosition.x !== this.tilePosition.x) {
+                this.scale.x = Math.sign(this.targetedPlayer.tilePosition.x - this.tilePosition.x) * Math.abs(this.scale.x);
+            }
+        } else {
+            const sign = Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x);
+            if (sign !== 0) {
+                this.scale.x = sign * Math.abs(this.scale.x);
             }
         }
     }
