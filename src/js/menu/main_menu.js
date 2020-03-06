@@ -265,7 +265,7 @@ function initMenuKeyBinding() {
         else if (Game.subSettingsInterface.visible) return Game.subSettingsInterface.buttons;
         else if (Game.controlsInterface.visible && Game.controlsInterface.choosable) return Game.controlsInterface.buttons;
         else if (Game.otherSettingsInterface.visible) return Game.otherSettingsInterface.buttons;
-        else if (SUPER_HUD.pauseScreen.visible) return SUPER_HUD.pauseScreen.buttons;
+        else if (SUPER_HUD.pauseScreen && SUPER_HUD.pauseScreen.visible) return SUPER_HUD.pauseScreen.buttons;
         else return null;
     };
 

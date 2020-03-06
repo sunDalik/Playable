@@ -42,6 +42,7 @@ export function loadAll(afterLoad) {
         .add("src/images/icons/intents/stun.png")
         .add("src/images/icons/intents/two_tiles_forward.png")
         .add("src/images/icons/intents/three_tiles_front.png")
+        .add("src/images/icons/intents/magic.png")
 
         .add("src/images/hazards/poison.png")
         .add("src/images/hazards/fire.png")
@@ -112,6 +113,13 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/lizard_warrior_triggered_wide_slash.png")
         .add("src/images/enemies/lizard_warrior_triggered_forward_pierce.png")
         .add("src/images/enemies/lizard_warrior_after_attack.png")
+        .add("src/images/enemies/mud_mage.png")
+        .add("src/images/enemies/mud_mage_prepare.png")
+        .add("src/images/enemies/mud_mage_cast.png")
+        .add("src/images/enemies/teleport_mage.png")
+        .add("src/images/enemies/teleport_mage_prepare.png")
+        .add("src/images/enemies/teleport_mage_cast.png")
+        .add("src/images/enemies/mud_cube_zombie.png")
 
         .add("src/images/bosses/paranoid_eel/neutral.png")
         .add("src/images/bosses/paranoid_eel/neutral_2.png")

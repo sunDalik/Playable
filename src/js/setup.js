@@ -29,7 +29,6 @@ import {drawMiniMap} from "./drawing/minimap";
 import {Spear} from "./classes/equipment/weapons/spear";
 import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
-import {Wind} from "./classes/equipment/magic/wind";
 
 PIXI.utils.skipHello();
 initLocalStorage();
