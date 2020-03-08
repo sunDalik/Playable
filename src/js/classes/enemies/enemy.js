@@ -185,7 +185,9 @@ export class Enemy extends AnimatedTileElement {
             this.redrawHealth();
             this.healthContainer.visible = false;
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
+            return true;
         }
+        return false;
     }
 
     getPathToPlayer1() {
