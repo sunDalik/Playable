@@ -568,6 +568,10 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
             particle.position.x = quadraticBezier(t, oldPosX, middlePoint.x, finalPoint.x);
             particle.position.y = quadraticBezier(t, oldPosY, middlePoint.y, finalPoint.y);
 
+            if (tileElement.fadingDestructionParticles) {
+                particle.alpha = 1 - counter / animationTime;
+            }
+
             if (!Game.paused && playerDeath) {
                 Game.world.upWorld.removeChild(particle);
                 Game.world.addChild(particle);
@@ -575,6 +579,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
             if (counter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 particle.position.set(finalPoint.x, finalPoint.y);
+                if (tileElement.fadingDestructionParticles) Game.world.removeChild(particle);
                 if (playerDeath) {
                     Game.world.upWorld.removeChild(particle);
                     Game.world.addChild(particle);

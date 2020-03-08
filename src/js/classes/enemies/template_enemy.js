@@ -14,6 +14,7 @@ export class TemplateEnemy extends Enemy {
         this.turnDelay = 1;
         this.currentTurnDelay = this.turnDelay;
         this.movable = false;
+        this.fadingDestructionParticles = true;
         this.energyDrop = 0;
         this.canMoveInvisible = true;
         this.fireImmunity = 0;

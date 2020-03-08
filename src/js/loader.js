@@ -120,6 +120,7 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/teleport_mage_prepare.png")
         .add("src/images/enemies/teleport_mage_cast.png")
         .add("src/images/enemies/mud_cube_zombie.png")
+        .add("src/images/enemies/summon_circle.png")
 
         .add("src/images/bosses/paranoid_eel/neutral.png")
         .add("src/images/bosses/paranoid_eel/neutral_2.png")

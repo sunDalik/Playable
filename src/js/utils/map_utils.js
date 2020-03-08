@@ -26,6 +26,19 @@ export function getHorizontalDirections() {
     return [{x: -1, y: 0}, {x: 1, y: 0}]
 }
 
+export function getDirectionsOnSquare(radius, excludeCorners = false) {
+    const directions = [];
+    for (let x = -radius; x <= radius; x++) {
+        for (let y = -radius; y <= radius; y++) {
+            if (excludeCorners && Math.abs(x) === radius && Math.abs(y) === radius) continue;
+            if (Math.abs(y) === radius || Math.abs(x) === radius) {
+                directions.push({x: x, y: y});
+            }
+        }
+    }
+    return directions;
+}
+
 export function getChasingDirections(chaser, runner) {
     if (chaser.tilePosition.x === runner.tilePosition.x || chaser.tilePosition.y === runner.tilePosition.y) {
         return [{

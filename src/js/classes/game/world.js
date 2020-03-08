@@ -8,6 +8,7 @@ import {otherPlayer} from "../../utils/game_utils";
 import {recalculateTileInDetectionGraph} from "../../map_generation";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
 import {runDestroyAnimation} from "../../animations";
+import {SummonCircle} from "../enemies/summon_circle";
 
 export class World extends PIXI.Container {
     constructor() {
@@ -77,6 +78,15 @@ export class World extends PIXI.Container {
         Game.world.addChild(enemy);
         enemy.updateIntentIcon();
         Game.enemies.push(enemy);
+    }
+
+    addEnemyViaSummonCircle(enemy, delay) {
+        const summonCircle = new SummonCircle(enemy.tilePosition.x, enemy.tilePosition.y, enemy);
+        Game.world.addChild(summonCircle);
+        Game.enemies.push(summonCircle);
+        if (delay !== undefined) {
+            summonCircle.setDelay(delay);
+        }
     }
 
     clean() {

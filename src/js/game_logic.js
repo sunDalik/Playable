@@ -1,7 +1,7 @@
 import {Game} from "./game"
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {ARMOR_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "./enums"
+import {EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "./enums"
 import {drawInteractionKeys, redrawBag, redrawSlotContents, redrawSpeedRunTimer} from "./drawing/draw_hud";
 import {createKissHeartAnimation, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
@@ -44,7 +44,8 @@ function enemyTurn() {
 }
 
 export function moveEnemies() {
-    for (const enemy of Game.enemies) {
+    for (let i = Game.enemies.length - 1; i >= 0; i--) {
+        const enemy = Game.enemies[i];
         if (!enemy.dead && (enemy.visible || enemy.canMoveInvisible)) {
             if (enemy.boss) enemy.stun = 0;
             if (enemy.stun <= 0) {

@@ -373,9 +373,9 @@ export class Player extends AnimatedTileElement {
         Game.world.upWorld.position = Game.world.position;
         runDestroyAnimation(this, true, 2.5 / time);
         if (source) {
+            sourceVisibility = source.visible && source.parent !== null;
             Game.world.removeChild(source);
             Game.world.upWorld.addChild(source);
-            sourceVisibility = source.visible && source.parent !== null;
             source.visible = true;
         }
 
