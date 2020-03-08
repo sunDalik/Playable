@@ -175,6 +175,7 @@ export const MAP_SYMBOLS = Object.freeze({
     LIZARD_WARRIOR: "liz_war",
     MUD_MAGE: "mud_mage",
     MUD_CUBE_ZOMBIE: "mud_cube_zombie",
+    WALL_SLIME: "wall_slime",
     TELEPORT_MAGE: "teleport_mage",
     PARANOID_EEL: "paranoid_eel",
     BALLET_SPIDER: "ballet_spider",
