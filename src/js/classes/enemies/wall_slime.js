@@ -25,6 +25,7 @@ export class WallSlime extends Enemy {
     }
 
     afterMapGen() {
+        if (this.baseSlime) return;
         if (this.pane === PANE.VERTICAL) {
             if (isEmpty(this.tilePosition.x, this.tilePosition.y - 1)
                 && isEmpty(this.tilePosition.x, this.tilePosition.y - 2)

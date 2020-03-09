@@ -48,6 +48,7 @@ import {TeleportMage} from "./classes/enemies/teleport_mage";
 import {MudCubeZombie} from "./classes/enemies/mud_cube_zombie";
 import {MudMage} from "./classes/enemies/mud_mage";
 import {WallSlime} from "./classes/enemies/wall_slime";
+import {PingPongBuddy} from "./classes/enemies/ping_pong_buddies";
 
 export function generateMap(level) {
     const map = copy2dArray(level);
@@ -140,6 +141,7 @@ export function generateMap(level) {
             else if (map[i][j] === MAP_SYMBOLS.MUD_MAGE) mapCell.entity = new MudMage(j, i);
             else if (map[i][j] === MAP_SYMBOLS.MUD_CUBE_ZOMBIE) mapCell.entity = new MudCubeZombie(j, i);
             else if (map[i][j] === MAP_SYMBOLS.WALL_SLIME) mapCell.entity = new WallSlime(j, i);
+            else if (map[i][j] === MAP_SYMBOLS.PING_PONG_BUDDIES) mapCell.entity = new PingPongBuddy(j, i);
             else if (map[i][j] === MAP_SYMBOLS.TELEPORT_MAGE) mapCell.entity = new TeleportMage(j, i);
             else if (map[i][j] === MAP_SYMBOLS.PARANOID_EEL) mapCell.entity = new ParanoidEel(j, i);
             else if (map[i][j] === MAP_SYMBOLS.BALLET_SPIDER) mapCell.entity = new BalletSpider(j, i);

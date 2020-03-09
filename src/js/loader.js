@@ -127,6 +127,7 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/wall_slime_edge.png")
         .add("src/images/enemies/wall_slime_edge_face.png")
         .add("src/images/enemies/wall_slime_single.png")
+        .add("src/images/enemies/ping_pong_buddy.png")
 
         .add("src/images/bosses/paranoid_eel/neutral.png")
         .add("src/images/bosses/paranoid_eel/neutral_2.png")
