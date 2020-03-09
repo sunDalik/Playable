@@ -2,9 +2,11 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE, PANE} from "../../enums";
 import {randomChoice} from "../../utils/random_utils";
-import {isEmpty} from "../../map_checks";
-import {closestPlayer} from "../../utils/game_utils";
+import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../map_checks";
+import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {getHealthArray} from "../../drawing/draw_utils";
+import {getCardinalDirections, getChasingDirections} from "../../utils/map_utils";
+import {removeObjectFromArray} from "../../utils/basic_utils";
 
 export class WallSlime extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/wall_slime.png"].texture) {
@@ -16,6 +18,7 @@ export class WallSlime extends Enemy {
         this.pane = randomChoice([PANE.VERTICAL, PANE.HORIZONTAL]);
         this.turnDelay = 5;
         this.currentTurnDelay = this.turnDelay;
+        this.STEP_ANIMATION_TIME = 14;
         this.spawnAttempt = false;
         this.baseSlime = null;
         this.subSlimes = [];
@@ -86,14 +89,113 @@ export class WallSlime extends Enemy {
         }
     }
 
+    //stunning sub slimes will probably not work...
     move() {
         if (this.baseSlime) return;
         this.correctScale();
         if (this.currentTurnDelay <= 0) {
-            this.currentTurnDelay = this.turnDelay;
+            let movementOptions = this.closestSlimeToPlayer().getChasingOptionsForSlime(closestPlayer(this));
+            if (movementOptions.length === 0) movementOptions = this.getRelativelyEmptyCardinalDirectionsForSlime();
+            if (movementOptions.length !== 0) {
+                const dir = randomChoice(movementOptions);
+                const players = [];
+                for (const slime of this.subSlimes.concat([this])) {
+                    const player = getPlayerOnTile(slime.tilePosition.x + dir.x, slime.tilePosition.y + dir.y);
+                    if (player) players.push(player);
+                }
+                if (players.length > 0) {
+                    for (const player of players) {
+                        player.damage(this.atk, this, true);
+                    }
+                    for (const slime of this.subSlimes.concat([this])) {
+                        slime.bump(dir.x, dir.y);
+                        if (Game.enemies.indexOf(slime) < Game.enemies.indexOf(this)) slime.cancellable = false;
+                    }
+                } else {
+                    for (const slime of this.subSlimes.concat([this])) {
+                        slime.step(dir.x, dir.y);
+                        //assuming we iterate through Game.enemies from end to start
+                        if (Game.enemies.indexOf(slime) < Game.enemies.indexOf(this)) slime.cancellable = false;
+                    }
+                }
+                this.currentTurnDelay = this.turnDelay;
+            }
         } else {
             this.currentTurnDelay--;
         }
+    }
+
+    //assuming it is always called on the base slime
+    getChasingOptionsForSlime(runner) {
+        const directions = getChasingDirections(this, runner);
+        for (let i = directions.length - 1; i >= 0; i--) {
+            if (!this.isDirectionRelativelyEmpty(directions[i])) {
+                removeObjectFromArray(directions[i], directions);
+            }
+        }
+        return directions;
+    }
+
+    getRelativelyEmptyCardinalDirectionsForSlime() {
+        const directions = getCardinalDirections();
+        for (let i = directions.length - 1; i >= 0; i--) {
+            if (!this.isDirectionRelativelyEmpty(directions[i])) {
+                removeObjectFromArray(directions[i], directions);
+            }
+        }
+        return directions;
+    }
+
+    closestSlimeToPlayer() {
+        let closestSlime = this;
+        for (const slime of this.subSlimes.concat([this])) {
+            if (tileDistance(slime, closestPlayer(slime)) < tileDistance(closestSlime, closestPlayer(closestSlime))) {
+                closestSlime = slime;
+            }
+        }
+        return closestSlime;
+    }
+
+    isDirectionRelativelyEmpty(dir) {
+        if (dir.y !== 0) {
+            if (this.pane === PANE.VERTICAL) {
+                if (dir.y === 1) {
+                    if (!isRelativelyEmpty(this.getLowestSlime().tilePosition.x, this.getLowestSlime().tilePosition.y + 1)) {
+                        return false;
+                    }
+                } else if (dir.y === -1) {
+                    if (!isRelativelyEmpty(this.getHighestSlime().tilePosition.x, this.getHighestSlime().tilePosition.y - 1)) {
+                        return false;
+
+                    }
+                }
+            } else {
+                for (const slime of this.subSlimes.concat([this])) {
+                    if (!isRelativelyEmpty(slime.tilePosition.x, slime.tilePosition.y + dir.y)) {
+                        return false;
+                    }
+                }
+            }
+        } else if (dir.x !== 0) {
+            if (this.pane === PANE.HORIZONTAL) {
+                if (dir.x === 1) {
+                    if (!isRelativelyEmpty(this.getRightmostSlime().tilePosition.x + 1, this.getRightmostSlime().tilePosition.y)) {
+                        return false;
+                    }
+                } else if (dir.x === -1) {
+                    if (!isRelativelyEmpty(this.getLeftmostSlime().tilePosition.x - 1, this.getLeftmostSlime().tilePosition.y)) {
+                        return false;
+                    }
+                }
+            } else {
+                for (const slime of this.subSlimes.concat([this])) {
+                    if (!isRelativelyEmpty(slime.tilePosition.x + dir.x, slime.tilePosition.y)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
@@ -185,6 +287,7 @@ export class WallSlime extends Enemy {
             }
             for (const slime of newSlimeArray) {
                 slime.turnDelay = newSlimeArray.length;
+                slime.STEP_ANIMATION_TIME = newSlimeArray.length * 2 + 4;
                 slime.currentTurnDelay = slime.turnDelay;
                 slime.health = slime.maxHealth;
                 if (slime.baseSlime === null) slime.updateIntentIcon();
@@ -210,13 +313,11 @@ export class WallSlime extends Enemy {
 
     updateIntentIcon() {
         if (this.baseSlime) return;
-        else {
-            super.updateIntentIcon();
-            if (this.currentTurnDelay <= 0) {
-                this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
-            } else {
-                this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
-            }
+        super.updateIntentIcon();
+        if (this.currentTurnDelay <= 0) {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+        } else {
+            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
         }
     }
 
@@ -235,8 +336,8 @@ export class WallSlime extends Enemy {
                 this.intentIcon2.position.y = this.intentIcon.position.y;
             }
         } else {
-            const lowestSlime = this.subSlimes.concat([this]).reduce((prev, val) => val.tilePosition.y > prev.tilePosition.y ? val : prev, this.subSlimes[0]);
-            const highestSlime = this.subSlimes.concat([this]).reduce((prev, val) => val.tilePosition.y < prev.tilePosition.y ? val : prev, this.subSlimes[0]);
+            const lowestSlime = this.getLowestSlime();
+            const highestSlime = this.getHighestSlime();
             this.healthContainer.position.x = lowestSlime.position.x - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 0) / 2 + 0 / 2;
             this.healthContainer.position.y = lowestSlime.position.y + this.height * 0.5 + 10;
 
@@ -247,5 +348,25 @@ export class WallSlime extends Enemy {
                 this.intentIcon2.position.y = this.intentIcon.position.y;
             }
         }
+    }
+
+    getLowestSlime() {
+        if (this.subSlimes.length === 0) return this;
+        return this.subSlimes.concat([this]).reduce((prev, val) => val.tilePosition.y > prev.tilePosition.y ? val : prev, this.subSlimes[0]);
+    }
+
+    getHighestSlime() {
+        if (this.subSlimes.length === 0) return this;
+        return this.subSlimes.concat([this]).reduce((prev, val) => val.tilePosition.y < prev.tilePosition.y ? val : prev, this.subSlimes[0]);
+    }
+
+    getLeftmostSlime() {
+        if (this.subSlimes.length === 0) return this;
+        return this.subSlimes.concat([this]).reduce((prev, val) => val.tilePosition.x < prev.tilePosition.x ? val : prev, this.subSlimes[0]);
+    }
+
+    getRightmostSlime() {
+        if (this.subSlimes.length === 0) return this;
+        return this.subSlimes.concat([this]).reduce((prev, val) => val.tilePosition.x > prev.tilePosition.x ? val : prev, this.subSlimes[0]);
     }
 }
