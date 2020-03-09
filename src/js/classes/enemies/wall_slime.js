@@ -289,6 +289,10 @@ export class WallSlime extends Enemy {
                 slime.turnDelay = newSlimeArray.length;
                 slime.STEP_ANIMATION_TIME = newSlimeArray.length * 2 + 4;
                 slime.currentTurnDelay = slime.turnDelay;
+                if (newSlimeArray.length === 4) slime.maxHealth = 4;
+                else if (newSlimeArray.length === 3) slime.maxHealth = 3;
+                else if (newSlimeArray.length === 2) slime.maxHealth = 3;
+                else if (newSlimeArray.length === 1) slime.maxHealth = 2;
                 slime.health = slime.maxHealth;
                 if (slime.baseSlime === null) slime.updateIntentIcon();
             }
