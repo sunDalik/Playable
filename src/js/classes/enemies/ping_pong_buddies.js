@@ -3,6 +3,8 @@ import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {randomChoice} from "../../utils/random_utils";
 import {isEmpty} from "../../map_checks";
+import {BigFireBullet} from "./bullets/big_fire";
+import {tileDistance} from "../../utils/game_utils";
 
 export class PingPongBuddy extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/ping_pong_buddy.png"].texture) {
@@ -15,6 +17,7 @@ export class PingPongBuddy extends Enemy {
         this.pair = null;
         this.direction = randomChoice([1, -1]);
         this.ball = null;
+        this.turn = true;
     }
 
     afterMapGen() {
@@ -41,12 +44,37 @@ export class PingPongBuddy extends Enemy {
         Game.enemies.push(this.pair);
         this.pair.direction = this.direction * -1;
         this.pair.main = false;
+        this.pair.turn = false;
+        this.pair.pair = this;
         this.correctScale();
         this.pair.correctScale();
     }
 
+    //can either throw horizontal or diagonal if they can move vertically with vertical distance = [horizontal - 2; horizontal]
     move() {
-        //...
+        if (this.turn && (this.ball === null || this.ball.dead || this.isBallNearby())) {
+            if (this.ball && !this.ball.dead) this.ball.die(true, false);
+            let offset;
+            if (this.direction === 1) offset = 2;
+            else offset = -1;
+            this.ball = this.pair.ball = new BigFireBullet(this.tilePosition.x + offset, this.tilePosition.y,
+                [{x: this.direction, y: 0}]);
+            Game.world.addBullet(this.ball);
+            this.pair.turn = true;
+            this.turn = false;
+        }
+    }
+
+    isBallNearby() {
+        for (const tile of [{x: this.ball.tilePosition.x, y: this.ball.tilePosition.y},
+            {x: this.ball.tilePosition.x - 1, y: this.ball.tilePosition.y},
+            {x: this.ball.tilePosition.x, y: this.ball.tilePosition.y - 1},
+            {x: this.ball.tilePosition.x - 1, y: this.ball.tilePosition.y - 1}]) {
+            if (tileDistance(this, {tilePosition: {x: tile.x, y: tile.y}}) === 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     correctScale() {

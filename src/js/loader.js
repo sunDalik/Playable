@@ -155,6 +155,7 @@ export function loadAll(afterLoad) {
 
         .add("src/images/bullets/electric_bullet.png")
         .add("src/images/bullets/fire_bullet.png")
+        .add("src/images/bullets/big_fire_bullet.png")
 
         .add("src/images/HUD/heart_full.png")
         .add("src/images/HUD/heart_75.png")
