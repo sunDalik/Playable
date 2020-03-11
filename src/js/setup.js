@@ -149,7 +149,7 @@ export function initializeLevel() {
     assignDrops();
     retreatBlackBars();
     setTickTimeout(() => {
-        if (Math.random() < 0.5 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {
+        if (Math.random() < 1 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {
             Game.player.microSlide(Game.player2.tilePosition.x - Game.player.tilePosition.x,
                 Game.player2.tilePosition.y - Game.player.tilePosition.y,
                 null, () => setTickTimeout(() =>

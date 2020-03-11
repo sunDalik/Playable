@@ -16,7 +16,7 @@ export class WallSlime extends Enemy {
         this.type = ENEMY_TYPE.WALL_SLIME;
         this.atk = 1;
         this.pane = randomChoice([PANE.VERTICAL, PANE.HORIZONTAL]);
-        this.turnDelay = 5;
+        this.turnDelay = 4;
         this.currentTurnDelay = this.turnDelay;
         this.STEP_ANIMATION_TIME = 14;
         this.spawnAttempt = false;
@@ -287,7 +287,7 @@ export class WallSlime extends Enemy {
                 newSlimeArray[2].subSlimes = [newSlimeArray[0], newSlimeArray[1], newSlimeArray[3]];
             }
             for (const slime of newSlimeArray) {
-                slime.turnDelay = newSlimeArray.length;
+                slime.turnDelay = Math.ceil(newSlimeArray.length * 0.8);
                 slime.STEP_ANIMATION_TIME = newSlimeArray.length * 2 + 4;
                 slime.currentTurnDelay = slime.turnDelay;
                 if (newSlimeArray.length === 4) slime.maxHealth = 4;

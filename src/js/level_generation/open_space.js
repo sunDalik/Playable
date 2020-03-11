@@ -1,6 +1,6 @@
 import {Game} from "../game";
 import {MAP_SYMBOLS} from "../enums";
-import {getRandomInt, randomArrayIndex, randomChoice} from "../utils/random_utils";
+import {getRandomInt, randomArrayIndex, randomChoice, randomChoiceSeveral} from "../utils/random_utils";
 import {
     createRoom,
     expandLevel,
@@ -22,9 +22,9 @@ export function generateOpenSpaceLevel() {
     let levelRooms = [];
 
     //generate starting room position
-    const startRoomY = getRandomInt(0, levelRoomHeight-1);
+    const startRoomY = getRandomInt(0, levelRoomHeight - 1);
     let startRoomX;
-    if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) startRoomX = getRandomInt(0, levelRoomWidth-1);
+    if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) startRoomX = getRandomInt(0, levelRoomWidth - 1);
     else startRoomX = randomChoice([0, levelRoomWidth - 1]);
     const startRoomI = startRoomY * levelRoomWidth + startRoomX;
 
@@ -60,7 +60,7 @@ export function generateOpenSpaceLevel() {
     let statueRoomIs = [];
     for (let i = 0; i < statueRoomsNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber-1);
+            const randomI = getRandomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && randomI !== endingRoomI && !statueRoomIs.includes(randomI)) {
                 statueRoomIs[i] = randomI;
                 break;
@@ -73,7 +73,7 @@ export function generateOpenSpaceLevel() {
     let chestRoomIs = [];
     for (let i = 0; i < chestRoomNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber-1);
+            const randomI = getRandomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && !chestRoomIs.includes(randomI) && randomI !== endingRoomI
                 && !statueRoomIs.includes(randomI)) {
                 chestRoomIs[i] = randomI;
@@ -87,7 +87,7 @@ export function generateOpenSpaceLevel() {
     let obeliskRoomIs = []; //this is for testing purposes. Actually there will always be only one obelisk
     for (let i = 0; i < obeliskRoomNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber-1);
+            const randomI = getRandomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && !statueRoomIs.includes(randomI) && randomI !== endingRoomI
                 && !chestRoomIs.includes(randomI) && !obeliskRoomIs.includes(randomI)) {
                 obeliskRoomIs[i] = randomI;
@@ -100,7 +100,13 @@ export function generateOpenSpaceLevel() {
     //picking rooms for level
     for (let i = 0; i < roomNumber; ++i) {
         if (i !== startRoomI && i !== endingRoomI) {
-            levelRooms[i] = createRoom(getRandomInt(8, 9), getRandomInt(8, 9), [], MAP_SYMBOLS.NONE);
+            const width = getRandomInt(7, 9);
+            const height = getRandomInt(7, 9);
+            const enemies = randomChoiceSeveral(getRoomInsideArray(width, height), getRandomInt(3, 5));
+            for (const enemy of enemies) {
+                enemy.symbol = randomChoice([MAP_SYMBOLS.PING_PONG_BUDDIES, MAP_SYMBOLS.WALL_SLIME, MAP_SYMBOLS.LIZARD_WARRIOR, MAP_SYMBOLS.MUD_MAGE, MAP_SYMBOLS.TELEPORT_MAGE])
+            }
+            levelRooms[i] = createRoomWithEnemies(width, height, enemies, MAP_SYMBOLS.NONE);
             continue;
 
             let room;
@@ -231,4 +237,33 @@ function outlineLevelWithWalls(level) {
             }
         }
     }
+}
+
+function getRoomInsideArray(width, height) {
+    const inside = [];
+    for (let x = 1; x < width; x++) {
+        for (let y = 1; y < height; y++) {
+            inside.push({x: x, y: y});
+        }
+    }
+    return inside;
+}
+
+function createRoomWithEnemies(width, height, enemies, wallSymbol = MAP_SYMBOLS.NONE) {
+    let room = [];
+    for (let i = 0; i < height; ++i) {
+        room[i] = [];
+        for (let j = 0; j < width; ++j) {
+            if (j === 0 || j === width - 1 || i === 0 || i === height - 1) {
+                room[i][j] = wallSymbol;
+            } else room[i][j] = MAP_SYMBOLS.NONE;
+
+            for (const enemy of enemies) {
+                if (i === enemy.y && j === enemy.x) {
+                    room[i][j] = enemy.symbol;
+                }
+            }
+        }
+    }
+    return room;
 }
