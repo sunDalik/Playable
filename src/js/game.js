@@ -91,3 +91,4 @@ Game.keys = [];
 
 Game.showTimer = false;
 Game.timer = 0; //MS
+Game.destroyParticles = [];

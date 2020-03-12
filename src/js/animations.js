@@ -504,6 +504,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         YBorders[i] = YBorders[i - 1] + tileElement.texture.height / 3 + getRandomInt(-tileElement.texture.height * maxOffsetMul, tileElement.texture.height * maxOffsetMul);
         XBorders[i] = XBorders[i - 1] + tileElement.texture.width / 3 + getRandomInt(-tileElement.texture.width * maxOffsetMul, tileElement.texture.width * maxOffsetMul);
     }
+    const particles = [];
     for (const region of [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0},
         {x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1},
         {x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}]) {
@@ -589,5 +590,23 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
             }
         };
         Game.app.ticker.add(animation);
+        particles.push(particle);
     }
+    if (!tileElement.fadingDestructionParticles) Game.destroyParticles.push(particles);
+}
+
+export function fadeOutAndDie(object) {
+    const animationTime = 10;
+    let counter = 0;
+
+    const animation = (delta) => {
+        if (Game.paused) return;
+        counter += delta;
+        object.alpha = 1 - easeInQuad(counter / animationTime);
+        if (counter >= animationTime) {
+            Game.app.ticker.remove(animation);
+            Game.world.removeChild(object);
+        }
+    };
+    Game.app.ticker.add(animation);
 }

@@ -3,7 +3,7 @@ import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
 import {EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "./enums"
 import {drawInteractionKeys, redrawBag, redrawSlotContents, redrawSpeedRunTimer} from "./drawing/draw_hud";
-import {createKissHeartAnimation, showHelpBox} from "./animations";
+import {createKissHeartAnimation, fadeOutAndDie, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
 import {updateChain} from "./drawing/draw_dunno";
 import {lightPosition, lightTile} from "./drawing/lighting";
@@ -14,6 +14,8 @@ import {get8Directions, getCardinalDirections} from "./utils/map_utils";
 import {getPlayerOnTile} from "./map_checks";
 import {ITEM_OUTLINE_FILTER} from "./filters";
 import {TileElement} from "./classes/tile_elements/tile_element";
+import {randomChoice, randomShuffle} from "./utils/random_utils";
+import {removeObjectFromArray} from "./utils/basic_utils";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -41,6 +43,7 @@ function enemyTurn() {
     Game.player.afterEnemyTurn();
     Game.player2.afterEnemyTurn();
     updateInanimates();
+    cleanParticles();
 }
 
 export function moveEnemies() {
@@ -100,6 +103,22 @@ function callDelayedMethods() {
         Game.delayList[i]();
     }
     Game.delayList = [];
+}
+
+function cleanParticles() {
+    //200 is an arbitrary limit
+    let diff = Game.destroyParticles.reduce((acc, val) => acc + val.length, 0) - 200;
+    while (diff-- > 0) {
+        const particleArray = Game.destroyParticles[0]; //remove oldest particles
+        const particle = randomChoice(particleArray);
+        removeObjectFromArray(particle, particleArray);
+        fadeOutAndDie(particle);
+        if (particleArray.length === 0) removeObjectFromArray(particleArray, Game.destroyParticles);
+        else if (particleArray.length <= 3) {
+            removeObjectFromArray(particleArray, Game.destroyParticles);
+            Game.destroyParticles.push(particleArray);
+        }
+    }
 }
 
 export function updateInanimates() {
@@ -368,6 +387,7 @@ export function cleanGameState() {
     }
     removeAllChildrenFromContainer(HUD.bossHealth);
     Game.bossEntryOpened = false;
+    Game.destroyParticles = [];
 }
 
 export function activateBossMode(player) {
