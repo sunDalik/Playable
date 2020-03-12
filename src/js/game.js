@@ -82,6 +82,7 @@ Game.bossFight = false;
 Game.bossExit = null;
 Game.bossEntry = null;
 Game.bossEntryOpened = false;
+Game.bossNoDamage = true;
 Game.savedTiles = [];
 
 Game.loadingText = null;
@@ -92,3 +93,4 @@ Game.keys = [];
 Game.showTimer = false;
 Game.timer = 0; //MS
 Game.destroyParticles = [];
+Game.achievementPopUpQueue = [];

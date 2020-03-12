@@ -418,6 +418,7 @@ export function activateBossMode(player) {
 
     Game.boss.redrawHealth();
     Game.bossFight = true;
+    Game.bossNoDamage = true;
 
     if (Game.boss.onBossModeActivate) {
         Game.boss.onBossModeActivate();

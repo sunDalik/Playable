@@ -331,6 +331,7 @@ export class Player extends AnimatedTileElement {
                 if (dmg < 0.25) dmg = 0.25;
                 this.health -= dmg;
                 redrawHealthForPlayer(this);
+                Game.bossNoDamage = false;
                 if (this.health <= 0) {
                     this.health = 0;
                     this.dieAnimationWait(source);

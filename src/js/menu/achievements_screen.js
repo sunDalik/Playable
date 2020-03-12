@@ -5,7 +5,6 @@ import {createBackButton} from "./menu_common";
 import {GAME_STATE, STORAGE} from "../enums";
 import {SUPER_HUD} from "../drawing/super_hud";
 import {achievements} from "../achievements";
-import {randomChoice} from "../utils/random_utils";
 import {HUDTextStyleTitle} from "../drawing/draw_constants";
 
 export function setupAchievementsScreen() {
@@ -17,6 +16,7 @@ export function setupAchievementsScreen() {
     Game.app.stage.addChild(Game.achievementsInterface);
     const backButton = createBackButton(Game.achievementsInterface);
     Game.achievementsInterface.buttons = [backButton];
+    Game.achievementsInterface.achievements = [];
     backButton.clickButton = () => {
         Game.achievementsInterface.visible = false;
         if (Game.state === GAME_STATE.MENU) {
@@ -41,7 +41,7 @@ function displayAchievements() {
     const initOffsetY = Game.achievementsInterface.buttons[0].height + Game.achievementsInterface.buttons[0].position.y;
     const rowOffset = (Game.app.renderer.screen.height - (imageSize + textOffset + textBoxHeight) * colLength - initOffsetY) / (colLength + 1);
     const colOffset = (Game.app.renderer.screen.width - imageSize * rowLength) / (rowLength + 1);
-    const storage = window.localStorage[STORAGE.ACHIEVEMENTS];
+    const storage = JSON.parse(window.localStorage[STORAGE.ACHIEVEMENTS]);
     for (let i = 0; i < achievements.length; i++) {
         const col = i % rowLength;
         const row = Math.floor(i / rowLength);
@@ -60,5 +60,15 @@ function displayAchievements() {
         }
         textBox.position.set(achievementSprite.position.x + imageSize / 2 - textBox.width / 2, achievementSprite.position.y + imageSize + textOffset);
         Game.achievementsInterface.addChild(textBox);
+        Game.achievementsInterface.achievements.push(achievementSprite);
+        Game.achievementsInterface.achievements.push(textBox);
     }
+}
+
+export function updateAchievementsScreen() {
+    for (let i = Game.achievementsInterface.achievements.length - 1; i >= 0; i--) {
+        Game.achievementsInterface.removeChild(Game.achievementsInterface.achievements[i]);
+    }
+    Game.achievementsInterface.achievements = [];
+    displayAchievements();
 }

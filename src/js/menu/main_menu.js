@@ -11,7 +11,7 @@ import {GAME_STATE, STORAGE} from "../enums";
 import {setupSubSettings} from "./subsettings";
 import {createSimpleButtonSet} from "./menu_common";
 import {SUPER_HUD} from "../drawing/super_hud";
-import {setupAchievementsScreen} from "./achievements_screen";
+import {setupAchievementsScreen, updateAchievementsScreen} from "./achievements_screen";
 
 const ppAnimationTime1 = 35;
 const ppAnimationTime2 = 35;
@@ -242,6 +242,7 @@ function setButtonClickHandlers() {
         Game.achievementsInterface.visible = true;
         Game.achievementsInterface.buttons[0].chooseButton();
         changeBGColor(achievementsMenuColor);
+        updateAchievementsScreen();
     };
 
     const spinPlayers = () => {
