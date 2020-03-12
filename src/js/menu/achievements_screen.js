@@ -33,9 +33,11 @@ export function setupAchievementsScreen() {
 
 function displayAchievements() {
     const rowLength = 5;
+    const colLength = 3;
     const size = 150;
-    const rowOffset = 40;
-    const colOffset = 100;
+    const initOffsetY = Game.achievementsInterface.buttons[0].height + Game.achievementsInterface.buttons[0].position.y;
+    const rowOffset = (Game.app.renderer.screen.height - size * colLength - initOffsetY) / (colLength + 1);
+    const colOffset = (Game.app.renderer.screen.width - size * rowLength) / (rowLength + 1);
     const storage = window.localStorage[STORAGE.ACHIEVEMENTS];
     for (let i = 0; i < achievements.length; i++) {
         const col = i % rowLength;
@@ -43,7 +45,7 @@ function displayAchievements() {
         const achievementSprite = new PIXI.Sprite(Game.resources["src/images/achievements/locked.png"].texture);
         if (storage[achievements[i].id] === 1) achievementSprite.texture = Game.resources[achievements[i].image].texture;
         achievementSprite.width = achievementSprite.height = size;
-        achievementSprite.position.set(col * (size + colOffset) + colOffset, row * (size + rowOffset) + rowOffset + Game.achievementsInterface.buttons[0].height + Game.achievementsInterface.buttons[0].position.y);
+        achievementSprite.position.set(col * (size + colOffset) + colOffset, row * (size + rowOffset) + rowOffset + initOffsetY);
         Game.achievementsInterface.addChild(achievementSprite);
     }
 }
