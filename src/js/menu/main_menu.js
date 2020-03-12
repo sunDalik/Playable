@@ -11,6 +11,7 @@ import {GAME_STATE, STORAGE} from "../enums";
 import {setupSubSettings} from "./subsettings";
 import {createSimpleButtonSet} from "./menu_common";
 import {SUPER_HUD} from "../drawing/super_hud";
+import {setupAchievementsScreen} from "./achievements_screen";
 
 const ppAnimationTime1 = 35;
 const ppAnimationTime2 = 35;
@@ -24,6 +25,7 @@ let player1, player2;
 
 export const menuBgColor = randomChoice([BG_COLORS.FLOODED_CAVE, BG_COLORS.DARK_TUNNEL]);
 export const settingsMenuColor = 0x2c293d;
+export const achievementsMenuColor = 0xcfc1a5;
 export let currentMenuBgColor = menuBgColor;
 let stopTilingAnimation = false;
 
@@ -50,12 +52,13 @@ export function setupMenu() {
         Game.menuCommon.tilingBG = createTilingBG();
     });
     setupSubSettings();
+    setupAchievementsScreen();
 
     [player1, player2] = createMenuTrianglesAnimation();
     setTickTimeout(() => {
         movePlayersUp([player1, player2]);
         setTickTimeout(() => {
-            Game.mainMenu.buttons = createSimpleButtonSet(["PLAY", "SETTINGS", "SPIN"], Game.mainMenu, playerOffset + playerSize + playerOffset);
+            Game.mainMenu.buttons = createSimpleButtonSet(["PLAY", "SETTINGS", "ACHIEVEMENTS"], Game.mainMenu, playerOffset + playerSize + playerOffset);
             setButtonClickHandlers();
             initMenuKeyBinding();
         }, ppUpAnimationTime * 2 / 3);
@@ -235,6 +238,14 @@ function setButtonClickHandlers() {
     };
     Game.mainMenu.buttons[2].clickButton = () => {
         if (!Game.mainMenu.choosable) return;
+        Game.mainMenu.visible = false;
+        Game.achievementsInterface.visible = true;
+        Game.achievementsInterface.buttons[0].chooseButton();
+        changeBGColor(achievementsMenuColor);
+    };
+
+    const spinPlayers = () => {
+        if (!Game.mainMenu.choosable) return;
         let sign = randomChoice([-1, 1]);
         for (const player of [player1, player2]) {
             let counter = 0;
@@ -254,6 +265,9 @@ function setButtonClickHandlers() {
         }
     };
 
+    player1.interactive = true;
+    player1.on("click", spinPlayers);
+
     for (let i = 0; i < Game.mainMenu.buttons.length; i++) {
         Game.mainMenu.buttons[i].on("click", Game.mainMenu.buttons[i].clickButton);
     }
@@ -266,6 +280,7 @@ function initMenuKeyBinding() {
         else if (Game.controlsInterface.visible && Game.controlsInterface.choosable) return Game.controlsInterface.buttons;
         else if (Game.otherSettingsInterface.visible) return Game.otherSettingsInterface.buttons;
         else if (SUPER_HUD.pauseScreen && SUPER_HUD.pauseScreen.visible) return SUPER_HUD.pauseScreen.buttons;
+        else if (Game.achievementsInterface.visible) return Game.achievementsInterface.buttons;
         else return null;
     };
 

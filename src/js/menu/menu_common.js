@@ -7,7 +7,7 @@ import {bottomColor, topColor} from "./main_menu";
 const menuButtonWidth = 250;
 const menuButtonHeight = 70;
 const buttonOffset = 25;
-const buttonFontSize = 28;
+const buttonFontSize = 26;
 const playerSelectorOffsetX = 20;
 const buttonLineWidth = 4;
 const buttonAnimationTime = 20;

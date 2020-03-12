@@ -44,6 +44,11 @@ export function loadAll(afterLoad) {
         .add("src/images/icons/intents/three_tiles_front.png")
         .add("src/images/icons/intents/magic.png")
 
+        .add("src/images/achievements/locked.png")
+        .add("src/images/achievements/beat_fc.png")
+        .add("src/images/achievements/beat_dt.png")
+        .add("src/images/achievements/beat_any_boss_no_damage.png")
+
         .add("src/images/hazards/poison.png")
         .add("src/images/hazards/fire.png")
         .add("src/images/hazards/fire_small.png")

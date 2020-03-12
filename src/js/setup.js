@@ -5,7 +5,7 @@ import {loadAll} from "./loader";
 import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
-import {GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums";
+import {ACHIEVEMENT_ID, GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums";
 import {generateLevel} from "./level_generation/level_generation";
 import {assignDrops, calculateDetectionGraph, generateMap} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
@@ -29,7 +29,6 @@ import {drawMiniMap} from "./drawing/minimap";
 import {Spear} from "./classes/equipment/weapons/spear";
 import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
-import {achievements_default} from "./achievements";
 
 PIXI.utils.skipHello();
 initLocalStorage();
@@ -251,7 +250,7 @@ function initLocalStorage(reset = false) {
     initLocalStorageKeys(reset);
     initLocalStorageOther(reset);
     window.localStorage.removeItem(STORAGE.ACHIEVEMENTS);
-    //initLocalStorageAchievements(reset);
+    initLocalStorageAchievements(reset);
 }
 
 export function initLocalStorageKeys(reset = false) {
@@ -291,5 +290,11 @@ export function initLocalStorageOther(reset = false) {
 }
 
 export function initLocalStorageAchievements(reset = false) {
-    if (reset || !window.localStorage[STORAGE.ACHIEVEMENTS]) window.localStorage[STORAGE.ACHIEVEMENTS] = JSON.stringify(achievements_default);
+    if (reset || !window.localStorage[STORAGE.ACHIEVEMENTS]) {
+        const achievementsArray = [];
+        for (const id of Object.values(ACHIEVEMENT_ID)) {
+            achievementsArray[id] = 0;
+        }
+        window.localStorage[STORAGE.ACHIEVEMENTS] = JSON.stringify(achievementsArray);
+    }
 }
