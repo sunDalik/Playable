@@ -16,6 +16,7 @@ import {ITEM_OUTLINE_FILTER} from "./filters";
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {randomChoice, randomShuffle} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
+import {completeBeatStageAchievements} from "./achievements";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -361,6 +362,7 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
 export function gotoNextLevel() {
     Game.world.clean();
     cleanGameState();
+    completeBeatStageAchievements(Game.stage);
     incrementStage();
     initializeLevel();
     Game.player.applyNextLevelMethods();

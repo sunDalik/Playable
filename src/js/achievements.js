@@ -1,4 +1,4 @@
-import {ACHIEVEMENT_ID} from "./enums";
+import {ACHIEVEMENT_ID, STAGE, STORAGE} from "./enums";
 
 export const achievements_default = [
     {id: ACHIEVEMENT_ID.BEAT_FC, description: "Beat Flooded Caves", image: "", completed: false},
@@ -15,3 +15,29 @@ export const achievements_default = [
         image: "",
         completed: false
     }];
+
+
+export function completeBeatStageAchievements(stage) {
+    switch (stage) {
+        case STAGE.FLOODED_CAVE:
+            completeAchievement(ACHIEVEMENT_ID.BEAT_FC);
+            break;
+        case STAGE.DARK_TUNNEL:
+            completeAchievement(ACHIEVEMENT_ID.BEAT_DT);
+            break;
+    }
+}
+
+export function completeAchievement(achievement_id) {
+    const storage = JSON.parse(window.localStorage[STORAGE.ACHIEVEMENTS]);
+    const achievement = storage.find(achievement => achievement.id === achievement_id);
+    if (achievement.completed === false) {
+        achievement.completed = true;
+        showAchievementAnimation(achievement);
+        window.localStorage[STORAGE.ACHIEVEMENTS] = storage;
+    }
+}
+
+export function showAchievementAnimation(achievement) {
+
+}

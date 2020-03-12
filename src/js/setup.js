@@ -250,7 +250,8 @@ function lightRandom() {
 function initLocalStorage(reset = false) {
     initLocalStorageKeys(reset);
     initLocalStorageOther(reset);
-    initLocalStorageAchievements(reset);
+    window.localStorage.removeItem(STORAGE.ACHIEVEMENTS);
+    //initLocalStorageAchievements(reset);
 }
 
 export function initLocalStorageKeys(reset = false) {
