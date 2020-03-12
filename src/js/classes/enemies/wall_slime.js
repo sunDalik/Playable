@@ -158,6 +158,7 @@ export class WallSlime extends Enemy {
     }
 
     isDirectionRelativelyEmpty(dir) {
+        const slimes = this.baseSlime ? this.baseSlime.subSlimes.concat([this.baseSlime]) : this.subSlimes.concat([this]);
         if (dir.y !== 0) {
             if (this.pane === PANE.VERTICAL) {
                 if (dir.y === 1) {
@@ -171,7 +172,7 @@ export class WallSlime extends Enemy {
                     }
                 }
             } else {
-                for (const slime of this.subSlimes.concat([this])) {
+                for (const slime of slimes) {
                     if (!isRelativelyEmpty(slime.tilePosition.x, slime.tilePosition.y + dir.y)) {
                         return false;
                     }
@@ -189,7 +190,7 @@ export class WallSlime extends Enemy {
                     }
                 }
             } else {
-                for (const slime of this.subSlimes.concat([this])) {
+                for (const slime of slimes) {
                     if (!isRelativelyEmpty(slime.tilePosition.x + dir.x, slime.tilePosition.y)) {
                         return false;
                     }

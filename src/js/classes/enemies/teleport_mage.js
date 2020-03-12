@@ -9,6 +9,7 @@ import {createPlayerAttackTile, rotate} from "../../animations";
 import {randomChoice} from "../../utils/random_utils";
 import {camera} from "../game/camera";
 import {MILD_DARK_GLOW_FILTER, MILD_WHITE_GLOW_FILTER} from "../../filters";
+import {updateChain} from "../../drawing/draw_dunno";
 
 export class TeleportMage extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/teleport_mage.png"].texture) {
@@ -46,6 +47,7 @@ export class TeleportMage extends Enemy {
                 this.targetedPlayer.removeFromMap();
                 this.setTilePosition(this.targetedPlayer.tilePosition.x, this.targetedPlayer.tilePosition.y);
                 this.targetedPlayer.setTilePosition(tempPos.x, tempPos.y);
+                updateChain();
                 rotate(this.targetedPlayer, randomChoice([true, false]));
                 createPlayerAttackTile(this.targetedPlayer.tilePosition);
                 camera.moveToCenter(5);
@@ -101,7 +103,8 @@ export class TeleportMage extends Enemy {
 
     blowAwayFromPlayerPosition(player) {
         for (const dir of getCardinalDirections()) {
-            if (isEnemy(player.tilePosition.x + dir.x, player.tilePosition.y + dir.y)) {
+            if (isEnemy(player.tilePosition.x + dir.x, player.tilePosition.y + dir.y)
+                && Game.map[player.tilePosition.y + dir.y][player.tilePosition.x + dir.x].entity.type !== ENEMY_TYPE.WALL_SLIME) { //temporary fix
                 Game.map[player.tilePosition.y + dir.y][player.tilePosition.x + dir.x].entity.stun++;
                 blowAwayInDirection(player.tilePosition, dir);
             }
