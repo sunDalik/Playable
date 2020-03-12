@@ -219,7 +219,10 @@ export const STORAGE = Object.freeze({
     KEY_MAP: "KeyMap",
     KEY_PAUSE: "KeyPause",
 
-    SHOW_TIMER: "ShowTimer"
+    SHOW_TIMER: "ShowTimer",
+    ACHIEVEMENTS: "Achievements"
 });
 
 export const GAME_STATE = Object.freeze({MENU: 0, PLAYING: 1});
+
+export const ACHIEVEMENT_ID = Object.freeze({BEAT_FC: 0, BEAT_DT: 1, BEAT_ANY_BOSS_NO_DAMAGE: 2});

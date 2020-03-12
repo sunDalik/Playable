@@ -29,6 +29,7 @@ import {drawMiniMap} from "./drawing/minimap";
 import {Spear} from "./classes/equipment/weapons/spear";
 import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
+import {achievements_default} from "./achievements";
 
 PIXI.utils.skipHello();
 initLocalStorage();
@@ -249,6 +250,7 @@ function lightRandom() {
 function initLocalStorage(reset = false) {
     initLocalStorageKeys(reset);
     initLocalStorageOther(reset);
+    initLocalStorageAchievements(reset);
 }
 
 export function initLocalStorageKeys(reset = false) {
@@ -285,4 +287,8 @@ export function initLocalStorageKeys(reset = false) {
 export function initLocalStorageOther(reset = false) {
     //use JSON.parse to parse string boolean values
     if (reset || !window.localStorage[STORAGE.SHOW_TIMER]) window.localStorage[STORAGE.SHOW_TIMER] = false;
+}
+
+export function initLocalStorageAchievements(reset = false) {
+    if (reset || !window.localStorage[STORAGE.ACHIEVEMENTS]) window.localStorage[STORAGE.ACHIEVEMENTS] = JSON.stringify(achievements_default);
 }
