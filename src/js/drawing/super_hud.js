@@ -2,11 +2,12 @@ import * as PIXI from "pixi.js";
 import {HUD} from "./hud_object";
 import {HUDTextStyleGameOver} from "./draw_constants";
 import {Game} from "../game";
-import {createSimpleButtonSet} from "../menu/menu_common";
+import {createSimpleButtonSet, menuButtonHeight, menuButtonOffset} from "../menu/menu_common";
 import {keyboardS} from "../keyboard/keyboard_handler";
 import {GAME_STATE, STORAGE} from "../enums";
 import {retry} from "../setup";
 import {bringMenuBackToLife} from "../menu/main_menu";
+import {updateAchievementsScreen} from "../menu/achievements_screen";
 
 export const SUPER_HUD = new PIXI.Container();
 SUPER_HUD.sortableChildren = true;
@@ -30,7 +31,9 @@ function setupPauseScreen() {
     SUPER_HUD.pauseScreen.visible = false;
     SUPER_HUD.pauseScreen.choosable = true;
     SUPER_HUD.pauseScreen.zIndex = 11;
-    SUPER_HUD.pauseScreen.buttons = createSimpleButtonSet(["RESUME", "RETRY", "SETTINGS", "EXIT"], SUPER_HUD.pauseScreen, 200).slice();
+    const buttons = ["RESUME", "RETRY", "SETTINGS", "ACHIEVEMENTS", "EXIT"];
+    SUPER_HUD.pauseScreen.buttons = createSimpleButtonSet(buttons, SUPER_HUD.pauseScreen,
+        (Game.app.renderer.screen.height - (menuButtonHeight + menuButtonOffset) * buttons.length) / 2).slice();
     window.addEventListener("resize", () => {
         redrawPauseBG();
     });
@@ -52,6 +55,12 @@ function setupPauseScreen() {
         Game.subSettingsInterface.buttons[1].chooseButton();
     };
     SUPER_HUD.pauseScreen.buttons[3].clickButton = () => {
+        SUPER_HUD.pauseScreen.visible = false;
+        Game.achievementsInterface.visible = true;
+        Game.achievementsInterface.buttons[0].chooseButton();
+        updateAchievementsScreen();
+    };
+    SUPER_HUD.pauseScreen.buttons[4].clickButton = () => {
         SUPER_HUD.pauseScreen.visible = false;
         Game.unplayable = true;
         Game.paused = false;

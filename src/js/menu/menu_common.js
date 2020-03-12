@@ -5,8 +5,8 @@ import {easeOutQuad} from "../utils/math_utils";
 import {bottomColor, topColor} from "./main_menu";
 
 const menuButtonWidth = 250;
-const menuButtonHeight = 70;
-const buttonOffset = 25;
+export const menuButtonHeight = 70;
+export const menuButtonOffset = 25;
 const buttonFontSize = 26;
 const playerSelectorOffsetX = 20;
 const buttonLineWidth = 4;
@@ -96,14 +96,14 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
 
             button.scale.x = button.scale.y = 0;
             button.position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
-            button.position.y = startOffsetY + (buttonHeight + buttonOffset) * i;
+            button.position.y = startOffsetY + (buttonHeight + menuButtonOffset) * i;
 
             const startScale = playerSelectors[0].scale.x;
             if (i === 0) {
                 playerSelectors[0].scale.x = playerSelectors[0].scale.y = playerSelectors[1].scale.x = playerSelectors[1].scale.y = 0;
                 playerSelectors[0].position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
                 playerSelectors[1].position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
-                playerSelectors[0].position.y = playerSelectors[1].position.y = startOffsetY + (buttonHeight + buttonOffset) * i;
+                playerSelectors[0].position.y = playerSelectors[1].position.y = startOffsetY + (buttonHeight + menuButtonOffset) * i;
                 container.addChild(playerSelectors[0]);
                 container.addChild(playerSelectors[1]);
                 if (chooseFirst) button.chooseButton();
@@ -114,7 +114,7 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
                 counter += delta;
                 button.scale.x = button.scale.y = easeOutQuad(counter / buttonAnimationTime);
                 button.position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
-                button.position.y = startOffsetY + (buttonHeight + buttonOffset) * i;
+                button.position.y = startOffsetY + (buttonHeight + menuButtonOffset) * i;
                 if (i === 0) {
                     playerSelectors[0].scale.x = playerSelectors[0].scale.y = playerSelectors[1].scale.x = playerSelectors[1].scale.y = startScale * easeOutQuad(counter / buttonAnimationTime);
                     redrawSelection();
@@ -307,12 +307,12 @@ export function createCheckboxSet(givenButtons, container, startOffsetY, chooseF
         };
 
         button.position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
-        button.position.y = startOffsetY + (buttonHeight + buttonOffset) * i;
+        button.position.y = startOffsetY + (buttonHeight + menuButtonOffset) * i;
 
         if (i === 0) {
             playerSelectors[0].position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
             playerSelectors[1].position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
-            playerSelectors[0].position.y = playerSelectors[1].position.y = startOffsetY + (buttonHeight + buttonOffset) * i;
+            playerSelectors[0].position.y = playerSelectors[1].position.y = startOffsetY + (buttonHeight + menuButtonOffset) * i;
             container.addChild(playerSelectors[0]);
             container.addChild(playerSelectors[1]);
             button.chooseButton();

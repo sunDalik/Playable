@@ -1,7 +1,7 @@
 import {Game} from "./game"
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "./enums"
+import {ACHIEVEMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "./enums"
 import {drawInteractionKeys, redrawBag, redrawSlotContents, redrawSpeedRunTimer} from "./drawing/draw_hud";
 import {createKissHeartAnimation, fadeOutAndDie, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
@@ -16,7 +16,7 @@ import {ITEM_OUTLINE_FILTER} from "./filters";
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {randomChoice, randomShuffle} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
-import {completeBeatStageAchievements} from "./achievements";
+import {completeAchievement, completeBeatStageAchievements} from "./achievements";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -431,6 +431,7 @@ export function deactivateBossMode() {
         Game.world.addTile(savedTile.tile, savedTile.tileType, savedTile.x, savedTile.y);
     }
     Game.bossFight = false;
+    if (Game.bossNoDamage) completeAchievement(ACHIEVEMENT_ID.BEAT_ANY_BOSS_NO_DAMAGE);
 
     Game.world.removeTile(Game.bossExit.x, Game.bossExit.y, null, false);
     Game.world.addTile(new TileElement(Game.resources["src/images/exit_text.png"].texture, Game.bossExit.x, Game.bossExit.y), TILE_TYPE.EXIT);
