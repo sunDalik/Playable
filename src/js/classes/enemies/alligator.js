@@ -234,7 +234,7 @@ export class Alligator extends Enemy {
         if (!this.dead) {
             if (!hazardDamage && (inputY !== 0 || inputX !== 0) && (!this.prey || this.prey.dead)) {
                 this.triggeredDirection = {x: -inputX, y: -inputY};
-                this.poisonCounter = 0;
+                if (this.direction.x !== this.triggeredDirection.x || this.direction.y !== this.triggeredDirection.y) this.poisonCounter = 0;
                 this.direction = this.triggeredDirection;
                 this.updateTexture();
                 if (this.alligatorType === RABBIT_TYPE.ENERGY) {
