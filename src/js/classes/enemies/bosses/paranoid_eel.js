@@ -69,6 +69,7 @@ export class ParanoidEel extends Boss {
             Game.resources["src/images/bosses/paranoid_eel/neutral_y_2.png"].texture];
 
         this.minions = [];
+        this.minionsLimit = 10;
     }
 
     cancelAnimation() {
@@ -115,19 +116,23 @@ export class ParanoidEel extends Boss {
             //bugs when it slides into wall then spits and all that happens quickly because you double tap player. Dont know why.
             if (roll < 2) {
                 if (this.emptyInFront()) {
-                    this.triggeredPoisonEelSpit = true;
-                    this.waitingToMove = true;
-                    this.correctLook();
-                    this.shake(this.direction.y, this.direction.x);
-                    canMove = false;
+                    if (this.aliveMinionsCount() < this.minionsLimit) {
+                        this.triggeredPoisonEelSpit = true;
+                        this.waitingToMove = true;
+                        this.correctLook();
+                        this.shake(this.direction.y, this.direction.x);
+                        canMove = false;
+                    }
                 }
             } else if (roll < 7) {
                 if (this.emptyInFront()) {
-                    this.triggeredEelSpit = true;
-                    this.currentEelSpitCounter = 0;
-                    this.correctLook();
-                    this.shake(this.direction.y, this.direction.x);
-                    canMove = false;
+                    if (this.aliveMinionsCount() < this.minionsLimit) {
+                        this.triggeredEelSpit = true;
+                        this.currentEelSpitCounter = 0;
+                        this.correctLook();
+                        this.shake(this.direction.y, this.direction.x);
+                        canMove = false;
+                    }
                 }
             } else if (roll < 9) {
                 this.triggeredSpinAttack = true;
@@ -724,5 +729,9 @@ export class ParanoidEel extends Boss {
         this.minions.push(minion);
         minion.energyDrop = 0;
         return minion;
+    }
+
+    aliveMinionsCount() {
+        return this.minions.reduce((acc, minion) => !minion.dead ? ++acc : acc, 0);
     }
 }
