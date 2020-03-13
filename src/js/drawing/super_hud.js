@@ -109,6 +109,9 @@ function escapeHandler() {
         } else if (Game.controlsInterface.visible) {
             Game.controlsInterface.visible = false;
             Game.subSettingsInterface.visible = true;
+        } else if (Game.achievementsInterface.visible) {
+            Game.achievementsInterface.visible = false;
+            SUPER_HUD.pauseScreen.visible = true;
         } else {
             Game.paused = true;
             SUPER_HUD.pauseScreen.buttons[0].chooseButton();
