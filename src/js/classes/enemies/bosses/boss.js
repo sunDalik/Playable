@@ -10,12 +10,10 @@ import {
     HUDTextStyleTitle
 } from "../../../drawing/draw_constants";
 import {deactivateBossMode} from "../../../game_logic";
-import {getRandomInt} from "../../../utils/random_utils";
-import {isEmpty, isEntity, isInanimate} from "../../../map_checks";
+import {randomShuffle} from "../../../utils/random_utils";
+import {getPlayerOnTile, isEnemy} from "../../../map_checks";
 import {getRandomChestDrop, getRandomWeapon} from "../../../utils/pool_utils";
 import {Pedestal} from "../../inanimate_objects/pedestal";
-import {getCardinalDirections} from "../../../utils/map_utils";
-import {INANIMATE_TYPE, ROLE} from "../../../enums";
 
 export class Boss extends Enemy {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -58,38 +56,26 @@ export class Boss extends Enemy {
         return false;
     }
 
-    //todo: make it SYMMETRICAL
     spawnRewards(number) {
-        const attemptMax = 1000;
-        const getRandomPointInEndRoom = (prop, attempt) => {
-            const center = Game.endRoomBoundaries[0][prop] + Math.floor((Game.endRoomBoundaries[1][prop] - Game.endRoomBoundaries[0][prop]) / 2);
-            const negOffset = center - Game.endRoomBoundaries[0][prop] - 1;
-            const posOffset = Game.endRoomBoundaries[1][prop] - center - 1;
-            const getOffsetConsideringAttempt = offset => Math.max(2, Math.floor(offset * (attempt / (attemptMax * 0.75))));
-            return getRandomInt(center - getOffsetConsideringAttempt(negOffset), center + getOffsetConsideringAttempt(posOffset));
-        };
-
-        for (let i = 0; i < number; i++) {
-            let attempt = 0;
-            while (attempt++ < attemptMax) {
-                const x = getRandomPointInEndRoom("x", attempt);
-                const y = getRandomPointInEndRoom("y", attempt);
-                if (isEmpty(x, y)) {
-                    let pedestalNearby = false;
-                    for (const dir of getCardinalDirections()) {
-                        if (isEntity(x + dir.x, y + dir.y, ROLE.INANIMATE, INANIMATE_TYPE.PEDESTAL)) {
-                            pedestalNearby = true;
-                            break;
-                        }
+        const centerX = Game.endRoomBoundaries[0].x + Math.floor((Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x + 1) / 2);
+        const centerY = Game.endRoomBoundaries[0].y + Math.floor((Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y + 1) / 2);
+        const configurations = randomShuffle([
+            [{x: centerX - 1, y: centerY}, {x: centerX + 1, y: centerY}],
+            [{x: centerX - 1, y: centerY - 1}, {x: centerX + 1, y: centerY + 1}],
+            [{x: centerX + 1, y: centerY - 1}, {x: centerX - 1, y: centerY + 1}]]);
+        for (const config of configurations) {
+            if (!getPlayerOnTile(config[0].x, config[0].y) && !getPlayerOnTile(config[1].x, config[1].y)) {
+                randomShuffle(config);
+                for (let i = 0; i < Math.min(2, number); i++) {
+                    const x = config[i].x;
+                    const y = config[i].y;
+                    if (isEnemy(x, y)) {
+                        Game.map[y][x].entity.die();
                     }
-                    if (pedestalNearby) continue;
-
-                    let item;
-                    if (Math.random() < 0.5) item = getRandomChestDrop();
-                    else item = getRandomWeapon();
+                    const item = Math.random() < 0.5 ? getRandomChestDrop() : getRandomWeapon();
                     Game.world.addInanimate(new Pedestal(x, y, item));
-                    break;
                 }
+                break;
             }
         }
     }
