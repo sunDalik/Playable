@@ -247,6 +247,7 @@ export function loadAll(afterLoad) {
 
         .add("src/images/other/chest.png")
         .add("src/images/other/chest_opened.png")
+        .add("src/images/other/pedestal.png")
 
         .add("src/images/other/grail.png")
         .add("src/images/other/obelisk.png")

@@ -80,6 +80,12 @@ export class World extends PIXI.Container {
         Game.enemies.push(enemy);
     }
 
+    addInanimate(inanimate) {
+        Game.map[inanimate.tilePosition.y][inanimate.tilePosition.x].entity = inanimate;
+        this.addChild(inanimate);
+        Game.inanimates.push(inanimate);
+    }
+
     addEnemyViaSummonCircle(enemy, delay) {
         const summonCircle = new SummonCircle(enemy.tilePosition.x, enemy.tilePosition.y, enemy);
         Game.world.addChild(summonCircle);

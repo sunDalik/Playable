@@ -73,7 +73,8 @@ export const INANIMATE_TYPE = Object.freeze({
     GRAIL: 2,
     CHEST: 3,
     ACCUMULATOR: 4,
-    FIRE_GOBLET: 5
+    FIRE_GOBLET: 5,
+    PEDESTAL: 6
 });
 
 export const EQUIPMENT_TYPE = Object.freeze({
