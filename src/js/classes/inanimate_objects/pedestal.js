@@ -26,6 +26,7 @@ export class Pedestal extends TileElement {
         this.textObj = new PIXI.Text(this.contents.name, getInanimateItemLabelTextStyle());
         this.textObj.anchor.set(0.5, 0.5);
         this.textObj.visible = false;
+        this.textObj.style.fill = this.contents.rarity.color;
         this.textObj.position.set(this.position.x, this.position.y - this.height * 1.5);
         this.textObj.zIndex = 99;
         Game.world.addChild(this.textObj);
