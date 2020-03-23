@@ -120,6 +120,10 @@ export function lightTile(tileX, tileY) {
     }
     Game.map[tileY][tileX].lit = true;
 
+    for (const dir of getCardinalDirections()) {
+        Game.darkTiles[tileY + dir.y][tileX + dir.x].update();
+    }
+
     const entity = Game.map[tileY][tileX].entity;
     if (entity) {
         if (!entity.visible && !entity.dead && entity.immediateReaction) {

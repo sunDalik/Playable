@@ -8,6 +8,7 @@ import {LyingItem} from "../equipment/lying_item";
 import {get8Directions} from "../../utils/map_utils";
 import {isInanimate, isNotAWall} from "../../map_checks";
 import {runDestroyAnimation} from "../../animations";
+import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -32,6 +33,13 @@ export class Enemy extends AnimatedTileElement {
         this.healthContainer.zIndex = 1;
         this.intentIcon = this.createIntentIcon();
         this.place();
+        this.ownZIndex = Z_INDEXES.ENEMY;
+    }
+
+    correctZIndex() {
+        super.correctZIndex();
+        if (this.intentIcon) this.intentIcon.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.INTENT;
+        if (this.intentIcon2) this.intentIcon2.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.INTENT;
     }
 
     cancelAnimation() {

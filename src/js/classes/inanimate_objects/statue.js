@@ -21,9 +21,9 @@ export class Statue extends TallTileElement {
         this.textObj.position.set(this.position.x, this.position.y - this.height / 4);
         this.textObj.visible = false;
         this.textObj.zIndex = 99;
-        this.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(this.textObj);
         this.updateTexture();
+        this.correctZIndex();
     }
 
     updateTexture() {

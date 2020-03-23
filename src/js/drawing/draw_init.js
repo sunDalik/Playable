@@ -5,7 +5,8 @@ import {decrementEachDigitInHex} from "../utils/basic_utils";
 import {DarkTunnelTile} from "../classes/tile_elements/dark_tunnel_tile";
 import {updateChain} from "./draw_dunno";
 import {LimitChain} from "../classes/draw/limit_chain";
-import {TileElement} from "../classes/tile_elements/tile_element";
+import {DarknessTile} from "../classes/draw/darkness";
+import {getZIndexForLayer, Z_INDEXES} from "../z_indexing";
 
 export function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {
@@ -25,9 +26,8 @@ export function createDarkness() {
             if (Game.stage === STAGE.DARK_TUNNEL) {
                 voidTile = new DarkTunnelTile(j, i);
             } else {
-                voidTile = new TileElement(PIXI.Texture.WHITE, j, i);
+                voidTile = new DarknessTile(PIXI.Texture.WHITE, j, i);
                 voidTile.tint = 0x000000;
-                voidTile.zIndex = 10;
             }
             Game.world.addChild(voidTile);
             Game.darkTiles[i][j] = voidTile;

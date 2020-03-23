@@ -3,6 +3,7 @@ import {TileElement} from "./tile_element"
 import {cubicBezier, quadraticBezier} from "../../utils/math_utils";
 import {BLACK_INVERT_FILTER, HIT_FILTER} from "../../filters";
 import {removeObjectFromArray} from "../../utils/basic_utils";
+import {getZIndexForLayer} from "../../z_indexing";
 
 export class AnimatedTileElement extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -43,6 +44,9 @@ export class AnimatedTileElement extends TileElement {
             this.position.x = quadraticBezier(t, oldPosX, oldPosX + tileStepX * Game.TILESIZE / 2, oldPosX + tileStepX * Game.TILESIZE);
             this.position.y = quadraticBezier(t, oldPosY, oldPosY - jumpHeight, oldPosY + tileStepY * Game.TILESIZE);
             if (onFrame) onFrame();
+            if (this.animationCounter >= animationTime / 2) {
+                this.correctZIndex();
+            }
             if (this.animationCounter >= time) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
@@ -76,6 +80,9 @@ export class AnimatedTileElement extends TileElement {
             counter += delta;
 
             if (onFrame) onFrame();
+            if (counter >= animationTime / 2) {
+                this.correctZIndex();
+            }
             if (counter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
@@ -300,6 +307,7 @@ export class AnimatedTileElement extends TileElement {
         this.placeOnMap();
         this.position.x += Game.TILESIZE * tileStepX;
         this.position.y += Game.TILESIZE * tileStepY;
+        this.correctZIndex();
     }
 
     setTilePosition(tilePosX, tilePosY) {
@@ -308,6 +316,7 @@ export class AnimatedTileElement extends TileElement {
         this.tilePosition.y = tilePosY;
         this.placeOnMap();
         this.place();
+        this.correctZIndex();
     }
 
     runHitAnimation() {

@@ -49,6 +49,8 @@ import {MudCubeZombie} from "./classes/enemies/mud_cube_zombie";
 import {MudMage} from "./classes/enemies/mud_mage";
 import {WallSlime} from "./classes/enemies/wall_slime";
 import {PingPongBuddy} from "./classes/enemies/ping_pong_buddies";
+import {WallTile} from "./classes/draw/wall";
+import {getZIndexForLayer, Z_INDEXES} from "./z_indexing";
 
 export function generateMap(level) {
     const map = copy2dArray(level);
@@ -67,10 +69,10 @@ export function generateMap(level) {
             };
             if (map[i][j].split(":")[0] === MAP_SYMBOLS.WALL) {
                 mapCell.tileType = TILE_TYPE.WALL;
-                mapCell.tile = new TileElement(Game.resources["src/images/wall.png"].texture, j, i);
+                mapCell.tile = new WallTile(Game.resources["src/images/wall.png"].texture, j, i);
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.SUPER_WALL) {
                 mapCell.tileType = TILE_TYPE.SUPER_WALL;
-                mapCell.tile = new TileElement(Game.resources["src/images/super_wall.png"].texture, j, i);
+                mapCell.tile = new WallTile(Game.resources["src/images/super_wall.png"].texture, j, i);
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.VOID) {
                 mapCell.tileType = TILE_TYPE.VOID;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.ENTRY) {

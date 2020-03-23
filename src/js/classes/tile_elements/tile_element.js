@@ -1,5 +1,6 @@
 import {Sprite} from "pixi.js"
 import {Game} from "../../game"
+import {getZIndexForLayer} from "../../z_indexing";
 
 export class TileElement extends Sprite {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -18,6 +19,11 @@ export class TileElement extends Sprite {
         this.fitToTile();
         this.place();
         this.filters = [];
+        this.ownZIndex = 0;
+    }
+
+    correctZIndex() {
+        this.zIndex = getZIndexForLayer(this.tilePosition.y) + this.ownZIndex;
     }
 
     cancelAnimation() {
@@ -36,6 +42,7 @@ export class TileElement extends Sprite {
     place() {
         this.position.x = this.getTilePositionX();
         this.position.y = this.getTilePositionY();
+        this.correctZIndex();
     }
 
     getTilePositionX() {

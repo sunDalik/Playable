@@ -17,6 +17,7 @@ import {TileElement} from "./classes/tile_elements/tile_element";
 import {randomChoice, randomShuffle} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
 import {completeAchievement, completeBeatStageAchievements} from "./achievements";
+import {Z_INDEXES} from "./z_indexing";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -235,6 +236,8 @@ export function switchPlayers() {
         if (Game.primaryPlayer === Game.player2) {
             Game.primaryPlayer = Game.player;
         } else Game.primaryPlayer = Game.player2;
+        Game.primaryPlayer.ownZIndex = Z_INDEXES.PLAYER_PRIMARY;
+        otherPlayer(Game.primaryPlayer).ownZIndex = Z_INDEXES.PLAYER;
         temp = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity;
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;

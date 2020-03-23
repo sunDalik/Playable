@@ -3,13 +3,12 @@ import * as PIXI from "pixi.js";
 import {Game} from "../../game";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {isNotAWall, isNotOutOfMap} from "../../map_checks";
-import {TileElement} from "./tile_element";
+import {DarknessTile} from "../draw/darkness";
 
-export class DarkTunnelTile extends TileElement {
+export class DarkTunnelTile extends DarknessTile {
     constructor(tilePositionX, tilePositionY, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
         this.tint = 0x000000;
-        this.zIndex = 10;
         this.dark = true;
         this.lightSources = [];
         this.nearbyAlpha = 0.70;
