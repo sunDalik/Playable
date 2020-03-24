@@ -30,6 +30,7 @@ import {Spear} from "./classes/equipment/weapons/spear";
 import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
 import {Z_INDEXES} from "./z_indexing";
+import {Pickaxe} from "./classes/equipment/tools/pickaxe";
 
 PIXI.utils.skipHello();
 initLocalStorage();
@@ -178,9 +179,8 @@ function initPlayers() {
     Game.player2.weapon = new Knife();
     Game.player.weapon = new Spear();
     Game.player.armor = new BasicArmor();
-
-    Game.player2.zIndex = Game.player2.ownZIndex = Z_INDEXES.PLAYER;
-    Game.player.zIndex = Game.player2.ownZIndex = Z_INDEXES.PLAYER_PRIMARY;
+    Game.player.setOwnZIndex(Z_INDEXES.PLAYER_PRIMARY);
+    Game.player2.setOwnZIndex(Z_INDEXES.PLAYER);
     Game.primaryPlayer = Game.player;
     Game.lastPlayerMoved = Game.player;
 

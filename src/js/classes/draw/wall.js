@@ -1,6 +1,6 @@
 import {TileElement} from "../tile_elements/tile_element";
 import {Game} from "../../game";
-import {Z_INDEXES} from "../../z_indexing";
+import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 
 export class WallTile extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -9,6 +9,9 @@ export class WallTile extends TileElement {
         this.correctZIndex();
     }
 
+    correctZIndex() {
+        this.zIndex = getZIndexForLayer(this.tilePosition.y, true) + this.ownZIndex;
+    }
 
     place() {
         this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;

@@ -80,9 +80,6 @@ export class AnimatedTileElement extends TileElement {
             counter += delta;
 
             if (onFrame) onFrame();
-            if (counter >= animationTime / 2) {
-                this.correctZIndex();
-            }
             if (counter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
@@ -157,6 +154,9 @@ export class AnimatedTileElement extends TileElement {
             this.position.y += stepY * delta;
             this.animationCounter += delta;
             if (onFrame) onFrame();
+            if (this.animationCounter >= animationTime / 2) {
+                this.correctZIndex();
+            }
             if (this.animationCounter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;

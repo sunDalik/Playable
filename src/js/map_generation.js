@@ -72,7 +72,9 @@ export function generateMap(level) {
                 mapCell.tile = new WallTile(Game.resources["src/images/wall.png"].texture, j, i);
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.SUPER_WALL) {
                 mapCell.tileType = TILE_TYPE.SUPER_WALL;
-                mapCell.tile = new WallTile(Game.resources["src/images/super_wall.png"].texture, j, i);
+                mapCell.tile = new WallTile(Game.resources["src/images/wall.png"].texture, j, i);
+                //mapCell.tile = new WallTile(Game.resources["src/images/super_wall.png"].texture, j, i);
+                mapCell.tile.tint = 0x888888;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.VOID) {
                 mapCell.tileType = TILE_TYPE.VOID;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.ENTRY) {

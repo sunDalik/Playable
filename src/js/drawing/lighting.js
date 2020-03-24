@@ -1,6 +1,7 @@
 import {Game} from "../game";
 import {EQUIPMENT_TYPE, STAGE, TILE_TYPE, TOOL_TYPE} from "../enums";
 import {getCardinalDirections} from "../utils/map_utils";
+import {isNotOutOfMap} from "../map_checks";
 
 let litAreas = [];
 let torchedAreas = [];
@@ -121,7 +122,9 @@ export function lightTile(tileX, tileY) {
     Game.map[tileY][tileX].lit = true;
 
     for (const dir of getCardinalDirections()) {
-        Game.darkTiles[tileY + dir.y][tileX + dir.x].update();
+        if (isNotOutOfMap(tileX + dir.x, tileY + dir.y)) {
+            Game.darkTiles[tileY + dir.y][tileX + dir.x].update();
+        }
     }
 
     const entity = Game.map[tileY][tileX].entity;

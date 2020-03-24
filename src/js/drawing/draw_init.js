@@ -6,7 +6,6 @@ import {DarkTunnelTile} from "../classes/tile_elements/dark_tunnel_tile";
 import {updateChain} from "./draw_dunno";
 import {LimitChain} from "../classes/draw/limit_chain";
 import {DarknessTile} from "../classes/draw/darkness";
-import {getZIndexForLayer, Z_INDEXES} from "../z_indexing";
 
 export function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {

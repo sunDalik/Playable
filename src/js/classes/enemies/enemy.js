@@ -30,7 +30,7 @@ export class Enemy extends AnimatedTileElement {
         this.healthContainer = new PIXI.Container();
         Game.world.addChild(this.healthContainer);
         this.healthContainer.visible = false;
-        this.healthContainer.zIndex = 1;
+        this.healthContainer.zIndex = 5000;
         this.intentIcon = this.createIntentIcon();
         this.place();
         this.ownZIndex = Z_INDEXES.ENEMY;

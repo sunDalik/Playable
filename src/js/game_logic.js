@@ -230,15 +230,10 @@ export function damagePlayerWithHazards(player) {
 export function switchPlayers() {
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y
         && !Game.player.dead && !Game.player2.dead) {
-        let temp = Game.player2.zIndex;
-        Game.player2.zIndex = Game.player.zIndex;
-        Game.player.zIndex = temp;
-        if (Game.primaryPlayer === Game.player2) {
-            Game.primaryPlayer = Game.player;
-        } else Game.primaryPlayer = Game.player2;
-        Game.primaryPlayer.ownZIndex = Z_INDEXES.PLAYER_PRIMARY;
-        otherPlayer(Game.primaryPlayer).ownZIndex = Z_INDEXES.PLAYER;
-        temp = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
+        Game.primaryPlayer = Game.primaryPlayer === Game.player2 ? Game.player : Game.player2;
+        Game.primaryPlayer.setOwnZIndex(Z_INDEXES.PLAYER_PRIMARY);
+        otherPlayer(Game.primaryPlayer).setOwnZIndex(Z_INDEXES.PLAYER);
+        let temp = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity;
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].entity = Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity;
         Game.map[Game.player.tilePosition.y][Game.player2.tilePosition.x].secondaryEntity = temp;
         drawInteractionKeys();
