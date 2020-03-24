@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import {Game} from "./game";
 import {camera} from "./classes/game/camera";
-import {loadAll} from "./loader";
+import {CommonSpriteSheet, loadAll} from "./loader";
 import {Player} from "./classes/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
@@ -31,6 +31,8 @@ import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
 import {Z_INDEXES} from "./z_indexing";
 import {Pickaxe} from "./classes/equipment/tools/pickaxe";
+import {Spikes} from "./classes/equipment/magic/spikes";
+import {Aura} from "./classes/equipment/magic/aura";
 
 PIXI.utils.skipHello();
 initLocalStorage();
@@ -172,8 +174,8 @@ export function initializeLevel() {
 }
 
 function initPlayers() {
-    Game.player = new Player(Game.resources["src/images/player.png"].texture, 0, 0);
-    Game.player2 = new Player(Game.resources["src/images/player2.png"].texture, 0, 0);
+    Game.player = new Player(CommonSpriteSheet["player.png"], 0, 0);
+    Game.player2 = new Player(CommonSpriteSheet["player2.png"], 0, 0);
     Game.player.setStats(0, 0.5, 0, 1.00);
     Game.player2.setStats(0, 1.00, 0, 0.5);
     Game.player2.weapon = new Knife();

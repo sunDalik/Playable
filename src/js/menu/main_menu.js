@@ -12,6 +12,7 @@ import {setupSubSettings} from "./subsettings";
 import {createSimpleButtonSet} from "./menu_common";
 import {SUPER_HUD} from "../drawing/super_hud";
 import {setupAchievementsScreen, updateAchievementsScreen} from "./achievements_screen";
+import {CommonSpriteSheet} from "../loader";
 
 const ppAnimationTime1 = 35;
 const ppAnimationTime2 = 35;
@@ -81,8 +82,8 @@ export function createMenuBG(color = 0x666666, zIndex = -10) {
 
 function createTilingBG() {
     const tempContainer = new PIXI.Container();
-    const p1 = new PIXI.Sprite(Game.resources["src/images/player.png"].texture);
-    const p2 = new PIXI.Sprite(Game.resources["src/images/player2.png"].texture);
+    const p1 = new PIXI.Sprite(CommonSpriteSheet["player.png"]);
+    const p2 = new PIXI.Sprite(CommonSpriteSheet["player2.png"]);
     const pSize = 20;
     p1.width = p1.height = p2.width = p2.height = pSize;
     p1.alpha = p2.alpha = 0.08;

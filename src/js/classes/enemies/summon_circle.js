@@ -3,9 +3,10 @@ import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import {getPlayerOnTile, isEmpty} from "../../map_checks";
+import {CommonEnemiesSpriteSheet} from "../../loader";
 
 export class SummonCircle extends Enemy {
-    constructor(tilePositionX, tilePositionY, enemy, texture = Game.resources["src/images/enemies/summon_circle.png"].texture) {
+    constructor(tilePositionX, tilePositionY, enemy, texture = CommonEnemiesSpriteSheet["summon_circle.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 42;
         this.health = this.maxHealth;

@@ -6,9 +6,10 @@ import {isEmpty} from "../../map_checks";
 import {BigFireBullet} from "./bullets/big_fire";
 import {tileDistance} from "../../utils/game_utils";
 import {FireBullet} from "./bullets/fire";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../loader";
 
 export class PingPongBuddy extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/ping_pong_buddy.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["ping_pong_buddy.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 3;
         this.health = this.maxHealth;
@@ -63,13 +64,13 @@ export class PingPongBuddy extends Enemy {
             this.cryMode = true;
             this.gonnaThrow = false;
             this.turn = false;
-            this.texture = Game.resources["src/images/enemies/ping_pong_buddy_cry.png"].texture;
+            this.texture = RUEnemiesSpriteSheet["ping_pong_buddy_cry.png"];
         } else if (this.cryMode) {
             if (this.currentCryTimes > 0) {
                 this.cry();
                 this.currentCryTimes--;
             } else {
-                this.texture = Game.resources["src/images/enemies/ping_pong_buddy_sad.png"].texture;
+                this.texture = RUEnemiesSpriteSheet["ping_pong_buddy_sad.png"];
             }
         }
 
@@ -201,6 +202,6 @@ export class PingPongBuddy extends Enemy {
 
     updateIntentIcon() {
         super.updateIntentIcon();
-        this.intentIcon.texture = Game.resources["src/images/icons/intents/question_mark.png"].texture;
+        this.intentIcon.texture = IntentsSpriteSheet["question_mark.png"];
     }
 }

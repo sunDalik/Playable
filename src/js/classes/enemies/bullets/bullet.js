@@ -4,6 +4,7 @@ import {TileElement} from "../../tile_elements/tile_element";
 import {canBeFliedOverByBullet, getPlayerOnTile, isEnemy} from "../../../map_checks";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import * as PIXI from "pixi.js";
+import {IntentsSpriteSheet} from "../../../loader";
 
 export class Bullet extends TileElement {
     constructor(texture, tilePositionX, tilePositionY, pattern) {
@@ -158,9 +159,9 @@ export class Bullet extends TileElement {
         if (this.delay > 0) {
             this.intentIcon.visible = false;
         } else if (this.pattern[this.patternIndex].x === 0 && this.pattern[this.patternIndex].y === 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["arrow_right.png"];
             this.intentIcon.angle = this.getArrowRightAngle();
         }
     }

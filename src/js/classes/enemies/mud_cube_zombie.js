@@ -1,9 +1,10 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
+import {RUEnemiesSpriteSheet} from "../../loader";
 
 export class MudCubeZombie extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/mud_cube_zombie.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_cube_zombie.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 0.25;
         this.health = this.maxHealth;

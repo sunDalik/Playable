@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {Roller} from "./roller"
 import {ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile, isEmpty, isNotOutOfMap, isRelativelyEmpty} from "../../map_checks";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class RedRoller extends Roller {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["roller_b.png"]) {
@@ -149,18 +149,18 @@ export class RedRoller extends Roller {
         for (let i = 1; ; i++) {
             if (!isRelativelyEmpty(this.tilePosition.x + i, this.tilePosition.y)) break;
             if (getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y)) {
-                this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+                this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
                 return;
             }
         }
         for (let i = -1; ; i--) {
             if (!isRelativelyEmpty(this.tilePosition.x + i, this.tilePosition.y)) break;
             if (getPlayerOnTile(this.tilePosition.x + i, this.tilePosition.y)) {
-                this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+                this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
                 return;
             }
         }
 
-        this.intentIcon.texture = Game.resources["src/images/icons/intents/eye.png"].texture;
+        this.intentIcon.texture = IntentsSpriteSheet["eye.png"];
     }
 }

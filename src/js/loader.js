@@ -1,25 +1,22 @@
 import {Game} from "./game";
 
+export let CommonSpriteSheet;
 export let FCEnemiesSpriteSheet;
+export let DTEnemiesSpriteSheet;
+export let RUEnemiesSpriteSheet;
+export let CommonEnemiesSpriteSheet;
+export let RabbitsSpriteSheet;
+export let ParanoidEelSpriteSheet;
+export let GotLSpriteSheet;
+export let IntentsSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
-        .add("src/images/player.png")
-        .add("src/images/player2.png")
+        .add("src/images/wall.png")
+        .add("src/textures/common.json")
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
-        .add("src/images/player_moved.png")
-        .add("src/images/player2_moved.png")
-        .add("src/images/fire.png")
-        //put all blocks into blocks folder
-        .add("src/images/wall.png")
-        .add("src/images/boss_entry.png")
-        .add("src/images/boss_entry_opened.png")
-        .add("src/images/exit_text.png")
-        .add("src/images/player_attack.png")
-        .add("src/images/player2_attack.png")
-        .add("src/images/follow_chain.png")
-        .add("src/images/limit_chain.png")
+        //.add("src/images/follow_chain.png")
 
         .add("src/images/icons/swap_icon_1.png")
         .add("src/images/icons/swap_icon_2.png")
@@ -28,22 +25,7 @@ export function loadAll(afterLoad) {
         .add("src/images/icons/together_icon.png")
         .add("src/images/icons/obelisk_sacrifice.png")
 
-        .add("src/images/icons/intents/hourglass.png")
-        .add("src/images/icons/intents/arrow_right.png")
-        .add("src/images/icons/intents/fear.png")
-        .add("src/images/icons/intents/anger.png")
-        .add("src/images/icons/intents/neutral.png")
-        .add("src/images/icons/intents/poison.png")
-        .add("src/images/icons/intents/fire.png")
-        .add("src/images/icons/intents/electricity.png")
-        .add("src/images/icons/intents/question_mark.png")
-        .add("src/images/icons/intents/eye.png")
-        .add("src/images/icons/intents/spikes.png")
-        .add("src/images/icons/intents/laser.png")
-        .add("src/images/icons/intents/stun.png")
-        .add("src/images/icons/intents/two_tiles_forward.png")
-        .add("src/images/icons/intents/three_tiles_front.png")
-        .add("src/images/icons/intents/magic.png")
+        .add("src/textures/intents.json")
 
         .add("src/images/achievements/locked.png")
         .add("src/images/achievements/beat_fc.png")
@@ -57,85 +39,14 @@ export function loadAll(afterLoad) {
         .add("src/images/hazards/dark_fire.png")
         .add("src/images/hazards/dark_fire_small.png")
 
-        //make different folders for enemies? based on what? on their stage maybe? dunno...
         .add("src/textures/fc_enemies.json")
-        .add("src/images/enemies/spider_green.png")
-        .add("src/images/enemies/spider_red.png")
-        .add("src/images/enemies/frog_fire.png")
-        .add("src/images/enemies/frog_king_fire.png")
-        .add("src/images/enemies/alligator_x.png")
-        .add("src/images/enemies/alligator_x_hungry.png")
-        .add("src/images/enemies/alligator_x_electric.png")
-        .add("src/images/enemies/alligator_x_electric_shooting.png")
-        .add("src/images/enemies/alligator_x_fire.png")
-        .add("src/images/enemies/alligator_x_fire_shooting.png")
-        .add("src/images/enemies/alligator_x_poison.png")
-        .add("src/images/enemies/alligator_x_poison_shooting.png")
-        .add("src/images/enemies/alligator_x_energy.png")
-        .add("src/images/enemies/alligator_y.png")
-        .add("src/images/enemies/alligator_y_hungry.png")
-        .add("src/images/enemies/alligator_y_electric.png")
-        .add("src/images/enemies/alligator_y_electric_shooting.png")
-        .add("src/images/enemies/alligator_y_fire.png")
-        .add("src/images/enemies/alligator_y_fire_shooting.png")
-        .add("src/images/enemies/alligator_y_poison.png")
-        .add("src/images/enemies/alligator_y_poison_shooting.png")
-        .add("src/images/enemies/alligator_y_energy.png")
-        .add("src/images/enemies/rabbit_x_energy.png")
-        .add("src/images/enemies/rabbit_x_electric.png")
-        .add("src/images/enemies/rabbit_x_fire.png")
-        .add("src/images/enemies/rabbit_x_poison.png")
-        .add("src/images/enemies/wall_trap_base.png")
-        .add("src/images/enemies/laser_turret_0.png")
-        .add("src/images/enemies/laser_turret_after_attack.png")
-        .add("src/images/enemies/laser_turret_awake.png")
-        .add("src/images/enemies/laser_turret_triggered.png")
-        .add("src/images/enemies/laser_turret_unready.png")
-        .add("src/images/enemies/lizard_warrior.png")
-        .add("src/images/enemies/lizard_warrior_triggered_wide_slash.png")
-        .add("src/images/enemies/lizard_warrior_triggered_forward_pierce.png")
-        .add("src/images/enemies/lizard_warrior_after_attack.png")
-        .add("src/images/enemies/mud_mage.png")
-        .add("src/images/enemies/mud_mage_prepare.png")
-        .add("src/images/enemies/mud_mage_cast.png")
-        .add("src/images/enemies/teleport_mage.png")
-        .add("src/images/enemies/teleport_mage_prepare.png")
-        .add("src/images/enemies/teleport_mage_cast.png")
-        .add("src/images/enemies/mud_cube_zombie.png")
-        .add("src/images/enemies/summon_circle.png")
-        .add("src/images/enemies/wall_slime.png")
-        .add("src/images/enemies/wall_slime_sub.png")
-        .add("src/images/enemies/wall_slime_sub_face.png")
-        .add("src/images/enemies/wall_slime_edge.png")
-        .add("src/images/enemies/wall_slime_edge_face.png")
-        .add("src/images/enemies/wall_slime_single.png")
-        .add("src/images/enemies/ping_pong_buddy.png")
-        .add("src/images/enemies/ping_pong_buddy_cry.png")
-        .add("src/images/enemies/ping_pong_buddy_sad.png")
+        .add("src/textures/dt_enemies.json")
+        .add("src/textures/ru_enemies.json")
+        .add("src/textures/rabbits.json")
+        .add("src/textures/common_enemies.json")
 
-        .add("src/images/bosses/paranoid_eel/neutral.png")
-        .add("src/images/bosses/paranoid_eel/neutral_2.png")
-        .add("src/images/bosses/paranoid_eel/panic.png")
-        .add("src/images/bosses/paranoid_eel/neutral_y.png")
-        .add("src/images/bosses/paranoid_eel/neutral_y_2.png")
-        .add("src/images/bosses/paranoid_eel/panic_y.png")
-        .add("src/images/bosses/paranoid_eel/ready_to_spit.png")
-        .add("src/images/bosses/paranoid_eel/ready_to_spit_poison.png")
-        .add("src/images/bosses/paranoid_eel/ready_to_spit_y.png")
-        .add("src/images/bosses/paranoid_eel/ready_to_spit_poison_y.png")
-        .add("src/images/bosses/paranoid_eel/spitting.png")
-        .add("src/images/bosses/paranoid_eel/spitting_y.png")
-        .add("src/images/bosses/paranoid_eel/vertical_rush.png")
-        .add("src/images/bosses/paranoid_eel/horizontal_rush.png")
-        .add("src/images/bosses/paranoid_eel/sneeze.png")
-        .add("src/images/bosses/paranoid_eel/sneeze_y.png")
-
-        .add("src/images/bosses/guardian_of_the_light/neutral.png")
-        .add("src/images/bosses/guardian_of_the_light/electric.png")
-        .add("src/images/bosses/guardian_of_the_light/fire.png")
-        .add("src/images/bosses/guardian_of_the_light/before_electric.png")
-        .add("src/images/bosses/guardian_of_the_light/after_electric.png")
-        .add("src/images/bosses/guardian_of_the_light/about_to_teleport.png")
+        .add("src/textures/paranoid_eel.json")
+        .add("src/textures/gotl.json")
 
         .add("src/images/bullets/electric_bullet.png")
         .add("src/images/bullets/fire_bullet.png")
@@ -252,5 +163,13 @@ export function loadAll(afterLoad) {
 }
 
 function setSpriteSheets() {
+    CommonSpriteSheet = Game.loader.resources["src/textures/common.json"].textures;
     FCEnemiesSpriteSheet = Game.loader.resources["src/textures/fc_enemies.json"].textures;
+    DTEnemiesSpriteSheet = Game.loader.resources["src/textures/dt_enemies.json"].textures;
+    RUEnemiesSpriteSheet = Game.loader.resources["src/textures/ru_enemies.json"].textures;
+    CommonEnemiesSpriteSheet = Game.loader.resources["src/textures/common_enemies.json"].textures;
+    RabbitsSpriteSheet = Game.loader.resources["src/textures/rabbits.json"].textures;
+    ParanoidEelSpriteSheet = Game.loader.resources["src/textures/paranoid_eel.json"].textures;
+    GotLSpriteSheet = Game.loader.resources["src/textures/gotl.json"].textures;
+    IntentsSpriteSheet = Game.loader.resources["src/textures/intents.json"].textures;
 }

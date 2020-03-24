@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile, isAnyWall, isInanimate, isRelativelyEmpty} from "../../map_checks";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class Roller extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["roller.png"]) {
@@ -84,7 +84,7 @@ export class Roller extends Enemy {
 
     updateIntentIcon() {
         super.updateIntentIcon();
-        this.intentIcon.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+        this.intentIcon.texture = IntentsSpriteSheet["arrow_right.png"];
         this.intentIcon.angle = this.getArrowRightAngleForDirection({x: this.direction, y: 0});
     }
 }

@@ -12,9 +12,10 @@ import {getPlayerOnTile, isEmpty} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
 import {TileElement} from "../tile_elements/tile_element";
 import {createEnemyAttackTile} from "../../animations";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../loader";
 
 export class LizardWarrior extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/lizard_warrior.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["lizard_warrior.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 4;
         this.health = this.maxHealth;
@@ -47,7 +48,7 @@ export class LizardWarrior extends Enemy {
             }
         }
         if (!this.triggeredWideSlash && !this.triggeredForwardPierce) {
-            this.texture = Game.resources["src/images/enemies/lizard_warrior.png"].texture;
+            this.texture = RUEnemiesSpriteSheet["lizard_warrior.png"];
         }
         this.correctScale();
         if (this.triggeredWideSlash) {
@@ -67,10 +68,10 @@ export class LizardWarrior extends Enemy {
                 }
             }
             this.triggeredForwardPierce = true;
-            this.texture = Game.resources["src/images/enemies/lizard_warrior_triggered_forward_pierce.png"].texture;
+            this.texture = RUEnemiesSpriteSheet["lizard_warrior_triggered_forward_pierce.png"];
         } else if (this.triggeredForwardPierce) {
             this.triggeredForwardPierce = false;
-            this.texture = Game.resources["src/images/enemies/lizard_warrior_after_attack.png"].texture;
+            this.texture = RUEnemiesSpriteSheet["lizard_warrior_after_attack.png"];
             this.attackedLastTurn = true;
             this.animateSwordForward(this.attackDirection);
             for (const attackTile of [{x: this.attackDirection.x, y: 0}, {x: this.attackDirection.x * 2, y: 0}]) {
@@ -94,7 +95,7 @@ export class LizardWarrior extends Enemy {
         } else if (!this.attackedLastTurn && this.tilePosition.y === this.lockedPlayer.tilePosition.y && tileDistance(this, this.lockedPlayer) === 1 && isEmpty(this.tilePosition.x + Math.sign(this.tilePosition.x - this.lockedPlayer.tilePosition.x), this.tilePosition.y)) {
             this.triggeredWideSlash = true;
             this.slide(Math.sign(this.tilePosition.x - this.lockedPlayer.tilePosition.x), 0, null, () => this.shake(0.7, 0));
-            this.texture = Game.resources["src/images/enemies/lizard_warrior_triggered_wide_slash.png"].texture;
+            this.texture = RUEnemiesSpriteSheet["lizard_warrior_triggered_wide_slash.png"];
             this.attackDirection = {x: Math.sign(this.lockedPlayer.tilePosition.x - this.tilePosition.x), y: 0};
         } else {
             this.attackedLastTurn = false;
@@ -217,16 +218,16 @@ export class LizardWarrior extends Enemy {
         this.intentIcon2.visible = false;
         if (this.triggeredWideSlash) {
             this.intentIcon.filters = [];
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/three_tiles_front.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["three_tiles_front.png"];
             this.intentIcon.height = this.intentIcon.texture.height / this.intentIcon.texture.width * this.intentIcon.width;
             this.intentIcon2.visible = true;
-            this.intentIcon2.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+            this.intentIcon2.texture = IntentsSpriteSheet["arrow_right.png"];
             this.intentIcon2.angle = this.getArrowRightAngleForDirection(this.attackDirection);
         } else if (this.triggeredForwardPierce) {
             this.intentIcon.filters = [];
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/two_tiles_forward.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["two_tiles_forward.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
             if (this.lockedPlayer === Game.player)
                 this.intentIcon.filters = [GRAIL_TEXT_WHITE_FILTER];
             else if (this.lockedPlayer === Game.player2)

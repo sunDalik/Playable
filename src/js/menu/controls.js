@@ -4,6 +4,7 @@ import {drawHUD, getKeyBindSymbol} from "../drawing/draw_hud";
 import {GAME_STATE, STORAGE} from "../enums";
 import {initLocalStorageKeys} from "../setup";
 import {createBackButton, createSimpleButtonSet} from "./menu_common";
+import {CommonSpriteSheet} from "../loader";
 
 export function setupControlSettings() {
     Game.controlsInterface = new PIXI.Container();
@@ -91,8 +92,8 @@ function createControlsButtonSet() {
         keyBindName.position.set(initialButtonOffsetX + keyBindWidth + buttonOffsetX + textWidth / 2 - keyBindName.width / 2, initialButtonOffsetY + i * (buttonHeight + buttonOffsetY) + buttonHeight / 2 - keyBindName.height / 2);
         keyBindP2.position.set(initialButtonOffsetX + (keyBindWidth + buttonOffsetX) + (textWidth + buttonOffsetX) + keyBindWidth / 2 - keyBindP2.width / 2, initialButtonOffsetY + i * (buttonHeight + buttonOffsetY) + buttonHeight / 2 - keyBindP2.height / 2);
         if (i === 0) {
-            const player1 = new PIXI.Sprite(Game.resources["src/images/player.png"].texture);
-            const player2 = new PIXI.Sprite(Game.resources["src/images/player2.png"].texture);
+            const player1 = new PIXI.Sprite(CommonSpriteSheet["player.png"]);
+            const player2 = new PIXI.Sprite(CommonSpriteSheet["player2.png"]);
             player1.width = player1.height = player2.width = player2.height = playerIconSize;
             player1.position.x = keyBindP1.position.x + keyBindP1.width / 2 - player1.width / 2;
             player2.position.x = keyBindP2.position.x + keyBindP2.width / 2 - player2.width / 2;

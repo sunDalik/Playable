@@ -2,9 +2,10 @@ import {Game} from "../../game"
 import {Spider} from "./spider"
 import {ENEMY_TYPE} from "../../enums";
 import {isEmpty} from "../../map_checks";
+import {DTEnemiesSpriteSheet} from "../../loader";
 
 export class GreenSpider extends Spider {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/spider_green.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["spider_green.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 2;
         this.health = this.maxHealth;

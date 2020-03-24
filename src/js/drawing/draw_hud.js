@@ -30,6 +30,7 @@ import {HUD} from "./hud_object";
 import {EQUIPMENT_TYPE, HEAD_TYPE, SHIELD_TYPE, STORAGE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
+import {CommonSpriteSheet} from "../loader";
 
 export function drawHUD() {
     drawHealth();
@@ -379,8 +380,8 @@ export function drawInteractionKeys() {
         ZKey.zIndex = Game.primaryPlayer.zIndex + 1;
 
         function drawPlayer(player) {
-            const texture = player === Game.player ? "src/images/player.png" : "src/images/player2.png";
-            const playerSprite = new PIXI.Sprite(Game.resources[texture].texture);
+            const texture = player === Game.player ? "player.png" : "player2.png";
+            const playerSprite = new PIXI.Sprite(CommonSpriteSheet[texture]);
             playerSprite.width = playerSize;
             playerSprite.height = playerSize;
             playerSprite.zIndex = player.zIndex;
@@ -416,12 +417,8 @@ export function drawOtherHUD() {
         heartYOffset + heartSize / 2 - playerSize / 2);
 
     function drawPlayer(player, posX, posY) {
-        let playerSprite;
-        if (player === Game.player) playerSprite = new PIXI.Sprite(Game.resources["src/images/player.png"].texture);
-        else {
-            playerSprite = new PIXI.Sprite(Game.resources["src/images/player2.png"].texture);
-            playerSprite.anchor.set(0.5, 0.5);
-        }
+        const playerTexture = player === Game.player ? "player.png" : "player2.png";
+        const playerSprite = new PIXI.Sprite(CommonSpriteSheet[playerTexture]);
         playerSprite.width = playerSprite.height = playerSize;
         playerSprite.alpha = 0.5;
         playerSprite.position.x = posX + playerSprite.width * playerSprite.anchor.x;

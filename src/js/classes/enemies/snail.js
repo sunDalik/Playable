@@ -6,7 +6,7 @@ import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class Snail extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["snail.png"]) {
@@ -76,11 +76,11 @@ export class Snail extends Enemy {
     updateIntentIcon() {
         super.updateIntentIcon();
         if (this.currentTurnDelay > 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/neutral.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
         }
     }
 }

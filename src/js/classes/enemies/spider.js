@@ -5,7 +5,7 @@ import {getPlayerOnTile, isEmpty} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class Spider extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spider.png"]) {
@@ -76,11 +76,11 @@ export class Spider extends Enemy {
     updateIntentIcon() {
         super.updateIntentIcon();
         if (this.thrown) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/stun.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["stun.png"];
         } else if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/neutral.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
         }
     }
 }

@@ -11,7 +11,7 @@ import {
 import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "../../map_checks";
 import {PoisonHazard} from "../hazards/poison";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class Frog extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["frog.png"]) {
@@ -103,13 +103,13 @@ export class Frog extends Enemy {
     updateIntentIcon() {
         super.updateIntentIcon();
         if (this.triggered) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/poison.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["poison.png"];
         } else if (this.currentTurnDelay > 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else if (tileDistance(this, closestPlayer(this)) <= 2) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/fear.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["fear.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/neutral.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
         }
     }
 }

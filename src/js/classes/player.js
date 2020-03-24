@@ -449,16 +449,6 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    setMovedTexture() {
-        if (this === Game.player) this.texture = Game.resources["src/images/player_moved.png"].texture;
-        else this.texture = Game.resources["src/images/player2_moved.png"].texture;
-    }
-
-    setUnmovedTexture() {
-        if (this === Game.player) this.texture = Game.resources["src/images/player.png"].texture;
-        else this.texture = Game.resources["src/images/player2.png"].texture;
-    }
-
     giveNewMagic(magic, showHelp = true) {
         if (this.magic1 === null) this.magic1 = magic;
         else if (this.magic2 === null) this.magic2 = magic;

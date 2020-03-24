@@ -31,7 +31,8 @@ export class Fireball {
             this.castedThisTurn = true;
             this.multiplierDecreaseDelay = 2;
 
-            const fire = new PIXI.Sprite(Game.resources["src/images/fire.png"].texture);
+            const fire = new PIXI.Sprite(PIXI.Texture.WHITE);
+            fire.tint = 0xf38f3e;
             fire.alpha = 0.15;
             fire.anchor.set(0, 0.5);
             fire.position.set(Game.player.x, Game.player.y);
@@ -49,7 +50,8 @@ export class Fireball {
 
     release() {
         if (this.uses <= 0 || this.multiplier <= 0 || Game.player.dead || Game.player2.dead) return false;
-        const fire = new PIXI.Sprite(Game.resources["src/images/fire.png"].texture);
+        const fire = new PIXI.Sprite(PIXI.Texture.WHITE);
+        fire.tint = 0xf38f3e;
         fire.anchor.set(0, 0.5);
         fire.position.set(Game.player.x, Game.player.y);
         fire.width = Math.sqrt((Game.player2.x - Game.player.x) ** 2 + (Game.player.y - Game.player2.y) ** 2);

@@ -6,9 +6,10 @@ import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {createFadingAttack} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
+import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class LaserTurret extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/laser_turret_0.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["laser_turret_0.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 1;
         this.health = this.maxHealth;
@@ -92,27 +93,27 @@ export class LaserTurret extends Enemy {
 
     updateTexture() {
         if (this.maskLayer === undefined) {
-            this.texture = Game.resources["src/images/enemies/laser_turret_0.png"].texture;
+            this.texture = DTEnemiesSpriteSheet["laser_turret_0.png"];
         } else if (this.justAttacked) {
-            this.texture = Game.resources["src/images/enemies/laser_turret_after_attack.png"].texture;
+            this.texture = DTEnemiesSpriteSheet["laser_turret_after_attack.png"];
             this.justAttacked = false;
         } else if (this.triggered) {
-            this.texture = Game.resources["src/images/enemies/laser_turret_triggered.png"].texture;
+            this.texture = DTEnemiesSpriteSheet["laser_turret_triggered.png"];
         } else if (this.currentTurnDelay > 0) {
-            this.texture = Game.resources["src/images/enemies/laser_turret_unready.png"].texture;
+            this.texture = DTEnemiesSpriteSheet["laser_turret_unready.png"];
         } else {
-            this.texture = Game.resources["src/images/enemies/laser_turret_awake.png"].texture;
+            this.texture = DTEnemiesSpriteSheet["laser_turret_awake.png"];
         }
     }
 
     updateIntentIcon() {
         super.updateIntentIcon();
         if (this.triggered) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/laser.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["laser.png"];
         } else if (this.currentTurnDelay > 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/eye.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["eye.png"];
         }
     }
 }

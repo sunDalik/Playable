@@ -19,6 +19,7 @@ import {removeObjectFromArray} from "./utils/basic_utils";
 import {completeAchievement, completeBeatStageAchievements} from "./achievements";
 import {Z_INDEXES} from "./z_indexing";
 import {SuperWallTile} from "./classes/draw/super_wall";
+import {CommonSpriteSheet} from "./loader";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -412,7 +413,7 @@ export function activateBossMode(player) {
     }
 
     if (Game.map[Game.bossEntry.y][Game.bossEntry.x].tile) {
-        Game.map[Game.bossEntry.y][Game.bossEntry.x].tile.texture = Game.resources["src/images/boss_entry_opened.png"].texture;
+        Game.map[Game.bossEntry.y][Game.bossEntry.x].tile.texture = CommonSpriteSheet["boss_entry_opened.png"];
     }
 
     Game.boss.redrawHealth();

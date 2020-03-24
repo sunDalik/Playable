@@ -6,7 +6,7 @@ import {getRandomInt, randomChoice} from "../../utils/random_utils";
 import {getRelativelyEmptyHorizontalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile, isEmpty, isNotAWall} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["mushroom.png"]) {
@@ -160,14 +160,14 @@ export class Mushroom extends Enemy {
         super.updateIntentIcon();
         this.intentIcon.angle = 0;
         if (this.walking) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["arrow_right.png"];
             this.intentIcon.angle = this.getArrowRightAngleForDirection(this.direction);
         } else if (this.standing) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else if (this.currentPoisonDelay === 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/poison.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["poison.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         }
     }
 }

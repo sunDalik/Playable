@@ -3,7 +3,7 @@ import {Eel} from "./eel"
 import {ENEMY_TYPE} from "../../enums";
 import {PoisonHazard} from "../hazards/poison";
 import {getPlayerOnTile} from "../../map_checks";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class PoisonEel extends Eel {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel_poison.png"]) {
@@ -70,7 +70,7 @@ export class PoisonEel extends Eel {
     updateIntentIcon() {
         super.updateIntentIcon();
         if (this.triggered) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/poison.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["poison.png"];
             this.intentIcon.angle = 0;
         }
     }

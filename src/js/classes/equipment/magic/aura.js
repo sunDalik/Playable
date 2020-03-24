@@ -1,4 +1,5 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
+import * as PIXI from "pixi.js";
 import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../../../enums";
 import {isNotAWall, getPlayerOnTile, isEnemy, isObelisk} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
@@ -26,7 +27,8 @@ export class Aura {
                 const attackPositionX = wielder.tilePosition.x + x;
                 const attackPositionY = wielder.tilePosition.y + y;
                 if (!(x === 0 && y === 0) && Math.abs(x) + Math.abs(y) <= 2 && isNotAWall(attackPositionX, attackPositionY)) {
-                    const attackSprite = new TileElement(Game.resources["src/images/player_attack.png"].texture, attackPositionX, attackPositionY);
+                    const attackSprite = new TileElement(PIXI.Texture.WHITE, attackPositionX, attackPositionY);
+                    attackSprite.tint = 0xe9e7a0;
                     if (Game.stage === STAGE.DARK_TUNNEL) attackSprite.maskLayer = {};
                     createFadingAttack(attackSprite);
                     if (isEnemy(attackPositionX, attackPositionY)) {

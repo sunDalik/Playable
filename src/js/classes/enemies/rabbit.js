@@ -13,9 +13,10 @@ import {FireHazard} from "../hazards/fire";
 import {PoisonHazard} from "../hazards/poison";
 import {ElectricBullet} from "./bullets/electric";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
+import {IntentsSpriteSheet, RabbitsSpriteSheet} from "../../loader";
 
 export class Rabbit extends Enemy {
-    constructor(tilePositionX, tilePositionY, type, texture = Game.resources["src/images/enemies/rabbit_x_energy.png"].texture) {
+    constructor(tilePositionX, tilePositionY, type, texture = RabbitsSpriteSheet["rabbit_x_energy.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 0.5;
         this.health = this.maxHealth;
@@ -99,16 +100,16 @@ export class Rabbit extends Enemy {
     updateTexture() {
         switch (this.rabbitType) {
             case RABBIT_TYPE.ENERGY:
-                this.texture = Game.resources["src/images/enemies/rabbit_x_energy.png"].texture;
+                this.texture = RabbitsSpriteSheet["rabbit_x_energy.png"];
                 break;
             case RABBIT_TYPE.ELECTRIC:
-                this.texture = Game.resources["src/images/enemies/rabbit_x_electric.png"].texture;
+                this.texture = RabbitsSpriteSheet["rabbit_x_electric.png"];
                 break;
             case RABBIT_TYPE.FIRE:
-                this.texture = Game.resources["src/images/enemies/rabbit_x_fire.png"].texture;
+                this.texture = RabbitsSpriteSheet["rabbit_x_fire.png"];
                 break;
             case RABBIT_TYPE.POISON:
-                this.texture = Game.resources["src/images/enemies/rabbit_x_poison.png"].texture;
+                this.texture = RabbitsSpriteSheet["rabbit_x_poison.png"];
                 break;
         }
     }
@@ -116,15 +117,15 @@ export class Rabbit extends Enemy {
     updateIntentIcon() {
         super.updateIntentIcon();
         if (this.predator && !this.predator.dead) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/fear.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["fear.png"];
         } else if (this.rabbitType === RABBIT_TYPE.ENERGY) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/fear.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["fear.png"];
         } else if (this.currentTurnDelay > 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else if (tileDistance(this, closestPlayer(this)) <= 2) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/fear.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["fear.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/neutral.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
         }
     }
 }

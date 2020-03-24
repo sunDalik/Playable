@@ -81,7 +81,9 @@ export function drawGrid() {
 export function drawOther() {
     const gameWorldBG = new PIXI.Graphics();
     gameWorldBG.beginFill(Game.BGColor);
-    gameWorldBG.drawRect(10, 10, Game.world.width - 20, Game.world.height - 20);
+    const cutW = Game.TILESIZE;
+    const cutH = Game.TILESIZE * 1.5;
+    gameWorldBG.drawRect(cutW / 2, cutH / 2, Game.world.width - cutW, Game.world.height - cutH);
     gameWorldBG.zIndex = -4;
     Game.world.addChild(gameWorldBG);
     //Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);

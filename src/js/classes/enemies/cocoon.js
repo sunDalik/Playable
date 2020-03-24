@@ -8,7 +8,7 @@ import {GraySpider} from "./spider_gray";
 import {GreenSpider} from "./spider_green";
 import {RedSpider} from "./spider_red";
 import {ITEM_OUTLINE_FILTER_SMALL} from "../../filters";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {DTEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class Cocoon extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["cocoon.png"]) {
@@ -56,16 +56,16 @@ export class Cocoon extends Enemy {
         super.updateIntentIcon();
         if (this.aboutToSpawn) {
             if (this.minionType === Spider)
-                this.intentIcon.texture = Game.resources["src/images/enemies/spider.png"].texture;
+                this.intentIcon.texture = FCEnemiesSpriteSheet["spider.png"];
             else if (this.minionType === GraySpider)
-                this.intentIcon.texture = Game.resources["src/images/enemies/spider_b.png"].texture;
+                this.intentIcon.texture = FCEnemiesSpriteSheet["spider_b.png"];
             else if (this.minionType === GreenSpider)
-                this.intentIcon.texture = Game.resources["src/images/enemies/spider_green.png"].texture;
+                this.intentIcon.texture = DTEnemiesSpriteSheet["spider_green.png"];
             else if (this.minionType === RedSpider)
-                this.intentIcon.texture = Game.resources["src/images/enemies/spider_red.png"].texture;
+                this.intentIcon.texture = DTEnemiesSpriteSheet["spider_red.png"];
             this.intentIcon.filters = [ITEM_OUTLINE_FILTER_SMALL];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
             this.intentIcon.filters = [];
         }
     }

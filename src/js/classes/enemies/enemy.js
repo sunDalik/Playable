@@ -9,6 +9,7 @@ import {get8Directions} from "../../utils/map_utils";
 import {isInanimate, isNotAWall} from "../../map_checks";
 import {runDestroyAnimation} from "../../animations";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
+import {IntentsSpriteSheet} from "../../loader";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -297,7 +298,7 @@ export class Enemy extends AnimatedTileElement {
 
     setStunIcon() {
         this.intentIcon.visible = !this.dead;
-        this.intentIcon.texture = Game.resources["src/images/icons/intents/stun.png"].texture;
+        this.intentIcon.texture = IntentsSpriteSheet["stun.png"];
         this.intentIcon.angle = 0;
         if (this.intentIcon2) this.intentIcon2.visible = false;
     }

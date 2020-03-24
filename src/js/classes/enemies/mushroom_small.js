@@ -4,7 +4,7 @@ import {getRandomInt} from "../../utils/random_utils";
 import {Mushroom} from "./mushroom";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../utils/map_utils";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class SmallMushroom extends Mushroom {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["mushroom_small.png"]) {
@@ -35,7 +35,7 @@ export class SmallMushroom extends Mushroom {
     updateIntentIcon() {
         super.updateIntentIcon();
         if (this.walking && tileDistance(this, closestPlayer(this)) <= 2) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
             this.intentIcon.angle = 0;
         }
     }

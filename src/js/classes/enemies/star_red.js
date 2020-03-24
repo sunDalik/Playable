@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {Star} from "./star"
 import {ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile} from "../../map_checks";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class RedStar extends Star {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star_b.png"]) {
@@ -44,9 +44,9 @@ export class RedStar extends Star {
         this.intentIcon2.visible = !this.dead;
         this.intentIcon.angle = this.intentIcon2.angle = 0;
         if (this.triggered) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/spikes.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["spikes.png"];
             this.intentIcon.angle = 45;
-            this.intentIcon2.texture = Game.resources["src/images/icons/intents/spikes.png"].texture;
+            this.intentIcon2.texture = IntentsSpriteSheet["spikes.png"];
         } else {
             this.intentIcon2.visible = false;
         }

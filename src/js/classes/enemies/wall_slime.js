@@ -7,9 +7,10 @@ import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {getHealthArray} from "../../drawing/draw_utils";
 import {getCardinalDirections, getChasingDirections} from "../../utils/map_utils";
 import {removeObjectFromArray} from "../../utils/basic_utils";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../loader";
 
 export class WallSlime extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/wall_slime.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["wall_slime_single.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 4;
         this.health = this.maxHealth;
@@ -321,9 +322,9 @@ export class WallSlime extends Enemy {
         if (this.baseSlime) return;
         super.updateIntentIcon();
         if (this.currentTurnDelay <= 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/anger.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         }
     }
 

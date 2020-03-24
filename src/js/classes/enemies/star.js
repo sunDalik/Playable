@@ -4,7 +4,7 @@ import {DIRECTIONS, ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile} from "../../map_checks";
 import {createEnemyAttackTile} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class Star extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star.png"]) {
@@ -144,12 +144,12 @@ export class Star extends Enemy {
         super.updateIntentIcon();
         this.intentIcon.angle = 0;
         if (this.triggered) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/spikes.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["spikes.png"];
             if (this.triggeredDirections === DIRECTIONS.CARDINAL) this.intentIcon.angle = 45;
         } else if (this.turnDelay > 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/eye.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["eye.png"];
         }
     }
 }

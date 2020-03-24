@@ -3,9 +3,10 @@ import {ENEMY_TYPE} from "../../enums";
 import {KingFrog} from "./frog_king";
 import {FireHazard} from "../hazards/fire";
 import {getPlayerOnTile} from "../../map_checks";
+import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class KingFireFrog extends KingFrog {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/frog_king_fire.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["frog_king_fire.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 3;
         this.health = this.maxHealth;
@@ -25,7 +26,7 @@ export class KingFireFrog extends KingFrog {
     updateIntentIcon() {
         super.updateIntentIcon();
         if (this.triggered) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/fire.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["fire.png"];
         }
     }
 }

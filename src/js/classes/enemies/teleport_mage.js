@@ -10,9 +10,10 @@ import {randomChoice} from "../../utils/random_utils";
 import {camera} from "../game/camera";
 import {MILD_DARK_GLOW_FILTER, MILD_WHITE_GLOW_FILTER} from "../../filters";
 import {updateChain} from "../../drawing/draw_dunno";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../loader";
 
 export class TeleportMage extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/teleport_mage.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["teleport_mage.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 3;
         this.health = this.maxHealth;
@@ -38,11 +39,11 @@ export class TeleportMage extends Enemy {
         if (this.casting) {
             this.currentCooldown = this.cooldown;
             this.currentCastTime--;
-            if (this.currentCastTime === 1) this.texture = Game.resources["src/images/enemies/teleport_mage_cast.png"].texture;
+            if (this.currentCastTime === 1) this.texture = RUEnemiesSpriteSheet["teleport_mage_cast.png"];
             else if (this.currentCastTime <= 0) {
                 this.casting = false;
                 this.currentTurnDelay = this.turnDelay;
-                this.texture = Game.resources["src/images/enemies/teleport_mage.png"].texture;
+                this.texture = RUEnemiesSpriteSheet["teleport_mage.png"];
                 const tempPos = {x: this.tilePosition.x, y: this.tilePosition.y};
                 this.targetedPlayer.removeFromMap();
                 this.setTilePosition(this.targetedPlayer.tilePosition.x, this.targetedPlayer.tilePosition.y);
@@ -63,7 +64,7 @@ export class TeleportMage extends Enemy {
             this.casting = true;
             this.currentCastTime = this.castTime;
             this.targetedPlayer = closestPlayer(this);
-            this.texture = Game.resources["src/images/enemies/teleport_mage_prepare.png"].texture;
+            this.texture = RUEnemiesSpriteSheet["teleport_mage_prepare.png"];
         } else if (this.currentTurnDelay <= 0) {
             let movementOptions;
             if (tileDistance(this, closestPlayer(this)) <= this.dangerDistance) {
@@ -88,16 +89,16 @@ export class TeleportMage extends Enemy {
         this.intentIcon.filters = [];
         if (this.casting) {
             if (this.currentCastTime === 1) {
-                this.intentIcon.texture = Game.resources["src/images/icons/intents/magic.png"].texture;
+                this.intentIcon.texture = IntentsSpriteSheet["magic.png"];
             } else {
-                this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+                this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
             }
             if (this.targetedPlayer === Game.player) this.intentIcon.filters = [MILD_WHITE_GLOW_FILTER];
             else this.intentIcon.filters = [MILD_DARK_GLOW_FILTER];
         } else if (this.currentTurnDelay <= 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/question_mark.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["question_mark.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         }
     }
 

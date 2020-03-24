@@ -50,8 +50,8 @@ import {MudMage} from "./classes/enemies/mud_mage";
 import {WallSlime} from "./classes/enemies/wall_slime";
 import {PingPongBuddy} from "./classes/enemies/ping_pong_buddies";
 import {WallTile} from "./classes/draw/wall";
-import {getZIndexForLayer, Z_INDEXES} from "./z_indexing";
 import {SuperWallTile} from "./classes/draw/super_wall";
+import {CommonSpriteSheet} from "./loader";
 
 export function generateMap(level) {
     const map = copy2dArray(level);
@@ -83,13 +83,13 @@ export function generateMap(level) {
                 mapCell.tileType = TILE_TYPE.PATH;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.EXIT) {
                 mapCell.tileType = TILE_TYPE.EXIT;
-                mapCell.tile = new TileElement(Game.resources["src/images/exit_text.png"].texture, j, i);
+                mapCell.tile = new TileElement(CommonSpriteSheet["exit_text.png"], j, i);
                 //mapCell.tile.zIndex = 100;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.START) {
                 Game.startPos = {x: j, y: i};
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.BOSS_EXIT) {
                 mapCell.tileType = TILE_TYPE.WALL;
-                mapCell.tile = new TileElement(Game.resources["src/images/wall.png"].texture, j, i);
+                mapCell.tile = new WallTile(j, i);
                 Game.bossExit = {x: j, y: i};
             }
 
@@ -233,7 +233,7 @@ export function generateMap(level) {
 
     for (const entry of entries) {
         if (tileInsideTheBossRoom(entry.x, entry.y)) {
-            const entrySprite = new TileElement(Game.resources["src/images/boss_entry.png"].texture, entry.x, entry.y);
+            const entrySprite = new TileElement(CommonSpriteSheet["boss_entry.png"], entry.x, entry.y);
             Game.bossEntry = {x: entry.x, y: entry.y};
             if (map[entry.y][entry.x - 1].tileType === TILE_TYPE.PATH) entrySprite.angle = 90;
             else if (map[entry.y][entry.x + 1].tileType === TILE_TYPE.PATH) entrySprite.angle = -90;

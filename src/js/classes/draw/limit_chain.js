@@ -1,6 +1,7 @@
 import {Game} from "../../game";
 import * as PIXI from "pixi.js";
 import {distance, otherPlayer, tileDistanceDiagonal} from "../../utils/game_utils";
+import {CommonSpriteSheet} from "../../loader";
 
 export class LimitChain extends PIXI.Container {
     constructor() {
@@ -40,7 +41,7 @@ export class LimitChain extends PIXI.Container {
 
     updateElement(index, hide, alpha, rot, posX, posY) {
         while (this.elements.length - 1 < index) {
-            this.elements.push(new PIXI.Sprite(Game.resources["src/images/limit_chain.png"].texture));
+            this.elements.push(new PIXI.Sprite(CommonSpriteSheet["limit_chain.png"]));
             const newElement = this.elements[this.elements.length - 1];
             newElement.anchor.set(0.5, 1);
             newElement.width = newElement.height = this.elementSize;

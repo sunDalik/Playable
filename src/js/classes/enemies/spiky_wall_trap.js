@@ -5,7 +5,7 @@ import {getPlayerOnTile} from "../../map_checks";
 import {randomChoice} from "../../utils/random_utils";
 import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../utils/map_utils";
 import {TileElement} from "../tile_elements/tile_element";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class SpikyWallTrap extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spiky_wall_trap_x.png"]) {
@@ -101,14 +101,14 @@ export class SpikyWallTrap extends Enemy {
         super.updateIntentIcon();
         this.intentIcon2.visible = false;
         if (this.triggered) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/spikes.png"].texture;
-            this.intentIcon2.texture = Game.resources["src/images/icons/intents/arrow_right.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["spikes.png"];
+            this.intentIcon2.texture = IntentsSpriteSheet["arrow_right.png"];
             this.intentIcon2.angle = this.getArrowRightAngleForDirection(this.direction);
             this.intentIcon2.visible = true;
         } else if (this.currentTurnDelay > 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/eye.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["eye.png"];
         }
     }
 

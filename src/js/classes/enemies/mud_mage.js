@@ -11,9 +11,10 @@ import {
 } from "../../utils/map_utils";
 import {MudCubeZombie} from "./mud_cube_zombie";
 import {isNotAWall} from "../../map_checks";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../loader";
 
 export class MudMage extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/mud_mage.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_mage.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 3;
         this.health = this.maxHealth;
@@ -40,11 +41,11 @@ export class MudMage extends Enemy {
         if (this.casting) {
             this.currentCooldown = this.cooldown;
             this.currentCastTime--;
-            if (this.currentCastTime === 1) this.texture = Game.resources["src/images/enemies/mud_mage_cast.png"].texture;
+            if (this.currentCastTime === 1) this.texture = RUEnemiesSpriteSheet["mud_mage_cast.png"];
             else if (this.currentCastTime <= 0) {
                 this.casting = false;
                 this.currentTurnDelay = this.turnDelay;
-                this.texture = Game.resources["src/images/enemies/mud_mage.png"].texture;
+                this.texture = RUEnemiesSpriteSheet["mud_mage.png"];
                 for (const tile of this.getRandomPattern()) {
                     if (isNotAWall(tile.x, tile.y)) {
                         const enemy = new MudCubeZombie(tile.x, tile.y);
@@ -56,7 +57,7 @@ export class MudMage extends Enemy {
         } else if (this.currentCooldown <= 0 && tileDistance(this, closestPlayer(this)) <= this.castDistance && this.aliveMinionsCount() < this.minionsMax) {
             this.casting = true;
             this.currentCastTime = this.castTime;
-            this.texture = Game.resources["src/images/enemies/mud_mage_prepare.png"].texture;
+            this.texture = RUEnemiesSpriteSheet["mud_mage_prepare.png"];
         } else if (this.currentTurnDelay <= 0) {
             let movementOptions;
             if (tileDistance(this, closestPlayer(this)) <= this.dangerDistance) {
@@ -81,14 +82,14 @@ export class MudMage extends Enemy {
         this.intentIcon.filters = [];
         if (this.casting) {
             if (this.currentCastTime === 1) {
-                this.intentIcon.texture = Game.resources["src/images/icons/intents/magic.png"].texture;
+                this.intentIcon.texture = IntentsSpriteSheet["magic.png"];
             } else {
-                this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+                this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
             }
         } else if (this.currentTurnDelay <= 0) {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/question_mark.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["question_mark.png"];
         } else {
-            this.intentIcon.texture = Game.resources["src/images/icons/intents/hourglass.png"].texture;
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         }
     }
 
