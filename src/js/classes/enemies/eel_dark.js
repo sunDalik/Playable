@@ -1,9 +1,9 @@
-import {Game} from "../../game"
 import {Eel} from "./eel"
 import {ENEMY_TYPE} from "../../enums";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class DarkEel extends Eel {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/eel_dark.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel_dark.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 3;
         this.health = this.maxHealth;

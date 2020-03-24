@@ -3,7 +3,7 @@ import {Game} from "../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 
 export class WallTile extends TileElement {
-    constructor(texture, tilePositionX, tilePositionY) {
+    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/wall.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.ownZIndex = Z_INDEXES.WALL;
         this.correctZIndex();

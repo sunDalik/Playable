@@ -16,7 +16,7 @@ export class DarknessTile extends TileElement {
 
     update() {
         for (const y of [-1, 1]) {
-            const off = 100;
+            const off = 128;
             if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + y)
                 && Game.map[this.tilePosition.y + y][this.tilePosition.x].lit
                 && (Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.WALL

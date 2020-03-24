@@ -6,9 +6,10 @@ import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../utils/map_utils";
 import {randomChoice} from "../../utils/random_utils";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class Snail extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/snail.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["snail.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
         this.health = this.maxHealth;

@@ -2,9 +2,10 @@ import {Game} from "../../game"
 import {ENEMY_TYPE} from "../../enums";
 import {Frog} from "./frog";
 import {getPlayerOnTile, isNotAWall} from "../../map_checks";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class KingFrog extends Frog {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/frog_king.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["frog_king.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 3;
         this.health = this.maxHealth;

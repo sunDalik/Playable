@@ -8,9 +8,10 @@ import {GraySpider} from "./spider_gray";
 import {GreenSpider} from "./spider_green";
 import {RedSpider} from "./spider_red";
 import {ITEM_OUTLINE_FILTER_SMALL} from "../../filters";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class Cocoon extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/cocoon.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["cocoon.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 3;
         this.health = this.maxHealth;

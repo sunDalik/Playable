@@ -1,5 +1,7 @@
 import {Game} from "./game";
 
+export let FCEnemiesSpriteSheet;
+
 export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/player.png")
@@ -11,7 +13,6 @@ export function loadAll(afterLoad) {
         .add("src/images/fire.png")
         //put all blocks into blocks folder
         .add("src/images/wall.png")
-        .add("src/images/super_wall.png")
         .add("src/images/boss_entry.png")
         .add("src/images/boss_entry_opened.png")
         .add("src/images/exit_text.png")
@@ -57,29 +58,11 @@ export function loadAll(afterLoad) {
         .add("src/images/hazards/dark_fire_small.png")
 
         //make different folders for enemies? based on what? on their stage maybe? dunno...
-        .add("src/images/enemies/roller.png")
-        .add("src/images/enemies/roller_b.png")
-        .add("src/images/enemies/star.png")
-        .add("src/images/enemies/star_b.png")
-        .add("src/images/enemies/star_spike.png")
-        .add("src/images/enemies/star_b_spike.png")
-        .add("src/images/enemies/spider.png")
-        .add("src/images/enemies/spider_b.png")
+        .add("src/textures/fc_enemies.json")
         .add("src/images/enemies/spider_green.png")
         .add("src/images/enemies/spider_red.png")
-        .add("src/images/enemies/snail.png")
-        .add("src/images/enemies/snail_spiky.png")
-        .add("src/images/enemies/eel.png")
-        .add("src/images/enemies/eel_poison.png")
-        .add("src/images/enemies/eel_dark.png")
-        .add("src/images/enemies/frog.png")
         .add("src/images/enemies/frog_fire.png")
-        .add("src/images/enemies/frog_king.png")
         .add("src/images/enemies/frog_king_fire.png")
-        .add("src/images/enemies/mushroom.png")
-        .add("src/images/enemies/mushroom_walking.png")
-        .add("src/images/enemies/mushroom_small.png")
-        .add("src/images/enemies/mushroom_small_walking.png")
         .add("src/images/enemies/alligator_x.png")
         .add("src/images/enemies/alligator_x_hungry.png")
         .add("src/images/enemies/alligator_x_electric.png")
@@ -102,18 +85,12 @@ export function loadAll(afterLoad) {
         .add("src/images/enemies/rabbit_x_electric.png")
         .add("src/images/enemies/rabbit_x_fire.png")
         .add("src/images/enemies/rabbit_x_poison.png")
+        .add("src/images/enemies/wall_trap_base.png")
         .add("src/images/enemies/laser_turret_0.png")
         .add("src/images/enemies/laser_turret_after_attack.png")
         .add("src/images/enemies/laser_turret_awake.png")
         .add("src/images/enemies/laser_turret_triggered.png")
         .add("src/images/enemies/laser_turret_unready.png")
-        .add("src/images/enemies/spiky_wall_trap_x.png")
-        .add("src/images/enemies/spiky_wall_trap_top.png")
-        .add("src/images/enemies/spiky_wall_trap_bottom.png")
-        .add("src/images/enemies/spiky_wall_trap_attacked.png")
-        .add("src/images/enemies/spiky_wall_trap_triggered.png")
-        .add("src/images/enemies/spikes_right.png")
-        .add("src/images/enemies/cocoon.png")
         .add("src/images/enemies/lizard_warrior.png")
         .add("src/images/enemies/lizard_warrior_triggered_wide_slash.png")
         .add("src/images/enemies/lizard_warrior_triggered_forward_pierce.png")
@@ -268,5 +245,12 @@ export function loadAll(afterLoad) {
         .add("src/images/magic/wind.png")
         .add("src/images/magic/abyssal_spit.png")
         .add("src/images/magic/immortality.png")
-        .load(afterLoad);
+        .load(() => {
+            setSpriteSheets();
+            afterLoad()
+        });
+}
+
+function setSpriteSheets() {
+    FCEnemiesSpriteSheet = Game.loader.resources["src/textures/fc_enemies.json"].textures;
 }

@@ -4,9 +4,10 @@ import {DIRECTIONS, ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile} from "../../map_checks";
 import {createEnemyAttackTile} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class Star extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/star.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
         this.health = this.maxHealth;
@@ -102,7 +103,7 @@ export class Star extends Enemy {
 
     createSpikeAnimation(offsetX, offsetY) {
         let prefix = this.type === ENEMY_TYPE.STAR ? "star" : "star_b";
-        const attack = new TileElement(Game.resources[`src/images/enemies/${prefix}_spike.png`].texture, this.tilePosition.x, this.tilePosition.y);
+        const attack = new TileElement(FCEnemiesSpriteSheet[`${prefix}_spike.png`], this.tilePosition.x, this.tilePosition.y);
         attack.zIndex = -1;
         attack.anchor.set(0, 0.5);
         attack.angle = this.getArrowRightAngleForDirection({x: Math.sign(offsetX), y: Math.sign(offsetY)});

@@ -1,9 +1,10 @@
 import {Game} from "../../game"
 import {Snail} from "./snail"
 import {ENEMY_TYPE} from "../../enums";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class SpikySnail extends Snail {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/snail_spiky.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["snail_spiky.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 5;
         this.health = this.maxHealth;

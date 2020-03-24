@@ -18,6 +18,7 @@ import {randomChoice, randomShuffle} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
 import {completeAchievement, completeBeatStageAchievements} from "./achievements";
 import {Z_INDEXES} from "./z_indexing";
+import {SuperWallTile} from "./classes/draw/super_wall";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -392,12 +393,12 @@ export function cleanGameState() {
 
 export function activateBossMode(player) {
     for (let x = Game.endRoomBoundaries[0].x; x <= Game.endRoomBoundaries[1].x; x++) {
-        Game.world.addAndSaveTile(new TileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[0].y - 1), TILE_TYPE.SUPER_WALL);
-        Game.world.addAndSaveTile(new TileElement(Game.resources["src/images/super_wall.png"].texture, x, Game.endRoomBoundaries[1].y + 1), TILE_TYPE.SUPER_WALL);
+        Game.world.addAndSaveTile(new SuperWallTile(x, Game.endRoomBoundaries[0].y - 1), TILE_TYPE.SUPER_WALL);
+        Game.world.addAndSaveTile(new SuperWallTile(x, Game.endRoomBoundaries[1].y + 1), TILE_TYPE.SUPER_WALL);
     }
     for (let y = Game.endRoomBoundaries[0].y; y <= Game.endRoomBoundaries[1].y; y++) {
-        Game.world.addAndSaveTile(new TileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[0].x - 1, y), TILE_TYPE.SUPER_WALL);
-        Game.world.addAndSaveTile(new TileElement(Game.resources["src/images/super_wall.png"].texture, Game.endRoomBoundaries[1].x + 1, y), TILE_TYPE.SUPER_WALL);
+        Game.world.addAndSaveTile(new SuperWallTile(Game.endRoomBoundaries[0].x - 1, y), TILE_TYPE.SUPER_WALL);
+        Game.world.addAndSaveTile(new SuperWallTile(Game.endRoomBoundaries[1].x + 1, y), TILE_TYPE.SUPER_WALL);
     }
 
     if (!otherPlayer(player).dead) {

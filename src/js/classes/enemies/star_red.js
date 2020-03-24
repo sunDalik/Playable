@@ -2,9 +2,10 @@ import {Game} from "../../game"
 import {Star} from "./star"
 import {ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile} from "../../map_checks";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class RedStar extends Star {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/star_b.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star_b.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.type = ENEMY_TYPE.STAR_RED;
         this.intentIcon2 = this.createIntentIcon();

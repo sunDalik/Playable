@@ -3,9 +3,10 @@ import {Eel} from "./eel"
 import {ENEMY_TYPE} from "../../enums";
 import {PoisonHazard} from "../hazards/poison";
 import {getPlayerOnTile} from "../../map_checks";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class PoisonEel extends Eel {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/eel_poison.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel_poison.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.maxHealth = 4;
         this.health = this.maxHealth;

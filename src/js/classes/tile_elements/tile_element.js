@@ -20,6 +20,7 @@ export class TileElement extends Sprite {
         this.place();
         this.filters = [];
         this.ownZIndex = 0;
+        this.correctZIndex();
     }
 
     correctZIndex() {
@@ -42,7 +43,6 @@ export class TileElement extends Sprite {
     place() {
         this.position.x = this.getTilePositionX();
         this.position.y = this.getTilePositionY();
-        this.correctZIndex();
     }
 
     getTilePositionX() {

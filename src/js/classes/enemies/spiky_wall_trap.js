@@ -5,9 +5,10 @@ import {getPlayerOnTile} from "../../map_checks";
 import {randomChoice} from "../../utils/random_utils";
 import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../utils/map_utils";
 import {TileElement} from "../tile_elements/tile_element";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class SpikyWallTrap extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/spiky_wall_trap_x.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spiky_wall_trap_x.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 1;
         this.health = this.maxHealth;
@@ -19,7 +20,7 @@ export class SpikyWallTrap extends Enemy {
         this.movable = false;
         this.role = ROLE.WALL_TRAP;
         this.direction = {x: 1, y: 0};
-        this.spikesSprite = new TileElement(Game.resources["src/images/enemies/spikes_right.png"].texture, 0, 0);
+        this.spikesSprite = new TileElement(FCEnemiesSpriteSheet["spikes_right.png"], 0, 0);
         this.spikesSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         this.spikesSprite.visible = false;
         Game.world.addChild(this.spikesSprite);
@@ -86,13 +87,13 @@ export class SpikyWallTrap extends Enemy {
         if (this.direction.x !== 0) this.scale.x = Math.abs(this.scale.x) * this.direction.x;
 
         if (this.triggered) {
-            this.texture = Game.resources["src/images/enemies/spiky_wall_trap_triggered.png"].texture;
+            this.texture = FCEnemiesSpriteSheet["spiky_wall_trap_triggered.png"];
         } else if (this.currentTurnDelay > 0) {
-            this.texture = Game.resources["src/images/enemies/spiky_wall_trap_attacked.png"].texture;
+            this.texture = FCEnemiesSpriteSheet["spiky_wall_trap_attacked.png"];
         } else {
-            if (this.direction.x !== 0) this.texture = Game.resources["src/images/enemies/spiky_wall_trap_x.png"].texture;
-            else if (this.direction.y === -1) this.texture = Game.resources["src/images/enemies/spiky_wall_trap_top.png"].texture;
-            else this.texture = Game.resources["src/images/enemies/spiky_wall_trap_bottom.png"].texture;
+            if (this.direction.x !== 0) this.texture = FCEnemiesSpriteSheet["spiky_wall_trap_x.png"];
+            else if (this.direction.y === -1) this.texture = FCEnemiesSpriteSheet["spiky_wall_trap_top.png"];
+            else this.texture = FCEnemiesSpriteSheet["spiky_wall_trap_bottom.png"];
         }
     }
 

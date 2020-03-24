@@ -2,9 +2,10 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile, isRelativelyEmpty} from "../../map_checks";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class Eel extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/eel.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
         this.health = this.maxHealth;

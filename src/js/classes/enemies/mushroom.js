@@ -6,9 +6,10 @@ import {getRandomInt, randomChoice} from "../../utils/random_utils";
 import {getRelativelyEmptyHorizontalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile, isEmpty, isNotAWall} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class Mushroom extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/mushroom.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["mushroom.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
         this.health = this.maxHealth;
@@ -20,8 +21,8 @@ export class Mushroom extends Enemy {
         this.walkDelay = this.getWalkDelay();
         this.canMoveInvisible = true;
         this.walking = false;
-        this.walkingTexture = Game.resources["src/images/enemies/mushroom_walking.png"].texture;
-        this.normalTexture = Game.resources["src/images/enemies/mushroom.png"].texture;
+        this.walkingTexture = FCEnemiesSpriteSheet["mushroom_walking.png"];
+        this.normalTexture = FCEnemiesSpriteSheet["mushroom.png"];
         this.standing = false;
         this.direction = {x: 1, y: 0}; //just a default value
         this.zIndex = Game.primaryPlayer.zIndex + 1;

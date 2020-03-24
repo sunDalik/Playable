@@ -497,18 +497,18 @@ export function showHelpBox(item) {
 
 export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul = 0.1, scaleMod = undefined) {
     //todo: fix angle
-    const YBorders = [0, undefined, undefined, tileElement.texture.height];
-    const XBorders = [0, undefined, undefined, tileElement.texture.width];
+    const YBorders = [0, undefined, undefined, tileElement.texture.frame.height];
+    const XBorders = [0, undefined, undefined, tileElement.texture.frame.width];
     const maxOffsetMul = 1 / 9;
     for (let i = 1; i <= 2; i++) {
-        YBorders[i] = YBorders[i - 1] + tileElement.texture.height / 3 + getRandomInt(-tileElement.texture.height * maxOffsetMul, tileElement.texture.height * maxOffsetMul);
-        XBorders[i] = XBorders[i - 1] + tileElement.texture.width / 3 + getRandomInt(-tileElement.texture.width * maxOffsetMul, tileElement.texture.width * maxOffsetMul);
+        YBorders[i] = YBorders[i - 1] + tileElement.texture.frame.height / 3 + getRandomInt(-tileElement.texture.frame.height * maxOffsetMul, tileElement.texture.frame.height * maxOffsetMul);
+        XBorders[i] = XBorders[i - 1] + tileElement.texture.frame.width / 3 + getRandomInt(-tileElement.texture.frame.width * maxOffsetMul, tileElement.texture.frame.width * maxOffsetMul);
     }
     const particles = [];
     for (const region of [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0},
         {x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1},
         {x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}]) {
-        const particle = new PIXI.Sprite(tileElement.texture.clone());
+        const particle = new PIXI.Sprite(new PIXI.Texture(tileElement.texture.baseTexture, tileElement.texture.frame));
         let scaleMul = 1;
         if (scaleMod !== undefined) scaleMul = scaleMod;
         else if (playerDeath) scaleMul = 1.2;
@@ -519,6 +519,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         const initScaleX = particle.scale.x;
         const initScaleY = particle.scale.y;
         particle.angle = tileElement.angle;
+        if (tileElement.texture.rotate === 2) particle.angle -= 90;
         particle.anchor.set(tileElement.anchor.x, tileElement.anchor.y);
         particle.position.set(tileElement.position.x, tileElement.position.y);
         if (playerDeath) particle.zIndex = 2;
@@ -530,11 +531,11 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         let offsetY = YBorders[region.y];
         const trimTexWidth = XBorders[region.x + 1] - XBorders[region.x];
         const trimTexHeight = YBorders[region.y + 1] - YBorders[region.y];
-        if (Math.sign(tileElement.scale.x) === -1) offsetX = tileElement.texture.width - offsetX - trimTexWidth;
-        if (Math.sign(tileElement.scale.y) === -1) offsetY = tileElement.texture.height - offsetY - trimTexHeight;
-        particle.texture.frame = new PIXI.Rectangle(offsetX, offsetY, trimTexWidth, trimTexHeight);
-        const trimWidth = trimTexWidth / tileElement.texture.width * tileElement.width;
-        const trimHeight = trimTexHeight / tileElement.texture.height * tileElement.height;
+        if (Math.sign(tileElement.scale.x) === -1) offsetX = tileElement.texture.frame.width - offsetX - trimTexWidth;
+        if (Math.sign(tileElement.scale.y) === -1) offsetY = tileElement.texture.frame.height - offsetY - trimTexHeight;
+        particle.texture.frame = new PIXI.Rectangle(tileElement.texture.frame.x + offsetX, tileElement.texture.frame.y + offsetY, trimTexWidth, trimTexHeight);
+        const trimWidth = trimTexWidth / tileElement.texture.frame.width * tileElement.width;
+        const trimHeight = trimTexHeight / tileElement.texture.frame.height * tileElement.height;
         const posOffsetX = trimWidth * (region.x - 1.5) + trimWidth * tileElement.anchor.x;
         const posOffsetY = trimHeight * (region.y - 1.5) + trimHeight * tileElement.anchor.y;
         particle.position.x += posOffsetX;

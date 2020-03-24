@@ -2,9 +2,10 @@ import {Game} from "../../game"
 import {Roller} from "./roller"
 import {ENEMY_TYPE} from "../../enums";
 import {getPlayerOnTile, isEmpty, isNotOutOfMap, isRelativelyEmpty} from "../../map_checks";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class RedRoller extends Roller {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/roller_b.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["roller_b.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.health = 0.25;
         this.atk = 1.25;

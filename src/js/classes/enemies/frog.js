@@ -11,9 +11,10 @@ import {
 import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "../../map_checks";
 import {PoisonHazard} from "../hazards/poison";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
+import {FCEnemiesSpriteSheet} from "../../loader";
 
 export class Frog extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/frog.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["frog.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
         this.health = this.maxHealth;
