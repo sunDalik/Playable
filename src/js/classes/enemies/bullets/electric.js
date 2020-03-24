@@ -1,9 +1,10 @@
 import {Bullet} from "./bullet";
 import {ROLE, STAGE} from "../../../enums";
 import {Game} from "../../../game";
+import {BulletsSpriteSheet} from "../../../loader";
 
 export class ElectricBullet extends Bullet {
-    constructor(tilePositionX, tilePositionY, pattern, texture = Game.resources["src/images/bullets/electric_bullet.png"].texture) {
+    constructor(tilePositionX, tilePositionY, pattern, texture = BulletsSpriteSheet["electric_bullet.png"]) {
         super(texture, tilePositionX, tilePositionY, pattern);
         if (Game.stage === STAGE.DARK_TUNNEL) {
             this.maskLayer = {};

@@ -4,10 +4,11 @@ import {drawInteractionKeys, drawMovementKeyBindings} from "../../../drawing/dra
 import {otherPlayer} from "../../../utils/game_utils";
 import {camera} from "../../game/camera";
 import {updateChain} from "../../../drawing/draw_dunno";
+import {MagicSpriteSheet} from "../../../loader";
 
 export class Teleport {
     constructor() {
-        this.texture = Game.resources["src/images/magic/teleport.png"].texture;
+        this.texture = MagicSpriteSheet["teleport.png"];
         this.type = MAGIC_TYPE.TELEPORT;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;

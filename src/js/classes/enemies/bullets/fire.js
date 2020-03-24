@@ -2,9 +2,10 @@ import {Bullet} from "./bullet";
 import {FireHazard} from "../../hazards/fire";
 import {Game} from "../../../game";
 import {STAGE} from "../../../enums";
+import {BulletsSpriteSheet} from "../../../loader";
 
 export class FireBullet extends Bullet {
-    constructor(tilePositionX, tilePositionY, pattern, texture = Game.resources["src/images/bullets/fire_bullet.png"].texture) {
+    constructor(tilePositionX, tilePositionY, pattern, texture = BulletsSpriteSheet["fire_bullet.png"]) {
         super(texture, tilePositionX, tilePositionY, pattern);
         if (Game.stage === STAGE.DARK_TUNNEL) {
             this.maskLayer = {};

@@ -3,11 +3,12 @@ import {FireHazard} from "../../hazards/fire";
 import {Game} from "../../../game";
 import {ROLE} from "../../../enums";
 import {getPlayerOnTile, isNotAWall} from "../../../map_checks";
+import {BulletsSpriteSheet} from "../../../loader";
 
 
 //this.tilePosition refers to bottom right position
 export class BigFireBullet extends Bullet {
-    constructor(tilePositionX, tilePositionY, pattern, texture = Game.resources["src/images/bullets/fire_bullet.png"].texture) {
+    constructor(tilePositionX, tilePositionY, pattern, texture = BulletsSpriteSheet["fire_bullet.png"]) { //???
         super(texture, tilePositionX, tilePositionY, pattern);
         this.scaleModifier = 2.8;
         this.fitToTile();

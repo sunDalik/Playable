@@ -6,6 +6,7 @@ import {GAME_STATE, STORAGE} from "../enums";
 import {SUPER_HUD} from "../drawing/super_hud";
 import {achievements} from "../achievements";
 import {HUDTextStyleTitle} from "../drawing/draw_constants";
+import {AchievementsSpriteSheet} from "../loader";
 
 export function setupAchievementsScreen() {
     Game.achievementsInterface = new PIXI.Container();
@@ -45,8 +46,8 @@ function displayAchievements() {
     for (let i = 0; i < achievements.length; i++) {
         const col = i % rowLength;
         const row = Math.floor(i / rowLength);
-        const achievementSprite = new PIXI.Sprite(Game.resources["src/images/achievements/locked.png"].texture);
-        if (storage[achievements[i].id] === 1) achievementSprite.texture = Game.resources[achievements[i].image].texture;
+        const achievementSprite = new PIXI.Sprite(AchievementsSpriteSheet["locked.png"]);
+        if (storage[achievements[i].id] === 1) achievementSprite.texture = AchievementsSpriteSheet[achievements[i].image];
         achievementSprite.width = achievementSprite.height = imageSize;
         achievementSprite.position.set(col * (imageSize + colOffset) + colOffset, row * (imageSize + rowOffset) + rowOffset + initOffsetY);
         Game.achievementsInterface.addChild(achievementSprite);

@@ -2,10 +2,11 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isDiggable, isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
+import {ToolsSpriteSheet} from "../../../loader";
 
 export class Pickaxe {
     constructor() {
-        this.texture = Game.resources["src/images/tools/pickaxe.png"].texture;
+        this.texture = ToolsSpriteSheet["pickaxe.png"];
         this.type = WEAPON_TYPE.PICKAXE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 0.75;

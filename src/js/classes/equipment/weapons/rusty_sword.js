@@ -1,12 +1,13 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
-import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
+import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class RustySword {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/rusty_sword.png"].texture;
+        this.texture = WeaponsSpriteSheet["rusty_sword.png"];
         this.type = WEAPON_TYPE.RUSTY_SWORD;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 2;
@@ -46,7 +47,7 @@ export class RustySword {
                 enemy.damage(wielder, atk, tileDirX, tileDirY, false);
             }
             this.uses--;
-            if (this.uses <= 0) this.texture = Game.resources["src/images/weapons/rusty_sword_broken.png"].texture;
+            if (this.uses <= 0) this.texture = WeaponsSpriteSheet["rusty_sword_broken.png"];
             redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
             return true;
         } else return false;

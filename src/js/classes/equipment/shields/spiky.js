@@ -1,11 +1,11 @@
-import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, SHIELD_TYPE} from "../../../enums";
 import {Shield} from "./shield";
+import {ShieldsSpriteSheet} from "../../../loader";
 
 export class SpikyShield extends Shield {
     constructor() {
         super();
-        this.texture = Game.resources["src/images/shields/spiky.png"].texture;
+        this.texture = ShieldsSpriteSheet["spiky_shield.png"];
         this.type = SHIELD_TYPE.SPIKY;
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
         this.shieldAtk = 1;

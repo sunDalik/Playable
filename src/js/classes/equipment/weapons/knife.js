@@ -2,10 +2,11 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class Knife {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/knife.png"].texture;
+        this.texture = WeaponsSpriteSheet["knife.png"];
         this.type = WEAPON_TYPE.KNIFE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;

@@ -2,10 +2,11 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class PawnSwords {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/pawn_swords.png"].texture;
+        this.texture = WeaponsSpriteSheet["pawn_swords.png"];
         this.type = WEAPON_TYPE.PAWN_SWORDS;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
@@ -31,9 +32,9 @@ export class PawnSwords {
         }
 
         if (enemiesToAttack.length === 0) return false;
-        createWeaponAnimationStab(wielder, {texture: Game.resources["src/images/weapons/pawn_sword_separate.png"].texture},
+        createWeaponAnimationStab(wielder, {texture: WeaponsSpriteSheet["pawn_sword_separate.png"]},
             attackTiles[0].x - wielder.tilePosition.x, attackTiles[0].y - wielder.tilePosition.y);
-        createWeaponAnimationStab(wielder, {texture: Game.resources["src/images/weapons/pawn_sword_separate.png"].texture},
+        createWeaponAnimationStab(wielder, {texture: WeaponsSpriteSheet["pawn_sword_separate.png"]},
             attackTiles[1].x - wielder.tilePosition.x, attackTiles[1].y - wielder.tilePosition.y, 6);
         createPlayerAttackTile(attackTiles[0]);
         createPlayerAttackTile(attackTiles[1]);

@@ -5,10 +5,11 @@ import {isBullet} from "../../map_checks";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {randomChoice} from "../../utils/random_utils";
 import {FireHazard} from "../hazards/fire";
+import {InanimatesSpriteSheet} from "../../loader";
 
 export class FireGoblet extends AnimatedTileElement {
     constructor(tilePositionX, tilePositionY) {
-        super(Game.resources["src/images/other/fire_goblet.png"].texture, tilePositionX, tilePositionY);
+        super(InanimatesSpriteSheet["fire_goblet.png"], tilePositionX, tilePositionY);
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.FIRE_GOBLET;
         this.zIndex = Game.primaryPlayer.zIndex + 1;
@@ -36,7 +37,7 @@ export class FireGoblet extends AnimatedTileElement {
             this.angle = 0;
             this.standing = true;
             this.zIndex = Game.primaryPlayer.zIndex + 1;
-            this.texture = Game.resources["src/images/other/fire_goblet.png"].texture;
+            this.texture = InanimatesSpriteSheet["fire_goblet.png"];
             for (let i = Game.bullets.length - 1; i >= 0; i--) {
                 if (Game.bullets[i].tilePosition.x === this.tilePosition.x && Game.bullets[i].tilePosition.y === this.tilePosition.y) {
                     Game.bullets[i].die();
@@ -47,7 +48,7 @@ export class FireGoblet extends AnimatedTileElement {
             this.angle = this.getAngleForDirection(this.direction);
             this.standing = false;
             this.zIndex = otherPlayer(Game.primaryPlayer).zIndex - 1;
-            this.texture = Game.resources["src/images/other/fire_goblet_fallen.png"].texture;
+            this.texture = InanimatesSpriteSheet["fire_goblet_fallen.png"];
         }
         this.relight();
         this.place();
@@ -124,7 +125,7 @@ export class FireGoblet extends AnimatedTileElement {
                 Game.darkTiles[mask.y][mask.x].removeLightSource(mask);
             }
             this.cancelAnimation();
-            this.texture = Game.resources["src/images/other/fire_goblet_shattered.png"].texture;
+            this.texture = InanimatesSpriteSheet["fire_goblet_shattered.png"];
             this.direction = {x: randomChoice([-1, 1]), y: 0};
             this.angle = this.getAngleForDirection(this.direction);
             this.standing = false;

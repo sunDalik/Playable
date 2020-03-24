@@ -7,10 +7,11 @@ import * as PIXI from "pixi.js";
 import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
+import {InanimatesSpriteSheet} from "../../loader";
 
 export class Chest extends TileElement {
     constructor(tilePositionX, tilePositionY, contents) {
-        super(Game.resources["src/images/other/chest.png"].texture, tilePositionX, tilePositionY);
+        super(InanimatesSpriteSheet["chest.png"], tilePositionX, tilePositionY);
         this.contents = contents;
         this.contentsType = contents.equipmentType;
         this.role = ROLE.INANIMATE;
@@ -34,7 +35,7 @@ export class Chest extends TileElement {
     }
 
     interact(player) {
-        this.texture = Game.resources["src/images/other/chest_opened.png"].texture;
+        this.texture = InanimatesSpriteSheet["chest_opened.png"];
         if (this.opened) {
             if (this.contents) this.contents = swapEquipmentWithPlayer(player, this.contents);
             else this.contents = removeEquipmentFromPlayer(player, this.contentsType);

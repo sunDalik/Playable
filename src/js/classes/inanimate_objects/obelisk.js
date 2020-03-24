@@ -6,10 +6,11 @@ import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 import {TileElement} from "../tile_elements/tile_element";
+import {InanimatesSpriteSheet} from "../../loader";
 
 export class Obelisk extends TileElement {
     constructor(tilePositionX, tilePositionY, magic, onDestroyMagic) {
-        super(Game.resources["src/images/other/obelisk.png"].texture, tilePositionX, tilePositionY);
+        super(InanimatesSpriteSheet["obelisk.png"], tilePositionX, tilePositionY);
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.OBELISK;
         this.activated = false;
@@ -64,8 +65,8 @@ export class Obelisk extends TileElement {
     deactivate(grail) {
         if (this.working && this.activated) {
             this.working = false;
-            if (this.timesDamaged > 0) this.texture = Game.resources["src/images/other/obelisk_used_damaged.png"].texture;
-            else this.texture = Game.resources["src/images/other/obelisk_used.png"].texture;
+            if (this.timesDamaged > 0) this.texture = InanimatesSpriteSheet["obelisk_used_damaged.png"];
+            else this.texture = InanimatesSpriteSheet["obelisk_used.png"];
             this.grail1.setMagic(null);
             this.grail2.setMagic(null);
             this.grail3.setMagic(null);
@@ -101,7 +102,7 @@ export class Obelisk extends TileElement {
             this.destroyed = true;
             this.visible = false;
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-            this.texture = Game.resources["src/images/other/obelisk_used_damaged.png"].texture;
+            this.texture = InanimatesSpriteSheet["obelisk_used_damaged.png"];
             runDestroyAnimation(this);
         }
         if (this.working) {
@@ -127,7 +128,7 @@ export class Obelisk extends TileElement {
             if (this.timesDamaged >= 1) this.destroy();
             else {
                 this.timesDamaged++;
-                this.texture = Game.resources["src/images/other/obelisk_damaged.png"].texture;
+                this.texture = InanimatesSpriteSheet["obelisk_damaged.png"];
                 createFadingText("Don't", this.position.x, this.position.y);
                 longShakeScreen();
             }

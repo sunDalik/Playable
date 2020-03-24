@@ -4,10 +4,11 @@ import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../..
 import {isNotAWall, getPlayerOnTile, isEnemy, isObelisk} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
+import {MagicSpriteSheet} from "../../../loader";
 
 export class Spikes {
     constructor() {
-        this.texture = Game.resources["src/images/magic/spikes.png"].texture;
+        this.texture = MagicSpriteSheet["spikes.png"];
         this.type = MAGIC_TYPE.SPIKES;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;

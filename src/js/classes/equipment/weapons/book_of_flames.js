@@ -6,10 +6,11 @@ import * as PIXI from "pixi.js";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {TileElement} from "../../tile_elements/tile_element";
 import {randomChoice} from "../../../utils/random_utils";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class BookOfFlames {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/book_of_flames.png"].texture;
+        this.texture = WeaponsSpriteSheet["book_of_flames.png"];
         this.type = WEAPON_TYPE.BOOK_OF_FLAMES;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.magical = true;
@@ -99,10 +100,10 @@ export class BookOfFlames {
 
     updateTexture() {
         if (this.uses === 0) {
-            this.texture = Game.resources[`src/images/weapons/book_of_flames_exhausted_${this.concentration}.png`].texture;
+            this.texture = WeaponsSpriteSheet[`book_of_flames_exhausted_${this.concentration}.png`];
         } else if (this.uses < this.maxUses) {
-            this.texture = Game.resources[`src/images/weapons/book_of_flames_used_${this.concentration}.png`].texture;
-        } else this.texture = Game.resources["src/images/weapons/book_of_flames.png"].texture;
+            this.texture = WeaponsSpriteSheet[`book_of_flames_used_${this.concentration}.png`];
+        } else this.texture = WeaponsSpriteSheet["book_of_flames.png"];
     }
 
     onNewTurn(wielder) {
@@ -117,7 +118,7 @@ export class BookOfFlames {
     holdBookAnimation(wielder, dirX, dirY) {
         const offsetMod = 0.3;
         const offsetX = dirX !== 0 ? dirX * offsetMod : randomChoice([offsetMod, -offsetMod]);
-        const bookSprite = new TileElement(Game.resources["src/images/weapons/book_of_flames.png"].texture, wielder.tilePosition.x + offsetX, wielder.tilePosition.y);
+        const bookSprite = new TileElement(WeaponsSpriteSheet["book_of_flames.png"], wielder.tilePosition.x + offsetX, wielder.tilePosition.y);
         Game.world.addChild(bookSprite);
         wielder.animationSubSprites.push(bookSprite);
         bookSprite.zIndex = Game.primaryPlayer.zIndex + 1;

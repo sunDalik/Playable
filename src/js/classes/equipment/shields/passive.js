@@ -2,11 +2,12 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, SHIELD_TYPE} from "../../../enums";
 import {Shield} from "./shield";
 import {redrawSecondHand} from "../../../drawing/draw_hud";
+import {ShieldsSpriteSheet} from "../../../loader";
 
 export class PassiveShield extends Shield {
     constructor() {
         super();
-        this.texture = Game.resources["src/images/shields/passive.png"].texture;
+        this.texture = ShieldsSpriteSheet["passive_shield.png"];
         this.type = SHIELD_TYPE.PASSIVE;
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
         this.maxUses = 6;

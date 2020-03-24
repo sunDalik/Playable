@@ -2,10 +2,11 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class Rapier {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/sword.png"].texture; //todo: rename to rapier :^)
+        this.texture = WeaponsSpriteSheet["rapier.png"];
         this.type = WEAPON_TYPE.RAPIER;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;

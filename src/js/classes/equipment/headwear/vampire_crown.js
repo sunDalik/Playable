@@ -1,10 +1,11 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY} from "../../../enums";
 import {redrawHeadwear} from "../../../drawing/draw_hud";
+import {HeadWearSpriteSheet} from "../../../loader";
 
 export class VampireCrown {
     constructor() {
-        this.texture = Game.resources["src/images/headwear/vampire_crown.png"].texture;
+        this.texture = HeadWearSpriteSheet["vampire_crown.png"];
         this.type = HEAD_TYPE.VAMPIRE_CROWN;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.killsNeeded = 10;

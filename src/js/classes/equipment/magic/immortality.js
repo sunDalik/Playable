@@ -1,9 +1,10 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
+import {MagicSpriteSheet} from "../../../loader";
 
 export class Immortality {
     constructor() {
-        this.texture = Game.resources["src/images/magic/immortality.png"].texture;
+        this.texture = MagicSpriteSheet["immortality.png"];
         this.type = MAGIC_TYPE.IMMORTALITY;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;

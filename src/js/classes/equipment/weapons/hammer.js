@@ -2,10 +2,11 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class Hammer {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/hammer.png"].texture;
+        this.texture = WeaponsSpriteSheet["hammer.png"];
         this.type = WEAPON_TYPE.HAMMER;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 0.75;

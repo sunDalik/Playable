@@ -1,5 +1,6 @@
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
+import {HUDSpriteSheet} from "../loader";
 
 export function getHealthArray(entity) {
     const health = [];
@@ -20,15 +21,15 @@ export function getHealthArray(entity) {
 export function getHeartTexture(heartValue) {
     switch (heartValue) {
         case 1:
-            return Game.resources["src/images/HUD/heart_full.png"].texture;
+            return HUDSpriteSheet["heart_full.png"];
         case 0.75:
-            return Game.resources["src/images/HUD/heart_75.png"].texture;
+            return HUDSpriteSheet["heart_75.png"];
         case 0.5:
-            return Game.resources["src/images/HUD/heart_half.png"].texture;
+            return HUDSpriteSheet["heart_half.png"];
         case 0.25:
-            return Game.resources["src/images/HUD/heart_25.png"].texture;
+            return HUDSpriteSheet["heart_25.png"];
         case 0:
-            return Game.resources["src/images/HUD/heart_empty.png"].texture;
+            return HUDSpriteSheet["heart_empty.png"];
         default:
             return PIXI.Texture.WHITE;
     }

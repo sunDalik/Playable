@@ -3,10 +3,11 @@ import * as PIXI from "pixi.js"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class NinjaKnife {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/ninja_knife.png"].texture;
+        this.texture = WeaponsSpriteSheet["ninja_knife.png"];
         this.type = WEAPON_TYPE.NINJA_KNIFE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.SLIDE_ANIMATION_TIME = 5;

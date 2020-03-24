@@ -3,11 +3,12 @@ import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createPlayerAttackTile, runDestroyAnimation} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class Bow {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/bow.png"].texture;
-        this.arrowTexture = Game.resources["src/images/weapons/arrow.png"].texture;
+        this.texture =WeaponsSpriteSheet["bow.png"];
+        this.arrowTexture = WeaponsSpriteSheet["arrow.png"];
         this.type = WEAPON_TYPE.BOW;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 0.75;

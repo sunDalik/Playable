@@ -1,9 +1,10 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, RARITY} from "../../../enums";
+import {FootwearSpriteSheet} from "../../../loader";
 
 export class DamagingBoots {
     constructor() {
-        this.texture = Game.resources["src/images/footwear/damaging.png"].texture;
+        this.texture = FootwearSpriteSheet["damaging.png"];
         this.type = FOOTWEAR_TYPE.DAMAGING;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
         this.atk = 0.5;

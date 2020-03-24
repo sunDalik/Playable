@@ -2,10 +2,11 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HAZARD_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {blowAwayInDirection} from "../../../special_move_logic";
+import {MagicSpriteSheet} from "../../../loader";
 
 export class Wind {
     constructor() {
-        this.texture = Game.resources["src/images/magic/wind.png"].texture;
+        this.texture = MagicSpriteSheet["wind.png"];
         this.type = MAGIC_TYPE.WIND;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.WHITE;

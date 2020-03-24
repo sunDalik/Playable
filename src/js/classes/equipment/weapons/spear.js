@@ -2,10 +2,11 @@ import {Game} from "../../../game"
 import {ENEMY_TYPE, EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub, createWeaponAnimationStab} from "../../../animations";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class Spear {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/spear.png"].texture;
+        this.texture = WeaponsSpriteSheet["spear.png"];
         this.type = WEAPON_TYPE.SPEAR;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 0.75;

@@ -1,9 +1,10 @@
 import {Game} from "../../../game"
 import {ENEMY_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, RARITY} from "../../../enums";
+import {FootwearSpriteSheet} from "../../../loader";
 
 export class OldBalletShoes {
     constructor() {
-        this.texture = Game.resources["src/images/footwear/old_ballet_shoes.png"].texture;
+        this.texture = FootwearSpriteSheet["old_ballet_shoes.png"];
         this.type = FOOTWEAR_TYPE.OLD_BALLET_SHOES;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
         this.name = "Old Ballet Shoes";

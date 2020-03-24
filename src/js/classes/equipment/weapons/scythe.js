@@ -2,10 +2,11 @@ import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class Scythe {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/scythe.png"].texture;
+        this.texture = WeaponsSpriteSheet["scythe.png"];
         this.type = WEAPON_TYPE.SCYTHE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;

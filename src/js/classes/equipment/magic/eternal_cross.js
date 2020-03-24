@@ -6,10 +6,11 @@ import {TileElement} from "../../tile_elements/tile_element";
 import * as PIXI from "pixi.js";
 import {lightPlayerPosition} from "../../../drawing/lighting";
 import {otherPlayer} from "../../../utils/game_utils";
+import {MagicSpriteSheet} from "../../../loader";
 
 export class EternalCross {
     constructor() {
-        this.texture = Game.resources["src/images/magic/eternal_cross.png"].texture;
+        this.texture = MagicSpriteSheet["eternal_cross.png"];
         this.type = MAGIC_TYPE.ETERNAL_CROSS;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.WHITE;

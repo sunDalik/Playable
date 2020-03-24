@@ -1,9 +1,10 @@
 import {Game} from "../../../game"
 import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, RARITY,} from "../../../enums";
+import {MagicSpriteSheet} from "../../../loader";
 
 export class Petrification {
     constructor() {
-        this.texture = Game.resources["src/images/magic/petrification.png"].texture;
+        this.texture = MagicSpriteSheet["petrification.png"];
         this.type = MAGIC_TYPE.PETRIFICATION;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.WHITE;

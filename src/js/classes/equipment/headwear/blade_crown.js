@@ -5,10 +5,11 @@ import {randomChoice} from "../../../utils/random_utils";
 import {get8Directions} from "../../../utils/map_utils";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile} from "../../../animations";
+import {HeadWearSpriteSheet} from "../../../loader";
 
 export class BladeCrown {
     constructor() {
-        this.texture = Game.resources["src/images/headwear/blade_crown.png"].texture;
+        this.texture = HeadWearSpriteSheet["blade_crown.png"];
         this.type = HEAD_TYPE.BLADE_CROWN;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.nonremoveable = true;

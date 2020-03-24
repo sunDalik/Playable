@@ -1,16 +1,16 @@
-import * as PIXI from "pixi.js"
 import {Game} from "../../game"
 import {Hazard} from "./hazard";
 import {HAZARD_TYPE, STAGE} from "../../enums";
 import {get8Directions, getCardinalDirections} from "../../utils/map_utils";
 import {isNotAWall} from "../../map_checks";
 import {randomShuffle} from "../../utils/random_utils";
+import {HazardsSpriteSheet} from "../../loader";
 
 export class FireHazard extends Hazard {
-    constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = Game.resources["src/images/hazards/fire.png"].texture) {
+    constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = HazardsSpriteSheet["hazard_fire.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.normalTexture = Game.resources["src/images/hazards/fire.png"].texture;
-        this.smallTexture = Game.resources["src/images/hazards/fire_small.png"].texture;
+        this.normalTexture = HazardsSpriteSheet["hazard_fire.png"];
+        this.smallTexture = HazardsSpriteSheet["hazard_fire_small.png"];
         this.LIFETIME = 14;
         this.actualAtk = 0.5;
         this.small = small;
@@ -113,8 +113,8 @@ export class FireHazard extends Hazard {
     turnToDark() {
         if (this.type === HAZARD_TYPE.FIRE) {
             this.type = HAZARD_TYPE.DARK_FIRE;
-            this.normalTexture = Game.resources["src/images/hazards/dark_fire.png"].texture;
-            this.smallTexture = Game.resources["src/images/hazards/dark_fire_small.png"].texture;
+            this.normalTexture = HazardsSpriteSheet["hazard_dark_fire.png"];
+            this.smallTexture = HazardsSpriteSheet["hazard_dark_fire_small.png"];
             if (this.subFire) {
                 if (Math.random() < 0.5) {
                     this.tileSpread++;
@@ -135,8 +135,8 @@ export class DarkFireHazard extends FireHazard {
     constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = Game.resources["src/images/hazards/dark_fire.png"].texture) {
         super(tilePositionX, tilePositionY, small, spreadTimes, texture);
         this.type = HAZARD_TYPE.DARK_FIRE;
-        this.normalTexture = Game.resources["src/images/hazards/dark_fire.png"].texture;
-        this.smallTexture = Game.resources["src/images/hazards/dark_fire_small.png"].texture;
+        this.normalTexture =  HazardsSpriteSheet["hazard_dark_fire.png"];
+        this.smallTexture =  HazardsSpriteSheet["hazard_dark_fire_small.png"];
         if (small) this.texture = this.smallTexture;
     }
 }

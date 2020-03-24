@@ -9,10 +9,11 @@ import {
     redrawWeaponAndSecondHand
 } from "../../../drawing/draw_hud";
 import {otherPlayer} from "../../../utils/game_utils";
+import {MagicSpriteSheet} from "../../../loader";
 
 export class Necromancy {
     constructor() {
-        this.texture = Game.resources["src/images/magic/necromancy.png"].texture;
+        this.texture = MagicSpriteSheet["necromancy.png"];
         this.type = MAGIC_TYPE.NECROMANCY;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.GRAY;

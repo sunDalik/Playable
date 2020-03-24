@@ -1,9 +1,10 @@
 import {Game} from "../../game"
 import {Hazard} from "./hazard";
 import {HAZARD_TYPE} from "../../enums";
+import {HazardsSpriteSheet} from "../../loader";
 
 export class PoisonHazard extends Hazard {
-    constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = Game.resources["src/images/hazards/poison.png"].texture) {
+    constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = HazardsSpriteSheet["hazard_poison.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.LIFETIME = 12;
         this.turnsLeft = this.LIFETIME;
@@ -16,7 +17,7 @@ export class PoisonHazard extends Hazard {
     turnToDark() {
         if (this.type === HAZARD_TYPE.POISON) {
             this.type = HAZARD_TYPE.DARK_POISON;
-            this.texture = Game.resources["src/images/hazards/dark_poison.png"].texture;
+            this.texture = HazardsSpriteSheet["hazard_dark_poison.png"];
             this.turnsLeft += 3;
         }
     }
@@ -28,7 +29,7 @@ export class PoisonHazard extends Hazard {
 }
 
 export class DarkPoisonHazard extends PoisonHazard {
-    constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = Game.resources["src/images/hazards/dark_poison.png"].texture) {
+    constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = HazardsSpriteSheet["hazard_dark_poison.png"]) {
         super(tilePositionX, tilePositionY, startAt0Atk, texture);
         this.type = HAZARD_TYPE.DARK_POISON;
     }

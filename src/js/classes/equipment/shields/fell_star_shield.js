@@ -5,11 +5,12 @@ import {isAnyWall, isEnemy, isObelisk} from "../../../map_checks";
 import {TileElement} from "../../tile_elements/tile_element";
 import * as PIXI from "pixi.js";
 import {createFadingAttack} from "../../../animations";
+import {ShieldsSpriteSheet} from "../../../loader";
 
 export class FellStarShield extends Shield {
     constructor() {
         super();
-        this.texture = Game.resources["src/images/shields/fell_star_shield.png"].texture;
+        this.texture = ShieldsSpriteSheet["fell_star_shield.png"];
         this.type = SHIELD_TYPE.FELL_STAR_SHIELD;
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
         this.maxUses = 6;

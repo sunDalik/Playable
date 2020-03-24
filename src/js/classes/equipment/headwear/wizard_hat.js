@@ -1,10 +1,11 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE, RARITY} from "../../../enums";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
+import {HeadWearSpriteSheet} from "../../../loader";
 
 export class WizardHat {
     constructor() {
-        this.texture = Game.resources["src/images/headwear/wizard_hat.png"].texture;
+        this.texture = HeadWearSpriteSheet["wizard_hat.png"];
         this.type = HEAD_TYPE.WIZARD_HAT;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.magUses = 1;

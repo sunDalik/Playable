@@ -4,10 +4,11 @@ import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../..
 import {collisionCheck} from "../../../collision_check";
 import {createFadingAttack} from "../../../animations";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
+import {MagicSpriteSheet} from "../../../loader";
 
 export class Fireball {
     constructor() {
-        this.texture = Game.resources["src/images/magic/fireball.png"].texture;
+        this.texture = MagicSpriteSheet["fireball.png"];
         this.type = MAGIC_TYPE.FIREBALL;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.GRAY;
@@ -112,19 +113,10 @@ export class Fireball {
     }
 
     updateTexture() {
-        switch (this.multiplier) {
-            case 0:
-                this.texture = Game.resources["src/images/magic/fireball.png"].texture;
-                break;
-            case 1:
-                this.texture = Game.resources["src/images/magic/fireball_1.png"].texture;
-                break;
-            case 2:
-                this.texture = Game.resources["src/images/magic/fireball_2.png"].texture;
-                break;
-            case 3:
-                this.texture = Game.resources["src/images/magic/fireball_3.png"].texture;
-                break;
+        if (this.multiplier === 0) {
+            this.texture = MagicSpriteSheet["fireball.png"];
+        } else {
+            this.texture = MagicSpriteSheet[`fireball_${this.multiplier}.png`];
         }
     }
 }

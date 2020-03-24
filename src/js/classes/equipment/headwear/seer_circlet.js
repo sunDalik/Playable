@@ -3,10 +3,11 @@ import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY, TILE_TYPE} from "../../../enums";
 import {darkenTile, lightTile} from "../../../drawing/lighting";
 import {otherPlayer} from "../../../utils/game_utils";
 import {tileInsideTheBossRoom} from "../../../map_checks";
+import {HeadWearSpriteSheet} from "../../../loader";
 
 export class SeerCirclet {
     constructor() {
-        this.texture = Game.resources["src/images/headwear/seer_circlet.png"].texture;
+        this.texture = HeadWearSpriteSheet["seer_circlet.png"];
         this.type = HEAD_TYPE.SEER_CIRCLET;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.name = "Seer Circlet";

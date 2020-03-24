@@ -1,10 +1,11 @@
 import {Game} from "../../../game"
 import {ARMOR_TYPE, EQUIPMENT_TYPE, MAGIC_TYPE, RARITY} from "../../../enums";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
+import {ArmorSpriteSheet} from "../../../loader";
 
 export class WizardRobe {
     constructor() {
-        this.texture = Game.resources["src/images/armor/wizard_robe.png"].texture;
+        this.texture = ArmorSpriteSheet["wizard_robe.png"];
         this.type = ARMOR_TYPE.WIZARD_ROBE;
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.magUses = 1;

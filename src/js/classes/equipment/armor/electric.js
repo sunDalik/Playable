@@ -1,9 +1,10 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, ARMOR_TYPE, RARITY} from "../../../enums";
+import {ArmorSpriteSheet} from "../../../loader";
 
 export class ElectricArmor {
     constructor() {
-        this.texture = Game.resources["src/images/armor/electric.png"].texture;
+        this.texture = ArmorSpriteSheet["electric.png"];
         this.type = ARMOR_TYPE.ELECTRIC;
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.def = 0.25;

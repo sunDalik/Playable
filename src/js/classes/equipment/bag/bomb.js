@@ -7,10 +7,11 @@ import {getPlayerOnTile, isDiggable, isEnemy, isObelisk, isWallTrap} from "../..
 import * as PIXI from "pixi.js";
 import {lightPlayerPosition} from "../../../drawing/lighting";
 import {TileElement} from "../../tile_elements/tile_element";
+import {BagSpriteSheet} from "../../../loader";
 
 export class Bomb {
     constructor() {
-        this.texture = Game.resources["src/images/bag/bomb.png"].texture;
+        this.texture = BagSpriteSheet["bomb.png"];
         this.type = BAG_ITEM_TYPE.BOMB;
         this.equipmentType = EQUIPMENT_TYPE.BAG_ITEM;
         this.name = "Bomb";
@@ -26,7 +27,7 @@ export class Bomb {
 
     useItem(player) {
         const placedBomb = new Bomb();
-        placedBomb.sprite = new TileElement(Game.resources["src/images/bag/bomb_ticking.png"].texture, player.tilePosition.x, player.tilePosition.y);
+        placedBomb.sprite = new TileElement(BagSpriteSheet["bomb_ticking.png"], player.tilePosition.x, player.tilePosition.y);
         Game.world.addChild(placedBomb.sprite);
         Game.updateList.push(placedBomb);
         this.amount--;
@@ -73,7 +74,7 @@ export class Bomb {
         } else {
             this.currentFuseDelay--;
             if (this.currentFuseDelay === 0) {
-                this.sprite.texture = Game.resources["src/images/bag/bomb_about_to_explode.png"].texture;
+                this.sprite.texture = BagSpriteSheet["bomb_about_to_explode.png"];
             }
         }
     }

@@ -8,17 +8,17 @@ import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
+import {InanimatesSpriteSheet} from "../../loader";
 
 export class Grail extends TileElement {
     constructor(tilePositionX, tilePositionY, obelisk) {
-        super(Game.resources["src/images/other/grail.png"].texture, tilePositionX, tilePositionY);
+        super(InanimatesSpriteSheet["grail.png"], tilePositionX, tilePositionY);
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.GRAIL;
         this.obelisk = obelisk;
         this.magic = null;
         this.magicSet = false;
-        //just some default texture
-        this.magicSprite = new TileElement(Game.resources["src/images/magic/aura.png"].texture, 0, 0);
+        this.magicSprite = new TileElement(PIXI.Texture.WHITE, 0, 0);
         this.magicSprite.scaleModifier = 0.8;
         this.magicSprite.fitToTile();
         this.magicSprite.visible = false;
@@ -85,7 +85,7 @@ export class Grail extends TileElement {
             this.magicSprite.visible = true;
         } else {
             this.magicSprite.visible = false;
-            this.texture = Game.resources["src/images/other/grail.png"].texture;
+            this.texture = InanimatesSpriteSheet["grail.png"];
         }
     }
 

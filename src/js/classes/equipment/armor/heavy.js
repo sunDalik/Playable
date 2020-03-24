@@ -1,9 +1,10 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, ARMOR_TYPE, RARITY} from "../../../enums";
+import {ArmorSpriteSheet} from "../../../loader";
 
 export class HeavyArmor {
     constructor() {
-        this.texture = Game.resources["src/images/armor/heavy.png"].texture;
+        this.texture = ArmorSpriteSheet["heavy.png"];
         this.type = ARMOR_TYPE.HEAVY;
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.def = 2;

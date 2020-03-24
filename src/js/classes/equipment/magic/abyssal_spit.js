@@ -2,10 +2,11 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
 import {isNotAWall} from "../../../map_checks";
 import {DarkPoisonHazard} from "../../hazards/poison";
+import {MagicSpriteSheet} from "../../../loader";
 
 export class AbyssalSpit {
     constructor() {
-        this.texture = Game.resources["src/images/magic/abyssal_spit.png"].texture;
+        this.texture = MagicSpriteSheet["abyssal_spit.png"];
         this.type = MAGIC_TYPE.ABYSSAL_SPIT;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;

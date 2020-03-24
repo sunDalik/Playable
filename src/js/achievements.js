@@ -2,7 +2,7 @@ import {ACHIEVEMENT_ID, STAGE, STORAGE} from "./enums";
 import {Game} from "./game";
 import {HUD} from "./drawing/hud_object";
 import * as PIXI from "pixi.js";
-import {HUDTextStyle, HUDTextStyleTitle, miniMapBottomOffset, slotBorderOffsetX} from "./drawing/draw_constants";
+import {HUDTextStyleTitle, miniMapBottomOffset, slotBorderOffsetX} from "./drawing/draw_constants";
 import {easeInQuad, easeOutQuad} from "./utils/math_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
 
@@ -10,18 +10,18 @@ export const achievements = [
     {
         id: ACHIEVEMENT_ID.BEAT_FC,
         description: "Beat Flooded Caves",
-        image: "src/images/achievements/beat_fc.png"
+        image: "beat_fc.png"
     },
     {
         id: ACHIEVEMENT_ID.BEAT_DT,
         description: "Beat Dark Tunnel",
-        image: "src/images/achievements/beat_dt.png",
+        image: "beat_dt.png",
         description_locked: "Beat level 2"
     },
     {
         id: ACHIEVEMENT_ID.BEAT_ANY_BOSS_NO_DAMAGE,
         description: "Beat any boss without taking damage",
-        image: "src/images/achievements/beat_any_boss_no_damage.png"
+        image: "beat_any_boss_no_damage.png"
     }];
 
 

@@ -1,9 +1,9 @@
-import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, TOOL_TYPE} from "../../../enums";
+import {ToolsSpriteSheet} from "../../../loader";
 
 export class Torch {
     constructor() {
-        this.texture = Game.resources["src/images/tools/torch.png"].texture;
+        this.texture = ToolsSpriteSheet["torch.png"];
         this.type = TOOL_TYPE.TORCH;
         this.equipmentType = EQUIPMENT_TYPE.TOOL;
         this.lightSpread = 3;

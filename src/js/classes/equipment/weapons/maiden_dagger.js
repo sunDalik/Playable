@@ -2,10 +2,11 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isAnyWall, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
+import {WeaponsSpriteSheet} from "../../../loader";
 
 export class MaidenDagger {
     constructor() {
-        this.texture = Game.resources["src/images/weapons/maiden_dagger.png"].texture;
+        this.texture = WeaponsSpriteSheet["maiden_dagger.png"];
         this.type = WEAPON_TYPE.MAIDEN_DAGGER;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;

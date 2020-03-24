@@ -1,9 +1,10 @@
 import {Game} from "../../../game"
 import {BAG_ITEM_TYPE, EQUIPMENT_TYPE, RARITY} from "../../../enums";
+import {BagSpriteSheet} from "../../../loader";
 
 export class SmallHealingPotion {
     constructor() {
-        this.texture = Game.resources["src/images/bag/small_healing_potion.png"].texture;
+        this.texture = BagSpriteSheet["small_healing_potion.png"];
         this.type = BAG_ITEM_TYPE.SMALL_HEALING_POTION;
         this.equipmentType = EQUIPMENT_TYPE.BAG_ITEM;
         this.name = "Small Healing Potion";
