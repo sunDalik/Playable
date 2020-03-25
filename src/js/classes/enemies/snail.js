@@ -18,8 +18,7 @@ export class Snail extends Enemy {
         this.turnDelay = 1;
         this.currentTurnDelay = this.turnDelay;
         this.noticeDistance = 5;
-        this.scaleModifier = 0.8;
-        this.fitToTile();
+        this.setScaleModifier(0.95);
     }
 
     afterMapGen() {

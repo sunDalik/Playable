@@ -377,14 +377,14 @@ export function drawInteractionKeys() {
         drawPlayer(Game.player2);
         const ZKey = drawKey(getKeyBindSymbol(window.localStorage[STORAGE.KEY_Z_SWITCH]), container,
             Game.app.renderer.screen.width / 2 - HUDKeyBindSize / 2, offsetY + playerSize / 2 - HUDKeyBindSize / 2);
-        ZKey.zIndex = Game.primaryPlayer.zIndex + 1;
+        ZKey.zIndex = Game.primaryPlayer.ownZIndex + 1;
 
         function drawPlayer(player) {
             const texture = player === Game.player ? "player.png" : "player2.png";
             const playerSprite = new PIXI.Sprite(CommonSpriteSheet[texture]);
             playerSprite.width = playerSize;
             playerSprite.height = playerSize;
-            playerSprite.zIndex = player.zIndex;
+            playerSprite.zIndex = player.ownZIndex;
             playerSprite.position.x = Game.app.renderer.screen.width / 2 - playerSize / 2;
             playerSprite.position.y = offsetY;
             container.addChild(playerSprite);

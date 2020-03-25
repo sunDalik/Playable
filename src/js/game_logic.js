@@ -14,7 +14,7 @@ import {get8Directions, getCardinalDirections} from "./utils/map_utils";
 import {getPlayerOnTile} from "./map_checks";
 import {ITEM_OUTLINE_FILTER} from "./filters";
 import {TileElement} from "./classes/tile_elements/tile_element";
-import {randomChoice, randomShuffle} from "./utils/random_utils";
+import {randomChoice} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
 import {completeAchievement, completeBeatStageAchievements} from "./achievements";
 import {Z_INDEXES} from "./z_indexing";
@@ -434,7 +434,7 @@ export function deactivateBossMode() {
     if (Game.bossNoDamage) completeAchievement(ACHIEVEMENT_ID.BEAT_ANY_BOSS_NO_DAMAGE);
 
     Game.world.removeTile(Game.bossExit.x, Game.bossExit.y, null, false);
-    Game.world.addTile(new TileElement(Game.resources["src/images/exit_text.png"].texture, Game.bossExit.x, Game.bossExit.y), TILE_TYPE.EXIT);
+    Game.world.addTile(new TileElement(CommonSpriteSheet["exit_text.png"], Game.bossExit.x, Game.bossExit.y), TILE_TYPE.EXIT);
 
     for (const dir of get8Directions()) {
         if (Game.map[Game.bossExit.y + dir.y][Game.bossExit.x + dir.x].tileType !== TILE_TYPE.SUPER_WALL) {

@@ -17,8 +17,7 @@ export class Star extends Enemy {
         this.type = ENEMY_TYPE.STAR;
         this.turnDelay = 1;
         this.movable = false;
-        this.scaleModifier = 0.8;
-        this.fitToTile();
+        this.setScaleModifier(0.9);
     }
 
     move() {
@@ -103,8 +102,9 @@ export class Star extends Enemy {
 
     createSpikeAnimation(offsetX, offsetY) {
         let prefix = this.type === ENEMY_TYPE.STAR ? "star" : "star_b";
-        const attack = new TileElement(FCEnemiesSpriteSheet[`${prefix}_spike.png`], this.tilePosition.x, this.tilePosition.y);
-        attack.zIndex = -1;
+        const attack = new TileElement(FCEnemiesSpriteSheet[`${prefix}_spike.png`], 0, 0);
+        attack.position.set(this.getTilePositionX(), this.getTilePositionY());
+        attack.zIndex = this.zIndex - 1;
         attack.anchor.set(0, 0.5);
         attack.angle = this.getArrowRightAngleForDirection({x: Math.sign(offsetX), y: Math.sign(offsetY)});
         Game.world.addChild(attack);

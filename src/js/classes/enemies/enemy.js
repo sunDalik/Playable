@@ -35,6 +35,7 @@ export class Enemy extends AnimatedTileElement {
         this.intentIcon = this.createIntentIcon();
         this.place();
         this.ownZIndex = Z_INDEXES.ENEMY;
+        this.correctZIndex();
     }
 
     correctZIndex() {
@@ -96,6 +97,7 @@ export class Enemy extends AnimatedTileElement {
             this.intentIcon2.position.x = this.intentIcon.position.x;
             this.intentIcon2.position.y = this.intentIcon.position.y;
         }
+        this.placeShadow();
     }
 
     redrawHealth() {
@@ -172,6 +174,8 @@ export class Enemy extends AnimatedTileElement {
             this.drop = null;
         }
         runDestroyAnimation(this);
+        Game.world.removeChild(this.shadow);
+        this.shadow = null;
     }
 
     heal(healHP) {
@@ -193,6 +197,7 @@ export class Enemy extends AnimatedTileElement {
             this.health = this.maxHealth;
             this.redrawHealth();
             this.healthContainer.visible = false;
+            this.regenerateShadow();
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = this;
             return true;
         }
@@ -318,7 +323,6 @@ export class Enemy extends AnimatedTileElement {
         const intentIcon = new PIXI.Sprite(PIXI.Texture.WHITE);
         Game.world.addChild(intentIcon);
         intentIcon.visible = false;
-        intentIcon.zIndex = Game.primaryPlayer.zIndex + 2;
         intentIcon.width = intentIcon.height = 25;
         intentIcon.anchor.set(0.5, 0.5);
         return intentIcon;

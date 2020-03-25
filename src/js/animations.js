@@ -8,6 +8,7 @@ import {camera} from "./classes/game/camera";
 import {ROLE, STAGE} from "./enums";
 import {easeInOutQuad, easeInQuad, easeOutQuad, quadraticBezier} from "./utils/math_utils";
 import {TileElement} from "./classes/tile_elements/tile_element";
+import {HUDSpriteSheet} from "./loader";
 
 // the picture is directed to the top left!
 export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {
@@ -23,7 +24,8 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
         offsetX -= Math.sign(offsetX) * 0.5;
         offsetY -= Math.sign(offsetY) * 0.5;
     }
-    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x + playerOffsetX, player.tilePosition.y + playerOffsetY);
+    const weaponSprite = new TileElement(weapon.texture, 0, 0);
+    weaponSprite.position.set(player.getTilePositionX() + playerOffsetX * Game.TILESIZE, player.getTilePositionY() + playerOffsetY * Game.TILESIZE);
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
     weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
@@ -73,7 +75,8 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
 
 // the picture is directed to the top left!
 export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1, lookingBottom = false, forceSwing = undefined, endAmplitude = angleAmplitude) {
-    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
+    const weaponSprite = new TileElement(weapon.texture, 0, 0);
+    weaponSprite.position.set(player.getTilePositionX(), player.getTilePositionY());
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
     weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
@@ -120,7 +123,9 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
 
 // the picture is directed to the top left!
 export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationTime = 8, delay = 4, angleAmplitude = 90, scaleMod = 1.1, offset = 0, lookingRight = false) {
-    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x + offset * Math.sign(dirX), player.tilePosition.y + offset * Math.sign(dirY));
+    const weaponSprite = new TileElement(weapon.texture, 0, 0);
+    weaponSprite.position.set(player.getTilePositionX() + offset * Math.sign(dirX) * Game.TILESIZE, player.getTilePositionY() + offset * Math.sign(dirY) * Game.TILESIZE);
+
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
     weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
@@ -361,7 +366,7 @@ export function longShakeScreen() {
 }
 
 export function createHeartAnimation(positionX, positionY, heartSize = Game.TILESIZE / 3, animationTime = 26, pound = false, poundTwice = false) {
-    const heart = new PIXI.Sprite(Game.resources["src/images/HUD/heart_full.png"].texture);
+    const heart = new PIXI.Sprite(HUDSpriteSheet["heart_full.png"]);
     heart.width = heartSize;
     heart.height = heartSize;
     const sizeEndChange = pound ? heartSize : heartSize / 2;

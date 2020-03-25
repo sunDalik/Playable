@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import {Game} from "./game";
 import {camera} from "./classes/game/camera";
 import {CommonSpriteSheet, loadAll} from "./loader";
-import {Player} from "./classes/player";
+import {Player} from "./classes/players/player";
 import {Knife} from "./classes/equipment/weapons/knife";
 import {BasicArmor} from "./classes/equipment/armor/basic";
 import {ACHIEVEMENT_ID, GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums";
@@ -33,6 +33,8 @@ import {Z_INDEXES} from "./z_indexing";
 import {Pickaxe} from "./classes/equipment/tools/pickaxe";
 import {Spikes} from "./classes/equipment/magic/spikes";
 import {Aura} from "./classes/equipment/magic/aura";
+import {WhitePlayer} from "./classes/players/player_white";
+import {BlackPlayer} from "./classes/players/player_black";
 
 PIXI.utils.skipHello();
 initLocalStorage();
@@ -118,6 +120,7 @@ export function initializeLevel() {
         Game.player.tilePosition.set(Game.startPos.x, Game.startPos.y);
         Game.player.place();
         Game.map[Game.player.tilePosition.y][Game.player.tilePosition.x].entity = Game.player;
+        Game.player.correctZIndex();
     }
     if (!Game.player2.dead) {
         if (Game.player.dead) {
@@ -130,6 +133,7 @@ export function initializeLevel() {
         }
         Game.player2.place();
         Game.map[Game.player2.tilePosition.y][Game.player2.tilePosition.x].entity = Game.player2;
+        Game.player2.correctZIndex();
     }
     drawInteractionKeys();
     drawMovementKeyBindings();
@@ -174,18 +178,10 @@ export function initializeLevel() {
 }
 
 function initPlayers() {
-    Game.player = new Player(CommonSpriteSheet["player.png"], 0, 0);
-    Game.player2 = new Player(CommonSpriteSheet["player2.png"], 0, 0);
-    Game.player.setStats(0, 0.5, 0, 1.00);
-    Game.player2.setStats(0, 1.00, 0, 0.5);
-    Game.player2.weapon = new Knife();
-    Game.player.weapon = new Spear();
-    Game.player.armor = new BasicArmor();
-    Game.player.setOwnZIndex(Z_INDEXES.PLAYER_PRIMARY);
-    Game.player2.setOwnZIndex(Z_INDEXES.PLAYER);
+    Game.player = new WhitePlayer(0, 0);
+    Game.player2 = new BlackPlayer(0, 0);
     Game.primaryPlayer = Game.player;
     Game.lastPlayerMoved = Game.player;
-
     Game.darkEnergy = 0;
     Game.lightEnergy = 0;
 }

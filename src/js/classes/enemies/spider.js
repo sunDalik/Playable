@@ -21,8 +21,7 @@ export class Spider extends Enemy {
         this.noticeDistance = 4;
         this.STEP_ANIMATION_TIME = 6;
         this.BUMP_ANIMATION_TIME = 12;
-        this.scaleModifier = 0.8;
-        this.fitToTile();
+        this.setScaleModifier(0.85);
     }
 
     move() {

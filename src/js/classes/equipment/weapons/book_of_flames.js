@@ -118,7 +118,8 @@ export class BookOfFlames {
     holdBookAnimation(wielder, dirX, dirY) {
         const offsetMod = 0.3;
         const offsetX = dirX !== 0 ? dirX * offsetMod : randomChoice([offsetMod, -offsetMod]);
-        const bookSprite = new TileElement(WeaponsSpriteSheet["book_of_flames.png"], wielder.tilePosition.x + offsetX, wielder.tilePosition.y);
+        const bookSprite = new TileElement(WeaponsSpriteSheet["book_of_flames.png"], 0, 0);
+        bookSprite.position.set(wielder.getTilePositionX() + offsetX * Game.TILESIZE, wielder.getTilePositionY());
         Game.world.addChild(bookSprite);
         wielder.animationSubSprites.push(bookSprite);
         bookSprite.zIndex = Game.primaryPlayer.zIndex + 1;

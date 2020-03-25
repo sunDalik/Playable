@@ -7,7 +7,7 @@ import {WeaponsSpriteSheet} from "../../../loader";
 
 export class Bow {
     constructor() {
-        this.texture =WeaponsSpriteSheet["bow.png"];
+        this.texture = WeaponsSpriteSheet["bow.png"];
         this.arrowTexture = WeaponsSpriteSheet["arrow.png"];
         this.type = WEAPON_TYPE.BOW;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
@@ -43,13 +43,15 @@ export class Bow {
     }
 
     createBowAnimation(wielder, atkOffsetX, atkOffsetY) {
-        const weaponSprite = new TileElement(this.texture, wielder.tilePosition.x, wielder.tilePosition.y);
+        const weaponSprite = new TileElement(this.texture, 0, 0);
+        weaponSprite.position.set(wielder.getTilePositionX(), wielder.getTilePositionY());
         Game.world.addChild(weaponSprite);
         wielder.animationSubSprites.push(weaponSprite);
         weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         weaponSprite.angle = this.getAngleForDir(0, Math.sign(atkOffsetX), Math.sign(atkOffsetY));
 
-        const arrowSprite = new TileElement(this.arrowTexture, wielder.tilePosition.x, wielder.tilePosition.y);
+        const arrowSprite = new TileElement(this.arrowTexture, 0, 0);
+        arrowSprite.position.set(wielder.getTilePositionX(), wielder.getTilePositionY());
         Game.world.addChild(arrowSprite);
         arrowSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         arrowSprite.scaleModifier = 0.8;

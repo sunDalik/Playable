@@ -26,8 +26,7 @@ export class Mushroom extends Enemy {
         this.standing = false;
         this.direction = {x: 1, y: 0}; //just a default value
         this.zIndex = Game.primaryPlayer.zIndex + 1;
-        this.scaleModifier = 0.9;
-        this.fitToTile();
+        this.setScaleModifier(0.95);
         this.spillAreas = [];
         this.healOnHit = 0;
     }
@@ -130,16 +129,9 @@ export class Mushroom extends Enemy {
     }
 
     place() {
-        this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
-        if (this.standing || this.walking)
-            this.position.y = Game.TILESIZE * this.tilePosition.y - Game.TILESIZE + (Game.TILESIZE * 2 - this.height) - this.bottomOffset + this.height * this.anchor.y;
-        else {
-            this.bottomOffset = (Game.TILESIZE - this.height) / 2;
-            this.position.y = Game.TILESIZE * this.tilePosition.y + this.bottomOffset + this.height * this.anchor.y;
-        }
-        if (this.healthContainer) {
-            this.moveHealthContainer();
-        }
+        super.place();
+        if (this.standing || this.walking) this.position.y -= this.bottomOffset;
+        else this.bottomOffset = (Game.TILESIZE - this.height) / 2;
     }
 
     correctScale() {

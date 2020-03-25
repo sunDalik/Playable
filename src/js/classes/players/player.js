@@ -1,6 +1,6 @@
-import {Game} from "../game"
+import {Game} from "../../game"
 import * as PIXI from "pixi.js"
-import {AnimatedTileElement} from "./tile_elements/animated_tile_element";
+import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {
     ARMOR_TYPE,
     EQUIPMENT_TYPE,
@@ -11,8 +11,8 @@ import {
     TILE_TYPE,
     TOOL_TYPE,
     WEAPON_TYPE
-} from "../enums";
-import {createHeartAnimation, rotate, runDestroyAnimation, shakeScreen, showHelpBox} from "../animations";
+} from "../../enums";
+import {createHeartAnimation, rotate, runDestroyAnimation, shakeScreen, showHelpBox} from "../../animations";
 import {
     drawHUD,
     redrawBag,
@@ -21,20 +21,20 @@ import {
     redrawSlotContents,
     redrawSlotContentsForPlayer,
     redrawWeaponAndSecondHand
-} from "../drawing/draw_hud";
-import {amIInTheBossRoom, isInanimate, isRelativelyEmpty} from "../map_checks";
-import {activateBossMode, gotoNextLevel, updateInanimates} from "../game_logic";
-import {lightPlayerPosition} from "../drawing/lighting";
-import {LyingItem} from "./equipment/lying_item";
-import {randomChoice} from "../utils/random_utils";
-import {otherPlayer, setTickTimeout} from "../utils/game_utils";
-import {camera} from "./game/camera";
-import {updateChain} from "../drawing/draw_dunno";
-import {closeBlackBars, pullUpGameOverScreen} from "../drawing/hud_animations";
-import {DEATH_FILTER} from "../filters";
-import {removeObjectFromArray} from "../utils/basic_utils";
-import {HUD} from "../drawing/hud_object";
-import {redrawMiniMapPixel} from "../drawing/minimap";
+} from "../../drawing/draw_hud";
+import {amIInTheBossRoom, isInanimate, isRelativelyEmpty} from "../../map_checks";
+import {activateBossMode, gotoNextLevel, updateInanimates} from "../../game_logic";
+import {lightPlayerPosition} from "../../drawing/lighting";
+import {LyingItem} from "../equipment/lying_item";
+import {randomChoice} from "../../utils/random_utils";
+import {otherPlayer, setTickTimeout} from "../../utils/game_utils";
+import {camera} from "../game/camera";
+import {updateChain} from "../../drawing/draw_dunno";
+import {closeBlackBars, pullUpGameOverScreen} from "../../drawing/hud_animations";
+import {DEATH_FILTER} from "../../filters";
+import {removeObjectFromArray} from "../../utils/basic_utils";
+import {HUD} from "../../drawing/hud_object";
+import {redrawMiniMapPixel} from "../../drawing/minimap";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -72,8 +72,7 @@ export class Player extends AnimatedTileElement {
         this.chargingMagic = null;
         this.doubleAttackCallback = () => {
         };
-        this.scaleModifier = 0.8;
-        this.fitToTile();
+        this.setScaleModifier(0.87);
     }
 
     cancelAnimation() {
@@ -283,6 +282,7 @@ export class Player extends AnimatedTileElement {
     onMoveFrame(extra = null) {
         if (extra) extra();
         updateChain();
+        this.placeShadow();
     }
 
     onMove(animationTime) {

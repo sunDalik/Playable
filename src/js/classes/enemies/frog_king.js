@@ -1,4 +1,3 @@
-import {Game} from "../../game"
 import {ENEMY_TYPE} from "../../enums";
 import {Frog} from "./frog";
 import {getPlayerOnTile, isNotAWall} from "../../map_checks";
@@ -11,6 +10,7 @@ export class KingFrog extends Frog {
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.FROG_KING;
         this.atk = 1.25;
+        this.setScaleModifier(1.15);
     }
 
     arePlayersInAttackRange() {

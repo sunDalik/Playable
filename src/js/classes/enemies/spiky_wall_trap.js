@@ -6,6 +6,10 @@ import {randomChoice} from "../../utils/random_utils";
 import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../utils/map_utils";
 import {TileElement} from "../tile_elements/tile_element";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {runDestroyAnimation} from "../../animations";
+import {WallTrapBase} from "../draw/wall_trap_base";
+import {wallTallness} from "../draw/wall";
+import {Z_INDEXES} from "../../z_indexing";
 
 export class SpikyWallTrap extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spiky_wall_trap_x.png"]) {
@@ -21,13 +25,18 @@ export class SpikyWallTrap extends Enemy {
         this.role = ROLE.WALL_TRAP;
         this.direction = {x: 1, y: 0};
         this.spikesSprite = new TileElement(FCEnemiesSpriteSheet["spikes_right.png"], 0, 0);
-        this.spikesSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         this.spikesSprite.visible = false;
         Game.world.addChild(this.spikesSprite);
         this.intentIcon2 = this.createIntentIcon();
         this.intentIcon2.alpha = 0.8;
         this.intentIcon2.width = this.intentIcon2.height = 15;
-        this.intentIcon.zIndex = this.intentIcon2.zIndex = Game.primaryPlayer.zIndex + 2;
+        this.wallBase = new WallTrapBase(this.tilePosition.x, this.tilePosition.y);
+        this.wallBase.zIndex = this.zIndex - 1;
+        Game.world.addChild(this.wallBase);
+        this.correctZIndex();
+        this.noShadow = true;
+        this.preserveCenteredPosition = true;
+        this.place();
     }
 
     afterMapGen() {
@@ -38,8 +47,20 @@ export class SpikyWallTrap extends Enemy {
         this.spikesSprite.tilePosition.x = this.tilePosition.x + this.direction.x;
         this.spikesSprite.tilePosition.y = this.tilePosition.y + this.direction.y;
         this.spikesSprite.place();
+        if (this.direction.y !== 1) this.spikesSprite.position.y -= wallTallness / 2;
         this.spikesSprite.angle = this.getArrowRightAngleForDirection(this.direction);
+        this.spikesSprite.ownZIndex = Z_INDEXES.PLAYER_PRIMARY + 1;
+        this.spikesSprite.correctZIndex();
         this.updateTexture();
+    }
+
+    place() {
+        super.place();
+        this.position.y -= wallTallness;
+        if (this.intentIcon2) {
+            this.intentIcon.position.y -= wallTallness;
+            this.intentIcon2.position.y -= wallTallness;
+        }
     }
 
     move() {
@@ -115,5 +136,6 @@ export class SpikyWallTrap extends Enemy {
     die(source) {
         super.die(source);
         this.spikesSprite.visible = false;
+        runDestroyAnimation(this.wallBase);
     }
 }

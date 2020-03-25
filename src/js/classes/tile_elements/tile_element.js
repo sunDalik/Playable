@@ -1,6 +1,7 @@
 import {Sprite} from "pixi.js"
 import {Game} from "../../game"
 import {getZIndexForLayer} from "../../z_indexing";
+import * as PIXI from "pixi.js";
 
 export class TileElement extends Sprite {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -14,13 +15,19 @@ export class TileElement extends Sprite {
             }
         };
         this.animation = null;
-        this.scaleModifier = 1;
         this.anchor.set(0.5, 0.5);
+        this.scaleModifier = 1;
         this.fitToTile();
+        if (!this.texture.trim) this.texture.trim = new PIXI.Rectangle(0, 0, this.texture.frame.width, this.texture.frame.height);
         this.place();
         this.filters = [];
         this.ownZIndex = 0;
         this.correctZIndex();
+    }
+
+    setScaleModifier(scaleModifier) {
+        this.scaleModifier = scaleModifier;
+        this.fitToTile();
     }
 
     correctZIndex() {

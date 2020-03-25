@@ -2,7 +2,7 @@ export const Z_INDEXES = Object.freeze({
     PLAYER_PRIMARY: 3,
     PLAYER: 1,
     ENEMY: 4,
-    INTENT: 5,
+    INTENT: 2,
     HEART: 0,
     TEXT: 0,
     WALL: 0

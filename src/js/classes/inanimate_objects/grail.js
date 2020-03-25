@@ -8,7 +8,7 @@ import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
-import {InanimatesSpriteSheet} from "../../loader";
+import {InanimatesSpriteSheet, MagicSpriteSheet} from "../../loader";
 
 export class Grail extends TileElement {
     constructor(tilePositionX, tilePositionY, obelisk) {
@@ -18,7 +18,7 @@ export class Grail extends TileElement {
         this.obelisk = obelisk;
         this.magic = null;
         this.magicSet = false;
-        this.magicSprite = new TileElement(PIXI.Texture.WHITE, 0, 0);
+        this.magicSprite = new TileElement(MagicSpriteSheet["aura.png"], 0, 0);
         this.magicSprite.scaleModifier = 0.8;
         this.magicSprite.fitToTile();
         this.magicSprite.visible = false;

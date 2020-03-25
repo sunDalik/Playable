@@ -14,8 +14,7 @@ export class PoisonEel extends Eel {
         this.triggered = false;
         this.FULL_ROTATE_TIME = 15;
         this.type = ENEMY_TYPE.POISON_EEL;
-        this.scaleModifier = 1.1;
-        this.fitToTile();
+        this.setScaleModifier(1.1);
     }
 
     move() {

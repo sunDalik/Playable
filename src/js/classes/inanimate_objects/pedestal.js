@@ -7,10 +7,11 @@ import * as PIXI from "pixi.js";
 import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
+import {InanimatesSpriteSheet} from "../../loader";
 
 export class Pedestal extends TileElement {
     constructor(tilePositionX, tilePositionY, contents) {
-        super(Game.resources["src/images/other/pedestal.png"].texture, tilePositionX, tilePositionY);
+        super(InanimatesSpriteSheet["pedestal.png"], tilePositionX, tilePositionY);
         this.contents = contents;
         this.contentsType = contents.equipmentType;
         this.role = ROLE.INANIMATE;

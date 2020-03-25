@@ -24,8 +24,7 @@ export class Frog extends Enemy {
         this.currentTurnDelay = this.turnDelay;
         this.triggered = false;
         this.triggeredTile = null;
-        this.scaleModifier = 0.8;
-        this.fitToTile();
+        this.setScaleModifier(1.1);
     }
 
     afterMapGen() {
@@ -33,12 +32,6 @@ export class Frog extends Enemy {
             || isInanimate(this.tilePosition.x + 1, this.tilePosition.y)) {
             this.scale.x *= -1;
         }
-    }
-
-    fitToTile() {
-        const scaleX = Game.TILESIZE / this.getUnscaledWidth();
-        const scaleY = Game.TILESIZE / this.getUnscaledHeight();
-        this.scale.set(scaleX, scaleY);
     }
 
     move() {
