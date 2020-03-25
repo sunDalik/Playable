@@ -9,6 +9,7 @@ import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
 import {InanimatesSpriteSheet, MagicSpriteSheet} from "../../loader";
+import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 
 export class Grail extends TileElement {
     constructor(tilePositionX, tilePositionY, obelisk) {
@@ -19,16 +20,15 @@ export class Grail extends TileElement {
         this.magic = null;
         this.magicSet = false;
         this.magicSprite = new TileElement(MagicSpriteSheet["aura.png"], 0, 0);
-        this.magicSprite.scaleModifier = 0.8;
-        this.magicSprite.fitToTile();
+        this.magicSprite.setScaleModifier(0.8);
         this.magicSprite.visible = false;
-        this.magicSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+        this.magicSprite.zIndex = getZIndexForLayer(this.tilePosition.y) + 1;
         Game.world.addChild(this.magicSprite);
 
         this.textObj = new PIXI.Text("", getInanimateItemLabelTextStyle());
         this.textObj.anchor.set(0.5, 0.5);
         this.textObj.visible = false;
-        this.textObj.zIndex = 99;
+        this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
     }
 
     placeGrail() {

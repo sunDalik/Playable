@@ -25,6 +25,7 @@ export class SpikyWallTrap extends Enemy {
         this.role = ROLE.WALL_TRAP;
         this.direction = {x: 1, y: 0};
         this.spikesSprite = new TileElement(FCEnemiesSpriteSheet["spikes_right.png"], 0, 0);
+        this.spikesSprite.setCenterPreservation();
         this.spikesSprite.visible = false;
         Game.world.addChild(this.spikesSprite);
         this.intentIcon2 = this.createIntentIcon();
@@ -47,7 +48,7 @@ export class SpikyWallTrap extends Enemy {
         this.spikesSprite.tilePosition.x = this.tilePosition.x + this.direction.x;
         this.spikesSprite.tilePosition.y = this.tilePosition.y + this.direction.y;
         this.spikesSprite.place();
-        if (this.direction.y !== 1) this.spikesSprite.position.y -= wallTallness / 2;
+        this.spikesSprite.position.y -= wallTallness / 2;
         this.spikesSprite.angle = this.getArrowRightAngleForDirection(this.direction);
         this.spikesSprite.ownZIndex = Z_INDEXES.PLAYER_PRIMARY + 1;
         this.spikesSprite.correctZIndex();

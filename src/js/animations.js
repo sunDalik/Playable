@@ -9,6 +9,7 @@ import {ROLE, STAGE} from "./enums";
 import {easeInOutQuad, easeInQuad, easeOutQuad, quadraticBezier} from "./utils/math_utils";
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {HUDSpriteSheet} from "./loader";
+import {getZIndexForLayer, Z_INDEXES} from "./z_indexing";
 
 // the picture is directed to the top left!
 export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {
@@ -367,14 +368,13 @@ export function longShakeScreen() {
 
 export function createHeartAnimation(positionX, positionY, heartSize = Game.TILESIZE / 3, animationTime = 26, pound = false, poundTwice = false) {
     const heart = new PIXI.Sprite(HUDSpriteSheet["heart_full.png"]);
-    heart.width = heartSize;
-    heart.height = heartSize;
+    heart.width = heart.height = heartSize;
     const sizeEndChange = pound ? heartSize : heartSize / 2;
     heart.anchor.set(0.5, 0.5);
     heart.position.set(positionX, positionY - heart.height / 4);
     const startPosY = heart.position.y;
     const posYEndChange = -Game.TILESIZE / 3;
-    heart.zIndex = 99;
+    heart.zIndex = Math.ceil(getZIndexForLayer(positionY / Game.TILESIZE)) + Z_INDEXES.META;
     Game.world.addChild(heart);
     let counter = 0;
 

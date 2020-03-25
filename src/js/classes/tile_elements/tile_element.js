@@ -3,6 +3,8 @@ import {Game} from "../../game"
 import {getZIndexForLayer} from "../../z_indexing";
 import * as PIXI from "pixi.js";
 
+export const floorLevel = Game.TILESIZE * 0.4;
+
 export class TileElement extends Sprite {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture);
@@ -19,6 +21,8 @@ export class TileElement extends Sprite {
         this.scaleModifier = 1;
         this.fitToTile();
         if (!this.texture.trim) this.texture.trim = new PIXI.Rectangle(0, 0, this.texture.frame.width, this.texture.frame.height);
+        this.preserveCenteredPosition = false;
+        this.tallModifier = 0;
         this.place();
         this.filters = [];
         this.ownZIndex = 0;
@@ -47,6 +51,16 @@ export class TileElement extends Sprite {
         this.scale.set(scaleX, scaleY);
     }
 
+    setOwnZIndex(ownZIndex) {
+        this.ownZIndex = ownZIndex;
+        this.correctZIndex();
+    }
+
+    setCenterPreservation() {
+        this.preserveCenteredPosition = true;
+        this.place();
+    }
+
     place() {
         this.position.x = this.getTilePositionX();
         this.position.y = this.getTilePositionY();
@@ -57,7 +71,12 @@ export class TileElement extends Sprite {
     }
 
     getTilePositionY() {
-        return Game.TILESIZE * this.tilePosition.y + (Game.TILESIZE - this.height) / 2 + this.height * this.anchor.y;
+        const basePosY = Game.TILESIZE * this.tilePosition.y + (Game.TILESIZE - this.height) / 2 + this.height * this.anchor.y;
+        if (this.preserveCenteredPosition)
+            return basePosY;
+        else
+            return basePosY + (this.texture.height - this.texture.trim.bottom) * this.scale.y + (Game.TILESIZE - this.height) / 2
+                - floorLevel - this.tallModifier;
     }
 
     getUnscaledWidth() {

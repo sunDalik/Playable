@@ -7,9 +7,8 @@ export let wallTallness = 0;
 export class WallTile extends TileElement {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/wall.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.ownZIndex = Z_INDEXES.WALL;
-        this.correctZIndex();
-        this.place();
+        this.setOwnZIndex(Z_INDEXES.WALL);
+        this.setCenterPreservation();
 
         if (wallTallness === 0) wallTallness = 128 * this.scale.y; // in theory it might initialize AFTER someone will need it... keep it in mind
     }

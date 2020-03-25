@@ -669,11 +669,6 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    setOwnZIndex(zIndex) {
-        this.ownZIndex = zIndex;
-        this.correctZIndex();
-    }
-
     removeFromMap() {
         if (this === Game.map[this.tilePosition.y][this.tilePosition.x].entity) {
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity;

@@ -25,7 +25,6 @@ export class Mushroom extends Enemy {
         this.normalTexture = FCEnemiesSpriteSheet["mushroom.png"];
         this.standing = false;
         this.direction = {x: 1, y: 0}; //just a default value
-        this.zIndex = Game.primaryPlayer.zIndex + 1;
         this.setScaleModifier(0.95);
         this.spillAreas = [];
         this.healOnHit = 0;

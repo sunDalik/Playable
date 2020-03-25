@@ -9,6 +9,7 @@ import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import {StatuesSpriteSheet} from "../../loader";
+import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 
 export class Statue extends TallTileElement {
     constructor(tilePositionX, tilePositionY, weapon) {
@@ -21,7 +22,7 @@ export class Statue extends TallTileElement {
         this.textObj.anchor.set(0.5, 0.5);
         this.textObj.position.set(this.position.x, this.position.y - this.height / 4);
         this.textObj.visible = false;
-        this.textObj.zIndex = 99;
+        this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
         Game.world.addChild(this.textObj);
         this.updateTexture();
         this.correctZIndex();

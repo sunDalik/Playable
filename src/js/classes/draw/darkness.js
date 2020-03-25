@@ -9,6 +9,7 @@ export class DarknessTile extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.correctZIndex();
+        this.setCenterPreservation()
     }
 
     correctZIndex() {

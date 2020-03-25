@@ -1,5 +1,5 @@
 import {Game} from "../game";
-import {keyboard, keyboardS} from "./keyboard_handler";
+import {keyboardS} from "./keyboard_handler";
 import {playerTurn, switchPlayers} from "../game_logic";
 import {toggleMiniMap} from "../drawing/minimap";
 import {STORAGE} from "../enums";
@@ -67,5 +67,4 @@ export function bindKeys() {
     mapKey.press = () => toggleMiniMap();
 
     //keyboard("KeyN").press = gotoNextLevel;
-    keyboard("KeyP").press = () => Game.player.place();
 }

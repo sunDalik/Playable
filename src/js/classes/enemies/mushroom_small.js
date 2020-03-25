@@ -1,4 +1,3 @@
-import {Game} from "../../game"
 import {ENEMY_TYPE} from "../../enums";
 import {getRandomInt} from "../../utils/random_utils";
 import {Mushroom} from "./mushroom";

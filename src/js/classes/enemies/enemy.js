@@ -34,8 +34,7 @@ export class Enemy extends AnimatedTileElement {
         this.healthContainer.zIndex = 5000;
         this.intentIcon = this.createIntentIcon();
         this.place();
-        this.ownZIndex = Z_INDEXES.ENEMY;
-        this.correctZIndex();
+        this.setOwnZIndex(Z_INDEXES.ENEMY);
     }
 
     correctZIndex() {

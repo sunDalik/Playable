@@ -1,14 +1,19 @@
 import {Game} from "../../game"
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import {TileElement} from "../tile_elements/tile_element";
+import {Z_INDEXES} from "../../z_indexing";
 
 export class Hazard extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
-        this.zIndex = -3;
         this.LIFETIME = 0;
         this.turnsLeft = this.LIFETIME;
         this.atk = 0;
+        this.setCenterPreservation()
+    }
+
+    correctZIndex() {
+        this.zIndex = Z_INDEXES.HAZARD;
     }
 
     addToWorld() {

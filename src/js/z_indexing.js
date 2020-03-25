@@ -4,8 +4,9 @@ export const Z_INDEXES = Object.freeze({
     ENEMY: 4,
     INTENT: 2,
     HEART: 0,
-    TEXT: 0,
-    WALL: 0
+    META: 20,
+    WALL: 0,
+    HAZARD: -3
 });
 
 export function getZIndexForLayer(y, wall = false) {

@@ -371,32 +371,22 @@ export function drawInteractionKeys() {
     if (Game.player.dead || Game.player2.dead) return;
     const playerSize = 50;
     const offsetY = 20;
-    const iconSize = 30;
     if (Game.player.tilePosition.x === Game.player2.tilePosition.x && Game.player.tilePosition.y === Game.player2.tilePosition.y) {
         drawPlayer(Game.player);
         drawPlayer(Game.player2);
         const ZKey = drawKey(getKeyBindSymbol(window.localStorage[STORAGE.KEY_Z_SWITCH]), container,
-            Game.app.renderer.screen.width / 2 - HUDKeyBindSize / 2, offsetY + playerSize / 2 - HUDKeyBindSize / 2);
+            Game.app.renderer.screen.width / 2 - HUDKeyBindSize / 2, offsetY + playerSize / 2 - HUDKeyBindSize / 2 - Game.player.tallModifier);
         ZKey.zIndex = Game.primaryPlayer.ownZIndex + 1;
 
         function drawPlayer(player) {
             const texture = player === Game.player ? "player.png" : "player2.png";
             const playerSprite = new PIXI.Sprite(CommonSpriteSheet[texture]);
-            playerSprite.width = playerSize;
-            playerSprite.height = playerSize;
+            playerSprite.scale.y = playerSprite.scale.x = playerSize / playerSprite.width;
             playerSprite.zIndex = player.ownZIndex;
             playerSprite.position.x = Game.app.renderer.screen.width / 2 - playerSize / 2;
-            playerSprite.position.y = offsetY;
+            playerSprite.position.y = offsetY - player.tallModifier;
             container.addChild(playerSprite);
             return playerSprite;
-        }
-
-        function drawIconAndKey(iconTexture, keyText, posX, posY) {
-            const icon = new PIXI.Sprite(Game.resources[iconTexture].texture);
-            icon.width = icon.height = iconSize;
-            icon.position.set(posX - iconSize / 2, posY);
-            container.addChild(icon);
-            drawKey(keyText, container, posX - HUDKeyBindSize / 2, posY + iconSize + 5);
         }
     }
 }
@@ -419,10 +409,11 @@ export function drawOtherHUD() {
     function drawPlayer(player, posX, posY) {
         const playerTexture = player === Game.player ? "player.png" : "player2.png";
         const playerSprite = new PIXI.Sprite(CommonSpriteSheet[playerTexture]);
-        playerSprite.width = playerSprite.height = playerSize;
+        playerSprite.scale.y = playerSprite.scale.x = playerSize / playerSprite.width;
         playerSprite.alpha = 0.5;
         playerSprite.position.x = posX + playerSprite.width * playerSprite.anchor.x;
         playerSprite.position.y = posY + playerSprite.height * playerSprite.anchor.y;
+        if (player === Game.player2) playerSprite.position.y -= player.tallModifier * 1.5;
         container.addChild(playerSprite);
     }
 }

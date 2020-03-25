@@ -1,11 +1,9 @@
 import {Game} from "../../game"
-import {TileElement} from "./tile_element"
+import {floorLevel, TileElement} from "./tile_element"
 import {cubicBezier, quadraticBezier} from "../../utils/math_utils";
 import {BLACK_INVERT_FILTER, HIT_FILTER} from "../../filters";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import * as PIXI from "pixi.js";
-
-const floorLevel = Game.TILESIZE * 0.4;
 
 export class AnimatedTileElement extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -19,7 +17,6 @@ export class AnimatedTileElement extends TileElement {
         this.MICRO_SLIDE_ANIMATION_TIME = 4;
         this.animationCounter = 0;
         this.animation = null;
-        this.tallModifier = 0;
         this.noShadow = false;
         this.regenerateShadow();
         this.place();
@@ -42,14 +39,6 @@ export class AnimatedTileElement extends TileElement {
     place() {
         super.place();
         if (this.shadow) this.placeShadow();
-    }
-
-    getTilePositionY() {
-        let posY = super.getTilePositionY();
-        if (!this.preserveCenteredPosition) //hack for eels
-            posY += (this.texture.height - this.texture.trim.bottom) * this.scale.y + (Game.TILESIZE - this.height) / 2
-                - floorLevel - this.tallModifier;
-        return posY;
     }
 
     placeShadow() {
