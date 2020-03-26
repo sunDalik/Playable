@@ -28,7 +28,7 @@ export class Spikes {
                 const attackPositionX = wielder.tilePosition.x + offset;
                 const attackPositionY = wielder.tilePosition.y + offset * sign;
                 if (offset !== 0 && isNotAWall(attackPositionX, attackPositionY)) {
-                    const attackSprite = new TileElement(PIXI.Texture.WHITE, attackPositionX, attackPositionY);
+                    const attackSprite = new TileElement(PIXI.Texture.WHITE, attackPositionX, attackPositionY, true);
                     attackSprite.tint = 0x485164;
                     if (Game.stage === STAGE.DARK_TUNNEL) attackSprite.maskLayer = {};
                     createFadingAttack(attackSprite);

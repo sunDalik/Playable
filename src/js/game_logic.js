@@ -434,7 +434,8 @@ export function deactivateBossMode() {
     if (Game.bossNoDamage) completeAchievement(ACHIEVEMENT_ID.BEAT_ANY_BOSS_NO_DAMAGE);
 
     Game.world.removeTile(Game.bossExit.x, Game.bossExit.y, null, false);
-    Game.world.addTile(new TileElement(CommonSpriteSheet["exit_text.png"], Game.bossExit.x, Game.bossExit.y), TILE_TYPE.EXIT);
+    const exitTile = new TileElement(CommonSpriteSheet["exit_text.png"], Game.bossExit.x, Game.bossExit.y, true);
+    Game.world.addTile(exitTile, TILE_TYPE.EXIT);
 
     for (const dir of get8Directions()) {
         if (Game.map[Game.bossExit.y + dir.y][Game.bossExit.x + dir.x].tileType !== TILE_TYPE.SUPER_WALL) {

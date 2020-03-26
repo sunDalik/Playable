@@ -39,8 +39,7 @@ export class EternalCross {
         for (let x = wielder.tilePosition.x + direction.x, y = wielder.tilePosition.y + direction.y; ; x += direction.x, y += direction.y) {
             if (isImpassable(x, y)) break;
             if (isDiggable(x, y)) Game.world.removeTile(x, y, null);
-            const attackSprite = new TileElement(PIXI.Texture.WHITE, x, y);
-            attackSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+            const attackSprite = new TileElement(PIXI.Texture.WHITE, x, y, true);
             attackSprite.tint = 0x57c799;
             if (Game.stage === STAGE.DARK_TUNNEL) attackSprite.maskLayer = {};
             createFadingAttack(attackSprite);

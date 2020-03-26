@@ -22,19 +22,20 @@ export class Grail extends TileElement {
         this.magicSprite = new TileElement(MagicSpriteSheet["aura.png"], 0, 0);
         this.magicSprite.setScaleModifier(0.8);
         this.magicSprite.visible = false;
-        this.magicSprite.zIndex = getZIndexForLayer(this.tilePosition.y) + 1;
         Game.world.addChild(this.magicSprite);
 
         this.textObj = new PIXI.Text("", getInanimateItemLabelTextStyle());
         this.textObj.anchor.set(0.5, 0.5);
         this.textObj.visible = false;
-        this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
+        this.tallModifier = -7;
     }
 
     placeGrail() {
         this.place();
-        this.magicSprite.tilePosition.set(this.tilePosition.x, this.tilePosition.y - 0.28);
+        this.magicSprite.tilePosition.set(this.tilePosition.x, this.tilePosition.y - 0.35);
+        this.magicSprite.zIndex = getZIndexForLayer(this.tilePosition.y) + 1;
         this.magicSprite.place();
+        this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
     }
 
     interact(player) {

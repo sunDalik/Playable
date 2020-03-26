@@ -28,7 +28,7 @@ export class Aura {
                 const attackPositionX = wielder.tilePosition.x + x;
                 const attackPositionY = wielder.tilePosition.y + y;
                 if (!(x === 0 && y === 0) && Math.abs(x) + Math.abs(y) <= 2 && isNotAWall(attackPositionX, attackPositionY)) {
-                    const attackSprite = new TileElement(PIXI.Texture.WHITE, attackPositionX, attackPositionY);
+                    const attackSprite = new TileElement(PIXI.Texture.WHITE, attackPositionX, attackPositionY, true);
                     attackSprite.tint = 0xe9e7a0;
                     if (Game.stage === STAGE.DARK_TUNNEL) attackSprite.maskLayer = {};
                     createFadingAttack(attackSprite);

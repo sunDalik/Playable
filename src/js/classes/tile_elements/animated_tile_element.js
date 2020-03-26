@@ -27,11 +27,19 @@ export class AnimatedTileElement extends TileElement {
         if (this.shadow) this.regenerateShadow()
     }
 
+    removeShadow() {
+        this.noShadow = true;
+        if (this.shadow) {
+            Game.world.removeChild(this.shadow);
+            this.shadow = null;
+        }
+    }
+
     regenerateShadow() {
         Game.world.removeChild(this.shadow);
         if (this.noShadow) return;
         this.shadow = new PIXI.Graphics();
-        this.shadow.beginFill(0x666666, 0.2);
+        this.shadow.beginFill(0x666666, 0.1);
         this.shadow.drawEllipse(0, 0, (this.texture.trim.right - this.texture.trim.left) * this.scale.y * 0.5, 8);
         Game.world.addChild(this.shadow);
     }
@@ -43,7 +51,7 @@ export class AnimatedTileElement extends TileElement {
 
     placeShadow() {
         //todo:they do be still looking kinda weird on y steps
-        if (this.noShadow) return;
+        if (this.noShadow || this.shadow === null) return;
         this.shadow.zIndex = this.zIndex - 1;
         this.shadow.position.x = this.position.x;
         if (Math.abs(this.position.x - this.getTilePositionX()) < 2) {

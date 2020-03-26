@@ -17,8 +17,8 @@ export class Eel extends Enemy {
         this.ROTATE_TIME = 6;
         this.wiggled = false;
         this.type = ENEMY_TYPE.EEL;
-        this.preserveCenteredPosition = true;
-        this.noShadow = true;
+        this.setCenterPreservation();
+        this.removeShadow();
         this.setScaleModifier(0.85);
     }
 

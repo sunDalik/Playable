@@ -83,7 +83,7 @@ export function generateMap(level) {
                 mapCell.tileType = TILE_TYPE.PATH;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.EXIT) {
                 mapCell.tileType = TILE_TYPE.EXIT;
-                mapCell.tile = new TileElement(CommonSpriteSheet["exit_text.png"], j, i);
+                mapCell.tile = new TileElement(CommonSpriteSheet["exit_text.png"], j, i, true);
                 //mapCell.tile.zIndex = 100;
             } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.START) {
                 Game.startPos = {x: j, y: i};
@@ -233,7 +233,7 @@ export function generateMap(level) {
 
     for (const entry of entries) {
         if (tileInsideTheBossRoom(entry.x, entry.y)) {
-            const entrySprite = new TileElement(CommonSpriteSheet["boss_entry.png"], entry.x, entry.y);
+            const entrySprite = new TileElement(CommonSpriteSheet["boss_entry.png"], entry.x, entry.y, true);
             Game.bossEntry = {x: entry.x, y: entry.y};
             if (map[entry.y][entry.x - 1].tileType === TILE_TYPE.PATH) entrySprite.angle = 90;
             else if (map[entry.y][entry.x + 1].tileType === TILE_TYPE.PATH) entrySprite.angle = -90;

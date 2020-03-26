@@ -18,6 +18,8 @@ export class Star extends Enemy {
         this.turnDelay = 1;
         this.movable = false;
         this.setScaleModifier(0.9);
+        this.tallModifier = -5;
+        this.place();
     }
 
     move() {

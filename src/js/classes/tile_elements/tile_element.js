@@ -6,7 +6,7 @@ import * as PIXI from "pixi.js";
 export const floorLevel = Game.TILESIZE * 0.4;
 
 export class TileElement extends Sprite {
-    constructor(texture, tilePositionX, tilePositionY) {
+    constructor(texture, tilePositionX, tilePositionY, keepInside = false) {
         super(texture);
         this.tilePosition = {
             x: tilePositionX,
@@ -21,7 +21,7 @@ export class TileElement extends Sprite {
         this.scaleModifier = 1;
         this.fitToTile();
         if (!this.texture.trim) this.texture.trim = new PIXI.Rectangle(0, 0, this.texture.frame.width, this.texture.frame.height);
-        this.preserveCenteredPosition = false;
+        this.preserveCenteredPosition = keepInside;
         this.tallModifier = 0;
         this.place();
         this.filters = [];

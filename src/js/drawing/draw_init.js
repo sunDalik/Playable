@@ -48,6 +48,7 @@ export function drawEntities() {
                     if (entity.role !== ROLE.PLAYER) {
                         entity.visible = false;
                     }
+                    entity.place();
                 }
             }
             const entity = Game.map[i][j].item;
