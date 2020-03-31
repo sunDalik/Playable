@@ -1,10 +1,7 @@
 import * as PIXI from "pixi.js";
 import {Game} from "./game";
 import {camera} from "./classes/game/camera";
-import {CommonSpriteSheet, loadAll} from "./loader";
-import {Player} from "./classes/players/player";
-import {Knife} from "./classes/equipment/weapons/knife";
-import {BasicArmor} from "./classes/equipment/armor/basic";
+import {loadAll} from "./loader";
 import {ACHIEVEMENT_ID, GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums";
 import {generateLevel} from "./level_generation/level_generation";
 import {assignDrops, calculateDetectionGraph, generateMap} from "./map_generation";
@@ -26,13 +23,8 @@ import {setupSuperHud, SUPER_HUD} from "./drawing/super_hud";
 import {removeObjectFromArray} from "./utils/basic_utils";
 import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "./filters";
 import {drawMiniMap} from "./drawing/minimap";
-import {Spear} from "./classes/equipment/weapons/spear";
 import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
-import {Z_INDEXES} from "./z_indexing";
-import {Pickaxe} from "./classes/equipment/tools/pickaxe";
-import {Spikes} from "./classes/equipment/magic/spikes";
-import {Aura} from "./classes/equipment/magic/aura";
 import {WhitePlayer} from "./classes/players/player_white";
 import {BlackPlayer} from "./classes/players/player_black";
 

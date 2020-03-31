@@ -546,10 +546,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         particle.position.y += posOffsetY;
         particle.texture.updateUvs();
 
-        let flyDir = 1;
-        if (region.x === 0) flyDir = -1;
-        else if (region.x === 2) flyDir = 1;
-        else if (region.x === 1) flyDir = randomChoice([-1, 1]);
+        const flyDir = region.x === 1 ? randomChoice([-1, 1]) : region.x - 1;
         const flyHeight = getRandomInt(Game.TILESIZE, Game.TILESIZE * 2);
         const oldPosX = particle.position.x;
         const oldPosY = particle.position.y;
@@ -600,7 +597,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
     if (!tileElement.fadingDestructionParticles) Game.destroyParticles.push(particles);
 }
 
-export function fadeOutAndDie(object) {
+export function fadeOutAndDie(object, destroyTexture = false) {
     const animationTime = 10;
     let counter = 0;
 
@@ -611,6 +608,7 @@ export function fadeOutAndDie(object) {
         if (counter >= animationTime) {
             Game.app.ticker.remove(animation);
             Game.world.removeChild(object);
+            if (destroyTexture) object.texture.destroy();
         }
     };
     Game.app.ticker.add(animation);

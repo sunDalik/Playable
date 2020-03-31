@@ -139,5 +139,6 @@ export class SpikyWallTrap extends Enemy {
         super.die(source);
         this.spikesSprite.visible = false;
         runDestroyAnimation(this.wallBase);
+        this.wallBase.visible = false;
     }
 }

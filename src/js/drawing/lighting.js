@@ -112,6 +112,7 @@ function lightWorld(tileX, tileY, distance, crossEntries = false, sourceDirX = 0
 }
 
 export function lightTile(tileX, tileY) {
+    const mapCell = Game.map[tileY][tileX];
     if (Game.stage === STAGE.DARK_TUNNEL) {
         if (Game.darkTiles[tileY][tileX].alpha === 1) {
             Game.darkTiles[tileY][tileX].alpha = Game.darkTiles[tileY][tileX].semiAlpha;
@@ -119,7 +120,7 @@ export function lightTile(tileX, tileY) {
     } else {
         Game.darkTiles[tileY][tileX].visible = false;
     }
-    Game.map[tileY][tileX].lit = true;
+    mapCell.lit = true;
 
     for (const dir of getCardinalDirections()) {
         if (isNotOutOfMap(tileX + dir.x, tileY + dir.y)) {
@@ -127,7 +128,7 @@ export function lightTile(tileX, tileY) {
         }
     }
 
-    const entity = Game.map[tileY][tileX].entity;
+    const entity = mapCell.entity;
     if (entity) {
         if (!entity.visible && !entity.dead && entity.immediateReaction) {
             entity.immediateReaction();
@@ -135,7 +136,7 @@ export function lightTile(tileX, tileY) {
         entity.visible = true;
     }
 
-    const secondaryEntity = Game.map[tileY][tileX].secondaryEntity;
+    const secondaryEntity = mapCell.secondaryEntity;
     if (secondaryEntity) {
         if (!secondaryEntity.visible && !secondaryEntity.dead && secondaryEntity.immediateReaction) {
             secondaryEntity.immediateReaction();
@@ -143,38 +144,31 @@ export function lightTile(tileX, tileY) {
         secondaryEntity.visible = true;
     }
 
-    if (Game.map[tileY][tileX].hazard) {
-        Game.map[tileY][tileX].hazard.visible = true;
-    }
-    if (Game.map[tileY][tileX].item) {
-        Game.map[tileY][tileX].item.visible = true;
-    }
+    if (mapCell.hazard) mapCell.hazard.visible = true;
+    if (mapCell.tile) mapCell.tile.visible = true;
+    if (mapCell.item) mapCell.item.visible = true;
 
-    if (Game.map[tileY][tileX].tileType === TILE_TYPE.VOID) return;
+    if (mapCell.tileType === TILE_TYPE.VOID) return;
     Game.minimap[tileY][tileX].visible = true;
 }
 
 export function darkenTile(tileX, tileY) {
+    const mapCell = Game.map[tileY][tileX];
+
     if (Game.stage === STAGE.DARK_TUNNEL) {
         Game.darkTiles[tileY][tileX].alpha = 1;
     } else {
         Game.darkTiles[tileY][tileX].visible = true;
     }
-    Game.map[tileY][tileX].lit = false;
-    if (Game.map[tileY][tileX].entity) {
-        Game.map[tileY][tileX].entity.visible = false;
-    }
-    if (Game.map[tileY][tileX].secondaryEntity) {
-        Game.map[tileY][tileX].secondaryEntity.visible = false;
-    }
-    if (Game.map[tileY][tileX].hazard) {
-        Game.map[tileY][tileX].hazard.visible = false;
-    }
-    if (Game.map[tileY][tileX].item) {
-        Game.map[tileY][tileX].item.visible = false;
-    }
 
-    if (Game.map[tileY][tileX].tileType === TILE_TYPE.VOID) return;
+    mapCell.lit = false;
+    if (mapCell.entity) mapCell.entity.visible = false;
+    if (mapCell.secondaryEntity) mapCell.secondaryEntity.visible = false;
+    if (mapCell.hazard) mapCell.hazard.visible = false;
+    if (mapCell.tile) mapCell.tile.visible = false;
+    if (mapCell.item) mapCell.item.visible = false;
+
+    if (mapCell.tileType === TILE_TYPE.VOID) return;
     Game.minimap[tileY][tileX].visible = false;
 }
 

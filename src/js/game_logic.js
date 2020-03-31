@@ -110,13 +110,13 @@ function callDelayedMethods() {
 }
 
 function cleanParticles() {
-    //200 is an arbitrary limit
-    let diff = Game.destroyParticles.reduce((acc, val) => acc + val.length, 0) - 200;
+    const particleLimit = 200;
+    let diff = Game.destroyParticles.reduce((acc, val) => acc + val.length, 0) - particleLimit;
     while (diff-- > 0) {
         const particleArray = Game.destroyParticles[0]; //remove oldest particles
         const particle = randomChoice(particleArray);
         removeObjectFromArray(particle, particleArray);
-        fadeOutAndDie(particle);
+        fadeOutAndDie(particle, true);
         if (particleArray.length === 0) removeObjectFromArray(particleArray, Game.destroyParticles);
         else if (particleArray.length <= 3) {
             removeObjectFromArray(particleArray, Game.destroyParticles);

@@ -71,8 +71,8 @@ export class ParanoidEel extends Boss {
 
         this.minions = [];
         this.minionsLimit = 10;
-        this.preserveCenteredPosition = true;
-        this.place();
+        this.setCenterPreservation();
+        this.removeShadow();
     }
 
     cancelAnimation() {

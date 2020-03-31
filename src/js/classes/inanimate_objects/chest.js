@@ -18,7 +18,7 @@ export class Chest extends TileElement {
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.CHEST;
         this.opened = false;
-        this.contentsSprite = new TileElement(this.contents.texture, this.tilePosition.x, this.tilePosition.y - 0.5);
+        this.contentsSprite = new TileElement(this.contents.texture, this.tilePosition.x, this.tilePosition.y - 1, true);
         this.contentsSprite.width = Game.TILESIZE * 0.9;
         this.contentsSprite.height = Game.TILESIZE * 0.9;
         this.contentsSprite.setScaleModifier(0.8);
