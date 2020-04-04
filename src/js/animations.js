@@ -233,7 +233,7 @@ export function createFadingText(caption, positionX, positionY, fontSize = Game.
         strokeThickness: 1
     });
     text.position.set(positionX - text.width / 2, positionY - text.height * 1.5);
-    text.zIndex = 99;
+    text.zIndex = getZIndexForLayer(positionY / Game.TILESIZE) + Z_INDEXES.META;
     Game.world.addChild(text);
     const stepY = Game.TILESIZE / 65 * 30 / animationTime;
     const delay = animationTime * 3 / 5;
