@@ -9,7 +9,12 @@ export class DarknessTile extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.correctZIndex();
-        this.setCenterPreservation()
+        this.setCenterPreservation();
+        if (this.tilePosition.y === 0) {
+            this.height = Game.TILESIZE + wallTallness;
+            this.place();
+            this.position.y -= wallTallness / 2;
+        }
     }
 
     correctZIndex() {
