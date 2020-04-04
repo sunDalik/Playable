@@ -68,14 +68,21 @@ export class Statue extends TileElement {
             }
             weapon.zIndex = hands.zIndex - 1;
             container.addChild(weapon);
+
+            let leftDiff = Math.max(0 - (weapon.position.x - weapon.width / 2), 0);
+            let upDiff = Math.max(0 - (weapon.position.y - weapon.height / 2), 0);
+            if (leftDiff > 0 && container.width > leftDiff + statue.width) leftDiff = container.width - statue.width;
+            if (upDiff > 0 && container.height > upDiff + statue.height) upDiff = container.height - statue.height;
+            this.anchor.x = (statue.width / 2 + leftDiff) / container.width;
+            this.anchor.y = (statue.height / 2 + upDiff) / container.height;
+        } else {
+            this.anchor.set(0.5, 0.5);
         }
         const newTexture = Game.app.renderer.generateTexture(container);
         if (this.customTexture) this.texture.destroy();
         this.texture = newTexture;
         this.generateEmptyTrim();
         this.fitToTile();
-        this.anchor.x = statue.width * this.scale.x / 2 / this.width;
-        this.anchor.y = statue.height * this.scale.y / 2 / this.height;
         this.place();
         this.customTexture = true;
     }
