@@ -80,4 +80,8 @@ export class MaidenDagger {
             } else return false;
         }
     }
+
+    getStatuePlacement() {
+        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+    }
 }

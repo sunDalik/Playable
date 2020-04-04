@@ -20,7 +20,7 @@ export class TileElement extends Sprite {
         this.anchor.set(0.5, 0.5);
         this.scaleModifier = 1;
         this.fitToTile();
-        if (!this.texture.trim) this.texture.trim = new PIXI.Rectangle(0, 0, this.texture.frame.width, this.texture.frame.height);
+        this.generateEmptyTrim();
         this.preserveCenteredPosition = keepInside;
         this.tallModifier = 0;
         this.place();
@@ -85,5 +85,9 @@ export class TileElement extends Sprite {
 
     getUnscaledHeight() {
         return this.height / this.scale.y;
+    }
+
+    generateEmptyTrim() {
+        if (!this.texture.trim) this.texture.trim = new PIXI.Rectangle(0, 0, this.texture.frame.width, this.texture.frame.height);
     }
 }

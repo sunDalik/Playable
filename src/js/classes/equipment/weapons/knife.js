@@ -3,6 +3,7 @@ import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 
 export class Knife {
     constructor() {
@@ -25,5 +26,15 @@ export class Knife {
             Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);
             return true;
         } else return false;
+    }
+
+    getStatuePlacement() {
+        return {
+            x: statueLeftHandPoint.x + 25,
+            y: statueLeftHandPoint.y - 40,
+            angle: 0,
+            scaleModifier: 0.55,
+            mirrorX: true
+        };
     }
 }

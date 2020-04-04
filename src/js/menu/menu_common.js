@@ -3,6 +3,7 @@ import {Game} from "../game";
 import {setTickTimeout} from "../utils/game_utils";
 import {easeOutQuad} from "../utils/math_utils";
 import {bottomColor, topColor} from "./main_menu";
+import {CommonSpriteSheet} from "../loader";
 
 const menuButtonWidth = 250;
 export const menuButtonHeight = 70;
@@ -15,8 +16,8 @@ const buttonAnimationTime = 20;
 export function createSimpleButtonSet(buttonTexts, container, startOffsetY, chooseFirst = true, fontSize = buttonFontSize, buttonWidth = menuButtonWidth, buttonHeight = menuButtonHeight) {
     if (!container.buttons) container.buttons = [];
     const buttons = [];
-    const playerSelectors = [new PIXI.Sprite(Game.resources["src/images/player_hd.png"].texture),
-        new PIXI.Sprite(Game.resources["src/images/player2_hd.png"].texture)];
+    const playerSelectors = [new PIXI.Sprite(CommonSpriteSheet["player.png"]),
+        new PIXI.Sprite(CommonSpriteSheet["player2.png"])];
     playerSelectors[0].angle = 90;
     playerSelectors[1].angle = 90;
     playerSelectors[0].anchor.set(0.5, 0.5);

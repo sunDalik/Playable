@@ -97,4 +97,8 @@ export class Bow {
         else if (dirY === 1) return baseAngle - 135;
         else if (dirY === -1) return baseAngle + 45;
     }
+
+    getStatuePlacement() {
+        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+    }
 }

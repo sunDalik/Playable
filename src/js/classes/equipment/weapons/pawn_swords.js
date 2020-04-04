@@ -45,4 +45,8 @@ export class PawnSwords {
         }
         return true;
     }
+
+    getStatuePlacement() {
+        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+    }
 }
