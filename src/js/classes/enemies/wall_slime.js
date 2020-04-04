@@ -328,10 +328,10 @@ export class WallSlime extends Enemy {
         }
     }
 
-    moveHealthContainer() {
+    onMoveFrame() {
         if (!this.subSlimes) return;
         if (this.baseSlime) return;
-        if (this.pane === PANE.HORIZONTAL && this.subSlimes.length % 2 === 0 || this.subSlimes.length === 0) super.moveHealthContainer();
+        if (this.pane === PANE.HORIZONTAL && this.subSlimes.length % 2 === 0 || this.subSlimes.length === 0) super.onMoveFrame();
         else if (this.pane === PANE.HORIZONTAL && this.subSlimes.length % 2 === 1) {
             this.healthContainer.position.x = this.position.x - this.width / 2 - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 0) / 2 + 0 / 2;
             this.healthContainer.position.y = this.position.y + this.height * 0.5 + 10;

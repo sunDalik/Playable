@@ -115,8 +115,8 @@ export class Mushroom extends Enemy {
         return getRandomInt(8, 14);
     }
 
-    moveHealthContainer() {
-        super.moveHealthContainer();
+    onMoveFrame() {
+        super.onMoveFrame();
         if (this.type !== ENEMY_TYPE.MUSHROOM && this.type !== ENEMY_TYPE.SMALL_MUSHROOM) return;
         if (this.standing || this.walking) {
             if (this.type === ENEMY_TYPE.SMALL_MUSHROOM) {

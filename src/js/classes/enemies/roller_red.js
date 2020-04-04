@@ -97,7 +97,7 @@ export class RedRoller extends Roller {
                 Game.app.ticker.remove(animation);
                 this.place();
             }
-            this.moveHealthContainer();
+            this.onMoveFrame();
         };
         this.animation = animation;
         Game.app.ticker.add(animation);
@@ -124,7 +124,7 @@ export class RedRoller extends Roller {
                 Game.app.ticker.remove(animation);
                 this.place();
             }
-            this.moveHealthContainer();
+            this.onMoveFrame();
         };
         this.animation = animation;
         Game.app.ticker.add(animation);

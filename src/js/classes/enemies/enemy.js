@@ -55,7 +55,7 @@ export class Enemy extends AnimatedTileElement {
     place() {
         super.place();
         if (this.healthContainer) {
-            this.moveHealthContainer();
+            this.onMoveFrame();
         }
     }
 
@@ -86,7 +86,7 @@ export class Enemy extends AnimatedTileElement {
         }
     }
 
-    moveHealthContainer() {
+    onMoveFrame() {
         this.healthContainer.position.x = this.position.x - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 0) / 2 + 0 / 2;
         this.healthContainer.position.y = this.position.y + this.height * 0.5 + 10;
 
@@ -271,28 +271,28 @@ export class Enemy extends AnimatedTileElement {
     step(tileStepX, tileStepY, onFrame = null, onEnd = null) {
         super.step(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
-            this.moveHealthContainer();
+            this.onMoveFrame();
         }, onEnd);
     }
 
     bump(tileStepX, tileStepY, onFrame = null, onEnd = null) {
         super.bump(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
-            this.moveHealthContainer()
+            this.onMoveFrame()
         }, onEnd);
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         super.slide(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
-            this.moveHealthContainer()
+            this.onMoveFrame()
         }, onEnd, animationTime);
     }
 
     slideBump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         super.slideBump(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
-            this.moveHealthContainer()
+            this.onMoveFrame()
         }, onEnd, animationTime);
     }
 

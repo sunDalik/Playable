@@ -236,8 +236,8 @@ export class LizardWarrior extends Enemy {
     }
 
 
-    moveHealthContainer() {
-        super.moveHealthContainer();
+    onMoveFrame() {
+        super.onMoveFrame();
         if (this.triggeredWideSlash) {
             if (this.attackDirection.x === 1) this.intentIcon.position.x += this.intentIcon.width / 2;
             else if (this.attackDirection.x === -1) this.intentIcon.position.x -= this.intentIcon.width / 2;
@@ -252,7 +252,7 @@ export class LizardWarrior extends Enemy {
     place() {
         this.position.x = this.getTilePositionX();
         this.position.y = Game.TILESIZE * this.tilePosition.y - Game.TILESIZE * 1.1 + (Game.TILESIZE * 2 - this.height) + this.height * this.anchor.y;
-        if (this.healthContainer) this.moveHealthContainer();
+        if (this.healthContainer) this.onMoveFrame();
     }
 
     correctScale() {

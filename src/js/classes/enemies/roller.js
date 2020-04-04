@@ -75,7 +75,7 @@ export class Roller extends Enemy {
                 Game.app.ticker.remove(animation);
                 this.place();
             }
-            this.moveHealthContainer();
+            this.onMoveFrame();
         };
 
         this.animation = animation;
