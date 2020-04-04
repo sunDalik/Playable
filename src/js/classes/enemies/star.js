@@ -7,7 +7,7 @@ import {TileElement} from "../tile_elements/tile_element";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class Star extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/enemies/fc_enemies/star.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 2;
         this.health = this.maxHealth;

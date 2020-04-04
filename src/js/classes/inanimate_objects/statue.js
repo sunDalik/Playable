@@ -1,19 +1,18 @@
 import {Game} from "../../game"
-import {TallTileElement} from "../tile_elements/tall_tile_element"
-import {EQUIPMENT_TYPE, INANIMATE_TYPE, ROLE, WEAPON_TYPE} from "../../enums";
+import {EQUIPMENT_TYPE, INANIMATE_TYPE, ROLE} from "../../enums";
 import {createFadingText} from "../../animations";
-import {randomChoice} from "../../utils/random_utils";
 import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
-import {StatuesSpriteSheet} from "../../loader";
+import {InanimatesSpriteSheet} from "../../loader";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
+import {TileElement} from "../tile_elements/tile_element";
 
-export class Statue extends TallTileElement {
+export class Statue extends TileElement {
     constructor(tilePositionX, tilePositionY, weapon) {
-        super(StatuesSpriteSheet["statue.png"], tilePositionX, tilePositionY);
+        super(InanimatesSpriteSheet["statue.png"], tilePositionX, tilePositionY);
         this.weapon = weapon;
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.STATUE;
@@ -24,7 +23,7 @@ export class Statue extends TallTileElement {
         this.textObj.visible = false;
         this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
         Game.world.addChild(this.textObj);
-        this.updateTexture();
+        //this.updateTexture();
         this.correctZIndex();
     }
 
@@ -33,52 +32,6 @@ export class Statue extends TallTileElement {
             this.textObj.text = this.weapon.name;
             this.textObj.style.fill = this.weapon.rarity.color;
         } else this.textObj.text = "";
-        if (this.weapon === null) this.texture = StatuesSpriteSheet["statue.png"];
-        else if (this.weapon.equipmentType === EQUIPMENT_TYPE.SHIELD) {
-            this.texture = StatuesSpriteSheet["statue_shield.png"];
-        } else if (this.weapon.equipmentType === EQUIPMENT_TYPE.TOOL) {
-            this.texture = StatuesSpriteSheet["statue_tool.png"];
-        } else switch (this.weapon.type) {
-            case WEAPON_TYPE.KNIFE:
-                this.texture = StatuesSpriteSheet["statue_knife.png"];
-                break;
-            case WEAPON_TYPE.RAPIER:
-                this.texture = StatuesSpriteSheet["statue_sword.png"];
-                break;
-            case WEAPON_TYPE.NINJA_KNIFE:
-                this.texture = StatuesSpriteSheet["statue_ninja_knife.png"];
-                break;
-            case WEAPON_TYPE.BOW:
-                this.texture = StatuesSpriteSheet["statue_bow.png"];
-                break;
-            case WEAPON_TYPE.BOOK_OF_FLAMES:
-                this.texture = StatuesSpriteSheet["statue_book_of_flames.png"];
-                break;
-            case WEAPON_TYPE.SCYTHE:
-                this.texture = StatuesSpriteSheet["statue_scythe.png"];
-                break;
-            case WEAPON_TYPE.SPEAR:
-                this.texture = StatuesSpriteSheet["statue_spear.png"];
-                break;
-            case WEAPON_TYPE.MAIDEN_DAGGER:
-                const option = randomChoice([1, 2]);
-                if (option === 1) {
-                    this.texture = StatuesSpriteSheet["statue_maiden_dagger.png"];
-                } else this.texture = StatuesSpriteSheet["statue_maiden_dagger_2.png"];
-                break;
-            case WEAPON_TYPE.HAMMER:
-                this.texture = StatuesSpriteSheet["statue_hammer.png"];
-                break;
-            case WEAPON_TYPE.PICKAXE:
-                this.texture = StatuesSpriteSheet["statue_tool.png"];
-                break;
-            case WEAPON_TYPE.PAWN_SWORDS:
-                this.texture = StatuesSpriteSheet["statue_pawn_swords.png"];
-                break;
-            case WEAPON_TYPE.RUSTY_SWORD:
-                this.texture = StatuesSpriteSheet["statue_rusty_sword.png"];
-                break;
-        }
     }
 
     interact(player) {

@@ -9,7 +9,6 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
 export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/wall.png")
-        .add("src/images/enemies/fc_enemies/star.png")
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
         .add("src/images/icons/obelisk_sacrifice.png")
@@ -35,7 +34,6 @@ export function loadAll(afterLoad) {
         .add("src/textures/footwear.json")
         .add("src/textures/headwear.json")
         .add("src/textures/bag.json")
-        .add("src/textures/statues.json")
         .add("src/textures/inanimates.json")
         .add("src/textures/magic.json")
 
@@ -55,7 +53,6 @@ function setSpriteSheets() {
     ParanoidEelSpriteSheet = Game.loader.resources["src/textures/paranoid_eel.json"].textures;
     GotLSpriteSheet = Game.loader.resources["src/textures/gotl.json"].textures;
     IntentsSpriteSheet = Game.loader.resources["src/textures/intents.json"].textures;
-    StatuesSpriteSheet = Game.loader.resources["src/textures/statues.json"].textures;
     InanimatesSpriteSheet = Game.loader.resources["src/textures/inanimates.json"].textures;
     HazardsSpriteSheet = Game.loader.resources["src/textures/hazards.json"].textures;
     WeaponsSpriteSheet = Game.loader.resources["src/textures/weapons.json"].textures;
