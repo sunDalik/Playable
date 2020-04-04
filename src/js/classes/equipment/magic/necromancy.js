@@ -13,7 +13,7 @@ import {MagicSpriteSheet} from "../../../loader";
 
 export class Necromancy {
     constructor() {
-        this.texture = MagicSpriteSheet["necromancy.png"];
+        this.texture = MagicSpriteSheet["magic_necromancy.png"];
         this.type = MAGIC_TYPE.NECROMANCY;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.GRAY;

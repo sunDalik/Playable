@@ -6,7 +6,7 @@ import {MagicSpriteSheet} from "../../../loader";
 
 export class AbyssalSpit {
     constructor() {
-        this.texture = MagicSpriteSheet["abyssal_spit.png"];
+        this.texture = MagicSpriteSheet["magic_abyssal_spit.png"];
         this.type = MAGIC_TYPE.ABYSSAL_SPIT;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;

@@ -6,7 +6,7 @@ import {MagicSpriteSheet} from "../../../loader";
 
 export class Wind {
     constructor() {
-        this.texture = MagicSpriteSheet["wind.png"];
+        this.texture = MagicSpriteSheet["magic_wind.png"];
         this.type = MAGIC_TYPE.WIND;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.WHITE;

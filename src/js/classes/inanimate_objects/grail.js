@@ -19,7 +19,7 @@ export class Grail extends TileElement {
         this.obelisk = obelisk;
         this.magic = null;
         this.magicSet = false;
-        this.magicSprite = new TileElement(MagicSpriteSheet["aura.png"], 0, 0);
+        this.magicSprite = new TileElement(MagicSpriteSheet["magic_aura.png"], 0, 0);
         this.magicSprite.setScaleModifier(0.8);
         this.magicSprite.visible = false;
         Game.world.addChild(this.magicSprite);

@@ -8,7 +8,7 @@ import {MagicSpriteSheet} from "../../../loader";
 
 export class Teleport {
     constructor() {
-        this.texture = MagicSpriteSheet["teleport.png"];
+        this.texture = MagicSpriteSheet["magic_teleport.png"];
         this.type = MAGIC_TYPE.TELEPORT;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;

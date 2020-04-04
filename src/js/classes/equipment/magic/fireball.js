@@ -8,7 +8,7 @@ import {MagicSpriteSheet} from "../../../loader";
 
 export class Fireball {
     constructor() {
-        this.texture = MagicSpriteSheet["fireball.png"];
+        this.texture = MagicSpriteSheet["magic_fireball.png"];
         this.type = MAGIC_TYPE.FIREBALL;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.GRAY;
@@ -114,7 +114,7 @@ export class Fireball {
 
     updateTexture() {
         if (this.multiplier === 0) {
-            this.texture = MagicSpriteSheet["fireball.png"];
+            this.texture = MagicSpriteSheet["magic_fireball.png"];
         } else {
             this.texture = MagicSpriteSheet[`fireball_${this.multiplier}.png`];
         }

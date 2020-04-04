@@ -8,7 +8,7 @@ import {MagicSpriteSheet} from "../../../loader";
 
 export class Aura {
     constructor() {
-        this.texture = MagicSpriteSheet["aura.png"];
+        this.texture = MagicSpriteSheet["magic_aura.png"];
         this.type = MAGIC_TYPE.AURA;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.WHITE;

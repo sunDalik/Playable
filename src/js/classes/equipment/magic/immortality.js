@@ -4,7 +4,7 @@ import {MagicSpriteSheet} from "../../../loader";
 
 export class Immortality {
     constructor() {
-        this.texture = MagicSpriteSheet["immortality.png"];
+        this.texture = MagicSpriteSheet["magic_immortality.png"];
         this.type = MAGIC_TYPE.IMMORTALITY;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;

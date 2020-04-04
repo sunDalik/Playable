@@ -4,7 +4,7 @@ import {MagicSpriteSheet} from "../../../loader";
 
 export class Petrification {
     constructor() {
-        this.texture = MagicSpriteSheet["petrification.png"];
+        this.texture = MagicSpriteSheet["magic_petrification.png"];
         this.type = MAGIC_TYPE.PETRIFICATION;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.WHITE;

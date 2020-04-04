@@ -8,7 +8,7 @@ import {MagicSpriteSheet} from "../../../loader";
 
 export class Spikes {
     constructor() {
-        this.texture = MagicSpriteSheet["spikes.png"];
+        this.texture = MagicSpriteSheet["magic_spikes.png"];
         this.type = MAGIC_TYPE.SPIKES;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;

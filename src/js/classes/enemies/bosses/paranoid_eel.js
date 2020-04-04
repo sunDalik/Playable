@@ -22,7 +22,7 @@ import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {ParanoidEelSpriteSheet} from "../../../loader";
 
 export class ParanoidEel extends Boss {
-    constructor(tilePositionX, tilePositionY, texture = ParanoidEelSpriteSheet["neutral.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = ParanoidEelSpriteSheet["paranoid_eel_neutral.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 25;
         this.health = this.maxHealth;
@@ -64,10 +64,10 @@ export class ParanoidEel extends Boss {
         this.zIndex = Game.primaryPlayer.zIndex + 1;
         this.normalScaleX = this.scale.x;
 
-        this.normTextures = [ParanoidEelSpriteSheet["neutral.png"],
-            ParanoidEelSpriteSheet["neutral_2.png"],
-            ParanoidEelSpriteSheet["neutral_y.png"],
-            ParanoidEelSpriteSheet["neutral_y_2.png"]];
+        this.normTextures = [ParanoidEelSpriteSheet["paranoid_eel_neutral.png"],
+            ParanoidEelSpriteSheet["paranoid_eel_neutral_2.png"],
+            ParanoidEelSpriteSheet["paranoid_eel_neutral_y.png"],
+            ParanoidEelSpriteSheet["paranoid_eel_neutral_y_2.png"]];
 
         this.minions = [];
         this.minionsLimit = 10;
@@ -222,8 +222,8 @@ export class ParanoidEel extends Boss {
     }
 
     spitEels() {
-        if (this.direction.x !== 0) this.texture = ParanoidEelSpriteSheet["spitting.png"];
-        else if (this.direction.y !== 0) this.texture = ParanoidEelSpriteSheet["spitting_y.png"];
+        if (this.direction.x !== 0) this.texture = ParanoidEelSpriteSheet["paranoid_eel_spitting.png"];
+        else if (this.direction.y !== 0) this.texture = ParanoidEelSpriteSheet["paranoid_eel_spitting_y.png"];
         this.currentEelSpitCounter++;
         const minionEel = this.spawnMinion(Eel, this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
         minionEel.stun = 1;
@@ -255,8 +255,8 @@ export class ParanoidEel extends Boss {
     }
 
     spitPoisonEel() {
-        if (this.direction.x !== 0) this.texture = ParanoidEelSpriteSheet["spitting.png"];
-        else if (this.direction.y !== 0) this.texture = ParanoidEelSpriteSheet["spitting_y.png"];
+        if (this.direction.x !== 0) this.texture = ParanoidEelSpriteSheet["paranoid_eel_spitting.png"];
+        else if (this.direction.y !== 0) this.texture = ParanoidEelSpriteSheet["paranoid_eel_spitting_y.png"];
         const minionEel = this.spawnMinion(PoisonEel, this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
         minionEel.stun = 1;
         if (this.direction.x !== 0) {
@@ -610,37 +610,37 @@ export class ParanoidEel extends Boss {
     correctLook() {
         if (this.triggeredSpinAttack) {
             if (this.direction.x !== 0) {
-                this.texture = ParanoidEelSpriteSheet["panic.png"];
+                this.texture = ParanoidEelSpriteSheet["paranoid_eel_panic.png"];
             } else if (this.direction.y !== 0) {
-                this.texture = ParanoidEelSpriteSheet["panic_y.png"];
+                this.texture = ParanoidEelSpriteSheet["paranoid_eel_panic_y.png"];
             }
         } else if (this.triggeredSneezeAttack) {
             if (this.direction.x !== 0) {
-                this.texture = ParanoidEelSpriteSheet["sneeze.png"];
+                this.texture = ParanoidEelSpriteSheet["paranoid_eel_sneeze.png"];
             } else if (this.direction.y !== 0) {
-                this.texture = ParanoidEelSpriteSheet["sneeze_y.png"];
+                this.texture = ParanoidEelSpriteSheet["paranoid_eel_sneeze_y.png"];
             }
         } else if (this.triggeredVerticalRush) {
-            this.texture = ParanoidEelSpriteSheet["vertical_rush.png"];
+            this.texture = ParanoidEelSpriteSheet["paranoid_eel_vertical_rush.png"];
         } else if (this.triggeredHorizontalRush) {
-            this.texture = ParanoidEelSpriteSheet["horizontal_rush.png"];
+            this.texture = ParanoidEelSpriteSheet["paranoid_eel_horizontal_rush.png"];
         } else if (this.triggeredEelSpit || this.triggeredPoisonEelSpit) {
             if (this.direction.x !== 0) {
-                this.texture = ParanoidEelSpriteSheet["ready_to_spit.png"];
+                this.texture = ParanoidEelSpriteSheet["paranoid_eel_ready_to_spit.png"];
             } else if (this.direction.y !== 0) {
-                this.texture = ParanoidEelSpriteSheet["ready_to_spit_y.png"];
+                this.texture = ParanoidEelSpriteSheet["paranoid_eel_ready_to_spit_y.png"];
             }
         } else if (this.triggeredStraightPoisonAttack) {
-            if (this.direction.x !== 0) this.texture = ParanoidEelSpriteSheet["ready_to_spit_poison.png"];
-            else if (this.direction.y !== 0) this.texture = ParanoidEelSpriteSheet["ready_to_spit_poison_y.png"];
+            if (this.direction.x !== 0) this.texture = ParanoidEelSpriteSheet["paranoid_eel_ready_to_spit_poison.png"];
+            else if (this.direction.y !== 0) this.texture = ParanoidEelSpriteSheet["paranoid_eel_ready_to_spit_poison_y.png"];
         } else {
             if (this.direction.x !== 0 && this.texture !== this.normTextures[0] && this.texture !== this.normTextures[1]) {
-                if (this.texture === ParanoidEelSpriteSheet["spitting.png"]) {
+                if (this.texture === ParanoidEelSpriteSheet["paranoid_eel_spitting.png"]) {
                     this.texture = this.normTextures[0];
                 } else if (Math.random() < 0.5) this.texture = this.normTextures[0];
                 else this.texture = this.normTextures[1];
             } else if (this.direction.y !== 0 && this.texture !== this.normTextures[2] && this.texture !== this.normTextures[3]) {
-                if (this.texture === ParanoidEelSpriteSheet["spitting_y.png"]) {
+                if (this.texture === ParanoidEelSpriteSheet["paranoid_eel_spitting_y.png"]) {
                     this.texture = this.normTextures[2];
                 } else if (Math.random() < 0.5) this.texture = this.normTextures[2];
                 else this.texture = this.normTextures[3];

@@ -88,7 +88,7 @@ export class Enemy extends AnimatedTileElement {
 
     onMoveFrame() {
         this.healthContainer.position.x = this.position.x - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 0) / 2 + 0 / 2;
-        this.healthContainer.position.y = this.position.y + this.height * 0.5 + 10;
+        this.healthContainer.position.y = this.position.y + this.texture.frame.height * this.scale.y / 2 + 10;
 
         this.intentIcon.position.x = this.position.x;
         this.intentIcon.position.y = this.position.y - this.height / 2 - this.intentIcon.height / 2;

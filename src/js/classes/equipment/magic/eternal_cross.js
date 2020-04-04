@@ -10,7 +10,7 @@ import {MagicSpriteSheet} from "../../../loader";
 
 export class EternalCross {
     constructor() {
-        this.texture = MagicSpriteSheet["eternal_cross.png"];
+        this.texture = MagicSpriteSheet["magic_eternal_cross.png"];
         this.type = MAGIC_TYPE.ETERNAL_CROSS;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
