@@ -3,6 +3,7 @@ import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isDiggable, isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {ToolsSpriteSheet} from "../../../loader";
+import {statueLeftHandPoint, statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class Pickaxe {
     constructor() {
@@ -40,5 +41,14 @@ export class Pickaxe {
             createPlayerAttackTile(digTile);
             return true;
         } else return false;
+    }
+
+    getStatuePlacement() {
+        return {
+            x: statueRightHandPoint.x + 25,
+            y: statueRightHandPoint.y - 40,
+            angle: 10,
+            scaleModifier: 0.6
+        };
     }
 }

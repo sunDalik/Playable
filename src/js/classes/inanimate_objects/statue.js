@@ -68,24 +68,15 @@ export class Statue extends TileElement {
             }
             weapon.zIndex = hands.zIndex - 1;
             container.addChild(weapon);
-
-            //recalculating anchor.x
-            const leftStatueBound = Math.min(hands.position.x, statue.position.x);
-            const rightStatueBound = Math.max(hands.position.x + hands.width, statue.position.x + statue.width);
-            const leftWeaponBound = weapon.position.x - weapon.width / 2;
-            const rightWeaponBound = weapon.position.x + weapon.width / 2;
-            const leftDiff = Math.max(0, leftStatueBound - leftWeaponBound);
-            const rightDiff = Math.max(0, rightWeaponBound - rightStatueBound);
-            const originalWidth = InanimatesSpriteSheet["statue.png"].width;
-            this.anchor.x = 0.5 + leftDiff / container.width / 2 - rightDiff / container.width / 2;
-        } else {
-            this.anchor.x = 0.5;
         }
         const newTexture = Game.app.renderer.generateTexture(container);
         if (this.customTexture) this.texture.destroy();
         this.texture = newTexture;
         this.generateEmptyTrim();
         this.fitToTile();
+        this.anchor.x = statue.width * this.scale.x / 2 / this.width;
+        this.anchor.y = statue.height * this.scale.y / 2 / this.height;
+        this.place();
         this.customTexture = true;
     }
 

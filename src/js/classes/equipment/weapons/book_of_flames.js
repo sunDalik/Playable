@@ -7,6 +7,7 @@ import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {TileElement} from "../../tile_elements/tile_element";
 import {randomChoice} from "../../../utils/random_utils";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 
 export class BookOfFlames {
     constructor() {
@@ -142,6 +143,12 @@ export class BookOfFlames {
     }
 
     getStatuePlacement() {
-        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+        return {
+            x: statueLeftHandPoint.x + 25,
+            y: statueLeftHandPoint.y - 40,
+            angle: 0,
+            scaleModifier: 0.55,
+            mirrorX: true
+        };
     }
 }

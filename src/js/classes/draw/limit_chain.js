@@ -2,19 +2,20 @@ import {Game} from "../../game";
 import * as PIXI from "pixi.js";
 import {distance, otherPlayer, tileDistanceDiagonal} from "../../utils/game_utils";
 import {CommonSpriteSheet} from "../../loader";
+import {getZIndexForLayer} from "../../z_indexing";
 
 export class LimitChain extends PIXI.Container {
     constructor() {
         super();
         this.chainVisRadius = 3.5;
         //this.zIndex = otherPlayer(Game.primaryPlayer).zIndex + 1;
-        this.zIndex = 11;
         this.visible = false;
         this.elements = [];
         this.elementSize = Game.TILESIZE;
     }
 
     update() {
+        this.zIndex = getZIndexForLayer(Game.map.length + 2);
         if (!Game.player.dead && !Game.player2.dead && Game.chainLength - tileDistanceDiagonal(Game.player, Game.player2) <= this.chainVisRadius) {
             const alpha = (this.chainVisRadius + 1 - (Game.chainLength - tileDistanceDiagonal(Game.player, Game.player2))) / this.chainVisRadius;
             let rotation = Math.atan((Game.player2.y - Game.player.y) / (Game.player2.x - Game.player.x)) + Math.PI / 2;

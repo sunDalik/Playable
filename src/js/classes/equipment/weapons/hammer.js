@@ -3,6 +3,7 @@ import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {statueLeftHandPoint, statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class Hammer {
     constructor() {
@@ -30,6 +31,11 @@ export class Hammer {
     }
 
     getStatuePlacement() {
-        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+        return {
+            x: statueRightHandPoint.x,
+            y: statueRightHandPoint.y - 70,
+            angle: 45,
+            scaleModifier: 0.60
+        };
     }
 }

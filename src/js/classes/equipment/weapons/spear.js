@@ -3,6 +3,7 @@ import {ENEMY_TYPE, EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {statueLeftHandPoint, statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class Spear {
     constructor() {
@@ -43,6 +44,12 @@ export class Spear {
     }
 
     getStatuePlacement() {
-        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+        return {
+            x: statueLeftHandPoint.x + 25,
+            y: statueLeftHandPoint.y - 40,
+            angle: -70,
+            scaleModifier: 0.7,
+            mirrorX: true
+        };
     }
 }

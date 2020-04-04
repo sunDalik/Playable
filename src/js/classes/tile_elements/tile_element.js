@@ -67,7 +67,8 @@ export class TileElement extends Sprite {
     }
 
     getTilePositionX() {
-        return Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
+        return Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * 0.5 +
+            (0.5 - this.anchor.x) * this.width / 2;
     }
 
     getTilePositionY() {
