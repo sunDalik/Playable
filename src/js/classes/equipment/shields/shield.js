@@ -1,4 +1,5 @@
 import {redrawSecondHand} from "../../../drawing/draw_hud";
+import {statueLeftHandPoint, statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class Shield {
     constructor() {
@@ -24,5 +25,15 @@ export class Shield {
         this.uses += Math.ceil(this.maxUses / 2);
         if (this.uses > this.maxUses) this.uses = this.maxUses;
         redrawSecondHand(player)
+    }
+
+    getStatuePlacement() {
+        return {
+            x: statueLeftHandPoint.x,
+            y: statueLeftHandPoint.y,
+            angle: 0,
+            scaleModifier: 0.8,
+            zIndex: 3
+        };
     }
 }

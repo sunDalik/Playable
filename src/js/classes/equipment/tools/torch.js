@@ -1,5 +1,6 @@
 import {EQUIPMENT_TYPE, RARITY, TOOL_TYPE} from "../../../enums";
 import {ToolsSpriteSheet} from "../../../loader";
+import {statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class Torch {
     constructor() {
@@ -14,5 +15,14 @@ export class Torch {
 
     use() {
         return false;
+    }
+
+    getStatuePlacement() {
+        return {
+            x: statueRightHandPoint.x,
+            y: statueRightHandPoint.y - 60,
+            angle: 0,
+            scaleModifier: 0.9
+        };
     }
 }

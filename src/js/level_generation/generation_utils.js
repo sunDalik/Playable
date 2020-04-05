@@ -125,9 +125,9 @@ export function createRoom(width, height, entries, wallSymbol = MAP_SYMBOLS.WALL
             } else room[i][j] = MAP_SYMBOLS.NONE;
 
             //for tests
-            if (j === width - 2 && i === height - 2) {
+            /*if (j === width - 2 && i === height - 2) {
                 room[i][j] = MAP_SYMBOLS.STATUE;
-            }
+            }*/
 
             for (const entry of entries) {
                 if (i === entry.y && j === entry.x) {

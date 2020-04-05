@@ -45,10 +45,10 @@ export class Pickaxe {
 
     getStatuePlacement() {
         return {
-            x: statueRightHandPoint.x + 25,
-            y: statueRightHandPoint.y - 40,
-            angle: 10,
-            scaleModifier: 0.6
+            x: statueRightHandPoint.x - 22,
+            y: statueRightHandPoint.y - 50,
+            angle: 20,
+            scaleModifier: 0.65
         };
     }
 }

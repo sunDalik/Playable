@@ -3,6 +3,8 @@ import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isAnyWall, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {randomChoice} from "../../../utils/random_utils";
+import {statueLeftHandPoint, statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class MaidenDagger {
     constructor() {
@@ -82,6 +84,8 @@ export class MaidenDagger {
     }
 
     getStatuePlacement() {
-        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+        return randomChoice(
+            [{x: statueRightHandPoint.x - 40, y: statueRightHandPoint.y + 55, angle: -10, scaleModifier: 0.7},
+                {x: statueLeftHandPoint.x + 40, y: statueLeftHandPoint.y - 55, angle: 170, scaleModifier: 0.7}]);
     }
 }

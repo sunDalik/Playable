@@ -54,25 +54,52 @@ export class Statue extends TileElement {
         const hands = new PIXI.Sprite(InanimatesSpriteSheet["statue_hands.png"]);
         hands.zIndex = statue.zIndex + 2;
         container.addChild(hands);
-        if (this.weapon) {
+        if (this.weapon && this.weapon.getStatuePlacement) {
             const weapon = new PIXI.Sprite(this.weapon.texture);
-            weapon.anchor.set(0.5, 0.5);
-            if (this.weapon.getStatuePlacement) {
-                const placement = this.weapon.getStatuePlacement();
+            let weapon2;
+
+            const applyPlacement = (weapon, placement) => {
+                weapon.anchor.set(0.5, 0.5);
+                if (placement.texture) weapon.texture = placement.texture;
                 weapon.scale.x = weapon.scale.y = statue.width / weapon.width * placement.scaleModifier;
                 if (placement.mirrorX) weapon.scale.x *= -1;
                 weapon.position.set(placement.x, placement.y);
                 weapon.angle = placement.angle;
-            } else {
-                weapon.scale.x = weapon.scale.y = statue.width / weapon.width * 0.7;
-            }
-            weapon.zIndex = hands.zIndex - 1;
-            container.addChild(weapon);
+                if (placement.zIndex) weapon.zIndex = placement.zIndex;
+                else weapon.zIndex = hands.zIndex - 1;
+                container.addChild(weapon);
+            };
 
+            applyPlacement(weapon, this.weapon.getStatuePlacement());
+            if (this.weapon.getStatuePlacement().secondWeapon) {
+                weapon2 = new PIXI.Sprite(this.weapon.texture);
+                applyPlacement(weapon2, this.weapon.getStatuePlacement().secondWeapon);
+            }
+
+            //sorry this is super messy
             let leftDiff = Math.max(0 - (weapon.position.x - weapon.width / 2), 0);
+            let rightDiff = Math.max((weapon.position.x + weapon.width / 2) - statue.width, 0);
             let upDiff = Math.max(0 - (weapon.position.y - weapon.height / 2), 0);
-            if (leftDiff > 0 && container.width > leftDiff + statue.width) leftDiff = container.width - statue.width;
-            if (upDiff > 0 && container.height > upDiff + statue.height) upDiff = container.height - statue.height;
+            let bottomDiff = Math.max((weapon.position.y + weapon.height / 2) - statue.height, 0);
+            if (weapon2) {
+                leftDiff = Math.max(leftDiff, 0 - (weapon2.position.x - weapon2.width / 2));
+                rightDiff = Math.max(rightDiff, (weapon2.position.x + weapon2.width / 2) - statue.width);
+                upDiff = Math.max(upDiff, 0 - (weapon2.position.y - weapon2.height / 2));
+                bottomDiff = Math.max(bottomDiff, (weapon2.position.y + weapon2.height / 2) - statue.height);
+            }
+
+            if (leftDiff > 0 && container.width > leftDiff + statue.width) {
+                leftDiff = container.width - statue.width;
+                if (weapon2) {
+                    leftDiff -= rightDiff;
+                }
+            }
+            if (upDiff > 0 && container.height > upDiff + statue.height) {
+                upDiff = container.height - statue.height;
+                if (weapon2) {
+                    upDiff -= bottomDiff;
+                }
+            }
             this.anchor.x = (statue.width / 2 + leftDiff) / container.width;
             this.anchor.y = (statue.height / 2 + upDiff) / container.height;
         } else {

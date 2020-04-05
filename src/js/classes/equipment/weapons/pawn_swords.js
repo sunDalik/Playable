@@ -3,6 +3,7 @@ import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {statueLeftHandPoint, statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class PawnSwords {
     constructor() {
@@ -47,6 +48,19 @@ export class PawnSwords {
     }
 
     getStatuePlacement() {
-        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+        return {
+            x: statueRightHandPoint.x - 37,
+            y: statueRightHandPoint.y + 60,
+            angle: -100,
+            scaleModifier: 0.7,
+            texture: WeaponsSpriteSheet["pawn_sword_separate.png"],
+            secondWeapon: {
+                x: statueLeftHandPoint.x + 42,
+                y: statueLeftHandPoint.y - 62,
+                angle: 80,
+                scaleModifier: 0.7,
+                texture: WeaponsSpriteSheet["pawn_sword_separate.png"]
+            }
+        };
     }
 }

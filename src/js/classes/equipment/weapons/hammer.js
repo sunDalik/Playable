@@ -32,10 +32,10 @@ export class Hammer {
 
     getStatuePlacement() {
         return {
-            x: statueRightHandPoint.x,
-            y: statueRightHandPoint.y - 70,
-            angle: 45,
-            scaleModifier: 0.60
+            x: statueRightHandPoint.x  - 10,
+            y: statueRightHandPoint.y - 45,
+            angle: 30,
+            scaleModifier: 0.7
         };
     }
 }

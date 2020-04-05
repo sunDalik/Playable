@@ -4,6 +4,7 @@ import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class RustySword {
     constructor() {
@@ -54,6 +55,6 @@ export class RustySword {
     }
 
     getStatuePlacement() {
-        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+        return {x: statueRightHandPoint.x - 24, y: statueRightHandPoint.y - 100, angle: 30, scaleModifier: 0.9};
     }
 }

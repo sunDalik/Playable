@@ -4,6 +4,7 @@ import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class NinjaKnife {
     constructor() {
@@ -97,6 +98,6 @@ export class NinjaKnife {
     }
 
     getStatuePlacement() {
-        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+        return {x: statueRightHandPoint.x - 27, y: statueRightHandPoint.y + 37, angle: -100, scaleModifier: 0.58};
     }
 }

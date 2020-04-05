@@ -4,6 +4,7 @@ import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createPlayerAttackTile, runDestroyAnimation} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class Bow {
     constructor() {
@@ -99,6 +100,12 @@ export class Bow {
     }
 
     getStatuePlacement() {
-        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+        return {
+            x: statueRightHandPoint.x + 50,
+            y: statueRightHandPoint.y + 45,
+            angle: -10,
+            scaleModifier: 0.9,
+            zIndex: 3
+        };
     }
 }

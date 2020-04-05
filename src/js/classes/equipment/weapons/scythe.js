@@ -3,6 +3,7 @@ import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 
 export class Scythe {
     constructor() {
@@ -54,6 +55,6 @@ export class Scythe {
     }
 
     getStatuePlacement() {
-        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+        return {x: statueLeftHandPoint.x - 60, y: statueLeftHandPoint.y + 42, angle: -70, scaleModifier: 1};
     }
 }

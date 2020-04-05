@@ -45,10 +45,10 @@ export class Spear {
 
     getStatuePlacement() {
         return {
-            x: statueLeftHandPoint.x + 25,
-            y: statueLeftHandPoint.y - 40,
+            x: statueLeftHandPoint.x - 55,
+            y: statueLeftHandPoint.y + 40,
             angle: -70,
-            scaleModifier: 0.7,
+            scaleModifier: 0.85,
             mirrorX: true
         };
     }

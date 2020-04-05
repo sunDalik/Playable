@@ -30,7 +30,7 @@ export class Knife {
 
     getStatuePlacement() {
         return {
-            x: statueLeftHandPoint.x + 25,
+            x: statueLeftHandPoint.x + 30,
             y: statueLeftHandPoint.y - 40,
             angle: 0,
             scaleModifier: 0.55,

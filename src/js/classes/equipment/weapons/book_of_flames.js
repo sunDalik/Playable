@@ -144,11 +144,10 @@ export class BookOfFlames {
 
     getStatuePlacement() {
         return {
-            x: statueLeftHandPoint.x + 25,
-            y: statueLeftHandPoint.y - 40,
-            angle: 0,
-            scaleModifier: 0.55,
-            mirrorX: true
+            x: statueLeftHandPoint.x + 15,
+            y: statueLeftHandPoint.y + 20,
+            angle: 20,
+            scaleModifier: 0.60
         };
     }
 }

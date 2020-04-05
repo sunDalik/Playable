@@ -3,6 +3,7 @@ import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class Rapier {
     constructor() {
@@ -35,6 +36,6 @@ export class Rapier {
     }
 
     getStatuePlacement() {
-        return {x: 0, y: 0, angle: 0, scaleModifier: 0};
+        return {x: statueRightHandPoint.x - 10, y: statueRightHandPoint.y - 110, angle: 40, scaleModifier: 0.9};
     }
 }
