@@ -22,10 +22,11 @@ export class DarknessTile extends TileElement {
     }
 
     update() {
+        if (!this.visible) return;
         for (const y of [-1, 1]) {
             if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + y)
                 && Game.map[this.tilePosition.y + y][this.tilePosition.x].lit
-                && (Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.WALL
+                && (y === -1 || Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.WALL
                     || Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.SUPER_WALL)) {
                 if (y === -1) {
                     this.height = Game.TILESIZE + wallTallness;
