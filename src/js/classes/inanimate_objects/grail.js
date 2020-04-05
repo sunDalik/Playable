@@ -32,7 +32,7 @@ export class Grail extends TileElement {
 
     placeGrail() {
         this.place();
-        this.magicSprite.tilePosition.set(this.tilePosition.x, this.tilePosition.y - 0.35);
+        this.magicSprite.tilePosition.set(this.tilePosition.x, this.tilePosition.y - 0.4);
         this.magicSprite.zIndex = getZIndexForLayer(this.tilePosition.y) + 1;
         this.magicSprite.place();
         this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;

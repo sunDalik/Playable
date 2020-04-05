@@ -9,12 +9,14 @@ export class DarknessTile extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.correctZIndex();
+        this.height = Game.TILESIZE + wallTallness;
         this.setCenterPreservation();
-        if (this.tilePosition.y === 0) {
-            this.height = Game.TILESIZE + wallTallness;
-            this.place();
-            this.position.y -= wallTallness / 2;
-        }
+    }
+
+    place() {
+        super.place();
+        const diff = (this.height - Game.TILESIZE);
+        this.position.y -= Math.abs(diff) / 2;
     }
 
     correctZIndex() {
@@ -23,20 +25,14 @@ export class DarknessTile extends TileElement {
 
     update() {
         if (!this.visible) return;
-        for (const y of [-1, 1]) {
+        for (const y of [1]) {
             if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + y)
                 && Game.map[this.tilePosition.y + y][this.tilePosition.x].lit
-                && (y === -1 || Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.WALL
+                && (Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.WALL
                     || Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.SUPER_WALL)) {
-                if (y === -1) {
-                    this.height = Game.TILESIZE + wallTallness;
-                    this.place();
-                    this.position.y -= wallTallness / 2;
-                } else {
-                    this.height = Game.TILESIZE;
-                    this.place();
-                    this.position.y -= wallTallness;
-                }
+                this.height = Game.TILESIZE;
+                this.place();
+                this.position.y -= wallTallness;
             }
         }
     }

@@ -71,6 +71,7 @@ export class TileElement extends Sprite {
     }
 
     getTilePositionY() {
+        //????
         const basePosY = Game.TILESIZE * this.tilePosition.y + (Game.TILESIZE - this.height) / 2 + this.height * this.anchor.y;
         if (this.preserveCenteredPosition)
             return basePosY;

@@ -92,18 +92,6 @@ export class FireGoblet extends AnimatedTileElement {
         }
     }
 
-    place() {
-        this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
-        if (this.standing) {
-            this.position.y = Game.TILESIZE * this.tilePosition.y - Game.TILESIZE +
-                (Game.TILESIZE * 2 - this.height) + this.height * this.anchor.y;
-        } else {
-            //no comments..
-            this.position.y = Game.TILESIZE * this.tilePosition.y - Game.TILESIZE +
-                (Game.TILESIZE * 1.78 - this.height) + this.height * this.anchor.y;
-        }
-    }
-
     getAngleForDirection(direction) {
         if (direction.x === -1) return -90;
         else if (direction.x === 1) return 90;
