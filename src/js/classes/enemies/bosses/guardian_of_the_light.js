@@ -49,6 +49,7 @@ export class GuardianOfTheLight extends Boss {
         this.bulletQueue = [];
         this.electricityDelay = 1;
         this.fitToTile();
+        this.setCenterPreservation();
     }
 
     cancelAnimation() {

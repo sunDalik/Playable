@@ -9,7 +9,9 @@ export class DarknessTile extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.correctZIndex();
-        this.height = Game.TILESIZE + wallTallness;
+        if ([TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[this.tilePosition.y][this.tilePosition.x].tileType)) {
+            this.height = Game.TILESIZE + wallTallness;
+        }
         this.setCenterPreservation();
     }
 
@@ -30,9 +32,11 @@ export class DarknessTile extends TileElement {
                 && Game.map[this.tilePosition.y + y][this.tilePosition.x].lit
                 && (Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.WALL
                     || Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.SUPER_WALL)) {
-                this.height = Game.TILESIZE;
-                this.place();
-                this.position.y -= wallTallness;
+                if ([TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[this.tilePosition.y][this.tilePosition.x].tileType)) {
+                    this.height = Game.TILESIZE;
+                    this.place();
+                    this.position.y -= wallTallness;
+                }
             }
         }
     }

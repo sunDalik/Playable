@@ -63,18 +63,7 @@ export class DarkTunnelTile extends DarknessTile {
                 }
             }
             if (foundLight) Game.darkTiles[this.tilePosition.y][this.tilePosition.x].alpha = this.nearbyAlpha;
-            else {
-                Game.darkTiles[this.tilePosition.y][this.tilePosition.x].alpha = this.semiAlpha;
-                for (const dir of getCardinalDirections()) {
-                    if (isNotOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
-                        const tile = Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x];
-                        if (tile.alpha >= tile.semiAlpha) {
-                            //tile.height = Game.TILESIZE;
-                            //tile.place();
-                        }
-                    }
-                }
-            }
+            else Game.darkTiles[this.tilePosition.y][this.tilePosition.x].alpha = this.semiAlpha;
         } else {
             this.visible = false;
         }
