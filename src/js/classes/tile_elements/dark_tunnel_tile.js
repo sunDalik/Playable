@@ -81,29 +81,4 @@ export class DarkTunnelTile extends DarknessTile {
             this.visible = false;
         }
     }
-
-
-    update() {
-        return;
-        for (const y of [-1, 1]) {
-            if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + y)
-                && Game.map[this.tilePosition.y + y][this.tilePosition.x].lit
-                && (y === -1 || Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.WALL
-                    || Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.SUPER_WALL)) {
-                if (y === -1) {
-                    this.height = Game.TILESIZE + wallTallness;
-                    this.place();
-                    this.position.y -= wallTallness / 2;
-                } else {
-                    this.height = Game.TILESIZE;
-                    this.place();
-                    this.position.y -= wallTallness;
-
-                    Game.darkTiles[this.tilePosition.y + y][this.tilePosition.x].height = Game.TILESIZE + wallTallness;
-                    //Game.darkTiles[this.tilePosition.y + y][this.tilePosition.x].place();
-                    Game.darkTiles[this.tilePosition.y + y][this.tilePosition.x].position.y -= wallTallness / 2;
-                }
-            }
-        }
-    }
 }

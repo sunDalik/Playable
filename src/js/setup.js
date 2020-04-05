@@ -206,7 +206,7 @@ export function retry() {
 }
 
 function initGameState() {
-    Game.stage = STAGE.FLOODED_CAVE;
+    Game.stage = STAGE.DARK_TUNNEL;
     Game.timer = 0;
     Game.app.ticker.remove(speedrunTimer);
     Game.showTimer = JSON.parse(window.localStorage[STORAGE.SHOW_TIMER]);
