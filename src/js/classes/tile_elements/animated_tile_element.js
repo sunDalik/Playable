@@ -1,11 +1,10 @@
 import {Game} from "../../game"
-import {floorLevel, TileElement} from "./tile_element"
 import {cubicBezier, quadraticBezier} from "../../utils/math_utils";
 import {BLACK_INVERT_FILTER, HIT_FILTER} from "../../filters";
 import {removeObjectFromArray} from "../../utils/basic_utils";
-import * as PIXI from "pixi.js";
+import {ShadowTileElement} from "./shadow_tile_element";
 
-export class AnimatedTileElement extends TileElement {
+export class AnimatedTileElement extends ShadowTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.STEP_ANIMATION_TIME = 8;
@@ -17,48 +16,6 @@ export class AnimatedTileElement extends TileElement {
         this.MICRO_SLIDE_ANIMATION_TIME = 4;
         this.animationCounter = 0;
         this.animation = null;
-        this.noShadow = false;
-        this.regenerateShadow();
-        this.place();
-    }
-
-    fitToTile() {
-        super.fitToTile();
-        if (this.shadow) this.regenerateShadow()
-    }
-
-    removeShadow() {
-        this.noShadow = true;
-        if (this.shadow) {
-            Game.world.removeChild(this.shadow);
-            this.shadow = null;
-        }
-    }
-
-    regenerateShadow() {
-        Game.world.removeChild(this.shadow);
-        if (this.noShadow) return;
-        this.shadow = new PIXI.Graphics();
-        this.shadow.beginFill(0x666666, 0.12);
-        this.shadow.drawEllipse(0, 0, (this.texture.trim.right - this.texture.trim.left) * this.scale.y * 0.5, 8);
-        Game.world.addChild(this.shadow);
-    }
-
-    place() {
-        super.place();
-        if (this.shadow) this.placeShadow();
-    }
-
-    placeShadow() {
-        //todo:they do be still looking kinda weird on y steps
-        if (this.noShadow || this.shadow === null) return;
-        this.shadow.zIndex = this.zIndex - 1;
-        this.shadow.position.x = this.position.x;
-        if (Math.abs(this.position.x - this.getTilePositionX()) < 2) {
-            this.shadow.position.y = (this.tilePosition.y + 1) * Game.TILESIZE - floorLevel - (this.getTilePositionY() - this.position.y);
-        } else {
-            this.shadow.position.y = (this.tilePosition.y + 1) * Game.TILESIZE - floorLevel;
-        }
     }
 
     step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {

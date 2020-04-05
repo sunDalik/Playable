@@ -473,6 +473,7 @@ export class Player extends AnimatedTileElement {
             }
         }
         redrawSlotContentsForPlayer(this);
+        this.regenerateShadow();
     }
 
     getEquipment() {

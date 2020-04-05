@@ -211,6 +211,10 @@ function initGameState() {
     Game.app.ticker.remove(speedrunTimer);
     Game.showTimer = JSON.parse(window.localStorage[STORAGE.SHOW_TIMER]);
     redrawSpeedRunTimer();
+
+    //otherwise players will have no shadow if you start on dt...
+    Game.player.regenerateShadow();
+    Game.player2.regenerateShadow();
 }
 
 function test() {

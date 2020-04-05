@@ -1,12 +1,12 @@
 import {Game} from "../../game"
 import {createFloatingItemAnimation} from "../../animations";
-import {TileElement} from "../tile_elements/tile_element";
 import {swapEquipmentWithPlayer} from "../../game_logic";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import * as PIXI from "pixi.js";
 import {HUDTextStyle} from "../../drawing/draw_constants";
+import {ShadowTileElement} from "../tile_elements/shadow_tile_element";
 
-export class LyingItem extends TileElement {
+export class LyingItem extends ShadowTileElement {
     constructor(tilePositionX, tilePositionY, item) {
         super(item.texture, tilePositionX, tilePositionY);
         this.item = item;
@@ -29,6 +29,7 @@ export class LyingItem extends TileElement {
             Game.map[this.tilePosition.y][this.tilePosition.x].item = null;
             Game.app.ticker.remove(this.animation);
             removeObjectFromArray(this.animation, Game.infiniteAnimations);
+            Game.world.removeChild(this.shadow);
         } else {
             this.texture = this.item.texture;
             this.width = Game.TILESIZE * 0.9;

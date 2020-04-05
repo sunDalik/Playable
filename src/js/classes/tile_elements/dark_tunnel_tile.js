@@ -4,8 +4,6 @@ import {Game} from "../../game";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {isNotAWall, isNotOutOfMap} from "../../map_checks";
 import {DarknessTile} from "../draw/darkness";
-import {TILE_TYPE} from "../../enums";
-import {wallTallness} from "../draw/wall";
 
 export class DarkTunnelTile extends DarknessTile {
     constructor(tilePositionX, tilePositionY, texture = PIXI.Texture.WHITE) {
