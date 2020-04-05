@@ -6,7 +6,8 @@ export const Z_INDEXES = Object.freeze({
     HEART: 0,
     META: 20,
     WALL: 0,
-    HAZARD: -3
+    HAZARD: -3,
+    BULLET: 5
 });
 
 export function getZIndexForLayer(y, wall = false) {

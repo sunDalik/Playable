@@ -7,9 +7,10 @@ import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {createFadingAttack} from "../../animations";
 import {TileElement} from "../tile_elements/tile_element";
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {wallTallness} from "../draw/wall";
 
 export class LaserTurret extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["laser_turret_0.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["laser_turret_unready.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 1;
         this.health = this.maxHealth;
@@ -23,6 +24,7 @@ export class LaserTurret extends Enemy {
         this.noticeTileDistance = 5;
         this.canMoveInvisible = true;
         this.directionX = 1;
+        this.removeShadow();
     }
 
     afterMapGen() {
@@ -79,7 +81,7 @@ export class LaserTurret extends Enemy {
     attack() {
         for (let x = this.directionX; ; x += this.directionX) {
             if (isAnyWall(this.tilePosition.x + x, this.tilePosition.y)) break;
-            const attackSprite = new TileElement(PIXI.Texture.WHITE, this.tilePosition.x + x, this.tilePosition.y);
+            const attackSprite = new TileElement(PIXI.Texture.WHITE, this.tilePosition.x + x, this.tilePosition.y, true);
             attackSprite.zIndex = 5;
             attackSprite.tint = 0xFF0000;
             attackSprite.width = Game.TILESIZE;
@@ -92,9 +94,7 @@ export class LaserTurret extends Enemy {
     }
 
     updateTexture() {
-        if (this.maskLayer === undefined) {
-            this.texture = DTEnemiesSpriteSheet["laser_turret_0.png"];
-        } else if (this.justAttacked) {
+        if (this.justAttacked) {
             this.texture = DTEnemiesSpriteSheet["laser_turret_after_attack.png"];
             this.justAttacked = false;
         } else if (this.triggered) {
@@ -114,6 +114,14 @@ export class LaserTurret extends Enemy {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else {
             this.intentIcon.texture = IntentsSpriteSheet["eye.png"];
+        }
+    }
+
+    place() {
+        this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
+        this.position.y = Game.TILESIZE * this.tilePosition.y - Game.TILESIZE + (Game.TILESIZE * 2 - this.height) + this.height * this.anchor.y;
+        if (this.healthContainer) {
+            this.onMoveFrame();
         }
     }
 }

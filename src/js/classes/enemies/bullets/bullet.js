@@ -1,12 +1,13 @@
 import {Game} from "../../../game"
 import {ROLE, STAGE} from "../../../enums";
-import {TileElement} from "../../tile_elements/tile_element";
 import {canBeFliedOverByBullet, getPlayerOnTile, isEnemy} from "../../../map_checks";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import * as PIXI from "pixi.js";
 import {IntentsSpriteSheet} from "../../../loader";
+import {Z_INDEXES} from "../../../z_indexing";
+import {ShadowTileElement} from "../../tile_elements/shadow_tile_element";
 
-export class Bullet extends TileElement {
+export class Bullet extends ShadowTileElement {
     constructor(texture, tilePositionX, tilePositionY, pattern) {
         super(texture, tilePositionX, tilePositionY);
         this.pattern = pattern;
@@ -16,7 +17,7 @@ export class Bullet extends TileElement {
         this.ANIMATION_TIME = 8;
         this.delay = 1;
         this.atk = 1;
-        this.zIndex = Game.primaryPlayer.zIndex + 1;
+        this.setOwnZIndex(Z_INDEXES.BULLET);
 
         this.intentIcon = new PIXI.Sprite(PIXI.Texture.WHITE);
         Game.world.addChild(this.intentIcon);
@@ -70,6 +71,7 @@ export class Bullet extends TileElement {
 
     removeFromWorld() {
         Game.world.removeChild(this);
+        Game.world.removeChild(this.shadow);
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
         }
