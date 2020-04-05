@@ -39,7 +39,7 @@ export class AnimatedTileElement extends TileElement {
         Game.world.removeChild(this.shadow);
         if (this.noShadow) return;
         this.shadow = new PIXI.Graphics();
-        this.shadow.beginFill(0x666666, 0.1);
+        this.shadow.beginFill(0x666666, 0.12);
         this.shadow.drawEllipse(0, 0, (this.texture.trim.right - this.texture.trim.left) * this.scale.y * 0.5, 8);
         Game.world.addChild(this.shadow);
     }

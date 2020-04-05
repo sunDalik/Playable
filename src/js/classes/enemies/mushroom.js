@@ -127,12 +127,6 @@ export class Mushroom extends Enemy {
         }
     }
 
-    place() {
-        super.place();
-        if (this.standing || this.walking) this.position.y -= this.bottomOffset;
-        else this.bottomOffset = (Game.TILESIZE - this.height) / 2;
-    }
-
     correctScale() {
         if ((this.direction.x === 1 && this.scale.x < 0) || (this.direction.x === -1 && this.scale.x > 0)) {
             this.scale.x *= -1
