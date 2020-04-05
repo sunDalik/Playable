@@ -20,6 +20,11 @@ export class ShadowTileElement extends TileElement {
         }
     }
 
+    setShadow() {
+        this.noShadow = false;
+        this.regenerateShadow();
+    }
+
     fitToTile() {
         super.fitToTile();
         if (this.shadow) this.regenerateShadow()

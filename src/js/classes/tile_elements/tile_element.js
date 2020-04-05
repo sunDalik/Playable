@@ -61,6 +61,11 @@ export class TileElement extends Sprite {
         this.place();
     }
 
+    removeCenterPreservation() {
+        this.preserveCenteredPosition = false;
+        this.place();
+    }
+
     place() {
         this.position.x = this.getTilePositionX();
         this.position.y = this.getTilePositionY();

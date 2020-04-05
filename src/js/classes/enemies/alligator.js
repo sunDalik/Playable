@@ -276,6 +276,8 @@ export class Alligator extends Enemy {
                 if (this.shooting) this.texture = DTEnemiesSpriteSheet["alligator_x_poison_shooting.png"];
                 else this.texture = DTEnemiesSpriteSheet["alligator_x_poison.png"];
             }
+            this.removeCenterPreservation();
+            this.setShadow();
         } else if (this.direction.y !== 0) {
             this.scale.x = randomChoice([-1, 1]) * Math.abs(this.scale.x);
             if (this.direction.y > 0) this.scale.y = Math.abs(this.scale.y);
@@ -293,6 +295,8 @@ export class Alligator extends Enemy {
                 if (this.shooting) this.texture = DTEnemiesSpriteSheet["alligator_y_poison_shooting.png"];
                 else this.texture = DTEnemiesSpriteSheet["alligator_y_poison.png"];
             }
+            this.setCenterPreservation();
+            this.removeShadow();
         }
     }
 
