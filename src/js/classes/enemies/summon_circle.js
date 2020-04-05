@@ -18,6 +18,8 @@ export class SummonCircle extends Enemy {
         this.currentDelay = this.delay;
         this.summonedEnemy = enemy;
         this.zIndex = -2;
+        this.removeShadow();
+        this.setCenterPreservation();
     }
 
     move() {

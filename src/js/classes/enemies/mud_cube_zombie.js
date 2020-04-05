@@ -13,6 +13,7 @@ export class MudCubeZombie extends Enemy {
         this.movable = false;
         this.fadingDestructionParticles = true;
         this.energyDrop = 0;
+        this.removeShadow();
     }
 
     move() {
@@ -21,5 +22,13 @@ export class MudCubeZombie extends Enemy {
     updateIntentIcon() {
         super.updateIntentIcon();
         this.intentIcon.visible = false;
+    }
+
+    place() {
+        this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
+        this.position.y = Game.TILESIZE * this.tilePosition.y - Game.TILESIZE + (Game.TILESIZE * 2 - this.height) + this.height * this.anchor.y;
+        if (this.healthContainer) {
+            this.onMoveFrame();
+        }
     }
 }

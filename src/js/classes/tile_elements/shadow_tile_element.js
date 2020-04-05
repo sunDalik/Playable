@@ -23,6 +23,7 @@ export class ShadowTileElement extends TileElement {
     setShadow() {
         this.noShadow = false;
         this.regenerateShadow();
+        this.placeShadow();
     }
 
     fitToTile() {

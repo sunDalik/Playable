@@ -12,7 +12,7 @@ import {getPlayerOnTile, isEmpty} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
 import {TileElement} from "../tile_elements/tile_element";
 import {createEnemyAttackTile} from "../../animations";
-import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../loader";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet, WeaponsSpriteSheet} from "../../loader";
 
 export class LizardWarrior extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["lizard_warrior.png"]) {
@@ -134,7 +134,7 @@ export class LizardWarrior extends Enemy {
     }
 
     animateSwordBottom(direction) {
-        const sword = new TileElement(Game.resources["src/images/weapons/rusty_sword.png"].texture, this.tilePosition.x + direction.x, this.tilePosition.y - 1);
+        const sword = new TileElement(WeaponsSpriteSheet["rusty_sword.png"], this.tilePosition.x + direction.x, this.tilePosition.y - 1);
         Game.world.addChild(sword);
         sword.zIndex = Game.primaryPlayer.zIndex + 1;
         if (direction.x === 1) sword.angle = 135; // the picture is directed to the top left!!
@@ -181,7 +181,7 @@ export class LizardWarrior extends Enemy {
     }
 
     animateSwordForward(direction) {
-        const sword = new TileElement(Game.resources["src/images/weapons/rusty_sword.png"].texture, this.tilePosition.x, this.tilePosition.y);
+        const sword = new TileElement(WeaponsSpriteSheet["rusty_sword.png"], this.tilePosition.x, this.tilePosition.y);
         Game.world.addChild(sword);
         sword.zIndex = Game.primaryPlayer.zIndex + 1;
         if (direction.x === 1) sword.angle = 135;
@@ -247,12 +247,6 @@ export class LizardWarrior extends Enemy {
                 else if (this.attackDirection.x === -1) this.intentIcon2.position.x = this.intentIcon.position.x + this.intentIcon.width;
             }
         }
-    }
-
-    place() {
-        this.position.x = this.getTilePositionX();
-        this.position.y = Game.TILESIZE * this.tilePosition.y - Game.TILESIZE * 1.1 + (Game.TILESIZE * 2 - this.height) + this.height * this.anchor.y;
-        if (this.healthContainer) this.onMoveFrame();
     }
 
     correctScale() {

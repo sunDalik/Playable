@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
-import {ENEMY_TYPE, PANE} from "../../enums";
+import {ENEMY_TYPE, PANE, STAGE} from "../../enums";
 import {randomChoice} from "../../utils/random_utils";
 import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
@@ -8,9 +8,10 @@ import {getHealthArray} from "../../drawing/draw_utils";
 import {getCardinalDirections, getChasingDirections} from "../../utils/map_utils";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../loader";
+import * as PIXI from "pixi.js";
 
 export class WallSlime extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["wall_slime_single.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["wall_slime_middle.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 4;
         this.health = this.maxHealth;
@@ -23,6 +24,28 @@ export class WallSlime extends Enemy {
         this.spawnAttempt = false;
         this.baseSlime = null;
         this.subSlimes = [];
+        this.eyes = [];
+        this.removeShadow();
+    }
+
+    regenerateShadow() {
+        if (!this.subSlimes) return;
+        Game.world.removeChild(this.shadow);
+        if (this.noShadow || (this.pane === PANE.VERTICAL && this.subSlimes.length > 0)) return;
+        this.shadow = new PIXI.Graphics();
+        this.shadow.beginFill(0x666666, 0.12);
+        this.shadow.drawEllipse(0, 0, (this.texture.trim.right - this.texture.trim.left) * (this.subSlimes.length + 1) * this.scale.y * 0.5, 8);
+
+        Game.world.addChild(this.shadow);
+    }
+
+    placeShadow() {
+        if (this.shadow) {
+            super.placeShadow();
+            if (this.subSlimes.length === 1 || this.subSlimes.length === 3) {
+                this.shadow.position.x -= this.width / 2;
+            }
+        }
     }
 
     afterMapGen() {
@@ -45,14 +68,14 @@ export class WallSlime extends Enemy {
                     slime.placeOnMap()
                 }
                 this.correctScale();
-                subSlimes[0].texture = subSlimes[2].texture = Game.resources["src/images/enemies/wall_slime_sub.png"].texture;
-                subSlimes[1].texture = subSlimes[3].texture = Game.resources["src/images/enemies/wall_slime_edge.png"].texture;
+                subSlimes[0].texture = subSlimes[2].texture = RUEnemiesSpriteSheet["wall_slime_middle.png"];
+                subSlimes[1].texture = subSlimes[3].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
                 subSlimes[0].angle = subSlimes[2].angle = 90;
                 subSlimes[1].angle = 270;
                 subSlimes[3].angle = 90;
             } else {
                 if (this.spawnAttempt) {
-                    this.texture = Game.resources["src/images/enemies/wall_slime_single.png"].texture;
+                    this.texture = RUEnemiesSpriteSheet["wall_slime_single.png"];
                     return;
                 }
                 this.pane = PANE.HORIZONTAL;
@@ -76,12 +99,12 @@ export class WallSlime extends Enemy {
                     Game.enemies.push(slime);
                     slime.placeOnMap()
                 }
-                subSlimes[0].texture = subSlimes[2].texture = Game.resources["src/images/enemies/wall_slime_sub.png"].texture;
-                subSlimes[1].texture = subSlimes[3].texture = Game.resources["src/images/enemies/wall_slime_edge.png"].texture;
+                subSlimes[0].texture = subSlimes[2].texture = RUEnemiesSpriteSheet["wall_slime_middle.png"];
+                subSlimes[1].texture = subSlimes[3].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
                 subSlimes[1].angle = 180;
             } else {
                 if (this.spawnAttempt) {
-                    this.texture = Game.resources["src/images/enemies/wall_slime_single.png"].texture;
+                    this.texture = RUEnemiesSpriteSheet["wall_slime_single.png"];
                     return;
                 }
                 this.pane = PANE.VERTICAL;
@@ -89,6 +112,7 @@ export class WallSlime extends Enemy {
                 this.afterMapGen();
             }
         }
+        this.setShadow();
     }
 
     //stunning sub slimes will probably not work...
@@ -241,11 +265,11 @@ export class WallSlime extends Enemy {
         for (const newSlimeArray of [firstHalf, secondHalf]) {
             if (newSlimeArray.length === 1) {
                 const newSlime = newSlimeArray[0];
-                newSlime.texture = Game.resources["src/images/enemies/wall_slime_single.png"].texture;
+                newSlime.texture = RUEnemiesSpriteSheet["wall_slime_single.png"];
                 newSlime.baseSlime = null;
                 newSlime.subSlimes = [];
             } else if (newSlimeArray.length === 2) {
-                newSlimeArray[0].texture = newSlimeArray[1].texture = Game.resources["src/images/enemies/wall_slime_edge_face.png"].texture;
+                newSlimeArray[0].texture = newSlimeArray[1].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
                 if (this.pane === PANE.HORIZONTAL) {
                     newSlimeArray[0].angle = 180;
                     newSlimeArray[1].angle = 0;
@@ -258,8 +282,8 @@ export class WallSlime extends Enemy {
                 newSlimeArray[1].baseSlime = null;
                 newSlimeArray[1].subSlimes = [newSlimeArray[0]];
             } else if (newSlimeArray.length === 3) {
-                newSlimeArray[0].texture = newSlimeArray[2].texture = Game.resources["src/images/enemies/wall_slime_edge.png"].texture;
-                newSlimeArray[1].texture = Game.resources["src/images/enemies/wall_slime.png"].texture;
+                newSlimeArray[0].texture = newSlimeArray[2].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
+                newSlimeArray[1].texture = RUEnemiesSpriteSheet["wall_slime_middle.png"];
                 if (this.pane === PANE.HORIZONTAL) {
                     newSlimeArray[0].angle = 180;
                     newSlimeArray[1].angle = newSlimeArray[2].angle = 0;
@@ -272,8 +296,8 @@ export class WallSlime extends Enemy {
                 newSlimeArray[1].baseSlime = null;
                 newSlimeArray[1].subSlimes = [newSlimeArray[0], newSlimeArray[2]];
             } else if (newSlimeArray.length === 4) {
-                newSlimeArray[1].texture = newSlimeArray[2].texture = Game.resources["src/images/enemies/wall_slime_sub_face.png"].texture;
-                newSlimeArray[0].texture = newSlimeArray[3].texture = Game.resources["src/images/enemies/wall_slime_edge.png"].texture;
+                newSlimeArray[1].texture = newSlimeArray[2].texture = RUEnemiesSpriteSheet["wall_slime_middle.png"];
+                newSlimeArray[0].texture = newSlimeArray[3].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
                 if (this.pane === PANE.HORIZONTAL) {
                     newSlimeArray[0].angle = 180;
                     newSlimeArray[2].angle = newSlimeArray[3].angle = 0;
@@ -297,7 +321,11 @@ export class WallSlime extends Enemy {
                 else if (newSlimeArray.length === 2) slime.maxHealth = 3;
                 else if (newSlimeArray.length === 1) slime.maxHealth = 2;
                 slime.health = slime.maxHealth;
-                if (slime.baseSlime === null) slime.updateIntentIcon();
+                slime.removeShadow();
+                if (slime.baseSlime === null) {
+                    slime.updateIntentIcon();
+                    slime.setShadow();
+                }
             }
             if (newSlimeArray.length !== 0) newSlimeArray[0].correctScale();
         }
