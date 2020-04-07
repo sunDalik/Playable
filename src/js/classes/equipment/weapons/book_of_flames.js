@@ -8,19 +8,18 @@ import {TileElement} from "../../tile_elements/tile_element";
 import {randomChoice} from "../../../utils/random_utils";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
+import {MagicBook} from "./magic_book";
 
-export class BookOfFlames {
+export class BookOfFlames extends MagicBook {
     constructor() {
-        this.texture = WeaponsSpriteSheet["book_of_flames.png"];
-        this.type = WEAPON_TYPE.BOOK_OF_FLAMES;
+        super(WeaponsSpriteSheet["book_of_flames.png"]);
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
-        this.magical = true;
+        this.type = WEAPON_TYPE.BOOK_OF_FLAMES;
         this.atk = 2;
         this.maxUses = 2;
         this.uses = this.maxUses;
         this.focusNeeded = 3;
-        this.currentFocus = 0;
-        this.focusedThisTurn = false;
+        this.primaryColor = 0x10afa6;
         this.name = "Book of Flames";
         this.description = "Magical wonder";
         this.rarity = RARITY.S;
@@ -74,8 +73,7 @@ export class BookOfFlames {
                 enemy.damage(wielder, atk, dirX, dirY, this.magical);
             }
             this.uses--;
-            this.updateTexture();
-            redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
+            this.updateTexture(wielder);
             this.holdBookAnimation(wielder, dirX, dirY);
             return true;
         } else return false;
@@ -90,30 +88,20 @@ export class BookOfFlames {
             if (this.currentFocus >= this.focusNeeded) {
                 this.currentFocus = 0;
                 this.uses = this.maxUses;
-                this.updateTexture();
+                this.updateTexture(wielder);
                 if (createText) createFadingText("Clear mind!", wielder.position.x, wielder.position.y, fontSize, 30);
             } else {
-                this.updateTexture();
+                this.updateTexture(wielder);
                 if (createText) createFadingText("Focus", wielder.position.x, wielder.position.y, fontSize * ((this.currentFocus + 1) / this.focusNeeded), 30);
             }
-            redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
             return true;
         } else return false;
-    }
-
-    updateTexture() {
-        if (this.uses === 0) {
-            this.texture = WeaponsSpriteSheet[`book_of_flames_exhausted_${this.currentFocus}.png`];
-        } else if (this.uses < this.maxUses) {
-            this.texture = WeaponsSpriteSheet[`book_of_flames_used_${this.currentFocus}.png`];
-        } else this.texture = WeaponsSpriteSheet["book_of_flames.png"];
     }
 
     onNewTurn(wielder) {
         if (!this.focusedThisTurn && this.uses < this.maxUses && this.currentFocus > 0) {
             this.currentFocus = 0;
             this.updateTexture(wielder);
-            redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
         }
         this.focusedThisTurn = false;
     }
@@ -149,7 +137,8 @@ export class BookOfFlames {
             x: statueLeftHandPoint.x + 15,
             y: statueLeftHandPoint.y + 20,
             angle: 20,
-            scaleModifier: 0.60
+            scaleModifier: 0.60,
+            texture: this.defaultTexture
         };
     }
 }
