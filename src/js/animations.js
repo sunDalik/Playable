@@ -177,7 +177,7 @@ export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationT
 }
 
 export function createEnemyAttackTile(tile, animationTime = 8, alpha = 0.5) {
-    const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y);
+    const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y, true);
     fadingTile.tint = 0xf4524a;
     fadingTile.alpha = alpha;
     fadingTile.zIndex = -2;
@@ -185,7 +185,7 @@ export function createEnemyAttackTile(tile, animationTime = 8, alpha = 0.5) {
 }
 
 export function createPlayerAttackTile(tile, animationTime = 8, alpha = 0.5, tint = 0xffffff) {
-    const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y);
+    const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y, true);
     fadingTile.tint = tint;
     fadingTile.alpha = alpha;
     fadingTile.zIndex = -2;
