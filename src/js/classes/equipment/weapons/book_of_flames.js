@@ -18,8 +18,9 @@ export class BookOfFlames {
         this.atk = 2;
         this.maxUses = 2;
         this.uses = this.maxUses;
-        this.concentrationLimit = 3;
-        this.concentration = 0;
+        this.focusNeeded = 3;
+        this.currentFocus = 0;
+        this.focusedThisTurn = false;
         this.name = "Book of Flames";
         this.description = "Magical wonder";
         this.rarity = RARITY.S;
@@ -80,19 +81,20 @@ export class BookOfFlames {
         } else return false;
     }
 
-    concentrate(wielder, createText = true) {
+    focus(wielder, createText = true) {
         if (this.uses < this.maxUses) {
-            this.concentration++;
+            this.currentFocus++;
             this.holdBookAnimation(wielder, 1, 0);
-            this.concentratedThisTurn = true;
-            if (this.concentration >= this.concentrationLimit) {
-                this.concentration = 0;
+            this.focusedThisTurn = true;
+            const fontSize = Game.TILESIZE / 65 * 22;
+            if (this.currentFocus >= this.focusNeeded) {
+                this.currentFocus = 0;
                 this.uses = this.maxUses;
                 this.updateTexture();
-                if (createText) createFadingText("Clear mind!", wielder.position.x, wielder.position.y, Game.TILESIZE / 65 * 22, 30);
+                if (createText) createFadingText("Clear mind!", wielder.position.x, wielder.position.y, fontSize, 30);
             } else {
                 this.updateTexture();
-                if (createText) createFadingText("Concentrating", wielder.position.x, wielder.position.y, Game.TILESIZE / 65 * 22, 30);
+                if (createText) createFadingText("Focus", wielder.position.x, wielder.position.y, fontSize * ((this.currentFocus + 1) / this.focusNeeded), 30);
             }
             redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
             return true;
@@ -101,19 +103,19 @@ export class BookOfFlames {
 
     updateTexture() {
         if (this.uses === 0) {
-            this.texture = WeaponsSpriteSheet[`book_of_flames_exhausted_${this.concentration}.png`];
+            this.texture = WeaponsSpriteSheet[`book_of_flames_exhausted_${this.currentFocus}.png`];
         } else if (this.uses < this.maxUses) {
-            this.texture = WeaponsSpriteSheet[`book_of_flames_used_${this.concentration}.png`];
+            this.texture = WeaponsSpriteSheet[`book_of_flames_used_${this.currentFocus}.png`];
         } else this.texture = WeaponsSpriteSheet["book_of_flames.png"];
     }
 
     onNewTurn(wielder) {
-        if (!this.concentratedThisTurn && this.uses < this.maxUses && this.concentration > 0) {
-            this.concentration = 0;
+        if (!this.focusedThisTurn && this.uses < this.maxUses && this.currentFocus > 0) {
+            this.currentFocus = 0;
             this.updateTexture(wielder);
             redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
         }
-        this.concentratedThisTurn = false;
+        this.focusedThisTurn = false;
     }
 
     holdBookAnimation(wielder, dirX, dirY) {

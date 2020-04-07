@@ -582,20 +582,20 @@ export class Player extends AnimatedTileElement {
                 [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
                 redrawWeaponAndSecondHand(this);
                 return true;
-            } else if (this.weapon && this.weapon.type === this.secondHand.type && this.secondHand.concentrate && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {
-                this.secondHand.concentrate(this);
+            } else if (this.weapon && this.weapon.type === this.secondHand.type && this.secondHand.focus && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {
+                this.secondHand.focus(this);
                 redrawSecondHand(this);
                 return true;
             } else return false;
         } else return false;
     }
 
-    concentrateWeapon() {
+    focusWeapon() {
         if (this.charging) return false;
-        if (!this.weapon || !this.weapon.concentrate) return false;
-        if (this.weapon.concentrate(this)) {
+        if (!this.weapon || !this.weapon.focus) return false;
+        if (this.weapon.focus(this)) {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type) {
-                this.secondHand.concentrate(this, false);
+                this.secondHand.focus(this, false);
             }
             return true;
         } else return false;

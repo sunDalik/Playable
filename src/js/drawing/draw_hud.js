@@ -252,7 +252,7 @@ export function redrawSlotContents(player, slot) {
             if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_1P]);
             else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_2P]);
 
-        } else if (slot === "weapon" && item.concentrate && item.uses < item.maxUses) {
+        } else if (slot === "weapon" && item.focus && item.uses < item.maxUses) {
             if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_WEAPON_1P]);
             else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_WEAPON_2P]);
         } else if (slot === "bag" && item.amount > 0) {

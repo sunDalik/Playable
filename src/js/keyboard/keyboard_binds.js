@@ -57,8 +57,8 @@ export function bindKeys() {
     secondHandKeyP1.press = () => playerTurn(Game.player, () => Game.player.useSecondHand());
     secondHandKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.useSecondHand());
 
-    weaponKeyP1.press = () => playerTurn(Game.player, () => Game.player.concentrateWeapon());
-    weaponKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.concentrateWeapon());
+    weaponKeyP1.press = () => playerTurn(Game.player, () => Game.player.focusWeapon());
+    weaponKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.focusWeapon());
 
     bagKeyP1.press = () => playerTurn(Game.player, () => Game.player.useBag());
     bagKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.useBag());
