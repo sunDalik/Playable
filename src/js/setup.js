@@ -8,7 +8,7 @@ import {assignDrops, calculateDetectionGraph, generateMap} from "./map_generatio
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
-import {drawHUD, drawInteractionKeys, drawMovementKeyBindings, redrawSpeedRunTimer} from "./drawing/draw_hud";
+import {drawHUD, drawInteractionKeys, drawMovementKeyBindings, redrawSpeedRunTime} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
@@ -207,10 +207,10 @@ export function retry() {
 
 function initGameState() {
     Game.stage = STAGE.FLOODED_CAVE;
-    Game.timer = 0;
+    Game.time = 0;
     Game.app.ticker.remove(speedrunTimer);
-    Game.showTimer = JSON.parse(window.localStorage[STORAGE.SHOW_TIMER]);
-    redrawSpeedRunTimer();
+    Game.showTime = JSON.parse(window.localStorage[STORAGE.SHOW_TIME]);
+    redrawSpeedRunTime();
 
     //otherwise players will have no shadow if you start on dt...
     Game.player.regenerateShadow();
@@ -280,7 +280,7 @@ export function initLocalStorageKeys(reset = false) {
 
 export function initLocalStorageOther(reset = false) {
     //use JSON.parse to parse string boolean values
-    if (reset || !window.localStorage[STORAGE.SHOW_TIMER]) window.localStorage[STORAGE.SHOW_TIMER] = false;
+    if (reset || !window.localStorage[STORAGE.SHOW_TIME]) window.localStorage[STORAGE.SHOW_TIME] = false;
 }
 
 export function initLocalStorageAchievements(reset = false) {

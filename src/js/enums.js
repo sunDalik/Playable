@@ -220,7 +220,7 @@ export const STORAGE = Object.freeze({
     KEY_MAP: "KeyMap",
     KEY_PAUSE: "KeyPause",
 
-    SHOW_TIMER: "ShowTimer",
+    SHOW_TIME: "ShowTimer",
     ACHIEVEMENTS: "Achievements"
 });
 

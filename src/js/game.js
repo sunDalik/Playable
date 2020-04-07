@@ -90,7 +90,7 @@ Game.loadingTextAnimation = null;
 Game.state = null;
 Game.keys = [];
 
-Game.showTimer = false;
-Game.timer = 0; //MS
+Game.showTime = false;
+Game.time = 0; //MS
 Game.destroyParticles = [];
 Game.achievementPopUpQueue = [];

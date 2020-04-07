@@ -2,7 +2,7 @@ import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {createBackButton, createCheckboxSet} from "./menu_common";
 import {STORAGE} from "../enums";
-import {redrawSpeedRunTimer} from "../drawing/draw_hud";
+import {redrawSpeedRunTime} from "../drawing/draw_hud";
 import {HUD} from "../drawing/hud_object";
 
 export function setupOtherSettings() {
@@ -13,8 +13,8 @@ export function setupOtherSettings() {
     Game.otherSettingsInterface.choosable = true;
     Game.app.stage.addChild(Game.otherSettingsInterface);
     Game.otherSettingsInterface.buttons = createCheckboxSet([{
-        text: "Show timer",
-        checked: JSON.parse(window.localStorage[STORAGE.SHOW_TIMER])
+        text: "Show time",
+        checked: JSON.parse(window.localStorage[STORAGE.SHOW_TIME])
     }], Game.otherSettingsInterface, 200).slice();
     const backButton = createBackButton(Game.otherSettingsInterface);
     Game.otherSettingsInterface.buttons.unshift(backButton);
@@ -32,9 +32,9 @@ export function setupOtherSettings() {
 function setButtonClickHandlers() {
     Game.otherSettingsInterface.buttons[1].clickButton = () => {
         Game.otherSettingsInterface.buttons[1].check();
-        window.localStorage[STORAGE.SHOW_TIMER] = Game.otherSettingsInterface.buttons[1].checked;
-        Game.showTimer = JSON.parse(window.localStorage[STORAGE.SHOW_TIMER]);
-        if (HUD.speedrunTimer) redrawSpeedRunTimer();
+        window.localStorage[STORAGE.SHOW_TIME] = Game.otherSettingsInterface.buttons[1].checked;
+        Game.showTime = JSON.parse(window.localStorage[STORAGE.SHOW_TIME]);
+        if (HUD.speedrunTime) redrawSpeedRunTime();
     };
 
     for (let i = 1; i < Game.otherSettingsInterface.buttons.length; i++) {

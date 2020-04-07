@@ -40,7 +40,7 @@ export function drawHUD() {
     drawInteractionKeys();
     redrawEnergy();
     drawSlotsContents();
-    redrawSpeedRunTimer();
+    redrawSpeedRunTime();
     if (Game.bossFight) Game.boss.redrawHealth();
 }
 
@@ -457,12 +457,12 @@ export function getKeyBindSymbol(keyBind) {
     else return keyBind.slice(-1);
 }
 
-export function redrawSpeedRunTimer() {
-    const container = HUD.speedrunTimer;
+export function redrawSpeedRunTime() {
+    const container = HUD.speedrunTime;
     removeAllChildrenFromContainer(container);
-    if (Game.showTimer) {
-        const time = getTimeFromMs(Game.timer);
-        const text = new PIXI.Text(`Timer: ${padTime(time.minutes, 2)}:${padTime(time.seconds, 2)}.${padTime(time.ms, 3)}`, HUDTextStyleTitle);
+    if (Game.showTime) {
+        const time = getTimeFromMs(Game.time);
+        const text = new PIXI.Text(`Time: ${padTime(time.minutes, 2)}:${padTime(time.seconds, 2)}.${padTime(time.ms, 3)}`, HUDTextStyleTitle);
         text.position.set(slotBorderOffsetX, Game.app.renderer.screen.height - text.height - miniMapBottomOffset);
         container.addChild(text);
     }
