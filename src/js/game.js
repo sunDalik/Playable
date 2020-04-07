@@ -94,3 +94,6 @@ Game.showTime = false;
 Game.time = 0; //MS
 Game.destroyParticles = [];
 Game.achievementPopUpQueue = [];
+
+
+Game.experimentalFeatures = false;
