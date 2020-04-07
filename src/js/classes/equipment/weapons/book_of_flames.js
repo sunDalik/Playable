@@ -1,13 +1,10 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
-import {createFadingAttack, createFadingText} from "../../../animations";
+import {createFadingAttack} from "../../../animations";
 import * as PIXI from "pixi.js";
-import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {TileElement} from "../../tile_elements/tile_element";
-import {randomChoice} from "../../../utils/random_utils";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {MagicBook} from "./magic_book";
 
 export class BookOfFlames extends MagicBook {
@@ -77,68 +74,5 @@ export class BookOfFlames extends MagicBook {
             this.holdBookAnimation(wielder, dirX, dirY);
             return true;
         } else return false;
-    }
-
-    focus(wielder, createText = true) {
-        if (this.uses < this.maxUses) {
-            this.currentFocus++;
-            this.holdBookAnimation(wielder, 1, 0);
-            this.focusedThisTurn = true;
-            const fontSize = Game.TILESIZE / 65 * 22;
-            if (this.currentFocus >= this.focusNeeded) {
-                this.currentFocus = 0;
-                this.uses = this.maxUses;
-                this.updateTexture(wielder);
-                if (createText) createFadingText("Clear mind!", wielder.position.x, wielder.position.y, fontSize, 30);
-            } else {
-                this.updateTexture(wielder);
-                if (createText) createFadingText("Focus", wielder.position.x, wielder.position.y, fontSize * ((this.currentFocus + 1) / this.focusNeeded), 30);
-            }
-            return true;
-        } else return false;
-    }
-
-    onNewTurn(wielder) {
-        if (!this.focusedThisTurn && this.uses < this.maxUses && this.currentFocus > 0) {
-            this.currentFocus = 0;
-            this.updateTexture(wielder);
-        }
-        this.focusedThisTurn = false;
-    }
-
-    holdBookAnimation(wielder, dirX, dirY) {
-        const offsetMod = 0.3;
-        const offsetX = dirX !== 0 ? dirX * offsetMod : randomChoice([offsetMod, -offsetMod]);
-        const bookSprite = new TileElement(WeaponsSpriteSheet["book_of_flames.png"], 0, 0);
-        bookSprite.position.set(wielder.getTilePositionX() + offsetX * Game.TILESIZE, wielder.getTilePositionY());
-        Game.world.addChild(bookSprite);
-        wielder.animationSubSprites.push(bookSprite);
-        bookSprite.zIndex = Game.primaryPlayer.zIndex + 1;
-        bookSprite.scaleModifier = 0.85;
-        bookSprite.fitToTile();
-        if (Math.sign(offsetX) === -1) bookSprite.scale.x *= -1;
-
-        const animationTime = 20;
-        let counter = 0;
-        const animation = delta => {
-            counter += delta;
-            if (counter >= animationTime) {
-                Game.world.removeChild(bookSprite);
-                Game.app.ticker.remove(animation);
-            }
-        };
-
-        wielder.animation = animation;
-        Game.app.ticker.add(animation);
-    }
-
-    getStatuePlacement() {
-        return {
-            x: statueLeftHandPoint.x + 15,
-            y: statueLeftHandPoint.y + 20,
-            angle: 20,
-            scaleModifier: 0.60,
-            texture: this.defaultTexture
-        };
     }
 }
