@@ -17,8 +17,8 @@ import {AdventurerBoots} from "./classes/equipment/footwear/adventurer";
 import {DamagingBoots} from "./classes/equipment/footwear/damaging";
 import {DarkBoots} from "./classes/equipment/footwear/dark";
 import {Knife} from "./classes/equipment/weapons/knife";
-import {NinjaKnife} from "./classes/equipment/weapons/ninja_knife";
-import {Rapier} from "./classes/equipment/weapons/rapier";
+import {AssassinDagger} from "./classes/equipment/weapons/assassin_dagger";
+import {LongSword} from "./classes/equipment/weapons/long_sword";
 import {Bow} from "./classes/equipment/weapons/bow";
 import {Scythe} from "./classes/equipment/weapons/scythe";
 import {MaidenDagger} from "./classes/equipment/weapons/maiden_dagger";
@@ -43,7 +43,7 @@ import {OldBalletShoes} from "./classes/equipment/footwear/old_ballet_shoes";
 import {BladeCrown} from "./classes/equipment/headwear/blade_crown";
 
 export function initPools() {
-    Game.weaponPool = [Knife, NinjaKnife, Rapier, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
+    Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross, Immortality];
     Game.chestItemPool = [Pickaxe,
         BasicShield, PassiveShield, SpikyShield, StunningShield, FellStarShield,

@@ -6,15 +6,15 @@ import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../anima
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
 
-export class NinjaKnife {
+export class AssassinDagger {
     constructor() {
-        this.texture = WeaponsSpriteSheet["ninja_knife.png"];
-        this.type = WEAPON_TYPE.NINJA_KNIFE;
+        this.texture = WeaponsSpriteSheet["assassin_dagger.png"];
+        this.type = WEAPON_TYPE.ASSASSIN_DAGGER;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.SLIDE_ANIMATION_TIME = 5;
         this.FINISH_SLIDE_TIME = 2;
         this.atk = 1.25;
-        this.name = "Ninja Knife";
+        this.name = "Assassin's Dagger";
         this.description = "Kill with style";
         this.rarity = RARITY.S;
     }
@@ -25,7 +25,7 @@ export class NinjaKnife {
         const atk = wielder.getAtkWithWeapon(this);
         if (isEnemy(attackTileX, attackTileY)) {
             if (isRelativelyEmpty(wielder.tilePosition.x + tileDirX * 2, wielder.tilePosition.y + tileDirY * 2)) {
-                createNinjaKnifeAnimation(this);
+                createAnimation(this);
                 wielder.slide(tileDirX * 2, tileDirY * 2, null, null, this.SLIDE_ANIMATION_TIME);
                 if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun = 1;
             } else {
@@ -37,7 +37,7 @@ export class NinjaKnife {
         } else return false;
 
         //todo refactor
-        function createNinjaKnifeAnimation(context) {
+        function createAnimation(context) {
             let attackParticle = new PIXI.Sprite(PIXI.Texture.WHITE);
             attackParticle.width = attackParticle.height = Game.TILESIZE / 2.5;
             let newAnchor;

@@ -5,13 +5,13 @@ import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animat
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
 
-export class Rapier {
+export class LongSword {
     constructor() {
-        this.texture = WeaponsSpriteSheet["rapier.png"];
-        this.type = WEAPON_TYPE.RAPIER;
+        this.texture = WeaponsSpriteSheet["long_sword.png"];
+        this.type = WEAPON_TYPE.LONG_SWORD;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
-        this.name = "Rapier";
+        this.name = "Long Sword";
         this.description = "2-range weapon";
         this.rarity = RARITY.B;
     }

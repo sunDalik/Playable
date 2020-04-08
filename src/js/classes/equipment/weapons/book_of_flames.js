@@ -17,6 +17,7 @@ export class BookOfFlames extends MagicBook {
         this.uses = this.maxUses;
         this.focusNeeded = 3;
         this.primaryColor = 0x10afa6;
+        this.holdTime = 20;
         this.name = "Book of Flames";
         this.description = "Magical wonder";
         this.rarity = RARITY.S;

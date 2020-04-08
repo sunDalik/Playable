@@ -55,6 +55,6 @@ export class Scythe {
     }
 
     getStatuePlacement() {
-        return {x: statueLeftHandPoint.x - 60, y: statueLeftHandPoint.y + 42, angle: -70, scaleModifier: 1};
+        return {x: statueLeftHandPoint.x - 70, y: statueLeftHandPoint.y + 90, angle: -90, scaleModifier: 1};
     }
 }

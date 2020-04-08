@@ -92,8 +92,8 @@ export const EQUIPMENT_TYPE = Object.freeze({
 });
 export const WEAPON_TYPE = Object.freeze({
     KNIFE: 0,
-    RAPIER: 1,
-    NINJA_KNIFE: 2,
+    LONG_SWORD: 1,
+    ASSASSIN_DAGGER: 2,
     BOW: 3,
     BOOK_OF_FLAMES: 4,
     SCYTHE: 5,

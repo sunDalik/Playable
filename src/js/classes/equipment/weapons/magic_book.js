@@ -19,6 +19,7 @@ export class MagicBook {
         this.uses = this.maxUses;
         this.focusNeeded = 1;
         this.primaryColor = 0x000000;
+        this.holdTime = 20;
     }
 
     updateTexture(wielder) {
@@ -86,11 +87,10 @@ export class MagicBook {
         bookSprite.fitToTile();
         if (Math.sign(offsetX) === -1) bookSprite.scale.x *= -1;
 
-        const animationTime = 20;
         let counter = 0;
         const animation = delta => {
             counter += delta;
-            if (counter >= animationTime) {
+            if (counter >= this.holdTime) {
                 Game.world.removeChild(bookSprite);
                 Game.app.ticker.remove(animation);
             }

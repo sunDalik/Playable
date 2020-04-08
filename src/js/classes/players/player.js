@@ -553,7 +553,7 @@ export class Player extends AnimatedTileElement {
     doubleAttack(dirX, dirY) {
         this.attackTimeout = null;
         if (this.dead) return;
-        if (this.weapon.type === WEAPON_TYPE.NINJA_KNIFE) {
+        if (this.weapon.type === WEAPON_TYPE.ASSASSIN_DAGGER) {
             dirX *= -1;
             dirY *= -1;
         }

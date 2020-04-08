@@ -5,7 +5,7 @@ import {ITEM_OUTLINE_FILTER} from "./filters";
 import {HUDTextStyle, HUDTextStyleTitle, miniMapBottomOffset} from "./drawing/draw_constants";
 import {HUD} from "./drawing/hud_object";
 import {camera} from "./classes/game/camera";
-import {ROLE, STAGE} from "./enums";
+import {ROLE, STAGE, WEAPON_TYPE} from "./enums";
 import {easeInOutQuad, easeInQuad, easeOutQuad, quadraticBezier} from "./utils/math_utils";
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {HUDSpriteSheet} from "./loader";
@@ -89,6 +89,7 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
         weaponSprite.anchor.set(1, 0);
         baseAngle = 90;
     }
+    if (weapon.type === WEAPON_TYPE.SCYTHE) baseAngle = -27; //temp solution
     let swingDir = forceSwing === 1 || forceSwing === -1 ? forceSwing : randomChoice([-1, 1]);
     if (dirX === 1) weaponSprite.angle = baseAngle + 135 - angleAmplitude / 2 * swingDir;
     else if (dirX === -1) weaponSprite.angle = baseAngle - 45 - angleAmplitude / 2 * swingDir;
@@ -96,6 +97,7 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
     else if (dirY === -1) weaponSprite.angle = baseAngle + 45 - angleAmplitude / 2 * swingDir;
 
     //assuming that the blade looks to the left on the picture
+    //SCYTHE PROBLEMS
     if (swingDir === 1 && !lookingBottom) {
         weaponSprite.scale.x *= -1;
         weaponSprite.angle -= 90;
