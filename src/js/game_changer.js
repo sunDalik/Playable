@@ -41,9 +41,10 @@ import {BattleHelmet} from "./classes/equipment/headwear/battle_helmet";
 import {FellStarShield} from "./classes/equipment/shields/fell_star_shield";
 import {OldBalletShoes} from "./classes/equipment/footwear/old_ballet_shoes";
 import {BladeCrown} from "./classes/equipment/headwear/blade_crown";
+import {Crossbow} from "./classes/equipment/weapons/crossbow";
 
 export function initPools() {
-    Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords];
+    Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe, PawnSwords, Crossbow];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross, Immortality];
     Game.chestItemPool = [Pickaxe,
         BasicShield, PassiveShield, SpikyShield, StunningShield, FellStarShield,

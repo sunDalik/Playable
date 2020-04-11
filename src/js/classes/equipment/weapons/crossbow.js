@@ -3,20 +3,23 @@ import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
 import {BowLikeWeapon} from "./bow_like_weapon";
 
-export class Bow extends BowLikeWeapon {
+export class Crossbow extends BowLikeWeapon {
     constructor() {
-        super(WeaponsSpriteSheet["bow.png"]);
-        this.type = WEAPON_TYPE.BOW;
+        super(WeaponsSpriteSheet["crossbow.png"]);
+        this.arrowTexture = WeaponsSpriteSheet["crossbow_bolt.png"];
+        this.type = WEAPON_TYPE.CROSSBOW;
         this.atk = 0.75;
-        this.name = "Bow";
-        this.description = "Long range but weak in close combat";
-        this.rarity = RARITY.B;
+        this.name = "Crossbow";
+        this.description = "Ranged weapon with no penalties";
+        this.rarity = RARITY.A;
     }
 
     getAtk(wielder, range) {
-        return wielder.getAtkWithWeapon(this, this.atk * (range / 3));
+        return wielder.getAtkWithWeapon(this);
     }
 
+
+    //todo
     getStatuePlacement() {
         return {
             x: statueRightHandPoint.x + 50,

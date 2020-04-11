@@ -199,9 +199,7 @@ export class Player extends AnimatedTileElement {
     }
 
     getAtkBaseWithWeapon(weapon, presetAtk = 0) {
-        let weaponAtk = 0;
-        if (weapon) weaponAtk = weapon.atk;
-        if (presetAtk) weaponAtk = presetAtk;
+        const weaponAtk = presetAtk ? presetAtk : weapon.atk;
         let atkBase = this.atkBase + weaponAtk;
         const atkEquipment = [this.headwear, this.armor, this.footwear];
         for (const equipment of atkEquipment) {
