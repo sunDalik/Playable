@@ -104,7 +104,10 @@ export const WEAPON_TYPE = Object.freeze({
     PAWN_SWORDS: 10,
     RUSTY_SWORD: 11,
     CROSSBOW: 12,
-    DIVINE_BOW: 13
+    DIVINE_BOW: 13,
+    BOOK_OF_THUNDERS: 14,
+    BOOK_OF_WEBS: 15,
+    BOOK_OF_ICE: 16
 });
 export const HEAD_TYPE = Object.freeze({
     WIZARD_HAT: 0,

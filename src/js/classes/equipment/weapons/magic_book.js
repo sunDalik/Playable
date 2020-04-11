@@ -17,7 +17,7 @@ export class MagicBook {
         //you should override these values
         this.maxUses = 1;
         this.uses = this.maxUses;
-        this.focusNeeded = 1;
+        this.focusTime = 1;
         this.primaryColor = 0x000000;
         this.holdTime = 20;
     }
@@ -33,11 +33,11 @@ export class MagicBook {
             book.zIndex = 1;
             if (this.uses === 0) book.filters = [DESATURATE_FILTER];
             container.addChild(book);
-            for (let f = 1; f <= this.focusNeeded - this.currentFocus; f++) {
+            for (let f = 1; f <= this.focusTime - this.currentFocus; f++) {
                 const circle = new PIXI.Graphics();
                 const minRadius = book.width / 4;
                 const maxRadius = book.width / 2 - 10;
-                const radius = minRadius + (maxRadius - minRadius) / this.focusNeeded * f;
+                const radius = minRadius + (maxRadius - minRadius) / this.focusTime * f;
                 circle.lineStyle(11, this.primaryColor);
                 circle.drawCircle(0, 0, radius);
                 circle.position.set(book.width / 2, book.height / 2);
@@ -54,14 +54,14 @@ export class MagicBook {
             this.holdBookAnimation(wielder, 1, 0);
             this.focusedThisTurn = true;
             const fontSize = Game.TILESIZE / 65 * 22;
-            if (this.currentFocus >= this.focusNeeded) {
+            if (this.currentFocus >= this.focusTime) {
                 this.currentFocus = 0;
                 this.uses = this.maxUses;
                 this.updateTexture(wielder);
                 if (createText) createFadingText("Clear mind!", wielder.position.x, wielder.position.y, fontSize, 30);
             } else {
                 this.updateTexture(wielder);
-                if (createText) createFadingText("Focus", wielder.position.x, wielder.position.y, fontSize * ((this.currentFocus + 1) / this.focusNeeded), 30);
+                if (createText) createFadingText("Focus", wielder.position.x, wielder.position.y, fontSize * ((this.currentFocus + 1) / this.focusTime), 30);
             }
             return true;
         } else return false;
