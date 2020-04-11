@@ -11,11 +11,9 @@ export class BowLikeWeapon {
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.arrowTexture = WeaponsSpriteSheet["arrow.png"];
         this.range = 3;
-        this.piercing = false;
     }
 
     attack(wielder, dirX, dirY) {
-        let attacked = false;
         for (let range = 1; range <= this.range; range++) {
             const atkPos = {x: wielder.tilePosition.x + dirX * range, y: wielder.tilePosition.y + dirY * range};
             if (range !== 1 && (isAnyWall(atkPos.x, atkPos.y) || !isLit(atkPos.x, atkPos.y))) {
@@ -26,13 +24,11 @@ export class BowLikeWeapon {
                 Game.map[atkPos.y][atkPos.x].entity.damage(wielder, atk, dirX, dirY);
                 this.createBowAnimation(wielder, dirX * range, dirY * range);
                 createPlayerAttackTile(atkPos);
-                attacked = true;
-                if (!this.piercing) break;
-            } else {
-                if (this.piercing) createPlayerAttackTile(atkPos);
+                return true;
             }
         }
-        return attacked;
+
+        return false;
     }
 
     createBowAnimation(wielder, atkOffsetX, atkOffsetY) {

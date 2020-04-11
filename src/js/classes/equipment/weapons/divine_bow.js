@@ -1,17 +1,19 @@
 import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
-import {BowLikeWeapon} from "./bow_like_weapon";
+import {PiercingBowLikeWeapon} from "./piercing_bow_like_weapon";
 
-export class Crossbow extends BowLikeWeapon {
+export class DivineBow extends PiercingBowLikeWeapon {
     constructor() {
-        super(WeaponsSpriteSheet["crossbow.png"]);
-        this.arrowTexture = WeaponsSpriteSheet["crossbow_bolt.png"];
-        this.type = WEAPON_TYPE.CROSSBOW;
-        this.atk = 0.75;
-        this.name = "Crossbow";
-        this.description = "Ranged weapon with no penalties";
-        this.rarity = RARITY.A;
+        super(WeaponsSpriteSheet["divine_bow.png"]);
+        this.arrowTexture = WeaponsSpriteSheet["divine_arrow.png"];
+        this.type = WEAPON_TYPE.DIVINE_BOW;
+        //atk 1 or range 4? hmmmmm
+        this.atk = 1;
+        this.piercing = true;
+        this.name = "Divine Bow";
+        this.description = "Piercing bow from heaven";
+        this.rarity = RARITY.S;
     }
 
     getAtk(wielder, range) {
