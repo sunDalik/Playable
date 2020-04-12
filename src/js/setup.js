@@ -173,6 +173,7 @@ export function initializeLevel() {
     if (Game.stage === STAGE.RUINS) {
         //lightAll();
     }
+    if (Game.experimentalFeatures) lightAll();
 }
 
 function initPlayers() {

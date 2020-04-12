@@ -125,7 +125,7 @@ export const ONE_TIME_ITEM_TYPE = Object.freeze({HEART: 0});
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
 
-export const PANE = Object.freeze({HORIZONTAL: 0, VERTICAL: 1});
+export const PLANE = Object.freeze({HORIZONTAL: 0, VERTICAL: 1});
 
 export const HAZARD_TYPE = Object.freeze({POISON: 0, FIRE: 1, DARK_POISON: 2, DARK_FIRE: 3});
 

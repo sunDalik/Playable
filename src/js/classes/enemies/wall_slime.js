@@ -1,6 +1,6 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
-import {ENEMY_TYPE, PANE, STAGE} from "../../enums";
+import {ENEMY_TYPE, PLANE, STAGE} from "../../enums";
 import {randomChoice} from "../../utils/random_utils";
 import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
@@ -17,7 +17,7 @@ export class WallSlime extends Enemy {
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.WALL_SLIME;
         this.atk = 1;
-        this.pane = randomChoice([PANE.VERTICAL, PANE.HORIZONTAL]);
+        this.pane = randomChoice([PLANE.VERTICAL, PLANE.HORIZONTAL]);
         this.turnDelay = 4;
         this.currentTurnDelay = this.turnDelay;
         this.STEP_ANIMATION_TIME = 14;
@@ -31,7 +31,7 @@ export class WallSlime extends Enemy {
     regenerateShadow() {
         if (!this.subSlimes) return;
         Game.world.removeChild(this.shadow);
-        if (this.noShadow || (this.pane === PANE.VERTICAL && this.subSlimes.length > 0)) return;
+        if (this.noShadow || (this.pane === PLANE.VERTICAL && this.subSlimes.length > 0)) return;
         this.shadow = new PIXI.Graphics();
         this.shadow.beginFill(0x666666, 0.12);
         this.shadow.drawEllipse(0, 0, (this.texture.trim.right - this.texture.trim.left) * (this.subSlimes.length + 1) * this.scale.y * 0.5, 8);
@@ -50,7 +50,7 @@ export class WallSlime extends Enemy {
 
     afterMapGen() {
         if (this.baseSlime) return;
-        if (this.pane === PANE.VERTICAL) {
+        if (this.pane === PLANE.VERTICAL) {
             if (isEmpty(this.tilePosition.x, this.tilePosition.y - 1)
                 && isEmpty(this.tilePosition.x, this.tilePosition.y - 2)
                 && isEmpty(this.tilePosition.x, this.tilePosition.y + 1)
@@ -78,11 +78,11 @@ export class WallSlime extends Enemy {
                     this.texture = RUEnemiesSpriteSheet["wall_slime_single.png"];
                     return;
                 }
-                this.pane = PANE.HORIZONTAL;
+                this.pane = PLANE.HORIZONTAL;
                 this.spawnAttempt = true;
                 this.afterMapGen();
             }
-        } else if (this.pane === PANE.HORIZONTAL) {
+        } else if (this.pane === PLANE.HORIZONTAL) {
             if (isEmpty(this.tilePosition.x - 1, this.tilePosition.y)
                 && isEmpty(this.tilePosition.x - 2, this.tilePosition.y)
                 && isEmpty(this.tilePosition.x + 1, this.tilePosition.y)
@@ -107,7 +107,7 @@ export class WallSlime extends Enemy {
                     this.texture = RUEnemiesSpriteSheet["wall_slime_single.png"];
                     return;
                 }
-                this.pane = PANE.VERTICAL;
+                this.pane = PLANE.VERTICAL;
                 this.spawnAttempt = true;
                 this.afterMapGen();
             }
@@ -185,7 +185,7 @@ export class WallSlime extends Enemy {
     isDirectionRelativelyEmpty(dir) {
         const slimes = this.baseSlime ? this.baseSlime.subSlimes.concat([this.baseSlime]) : this.subSlimes.concat([this]);
         if (dir.y !== 0) {
-            if (this.pane === PANE.VERTICAL) {
+            if (this.pane === PLANE.VERTICAL) {
                 if (dir.y === 1) {
                     if (!isRelativelyEmpty(this.getLowestSlime().tilePosition.x, this.getLowestSlime().tilePosition.y + 1)) {
                         return false;
@@ -204,7 +204,7 @@ export class WallSlime extends Enemy {
                 }
             }
         } else if (dir.x !== 0) {
-            if (this.pane === PANE.HORIZONTAL) {
+            if (this.pane === PLANE.HORIZONTAL) {
                 if (dir.x === 1) {
                     if (!isRelativelyEmpty(this.getRightmostSlime().tilePosition.x + 1, this.getRightmostSlime().tilePosition.y)) {
                         return false;
@@ -255,9 +255,9 @@ export class WallSlime extends Enemy {
         this.healthContainer.visible = false;
         this.intentIcon.visible = false;
         this.subSlimes.push(this);
-        if (this.pane === PANE.HORIZONTAL) {
+        if (this.pane === PLANE.HORIZONTAL) {
             this.subSlimes.sort((a, b) => a.tilePosition.x - b.tilePosition.x);
-        } else if (this.pane === PANE.VERTICAL) {
+        } else if (this.pane === PLANE.VERTICAL) {
             this.subSlimes.sort((a, b) => a.tilePosition.y - b.tilePosition.y);
         }
         const firstHalf = this.subSlimes.slice(0, this.subSlimes.indexOf(divider));
@@ -270,7 +270,7 @@ export class WallSlime extends Enemy {
                 newSlime.subSlimes = [];
             } else if (newSlimeArray.length === 2) {
                 newSlimeArray[0].texture = newSlimeArray[1].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
-                if (this.pane === PANE.HORIZONTAL) {
+                if (this.pane === PLANE.HORIZONTAL) {
                     newSlimeArray[0].angle = 180;
                     newSlimeArray[1].angle = 0;
                 } else {
@@ -284,7 +284,7 @@ export class WallSlime extends Enemy {
             } else if (newSlimeArray.length === 3) {
                 newSlimeArray[0].texture = newSlimeArray[2].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
                 newSlimeArray[1].texture = RUEnemiesSpriteSheet["wall_slime_middle.png"];
-                if (this.pane === PANE.HORIZONTAL) {
+                if (this.pane === PLANE.HORIZONTAL) {
                     newSlimeArray[0].angle = 180;
                     newSlimeArray[1].angle = newSlimeArray[2].angle = 0;
                 } else {
@@ -298,7 +298,7 @@ export class WallSlime extends Enemy {
             } else if (newSlimeArray.length === 4) {
                 newSlimeArray[1].texture = newSlimeArray[2].texture = RUEnemiesSpriteSheet["wall_slime_middle.png"];
                 newSlimeArray[0].texture = newSlimeArray[3].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
-                if (this.pane === PANE.HORIZONTAL) {
+                if (this.pane === PLANE.HORIZONTAL) {
                     newSlimeArray[0].angle = 180;
                     newSlimeArray[2].angle = newSlimeArray[3].angle = 0;
                     newSlimeArray[1].angle = 180;
@@ -339,7 +339,7 @@ export class WallSlime extends Enemy {
         if (this.subSlimes.length % 2 === 1) return;
         if (this.subSlimes.length === 0) {
             this.angle = 0;
-        } else if (this.pane === PANE.VERTICAL) {
+        } else if (this.pane === PLANE.VERTICAL) {
             const sign = Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x);
             if (sign === 1) this.angle = 270;
             else if (sign === -1) this.angle = 90;
@@ -359,8 +359,8 @@ export class WallSlime extends Enemy {
     onMoveFrame() {
         if (!this.subSlimes) return;
         if (this.baseSlime) return;
-        if (this.pane === PANE.HORIZONTAL && this.subSlimes.length % 2 === 0 || this.subSlimes.length === 0) super.onMoveFrame();
-        else if (this.pane === PANE.HORIZONTAL && this.subSlimes.length % 2 === 1) {
+        if (this.pane === PLANE.HORIZONTAL && this.subSlimes.length % 2 === 0 || this.subSlimes.length === 0) super.onMoveFrame();
+        else if (this.pane === PLANE.HORIZONTAL && this.subSlimes.length % 2 === 1) {
             this.healthContainer.position.x = this.position.x - this.width / 2 - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 0) / 2 + 0 / 2;
             this.healthContainer.position.y = this.position.y + this.height * 0.5 + 10;
 

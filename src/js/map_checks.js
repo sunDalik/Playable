@@ -130,6 +130,7 @@ export function isEntity(tilePosX, tilePosY, role, type = null) {
 
 //boss room checks
 export function areWeInTheBossRoom() {
+    if (Game.experimentalFeatures) return false;
     return (Game.player.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player.tilePosition.y >= Game.endRoomBoundaries[0].y
         && Game.player.tilePosition.x <= Game.endRoomBoundaries[1].x && Game.player.tilePosition.y <= Game.endRoomBoundaries[1].y || Game.player.dead)
         && (Game.player2.tilePosition.x >= Game.endRoomBoundaries[0].x && Game.player2.tilePosition.y >= Game.endRoomBoundaries[0].y
