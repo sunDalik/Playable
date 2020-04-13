@@ -3,10 +3,10 @@ import {init2dArray} from "../utils/basic_utils";
 import {MAP_SYMBOLS, PLANE} from "../enums";
 import {Game} from "../game";
 import {expandLevel, outlineWallsWithSuperWalls} from "./generation_utils";
+import {shapers} from "./room_shapers";
 
-const minRoomSize = 6;
+const minRoomSize = 7;
 const minRoomArea = 54;
-const maxRoomSize = 10;
 let roomId = 0;
 let level;
 
@@ -15,6 +15,9 @@ export function generateExperimental() {
     const rooms = splitRoomAMAP({offsetX: 0, offsetY: 0, width: level[0].length, height: level.length, id: roomId++});
     for (const room of rooms) {
         outlineRoomWithWalls(room);
+        shapeRoom(room, randomChoice(shapers));
+        //shapeRoom(room, shapers[2]); //for testing
+        randomlyRotateRoom(room)
     }
 
     Game.startPos = {x: 3, y: 3};
@@ -113,6 +116,50 @@ function outlineRoomWithWalls(room) {
     }
 }
 
+function shapeRoom(room, shaper) {
+    for (let i = 1; i < room.height - 1; i++) {
+        for (let j = 1; j < room.width - 1; j++) {
+            if (shaper(j, i, room.width, room.height)) {
+                level[i + room.offsetY][j + room.offsetX] = MAP_SYMBOLS.WALL;
+            }
+        }
+    }
+}
+
+function randomlyRotateRoom(room) {
+    const transformOption = getRandomInt(0, 3);
+    switch (transformOption) {
+        case 1:
+            mirrorRoomHorizontally(room);
+            break;
+        case 2:
+            mirrorRoomVertically(room);
+            break;
+        case 3:
+            mirrorRoomVertically(room);
+            mirrorRoomHorizontally(room);
+            break;
+    }
+}
+
+function mirrorRoomVertically(room) {
+    const oldRoom = copyPartOf2dArray(level, room.offsetX, room.offsetY, room.width, room.height);
+    for (let i = 0; i < room.height; i++) {
+        for (let j = 0; j < room.width; j++) {
+            level[i + room.offsetY][j + room.offsetX] = oldRoom[room.height - 1 - i][j];
+        }
+    }
+}
+
+function mirrorRoomHorizontally(room) {
+    const oldRoom = copyPartOf2dArray(level, room.offsetX, room.offsetY, room.width, room.height);
+    for (let i = 0; i < room.height; i++) {
+        for (let j = 0; j < room.width; j++) {
+            level[i + room.offsetY][j + room.offsetX] = oldRoom[i][room.width - 1 - j];
+        }
+    }
+}
+
 function replaceNumbers() {
     for (let i = 0; i < level.length; i++) {
         for (let j = 0; j < level[0].length; j++) {
@@ -122,4 +169,12 @@ function replaceNumbers() {
                 level[i][j] = MAP_SYMBOLS.NONE;
         }
     }
+}
+
+function copyPartOf2dArray(array, offsetX, offsetY, width, height) {
+    const newArray = [];
+    for (let i = 0; i < height; i++) {
+        newArray[i] = array[i + offsetY].slice(offsetX, offsetX + width);
+    }
+    return newArray;
 }
