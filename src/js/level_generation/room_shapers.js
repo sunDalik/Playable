@@ -18,7 +18,7 @@ export const shapers = [
 
     //5. house-like hexagonal room
     (x, y, width, height) => {
-        return false; // doesnt work yet
+        return shapers[1](x, y, width, height); // doesnt work yet
         const halfSide = Math.ceil(Math.min(width, height) / 2);
         const thirdSide = Math.floor(Math.max(width, height) / 3);
         if (width < height) [x, y] = [y, x];

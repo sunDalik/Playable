@@ -19,9 +19,13 @@ export function generateExperimental() {
         //shapeRoom(room, shapers[2]); //for testing
         randomlyRotateRoom(room)
     }
-
-    Game.startPos = {x: 3, y: 3};
     replaceNumbers();
+    const bossRoom = findBossRoom(rooms);
+    clearShape(bossRoom);
+    const path = planPath(bossRoom, rooms);
+    clearShape(path[path.length - 1]); //starting room
+    drawPath(path);
+    Game.startPos = {x: 3, y: 3};
     level = expandLevel(level, 1, 1);
     outlineWallsWithSuperWalls(level);
     return level;
@@ -126,6 +130,14 @@ function shapeRoom(room, shaper) {
     }
 }
 
+function clearShape(room) {
+    for (let i = 1; i < room.height - 1; i++) {
+        for (let j = 1; j < room.width - 1; j++) {
+            level[i + room.offsetY][j + room.offsetX] = MAP_SYMBOLS.NONE;
+        }
+    }
+}
+
 function randomlyRotateRoom(room) {
     const transformOption = getRandomInt(0, 3);
     switch (transformOption) {
@@ -177,4 +189,119 @@ function copyPartOf2dArray(array, offsetX, offsetY, width, height) {
         newArray[i] = array[i + offsetY].slice(offsetX, offsetX + width);
     }
     return newArray;
+}
+
+function findBossRoom(rooms) {
+    let bossRoom = rooms[0];
+    for (const room of rooms) {
+        if (room.width >= room.height && room.width * room.height > bossRoom.width * bossRoom.height) bossRoom = room;
+    }
+    return bossRoom;
+}
+
+function planPath(startRoom, rooms) {
+    const maxPath = rooms.length * 0.6;
+    let path = [startRoom];
+    let attempt = 0;
+    while (path.length < maxPath) {
+        const nextRoom = randomChoice(getAdjacentRooms(path[path.length - 1], rooms).filter(r => path.indexOf(r) === -1));
+        if (nextRoom === undefined) {
+            if (attempt++ > 100 || path.length > 3) break;
+            else path = [startRoom];
+            continue;
+        }
+        path.push(nextRoom);
+    }
+    return path;
+}
+
+function getAdjacentRooms(room, rooms) {
+    const adjacentRooms = [];
+    for (const r of rooms) {
+        if (r === room) continue;
+        if (((r.offsetX === room.offsetX + room.width || room.offsetX === r.offsetX + r.width) && r.offsetY < room.offsetY + room.height - 2 && r.offsetY + r.height - 2 > room.offsetY)
+            || ((r.offsetY === room.offsetY + room.height || room.offsetY === r.offsetY + r.height) && r.offsetX < room.offsetX + room.width - 2 && r.offsetX + r.width - 2 > room.offsetX)) {
+            adjacentRooms.push(r);
+        }
+    }
+    return adjacentRooms;
+}
+
+function drawPath(path) {
+    for (let i = 0; i < path.length - 1; i++) {
+        const startRoom = path[i];
+        const endRoom = path[i + 1];
+        let adjacencyPlane; //defined by two points
+        if (startRoom.offsetX === endRoom.offsetX + endRoom.width)
+            adjacencyPlane = [{x: startRoom.offsetX, y: startRoom.offsetY + 1},
+                {x: startRoom.offsetX, y: startRoom.offsetY + startRoom.height - 2}];
+        else if (endRoom.offsetX === startRoom.offsetX + startRoom.width)
+            adjacencyPlane = [{x: endRoom.offsetX, y: endRoom.offsetY + 1},
+                {x: endRoom.offsetX, y: endRoom.offsetY + endRoom.height - 2}];
+        else if (startRoom.offsetY === endRoom.offsetY + endRoom.height)
+            adjacencyPlane = [{x: startRoom.offsetX + 1, y: startRoom.offsetY},
+                {x: startRoom.offsetX + startRoom.width - 2, y: startRoom.offsetY}];
+        else if (endRoom.offsetY === startRoom.offsetY + startRoom.height)
+            adjacencyPlane = [{x: endRoom.offsetX + 1, y: endRoom.offsetY},
+                {x: endRoom.offsetX + endRoom.width - 2, y: endRoom.offsetY}];
+
+        let primary, secondary; // adjacency plane spans across the primary axis. secondary axis doesnt change
+        if (adjacencyPlane[0].x === adjacencyPlane[1].x) {
+            primary = "y";
+            secondary = "x";
+        } else {
+            primary = "x";
+            secondary = "y";
+        }
+
+        let bestPoints = [adjacencyPlane[0][primary]];
+        let bestPenalty = 999;
+        for (let j = adjacencyPlane[0][primary] + 1; j <= adjacencyPlane[1][primary]; j++) {
+            if ((primary === "y" && j >= startRoom.offsetY + 1 && j <= startRoom.offsetY + startRoom.height - 2
+                && j >= endRoom.offsetY + 1 && j <= endRoom.offsetY + endRoom.height - 2)
+                || (primary === "x" && j >= startRoom.offsetX + 1 && j <= startRoom.offsetX + startRoom.width - 2
+                    && j >= endRoom.offsetX + 1 && j <= endRoom.offsetX + endRoom.width - 2)) {
+                let penalty = 0;
+                for (const sign of [-1, 1]) {
+                    for (let s = sign; ; s += sign) {
+                        const realS = adjacencyPlane[0][secondary] + s;
+                        if ((secondary === "y" && ((realS >= startRoom.offsetY && realS <= startRoom.offsetY + startRoom.height - 1)
+                            || (realS >= endRoom.offsetY && realS <= endRoom.offsetY + endRoom.height - 1)))
+                            || secondary === "x" && ((realS >= startRoom.offsetX && realS <= startRoom.offsetX + startRoom.width - 1)
+                                || (realS >= endRoom.offsetX && realS <= endRoom.offsetX + endRoom.width - 1))) {
+                            let checkTile;
+                            if (primary === "y") checkTile = level[j][realS];
+                            else checkTile = level[realS][j];
+                            if (checkTile === MAP_SYMBOLS.NONE) break;
+                            else penalty++;
+                        } else break;
+                    }
+                }
+                if (penalty < bestPenalty) {
+                    bestPenalty = penalty;
+                    bestPoints = [j];
+                } else if (penalty === bestPenalty) {
+                    bestPoints.push(j);
+                }
+            }
+        }
+        const bestPoint = randomChoice(bestPoints);
+        for (const sign of [-1, 1, 0]) {
+            for (let s = sign; ; s += sign) {
+                const realS = adjacencyPlane[0][secondary] + s;
+                if ((secondary === "y" && ((realS >= startRoom.offsetY && realS <= startRoom.offsetY + startRoom.height - 1)
+                    || (realS >= endRoom.offsetY && realS <= endRoom.offsetY + endRoom.height - 1)))
+                    || secondary === "x" && ((realS >= startRoom.offsetX && realS <= startRoom.offsetX + startRoom.width - 1)
+                        || (realS >= endRoom.offsetX && realS <= endRoom.offsetX + endRoom.width - 1))) {
+                    if (primary === "y") {
+                        if (level[bestPoint][realS] === MAP_SYMBOLS.WALL) level[bestPoint][realS] = MAP_SYMBOLS.NONE;
+                        else break;
+                    } else {
+                        if (level[realS][bestPoint] === MAP_SYMBOLS.WALL) level[realS][bestPoint] = MAP_SYMBOLS.NONE;
+                        else break;
+                    }
+                } else break;
+            }
+        }
+    }
 }
