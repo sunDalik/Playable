@@ -29,6 +29,8 @@ export function setupGenerator(settings) {
 
 }
 
+//todo add boss
+//todo add spiky wall traps
 export function generateExperimental() {
     level = initEmptyLevel();
     rooms = splitRoomAMAP(new Room(0, 0, level[0].length, level.length, roomId++));
@@ -489,7 +491,7 @@ function placeObelisk(room) {
     let attempt = 0;
     while (attempt++ < 200) {
         const point = {
-            x: randomInt(room.offsetX + 1, room.offsetX + room.width - 2),
+            x: randomInt(room.offsetX + 3, room.offsetX + room.width - 4),
             y: randomInt(room.offsetY + 1, room.offsetY + room.height - 4)
         };
         if (level[point.y][point.x].tileType === TILE_TYPE.NONE && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL

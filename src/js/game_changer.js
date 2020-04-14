@@ -30,7 +30,6 @@ import {SpikyShield} from "./classes/equipment/shields/spiky";
 import {StunningShield} from "./classes/equipment/shields/stunning";
 import {Game} from "./game";
 import {RARITY, STAGE} from "./enums";
-import * as rooms from "./rooms";
 import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
 import {BasicShield} from "./classes/equipment/shields/basic_shield";
@@ -92,20 +91,10 @@ export const BG_COLORS = {
 export function setVariablesForStage() {
     switch (Game.stage) {
         case STAGE.FLOODED_CAVE:
-            Game.normalRooms = rooms.FCNormalRooms;
-            Game.statueRooms = rooms.FCStatueRooms;
-            Game.obeliskRooms = rooms.FCObeliskRooms;
-            Game.chestRooms = rooms.FCChestRooms;
-            Game.bossRooms = rooms.FCBossRooms;
             Game.BGColor = BG_COLORS.FLOODED_CAVE;
             assignRarityChances(55, 88, 97); // 55% 33% 9% 3%
             break;
         case STAGE.DARK_TUNNEL:
-            Game.normalRooms = rooms.DTNormalRooms;
-            Game.statueRooms = rooms.DTStatueRooms;
-            Game.obeliskRooms = rooms.DTObeliskRooms;
-            Game.chestRooms = rooms.DTChestRooms;
-            Game.bossRooms = rooms.DTBossRooms;
             Game.BGColor = BG_COLORS.DARK_TUNNEL;
             assignRarityChances(22, 78, 94); // 22% 56% 16% 6%
             break;

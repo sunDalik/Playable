@@ -44,7 +44,7 @@ export function lightPlayerPosition(player) {
         lightWorld(px, py, roomDist);
     } else {
         const pathDist = 5;
-        const roomDist = 9;
+        const roomDist = 6; // was 9
         if (Game.map[py][px].tileType === TILE_TYPE.PATH) {
             lightWorld(px, py, pathDist);
         } else if (Game.map[py][px].tileType === TILE_TYPE.NONE) {
