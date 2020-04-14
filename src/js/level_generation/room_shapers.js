@@ -16,16 +16,8 @@ export const shapers = [
     (x, y, width, height) => x + y <= Math.ceil(Math.min(width, height) / 2)
         || ((width + height - 2) - (x + y)) <= Math.ceil(Math.min(width, height) / 2),
 
-    //5. house-like hexagonal room
-    (x, y, width, height) => {
-        return shapers[1](x, y, width, height); // doesnt work yet
-        const halfSide = Math.ceil(Math.min(width, height) / 2);
-        const thirdSide = Math.floor(Math.max(width, height) / 3);
-        if (width < height) [x, y] = [y, x];
-        const pos = x * halfSide / thirdSide + y;
-        return (y <= halfSide)
-            && (pos <= thirdSide || (width + height - 2) - pos <= thirdSide)
-    },
+    //5. 4 corner dots
+    (x, y, width, height) => Math.min(x, width - 1 - x) === 2 && Math.min(y, height - 1 - y) === 2,
 
     //6. 1-tile corners + random 2-tile corners
     (x, y, width, height) => (Math.min(x, width - 1 - x) + Math.min(y, height - 1 - y) <= 2)
@@ -107,6 +99,42 @@ export const comboShapers = [
 
     //10. T-shape + 2-tile corners
     (x, y, width, height) => shapers[10](x, y, width, height) || shapers[7](x, y, width, height),
+
+    //11. L-shape + 1-tile corners
+    (x, y, width, height) => shapers[2](x, y, width, height) || shapers[1](x, y, width, height),
+
+    //12. L-shape + 2-tile corners
+    (x, y, width, height) => shapers[2](x, y, width, height) || shapers[7](x, y, width, height),
+
+    //13. L-shape + random 2-tile corners
+    (x, y, width, height) => shapers[2](x, y, width, height) || shapers[6](x, y, width, height),
+
+    //14. L-shape + 4 corner dots
+    (x, y, width, height) => shapers[2](x, y, width, height) || shapers[5](x, y, width, height),
+
+    //15. 4 corner dots + bottom convex
+    (x, y, width, height) => shapers[5](x, y, width, height) || shapers[12](x, y, width, height),
+
+    //16. 4 corner dots + horizontal border
+    (x, y, width, height) => shapers[5](x, y, width, height) || shapers[13](x, y, width, height),
+
+    //17. 4 corner dots + two cut opposite corners
+    (x, y, width, height) => shapers[5](x, y, width, height) || shapers[4](x, y, width, height),
+
+    //18. 4 corner dots + T-shape
+    (x, y, width, height) => shapers[5](x, y, width, height) || shapers[10](x, y, width, height),
+
+    //19. 4 corner dots + ⊢-shape
+    (x, y, width, height) => shapers[5](x, y, width, height) || shapers[11](x, y, width, height),
+
+    //20. 4 corner dots + small rect ring
+    (x, y, width, height) => shapers[5](x, y, width, height) || shapers[14](x, y, width, height),
+
+    //21. 4 corner dots + 1-tile corners
+    (x, y, width, height) => shapers[5](x, y, width, height) || shapers[1](x, y, width, height),
+
+    //22. small rect ring + 2-tile corners
+    (x, y, width, height) => shapers[14](x, y, width, height) || shapers[7](x, y, width, height),
 ];
 
 export const startingRoomShaper = (x, y, width, height) => Math.min(x, width - 1 - x) < (width - 7) / 2

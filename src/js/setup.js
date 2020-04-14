@@ -12,7 +12,7 @@ import {drawHUD, drawInteractionKeys, drawMovementKeyBindings, redrawSpeedRunTim
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
-import {get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
+import {get8Directions, get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
 import {cleanGameState, kiss, speedrunTimer, swapEquipmentWithPlayer} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
@@ -26,6 +26,7 @@ import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
 import {WhitePlayer} from "./classes/players/player_white";
 import {BlackPlayer} from "./classes/players/player_black";
+import {isNotOutOfMap} from "./map_checks";
 
 const cinematic = false;
 
@@ -83,7 +84,7 @@ export function setupGame() {
         Game.TILESIZE = 100;
         HUD.visible = false;
     }
-    //Game.TILESIZE = 40;
+    //Game.TILESIZE = 20;
     Game.state = GAME_STATE.PLAYING;
     Game.world = new World();
     Game.app.stage.addChild(Game.world);
@@ -169,7 +170,10 @@ export function initializeLevel() {
     if (Game.stage === STAGE.RUINS) {
         //lightAll();
     }
-    if (Game.experimentalFeatures) lightAll();
+    if (Game.experimentalFeatures) {
+        lightAllRealistic();
+        camera.setup(Game.world.width / 2, Game.world.height / 2);
+    }
 }
 
 function initPlayers() {
@@ -231,6 +235,22 @@ function lightAll() {
         for (let j = 0; j < Game.map[0].length; j++) {
             if (Game.map[i][j].tileType !== TILE_TYPE.VOID)
                 lightTile(j, i);
+        }
+    }
+}
+
+function lightAllRealistic() {
+    for (let i = 0; i < Game.map.length; i++) {
+        for (let j = 0; j < Game.map[0].length; j++) {
+            if (![TILE_TYPE.VOID, TILE_TYPE.SUPER_WALL].includes(Game.map[i][j].tileType)) {
+                if ([TILE_TYPE.WALL].includes(Game.map[i][j].tileType)) {
+                    for (const dir of get8Directions()) {
+                        if (![TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[i + dir.y][j + dir.x].tileType)) {
+                            lightTile(j, i)
+                        }
+                    }
+                } else lightTile(j, i);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-import {randomInt, randomChoice} from "../utils/random_utils";
+import {randomChoice, randomInt} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
 import {LEVEL_SYMBOLS, PLANE, TILE_TYPE} from "../enums";
 import {Game} from "../game";
@@ -8,6 +8,10 @@ import {WallTile} from "../classes/draw/wall";
 import {SuperWallTile} from "../classes/draw/super_wall";
 import {TileElement} from "../classes/tile_elements/tile_element";
 import {CommonSpriteSheet} from "../loader";
+import {Room, ROOM_TYPE} from "./room";
+import {Chest} from "../classes/inanimate_objects/chest";
+import {getRandomChestDrop, getRandomWeapon} from "../utils/pool_utils";
+import {Statue} from "../classes/inanimate_objects/statue";
 
 const minRoomSize = 7;
 const minRoomArea = 54;
@@ -15,25 +19,30 @@ let roomId = 0;
 let level;
 let rooms;
 
-//todo add local class Room
 export function generateExperimental() {
     level = initEmptyLevel();
-    rooms = splitRoomAMAP({offsetX: 0, offsetY: 0, width: level[0].length, height: level.length, id: roomId++});
+    rooms = splitRoomAMAP(new Room(0, 0, level[0].length, level.length, roomId++));
     for (const room of rooms) {
         outlineRoomWithWalls(room);
-        if (Math.random() > 0.5) shapeRoom(room, randomChoice(comboShapers));
+        if (Math.random() > 0.4) shapeRoom(room, randomChoice(comboShapers));
         else shapeRoom(room, randomChoice(shapers));
-        //shapeRoom(room, shapers[2]); //for testing
+        //shapeRoom(room, shapers[5]); //for testing
+        //shapeRoom(room, randomChoice(shapers)); //for testing
         randomlyRotateRoom(room)
     }
     replaceNumbers();
     const bossRoom = findBossRoom();
     clearShape(bossRoom);
     const path = planPath(bossRoom);
+
     const startRoom = path[path.length - 1];
     reshapeRoom(startRoom, startingRoomShaper);
     drawPath(path);
+    path.forEach(r => r.type = ROOM_TYPE.MAIN);
+    bossRoom.type = ROOM_TYPE.BOSS;
+    startRoom.type = ROOM_TYPE.START;
     const unconnectedRooms = rooms.filter(room => !path.includes(room));
+    unconnectedRooms.forEach(r => r.type = ROOM_TYPE.SECONDARY);
     let attempt = 0;
     while (unconnectedRooms.length > 1) {
         const room = randomChoice(unconnectedRooms);
@@ -46,8 +55,9 @@ export function generateExperimental() {
         }
     }
     const secretRoom = unconnectedRooms[0];
+    secretRoom.type = ROOM_TYPE.SECRET;
     reshapeRoom(secretRoom, shapers[1]);
-    level = expandLevelAndRooms( 1, 1);
+    level = expandLevelAndRooms(1, 1);
     outlineWallsWithSuperWalls(level);
 
     //level shaping is finished
@@ -92,27 +102,17 @@ function divideRoom(offsetX, offsetY, width, height) {
         const dividerY = dividingPlane === PLANE.HORIZONTAL ? randomInt(minRoomSize - 1, height - minRoomSize - 1) : -1;
         let rooms = [];
         if (dividingPlane === PLANE.HORIZONTAL) {
-            rooms[0] = {offsetX: offsetX, offsetY: offsetY, width: width, height: dividerY + 1};
-            rooms[1] = {
-                offsetX: offsetX,
-                offsetY: offsetY + rooms[0].height,
-                width: width,
-                height: height - rooms[0].height
-            };
+            rooms[0] = new Room(offsetX, offsetY, width, dividerY + 1);
+            rooms[1] = new Room(offsetX, offsetY + rooms[0].height, width, height - rooms[0].height);
         } else {
-            rooms[0] = {offsetX: offsetX, offsetY: offsetY, width: dividerX + 1, height: height};
-            rooms[1] = {
-                offsetX: offsetX + rooms[0].width,
-                offsetY: offsetY,
-                width: width - rooms[0].width,
-                height: height
-            };
+            rooms[0] = new Room(offsetX, offsetY, dividerX + 1, height);
+            rooms[1] = new Room(offsetX + rooms[0].width, offsetY, width - rooms[0].width, height);
         }
 
         if (isRoomGood(rooms[0].width, rooms[0].height) && isRoomGood(rooms[1].width, rooms[1].height)) {
             for (let i = 0; i < 2; i++) {
                 rooms[i].id = roomId++;
-                assignRoom(rooms[i].offsetX, rooms[i].offsetY, rooms[i].width, rooms[i].height, rooms[i].id);
+                assignRoom(rooms[i]);
             }
             return rooms;
         }
@@ -120,10 +120,11 @@ function divideRoom(offsetX, offsetY, width, height) {
     return null;
 }
 
-function assignRoom(offsetX, offsetY, width, height, id = roomId) {
-    for (let i = offsetY; i < offsetY + height; i++) {
-        for (let j = offsetX; j < offsetX + width; j++) {
-            level[i][j] = id;
+//I forgot... do I even need it?
+function assignRoom(room) {
+    for (let i = room.offsetY; i < room.offsetY + room.height; i++) {
+        for (let j = room.offsetX; j < room.offsetX + room.width; j++) {
+            level[i][j] = room.id;
         }
     }
 }
@@ -227,7 +228,7 @@ function copyPartOf2dArray(array, offsetX, offsetY, width, height) {
 function findBossRoom() {
     let bossRoom = rooms[0];
     for (const room of rooms) {
-        if (room.width >= room.height && area(room) > area(bossRoom)) bossRoom = room;
+        if (room.width >= room.height && room.area() > bossRoom.area()) bossRoom = room;
     }
     return bossRoom;
 }
@@ -339,10 +340,6 @@ function drawPath(path) {
     }
 }
 
-function area(room) {
-    return room.width * room.height;
-}
-
 function replaceStringsWithObjects() {
     const map = [];
     for (let i = 0; i < level.length; ++i) {
@@ -402,6 +399,77 @@ function expandLevelAndRooms(expandX, expandY) {
 }
 
 function generateInanimates() {
+    const obelisksNumber = 1;
+    const statuesNumber = randomInt(1, 2);
+    const chestsNumber = 4 - statuesNumber;
+    placeInanimate(placeChest, chestsNumber);
+    placeInanimate(placeStatue, statuesNumber);
+    //placeInanimate(placeObelisk, obelisksNumber);
+}
+
+function placeInanimate(placeMethod, amount) {
+    const mainRooms = rooms.filter(r => r.type === ROOM_TYPE.MAIN);
+    const secondaryRooms = rooms.filter(r => r.type === ROOM_TYPE.SECONDARY);
+    let attempt = 0;
+    for (let i = 0; i < amount; i++) {
+        attempt = 0;
+        while (attempt++ < 200) {
+            const room = Math.random() < 0.4 ? randomChoice(mainRooms) : randomChoice(secondaryRooms);
+            if (placeMethod(room)) break;
+        }
+    }
+}
+
+function placeChest(room) {
+    let attempt = 0;
+    while (attempt++ < 200) {
+        const point = {
+            x: randomInt(room.offsetX + 1, room.offsetX + room.width - 2),
+            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 3)
+        };
+        if (level[point.y][point.x].tileType === TILE_TYPE.NONE
+            && level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
+            && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL) {
+            ensureInanimateSurroundings(point.x, point.y);
+            level[point.y][point.x].entity = new Chest(point.x, point.y, getRandomChestDrop());
+            return true;
+        }
+    }
+    return false;
+}
+
+function ensureInanimateSurroundings(x, y) {
+    if (level[y][x - 1].tileType === TILE_TYPE.NONE && level[y + 1][x - 1].tileType === TILE_TYPE.WALL) {
+        level[y + 1][x - 1].tileType = TILE_TYPE.NONE;
+        level[y + 1][x - 1].tile = null;
+    }
+    if (level[y][x + 1].tileType === TILE_TYPE.NONE && level[y + 1][x + 1].tileType === TILE_TYPE.WALL) {
+        level[y + 1][x + 1].tileType = TILE_TYPE.NONE;
+        level[y + 1][x + 1].tile = null;
+    }
+}
+
+function placeStatue(room) {
+    let attempt = 0;
+    while (attempt++ < 200) {
+        const point = {
+            x: randomInt(room.offsetX + 1, room.offsetX + room.width - 2),
+            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 3)
+        };
+        if (level[point.y][point.x].tileType === TILE_TYPE.NONE
+            && level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
+            && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL) {
+            ensureInanimateSurroundings(point.x, point.y);
+            if (Game.weaponPool.length > 0) {
+                level[point.y][point.x].entity = new Statue(point.x, point.y, getRandomWeapon());
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+function placeObelisk(room) {
 
 }
 
