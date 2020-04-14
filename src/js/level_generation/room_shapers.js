@@ -63,3 +63,39 @@ export const shapers = [
     //13. horizontal border with a gap
     (x, y, width, height) => Math.min(x, width - 1 - x) < width / 2 - 1 && (y === Math.round((height - 1) / 2)),
 ];
+
+//this array contains approved shaper combos
+export const comboShapers = [
+    //0. rect ring + 1-tile corners
+    (x, y, width, height) => shapers[8](x, y, width, height) || shapers[1](x, y, width, height),
+
+    //1. cut corner + random 2-tile corners
+    (x, y, width, height) => shapers[3](x, y, width, height) || shapers[6](x, y, width, height),
+
+    //2. bottom convex + 1-tile corners
+    (x, y, width, height) => shapers[12](x, y, width, height) || shapers[1](x, y, width, height),
+
+    //3. bottom convex + two cut corners on opposite sides
+    (x, y, width, height) => shapers[12](x, y, width, height) || shapers[4](x, y, width, height),
+
+    //4. horizontal border with gap + 1-tile corners
+    (x, y, width, height) => shapers[13](x, y, width, height) || shapers[1](x, y, width, height),
+
+    //5. horizontal border with gap + random 2-tile corners
+    (x, y, width, height) => shapers[13](x, y, width, height) || shapers[6](x, y, width, height),
+
+    //6. two cut corners on opposite sides + 1-tile corners
+    (x, y, width, height) => shapers[4](x, y, width, height) || shapers[1](x, y, width, height),
+
+    //7. T-shape + 1-tile corners
+    (x, y, width, height) => shapers[10](x, y, width, height) || shapers[1](x, y, width, height),
+
+    //8. rect ring + random 2-tile corners
+    (x, y, width, height) => shapers[8](x, y, width, height) || shapers[6](x, y, width, height),
+
+    //9. T-shape + random 2-tile corners
+    (x, y, width, height) => shapers[10](x, y, width, height) || shapers[6](x, y, width, height),
+
+    //10. T-shape + 2-tile corners
+    (x, y, width, height) => shapers[10](x, y, width, height) || shapers[7](x, y, width, height),
+];

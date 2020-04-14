@@ -3,7 +3,7 @@ import {init2dArray} from "../utils/basic_utils";
 import {MAP_SYMBOLS, PLANE} from "../enums";
 import {Game} from "../game";
 import {expandLevel, outlineWallsWithSuperWalls} from "./generation_utils";
-import {shapers} from "./room_shapers";
+import {comboShapers, shapers} from "./room_shapers";
 
 const minRoomSize = 7;
 const minRoomArea = 54;
@@ -15,7 +15,8 @@ export function generateExperimental() {
     const rooms = splitRoomAMAP({offsetX: 0, offsetY: 0, width: level[0].length, height: level.length, id: roomId++});
     for (const room of rooms) {
         outlineRoomWithWalls(room);
-        shapeRoom(room, randomChoice(shapers));
+        if (area(room) > 80 && Math.random() > 0.5) shapeRoom(room, randomChoice(comboShapers));
+        else shapeRoom(room, randomChoice(shapers));
         //shapeRoom(room, shapers[2]); //for testing
         randomlyRotateRoom(room)
     }
@@ -304,4 +305,8 @@ function drawPath(path) {
             }
         }
     }
+}
+
+function area(room) {
+    return room.width * room.height;
 }

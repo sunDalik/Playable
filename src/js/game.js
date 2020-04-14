@@ -96,4 +96,4 @@ Game.destroyParticles = [];
 Game.achievementPopUpQueue = [];
 
 
-Game.experimentalFeatures = false;
+Game.experimentalFeatures = true;
