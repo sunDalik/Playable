@@ -1,5 +1,5 @@
 import {copy2dArray, init2dArray} from "../utils/basic_utils";
-import {MAP_SYMBOLS} from "../enums";
+import {LEVEL_SYMBOLS} from "../enums";
 import {get8Directions} from "../utils/map_utils";
 import {getRandomInt} from "../utils/random_utils";
 import PF from "../../../bower_components/pathfinding/pathfinding-browser";
@@ -38,7 +38,7 @@ export function expandLevel(level, expandX, expandY) {
         expandedLevel[i] = [];
         for (let j = 0; j < level[0].length + expandX * 2; ++j) {
             if (i < expandY || j < expandX || i >= level.length + expandY || j >= level[0].length + expandX) {
-                expandedLevel[i][j] = MAP_SYMBOLS.VOID;
+                expandedLevel[i][j] = LEVEL_SYMBOLS.VOID;
             } else {
                 expandedLevel[i][j] = level[i - expandY][j - expandX];
             }
@@ -50,10 +50,10 @@ export function expandLevel(level, expandX, expandY) {
 export function outlinePathsWithWalls(level) {
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 1; j < level[0].length - 1; ++j) {
-            if (level[i][j] === MAP_SYMBOLS.PATH || level[i][j] === MAP_SYMBOLS.ENTRY) {
+            if (level[i][j] === LEVEL_SYMBOLS.PATH || level[i][j] === LEVEL_SYMBOLS.ENTRY) {
                 for (const dir of get8Directions()) {
-                    if (level[i + dir.y][j + dir.x] === MAP_SYMBOLS.VOID) {
-                        level[i + dir.y][j + dir.x] = MAP_SYMBOLS.WALL
+                    if (level[i + dir.y][j + dir.x] === LEVEL_SYMBOLS.VOID) {
+                        level[i + dir.y][j + dir.x] = LEVEL_SYMBOLS.WALL
                     }
                 }
             }
@@ -65,10 +65,10 @@ export function outlineWallsWithWalls(level) {
     const placedWalls = init2dArray(level.length, level[0].length, false);
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 1; j < level[0].length - 1; ++j) {
-            if (level[i][j] === MAP_SYMBOLS.WALL && placedWalls[i][j] === false) {
+            if (level[i][j] === LEVEL_SYMBOLS.WALL && placedWalls[i][j] === false) {
                 for (const dir of get8Directions()) {
-                    if (level[i + dir.y][j + dir.x] === MAP_SYMBOLS.VOID) {
-                        level[i + dir.y][j + dir.x] = MAP_SYMBOLS.WALL;
+                    if (level[i + dir.y][j + dir.x] === LEVEL_SYMBOLS.VOID) {
+                        level[i + dir.y][j + dir.x] = LEVEL_SYMBOLS.WALL;
                         placedWalls[i + dir.y][j + dir.x] = true;
                     }
                 }
@@ -80,10 +80,10 @@ export function outlineWallsWithWalls(level) {
 export function outlineWallsWithSuperWalls(level) {
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 1; j < level[0].length - 1; ++j) {
-            if (level[i][j] === MAP_SYMBOLS.WALL) {
+            if (level[i][j] === LEVEL_SYMBOLS.WALL) {
                 for (const dir of get8Directions()) {
-                    if (level[i + dir.y][j + dir.x] === MAP_SYMBOLS.VOID) {
-                        level[i + dir.y][j + dir.x] = MAP_SYMBOLS.SUPER_WALL
+                    if (level[i + dir.y][j + dir.x] === LEVEL_SYMBOLS.VOID) {
+                        level[i + dir.y][j + dir.x] = LEVEL_SYMBOLS.SUPER_WALL
                     }
                 }
             }
@@ -94,19 +94,19 @@ export function outlineWallsWithSuperWalls(level) {
 export function connectDiagonalPaths(level) {
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 0; j < level[0].length - 1; ++j) {
-            if (level[i][j] === MAP_SYMBOLS.PATH) {
-                if (level[i - 1][j + 1] === MAP_SYMBOLS.PATH) {
+            if (level[i][j] === LEVEL_SYMBOLS.PATH) {
+                if (level[i - 1][j + 1] === LEVEL_SYMBOLS.PATH) {
                     let randomWall = getRandomInt(0, 1);
-                    if (level[i - 1][j] === MAP_SYMBOLS.WALL && level[i][j + 1] === MAP_SYMBOLS.WALL) {
-                        if (randomWall === 0) level[i - 1][j] = MAP_SYMBOLS.PATH;
-                        else level[i][j + 1] = MAP_SYMBOLS.PATH;
+                    if (level[i - 1][j] === LEVEL_SYMBOLS.WALL && level[i][j + 1] === LEVEL_SYMBOLS.WALL) {
+                        if (randomWall === 0) level[i - 1][j] = LEVEL_SYMBOLS.PATH;
+                        else level[i][j + 1] = LEVEL_SYMBOLS.PATH;
                     }
                 }
-                if (level[i + 1][j + 1] === MAP_SYMBOLS.PATH) {
+                if (level[i + 1][j + 1] === LEVEL_SYMBOLS.PATH) {
                     let randomWall = getRandomInt(0, 1);
-                    if (level[i + 1][j] === MAP_SYMBOLS.WALL && level[i][j + 1] === MAP_SYMBOLS.WALL) {
-                        if (randomWall === 0) level[i + 1][j] = MAP_SYMBOLS.PATH;
-                        else level[i][j + 1] = MAP_SYMBOLS.PATH;
+                    if (level[i + 1][j] === LEVEL_SYMBOLS.WALL && level[i][j + 1] === LEVEL_SYMBOLS.WALL) {
+                        if (randomWall === 0) level[i + 1][j] = LEVEL_SYMBOLS.PATH;
+                        else level[i][j + 1] = LEVEL_SYMBOLS.PATH;
                     }
                 }
             }
@@ -115,23 +115,23 @@ export function connectDiagonalPaths(level) {
 }
 
 //entries format = [{x: 1, y:3}, {x:4, y:2} ... ]
-export function createRoom(width, height, entries, wallSymbol = MAP_SYMBOLS.WALL) {
+export function createRoom(width, height, entries, wallSymbol = LEVEL_SYMBOLS.WALL) {
     let room = [];
     for (let i = 0; i < height; ++i) {
         room[i] = [];
         for (let j = 0; j < width; ++j) {
             if (j === 0 || j === width - 1 || i === 0 || i === height - 1) {
                 room[i][j] = wallSymbol;
-            } else room[i][j] = MAP_SYMBOLS.NONE;
+            } else room[i][j] = LEVEL_SYMBOLS.NONE;
 
             //for tests
             /*if (j === width - 2 && i === height - 2) {
-                room[i][j] = MAP_SYMBOLS.STATUE;
+                room[i][j] = LEVEL_SYMBOLS.STATUE;
             }*/
 
             for (const entry of entries) {
                 if (i === entry.y && j === entry.x) {
-                    room[i][j] = MAP_SYMBOLS.ENTRY;
+                    room[i][j] = LEVEL_SYMBOLS.ENTRY;
                 }
             }
         }
@@ -148,7 +148,7 @@ export function removeGarbage(level) {
     function removeRight() {
         for (let j = level[0].length - 1; j > 0; j--) {
             for (let i = 0; i < level.length; i++) {
-                if (level[i][j] !== MAP_SYMBOLS.VOID) return;
+                if (level[i][j] !== LEVEL_SYMBOLS.VOID) return;
             }
             for (let i = 0; i < level.length; i++) {
                 level[i].pop();
@@ -159,7 +159,7 @@ export function removeGarbage(level) {
     function removeBottom() {
         for (let i = level.length - 1; i > 0; i--) {
             for (let j = 0; j < level[0].length; j++) {
-                if (level[i][j] !== MAP_SYMBOLS.VOID) return;
+                if (level[i][j] !== LEVEL_SYMBOLS.VOID) return;
             }
             level.pop();
         }
@@ -168,7 +168,7 @@ export function removeGarbage(level) {
     function removeTop() {
         for (let i = 0; i < level.length; i++) {
             for (let j = 0; j < level[0].length; j++) {
-                if (level[i][j] !== MAP_SYMBOLS.VOID) return;
+                if (level[i][j] !== LEVEL_SYMBOLS.VOID) return;
             }
             level.shift();
         }
@@ -177,7 +177,7 @@ export function removeGarbage(level) {
     function removeLeft() {
         for (let j = 0; j < level[0].length; j++) {
             for (let i = 0; i < level.length; i++) {
-                if (level[i][j] !== MAP_SYMBOLS.VOID) return;
+                if (level[i][j] !== LEVEL_SYMBOLS.VOID) return;
             }
             for (let i = 0; i < level.length; i++) {
                 level[i].shift();
@@ -193,7 +193,7 @@ export function getLevelPlayerGraph(level) {
     for (let i = 0; i < level.length; ++i) {
         levelWithPlayerWeights[i] = [];
         for (let j = 0; j < level[0].length; ++j) {
-            if (level[i][j] === MAP_SYMBOLS.VOID || level[i][j] === MAP_SYMBOLS.WALL) {
+            if (level[i][j] === LEVEL_SYMBOLS.VOID || level[i][j] === LEVEL_SYMBOLS.WALL) {
                 levelWithPlayerWeights[i][j] = 1;
             } else {
                 levelWithPlayerWeights[i][j] = 0;

@@ -4,7 +4,7 @@ import {camera} from "./classes/game/camera";
 import {loadAll} from "./loader";
 import {ACHIEVEMENT_ID, GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums";
 import {generateLevel} from "./level_generation/level_generation";
-import {assignDrops, calculateDetectionGraph, generateMap} from "./map_generation";
+import {assignDrops, calculateDetectionGraph} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
@@ -17,7 +17,6 @@ import {cleanGameState, kiss, speedrunTimer, swapEquipmentWithPlayer} from "./ga
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";
-import {getLevelPlayerGraph} from "./level_generation/generation_utils";
 import {Torch} from "./classes/equipment/tools/torch";
 import {setupSuperHud, SUPER_HUD} from "./drawing/super_hud";
 import {removeObjectFromArray} from "./utils/basic_utils";
@@ -109,11 +108,8 @@ export function setupGame() {
 
 export function initializeLevel() {
     setVariablesForStage();
-    const level = generateLevel();
-    Game.map = generateMap(level);
-    Game.level = level;
+    Game.map = generateLevel();
     calculateDetectionGraph(Game.map);
-    Game.levelGraph = getLevelPlayerGraph(level);
     if (!Game.player.dead) {
         Game.player.tilePosition.set(Game.startPos.x, Game.startPos.y);
         Game.player.place();

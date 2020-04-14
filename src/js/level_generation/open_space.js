@@ -1,5 +1,5 @@
 import {Game} from "../game";
-import {MAP_SYMBOLS} from "../enums";
+import {LEVEL_SYMBOLS} from "../enums";
 import {getRandomInt, randomArrayIndex, randomChoice, randomChoiceSeveral} from "../utils/random_utils";
 import {
     createRoom,
@@ -52,7 +52,7 @@ export function generateOpenSpaceLevel() {
         if (startRoomY + 1 <= (levelRoomHeight + 1) / 2) endingRoomEntry = {x: Math.floor(endingRoomWidth / 2), y: 0};
         else endingRoomEntry = {x: Math.floor(endingRoomWidth / 2), y: endingRoomHeight - 1};
 
-        levelRooms[endingRoomI][endingRoomEntry.y][endingRoomEntry.x] = MAP_SYMBOLS.ENTRY;
+        levelRooms[endingRoomI][endingRoomEntry.y][endingRoomEntry.x] = LEVEL_SYMBOLS.ENTRY;
     }
 
     //determining statue rooms indexes
@@ -104,9 +104,9 @@ export function generateOpenSpaceLevel() {
             const height = getRandomInt(7, 9);
             const enemies = randomChoiceSeveral(getRoomInsideArray(width, height), getRandomInt(3, 5));
             for (const enemy of enemies) {
-                enemy.symbol = randomChoice([MAP_SYMBOLS.PING_PONG_BUDDIES, MAP_SYMBOLS.WALL_SLIME, MAP_SYMBOLS.LIZARD_WARRIOR, MAP_SYMBOLS.MUD_MAGE, MAP_SYMBOLS.TELEPORT_MAGE])
+                enemy.symbol = randomChoice([LEVEL_SYMBOLS.PING_PONG_BUDDIES, LEVEL_SYMBOLS.WALL_SLIME, LEVEL_SYMBOLS.LIZARD_WARRIOR, LEVEL_SYMBOLS.MUD_MAGE, LEVEL_SYMBOLS.TELEPORT_MAGE])
             }
-            levelRooms[i] = createRoomWithEnemies(width, height, enemies, MAP_SYMBOLS.NONE);
+            levelRooms[i] = createRoomWithEnemies(width, height, enemies, LEVEL_SYMBOLS.NONE);
             continue;
 
             let room;
@@ -147,7 +147,7 @@ export function generateOpenSpaceLevel() {
     let startRoomHeight;
     startRoomWidth = getRandomInt(5, 7);
     startRoomHeight = getRandomInt(5, 7);
-    levelRooms[startRoomI] = createRoom(startRoomWidth, startRoomHeight, [], MAP_SYMBOLS.NONE);
+    levelRooms[startRoomI] = createRoom(startRoomWidth, startRoomHeight, [], LEVEL_SYMBOLS.NONE);
 
     //calculating max width and total height of the level
     let levelTileWidths = [];
@@ -172,7 +172,7 @@ export function generateOpenSpaceLevel() {
 
     const levelTileWidth = Math.max(...levelTileWidths) + maxRandRoomOffset * levelRoomWidth + 2;
     const levelTileHeight = arraySum(levelTileHeights) + maxRandRoomOffset * levelRoomHeight + 2;
-    level = init2dArray(levelTileHeight, levelTileWidth, MAP_SYMBOLS.PATH);
+    level = init2dArray(levelTileHeight, levelTileWidth, LEVEL_SYMBOLS.PATH);
 
     let previousX = 0;
     let previousY = 0;
@@ -191,23 +191,23 @@ export function generateOpenSpaceLevel() {
         if (r === startRoomI) {
             const startPositionX = Math.floor((startRoomWidth - 2) / 2) + 1;
             const startPositionY = Math.floor((startRoomHeight - 2) / 2) + 1;
-            currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;
+            currentRoom[startPositionY][startPositionX] = LEVEL_SYMBOLS.START;
 
         } else if (r === endingRoomI) {
-            currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = MAP_SYMBOLS.EXIT;
+            currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = LEVEL_SYMBOLS.EXIT;
 
             const startPositionX = Math.floor(endingRoomWidth / 2) - 2; //for tests
             const startPositionY = Math.floor(endingRoomHeight / 2) - 2;
-            //currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;
+            //currentRoom[startPositionY][startPositionX] = LEVEL_SYMBOLS.START;
 
-            currentRoom[0][0] += ":" + MAP_SYMBOLS.END_ROOM_BOUNDARY;
-            currentRoom[endingRoomHeight - 1][endingRoomWidth - 1] += ":" + MAP_SYMBOLS.END_ROOM_BOUNDARY;
+            currentRoom[0][0] += ":" + LEVEL_SYMBOLS.END_ROOM_BOUNDARY;
+            currentRoom[endingRoomHeight - 1][endingRoomWidth - 1] += ":" + LEVEL_SYMBOLS.END_ROOM_BOUNDARY;
 
             if (false && bossAreas.includes(Game.stage)) {
                 if (endingRoomEntry.y === 0) {
-                    level[startY + endingRoomHeight][startX + endingRoomEntry.x] = MAP_SYMBOLS.BOSS_EXIT;
+                    level[startY + endingRoomHeight][startX + endingRoomEntry.x] = LEVEL_SYMBOLS.BOSS_EXIT;
                 } else if (endingRoomEntry.y === endingRoomHeight - 1) {
-                    level[startY - 1][startX + endingRoomEntry.x] = MAP_SYMBOLS.BOSS_EXIT;
+                    level[startY - 1][startX + endingRoomEntry.x] = LEVEL_SYMBOLS.BOSS_EXIT;
                 }
             }
         }
@@ -228,10 +228,10 @@ export function generateOpenSpaceLevel() {
 function outlineLevelWithWalls(level) {
     for (let i = 1; i < level.length - 1; ++i) {
         for (let j = 1; j < level[0].length - 1; ++j) {
-            if (level[i][j] === MAP_SYMBOLS.NONE || level[i][j] === MAP_SYMBOLS.PATH) {
+            if (level[i][j] === LEVEL_SYMBOLS.NONE || level[i][j] === LEVEL_SYMBOLS.PATH) {
                 for (const dir of get8Directions()) {
-                    if (level[i + dir.y][j + dir.x] === MAP_SYMBOLS.VOID) {
-                        level[i + dir.y][j + dir.x] = MAP_SYMBOLS.WALL
+                    if (level[i + dir.y][j + dir.x] === LEVEL_SYMBOLS.VOID) {
+                        level[i + dir.y][j + dir.x] = LEVEL_SYMBOLS.WALL
                     }
                 }
             }
@@ -249,14 +249,14 @@ function getRoomInsideArray(width, height) {
     return inside;
 }
 
-function createRoomWithEnemies(width, height, enemies, wallSymbol = MAP_SYMBOLS.NONE) {
+function createRoomWithEnemies(width, height, enemies, wallSymbol = LEVEL_SYMBOLS.NONE) {
     let room = [];
     for (let i = 0; i < height; ++i) {
         room[i] = [];
         for (let j = 0; j < width; ++j) {
             if (j === 0 || j === width - 1 || i === 0 || i === height - 1) {
                 room[i][j] = wallSymbol;
-            } else room[i][j] = MAP_SYMBOLS.NONE;
+            } else room[i][j] = LEVEL_SYMBOLS.NONE;
 
             for (const enemy of enemies) {
                 if (i === enemy.y && j === enemy.x) {

@@ -3,7 +3,7 @@ import {Game} from "../game"
 import PF from "../../../bower_components/pathfinding/pathfinding-browser";
 
 import {arraySum, copy2dArray, init2dArray, removeObjectFromArray} from "../utils/basic_utils";
-import {MAP_SYMBOLS, STAGE} from "../enums";
+import {LEVEL_SYMBOLS, STAGE} from "../enums";
 import {getRandomInt, randomArrayIndex, randomChoice, randomShuffle} from "../utils/random_utils";
 import {
     connectDiagonalPaths,
@@ -80,7 +80,7 @@ export function generateEntryBasedLevel() {
         if (startRoomY + 1 <= (levelRoomHeight + 1) / 2) endingRoomEntry = {x: Math.floor(endingRoomWidth / 2), y: 0};
         else endingRoomEntry = {x: Math.floor(endingRoomWidth / 2), y: endingRoomHeight - 1};
 
-        levelRooms[endingRoomI][endingRoomEntry.y][endingRoomEntry.x] = MAP_SYMBOLS.ENTRY;
+        levelRooms[endingRoomI][endingRoomEntry.y][endingRoomEntry.x] = LEVEL_SYMBOLS.ENTRY;
     }
 
     //determining statue rooms indexes
@@ -171,7 +171,7 @@ export function generateEntryBasedLevel() {
         if (levelRooms[r]) {
             for (let i = 0; i < levelRooms[r].length; ++i) {
                 for (let j = 0; j < levelRooms[r][0].length; ++j) {
-                    if (levelRooms[r][i][j] === MAP_SYMBOLS.ENTRY) entryCount++;
+                    if (levelRooms[r][i][j] === LEVEL_SYMBOLS.ENTRY) entryCount++;
                 }
             }
         }
@@ -258,7 +258,7 @@ export function generateEntryBasedLevel() {
 
     const levelTileWidth = Math.max(...levelTileWidths) + maxRandRoomOffset * levelRoomWidth + 2;
     const levelTileHeight = arraySum(levelTileHeights) + maxRandRoomOffset * levelRoomHeight + 2;
-    level = init2dArray(levelTileHeight, levelTileWidth, MAP_SYMBOLS.VOID);
+    level = init2dArray(levelTileHeight, levelTileWidth, LEVEL_SYMBOLS.VOID);
 
     let previousX = 0;
     let previousY = 0;
@@ -278,7 +278,7 @@ export function generateEntryBasedLevel() {
         if (r === startRoomI) {
             const startPositionX = Math.floor((startRoomWidth - 2) / 2) + 1;
             const startPositionY = Math.floor((startRoomHeight - 2) / 2) + 1;
-            currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;
+            currentRoom[startPositionY][startPositionX] = LEVEL_SYMBOLS.START;
             if (Game.stage === STAGE.DARK_TUNNEL) {
                 let torchX = 1;
                 let torchY = 2;
@@ -288,28 +288,28 @@ export function generateEntryBasedLevel() {
                         break;
                     }
                 }
-                currentRoom[torchY][torchX] = MAP_SYMBOLS.TORCH;
+                currentRoom[torchY][torchX] = LEVEL_SYMBOLS.TORCH;
             }
         } else if (r === endingRoomI) {
             if (!bossAreas.includes(Game.stage)) {
-                currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = MAP_SYMBOLS.EXIT;
+                currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2)] = LEVEL_SYMBOLS.EXIT;
             }
 
             const startPositionX = Math.floor(endingRoomWidth / 2) - 2; //for tests
             const startPositionY = Math.floor(endingRoomHeight / 2) - 2;
-            //currentRoom[startPositionY][startPositionX] = MAP_SYMBOLS.START;
+            //currentRoom[startPositionY][startPositionX] = LEVEL_SYMBOLS.START;
 
-            currentRoom[0][0] += ":" + MAP_SYMBOLS.END_ROOM_BOUNDARY;
-            currentRoom[endingRoomHeight - 1][endingRoomWidth - 1] += ":" + MAP_SYMBOLS.END_ROOM_BOUNDARY;
+            currentRoom[0][0] += ":" + LEVEL_SYMBOLS.END_ROOM_BOUNDARY;
+            currentRoom[endingRoomHeight - 1][endingRoomWidth - 1] += ":" + LEVEL_SYMBOLS.END_ROOM_BOUNDARY;
 
             if (bossAreas.includes(Game.stage)) {
                 if (endingRoomEntry.y === 0) {
-                    level[startY + endingRoomHeight][startX + endingRoomEntry.x] = MAP_SYMBOLS.BOSS_EXIT;
+                    level[startY + endingRoomHeight][startX + endingRoomEntry.x] = LEVEL_SYMBOLS.BOSS_EXIT;
                 } else if (endingRoomEntry.y === endingRoomHeight - 1) {
-                    level[startY - 1][startX + endingRoomEntry.x] = MAP_SYMBOLS.BOSS_EXIT;
+                    level[startY - 1][startX + endingRoomEntry.x] = LEVEL_SYMBOLS.BOSS_EXIT;
                 }
-                //currentRoom[Math.floor(endingRoomHeight / 2) + 2][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.PARANOID_EEL;
-                //currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2) + 2] = MAP_SYMBOLS.GUARDIAN_OF_THE_LIGHT;
+                //currentRoom[Math.floor(endingRoomHeight / 2) + 2][Math.floor(endingRoomWidth / 2) + 2] = LEVEL_SYMBOLS.PARANOID_EEL;
+                //currentRoom[Math.floor(endingRoomHeight / 2)][Math.floor(endingRoomWidth / 2) + 2] = LEVEL_SYMBOLS.GUARDIAN_OF_THE_LIGHT;
             }
         }
         mergeRoomIntoLevel(level, currentRoom, startX, startY);
@@ -319,7 +319,7 @@ export function generateEntryBasedLevel() {
 
         for (let i = 0; i < currentRoom.length; ++i) {
             for (let j = 0; j < currentRoom[0].length; ++j) {
-                if (currentRoom[i][j] === MAP_SYMBOLS.ENTRY) entryPoints.push({
+                if (currentRoom[i][j] === LEVEL_SYMBOLS.ENTRY) entryPoints.push({
                     coords: {y: i + startY, x: j + startX},
                     connected: false,
                     room_id: r
@@ -345,7 +345,7 @@ export function generateEntryBasedLevel() {
             if (minConnection !== undefined) {
                 if (minConnection.connection.length > Math.min(levelTileWidth, levelTileHeight) * 0.32 && entryPoints.filter(e => e.room_id === entry.room_id).length > 1) {
                     removeObjectFromArray(entry, entryPoints);
-                    level[entry.coords.y][entry.coords.x] = MAP_SYMBOLS.WALL;
+                    level[entry.coords.y][entry.coords.x] = LEVEL_SYMBOLS.WALL;
                 } else
                     connectEntries(minConnection.entry, entry, minConnection.connection, roomConnections, level);
             }
@@ -406,8 +406,8 @@ export function generateEntryBasedLevel() {
 function drawConnection(level, connection) {
     //connection format is [[x1,y1], [x2,y2] ... ]
     for (let i = 0; i < connection.length; ++i) {
-        if (level[connection[i][1]][connection[i][0]] !== MAP_SYMBOLS.ENTRY) {
-            level[connection[i][1]][connection[i][0]] = MAP_SYMBOLS.PATH;
+        if (level[connection[i][1]][connection[i][0]] !== LEVEL_SYMBOLS.ENTRY) {
+            level[connection[i][1]][connection[i][0]] = LEVEL_SYMBOLS.PATH;
         }
     }
 }
@@ -462,7 +462,7 @@ function getLevelPathGraph(level) {
     for (let i = 0; i < level.length; ++i) {
         levelWithPathWeights[i] = [];
         for (let j = 0; j < level[0].length; ++j) {
-            if (level[i][j] === MAP_SYMBOLS.VOID || level[i][j] === MAP_SYMBOLS.ENTRY || level[i][j] === MAP_SYMBOLS.PATH) {
+            if (level[i][j] === LEVEL_SYMBOLS.VOID || level[i][j] === LEVEL_SYMBOLS.ENTRY || level[i][j] === LEVEL_SYMBOLS.PATH) {
                 levelWithPathWeights[i][j] = 0;
             } else {
                 levelWithPathWeights[i][j] = 1;

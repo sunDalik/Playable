@@ -1,5 +1,5 @@
 import {Game} from "./game";
-import {ENEMY_TYPE, MAP_SYMBOLS, RABBIT_TYPE, ROLE, STAGE, TILE_TYPE} from "./enums";
+import {ENEMY_TYPE, LEVEL_SYMBOLS, RABBIT_TYPE, ROLE, STAGE, TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {copy2dArray} from "./utils/basic_utils";
 import {getRandomInt, getRandomValue, randomShuffle} from "./utils/random_utils";
@@ -68,53 +68,8 @@ export function generateMap(level) {
                 item: null,
                 lit: false
             };
-            if (map[i][j].split(":")[0] === MAP_SYMBOLS.WALL) {
-                mapCell.tileType = TILE_TYPE.WALL;
-                mapCell.tile = new WallTile(j, i);
-            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.SUPER_WALL) {
-                mapCell.tileType = TILE_TYPE.SUPER_WALL;
-                mapCell.tile = new SuperWallTile(j, i);
-            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.VOID) {
-                mapCell.tileType = TILE_TYPE.VOID;
-            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.ENTRY) {
-                mapCell.tileType = TILE_TYPE.ENTRY;
-                entries.push({x: j, y: i});
-            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.PATH) {
-                mapCell.tileType = TILE_TYPE.PATH;
-            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.EXIT) {
-                mapCell.tileType = TILE_TYPE.EXIT;
-                mapCell.tile = new TileElement(CommonSpriteSheet["exit_text.png"], j, i, true);
-                //mapCell.tile.zIndex = 100;
-            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.START) {
-                Game.startPos = {x: j, y: i};
-            } else if (map[i][j].split(":")[0] === MAP_SYMBOLS.BOSS_EXIT) {
-                mapCell.tileType = TILE_TYPE.WALL;
-                mapCell.tile = new WallTile(j, i);
-                Game.bossExit = {x: j, y: i};
-            }
 
-            if (map[i][j].split(":")[1] === MAP_SYMBOLS.END_ROOM_BOUNDARY) Game.endRoomBoundaries.push({x: j, y: i});
-
-            if (map[i][j] === MAP_SYMBOLS.ROLLER) mapCell.entity = new Roller(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.ROLLER_RED) mapCell.entity = new RedRoller(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.STAR) mapCell.entity = new Star(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.STAR_RED) mapCell.entity = new RedStar(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SPIDER) mapCell.entity = new Spider(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SPIDER_GRAY) mapCell.entity = new GraySpider(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SPIDER_RED) mapCell.entity = new RedSpider(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SPIDER_GREEN) mapCell.entity = new GreenSpider(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SNAIL) mapCell.entity = new Snail(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SNAIL_SPIKY) mapCell.entity = new SpikySnail(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.EEL) mapCell.entity = new Eel(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.EEL_DARK) mapCell.entity = new DarkEel(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.EEL_POISON) mapCell.entity = new PoisonEel(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.FROG) mapCell.entity = new Frog(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.FROG_FIRE) mapCell.entity = new FireFrog(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.FROG_KING) mapCell.entity = new KingFrog(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.FROG_KING_FIRE) mapCell.entity = new KingFireFrog(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.MUSHROOM) mapCell.entity = new Mushroom(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.MUSHROOM_SMALL) mapCell.entity = new SmallMushroom(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR) {
+            if (map[i][j] === LEVEL_SYMBOLS.ALLIGATOR) {
                 //Pairs for paired enemies are generated in the map generation phase. That is how I've decided it to be...
                 //Paired enemies have one main enemy and one sub enemy. The main enemy controls both itself and the sub enemy.
                 //The sub enemy can move independently only when the main enemy is dead
@@ -129,33 +84,14 @@ export function generateMap(level) {
                 alligator.prey = rabbit;
                 mapCell.entity = alligator;
                 mapCell.secondaryEntity = rabbit;
-            } else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR_ELECTRIC) mapCell.entity = new Alligator(j, i, RABBIT_TYPE.ELECTRIC);
-            else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR_FIRE) mapCell.entity = new Alligator(j, i, RABBIT_TYPE.FIRE);
-            else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR_ENERGY) mapCell.entity = new Alligator(j, i, RABBIT_TYPE.ENERGY);
-            else if (map[i][j] === MAP_SYMBOLS.ALLIGATOR_POISON) mapCell.entity = new Alligator(j, i, RABBIT_TYPE.POISON);
-            else if (map[i][j] === MAP_SYMBOLS.RABBIT_ELECTRIC) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.ELECTRIC);
-            else if (map[i][j] === MAP_SYMBOLS.RABBIT_FIRE) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.FIRE);
-            else if (map[i][j] === MAP_SYMBOLS.RABBIT_ENERGY) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.ENERGY);
-            else if (map[i][j] === MAP_SYMBOLS.RABBIT_POISON) mapCell.entity = new Rabbit(j, i, RABBIT_TYPE.POISON);
-            else if (map[i][j] === MAP_SYMBOLS.LASER_TURRET) mapCell.entity = new LaserTurret(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.SPIKY_WALL_TRAP) mapCell.entity = new SpikyWallTrap(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.COCOON) mapCell.entity = new Cocoon(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.LIZARD_WARRIOR) mapCell.entity = new LizardWarrior(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.MUD_MAGE) mapCell.entity = new MudMage(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.MUD_CUBE_ZOMBIE) mapCell.entity = new MudCubeZombie(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.WALL_SLIME) mapCell.entity = new WallSlime(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.PING_PONG_BUDDIES) mapCell.entity = new PingPongBuddy(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.TELEPORT_MAGE) mapCell.entity = new TeleportMage(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.PARANOID_EEL) mapCell.entity = new ParanoidEel(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.BALLET_SPIDER) mapCell.entity = new BalletSpider(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.GUARDIAN_OF_THE_LIGHT) mapCell.entity = new GuardianOfTheLight(j, i);
-            else if (map[i][j] === MAP_SYMBOLS.STATUE) {
+            }
+            else if (map[i][j] === LEVEL_SYMBOLS.STATUE) {
                 if (Game.weaponPool.length > 0) {
                     mapCell.entity = new Statue(j, i, getRandomWeapon());
                 }
-            } else if (map[i][j] === MAP_SYMBOLS.CHEST) {
+            } else if (map[i][j] === LEVEL_SYMBOLS.CHEST) {
                 mapCell.entity = new Chest(j, i, getRandomChestDrop());
-            } else if (map[i][j] === MAP_SYMBOLS.OBELISK) {
+            } else if (map[i][j] === LEVEL_SYMBOLS.OBELISK) {
                 if (Game.magicPool.length >= 4) {
                     let necromancyIndex = -1;
                     let alivePlayer = null;
@@ -195,10 +131,10 @@ export function generateMap(level) {
                     obeliskTiles.push({x: j, y: i});
                     mapCell.entity = new Obelisk(j, i, magicPool, onDestroyMagicPool);
                 }
-            } else if (map[i][j] === MAP_SYMBOLS.TORCH) {
+            } else if (map[i][j] === LEVEL_SYMBOLS.TORCH) {
                 mapCell.item = new LyingItem(j, i, new Torch());
                 Game.torchTile = {x: j, y: i};
-            } else if (map[i][j] === MAP_SYMBOLS.FIRE_GOBLET) {
+            } else if (map[i][j] === LEVEL_SYMBOLS.FIRE_GOBLET) {
                 mapCell.entity = new FireGoblet(j, i);
             }
 

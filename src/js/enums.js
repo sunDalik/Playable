@@ -137,7 +137,7 @@ export const RARITY = Object.freeze({
     UNIQUE: {label: "Unique", color: 0xffffff, chanceFrom: 0, chanceTo: 0},
 });
 
-export const MAP_SYMBOLS = Object.freeze({
+export const LEVEL_SYMBOLS = Object.freeze({
     NONE: "",
     WALL: "w",
     SUPER_WALL: "sw",

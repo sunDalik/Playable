@@ -13,7 +13,6 @@ Game.TILESIZE = 66;
 Game.followMode = false;
 Game.chainLength = 10;
 
-Game.level = [];
 Game.stage = STAGE.FLOODED_CAVE;
 Game.map = [];
 Game.enemies = [];
@@ -59,7 +58,6 @@ Game.itemHelp = null;
 Game.minimap = [];
 
 Game.playerDetectionGraph = null;
-Game.levelGraph = null;
 Game.finder = new PF.AStarFinder();
 
 Game.afterTurn = false;

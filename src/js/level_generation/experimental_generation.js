@@ -1,9 +1,13 @@
 import {getRandomInt, randomChoice} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
-import {MAP_SYMBOLS, PLANE} from "../enums";
+import {LEVEL_SYMBOLS, PLANE, TILE_TYPE} from "../enums";
 import {Game} from "../game";
 import {expandLevel, outlineWallsWithSuperWalls} from "./generation_utils";
 import {comboShapers, shapers, startingRoomShaper} from "./room_shapers";
+import {WallTile} from "../classes/draw/wall";
+import {SuperWallTile} from "../classes/draw/super_wall";
+import {TileElement} from "../classes/tile_elements/tile_element";
+import {CommonSpriteSheet} from "../loader";
 
 const minRoomSize = 7;
 const minRoomArea = 54;
@@ -11,6 +15,7 @@ let roomId = 0;
 let level;
 
 //todo add local class Room
+//maybe rooms should be visible for the whole file like level?
 export function generateExperimental() {
     level = initEmptyLevel();
     const rooms = splitRoomAMAP({offsetX: 0, offsetY: 0, width: level[0].length, height: level.length, id: roomId++});
@@ -28,10 +33,6 @@ export function generateExperimental() {
     const startRoom = path[path.length - 1];
     reshapeRoom(startRoom, startingRoomShaper);
     drawPath(path);
-    Game.startPos = {
-        x: startRoom.offsetX + Math.floor(startRoom.width / 2),
-        y: startRoom.offsetY + Math.floor(startRoom.height / 2)
-    };
     const unconnectedRooms = rooms.filter(room => !path.includes(room));
     let attempt = 0;
     while (unconnectedRooms.length > 1) {
@@ -46,8 +47,14 @@ export function generateExperimental() {
     }
     const secretRoom = unconnectedRooms[0];
     reshapeRoom(secretRoom, shapers[1]);
-    level = expandLevel(level, 1, 1);
+    level = expandLevelAndRooms(level, rooms, 1, 1);
     outlineWallsWithSuperWalls(level);
+
+    //level shaping is finished
+    level = replaceStringsWithObjects();
+
+    setStartPosition(startRoom);
+    setBossRoomPosition(bossRoom);
     return level;
 }
 
@@ -134,7 +141,7 @@ function outlineRoomWithWalls(room) {
     for (let i = 0; i < room.height; i++) {
         for (let j = 0; j < room.width; j++) {
             if (i === 0 || j === 0 || i === room.height - 1 || j === room.width - 1) {
-                level[i + room.offsetY][j + room.offsetX] = MAP_SYMBOLS.WALL;
+                level[i + room.offsetY][j + room.offsetX] = LEVEL_SYMBOLS.WALL;
             }
         }
     }
@@ -144,7 +151,7 @@ function shapeRoom(room, shaper) {
     for (let i = 1; i < room.height - 1; i++) {
         for (let j = 1; j < room.width - 1; j++) {
             if (shaper(j, i, room.width, room.height)) {
-                level[i + room.offsetY][j + room.offsetX] = MAP_SYMBOLS.WALL;
+                level[i + room.offsetY][j + room.offsetX] = LEVEL_SYMBOLS.WALL;
             }
         }
     }
@@ -153,7 +160,7 @@ function shapeRoom(room, shaper) {
 function clearShape(room) {
     for (let i = 1; i < room.height - 1; i++) {
         for (let j = 1; j < room.width - 1; j++) {
-            level[i + room.offsetY][j + room.offsetX] = MAP_SYMBOLS.NONE;
+            level[i + room.offsetY][j + room.offsetX] = LEVEL_SYMBOLS.NONE;
         }
     }
 }
@@ -201,9 +208,9 @@ function replaceNumbers() {
     for (let i = 0; i < level.length; i++) {
         for (let j = 0; j < level[0].length; j++) {
             if (level[i][j] === -1)
-                level[i][j] = MAP_SYMBOLS.VOID;
+                level[i][j] = LEVEL_SYMBOLS.VOID;
             else if (typeof level[i][j] === "number")
-                level[i][j] = MAP_SYMBOLS.NONE;
+                level[i][j] = LEVEL_SYMBOLS.NONE;
         }
     }
 }
@@ -297,7 +304,7 @@ function drawPath(path) {
                             let checkTile;
                             if (primary === "y") checkTile = level[j][realS];
                             else checkTile = level[realS][j];
-                            if (checkTile === MAP_SYMBOLS.NONE) break;
+                            if (checkTile === LEVEL_SYMBOLS.NONE) break;
                             else penalty++;
                         } else break;
                     }
@@ -319,10 +326,10 @@ function drawPath(path) {
                     || secondary === "x" && ((realS >= startRoom.offsetX && realS <= startRoom.offsetX + startRoom.width - 1)
                         || (realS >= endRoom.offsetX && realS <= endRoom.offsetX + endRoom.width - 1))) {
                     if (primary === "y") {
-                        if (level[bestPoint][realS] === MAP_SYMBOLS.WALL) level[bestPoint][realS] = MAP_SYMBOLS.NONE;
+                        if (level[bestPoint][realS] === LEVEL_SYMBOLS.WALL) level[bestPoint][realS] = LEVEL_SYMBOLS.NONE;
                         else break;
                     } else {
-                        if (level[realS][bestPoint] === MAP_SYMBOLS.WALL) level[realS][bestPoint] = MAP_SYMBOLS.NONE;
+                        if (level[realS][bestPoint] === LEVEL_SYMBOLS.WALL) level[realS][bestPoint] = LEVEL_SYMBOLS.NONE;
                         else break;
                     }
                 } else break;
@@ -333,4 +340,62 @@ function drawPath(path) {
 
 function area(room) {
     return room.width * room.height;
+}
+
+function replaceStringsWithObjects() {
+    const map = [];
+    for (let i = 0; i < level.length; ++i) {
+        map[i] = [];
+        for (let j = 0; j < level[0].length; ++j) {
+            const mapCell = {
+                tileType: TILE_TYPE.NONE,
+                tile: null,
+                hazard: null,
+                entity: null,
+                secondaryEntity: null,
+                item: null,
+                lit: false
+            };
+            if (level[i][j] === LEVEL_SYMBOLS.WALL) {
+                mapCell.tileType = TILE_TYPE.WALL;
+                mapCell.tile = new WallTile(j, i);
+            } else if (level[i][j] === LEVEL_SYMBOLS.SUPER_WALL) {
+                mapCell.tileType = TILE_TYPE.SUPER_WALL;
+                mapCell.tile = new SuperWallTile(j, i);
+            } else if (level[i][j] === LEVEL_SYMBOLS.VOID) {
+                mapCell.tileType = TILE_TYPE.VOID;
+            } else if (level[i][j] === LEVEL_SYMBOLS.EXIT) {
+                mapCell.tileType = TILE_TYPE.EXIT;
+                mapCell.tile = new TileElement(CommonSpriteSheet["exit_text.png"], j, i, true);
+                //mapCell.tile.zIndex = 100;
+            } else if (level[i][j] === LEVEL_SYMBOLS.BOSS_EXIT) {
+                mapCell.tileType = TILE_TYPE.WALL;
+                mapCell.tile = new WallTile(j, i);
+                Game.bossExit = {x: j, y: i};
+            }
+            map[i][j] = mapCell;
+        }
+    }
+    return map;
+}
+
+function setStartPosition(startRoom) {
+    Game.startPos = {
+        x: startRoom.offsetX + Math.floor(startRoom.width / 2),
+        y: startRoom.offsetY + Math.floor(startRoom.height / 2)
+    };
+}
+
+function setBossRoomPosition(bossRoom) {
+    Game.endRoomBoundaries = [
+        {x: bossRoom.offsetX, y: bossRoom.offsetY},
+        {x: bossRoom.offsetX + bossRoom.width - 1, y: bossRoom.offsetY + bossRoom.height - 1}];
+}
+
+function expandLevelAndRooms(level, rooms, expandX, expandY) {
+    for (const room of rooms) {
+        room.offsetX += expandX;
+        room.offsetY += expandY;
+    }
+    return expandLevel(level, expandX, expandY);
 }

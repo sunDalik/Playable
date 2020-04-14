@@ -412,7 +412,7 @@ export function activateBossMode(player) {
         }
     }
 
-    if (Game.map[Game.bossEntry.y][Game.bossEntry.x].tile) {
+    if (!Game.experimentalFeatures && Game.map[Game.bossEntry.y][Game.bossEntry.x].tile) {
         Game.map[Game.bossEntry.y][Game.bossEntry.x].tile.texture = CommonSpriteSheet["boss_entry_opened.png"];
     }
 
