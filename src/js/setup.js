@@ -170,8 +170,8 @@ export function initializeLevel() {
         //lightAll();
     }
     if (Game.experimentalFeatures) {
-        lightAllRealistic();
-        camera.setup(Game.world.width / 2, Game.world.height / 2);
+        //lightAllRealistic();
+        //camera.setup(Game.world.width / 2, Game.world.height / 2);
     }
 }
 

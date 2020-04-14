@@ -15,12 +15,19 @@ import {Statue} from "../classes/inanimate_objects/statue";
 import {get8Directions} from "../utils/map_utils";
 import {Necromancy} from "../classes/equipment/magic/necromancy";
 import {Obelisk} from "../classes/inanimate_objects/obelisk";
+import {FCEnemySets} from "./enemy_sets";
 
+let enemySets = FCEnemySets;
 const minRoomSize = 7;
 const minRoomArea = 54;
 let roomId = 0;
 let level;
 let rooms;
+
+//todo
+export function setupGenerator(settings) {
+
+}
 
 export function generateExperimental() {
     level = initEmptyLevel();
@@ -569,5 +576,37 @@ function createObelisk(x, y) {
 }
 
 function generateEnemies() {
-
+    for (const room of rooms) {
+        if ([ROOM_TYPE.MAIN, ROOM_TYPE.SECONDARY].includes(room.type)) {
+            let emptyTiles = 0;
+            for (let i = 2; i < room.height - 2; i++) {
+                for (let j = 2; j < room.width - 2; j++) {
+                    if (level[i + room.offsetY][j + room.offsetX].tileType === TILE_TYPE.NONE) {
+                        emptyTiles++;
+                    }
+                }
+            }
+            const enemyAmount = Math.round(emptyTiles / 7);
+            let pack;
+            for (let i = enemyAmount; i > 0; i--) {
+                pack = randomChoice(enemySets.filter(set => set.length === i));
+                if (pack !== undefined) break;
+            }
+            if (pack === undefined) continue;
+            for (const enemy of pack) {
+                let attempt = 0;
+                while (attempt++ < 100) {
+                    const point = {
+                        x: randomInt(room.offsetX + 2, room.offsetX + room.width - 3),
+                        y: randomInt(room.offsetY + 2, room.offsetY + room.height - 3)
+                    };
+                    if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
+                        if (enemy.params) level[point.y][point.x].entity = new enemy(point.x, point.y, ...enemy.params);
+                        else level[point.y][point.x].entity = new enemy(point.x, point.y);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
