@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {Enemy} from "./enemy"
 import {ENEMY_TYPE} from "../../enums";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {getRandomInt, randomChoice} from "../../utils/random_utils";
+import {randomInt, randomChoice} from "../../utils/random_utils";
 import {
     get8Directions,
     getDirectionsOnSquare,
@@ -95,7 +95,7 @@ export class MudMage extends Enemy {
 
     getRandomPattern() {
         //anticlockwise
-        const radius = getRandomInt(1, 3);
+        const radius = randomInt(1, 3);
         const pattern = [randomChoice(getDirectionsOnSquare(radius, true))]; //dumb hack
         let directionX;
         let directionY;

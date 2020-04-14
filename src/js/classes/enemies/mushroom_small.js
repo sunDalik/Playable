@@ -1,5 +1,5 @@
 import {ENEMY_TYPE} from "../../enums";
-import {getRandomInt} from "../../utils/random_utils";
+import {randomInt} from "../../utils/random_utils";
 import {Mushroom} from "./mushroom";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../utils/map_utils";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
@@ -20,7 +20,7 @@ export class SmallMushroom extends Mushroom {
     }
 
     getWalkDelay() {
-        return getRandomInt(4, 8);
+        return randomInt(4, 8);
     }
 
     getDirections() {

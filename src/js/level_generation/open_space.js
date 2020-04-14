@@ -1,6 +1,6 @@
 import {Game} from "../game";
 import {LEVEL_SYMBOLS} from "../enums";
-import {getRandomInt, randomArrayIndex, randomChoice, randomChoiceSeveral} from "../utils/random_utils";
+import {randomInt, randomArrayIndex, randomChoice, randomChoiceSeveral} from "../utils/random_utils";
 import {
     createRoom,
     expandLevel,
@@ -22,16 +22,16 @@ export function generateOpenSpaceLevel() {
     let levelRooms = [];
 
     //generate starting room position
-    const startRoomY = getRandomInt(0, levelRoomHeight - 1);
+    const startRoomY = randomInt(0, levelRoomHeight - 1);
     let startRoomX;
-    if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) startRoomX = getRandomInt(0, levelRoomWidth - 1);
+    if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) startRoomX = randomInt(0, levelRoomWidth - 1);
     else startRoomX = randomChoice([0, levelRoomWidth - 1]);
     const startRoomI = startRoomY * levelRoomWidth + startRoomX;
 
     let endingRoomX;
     let endingRoomY;
-    let endingRoomWidth = getRandomInt(12, 13);
-    let endingRoomHeight = getRandomInt(8, 10);
+    let endingRoomWidth = randomInt(12, 13);
+    let endingRoomHeight = randomInt(8, 10);
     let endingRoomEntry;
     if (startRoomX + 1 <= (levelRoomWidth + 1) / 2) endingRoomX = levelRoomWidth - 1;
     else endingRoomX = 0;
@@ -60,7 +60,7 @@ export function generateOpenSpaceLevel() {
     let statueRoomIs = [];
     for (let i = 0; i < statueRoomsNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber - 1);
+            const randomI = randomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && randomI !== endingRoomI && !statueRoomIs.includes(randomI)) {
                 statueRoomIs[i] = randomI;
                 break;
@@ -73,7 +73,7 @@ export function generateOpenSpaceLevel() {
     let chestRoomIs = [];
     for (let i = 0; i < chestRoomNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber - 1);
+            const randomI = randomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && !chestRoomIs.includes(randomI) && randomI !== endingRoomI
                 && !statueRoomIs.includes(randomI)) {
                 chestRoomIs[i] = randomI;
@@ -87,7 +87,7 @@ export function generateOpenSpaceLevel() {
     let obeliskRoomIs = []; //this is for testing purposes. Actually there will always be only one obelisk
     for (let i = 0; i < obeliskRoomNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber - 1);
+            const randomI = randomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && !statueRoomIs.includes(randomI) && randomI !== endingRoomI
                 && !chestRoomIs.includes(randomI) && !obeliskRoomIs.includes(randomI)) {
                 obeliskRoomIs[i] = randomI;
@@ -100,9 +100,9 @@ export function generateOpenSpaceLevel() {
     //picking rooms for level
     for (let i = 0; i < roomNumber; ++i) {
         if (i !== startRoomI && i !== endingRoomI) {
-            const width = getRandomInt(7, 9);
-            const height = getRandomInt(7, 9);
-            const enemies = randomChoiceSeveral(getRoomInsideArray(width, height), getRandomInt(3, 5));
+            const width = randomInt(7, 9);
+            const height = randomInt(7, 9);
+            const enemies = randomChoiceSeveral(getRoomInsideArray(width, height), randomInt(3, 5));
             for (const enemy of enemies) {
                 enemy.symbol = randomChoice([LEVEL_SYMBOLS.PING_PONG_BUDDIES, LEVEL_SYMBOLS.WALL_SLIME, LEVEL_SYMBOLS.LIZARD_WARRIOR, LEVEL_SYMBOLS.MUD_MAGE, LEVEL_SYMBOLS.TELEPORT_MAGE])
             }
@@ -126,7 +126,7 @@ export function generateOpenSpaceLevel() {
             }
 
             room = copy2dArray(room);
-            let transformOption = getRandomInt(0, 3);
+            let transformOption = randomInt(0, 3);
             if (obeliskRoomIs.includes(i)) transformOption = randomChoice([0, 1]);
             switch (transformOption) {
                 case 1:
@@ -145,8 +145,8 @@ export function generateOpenSpaceLevel() {
 
     let startRoomWidth;
     let startRoomHeight;
-    startRoomWidth = getRandomInt(5, 7);
-    startRoomHeight = getRandomInt(5, 7);
+    startRoomWidth = randomInt(5, 7);
+    startRoomHeight = randomInt(5, 7);
     levelRooms[startRoomI] = createRoom(startRoomWidth, startRoomHeight, [], LEVEL_SYMBOLS.NONE);
 
     //calculating max width and total height of the level
@@ -184,8 +184,8 @@ export function generateOpenSpaceLevel() {
             previousYMaxAddition = 0;
         }
         let currentRoom = levelRooms[r];
-        const randomOffsetX = getRandomInt(minRandRoomOffset, maxRandRoomOffset);
-        const randomOffsetY = getRandomInt(minRandRoomOffset, maxRandRoomOffset);
+        const randomOffsetX = randomInt(minRandRoomOffset, maxRandRoomOffset);
+        const randomOffsetY = randomInt(minRandRoomOffset, maxRandRoomOffset);
         const startX = previousX + randomOffsetX;
         const startY = previousY + randomOffsetY;
         if (r === startRoomI) {

@@ -4,7 +4,7 @@ import PF from "../../../bower_components/pathfinding/pathfinding-browser";
 
 import {arraySum, copy2dArray, init2dArray, removeObjectFromArray} from "../utils/basic_utils";
 import {LEVEL_SYMBOLS, STAGE} from "../enums";
-import {getRandomInt, randomArrayIndex, randomChoice, randomShuffle} from "../utils/random_utils";
+import {randomInt, randomArrayIndex, randomChoice, randomShuffle} from "../utils/random_utils";
 import {
     connectDiagonalPaths,
     createRoom,
@@ -46,10 +46,10 @@ export function generateEntryBasedLevel() {
     let levelRooms = [];
 
     //generate starting room position
-    const startRoomY = getRandomInt(0, levelRoomHeight - 1);
+    const startRoomY = randomInt(0, levelRoomHeight - 1);
     let startRoomX;
     if (startRoomY === 0 || startRoomY === levelRoomHeight - 1) {
-        startRoomX = getRandomInt(0, levelRoomWidth - 1);
+        startRoomX = randomInt(0, levelRoomWidth - 1);
         if (Game.stage === STAGE.DARK_TUNNEL) {
             startRoomX = randomChoice([0, 1, levelRoomWidth - 2, levelRoomWidth - 1]);
         }
@@ -58,8 +58,8 @@ export function generateEntryBasedLevel() {
 
     let endingRoomX;
     let endingRoomY;
-    let endingRoomWidth = getRandomInt(12, 13);
-    let endingRoomHeight = getRandomInt(8, 10);
+    let endingRoomWidth = randomInt(12, 13);
+    let endingRoomHeight = randomInt(8, 10);
     let endingRoomEntry;
     if (startRoomX + 1 <= (levelRoomWidth + 1) / 2) endingRoomX = levelRoomWidth - 1;
     else endingRoomX = 0;
@@ -88,7 +88,7 @@ export function generateEntryBasedLevel() {
     let statueRoomIs = [];
     for (let i = 0; i < statueRoomsNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber - 1);
+            const randomI = randomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && randomI !== endingRoomI && !statueRoomIs.includes(randomI)) {
                 statueRoomIs[i] = randomI;
                 break;
@@ -105,7 +105,7 @@ export function generateEntryBasedLevel() {
     let chestRoomIs = [];
     for (let i = 0; i < chestRoomNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber - 1);
+            const randomI = randomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && !chestRoomIs.includes(randomI) && randomI !== endingRoomI
                 && !statueRoomIs.includes(randomI)) {
                 chestRoomIs[i] = randomI;
@@ -119,7 +119,7 @@ export function generateEntryBasedLevel() {
     let obeliskRoomIs = []; //this is for testing purposes. Actually there will always be only one obelisk
     for (let i = 0; i < obeliskRoomNumber; ++i) {
         while (true) {
-            const randomI = getRandomInt(0, roomNumber - 1);
+            const randomI = randomInt(0, roomNumber - 1);
             if (randomI !== startRoomI && !statueRoomIs.includes(randomI) && randomI !== endingRoomI
                 && !chestRoomIs.includes(randomI) && !obeliskRoomIs.includes(randomI)) {
                 obeliskRoomIs[i] = randomI;
@@ -149,7 +149,7 @@ export function generateEntryBasedLevel() {
             }
 
             room = copy2dArray(room);
-            let transformOption = getRandomInt(0, 3);
+            let transformOption = randomInt(0, 3);
             if (obeliskRoomIs.includes(i)) transformOption = randomChoice([0, 1]);
             switch (transformOption) {
                 case 1:
@@ -183,52 +183,52 @@ export function generateEntryBasedLevel() {
     let startRoomEntriesCount;
     const startRoomEntries = [];
     if (Game.stage === STAGE.DARK_TUNNEL) {
-        startRoomWidth = getRandomInt(5, 6);
-        startRoomHeight = getRandomInt(5, 6);
+        startRoomWidth = randomInt(5, 6);
+        startRoomHeight = randomInt(5, 6);
         if (entryCount % 2 === 0) startRoomEntriesCount = 2;
         else startRoomEntriesCount = 1;
         if (startRoomEntriesCount === 2) {
-            if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 2), y: 0};
-            else startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 2), y: startRoomHeight - 1};
+            if (endingRoomY === 0) startRoomEntries[0] = {x: randomInt(1, startRoomWidth - 2), y: 0};
+            else startRoomEntries[0] = {x: randomInt(1, startRoomWidth - 2), y: startRoomHeight - 1};
 
-            if (endingRoomX === 0) startRoomEntries[1] = {x: 0, y: getRandomInt(1, startRoomHeight - 2)};
-            else startRoomEntries[1] = {x: startRoomWidth - 1, y: getRandomInt(1, startRoomHeight - 2)};
+            if (endingRoomX === 0) startRoomEntries[1] = {x: 0, y: randomInt(1, startRoomHeight - 2)};
+            else startRoomEntries[1] = {x: startRoomWidth - 1, y: randomInt(1, startRoomHeight - 2)};
 
         } else if (startRoomEntriesCount === 1) {
-            const option = getRandomInt(0, 1);
+            const option = randomInt(0, 1);
             if (option === 0) {
-                if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 2), y: 0};
-                else startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 2), y: startRoomHeight - 1};
+                if (endingRoomY === 0) startRoomEntries[0] = {x: randomInt(1, startRoomWidth - 2), y: 0};
+                else startRoomEntries[0] = {x: randomInt(1, startRoomWidth - 2), y: startRoomHeight - 1};
             } else {
-                if (endingRoomX === 0) startRoomEntries[0] = {x: 0, y: getRandomInt(1, startRoomHeight - 2)};
-                else startRoomEntries[0] = {x: startRoomWidth - 1, y: getRandomInt(1, startRoomHeight - 2)};
+                if (endingRoomX === 0) startRoomEntries[0] = {x: 0, y: randomInt(1, startRoomHeight - 2)};
+                else startRoomEntries[0] = {x: startRoomWidth - 1, y: randomInt(1, startRoomHeight - 2)};
             }
         }
     } else {
-        startRoomWidth = getRandomInt(5, 7);
-        startRoomHeight = getRandomInt(5, 7);
+        startRoomWidth = randomInt(5, 7);
+        startRoomHeight = randomInt(5, 7);
         if (entryCount % 2 === 0) startRoomEntriesCount = 2;
         else startRoomEntriesCount = 3;
-        if (endingRoomY === 0) startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 2), y: 0};
-        else startRoomEntries[0] = {x: getRandomInt(1, startRoomWidth - 2), y: startRoomHeight - 1};
+        if (endingRoomY === 0) startRoomEntries[0] = {x: randomInt(1, startRoomWidth - 2), y: 0};
+        else startRoomEntries[0] = {x: randomInt(1, startRoomWidth - 2), y: startRoomHeight - 1};
 
-        if (endingRoomX === 0) startRoomEntries[1] = {x: 0, y: getRandomInt(1, startRoomHeight - 2)};
-        else startRoomEntries[1] = {x: startRoomWidth - 1, y: getRandomInt(1, startRoomHeight - 2)};
+        if (endingRoomX === 0) startRoomEntries[1] = {x: 0, y: randomInt(1, startRoomHeight - 2)};
+        else startRoomEntries[1] = {x: startRoomWidth - 1, y: randomInt(1, startRoomHeight - 2)};
 
         if (startRoomEntriesCount === 3) {
-            const option = getRandomInt(0, 1);
+            const option = randomInt(0, 1);
             if (option === 0) {
                 if (endingRoomY === 0) startRoomEntries[2] = {
-                    x: getRandomInt(1, startRoomWidth - 2),
+                    x: randomInt(1, startRoomWidth - 2),
                     y: startRoomHeight - 1
                 };
-                else startRoomEntries[2] = {x: getRandomInt(1, startRoomWidth - 2), y: 0};
+                else startRoomEntries[2] = {x: randomInt(1, startRoomWidth - 2), y: 0};
             } else {
                 if (endingRoomX === 0) startRoomEntries[2] = {
                     x: startRoomWidth - 1,
-                    y: getRandomInt(1, startRoomHeight - 2)
+                    y: randomInt(1, startRoomHeight - 2)
                 };
-                else startRoomEntries[2] = {x: 0, y: getRandomInt(1, startRoomHeight - 2)};
+                else startRoomEntries[2] = {x: 0, y: randomInt(1, startRoomHeight - 2)};
             }
         }
     }
@@ -271,8 +271,8 @@ export function generateEntryBasedLevel() {
             previousYMaxAddition = 0;
         }
         let currentRoom = levelRooms[r];
-        const randomOffsetX = getRandomInt(minRandRoomOffset, maxRandRoomOffset);
-        const randomOffsetY = getRandomInt(minRandRoomOffset, maxRandRoomOffset);
+        const randomOffsetX = randomInt(minRandRoomOffset, maxRandRoomOffset);
+        const randomOffsetY = randomInt(minRandRoomOffset, maxRandRoomOffset);
         const startX = previousX + randomOffsetX;
         const startY = previousY + randomOffsetY;
         if (r === startRoomI) {

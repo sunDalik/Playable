@@ -32,7 +32,7 @@ export function randomArrayIndex(array) {
 
 // random: [min; max]
 //todo should probably shorten it to randomInt
-export function getRandomInt(min, max) {
+export function randomInt(min, max) {
     return Math.floor(Math.random() * (max + 1 - min) + min);
 }
 

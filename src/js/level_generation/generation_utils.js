@@ -1,7 +1,7 @@
 import {copy2dArray, init2dArray} from "../utils/basic_utils";
 import {LEVEL_SYMBOLS} from "../enums";
 import {get8Directions} from "../utils/map_utils";
-import {getRandomInt} from "../utils/random_utils";
+import {randomInt} from "../utils/random_utils";
 import PF from "../../../bower_components/pathfinding/pathfinding-browser";
 
 export function mergeRoomIntoLevel(level, room, startX, startY) {
@@ -96,14 +96,14 @@ export function connectDiagonalPaths(level) {
         for (let j = 0; j < level[0].length - 1; ++j) {
             if (level[i][j] === LEVEL_SYMBOLS.PATH) {
                 if (level[i - 1][j + 1] === LEVEL_SYMBOLS.PATH) {
-                    let randomWall = getRandomInt(0, 1);
+                    let randomWall = randomInt(0, 1);
                     if (level[i - 1][j] === LEVEL_SYMBOLS.WALL && level[i][j + 1] === LEVEL_SYMBOLS.WALL) {
                         if (randomWall === 0) level[i - 1][j] = LEVEL_SYMBOLS.PATH;
                         else level[i][j + 1] = LEVEL_SYMBOLS.PATH;
                     }
                 }
                 if (level[i + 1][j + 1] === LEVEL_SYMBOLS.PATH) {
-                    let randomWall = getRandomInt(0, 1);
+                    let randomWall = randomInt(0, 1);
                     if (level[i + 1][j] === LEVEL_SYMBOLS.WALL && level[i][j + 1] === LEVEL_SYMBOLS.WALL) {
                         if (randomWall === 0) level[i + 1][j] = LEVEL_SYMBOLS.PATH;
                         else level[i][j + 1] = LEVEL_SYMBOLS.PATH;

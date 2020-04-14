@@ -2,7 +2,7 @@ import {Game} from "../../game"
 import {ENEMY_TYPE, TILE_TYPE} from "../../enums";
 import {Enemy} from "./enemy";
 import {PoisonHazard} from "../hazards/poison";
-import {getRandomInt, randomChoice} from "../../utils/random_utils";
+import {randomInt, randomChoice} from "../../utils/random_utils";
 import {getRelativelyEmptyHorizontalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile, isEmpty, isNotAWall} from "../../map_checks";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
@@ -112,7 +112,7 @@ export class Mushroom extends Enemy {
 
 
     getWalkDelay() {
-        return getRandomInt(8, 14);
+        return randomInt(8, 14);
     }
 
     onMoveFrame() {

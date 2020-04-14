@@ -1,6 +1,6 @@
 import {Game} from "./game"
 import * as PIXI from "pixi.js"
-import {getRandomInt, randomChoice} from "./utils/random_utils";
+import {randomInt, randomChoice} from "./utils/random_utils";
 import {ITEM_OUTLINE_FILTER} from "./filters";
 import {HUDTextStyle, HUDTextStyleTitle, miniMapBottomOffset} from "./drawing/draw_constants";
 import {HUD} from "./drawing/hud_object";
@@ -508,8 +508,8 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
     const XBorders = [0, undefined, undefined, tileElement.texture.frame.width];
     const maxOffsetMul = 1 / 9;
     for (let i = 1; i <= 2; i++) {
-        YBorders[i] = YBorders[i - 1] + tileElement.texture.frame.height / 3 + getRandomInt(-tileElement.texture.frame.height * maxOffsetMul, tileElement.texture.frame.height * maxOffsetMul);
-        XBorders[i] = XBorders[i - 1] + tileElement.texture.frame.width / 3 + getRandomInt(-tileElement.texture.frame.width * maxOffsetMul, tileElement.texture.frame.width * maxOffsetMul);
+        YBorders[i] = YBorders[i - 1] + tileElement.texture.frame.height / 3 + randomInt(-tileElement.texture.frame.height * maxOffsetMul, tileElement.texture.frame.height * maxOffsetMul);
+        XBorders[i] = XBorders[i - 1] + tileElement.texture.frame.width / 3 + randomInt(-tileElement.texture.frame.width * maxOffsetMul, tileElement.texture.frame.width * maxOffsetMul);
     }
     const particles = [];
     for (const region of [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0},
@@ -550,17 +550,17 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         particle.texture.updateUvs();
 
         const flyDir = region.x === 1 ? randomChoice([-1, 1]) : region.x - 1;
-        const flyHeight = getRandomInt(Game.TILESIZE, Game.TILESIZE * 2);
+        const flyHeight = randomInt(Game.TILESIZE, Game.TILESIZE * 2);
         const oldPosX = particle.position.x;
         const oldPosY = particle.position.y;
-        const distX = getRandomInt(-tileElement.width / 4, tileElement.width / 1.5) * flyDir;
+        const distX = randomInt(-tileElement.width / 4, tileElement.width / 1.5) * flyDir;
         const middlePoint = {x: oldPosX + distX / 2, y: oldPosY - flyHeight};
         const finalPoint = {
             x: oldPosX + distX,
-            y: tileElement.getTilePositionY() + (1 - tileElement.anchor.y) * Game.TILESIZE - getRandomInt(0, Game.TILESIZE / 2)
+            y: tileElement.getTilePositionY() + (1 - tileElement.anchor.y) * Game.TILESIZE - randomInt(0, Game.TILESIZE / 2)
         };
 
-        const animationTime = getRandomInt(10, 14);
+        const animationTime = randomInt(10, 14);
         const step = 1 / animationTime;
         let counter = 0;
 

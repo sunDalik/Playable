@@ -2,7 +2,7 @@ import {Game} from "./game";
 import {ENEMY_TYPE, LEVEL_SYMBOLS, RABBIT_TYPE, ROLE, STAGE, TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {copy2dArray} from "./utils/basic_utils";
-import {getRandomInt, getRandomValue, randomShuffle} from "./utils/random_utils";
+import {randomInt, getRandomValue, randomShuffle} from "./utils/random_utils";
 import {Roller} from "./classes/enemies/roller";
 import {RedRoller} from "./classes/enemies/roller_red";
 import {Snail} from "./classes/enemies/snail";
@@ -98,9 +98,9 @@ export function generateMap(level) {
                     if (Game.player.dead) alivePlayer = Game.player2;
                     else if (Game.player2.dead) alivePlayer = Game.player;
                     if (alivePlayer !== null) {
-                        if (alivePlayer.health >= 3.5) necromancyIndex = getRandomInt(0, 3);
-                        else if (alivePlayer.health >= 2.5) necromancyIndex = getRandomInt(0, 2);
-                        else necromancyIndex = getRandomInt(0, 1);
+                        if (alivePlayer.health >= 3.5) necromancyIndex = randomInt(0, 3);
+                        else if (alivePlayer.health >= 2.5) necromancyIndex = randomInt(0, 2);
+                        else necromancyIndex = randomInt(0, 1);
                     }
 
                     let magicPool = [];
@@ -212,8 +212,8 @@ export function recalculateTileInDetectionGraph(tileX, tileY) {
 }
 
 export function assignDrops() {
-    distributeDrops(Bomb, getRandomInt(3, 4));
-    distributeDrops(SmallHealingPotion, getRandomInt(1, 2));
+    distributeDrops(Bomb, randomInt(3, 4));
+    distributeDrops(SmallHealingPotion, randomInt(1, 2));
 
     if (Game.stage === STAGE.RUINS) {
         if (Math.random() < 0.5) {

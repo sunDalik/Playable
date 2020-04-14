@@ -1,7 +1,7 @@
 import {Game} from "../../game"
 import {ENEMY_TYPE, STAGE} from "../../enums";
 import {Enemy} from "./enemy";
-import {getRandomInt, randomChoice} from "../../utils/random_utils";
+import {randomInt, randomChoice} from "../../utils/random_utils";
 import {getEmptyCardinalDirections} from "../../utils/map_utils";
 import {Spider} from "./spider";
 import {GraySpider} from "./spider_gray";
@@ -17,7 +17,7 @@ export class Cocoon extends Enemy {
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.COCOON;
         this.atk = 0;
-        this.spawnDelay = getRandomInt(1, 5);
+        this.spawnDelay = randomInt(1, 5);
         if (Game.stage === STAGE.FLOODED_CAVE) {
             this.minionType = randomChoice([Spider, GraySpider]);
         } else {
@@ -49,7 +49,7 @@ export class Cocoon extends Enemy {
     }
 
     getSpawnDelay() {
-        return getRandomInt(8, 13);
+        return randomInt(8, 13);
     }
 
     updateIntentIcon() {

@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {ENEMY_TYPE, EQUIPMENT_TYPE, INANIMATE_TYPE, TOOL_TYPE} from "../../../enums";
 import {Boss} from "./boss";
-import {getRandomInt, randomChoice} from "../../../utils/random_utils";
+import {randomInt, randomChoice} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
 import {getChasingDirections} from "../../../utils/map_utils";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
@@ -200,11 +200,11 @@ export class GuardianOfTheLight extends Boss {
             this.texture = GotLSpriteSheet["gotl_after_electric.png"];
             if (this.electricDoomWearOff) {
                 this.electricDoomWearOff = false;
-                this.electricityDelay = getRandomInt(11, 13);
+                this.electricityDelay = randomInt(11, 13);
             } else {
-                if (this.phase === 1) this.electricityDelay = getRandomInt(8, 12);
-                else if (this.phase === 2) this.electricityDelay = getRandomInt(8, 11);
-                else if (this.phase === 3) this.electricityDelay = getRandomInt(10, 13);
+                if (this.phase === 1) this.electricityDelay = randomInt(8, 12);
+                else if (this.phase === 2) this.electricityDelay = randomInt(8, 11);
+                else if (this.phase === 3) this.electricityDelay = randomInt(10, 13);
             }
 
         } else if (this.triggeredElectricDoom) {
@@ -430,8 +430,8 @@ export class GuardianOfTheLight extends Boss {
     }
 
     updatePatience() {
-        this.patience.turns = getRandomInt(24, 31) - this.phase * 2;
-        this.patience.damage = getRandomInt(3, 4);
+        this.patience.turns = randomInt(24, 31) - this.phase * 2;
+        this.patience.damage = randomInt(3, 4);
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
