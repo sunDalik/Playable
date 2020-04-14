@@ -1,5 +1,5 @@
 import {getRandomInt, randomChoice} from "../utils/random_utils";
-import {init2dArray} from "../utils/basic_utils";
+import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
 import {MAP_SYMBOLS, PLANE} from "../enums";
 import {Game} from "../game";
 import {expandLevel, outlineWallsWithSuperWalls} from "./generation_utils";
@@ -10,12 +10,13 @@ const minRoomArea = 54;
 let roomId = 0;
 let level;
 
+//todo add local class Room
 export function generateExperimental() {
     level = initEmptyLevel();
     const rooms = splitRoomAMAP({offsetX: 0, offsetY: 0, width: level[0].length, height: level.length, id: roomId++});
     for (const room of rooms) {
         outlineRoomWithWalls(room);
-        if (area(room) > 80 && Math.random() > 0.5) shapeRoom(room, randomChoice(comboShapers));
+        if (Math.random() > 0.5) shapeRoom(room, randomChoice(comboShapers));
         else shapeRoom(room, randomChoice(shapers));
         //shapeRoom(room, shapers[2]); //for testing
         randomlyRotateRoom(room)
@@ -25,20 +26,33 @@ export function generateExperimental() {
     clearShape(bossRoom);
     const path = planPath(bossRoom, rooms);
     const startRoom = path[path.length - 1];
-    clearShape(startRoom);
-    shapeRoom(startRoom, startingRoomShaper);
+    reshapeRoom(startRoom, startingRoomShaper);
     drawPath(path);
     Game.startPos = {
         x: startRoom.offsetX + Math.floor(startRoom.width / 2),
         y: startRoom.offsetY + Math.floor(startRoom.height / 2)
     };
+    const unconnectedRooms = rooms.filter(room => !path.includes(room));
+    let attempt = 0;
+    while (unconnectedRooms.length > 1) {
+        const room = randomChoice(unconnectedRooms);
+        const nextRoom = randomChoice(getAdjacentRooms(room, rooms).filter(r => !unconnectedRooms.includes(r) && r !== bossRoom));
+        if (nextRoom === undefined) {
+            if (attempt++ > 200) break;
+        } else {
+            drawPath([room, nextRoom]);
+            removeObjectFromArray(room, unconnectedRooms);
+        }
+    }
+    const secretRoom = unconnectedRooms[0];
+    reshapeRoom(secretRoom, shapers[1]);
     level = expandLevel(level, 1, 1);
     outlineWallsWithSuperWalls(level);
     return level;
 }
 
 function initEmptyLevel() {
-    const minLevelSize = 28;
+    const minLevelSize = 30;
     const maxLevelSize = 40;
     const width = getRandomInt(minLevelSize, maxLevelSize);
     const height = getRandomInt(minLevelSize, maxLevelSize);
@@ -144,6 +158,11 @@ function clearShape(room) {
     }
 }
 
+function reshapeRoom(room, shaper) {
+    clearShape(room);
+    shapeRoom(room, shaper);
+}
+
 function randomlyRotateRoom(room) {
     const transformOption = getRandomInt(0, 3);
     switch (transformOption) {
@@ -200,7 +219,7 @@ function copyPartOf2dArray(array, offsetX, offsetY, width, height) {
 function findBossRoom(rooms) {
     let bossRoom = rooms[0];
     for (const room of rooms) {
-        if (room.width >= room.height && room.width * room.height > bossRoom.width * bossRoom.height) bossRoom = room;
+        if (room.width >= room.height && area(room) > area(bossRoom)) bossRoom = room;
     }
     return bossRoom;
 }
@@ -210,7 +229,7 @@ function planPath(startRoom, rooms) {
     let path = [startRoom];
     let attempt = 0;
     while (path.length < maxPath) {
-        const nextRoom = randomChoice(getAdjacentRooms(path[path.length - 1], rooms).filter(r => path.indexOf(r) === -1));
+        const nextRoom = randomChoice(getAdjacentRooms(path[path.length - 1], rooms).filter(r => !path.includes(r)));
         if (nextRoom === undefined) {
             if (attempt++ > 100 || path.length > 4) break;
             else path = [startRoom];

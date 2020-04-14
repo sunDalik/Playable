@@ -62,9 +62,18 @@ export const shapers = [
 
     //13. horizontal border with a gap
     (x, y, width, height) => Math.min(x, width - 1 - x) < width / 2 - 1 && (y === Math.round((height - 1) / 2)),
+
+    //14. small rectangular ring
+    (x, y, width, height) => {
+        const size = Math.floor((Math.min(width, height) - 2) / 3);
+        const freeWidth = Math.floor((width - 2 - size) / 2);
+        const freeHeight = Math.floor((height - 2 - size) / 2);
+        return x > freeWidth && x < (width - freeWidth - 1) && y > freeHeight && y < (height - freeHeight - 1);
+    },
 ];
 
 //this array contains approved shaper combos
+//hmmm you can also choose different combos depending on the area... (width * height)
 export const comboShapers = [
     //0. rect ring + 1-tile corners
     (x, y, width, height) => shapers[8](x, y, width, height) || shapers[1](x, y, width, height),
@@ -90,8 +99,8 @@ export const comboShapers = [
     //7. T-shape + 1-tile corners
     (x, y, width, height) => shapers[10](x, y, width, height) || shapers[1](x, y, width, height),
 
-    //8. rect ring + random 2-tile corners
-    (x, y, width, height) => shapers[8](x, y, width, height) || shapers[6](x, y, width, height),
+    //8. small rect ring + random 2-tile corners
+    (x, y, width, height) => shapers[14](x, y, width, height) || shapers[6](x, y, width, height),
 
     //9. T-shape + random 2-tile corners
     (x, y, width, height) => shapers[10](x, y, width, height) || shapers[6](x, y, width, height),
