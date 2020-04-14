@@ -10,9 +10,11 @@ import {TileElement} from "../classes/tile_elements/tile_element";
 import {CommonSpriteSheet} from "../loader";
 import {Room, ROOM_TYPE} from "./room";
 import {Chest} from "../classes/inanimate_objects/chest";
-import {getRandomChestDrop, getRandomWeapon} from "../utils/pool_utils";
+import {getRandomChestDrop, getRandomSpell, getRandomWeapon} from "../utils/pool_utils";
 import {Statue} from "../classes/inanimate_objects/statue";
 import {get8Directions} from "../utils/map_utils";
+import {Necromancy} from "../classes/equipment/magic/necromancy";
+import {Obelisk} from "../classes/inanimate_objects/obelisk";
 
 const minRoomSize = 7;
 const minRoomArea = 54;
@@ -405,7 +407,7 @@ function generateInanimates() {
     const chestsNumber = 4 - statuesNumber;
     placeInanimate(placeChest, chestsNumber);
     placeInanimate(placeStatue, statuesNumber);
-    //placeInanimate(placeObelisk, obelisksNumber);
+    placeInanimate(placeObelisk, obelisksNumber);
 }
 
 function placeInanimate(placeMethod, amount) {
@@ -477,7 +479,93 @@ function ensureInanimateSurroundings(x, y) {
 }
 
 function placeObelisk(room) {
+    let attempt = 0;
+    while (attempt++ < 200) {
+        const point = {
+            x: randomInt(room.offsetX + 1, room.offsetX + room.width - 2),
+            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 4)
+        };
+        if (level[point.y][point.x].tileType === TILE_TYPE.NONE && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL
+            && level[point.y - 1][point.x - 1].tileType === TILE_TYPE.WALL && level[point.y - 1][point.x + 1].tileType === TILE_TYPE.WALL) {
+            const obelisk = createObelisk(point.x, point.y);
+            Game.obelisks.push(obelisk);
+            if (level[point.y - 1][point.x - 2].tileType === TILE_TYPE.WALL && level[point.y - 1][point.x + 2].tileType === TILE_TYPE.WALL) {
+                level[point.y][point.x - 1].entity = obelisk.grail1;
+                obelisk.grail1.tilePosition.set(point.x - 1, point.y);
+                level[point.y][point.x + 1].entity = obelisk.grail2;
+                obelisk.grail2.tilePosition.set(point.x + 1, point.y);
+                level[point.y][point.x - 2].entity = obelisk.grail3;
+                obelisk.grail3.tilePosition.set(point.x - 2, point.y);
+                level[point.y][point.x + 2].entity = obelisk.grail4;
+                obelisk.grail4.tilePosition.set(point.x + 2, point.y);
+                obelisk.placeGrails();
+            } else {
+                level[point.y + 1][point.x - 1].entity = obelisk.grail1;
+                obelisk.grail1.tilePosition.set(point.x - 1, point.y + 1);
+                level[point.y + 1][point.x + 1].entity = obelisk.grail2;
+                obelisk.grail2.tilePosition.set(point.x + 1, point.y + 1);
+                level[point.y + 2][point.x - 1].entity = obelisk.grail3;
+                obelisk.grail3.tilePosition.set(point.x - 1, point.y + 2);
+                level[point.y + 2][point.x + 1].entity = obelisk.grail4;
+                obelisk.grail4.tilePosition.set(point.x + 1, point.y + 2);
+            }
+            const clearDirs = [{x: 0, y: 0}, {x: -1, y: 0}, {x: +1, y: 0}, {x: -1, y: +1},
+                {x: +1, y: +1}, {x: 0, y: +1}];
+            for (const grail of [obelisk.grail1, obelisk.grail2, obelisk.grail3, obelisk.grail4]) {
+                for (const dir of clearDirs) {
+                    level[grail.tilePosition.y + dir.y][grail.tilePosition.x + dir.x].tileType = TILE_TYPE.NONE;
+                    level[grail.tilePosition.y + dir.y][grail.tilePosition.x + dir.x].tile = null;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
+}
 
+function createObelisk(x, y) {
+    if (Game.magicPool.length >= 4) {
+        let necromancyIndex = -1;
+        let alivePlayer = null;
+        if (Game.player.dead) alivePlayer = Game.player2;
+        else if (Game.player2.dead) alivePlayer = Game.player;
+        if (alivePlayer !== null) {
+            if (alivePlayer.health >= 3.5) necromancyIndex = randomInt(0, 3);
+            else if (alivePlayer.health >= 2.5) necromancyIndex = randomInt(0, 2);
+            else necromancyIndex = randomInt(0, 1);
+        }
+
+        const magicPool = [];
+        let attempt = 0;
+        for (let i = 0; i < 4; ++i) {
+            if (i === necromancyIndex) {
+                magicPool[i] = new Necromancy();
+            } else {
+                while (attempt++ < 200) {
+                    const randomSpell = getRandomSpell();
+                    if (!magicPool.some(magic => magic.type === randomSpell.type)) {
+                        magicPool[i] = randomSpell;
+                        break;
+                    }
+                }
+                if (attempt >= 200) magicPool[i] = new Necromancy();
+            }
+        }
+        let onDestroyMagicPool = [];
+        attempt = 0;
+        for (let i = 0; i < 2; ++i) {
+            while (attempt++ < 200) {
+                const randomSpell = getRandomSpell();
+                if (!onDestroyMagicPool.some(magic => magic.type === randomSpell.type)) {
+                    onDestroyMagicPool[i] = randomSpell;
+                    break;
+                }
+            }
+            if (attempt >= 200) onDestroyMagicPool[i] = new Necromancy();
+        }
+        level[y][x].entity = new Obelisk(x, y, magicPool, onDestroyMagicPool);
+        return level[y][x].entity;
+    }
 }
 
 function generateEnemies() {

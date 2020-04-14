@@ -84,7 +84,6 @@ export function setupGame() {
         Game.TILESIZE = 100;
         HUD.visible = false;
     }
-    //Game.TILESIZE = 20;
     Game.state = GAME_STATE.PLAYING;
     Game.world = new World();
     Game.app.stage.addChild(Game.world);
