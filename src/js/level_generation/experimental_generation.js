@@ -12,6 +12,7 @@ import {Room, ROOM_TYPE} from "./room";
 import {Chest} from "../classes/inanimate_objects/chest";
 import {getRandomChestDrop, getRandomWeapon} from "../utils/pool_utils";
 import {Statue} from "../classes/inanimate_objects/statue";
+import {get8Directions} from "../utils/map_utils";
 
 const minRoomSize = 7;
 const minRoomArea = 54;
@@ -421,18 +422,44 @@ function placeInanimate(placeMethod, amount) {
 }
 
 function placeChest(room) {
+    return placeChestOrStatue(room, true);
+}
+
+function placeStatue(room) {
+    return placeChestOrStatue(room, false);
+}
+
+function placeChestOrStatue(room, isChest) {
     let attempt = 0;
     while (attempt++ < 200) {
         const point = {
             x: randomInt(room.offsetX + 1, room.offsetX + room.width - 2),
             y: randomInt(room.offsetY + 1, room.offsetY + room.height - 3)
         };
-        if (level[point.y][point.x].tileType === TILE_TYPE.NONE
-            && level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
-            && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL) {
-            ensureInanimateSurroundings(point.x, point.y);
-            level[point.y][point.x].entity = new Chest(point.x, point.y, getRandomChestDrop());
-            return true;
+        if (level[point.y][point.x].tileType === TILE_TYPE.NONE) {
+            let good = false;
+            if (level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
+                && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL) {
+                good = true
+            } else {
+                for (const dir of get8Directions()) {
+                    good = true;
+                    if (level[point.y + dir.y][point.x + dir.x].tileType !== TILE_TYPE.NONE) {
+                        good = false;
+                        break;
+                    }
+                }
+            }
+            if (good) {
+                ensureInanimateSurroundings(point.x, point.y);
+                if (isChest) level[point.y][point.x].entity = new Chest(point.x, point.y, getRandomChestDrop());
+                else {
+                    if (Game.weaponPool.length > 0) {
+                        level[point.y][point.x].entity = new Statue(point.x, point.y, getRandomWeapon());
+                    }
+                }
+                return true;
+            }
         }
     }
     return false;
@@ -447,26 +474,6 @@ function ensureInanimateSurroundings(x, y) {
         level[y + 1][x + 1].tileType = TILE_TYPE.NONE;
         level[y + 1][x + 1].tile = null;
     }
-}
-
-function placeStatue(room) {
-    let attempt = 0;
-    while (attempt++ < 200) {
-        const point = {
-            x: randomInt(room.offsetX + 1, room.offsetX + room.width - 2),
-            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 3)
-        };
-        if (level[point.y][point.x].tileType === TILE_TYPE.NONE
-            && level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
-            && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL) {
-            ensureInanimateSurroundings(point.x, point.y);
-            if (Game.weaponPool.length > 0) {
-                level[point.y][point.x].entity = new Statue(point.x, point.y, getRandomWeapon());
-            }
-            return true;
-        }
-    }
-    return false;
 }
 
 function placeObelisk(room) {
