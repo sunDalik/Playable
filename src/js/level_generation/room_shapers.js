@@ -99,3 +99,6 @@ export const comboShapers = [
     //10. T-shape + 2-tile corners
     (x, y, width, height) => shapers[10](x, y, width, height) || shapers[7](x, y, width, height),
 ];
+
+export const startingRoomShaper = (x, y, width, height) => Math.min(x, width - 1 - x) < (width - 7) / 2
+    || Math.min(y, height - 1 - y) < (height - 7) / 2;

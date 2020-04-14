@@ -3,7 +3,7 @@ import {init2dArray} from "../utils/basic_utils";
 import {MAP_SYMBOLS, PLANE} from "../enums";
 import {Game} from "../game";
 import {expandLevel, outlineWallsWithSuperWalls} from "./generation_utils";
-import {comboShapers, shapers} from "./room_shapers";
+import {comboShapers, shapers, startingRoomShaper} from "./room_shapers";
 
 const minRoomSize = 7;
 const minRoomArea = 54;
@@ -24,9 +24,14 @@ export function generateExperimental() {
     const bossRoom = findBossRoom(rooms);
     clearShape(bossRoom);
     const path = planPath(bossRoom, rooms);
-    clearShape(path[path.length - 1]); //starting room
+    const startRoom = path[path.length - 1];
+    clearShape(startRoom);
+    shapeRoom(startRoom, startingRoomShaper);
     drawPath(path);
-    Game.startPos = {x: 3, y: 3};
+    Game.startPos = {
+        x: startRoom.offsetX + Math.floor(startRoom.width / 2),
+        y: startRoom.offsetY + Math.floor(startRoom.height / 2)
+    };
     level = expandLevel(level, 1, 1);
     outlineWallsWithSuperWalls(level);
     return level;
@@ -207,7 +212,7 @@ function planPath(startRoom, rooms) {
     while (path.length < maxPath) {
         const nextRoom = randomChoice(getAdjacentRooms(path[path.length - 1], rooms).filter(r => path.indexOf(r) === -1));
         if (nextRoom === undefined) {
-            if (attempt++ > 100 || path.length > 3) break;
+            if (attempt++ > 100 || path.length > 4) break;
             else path = [startRoom];
             continue;
         }
