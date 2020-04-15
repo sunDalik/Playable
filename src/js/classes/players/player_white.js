@@ -9,7 +9,8 @@ import {Game} from "../../game";
 export class WhitePlayer extends Player {
     constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/player.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
-        this.setStats(0, 0.5, 0, 1.00);
+        this.atkMul = 0.5;
+        this.defMul = 1;
         this.weapon = new Spear();
         this.armor = new BasicArmor();
         this.setOwnZIndex(Z_INDEXES.PLAYER_PRIMARY);

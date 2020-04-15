@@ -187,13 +187,6 @@ export class Player extends AnimatedTileElement {
         redrawSlotContents(this, "magic" + i);
     }
 
-    setStats(atkBase, atkMul, defBase, defMul) {
-        this.atkBase = atkBase;
-        this.atkMul = atkMul;
-        this.defBase = defBase;
-        this.defMul = defMul;
-    }
-
     getAtkWithWeapon(weapon, presetAtk = 0) {
         const atkBase = this.getAtkBaseWithWeapon(weapon, presetAtk);
         return (Math.round(atkBase * this.getAtkMul() * 4) / 4)
