@@ -22,6 +22,12 @@ export function tileDistance(a, b) {
     return Math.abs(a.tilePosition.x - b.tilePosition.x) + Math.abs(a.tilePosition.y - b.tilePosition.y);
 }
 
+//this is the method for objects of format {x: 0, y: 0}
+// I'm not very proud of it ;)
+export function pointTileDistance(a, b) {
+    return tileDistance({tilePosition: {x: a.x, y: a.y}}, {tilePosition: {x: b.x, y: b.y}})
+}
+
 export function tileDistanceDiagonal(a, b) {
     const tileDistX = Math.abs(a.tilePosition.x - b.tilePosition.x);
     const tileDistY = Math.abs(a.tilePosition.y - b.tilePosition.y);

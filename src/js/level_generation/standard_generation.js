@@ -15,26 +15,24 @@ import {Statue} from "../classes/inanimate_objects/statue";
 import {get8Directions} from "../utils/map_utils";
 import {Necromancy} from "../classes/equipment/magic/necromancy";
 import {Obelisk} from "../classes/inanimate_objects/obelisk";
-import {FCEnemySets} from "./enemy_sets";
+import {pointTileDistance} from "../utils/game_utils";
 
-let enemySets = FCEnemySets;
-const minRoomSize = 7;
-const minRoomArea = 54;
+let settings;
 let level;
 let rooms;
 
-//todo
-export function setupGenerator(settings) {
-
+//you have to setup settings before you use it
+export function setupGenerator(generatorSettings) {
+    settings = generatorSettings;
 }
 
 //todo add boss
 //todo add spiky wall traps
-export function generateExperimental() {
+export function generateStandard() {
     level = initEmptyLevel();
     rooms = splitRoomAMAP(new Room(0, 0, level[0].length, level.length));
     for (const room of rooms) {
-        outlineRoomWithWalls(room);
+        if (!settings.openSpace) outlineRoomWithWalls(room);
         if (Math.random() > 0.4) shapeRoom(room, randomChoice(comboShapers));
         else shapeRoom(room, randomChoice(shapers));
         //shapeRoom(room, shapers[5]); //for testing
@@ -80,10 +78,8 @@ export function generateExperimental() {
 }
 
 function initEmptyLevel() {
-    const minLevelSize = 30;
-    const maxLevelSize = 40;
-    const width = randomInt(minLevelSize, maxLevelSize);
-    const height = randomInt(minLevelSize, maxLevelSize);
+    const width = randomInt(settings.minLevelWidth, settings.maxLevelWidth);
+    const height = randomInt(settings.minLevelHeight, settings.maxLevelHeight);
     return init2dArray(height, width, LEVEL_SYMBOLS.NONE);
 }
 
@@ -107,8 +103,8 @@ function divideRoom(offsetX, offsetY, width, height) {
     while (attempt++ < 500) {
         const dividingPlane = randomChoice([PLANE.VERTICAL, PLANE.HORIZONTAL]);
         //dividing line tiles will be included in the leftmost/topmost room;
-        const dividerX = dividingPlane === PLANE.VERTICAL ? randomInt(minRoomSize - 1, width - minRoomSize - 1) : -1;
-        const dividerY = dividingPlane === PLANE.HORIZONTAL ? randomInt(minRoomSize - 1, height - minRoomSize - 1) : -1;
+        const dividerX = dividingPlane === PLANE.VERTICAL ? randomInt(settings.minRoomSize - 1, width - settings.minRoomSize - 1) : -1;
+        const dividerY = dividingPlane === PLANE.HORIZONTAL ? randomInt(settings.minRoomSize - 1, height - settings.minRoomSize - 1) : -1;
         let rooms = [];
         if (dividingPlane === PLANE.HORIZONTAL) {
             rooms[0] = new Room(offsetX, offsetY, width, dividerY + 1);
@@ -132,7 +128,7 @@ function canBeDivided(width, height) {
 function isRoomGood(width, height) {
     const minDimension = Math.min(width, height);
     const area = width * height;
-    return minDimension >= minRoomSize && area >= minRoomArea;
+    return minDimension >= settings.minRoomSize && area >= settings.minRoomArea;
 }
 
 function outlineRoomWithWalls(room) {
@@ -246,6 +242,7 @@ function getAdjacentRooms(room) {
     return adjacentRooms;
 }
 
+//this is messy AND not always efficient
 function drawPath(path) {
     for (let i = 0; i < path.length - 1; i++) {
         const startRoom = path[i];
@@ -421,6 +418,7 @@ function placeChestOrStatue(room, isChest) {
             y: randomInt(room.offsetY + 1, room.offsetY + room.height - 3)
         };
         if (level[point.y][point.x].tileType === TILE_TYPE.NONE) {
+            if (!settings.openSpace && isNearEntrance(point, room)) continue;
             let good = false;
             if (level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
                 && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL) {
@@ -505,6 +503,7 @@ function placeObelisk(room) {
     return false;
 }
 
+//obelisk generation is pretty weak right now
 function createObelisk(x, y) {
     if (Game.magicPool.length >= 4) {
         let necromancyIndex = -1;
@@ -554,8 +553,8 @@ function generateEnemies() {
     for (const room of rooms) {
         if ([ROOM_TYPE.MAIN, ROOM_TYPE.SECONDARY].includes(room.type)) {
             let emptyTiles = 0;
-            for (let i = 2; i < room.height - 2; i++) {
-                for (let j = 2; j < room.width - 2; j++) {
+            for (let i = 1; i < room.height - 2; i++) {
+                for (let j = 1; j < room.width - 2; j++) {
                     if (level[i + room.offsetY][j + room.offsetX].tileType === TILE_TYPE.NONE) {
                         emptyTiles++;
                     }
@@ -564,7 +563,7 @@ function generateEnemies() {
             const enemyAmount = Math.round(emptyTiles / 7);
             let pack;
             for (let i = enemyAmount; i > 0; i--) {
-                pack = randomChoice(enemySets.filter(set => set.length === i));
+                pack = randomChoice(settings.enemySets.filter(set => set.length === i));
                 if (pack !== undefined) break;
             }
             if (pack === undefined) continue;
@@ -576,6 +575,7 @@ function generateEnemies() {
                         y: randomInt(room.offsetY + 2, room.offsetY + room.height - 3)
                     };
                     if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
+                        if (!settings.openSpace && isNearEntrance(point, room)) continue;
                         if (enemy.params) level[point.y][point.x].entity = new enemy(point.x, point.y, ...enemy.params);
                         else level[point.y][point.x].entity = new enemy(point.x, point.y);
                         break;
@@ -584,4 +584,28 @@ function generateEnemies() {
             }
         }
     }
+}
+
+function isNearEntrance(point, room) {
+    const entries = getRoomEntries(room);
+    for (const entry of entries) {
+        if (pointTileDistance(entry, point) <= 3) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function getRoomEntries(room) {
+    const entries = [];
+    for (let i = 0; i < room.height; i++) {
+        for (let j = 0; j < room.width; j++) {
+            if (i === 0 || i === room.height - 1 || j === 0 || j === room.width - 1) {
+                if (level[i + room.offsetY][j + room.offsetX].tileType === TILE_TYPE.NONE) {
+                    entries.push({x: room.offsetX + j, y: room.offsetY + i});
+                }
+            }
+        }
+    }
+    return entries;
 }
