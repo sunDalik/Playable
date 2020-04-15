@@ -1,6 +1,6 @@
 import {randomChoice, randomInt} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
-import {LEVEL_SYMBOLS, PLANE, TILE_TYPE} from "../enums";
+import {LEVEL_SYMBOLS, PLANE, STAGE, TILE_TYPE} from "../enums";
 import {Game} from "../game";
 import {expandLevel, outlineWallsWithSuperWalls} from "./generation_utils";
 import {comboShapers, shapers, startingRoomShaper} from "./room_shapers";
@@ -12,22 +12,22 @@ import {Room, ROOM_TYPE} from "./room";
 import {Chest} from "../classes/inanimate_objects/chest";
 import {getRandomChestDrop, getRandomSpell, getRandomWeapon} from "../utils/pool_utils";
 import {Statue} from "../classes/inanimate_objects/statue";
-import {get8Directions} from "../utils/map_utils";
+import {get8Directions, getCardinalDirections} from "../utils/map_utils";
 import {Necromancy} from "../classes/equipment/magic/necromancy";
 import {Obelisk} from "../classes/inanimate_objects/obelisk";
 import {pointTileDistance} from "../utils/game_utils";
+import {SpikyWallTrap} from "../classes/enemies/spiky_wall_trap";
 
 let settings;
 let level;
 let rooms;
 
-//you have to setup settings before you use it
+//you HAVE to setup settings before you use generator
 export function setupGenerator(generatorSettings) {
     settings = generatorSettings;
 }
 
 //todo add boss
-//todo add spiky wall traps
 export function generateStandard() {
     level = initEmptyLevel();
     rooms = splitRoomAMAP(new Room(0, 0, level[0].length, level.length));
@@ -550,6 +550,7 @@ function createObelisk(x, y) {
 }
 
 function generateEnemies() {
+    generateSpecificEnemies();
     for (const room of rooms) {
         if ([ROOM_TYPE.MAIN, ROOM_TYPE.SECONDARY].includes(room.type)) {
             let emptyTiles = 0;
@@ -608,4 +609,33 @@ function getRoomEntries(room) {
         }
     }
     return entries;
+}
+
+function generateSpecificEnemies() {
+    if (Game.stage === STAGE.FLOODED_CAVE) {
+        //todo dont generate them near doors
+        let spikyWallTrapsAmount = Math.ceil(rooms.length * 1.3);
+        let attempt = 0;
+        while (spikyWallTrapsAmount > 0 && attempt++ < 200 + spikyWallTrapsAmount) {
+            const point = {
+                x: randomInt(1, level[0].length - 2),
+                y: randomInt(1, level.length - 2)
+            };
+            if (level[point.y][point.x].tileType === TILE_TYPE.WALL && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
+                && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))) {
+                for (const dir of getCardinalDirections()) {
+                    if (level[point.y + dir.y][point.x + dir.x].tileType === TILE_TYPE.NONE) {
+                        level[point.y][point.x].entity = new SpikyWallTrap(point.x, point.y);
+                        spikyWallTrapsAmount--;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+function isInsideRoom(point, room) {
+    return point.x >= room.offsetX && point.x <= room.offsetX + room.width - 1
+        && point.y >= room.offsetY && point.y <= room.offsetY + room.height - 1
 }
