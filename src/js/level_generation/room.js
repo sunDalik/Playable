@@ -6,7 +6,6 @@ export class Room {
         this.offsetY = offsetY;
         this.width = width;
         this.height = height;
-        this.id = id;
         this.type = type;
     }
 

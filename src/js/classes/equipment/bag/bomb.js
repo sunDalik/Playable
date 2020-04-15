@@ -74,7 +74,7 @@ export class Bomb {
         } else {
             this.currentFuseDelay--;
             if (this.currentFuseDelay === 0) {
-                this.sprite.texture = BagSpriteSheet["bomb_about_to_explode.png"];
+                this.sprite.tint = 0xff7777;
             }
         }
     }

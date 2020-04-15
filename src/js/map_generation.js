@@ -2,61 +2,21 @@ import {Game} from "./game";
 import {ENEMY_TYPE, LEVEL_SYMBOLS, RABBIT_TYPE, ROLE, STAGE, TILE_TYPE} from "./enums";
 import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {copy2dArray} from "./utils/basic_utils";
-import {randomInt, getRandomValue, randomShuffle} from "./utils/random_utils";
-import {Roller} from "./classes/enemies/roller";
-import {RedRoller} from "./classes/enemies/roller_red";
-import {Snail} from "./classes/enemies/snail";
-import {SpikySnail} from "./classes/enemies/snail_spiky";
-import {Star} from "./classes/enemies/star";
-import {RedStar} from "./classes/enemies/star_red";
-import {Spider} from "./classes/enemies/spider";
-import {GraySpider} from "./classes/enemies/spider_gray";
-import {Eel} from "./classes/enemies/eel";
-import {DarkEel} from "./classes/enemies/eel_dark";
-import {PoisonEel} from "./classes/enemies/eel_poison";
-import {Statue} from "./classes/inanimate_objects/statue";
-import {Chest} from "./classes/inanimate_objects/chest";
-import {Obelisk} from "./classes/inanimate_objects/obelisk";
-import {RedSpider} from "./classes/enemies/spider_red";
-import {GreenSpider} from "./classes/enemies/spider_green";
-import {KingFireFrog} from "./classes/enemies/frog_king_fire";
-import {KingFrog} from "./classes/enemies/frog_king";
-import {FireFrog} from "./classes/enemies/frog_fire";
-import {Frog} from "./classes/enemies/frog";
-import {Mushroom} from "./classes/enemies/mushroom";
-import {SmallMushroom} from "./classes/enemies/mushroom_small";
+import {getRandomValue, randomInt, randomShuffle} from "./utils/random_utils";
 import {Alligator} from "./classes/enemies/alligator";
 import {Rabbit} from "./classes/enemies/rabbit";
 import {Torch} from "./classes/equipment/tools/torch";
 import {LyingItem} from "./classes/equipment/lying_item";
-import {LaserTurret} from "./classes/enemies/laser_turret";
-import {SpikyWallTrap} from "./classes/enemies/spiky_wall_trap";
-import {ParanoidEel} from "./classes/enemies/bosses/paranoid_eel";
-import {BalletSpider} from "./classes/enemies/bosses/ballet_spider";
-import {GuardianOfTheLight} from "./classes/enemies/bosses/guardian_of_the_light";
 import {FireGoblet} from "./classes/inanimate_objects/fire_goblet";
-import {Necromancy} from "./classes/equipment/magic/necromancy";
 import {Bomb} from "./classes/equipment/bag/bomb";
 import {SmallHealingPotion} from "./classes/equipment/bag/small_healing_potion";
 import {TileElement} from "./classes/tile_elements/tile_element";
-import {getRandomChestDrop, getRandomSpell, getRandomWeapon} from "./utils/pool_utils";
 import {tileInsideTheBossRoom} from "./map_checks";
-import {Cocoon} from "./classes/enemies/cocoon";
-import {LizardWarrior} from "./classes/enemies/lizard_warrior";
 import {RustySword} from "./classes/equipment/weapons/rusty_sword";
-import {TeleportMage} from "./classes/enemies/teleport_mage";
-import {MudCubeZombie} from "./classes/enemies/mud_cube_zombie";
-import {MudMage} from "./classes/enemies/mud_mage";
-import {WallSlime} from "./classes/enemies/wall_slime";
-import {PingPongBuddy} from "./classes/enemies/ping_pong_buddies";
-import {WallTile} from "./classes/draw/wall";
-import {SuperWallTile} from "./classes/draw/super_wall";
 import {CommonSpriteSheet} from "./loader";
 
 export function generateMap(level) {
     const map = copy2dArray(level);
-    const obeliskTiles = [];
-    const entries = [];
     for (let i = 0; i < map.length; ++i) {
         for (let j = 0; j < map[0].length; ++j) {
             const mapCell = {
@@ -84,53 +44,6 @@ export function generateMap(level) {
                 alligator.prey = rabbit;
                 mapCell.entity = alligator;
                 mapCell.secondaryEntity = rabbit;
-            }
-            else if (map[i][j] === LEVEL_SYMBOLS.STATUE) {
-                if (Game.weaponPool.length > 0) {
-                    mapCell.entity = new Statue(j, i, getRandomWeapon());
-                }
-            } else if (map[i][j] === LEVEL_SYMBOLS.CHEST) {
-                mapCell.entity = new Chest(j, i, getRandomChestDrop());
-            } else if (map[i][j] === LEVEL_SYMBOLS.OBELISK) {
-                if (Game.magicPool.length >= 4) {
-                    let necromancyIndex = -1;
-                    let alivePlayer = null;
-                    if (Game.player.dead) alivePlayer = Game.player2;
-                    else if (Game.player2.dead) alivePlayer = Game.player;
-                    if (alivePlayer !== null) {
-                        if (alivePlayer.health >= 3.5) necromancyIndex = randomInt(0, 3);
-                        else if (alivePlayer.health >= 2.5) necromancyIndex = randomInt(0, 2);
-                        else necromancyIndex = randomInt(0, 1);
-                    }
-
-                    let magicPool = [];
-                    for (let i = 0; i < 4; ++i) {
-                        if (i === necromancyIndex) {
-                            magicPool.push(new Necromancy());
-                        } else {
-                            //todo: add attempts and stuff because now it breaks on the 4th floor with only C-magic in the pool
-                            while (true) {
-                                const randomSpell = getRandomSpell();
-                                if (!magicPool.some(magic => magic.type === randomSpell.type)) {
-                                    magicPool.push(randomSpell);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    let onDestroyMagicPool = [];
-                    for (let i = 0; i < 2; ++i) {
-                        while (true) {
-                            const randomSpell = getRandomSpell();
-                            if (!onDestroyMagicPool.some(magic => magic.type === randomSpell.type)) {
-                                onDestroyMagicPool.push(randomSpell);
-                                break;
-                            }
-                        }
-                    }
-                    obeliskTiles.push({x: j, y: i});
-                    mapCell.entity = new Obelisk(j, i, magicPool, onDestroyMagicPool);
-                }
             } else if (map[i][j] === LEVEL_SYMBOLS.TORCH) {
                 mapCell.item = new LyingItem(j, i, new Torch());
                 Game.torchTile = {x: j, y: i};
@@ -212,7 +125,7 @@ export function recalculateTileInDetectionGraph(tileX, tileY) {
 }
 
 export function assignDrops() {
-    distributeDrops(Bomb, randomInt(3, 4));
+    distributeDrops(Bomb, randomInt(4, 5));
     distributeDrops(SmallHealingPotion, randomInt(1, 2));
 
     if (Game.stage === STAGE.RUINS) {

@@ -5,7 +5,7 @@ import {Knife} from "../equipment/weapons/knife";
 
 //aka player 2
 export class BlackPlayer extends Player {
-    constructor(tilePositionX, tilePositionY, texture = CommonSpriteSheet["player2.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/player2.png"].texture) {
         super(texture, tilePositionX, tilePositionY);
         this.setStats(0, 1, 0, 0.5);
         this.weapon = new Knife();

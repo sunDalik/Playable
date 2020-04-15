@@ -26,7 +26,6 @@ import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
 import {WhitePlayer} from "./classes/players/player_white";
 import {BlackPlayer} from "./classes/players/player_black";
-import {isNotOutOfMap} from "./map_checks";
 
 const cinematic = false;
 
@@ -170,8 +169,8 @@ export function initializeLevel() {
         //lightAll();
     }
     if (Game.experimentalFeatures) {
-        //lightAllRealistic();
-        //camera.setup(Game.world.width / 2, Game.world.height / 2);
+        lightAllRealistic();
+        camera.setup(Game.world.width / 2, Game.world.height / 2);
     }
 }
 

@@ -1,6 +1,6 @@
 import {Game} from "../game";
 import {STAGE} from "../enums";
-import {generateExperimental} from "./experimental_generation";
+import {generateExperimental} from "./standard_generation";
 
 export function generateLevel() {
     switch (Game.stage) {

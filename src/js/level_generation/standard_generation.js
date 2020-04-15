@@ -20,7 +20,6 @@ import {FCEnemySets} from "./enemy_sets";
 let enemySets = FCEnemySets;
 const minRoomSize = 7;
 const minRoomArea = 54;
-let roomId = 0;
 let level;
 let rooms;
 
@@ -33,7 +32,7 @@ export function setupGenerator(settings) {
 //todo add spiky wall traps
 export function generateExperimental() {
     level = initEmptyLevel();
-    rooms = splitRoomAMAP(new Room(0, 0, level[0].length, level.length, roomId++));
+    rooms = splitRoomAMAP(new Room(0, 0, level[0].length, level.length));
     for (const room of rooms) {
         outlineRoomWithWalls(room);
         if (Math.random() > 0.4) shapeRoom(room, randomChoice(comboShapers));
@@ -42,7 +41,6 @@ export function generateExperimental() {
         //shapeRoom(room, randomChoice(shapers)); //for testing
         randomlyRotateRoom(room)
     }
-    replaceNumbers();
     const bossRoom = findBossRoom();
     clearShape(bossRoom);
     const path = planPath(bossRoom);
@@ -86,8 +84,7 @@ function initEmptyLevel() {
     const maxLevelSize = 40;
     const width = randomInt(minLevelSize, maxLevelSize);
     const height = randomInt(minLevelSize, maxLevelSize);
-    roomId = 0;
-    return init2dArray(height, width, -1);
+    return init2dArray(height, width, LEVEL_SYMBOLS.NONE);
 }
 
 function splitRoomAMAP(initialRoom) {
@@ -122,23 +119,10 @@ function divideRoom(offsetX, offsetY, width, height) {
         }
 
         if (isRoomGood(rooms[0].width, rooms[0].height) && isRoomGood(rooms[1].width, rooms[1].height)) {
-            for (let i = 0; i < 2; i++) {
-                rooms[i].id = roomId++;
-                assignRoom(rooms[i]);
-            }
             return rooms;
         }
     }
     return null;
-}
-
-//I forgot... do I even need it?
-function assignRoom(room) {
-    for (let i = room.offsetY; i < room.offsetY + room.height; i++) {
-        for (let j = room.offsetX; j < room.offsetX + room.width; j++) {
-            level[i][j] = room.id;
-        }
-    }
 }
 
 function canBeDivided(width, height) {
@@ -214,17 +198,6 @@ function mirrorRoomHorizontally(room) {
     for (let i = 0; i < room.height; i++) {
         for (let j = 0; j < room.width; j++) {
             level[i + room.offsetY][j + room.offsetX] = oldRoom[i][room.width - 1 - j];
-        }
-    }
-}
-
-function replaceNumbers() {
-    for (let i = 0; i < level.length; i++) {
-        for (let j = 0; j < level[0].length; j++) {
-            if (level[i][j] === -1)
-                level[i][j] = LEVEL_SYMBOLS.VOID;
-            else if (typeof level[i][j] === "number")
-                level[i][j] = LEVEL_SYMBOLS.NONE;
         }
     }
 }

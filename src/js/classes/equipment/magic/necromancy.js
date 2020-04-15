@@ -29,6 +29,7 @@ export class Necromancy {
         if (this.removeIfExhausted(wielder)) return false;
         const revivedPlayer = otherPlayer(wielder);
         if (revivedPlayer.dead) {
+            //todo add revive method probably and also restore shadow
             revivedPlayer.dead = false;
             revivedPlayer.visible = true;
             Game.world.addChild(revivedPlayer);
