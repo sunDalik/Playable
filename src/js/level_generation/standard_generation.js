@@ -45,7 +45,6 @@ export function generateStandard() {
     const path = planPath(bossRoom);
 
     const startRoom = path[path.length - 1];
-    clearShape(startRoom);
     drawPath(path);
     path.forEach(r => r.type = ROOM_TYPE.MAIN);
     bossRoom.type = ROOM_TYPE.BOSS;
@@ -374,6 +373,10 @@ function setStartPosition(startRoom) {
         x: startRoom.offsetX + Math.floor(startRoom.width / 2),
         y: startRoom.offsetY + Math.floor(startRoom.height / 2)
     };
+    for (const dir of get8Directions().concat({x: 0, y: 0})) {
+        level[Game.startPos.y + dir.y][Game.startPos.x + dir.x].tile = null;
+        level[Game.startPos.y + dir.y][Game.startPos.x + dir.x].tileType = TILE_TYPE.NONE;
+    }
 }
 
 function setBossRoomPosition(bossRoom) {

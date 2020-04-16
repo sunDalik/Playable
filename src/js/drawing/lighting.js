@@ -43,24 +43,9 @@ export function lightPlayerPosition(player) {
         const roomDist = 12;
         lightWorld(px, py, roomDist);
     } else {
-        const pathDist = 5;
-        const roomDist = 6; // was 9
-        if (Game.map[py][px].tileType === TILE_TYPE.PATH) {
-            lightWorld(px, py, pathDist);
-        } else if (Game.map[py][px].tileType === TILE_TYPE.NONE) {
+        const roomDist = 9;
+        if (Game.map[py][px].tileType === TILE_TYPE.NONE || Game.map[py][px].tileType === TILE_TYPE.ENTRY) {
             lightWorld(px, py, roomDist);
-        } else if (Game.map[py][px].tileType === TILE_TYPE.ENTRY) {
-            let found = false;
-            for (const dir of getCardinalDirections()) {
-                if (Game.map[py + dir.y][px + dir.x].tileType === TILE_TYPE.NONE && !Game.map[py + dir.y][px + dir.x].lit) {
-                    found = true;
-                    lightWorld(px, py, roomDist);
-                    break;
-                }
-            }
-            if (!found) {
-                lightWorld(px, py, pathDist);
-            }
         }
     }
 }
@@ -69,7 +54,7 @@ function lightWorld(tileX, tileY, distance, crossEntries = false, sourceDirX = 0
     const tileType = Game.map[tileY][tileX].tileType;
     if (distance > -1) {
         if ((tileType === TILE_TYPE.ENTRY && (crossEntries === true || spreadStart === true))
-            || tileType === TILE_TYPE.PATH || tileType === TILE_TYPE.NONE || tileType === TILE_TYPE.EXIT) {
+            || tileType === TILE_TYPE.NONE || tileType === TILE_TYPE.EXIT) {
             if (!Game.map[tileY][tileX].lit) lightTile(tileX, tileY);
             litAreas.push({x: tileX, y: tileY});
             if (sourceDirX === 0 && sourceDirY === 0) {
