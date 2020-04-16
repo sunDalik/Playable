@@ -1,6 +1,6 @@
 import {randomChoice, randomInt} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
-import {LEVEL_SYMBOLS, PLANE, STAGE, TILE_TYPE} from "../enums";
+import {LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums";
 import {Game} from "../game";
 import {expandLevel, outlineWallsWithSuperWalls} from "./generation_utils";
 import {comboShapers, shapers, startingRoomShaper} from "./room_shapers";
@@ -460,6 +460,7 @@ function placeChestOrStatue(room, isChest) {
     return false;
 }
 
+//doesnt sometimes work????????? I dunno
 function ensureInanimateSurroundings(x, y) {
     if (level[y][x - 1].tileType === TILE_TYPE.NONE && level[y + 1][x - 1].tileType === TILE_TYPE.WALL) {
         level[y + 1][x - 1].tileType = TILE_TYPE.NONE;
@@ -637,9 +638,12 @@ function generateSpecificEnemies() {
                 && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))) {
                 if (anyDoorsAround(point)) continue;
                 for (const dir of getCardinalDirections()) {
-                    if (level[point.y + dir.y][point.x + dir.x].tileType === TILE_TYPE.NONE) {
+                    if (level[point.y + dir.y][point.x + dir.x].tileType === TILE_TYPE.NONE
+                        && (level[point.y + dir.y][point.x + dir.x].entity === null
+                            || level[point.y + dir.y][point.x + dir.x].entity.role !== ROLE.INANIMATE)) {
                         level[point.y][point.x].entity = new SpikyWallTrap(point.x, point.y);
                         spikyWallTrapsAmount--;
+                        level[point.y][point.x].tile = null;
                         break;
                     }
                 }

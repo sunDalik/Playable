@@ -34,7 +34,7 @@ export class SpikyWallTrap extends Enemy {
         this.wallBase = new WallTrapBase(this.tilePosition.x, this.tilePosition.y);
         Game.world.addChild(this.wallBase);
         this.correctZIndex();
-        this.wallBase.zIndex = getZIndexForLayer(this.tilePosition.y);
+        this.wallBase.zIndex = getZIndexForLayer(this.tilePosition.y, true);
         this.removeShadow();
         this.setCenterPreservation();
     }

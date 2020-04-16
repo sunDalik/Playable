@@ -43,6 +43,7 @@ export function lightPlayerPosition(player) {
         const roomDist = 12;
         lightWorld(px, py, roomDist);
     } else {
+        //you should get rid of it and replace it with a new system where an entire room lights up when you enter it ???
         const roomDist = 9;
         if (Game.map[py][px].tileType === TILE_TYPE.NONE || Game.map[py][px].tileType === TILE_TYPE.ENTRY) {
             lightWorld(px, py, roomDist);

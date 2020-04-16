@@ -36,7 +36,6 @@ export function setEnemyTurnTimeout() {
 function enemyTurn() {
     Game.enemiesTimeout = null;
     drawInteractionKeys();
-    openDoors();
     callDelayedMethods(); //delay isn't perfect yeah
     updateList();
     damagePlayersWithHazards();
@@ -103,14 +102,14 @@ function updateList() {
     }
 }
 
-function openDoors() {
+export function openDoors(tileStepX, tileStepY) {
     for (const player of [Game.player, Game.player2]) {
         if (!player.dead) {
             if (Game.map[player.tilePosition.y][player.tilePosition.x].tileType === TILE_TYPE.ENTRY) {
                 //todo ?. operator
                 if (Game.map[player.tilePosition.y][player.tilePosition.x].tile
                     && Game.map[player.tilePosition.y][player.tilePosition.x].tile.open) {
-                    Game.map[player.tilePosition.y][player.tilePosition.x].tile.open();
+                    Game.map[player.tilePosition.y][player.tilePosition.x].tile.open(tileStepX, tileStepY);
                 }
             }
         }

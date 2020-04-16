@@ -1,9 +1,10 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
+import {ENEMY_TYPE, TILE_TYPE} from "../../enums";
 import {getPlayerOnTile, isAnyWall, isInanimate, isRelativelyEmpty} from "../../map_checks";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
+// I HAVE NO IDEA WHY BUT HIS ANIMATIONS ARE SUPPER BUGGY
 export class Roller extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["roller.png"]) {
         super(texture, tilePositionX, tilePositionY);
@@ -17,10 +18,8 @@ export class Roller extends Enemy {
         this.setScaleModifier(0.85);
     }
 
-    // super()??
     cancelAnimation() {
-        Game.app.ticker.remove(this.animation);
-        this.place();
+        super.cancelAnimation();
         this.correctScale();
     }
 
@@ -33,7 +32,8 @@ export class Roller extends Enemy {
     }
 
     move() {
-        if (isRelativelyEmpty(this.tilePosition.x + this.direction, this.tilePosition.y)) {
+        if (isRelativelyEmpty(this.tilePosition.x + this.direction, this.tilePosition.y)
+            && Game.map[this.tilePosition.y][this.tilePosition.x + this.direction].tileType !== TILE_TYPE.ENTRY) {
             let player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
             if (player !== null) {
                 player.damage(this.atk, this);

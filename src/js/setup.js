@@ -12,12 +12,7 @@ import {drawHUD, drawInteractionKeys, drawMovementKeyBindings, redrawSpeedRunTim
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
-import {
-    get8Directions,
-    get8DirectionsWithoutItems,
-    get8DirectionsWithoutItemsAndWalls,
-    getCardinalDirectionsWithoutItems
-} from "./utils/map_utils";
+import {get8Directions, get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
 import {cleanGameState, kiss, speedrunTimer, swapEquipmentWithPlayer} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";

@@ -23,7 +23,7 @@ import {
     redrawWeaponAndSecondHand
 } from "../../drawing/draw_hud";
 import {amIInTheBossRoom, isInanimate, isRelativelyEmpty} from "../../map_checks";
-import {activateBossMode, gotoNextLevel, updateInanimates} from "../../game_logic";
+import {activateBossMode, gotoNextLevel, openDoors, updateInanimates} from "../../game_logic";
 import {lightPlayerPosition} from "../../drawing/lighting";
 import {LyingItem} from "../equipment/lying_item";
 import {randomChoice} from "../../utils/random_utils";
@@ -241,7 +241,7 @@ export class Player extends AnimatedTileElement {
             }, () => {
                 this.onMoveFrame(onEnd);
             }, animationTime);
-            this.onMove(animationTime);
+            this.onMove(animationTime, tileStepX, tileStepY);
         }
     }
 
@@ -268,7 +268,7 @@ export class Player extends AnimatedTileElement {
         }, () => {
             this.onMoveFrame(onEnd);
         }, animationTime);
-        this.onMove(animationTime);
+        this.onMove(animationTime, tileStepX, tileStepY);
     }
 
     onMoveFrame(extra = null) {
@@ -277,8 +277,9 @@ export class Player extends AnimatedTileElement {
         this.placeShadow();
     }
 
-    onMove(animationTime) {
+    onMove(animationTime, tileStepX, tileStepY) {
         lightPlayerPosition(this);
+        openDoors(tileStepX, tileStepY);
         Game.delayList.push(() => this.pickUpItems());
         camera.moveToCenter(animationTime);
         for (const eq of this.getEquipment()) {
