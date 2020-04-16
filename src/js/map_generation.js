@@ -1,6 +1,5 @@
 import {Game} from "./game";
 import {ENEMY_TYPE, LEVEL_SYMBOLS, RABBIT_TYPE, ROLE, STAGE, TILE_TYPE} from "./enums";
-import PF from "../../bower_components/pathfinding/pathfinding-browser";
 import {copy2dArray} from "./utils/basic_utils";
 import {getRandomValue, randomInt, randomShuffle} from "./utils/random_utils";
 import {Alligator} from "./classes/enemies/alligator";
@@ -93,35 +92,6 @@ export function generateMap(level) {
     }
 
     return map;
-}
-
-let mapWithWeights;
-
-//0 is walkable, 1 is not
-export function calculateDetectionGraph(map) {
-    mapWithWeights = [];
-    for (let i = 0; i < map.length; ++i) {
-        mapWithWeights[i] = [];
-        for (let j = 0; j < map[0].length; ++j) {
-            if (map[i][j].tileType === TILE_TYPE.VOID || map[i][j].tileType === TILE_TYPE.PATH
-                || map[i][j].tileType === TILE_TYPE.WALL || map[i][j].tileType === TILE_TYPE.SUPER_WALL) {
-                mapWithWeights[i][j] = 1;
-            } else {
-                mapWithWeights[i][j] = 0;
-            }
-        }
-    }
-    Game.playerDetectionGraph = new PF.Grid(mapWithWeights);
-}
-
-export function recalculateTileInDetectionGraph(tileX, tileY) {
-    if (Game.map[tileY][tileX].tileType === TILE_TYPE.VOID || Game.map[tileY][tileX].tileType === TILE_TYPE.PATH
-        || Game.map[tileY][tileX].tileType === TILE_TYPE.WALL || Game.map[tileY][tileX].tileType === TILE_TYPE.SUPER_WALL) {
-        mapWithWeights[tileY][tileX] = 1;
-    } else {
-        mapWithWeights[tileY][tileX] = 0;
-    }
-    Game.playerDetectionGraph = new PF.Grid(mapWithWeights); //wait do I need it? I don't know
 }
 
 export function assignDrops() {

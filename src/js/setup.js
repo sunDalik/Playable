@@ -4,7 +4,7 @@ import {camera} from "./classes/game/camera";
 import {loadAll} from "./loader";
 import {ACHIEVEMENT_ID, GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums";
 import {generateLevel} from "./level_generation/level_generation";
-import {assignDrops, calculateDetectionGraph} from "./map_generation";
+import {assignDrops} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
@@ -108,7 +108,6 @@ export function setupGame() {
 export function initializeLevel() {
     setVariablesForStage();
     Game.map = generateLevel();
-    calculateDetectionGraph(Game.map);
     if (!Game.player.dead) {
         Game.player.tilePosition.set(Game.startPos.x, Game.startPos.y);
         Game.player.place();

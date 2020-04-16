@@ -1,5 +1,4 @@
 import {STAGE} from "./enums";
-import PF from "../../bower_components/pathfinding/pathfinding-browser";
 
 export const Game = {};
 Game.app = null;
@@ -58,9 +57,6 @@ Game.itemHelp = null;
 
 Game.minimap = [];
 
-Game.playerDetectionGraph = null;
-Game.finder = new PF.AStarFinder();
-
 Game.afterTurn = false;
 
 Game.lightEnergy = 0;
@@ -93,6 +89,5 @@ Game.showTime = false;
 Game.time = 0; //MS
 Game.destroyParticles = [];
 Game.achievementPopUpQueue = [];
-
 
 Game.experimentalFeatures = true;

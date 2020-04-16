@@ -203,18 +203,6 @@ export class Enemy extends AnimatedTileElement {
         return false;
     }
 
-    canSeePlayers() {
-        let distanceToPlayer1;
-        if (Game.player.dead) distanceToPlayer1 = [];
-        else distanceToPlayer1 = Game.finder.findPath(this.tilePosition.x, this.tilePosition.y,
-            Game.player.tilePosition.x, Game.player.tilePosition.y, Game.playerDetectionGraph.clone());
-        let distanceToPlayer2;
-        if (Game.player2.dead) distanceToPlayer2 = [];
-        else distanceToPlayer2 = Game.finder.findPath(this.tilePosition.x, this.tilePosition.y,
-            Game.player2.tilePosition.x, Game.player2.tilePosition.y, Game.playerDetectionGraph.clone());
-        return distanceToPlayer1.length !== 0 || distanceToPlayer2.length !== 0;
-    }
-
     removeFromMap() {
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);

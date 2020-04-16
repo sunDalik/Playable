@@ -5,7 +5,6 @@ import {EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE, TOOL_TYPE} from "../../en
 import {removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {lightPlayerPosition} from "../../drawing/lighting";
 import {otherPlayer} from "../../utils/game_utils";
-import {recalculateTileInDetectionGraph} from "../../map_generation";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
 import {runDestroyAnimation} from "../../animations";
 import {SummonCircle} from "../enemies/summon_circle";
@@ -119,7 +118,6 @@ export class World extends PIXI.Container {
                 } else lightPlayerPosition(remover)
             } else lightPlayerPosition(remover);
         }
-        recalculateTileInDetectionGraph(x, y);
         redrawMiniMapPixel(x, y);
         if (animate && Game.map[y][x].tile) {
             runDestroyAnimation(Game.map[y][x].tile);
@@ -138,7 +136,6 @@ export class World extends PIXI.Container {
         this.removeChild(Game.map[tile.tilePosition.y][tile.tilePosition.x].tile);
         Game.map[tile.tilePosition.y][tile.tilePosition.x].tile = tile;
         Game.map[tile.tilePosition.y][tile.tilePosition.x].tileType = tileType;
-        recalculateTileInDetectionGraph(tile.tilePosition.x, tile.tilePosition.y);
         redrawMiniMapPixel(tile.tilePosition.x, tile.tilePosition.y);
     }
 
@@ -147,11 +144,9 @@ export class World extends PIXI.Container {
             this.addChild(tile);
             Game.map[tile.tilePosition.y][tile.tilePosition.x].tile = tile;
             Game.map[tile.tilePosition.y][tile.tilePosition.x].tileType = tileType;
-            recalculateTileInDetectionGraph(tile.tilePosition.x, tile.tilePosition.y);
             redrawMiniMapPixel(tile.tilePosition.x, tile.tilePosition.y);
         } else {
             Game.map[y][x].tileType = tileType;
-            recalculateTileInDetectionGraph(x, y);
             redrawMiniMapPixel(x, y);
         }
     }
