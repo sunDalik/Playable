@@ -45,7 +45,7 @@ export function generateStandard() {
     const path = planPath(bossRoom);
 
     const startRoom = path[path.length - 1];
-    reshapeRoom(startRoom, startingRoomShaper);
+    clearShape(startRoom);
     drawPath(path);
     path.forEach(r => r.type = ROOM_TYPE.MAIN);
     bossRoom.type = ROOM_TYPE.BOSS;

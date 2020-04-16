@@ -12,7 +12,7 @@ export function drawTiles() {
         for (let j = 0; j < Game.map[0].length; ++j) {
             if (Game.map[i][j].tile !== null) {
                 Game.world.addChild(Game.map[i][j].tile);
-                //Game.map[i][j].tile.visible = false;
+                Game.map[i][j].tile.visible = false;
             }
         }
     }

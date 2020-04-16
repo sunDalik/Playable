@@ -27,7 +27,6 @@ export class DoorsTile extends TileElement {
         this.initialScale = {};
         this.initialScale.x = Game.TILESIZE / Game.resources["src/images/door_horizontal.png"].texture.width / 2;
         this.initialScale.y = Math.abs(this.initialScale.x);
-        console.log(this.initialScale);
     }
 
     open() {
