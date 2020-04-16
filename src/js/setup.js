@@ -119,6 +119,7 @@ export function initializeLevel() {
             Game.player2.tilePosition.set(Game.startPos.x, Game.startPos.y);
         } else {
             let startPlace;
+            //Game.followMode isn't used anymore though...
             if (Game.followMode) startPlace = randomChoice(getCardinalDirectionsWithoutItems(Game.player));
             else startPlace = randomChoice(get8DirectionsWithoutItems(Game.player));
             Game.player2.tilePosition.set(Game.player.tilePosition.x + startPlace.x, Game.player.tilePosition.y + startPlace.y);
@@ -168,8 +169,8 @@ export function initializeLevel() {
         //lightAll();
     }
     if (Game.experimentalFeatures) {
-        //lightAllRealistic();
-        //camera.setup(Game.world.width / 2, Game.world.height / 2);
+        lightAllRealistic();
+        camera.setup(Game.world.width / 2, Game.world.height / 2);
     }
 }
 

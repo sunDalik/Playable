@@ -2,6 +2,7 @@ import {TileElement} from "../tile_elements/tile_element";
 import {Game} from "../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import * as PIXI from "pixi.js";
+import {TILE_TYPE} from "../../enums";
 
 
 export class DoorsTile extends TileElement {
@@ -9,8 +10,30 @@ export class DoorsTile extends TileElement {
         super(texture, tilePositionX, tilePositionY, true);
         this.horizontal = isHorizontal; //describes connection way
         this.opened = false;
+        this.initiateScale();
         this.updateTexture();
         this.setOwnZIndex(Z_INDEXES.DOOR);
+    }
+
+    fitToTile() {
+        if (this.initialScale) {
+            this.scale.set(this.initialScale.x, this.initialScale.y);
+        } else {
+            super.fitToTile();
+        }
+    }
+
+    initiateScale() {
+        this.initialScale = {};
+        this.initialScale.x = Game.TILESIZE / Game.resources["src/images/door_horizontal.png"].texture.width / 2;
+        this.initialScale.y = Math.abs(this.initialScale.x);
+        console.log(this.initialScale);
+    }
+
+    open() {
+        this.opened = true;
+        this.updateTexture();
+        Game.map[this.tilePosition.y][this.tilePosition.x].tileType = TILE_TYPE.NONE;
     }
 
     place() {
@@ -27,7 +50,7 @@ export class DoorsTile extends TileElement {
         if (this.horizontal === this.opened) {
             door1.texture = door2.texture = Game.resources["src/images/door_horizontal.png"].texture;
         } else {
-            door1.texture = door2.texture = PIXI.Texture.WHITE;
+            door1.texture = door2.texture = Game.resources["src/images/door_vertical.png"].texture;
         }
         if (this.horizontal) {
             door2.position.y = door1.height * 2 - 4;

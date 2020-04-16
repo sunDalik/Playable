@@ -623,7 +623,6 @@ function getRoomEntries(room) {
 
 function generateSpecificEnemies() {
     if (Game.stage === STAGE.FLOODED_CAVE) {
-        //todo dont generate them near doors
         let spikyWallTrapsAmount = Math.ceil(rooms.length * 1.3);
         let attempt = 0;
         while (spikyWallTrapsAmount > 0 && attempt++ < 200 + spikyWallTrapsAmount) {
@@ -633,6 +632,7 @@ function generateSpecificEnemies() {
             };
             if (level[point.y][point.x].tileType === TILE_TYPE.WALL && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
                 && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))) {
+                if (anyDoorsAround(point)) continue;
                 for (const dir of getCardinalDirections()) {
                     if (level[point.y + dir.y][point.x + dir.x].tileType === TILE_TYPE.NONE) {
                         level[point.y][point.x].entity = new SpikyWallTrap(point.x, point.y);
@@ -648,4 +648,13 @@ function generateSpecificEnemies() {
 function isInsideRoom(point, room) {
     return point.x >= room.offsetX && point.x <= room.offsetX + room.width - 1
         && point.y >= room.offsetY && point.y <= room.offsetY + room.height - 1
+}
+
+function anyDoorsAround(point) {
+    for (const dir of getCardinalDirections()) {
+        if (level[point.y + dir.y][point.x + dir.x].tileType === TILE_TYPE.ENTRY) {
+            return true;
+        }
+    }
+    return false;
 }
