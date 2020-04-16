@@ -1,16 +1,16 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_TYPE, RARITY, ROLE, WEAPON_TYPE} from "../../../enums";
 import {isDiggable, isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {ToolsSpriteSheet} from "../../../loader";
-import {statueLeftHandPoint, statueRightHandPoint} from "../../inanimate_objects/statue";
+import {statueRightHandPoint} from "../../inanimate_objects/statue";
 
 export class Pickaxe {
     constructor() {
         this.texture = ToolsSpriteSheet["pickaxe.png"];
         this.type = WEAPON_TYPE.PICKAXE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
-        this.atk = 0.75;
+        this.atk = 1;
         this.name = "Pickaxe";
         this.description = "Dig walls";
         this.rarity = RARITY.B;
@@ -30,7 +30,13 @@ export class Pickaxe {
     use(wielder, dirX, dirY) {
         const digTile = {x: wielder.tilePosition.x + dirX, y: wielder.tilePosition.y + dirY};
         if (isDiggable(digTile.x, digTile.y)) {
-            Game.world.removeTile(digTile.x, digTile.y, wielder);
+            //todo ?. operator
+            if (Game.map[digTile.y][digTile.x].entity && Game.map[digTile.y][digTile.x].entity.role === ROLE.WALL_TRAP) {
+                Game.world.removeTile(digTile.x, digTile.y, wielder, false);
+                Game.map[digTile.y][digTile.x].entity.die();
+            } else {
+                Game.world.removeTile(digTile.x, digTile.y, wielder);
+            }
             if (wielder.weapon && wielder.weapon.equipmentType === this.equipmentType && wielder.weapon.type === this.type
                 && wielder.secondHand && wielder.secondHand.equipmentType === this.equipmentType && wielder.secondHand.type === this.type) {
                 createWeaponAnimationClub(wielder, this, dirX, dirY, 8, 3, 90, 1, 0.5);

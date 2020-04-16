@@ -36,9 +36,7 @@ export class SpikyWallTrap extends Enemy {
         Game.world.addChild(this.wallBase);
         this.correctZIndex();
         this.removeShadow();
-        this.noShadow = true;
-        this.preserveCenteredPosition = true;
-        this.place();
+        this.setCenterPreservation();
     }
 
     afterMapGen() {
@@ -135,6 +133,8 @@ export class SpikyWallTrap extends Enemy {
         }
     }
 
+    //doesnt die properly sometimes? (wallbase isnt removed)
+    //wall destruction animation is weird
     die(source) {
         super.die(source);
         this.spikesSprite.visible = false;
