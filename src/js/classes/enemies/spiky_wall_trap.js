@@ -9,7 +9,7 @@ import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 import {runDestroyAnimation} from "../../animations";
 import {WallTrapBase} from "../draw/wall_trap_base";
 import {wallTallness} from "../draw/wall";
-import {Z_INDEXES} from "../../z_indexing";
+import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 
 export class SpikyWallTrap extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spiky_wall_trap_x.png"]) {
@@ -32,9 +32,9 @@ export class SpikyWallTrap extends Enemy {
         this.intentIcon2.alpha = 0.8;
         this.intentIcon2.width = this.intentIcon2.height = 15;
         this.wallBase = new WallTrapBase(this.tilePosition.x, this.tilePosition.y);
-        this.wallBase.zIndex = this.zIndex - 1;
         Game.world.addChild(this.wallBase);
         this.correctZIndex();
+        this.wallBase.zIndex = getZIndexForLayer(this.tilePosition.y);
         this.removeShadow();
         this.setCenterPreservation();
     }

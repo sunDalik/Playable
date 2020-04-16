@@ -1,14 +1,14 @@
 import {TileElement} from "../tile_elements/tile_element";
 import {Game} from "../../game";
 import {STAGE, TILE_TYPE} from "../../enums";
-import {getZIndexForLayer} from "../../z_indexing";
+import {Z_INDEXES} from "../../z_indexing";
 import {isNotOutOfMap} from "../../map_checks";
 import {wallTallness} from "./wall";
 
 export class DarknessTile extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
-        this.correctZIndex();
+        this.setOwnZIndex(Z_INDEXES.DARKNESS);
         if (Game.stage !== STAGE.DARK_TUNNEL
             || [TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[this.tilePosition.y][this.tilePosition.x].tileType)) {
             this.height = Game.TILESIZE + wallTallness;
@@ -20,10 +20,6 @@ export class DarknessTile extends TileElement {
         super.place();
         const diff = (this.height - Game.TILESIZE);
         this.position.y -= Math.abs(diff) / 2;
-    }
-
-    correctZIndex() {
-        this.zIndex = getZIndexForLayer(Game.map.length);
     }
 
     update() {

@@ -17,6 +17,7 @@ import {Necromancy} from "../classes/equipment/magic/necromancy";
 import {Obelisk} from "../classes/inanimate_objects/obelisk";
 import {pointTileDistance} from "../utils/game_utils";
 import {SpikyWallTrap} from "../classes/enemies/spiky_wall_trap";
+import {DoorsTile} from "../classes/draw/doors";
 
 let settings;
 let level;
@@ -319,6 +320,11 @@ function drawPath(path) {
                 } else break;
             }
         }
+        if (primary === "y") {
+            level[bestPoint][adjacencyPlane[0][secondary]] = LEVEL_SYMBOLS.ENTRY;
+        } else {
+            level[adjacencyPlane[0][secondary]][bestPoint] = LEVEL_SYMBOLS.ENTRY;
+        }
     }
 }
 
@@ -344,6 +350,10 @@ function replaceStringsWithObjects() {
                 mapCell.tile = new SuperWallTile(j, i);
             } else if (level[i][j] === LEVEL_SYMBOLS.VOID) {
                 mapCell.tileType = TILE_TYPE.VOID;
+            } else if (level[i][j] === LEVEL_SYMBOLS.ENTRY) {
+                mapCell.tileType = TILE_TYPE.ENTRY;
+                const horizontal = map[i][j - 1].tileType === TILE_TYPE.NONE;
+                mapCell.tile = new DoorsTile(j, i, horizontal);
             } else if (level[i][j] === LEVEL_SYMBOLS.EXIT) {
                 mapCell.tileType = TILE_TYPE.EXIT;
                 mapCell.tile = new TileElement(CommonSpriteSheet["exit_text.png"], j, i, true);
@@ -602,7 +612,7 @@ function getRoomEntries(room) {
     for (let i = 0; i < room.height; i++) {
         for (let j = 0; j < room.width; j++) {
             if (i === 0 || i === room.height - 1 || j === 0 || j === room.width - 1) {
-                if (level[i + room.offsetY][j + room.offsetX].tileType === TILE_TYPE.NONE) {
+                if ([TILE_TYPE.NONE, TILE_TYPE.ENTRY].includes(level[i + room.offsetY][j + room.offsetX].tileType)) {
                     entries.push({x: room.offsetX + j, y: room.offsetY + i});
                 }
             }

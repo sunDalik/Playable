@@ -9,6 +9,8 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
 export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/wall.png")
+        .add("src/images/door_horizontal.png")
+        //.add("src/images/door_vertical.png")
         .add("src/images/player.png")
         .add("src/images/player2.png")
         .add("src/images/player_hd.png")
