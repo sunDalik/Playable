@@ -46,6 +46,8 @@ export function redrawMiniMapPixel(x, y) {
     const pixel = new PIXI.Graphics();
     if (Game.map[y][x].tileType === TILE_TYPE.WALL) {
         pixel.beginFill(0x7a5916);
+    } else if (Game.map[y][x].tileType === TILE_TYPE.ENTRY) {
+        pixel.beginFill(0x73f05d);
     } else if (Game.map[y][x].tileType === TILE_TYPE.SUPER_WALL) {
         pixel.beginFill(0x757167);
     } else if (Game.map[y][x].tileType === TILE_TYPE.VOID) {

@@ -3,6 +3,7 @@ import {Game} from "../../game";
 import {Z_INDEXES} from "../../z_indexing";
 import * as PIXI from "pixi.js";
 import {TILE_TYPE} from "../../enums";
+import {redrawMiniMapPixel} from "../../drawing/minimap";
 
 //todo all enemies should NOT go through closed doors
 export class DoorsTile extends TileElement {
@@ -25,6 +26,7 @@ export class DoorsTile extends TileElement {
         this.opened = true;
         this.updateTexture();
         Game.map[this.tilePosition.y][this.tilePosition.x].tileType = TILE_TYPE.NONE;
+        redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
     }
 
     place() {
@@ -39,10 +41,10 @@ export class DoorsTile extends TileElement {
             this.texture = this.door2.texture = Game.resources["src/images/door_vertical.png"].texture;
         }
         if (this.horizontal) {
-            this.door2.position.y = this.position.y+this.height * 2 - 4;
+            this.door2.position.y = this.position.y + this.height * 2 - 4;
             this.door2.scale.y *= -1;
         } else {
-            this.door2.position.x = this.position.x+this.width * 2 - 4;
+            this.door2.position.x = this.position.x + this.width * 2 - 4;
             this.door2.scale.x *= -1;
         }
         this.fitToTile();
