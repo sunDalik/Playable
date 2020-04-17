@@ -131,7 +131,10 @@ export function lightTile(tileX, tileY) {
     }
 
     if (mapCell.hazard) mapCell.hazard.visible = true;
-    if (mapCell.tile) mapCell.tile.visible = true;
+    if (mapCell.tile) {
+        mapCell.tile.visible = true;
+        if (mapCell.tile.door2) mapCell.tile.door2.visible = true;
+    }
     if (mapCell.item) mapCell.item.visible = true;
 
     if (mapCell.tileType === TILE_TYPE.VOID) return;
