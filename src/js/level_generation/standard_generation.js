@@ -629,7 +629,7 @@ function getRoomEntries(room) {
 
 function generateSpecificEnemies() {
     if (Game.stage === STAGE.FLOODED_CAVE) {
-        let spikyWallTrapsAmount = Math.ceil(rooms.length * 1.3);
+        let spikyWallTrapsAmount = Math.ceil(rooms.length * 1.1);
         let attempt = 0;
         while (spikyWallTrapsAmount > 0 && attempt++ < 200 + spikyWallTrapsAmount) {
             const point = {

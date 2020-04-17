@@ -24,18 +24,24 @@ export class DarknessTile extends TileElement {
 
     update() {
         if (!this.visible) return;
-        for (const y of [1]) {
-            if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + y)
-                && Game.map[this.tilePosition.y + y][this.tilePosition.x].lit
-                && (Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.WALL
-                    || Game.map[this.tilePosition.y + y][this.tilePosition.x].tileType === TILE_TYPE.SUPER_WALL)) {
-                if (Game.stage !== STAGE.DARK_TUNNEL
-                    || [TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[this.tilePosition.y][this.tilePosition.x].tileType)) {
-                    this.height = Game.TILESIZE;
-                    this.place();
-                    this.position.y -= wallTallness;
-                }
+        if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + 1)
+            && Game.map[this.tilePosition.y + 1][this.tilePosition.x].lit
+            && (Game.map[this.tilePosition.y + 1][this.tilePosition.x].tileType === TILE_TYPE.WALL
+                || Game.map[this.tilePosition.y + 1][this.tilePosition.x].tileType === TILE_TYPE.SUPER_WALL)) {
+            if (Game.stage !== STAGE.DARK_TUNNEL
+                || [TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[this.tilePosition.y][this.tilePosition.x].tileType)) {
+                this.height = Game.TILESIZE;
+                this.place();
+                this.position.y -= wallTallness;
             }
+        }
+
+        //doorsss
+        if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y - 1)
+            && Game.map[this.tilePosition.y - 1][this.tilePosition.x].lit
+            && Game.map[this.tilePosition.y - 1][this.tilePosition.x].tileType === TILE_TYPE.ENTRY) {
+            this.height = Game.TILESIZE * 1.34;
+            this.place();
         }
     }
 }
