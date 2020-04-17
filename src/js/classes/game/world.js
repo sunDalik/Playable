@@ -8,6 +8,7 @@ import {otherPlayer} from "../../utils/game_utils";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
 import {runDestroyAnimation} from "../../animations";
 import {SummonCircle} from "../enemies/summon_circle";
+import {updateIntent} from "../../game_logic";
 
 export class World extends PIXI.Container {
     constructor() {
@@ -75,8 +76,9 @@ export class World extends PIXI.Container {
     addEnemy(enemy) {
         enemy.placeOnMap();
         Game.world.addChild(enemy);
-        enemy.updateIntentIcon();
+        updateIntent(enemy);
         Game.enemies.push(enemy);
+        enemy.place();
     }
 
     addInanimate(inanimate) {

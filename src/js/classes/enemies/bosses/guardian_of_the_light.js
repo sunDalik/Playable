@@ -16,6 +16,7 @@ import {Torch} from "../../equipment/tools/torch";
 import {extinguishTorch, lightPosition} from "../../../drawing/lighting";
 import {updateChain} from "../../../drawing/draw_dunno";
 import {GotLSpriteSheet} from "../../../loader";
+import {FireGoblet} from "../../inanimate_objects/fire_goblet";
 
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = GotLSpriteSheet["gotl_neutral.png"]) {
@@ -70,19 +71,17 @@ export class GuardianOfTheLight extends Boss {
         Game.unplayable = true;
         for (const inanimate of Game.inanimates) {
             if (inanimate.type === INANIMATE_TYPE.FIRE_GOBLET) {
-                if (inanimate.tilePosition.y > Game.endRoomBoundaries[0].y + 2 && inanimate.tilePosition.y < Game.endRoomBoundaries[1].y - 2) {
-                    if (Game.player.dead) {
-                        this.teleportPlayer(Game.player2, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
-                        break;
-                    } else if (Game.player2.dead) {
-                        this.teleportPlayer(Game.player, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
-                        break;
-                    } else if (teleportedPlayer === null) {
-                        teleportedPlayer = randomChoice([Game.player, Game.player2]);
-                        this.teleportPlayer(teleportedPlayer, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
-                    } else {
-                        this.teleportPlayer(otherPlayer(teleportedPlayer), inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
-                    }
+                if (Game.player.dead) {
+                    this.teleportPlayer(Game.player2, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
+                    break;
+                } else if (Game.player2.dead) {
+                    this.teleportPlayer(Game.player, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
+                    break;
+                } else if (teleportedPlayer === null) {
+                    teleportedPlayer = randomChoice([Game.player, Game.player2]);
+                    this.teleportPlayer(teleportedPlayer, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
+                } else {
+                    this.teleportPlayer(otherPlayer(teleportedPlayer), inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
                 }
             }
         }
@@ -494,6 +493,33 @@ export class GuardianOfTheLight extends Boss {
             if (inanimate.type === INANIMATE_TYPE.FIRE_GOBLET) {
                 inanimate.shatter();
             }
+        }
+    }
+
+    applyRoomLayout(level, room) {
+        const positions = [];
+        if (room.height >= 11) {
+            positions.push({x: this.tilePosition.x, y: this.tilePosition.y - 3},
+                {x: this.tilePosition.x, y: this.tilePosition.y + 3})
+        } else if (room.height >= 9) {
+            positions.push({x: this.tilePosition.x, y: this.tilePosition.y - 2},
+                {x: this.tilePosition.x, y: this.tilePosition.y + 2})
+        } else {
+            positions.push({x: this.tilePosition.x, y: this.tilePosition.y + randomChoice([-1, 1])})
+        }
+
+        if (room.width >= 11) {
+            positions.push({x: this.tilePosition.x - 3, y: this.tilePosition.y},
+                {x: this.tilePosition.x + 3, y: this.tilePosition.y})
+        } else if (room.width >= 9) {
+            positions.push({x: this.tilePosition.x - 2, y: this.tilePosition.y},
+                {x: this.tilePosition.x + 2, y: this.tilePosition.y})
+        } else {
+            positions.push({x: this.tilePosition.x + randomChoice([-1, 1]), y: this.tilePosition.y})
+        }
+
+        for (const pos of positions) {
+            level[pos.y][pos.x].entity = new FireGoblet(pos.x, pos.y);
         }
     }
 }

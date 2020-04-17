@@ -1,19 +1,20 @@
 import {Game} from "../game";
 import {STAGE} from "../enums";
 import {generateStandard, setupGenerator} from "./standard_generation";
-import {FCEnemySets} from "./enemy_sets";
+import {DTBossSets, DTEnemySets, FCBossSets, FCEnemySets} from "./enemy_sets";
 import {Settings} from "./settings";
 
 export function generateLevel() {
     switch (Game.stage) {
         case STAGE.FLOODED_CAVE:
-            setupGenerator(new Settings(30, 40, 30, 40, FCEnemySets));
+            setupGenerator(new Settings(30, 40, 30, 40, FCEnemySets, FCBossSets));
             return generateStandard();
         case STAGE.DARK_TUNNEL:
-            return [];
+            setupGenerator(new Settings(40, 50, 20, 25, DTEnemySets, DTBossSets));
+            return generateStandard();
         case STAGE.RUINS:
             return [];
         default:
-            return [];
+            return generateStandard();
     }
 }

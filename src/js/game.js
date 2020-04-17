@@ -25,11 +25,6 @@ Game.bullets = [];
 Game.darkTiles = [];
 Game.infiniteAnimations = [];
 
-Game.normalRooms = null;
-Game.statueRooms = null;
-Game.obeliskRooms = null;
-Game.chestRooms = null;
-Game.bossRooms = null;
 Game.BGColor = 0xffffff;
 
 Game.player = null; //white player
@@ -75,8 +70,6 @@ Game.endRoomBoundaries = [];
 Game.boss = null;
 Game.bossFight = false;
 Game.bossExit = null;
-Game.bossEntry = null;
-Game.bossEntryOpened = false;
 Game.bossNoDamage = true;
 Game.savedTiles = [];
 

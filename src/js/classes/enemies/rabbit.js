@@ -7,7 +7,7 @@ import {
     getRelativelyEmptyLitCardinalDirections,
     getRunAwayOptions
 } from "../../utils/map_utils";
-import {randomChoice} from "../../utils/random_utils";
+import {getRandomValue, randomChoice} from "../../utils/random_utils";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
 import {FireHazard} from "../hazards/fire";
 import {PoisonHazard} from "../hazards/poison";
@@ -16,12 +16,13 @@ import {closestPlayer, tileDistance} from "../../utils/game_utils";
 import {IntentsSpriteSheet, RabbitsSpriteSheet} from "../../loader";
 
 export class Rabbit extends Enemy {
-    constructor(tilePositionX, tilePositionY, type, texture = RabbitsSpriteSheet["rabbit_x_energy.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = RabbitsSpriteSheet["rabbit_x_energy.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 0.5;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.RABBIT;
-        this.rabbitType = type;
+        this.rabbitType = getRandomValue(RABBIT_TYPE);
+        if (this.rabbitType === RABBIT_TYPE.ENERGY) this.rabbitType = getRandomValue(RABBIT_TYPE);
         this.atk = 0.5;
         this.predator = null;
         this.turnDelay = 1;

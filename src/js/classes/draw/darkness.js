@@ -8,7 +8,8 @@ import {wallTallness} from "./wall";
 export class DarknessTile extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
-        this.setOwnZIndex(Z_INDEXES.DARKNESS);
+        if (Game.stage === STAGE.DARK_TUNNEL) this.setOwnZIndex(Z_INDEXES.DARK_TUNNEL_DARKNESS);
+        else this.setOwnZIndex(Z_INDEXES.DARKNESS);
         if (Game.stage !== STAGE.DARK_TUNNEL
             || [TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[this.tilePosition.y][this.tilePosition.x].tileType)) {
             this.height = Game.TILESIZE + wallTallness;

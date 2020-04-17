@@ -17,12 +17,9 @@ export class Cocoon extends Enemy {
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.COCOON;
         this.atk = 0;
-        this.spawnDelay = randomInt(1, 5);
-        if (Game.stage === STAGE.FLOODED_CAVE) {
-            this.minionType = randomChoice([Spider, GraySpider]);
-        } else {
-            this.minionType = randomChoice([Spider, GraySpider, GreenSpider, RedSpider]);
-        }
+        this.spawnDelay = randomInt(3, 7);
+        this.getMinionType();
+        if (this.minionType === Spider || this.minionType === RedSpider) this.getMinionType(); // lower chance for black spiders and red spiders
         this.minion = null;
         this.aboutToSpawn = false;
         this.scaleModifier = 0.9;
@@ -67,6 +64,14 @@ export class Cocoon extends Enemy {
         } else {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
             this.intentIcon.filters = [];
+        }
+    }
+
+    getMinionType() {
+        if (Game.stage === STAGE.FLOODED_CAVE) {
+            this.minionType = randomChoice([Spider, GraySpider]);
+        } else {
+            this.minionType = randomChoice([Spider, GraySpider, GreenSpider, RedSpider]);
         }
     }
 }

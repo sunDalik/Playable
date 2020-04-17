@@ -1,6 +1,6 @@
 import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {statueRightHandPoint} from "../../inanimate_objects/statue";
+import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {BowLikeWeapon} from "./bow_like_weapon";
 
 export class Crossbow extends BowLikeWeapon {
@@ -18,12 +18,11 @@ export class Crossbow extends BowLikeWeapon {
         return wielder.getAtkWithWeapon(this);
     }
 
-    //todo
     getStatuePlacement() {
         return {
-            x: statueRightHandPoint.x + 50,
-            y: statueRightHandPoint.y + 45,
-            angle: -10,
+            x: statueLeftHandPoint.x + 40,
+            y: statueLeftHandPoint.y + 35,
+            angle: 170,
             scaleModifier: 0.9,
             zIndex: 3
         };

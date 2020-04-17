@@ -75,7 +75,7 @@ export function moveEnemies() {
     }
 }
 
-function updateIntent(enemy) {
+export function updateIntent(enemy) {
     if (!enemy.dead && enemy.visible) {
         if (enemy.stun > 0) enemy.setStunIcon();
         else enemy.updateIntentIcon();
@@ -402,7 +402,6 @@ export function cleanGameState() {
         Game.itemHelp = null;
     }
     removeAllChildrenFromContainer(HUD.bossHealth);
-    Game.bossEntryOpened = false;
     Game.destroyParticles = [];
 }
 
@@ -424,10 +423,6 @@ export function activateBossMode(player) {
         for (let x = Game.endRoomBoundaries[0].x; x <= Game.endRoomBoundaries[1].x; x++) {
             lightTile(x, y);
         }
-    }
-
-    if (!Game.experimentalFeatures && Game.map[Game.bossEntry.y][Game.bossEntry.x].tile) {
-        Game.map[Game.bossEntry.y][Game.bossEntry.x].tile.texture = CommonSpriteSheet["boss_entry_opened.png"];
     }
 
     Game.boss.redrawHealth();

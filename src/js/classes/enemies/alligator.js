@@ -1,26 +1,28 @@
 import {Game} from "../../game"
 import {Enemy} from "./enemy"
-import {ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../enums";
+import {ENEMY_TYPE, RABBIT_TYPE, ROLE, STAGE} from "../../enums";
 import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall, isRelativelyEmpty} from "../../map_checks";
 import {
     getChasingOptions,
     getRelativelyEmptyCardinalDirections,
     getRelativelyEmptyLitCardinalDirections
 } from "../../utils/map_utils";
-import {randomChoice} from "../../utils/random_utils";
+import {getRandomValue, randomChoice} from "../../utils/random_utils";
 import {PoisonHazard} from "../hazards/poison";
 import {ElectricBullet} from "./bullets/electric";
 import {FireBullet} from "./bullets/fire";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {DTEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {Rabbit} from "./rabbit";
 
 export class Alligator extends Enemy {
-    constructor(tilePositionX, tilePositionY, type = undefined, texture = DTEnemiesSpriteSheet["alligator_x.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["alligator_x.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 4;
         this.health = this.maxHealth;
         this.type = ENEMY_TYPE.ALLIGATOR;
-        this.alligatorType = type;
+        this.prey = null;
+        this.initAlligator();
         this.shooting = false;
         this.shootingDelay = false;
         this.atk = 1;
@@ -28,7 +30,6 @@ export class Alligator extends Enemy {
             this.turnDelay = 1;
         } else this.turnDelay = 2;
         this.currentTurnDelay = 0;
-        this.prey = null;
         this.triggeredDirection = null;
         this.direction = {x: 1, y: 0};
         this.stepXjumpHeight = Game.TILESIZE * 24 / 75;
@@ -41,6 +42,38 @@ export class Alligator extends Enemy {
         this.fitToTile();
         this.updateTexture();
         this.poisonCounter = 0;
+    }
+
+    initAlligator() {
+        if (Math.random() < 0.3) {
+            let type = getRandomValue(RABBIT_TYPE);
+            if (type === RABBIT_TYPE.ENERGY) {
+                //energy type is rarer than others so if we get it we reroll it once again
+                type = getRandomValue(RABBIT_TYPE)
+            }
+            const rabbit = new Rabbit(this.tilePosition.x, this.tilePosition.y);
+            rabbit.rabbitType = type;
+            rabbit.updateTexture();
+            rabbit.predator = this;
+            this.prey = rabbit;
+        } else {
+            this.alligatorType = randomChoice([RABBIT_TYPE.FIRE, RABBIT_TYPE.ELECTRIC, RABBIT_TYPE.POISON]);
+        }
+    }
+
+    onMoveFrame() {
+        super.onMoveFrame();
+        if (this.direction && this.direction.y === -1) this.healthContainer.position.y += Game.TILESIZE; // I have no idea why
+    }
+
+    afterMapGen() {
+        if (this.prey) {
+            Game.map[this.tilePosition.y][this.tilePosition.x].secondaryEntity = this.prey;
+            Game.enemies.push(this.prey);
+            Game.world.addChild(this.prey);
+            this.prey.visible = false;
+            this.prey.place();
+        }
     }
 
     fitToTile() {

@@ -31,7 +31,8 @@ export function lightPlayerPosition(player) {
     if (Game.stage === STAGE.DARK_TUNNEL) {
         if (player.secondHand && player.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && player.secondHand.type === TOOL_TYPE.TORCH) {
             for (const lightSource of torchedAreas) {
-                Game.darkTiles[lightSource.y][lightSource.x].removeLightSource(torchLightSprite);
+                if (isNotOutOfMap(lightSource.x, lightSource.y))//this is bad...
+                    Game.darkTiles[lightSource.y][lightSource.x].removeLightSource(torchLightSprite);
             }
             torchedAreas = [];
             lightWorldDT(px, py, player.secondHand.lightSpread);
@@ -166,7 +167,7 @@ const torchLightSprite = {};
 
 function lightWorldDT(tileX, tileY, distance, sourceDirX = 0, sourceDirY = 0) {
     if (distance > -1) {
-        if (Game.map[tileY][tileX].tileType !== TILE_TYPE.WALL && Game.map[tileY][tileX].tileType !== TILE_TYPE.SUPER_WALL && (Game.bossEntryOpened || !(tileX === Game.bossEntry.x && tileY === Game.bossEntry.y))) {
+        if (Game.map[tileY][tileX].tileType !== TILE_TYPE.WALL && Game.map[tileY][tileX].tileType !== TILE_TYPE.SUPER_WALL) {
             lightTileDT(tileX, tileY);
             if (sourceDirX === 0 && sourceDirY === 0) {
                 lightWorldDT(tileX + 1, tileY, distance - 1, -1, 0);

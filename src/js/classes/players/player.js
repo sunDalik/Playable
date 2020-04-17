@@ -135,15 +135,6 @@ export class Player extends AnimatedTileElement {
                     return false;
                 } else {
                     this.step(tileStepX, tileStepY);
-                    if (Game.experimentalFeatures) return true;
-                    if (this.tilePosition.x === Game.bossEntry.x && this.tilePosition.y === Game.bossEntry.y && !Game.bossEntryOpened) {
-                        Game.world.removeTile(this.tilePosition.x, this.tilePosition.y, null, false);
-                        Game.bossEntryOpened = true;
-                        if (Game.stage === STAGE.DARK_TUNNEL) {
-                            lightPlayerPosition(Game.player);
-                            lightPlayerPosition(Game.player2);
-                        }
-                    }
                     if (Game.boss && !Game.boss.dead && !Game.bossFight && amIInTheBossRoom(this)) {
                         activateBossMode(this);
                     }

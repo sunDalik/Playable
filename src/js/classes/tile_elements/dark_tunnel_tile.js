@@ -32,8 +32,7 @@ export class DarkTunnelTile extends DarknessTile {
     }
 
     lightNearby() {
-        if (isNotAWall(this.tilePosition.x, this.tilePosition.y)
-            && (Game.bossEntryOpened || !(this.tilePosition.x === Game.bossEntry.x && this.tilePosition.y === Game.bossEntry.y))) {
+        if (isNotAWall(this.tilePosition.x, this.tilePosition.y)) {
             for (const dir of getCardinalDirections()) {
                 Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].alpha = this.nearbyAlpha;
             }
