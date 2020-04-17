@@ -3,7 +3,7 @@ import {Game} from "../../game"
 import {getZIndexForLayer} from "../../z_indexing";
 import * as PIXI from "pixi.js";
 
-export const floorLevel = Game.TILESIZE * 0.4;
+export const floorLevel = Game.TILESIZE * 0.5;
 
 export class TileElement extends Sprite {
     constructor(texture, tilePositionX, tilePositionY, keepInside = false) {
@@ -76,7 +76,6 @@ export class TileElement extends Sprite {
     }
 
     getTilePositionY() {
-        //????
         const basePosY = Game.TILESIZE * this.tilePosition.y + (Game.TILESIZE - this.height) / 2 + this.height * this.anchor.y;
         if (this.preserveCenteredPosition)
             return basePosY;

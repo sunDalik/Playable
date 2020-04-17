@@ -13,6 +13,9 @@ export function drawTiles() {
             if (Game.map[i][j].tile !== null) {
                 Game.world.addChild(Game.map[i][j].tile);
                 Game.map[i][j].tile.visible = false;
+
+                //for doors
+                if (Game.map[i][j].tile.door2) Game.world.addChild(Game.map[i][j].tile.door2);
             }
         }
     }

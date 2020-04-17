@@ -43,8 +43,8 @@ export function cullByView() {
         //todo: make toggleVisibility function to also hide intents and shadows?
         const mapCell = Game.map[y][x];
         if (mapCell.lit) {
-            if (mapCell.entity) mapCell.entity.visible = visible;
-            if (mapCell.secondaryEntity) mapCell.secondaryEntity.visible = visible;
+            //if (mapCell.entity) mapCell.entity.visible = visible;
+            //if (mapCell.secondaryEntity) mapCell.secondaryEntity.visible = visible;
             if (mapCell.hazard) mapCell.hazard.visible = visible;
             if (mapCell.tile) mapCell.tile.visible = visible;
             if (mapCell.item) mapCell.item.visible = visible;

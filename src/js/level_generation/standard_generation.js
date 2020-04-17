@@ -63,8 +63,10 @@ export function generateStandard() {
         }
     }
     const secretRoom = unconnectedRooms[0];
-    secretRoom.type = ROOM_TYPE.SECRET;
-    reshapeRoom(secretRoom, shapers[1]);
+    if (secretRoom !== undefined) {
+        secretRoom.type = ROOM_TYPE.SECRET;
+        reshapeRoom(secretRoom, shapers[1]);
+    }
     level = expandLevelAndRooms(1, 1);
     outlineWallsWithSuperWalls(level);
 
@@ -492,7 +494,6 @@ function placeObelisk(room) {
                 obelisk.grail3.tilePosition.set(point.x - 2, point.y);
                 level[point.y][point.x + 2].entity = obelisk.grail4;
                 obelisk.grail4.tilePosition.set(point.x + 2, point.y);
-                obelisk.placeGrails();
             } else {
                 level[point.y + 1][point.x - 1].entity = obelisk.grail1;
                 obelisk.grail1.tilePosition.set(point.x - 1, point.y + 1);
@@ -503,6 +504,7 @@ function placeObelisk(room) {
                 level[point.y + 2][point.x + 1].entity = obelisk.grail4;
                 obelisk.grail4.tilePosition.set(point.x + 1, point.y + 2);
             }
+            obelisk.placeGrails();
             const clearDirs = [{x: 0, y: 0}, {x: -1, y: 0}, {x: +1, y: 0}, {x: -1, y: +1},
                 {x: +1, y: +1}, {x: 0, y: +1}];
             for (const grail of [obelisk.grail1, obelisk.grail2, obelisk.grail3, obelisk.grail4]) {

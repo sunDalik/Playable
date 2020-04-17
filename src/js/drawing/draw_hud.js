@@ -38,7 +38,8 @@ export function drawHUD() {
     drawOtherHUD();
     drawMovementKeyBindings();
     drawInteractionKeys();
-    redrawEnergy();
+    redrawFps();
+    //redrawEnergy();
     drawSlotsContents();
     redrawSpeedRunTime();
     if (Game.bossFight) Game.boss.redrawHealth();
@@ -162,8 +163,10 @@ export function redrawSlotsForPlayer(player) {
     else if (player === Game.player2) HUD.bagSlot2 = bagSlot;
     if (player.bag === null) bagSlot.visible = false;
 
-    if (player === Game.player)
+    if (player === Game.player) {
         HUD.energy.position.set(slotBorderOffsetX, slotsYOffset + (slotSize + slotsRowOffset) * 5);
+        HUD.fps.position.set(HUD.energy.position.x, HUD.energy.position.y);
+    }
 
     function drawSlot(x, y, slot) {
         slot.position.x = x;
@@ -391,7 +394,25 @@ export function drawInteractionKeys() {
     }
 }
 
+function redrawFps() {
+    const container = HUD.fps;
+    removeAllChildrenFromContainer(container);
+    if (HUD.fps.animation) Game.app.ticker.remove(HUD.fps.animation);
+    const text = new PIXI.Text("FPS: ", HUDTextStyle);
+    container.addChild(text);
+    let counter = 0;
+    HUD.fps.animation = (delta) => {
+        counter += delta;
+        if (counter > 10) {
+            text.text = "FPS " + Math.floor(Game.app.ticker.FPS);
+            counter = 0;
+        }
+    };
+    Game.app.ticker.add(HUD.fps.animation);
+}
+
 export function redrawEnergy() {
+    return;
     const container = HUD.energy;
     removeAllChildrenFromContainer(container);
     const text = new PIXI.Text(`LE ${Game.lightEnergy}\nDE ${Game.darkEnergy}`, HUDTextStyle);

@@ -22,7 +22,6 @@ export class Grail extends TileElement {
         this.magicSprite = new TileElement(MagicSpriteSheet["magic_aura.png"], 0, 0);
         this.magicSprite.setScaleModifier(0.8);
         this.magicSprite.visible = false;
-        Game.world.addChild(this.magicSprite);
 
         this.textObj = new PIXI.Text("", getInanimateItemLabelTextStyle());
         this.textObj.anchor.set(0.5, 0.5);
@@ -58,17 +57,13 @@ export class Grail extends TileElement {
             this.textObj.style.strokeThickness = 3;
             switch (this.magic.alignment) {
                 case MAGIC_ALIGNMENT.WHITE:
-                    //todo: fill with rarity color when you implement rarity
-                    //this.textObj.style.fill = 0xffecb0;
                     this.textObj.filters = [GRAIL_TEXT_WHITE_FILTER];
                     break;
                 case MAGIC_ALIGNMENT.DARK:
-                    //this.textObj.style.fill = 0xffecb0;
                     this.textObj.style.strokeThickness = 2;
                     this.textObj.filters = [GRAIL_TEXT_DARK_FILTER];
                     break;
                 case MAGIC_ALIGNMENT.GRAY:
-                    //this.textObj.style.fill = 0xffecb0;
                     this.textObj.filters = [];
                     break;
             }
@@ -84,6 +79,7 @@ export class Grail extends TileElement {
             Game.app.ticker.add(this.textObj.animation);
             this.magicSprite.texture = this.magic.texture;
             this.magicSprite.visible = true;
+            Game.world.addChild(this.magicSprite);
         } else {
             this.magicSprite.visible = false;
             this.texture = InanimatesSpriteSheet["grail.png"];
