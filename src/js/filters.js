@@ -16,19 +16,43 @@ export const ITEM_OUTLINE_FILTER_SMALL = new OutlineFilter(1, 0xFFFFFF);
 ITEM_OUTLINE_FILTER_SMALL.padding = 2;
 ITEM_OUTLINE_FILTER_SMALL.resolution = 2;
 
-export const GRAIL_TEXT_WHITE_FILTER = new GlowFilter(9, 4, 0, 0xffffff, 0.3);
+export const GRAIL_TEXT_WHITE_FILTER = new GlowFilter({
+    distance: 9,
+    outerStrength: 4,
+    innerStrength: 0,
+    color: 0xffffff,
+    quality: 0.3
+});
 GRAIL_TEXT_WHITE_FILTER.padding = 9;
 GRAIL_TEXT_WHITE_FILTER.resolution = 2;
 
-export const GRAIL_TEXT_DARK_FILTER = new GlowFilter(8, 3, 0, 0x000000, 0.3);
+export const GRAIL_TEXT_DARK_FILTER = new GlowFilter({
+    distance: 8,
+    outerStrength: 3,
+    innerStrength: 0,
+    color: 0x000000,
+    quality: 0.3
+});
 GRAIL_TEXT_DARK_FILTER.padding = 8;
 GRAIL_TEXT_DARK_FILTER.resolution = 2;
 
-export const MILD_DARK_GLOW_FILTER = new GlowFilter(4, 2, 0, 0x000000, 0.3);
+export const MILD_DARK_GLOW_FILTER = new GlowFilter({
+    distance: 4,
+    outerStrength: 2,
+    innerStrength: 0,
+    color: 0x000000,
+    quality: 0.3
+});
 MILD_DARK_GLOW_FILTER.padding = 4;
 MILD_DARK_GLOW_FILTER.resolution = 2;
 
-export const MILD_WHITE_GLOW_FILTER = new GlowFilter(5, 3, 0, 0xffffff, 0.3);
+export const MILD_WHITE_GLOW_FILTER = new GlowFilter({
+    distance: 5,
+    outerStrength: 3,
+    innerStrength: 0,
+    color: 0xffffff,
+    quality: 0.3
+});
 MILD_WHITE_GLOW_FILTER.padding = 5;
 MILD_WHITE_GLOW_FILTER.resolution = 2;
 

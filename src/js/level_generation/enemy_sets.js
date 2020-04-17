@@ -20,6 +20,10 @@ import {RedSpider} from "../classes/enemies/spider_red";
 import {GreenSpider} from "../classes/enemies/spider_green";
 import {FireFrog} from "../classes/enemies/frog_fire";
 import {KingFireFrog} from "../classes/enemies/frog_king_fire";
+import {LizardWarrior} from "../classes/enemies/lizard_warrior";
+import {MudMage} from "../classes/enemies/mud_mage";
+import {TeleportMage} from "../classes/enemies/teleport_mage";
+import {WallSlime} from "../classes/enemies/wall_slime";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, GraySpider],
@@ -149,4 +153,31 @@ export const DTEnemySets = [
 
 export const DTBossSets = [
     [GuardianOfTheLight]
+];
+
+export const RUEnemySets = [
+    [LizardWarrior, LizardWarrior],
+    [LizardWarrior],
+    [MudMage],
+    [TeleportMage],
+    [WallSlime],
+    [MudMage, WallSlime],
+    [WallSlime, TeleportMage, TeleportMage],
+    [TeleportMage, MudMage],
+    [TeleportMage, MudMage, MudMage],
+    [LizardWarrior, TeleportMage, TeleportMage],
+    [LizardWarrior, MudMage, MudMage],
+    [MudMage, LizardWarrior],
+    [LizardWarrior, TeleportMage],
+    [LizardWarrior, LizardWarrior, MudMage, TeleportMage, MudMage],
+    [MudMage, MudMage, LizardWarrior, LizardWarrior],
+    [LizardWarrior, TeleportMage, TeleportMage, MudMage, MudMage],
+    [LizardWarrior, LizardWarrior, WallSlime],
+    [LizardWarrior, WallSlime, LizardWarrior, MudMage],
+    [LizardWarrior, TeleportMage, MudMage],
+    [WallSlime, WallSlime]
+];
+
+export const RUBossSets = [
+    [LizardWarrior] //temp
 ];

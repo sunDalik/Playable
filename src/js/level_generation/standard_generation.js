@@ -41,6 +41,7 @@ export function generateStandard() {
         //shapeRoom(room, randomChoice(shapers)); //for testing
         randomlyRotateRoom(room)
     }
+    if (settings.openSpace) outlineLevelWithWalls();
     const bossRoom = findBossRoom();
     clearShape(bossRoom);
     const path = planPath(bossRoom);
@@ -323,7 +324,7 @@ function drawPath(path) {
                 } else break;
             }
         }
-        if (Game.stage !== STAGE.DARK_TUNNEL || startRoom.type === ROOM_TYPE.BOSS || endRoom.type === ROOM_TYPE.BOSS) {
+        if (!settings.openSpace && (Game.stage !== STAGE.DARK_TUNNEL || startRoom.type === ROOM_TYPE.BOSS || endRoom.type === ROOM_TYPE.BOSS)) {
             if (primary === "y") {
                 level[bestPoint][adjacencyPlane[0][secondary]] = LEVEL_SYMBOLS.ENTRY;
             } else {
@@ -395,7 +396,7 @@ function setStartPosition(startRoom) {
     }
 
     //for tests
-    if (true) {
+    if (false) {
         const bossRoom = rooms.find(r => r.type === ROOM_TYPE.BOSS);
         Game.startPos = {x: bossRoom.offsetX + 1, y: bossRoom.offsetY + 1};
     }
@@ -597,7 +598,8 @@ function generateEnemies() {
                     }
                 }
             }
-            const enemyAmount = Math.round(emptyTiles / 7) + randomChoice([-2, -1, 0, 1]);
+            const randomBonus = settings.openSpace ? randomChoice([-3, -2, -1, 0]) : randomChoice([-2, -1, 0, 1]);
+            const enemyAmount = Math.round(emptyTiles / 7) + randomBonus;
             let pack;
             for (let i = enemyAmount; i > 0; i--) {
                 pack = randomChoice(settings.enemySets.filter(set => set.length === i));
@@ -737,6 +739,16 @@ function generateBoss() {
                 else level[point.y][point.x].entity = new set[i](point.x, point.y);
                 if (i === 0 && level[point.y][point.x].entity.applyRoomLayout) level[point.y][point.x].entity.applyRoomLayout(level, room);
                 break;
+            }
+        }
+    }
+}
+
+function outlineLevelWithWalls() {
+    for (let i = 0; i < level.length; i++) {
+        for (let j = 0; j < level[0].length; j++) {
+            if (i === 0 || i === level.length - 1 || j === 0 || j === level[0].length - 1) {
+                level[i][j] = LEVEL_SYMBOLS.WALL;
             }
         }
     }
