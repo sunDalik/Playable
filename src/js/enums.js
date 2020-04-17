@@ -176,7 +176,9 @@ export const STORAGE = Object.freeze({
     KEY_PAUSE: "KeyPause",
 
     SHOW_TIME: "ShowTimer",
-    ACHIEVEMENTS: "Achievements"
+    ACHIEVEMENTS: "Achievements",
+    DISABLE_MOUSE: "DisableMouse",
+    SHOW_FPS: "ShowFPS"
 });
 
 export const GAME_STATE = Object.freeze({MENU: 0, PLAYING: 1});

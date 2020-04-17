@@ -394,10 +394,11 @@ export function drawInteractionKeys() {
     }
 }
 
-function redrawFps() {
+export function redrawFps() {
     const container = HUD.fps;
     removeAllChildrenFromContainer(container);
     if (HUD.fps.animation) Game.app.ticker.remove(HUD.fps.animation);
+    if (!Game.showFPS) return;
     const text = new PIXI.Text("FPS: ", HUDTextStyle);
     container.addChild(text);
     let counter = 0;

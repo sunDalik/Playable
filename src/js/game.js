@@ -91,3 +91,5 @@ Game.destroyParticles = [];
 Game.achievementPopUpQueue = [];
 
 Game.experimentalFeatures = true;
+Game.disableMouse = false;
+Game.showFPS = false;

@@ -214,8 +214,7 @@ function initGameState() {
     Game.stage = STAGE.FLOODED_CAVE;
     Game.time = 0;
     Game.app.ticker.remove(speedrunTimer);
-    Game.showTime = JSON.parse(window.localStorage[STORAGE.SHOW_TIME]);
-    redrawSpeedRunTime();
+    redrawSpeedRunTime(); // why???
 
     //otherwise players will have no shadow if you start on dt...
     Game.player.regenerateShadow();
@@ -266,6 +265,7 @@ function initLocalStorage(reset = false) {
     initLocalStorageKeys(reset);
     initLocalStorageOther(reset);
     initLocalStorageAchievements(reset);
+    setupSettingsFromLocalStorage();
 }
 
 export function initLocalStorageKeys(reset = false) {
@@ -302,6 +302,8 @@ export function initLocalStorageKeys(reset = false) {
 export function initLocalStorageOther(reset = false) {
     //use JSON.parse to parse string boolean values
     if (reset || !window.localStorage[STORAGE.SHOW_TIME]) window.localStorage[STORAGE.SHOW_TIME] = false;
+    if (reset || !window.localStorage[STORAGE.DISABLE_MOUSE]) window.localStorage[STORAGE.DISABLE_MOUSE] = false;
+    if (reset || !window.localStorage[STORAGE.SHOW_FPS]) window.localStorage[STORAGE.SHOW_FPS] = false;
 }
 
 export function initLocalStorageAchievements(reset = false) {
@@ -312,4 +314,10 @@ export function initLocalStorageAchievements(reset = false) {
         }
         window.localStorage[STORAGE.ACHIEVEMENTS] = JSON.stringify(achievementsArray);
     }
+}
+
+function setupSettingsFromLocalStorage() {
+    Game.showTime = JSON.parse(window.localStorage[STORAGE.SHOW_TIME]);
+    Game.disableMouse = JSON.parse(window.localStorage[STORAGE.DISABLE_MOUSE]);
+    Game.showFPS = JSON.parse(window.localStorage[STORAGE.SHOW_FPS]);
 }
