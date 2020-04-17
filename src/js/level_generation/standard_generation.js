@@ -321,10 +321,12 @@ function drawPath(path) {
                 } else break;
             }
         }
-        if (primary === "y") {
-            level[bestPoint][adjacencyPlane[0][secondary]] = LEVEL_SYMBOLS.ENTRY;
-        } else {
-            level[adjacencyPlane[0][secondary]][bestPoint] = LEVEL_SYMBOLS.ENTRY;
+        if (Game.stage !== STAGE.DARK_TUNNEL) {
+            if (primary === "y") {
+                level[bestPoint][adjacencyPlane[0][secondary]] = LEVEL_SYMBOLS.ENTRY;
+            } else {
+                level[adjacencyPlane[0][secondary]][bestPoint] = LEVEL_SYMBOLS.ENTRY;
+            }
         }
     }
 }

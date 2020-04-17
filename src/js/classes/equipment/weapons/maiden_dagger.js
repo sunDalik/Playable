@@ -11,14 +11,14 @@ export class MaidenDagger {
         this.texture = WeaponsSpriteSheet["maiden_dagger.png"];
         this.type = WEAPON_TYPE.MAIDEN_DAGGER;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
-        this.atk = 1;
+        this.atk = 1.25;
         this.name = "Maiden's Dagger";
-        this.description = "I hear weeping...";
+        this.description = "1.25 atk\nBecomes more powerful with its pair";
         this.rarity = RARITY.B;
     }
 
     onWear(player) {
-        player.voluntaryDamage(0.25);
+        //player.voluntaryDamage(0.25);
     }
 
     attack(wielder, tileDirX, tileDirY) {
