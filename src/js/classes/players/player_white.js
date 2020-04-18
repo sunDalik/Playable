@@ -7,7 +7,7 @@ import {Game} from "../../game";
 
 //aka player 1
 export class WhitePlayer extends Player {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/player.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = CommonSpriteSheet["player.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.atkMul = 0.5;
         this.defMul = 1;

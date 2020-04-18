@@ -1,18 +1,14 @@
 import {Game} from "./game";
 
 export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnemiesSpriteSheet,
-    CommonEnemiesSpriteSheet, RabbitsSpriteSheet, ParanoidEelSpriteSheet, GotLSpriteSheet, IntentsSpriteSheet,
-    StatuesSpriteSheet, InanimatesSpriteSheet, HazardsSpriteSheet, WeaponsSpriteSheet, AchievementsSpriteSheet,
-    HUDSpriteSheet, BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
+    ParanoidEelSpriteSheet, GotLSpriteSheet, IntentsSpriteSheet, InanimatesSpriteSheet,
+    HazardsSpriteSheet, WeaponsSpriteSheet, AchievementsSpriteSheet, HUDSpriteSheet,
+    BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
     HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/wall.png")
-        .add("src/images/door_horizontal.png")
-        .add("src/images/door_vertical.png")
-        .add("src/images/player.png")
-        .add("src/images/player2.png")
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
         .add("src/images/icons/obelisk_sacrifice.png")
@@ -25,8 +21,6 @@ export function loadAll(afterLoad) {
         .add("src/textures/fc_enemies.json")
         .add("src/textures/dt_enemies.json")
         .add("src/textures/ru_enemies.json")
-        .add("src/textures/rabbits.json")
-        .add("src/textures/common_enemies.json")
         .add("src/textures/paranoid_eel.json")
         .add("src/textures/gotl.json")
         .add("src/textures/bullets.json")
@@ -52,8 +46,6 @@ function setSpriteSheets() {
     FCEnemiesSpriteSheet = Game.loader.resources["src/textures/fc_enemies.json"].textures;
     DTEnemiesSpriteSheet = Game.loader.resources["src/textures/dt_enemies.json"].textures;
     RUEnemiesSpriteSheet = Game.loader.resources["src/textures/ru_enemies.json"].textures;
-    CommonEnemiesSpriteSheet = Game.loader.resources["src/textures/common_enemies.json"].textures;
-    RabbitsSpriteSheet = Game.loader.resources["src/textures/rabbits.json"].textures;
     ParanoidEelSpriteSheet = Game.loader.resources["src/textures/paranoid_eel.json"].textures;
     GotLSpriteSheet = Game.loader.resources["src/textures/gotl.json"].textures;
     IntentsSpriteSheet = Game.loader.resources["src/textures/intents.json"].textures;

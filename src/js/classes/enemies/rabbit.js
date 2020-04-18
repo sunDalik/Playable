@@ -13,10 +13,10 @@ import {FireHazard} from "../hazards/fire";
 import {PoisonHazard} from "../hazards/poison";
 import {ElectricBullet} from "./bullets/electric";
 import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {IntentsSpriteSheet, RabbitsSpriteSheet} from "../../loader";
+import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
 
 export class Rabbit extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = RabbitsSpriteSheet["rabbit_x_energy.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["rabbit_x_energy.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.maxHealth = 0.5;
         this.health = this.maxHealth;
@@ -101,16 +101,16 @@ export class Rabbit extends Enemy {
     updateTexture() {
         switch (this.rabbitType) {
             case RABBIT_TYPE.ENERGY:
-                this.texture = RabbitsSpriteSheet["rabbit_x_energy.png"];
+                this.texture = DTEnemiesSpriteSheet["rabbit_x_energy.png"];
                 break;
             case RABBIT_TYPE.ELECTRIC:
-                this.texture = RabbitsSpriteSheet["rabbit_x_electric.png"];
+                this.texture = DTEnemiesSpriteSheet["rabbit_x_electric.png"];
                 break;
             case RABBIT_TYPE.FIRE:
-                this.texture = RabbitsSpriteSheet["rabbit_x_fire.png"];
+                this.texture = DTEnemiesSpriteSheet["rabbit_x_fire.png"];
                 break;
             case RABBIT_TYPE.POISON:
-                this.texture = RabbitsSpriteSheet["rabbit_x_poison.png"];
+                this.texture = DTEnemiesSpriteSheet["rabbit_x_poison.png"];
                 break;
         }
     }

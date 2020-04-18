@@ -3,14 +3,15 @@ import {Game} from "../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import {TILE_TYPE} from "../../enums";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
+import {CommonSpriteSheet} from "../../loader";
 
 //todo all enemies should NOT go through closed doors
 export class DoorsTile extends TileElement {
-    constructor(tilePositionX, tilePositionY, isHorizontal, texture = Game.resources["src/images/door_horizontal.png"].texture) {
+    constructor(tilePositionX, tilePositionY, isHorizontal, texture = CommonSpriteSheet["door_horizontal.png"]) {
         super(texture, tilePositionX, tilePositionY, true);
         this.horizontal = isHorizontal; //describes connection way
         this.opened = false;
-        this.door2 = new TileElement(Game.resources["src/images/door_horizontal.png"].texture, this.tilePosition.x, this.tilePosition.y, true);
+        this.door2 = new TileElement(CommonSpriteSheet["door_horizontal.png"], this.tilePosition.x, this.tilePosition.y, true);
         this.scaleModifier = this.door2.scaleModifier = 0.5;
         this.updateTexture();
         this.setOwnZIndex(Z_INDEXES.DOOR);
@@ -53,9 +54,9 @@ export class DoorsTile extends TileElement {
 
     updateTexture() {
         if (this.horizontal === this.opened) {
-            this.texture = this.door2.texture = Game.resources["src/images/door_horizontal.png"].texture;
+            this.texture = this.door2.texture = CommonSpriteSheet["door_horizontal.png"];
         } else {
-            this.texture = this.door2.texture = Game.resources["src/images/door_vertical.png"].texture;
+            this.texture = this.door2.texture = CommonSpriteSheet["door_vertical.png"];
         }
         this.fitToTile();
         this.place();
