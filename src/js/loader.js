@@ -60,7 +60,6 @@ function setSpriteSheets() {
     ToolsSpriteSheet = Game.loader.resources["src/textures/tools.json"].textures;
     ShieldsSpriteSheet = Game.loader.resources["src/textures/shields.json"].textures;
     HUDSpriteSheet = Game.loader.resources["src/textures/hud.json"].textures;
-    AchievementsSpriteSheet = Game.loader.resources["src/textures/achievements.json"].textures;
     BagSpriteSheet = Game.loader.resources["src/textures/bag.json"].textures;
     BulletsSpriteSheet = Game.loader.resources["src/textures/bullets.json"].textures;
 }

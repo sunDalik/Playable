@@ -436,6 +436,7 @@ export class ParanoidEel extends Boss {
         this.bump(this.direction.x, this.direction.y, null, () => this.rotateDirectionBy90());
     }
 
+    //todo dont react on hazard damage?
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         if (!this.dead) {

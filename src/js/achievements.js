@@ -5,6 +5,7 @@ import * as PIXI from "pixi.js";
 import {HUDTextStyleTitle, miniMapBottomOffset, slotBorderOffsetX} from "./drawing/draw_constants";
 import {easeInQuad, easeOutQuad} from "./utils/math_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
+import {AchievementsSpriteSheet} from "./loader";
 
 export const achievements = [
     {
@@ -56,7 +57,7 @@ export function showAchievementAnimation(achievement, fromQueue = false) {
     popUp.lineStyle(3, 0xffffff);
     popUp.drawRoundedRect(0, 0, 350, 100, 5);
     const imageSize = 65;
-    const achievementSprite = new PIXI.Sprite(Game.resources[achievement.image].texture);
+    const achievementSprite = new PIXI.Sprite(AchievementsSpriteSheet[achievement.image]);
     achievementSprite.width = achievementSprite.height = imageSize;
     const imageOffsetX = 40;
     const imageOffsetY = 15;
