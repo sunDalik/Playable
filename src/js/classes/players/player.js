@@ -405,6 +405,7 @@ export class Player extends AnimatedTileElement {
         this.removeHealthContainers(1);
         otherPlayer(this).removeHealthContainers(1);
         updateInanimates();
+        Game.world.removeChild(this.shadow);
     }
 
     removeHealthContainers(num) {

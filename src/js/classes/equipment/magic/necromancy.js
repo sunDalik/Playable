@@ -32,6 +32,7 @@ export class Necromancy {
             //todo add revive method probably and also restore shadow
             revivedPlayer.dead = false;
             revivedPlayer.visible = true;
+            revivedPlayer.regenerateShadow();
             Game.world.addChild(revivedPlayer);
             revivedPlayer.health = revivedPlayer.maxHealth;
             redrawHealthForPlayer(revivedPlayer);
