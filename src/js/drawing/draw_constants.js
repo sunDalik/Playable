@@ -9,7 +9,7 @@ export const slotSize = 62;
 export const slotOffsetFromHeartsY = 20;
 export const slotsRowOffset = 15;
 export const slotsColOffset = 15;
-export const slotContentSizeMargin = 10;
+export const slotContentSizeMargin = 8;
 export const slotBorderOffsetX = 25;
 export const statsOffsetX = 15;
 

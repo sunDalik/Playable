@@ -35,7 +35,9 @@ export class LyingItem extends ShadowTileElement {
             this.width = Game.TILESIZE * 0.9;
             this.height = Game.TILESIZE * 0.9;
             this.addAmountNumber();
-            this.regenerateShadow();
+            //this.regenerateShadow();
+            //if (this.item.amount > 1) this.texture.trim = this.texture.frame;
+            //this.placeShadow();
         }
     }
 

@@ -58,7 +58,7 @@ export class BookOfFlames extends MagicBook {
                 }
                 const attackTile = attackTiles[i];
                 if (isNotAWall(attackTile.x, attackTile.y)) {
-                    const attackSprite = new TileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y);
+                    const attackSprite = new TileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y, true);
                     attackSprite.tint = 0x10afa6;
                     createFadingAttack(attackSprite);
                 }
