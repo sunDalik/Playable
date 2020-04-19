@@ -45,10 +45,11 @@ import {DivineBow} from "./classes/equipment/weapons/divine_bow";
 import {DoubleGlaive} from "./classes/equipment/weapons/double_glaive";
 import {BookOfWebs} from "./classes/equipment/weapons/book_of_webs";
 import {BookOfThunders} from "./classes/equipment/weapons/book_of_thunders";
+import {BookOfIce} from "./classes/equipment/weapons/book_of_ice";
 
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
-        PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders];
+        PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross, Immortality];
     Game.chestItemPool = [Pickaxe,
         BasicShield, PassiveShield, SpikyShield, StunningShield, FellStarShield,
