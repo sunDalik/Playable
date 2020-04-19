@@ -107,7 +107,8 @@ export const WEAPON_TYPE = Object.freeze({
     DIVINE_BOW: 13,
     BOOK_OF_THUNDERS: 14,
     BOOK_OF_WEBS: 15,
-    BOOK_OF_ICE: 16
+    BOOK_OF_ICE: 16,
+    DOUBLE_GLAIVE: 17
 });
 export const HEAD_TYPE = Object.freeze({
     WIZARD_HAT: 0,
