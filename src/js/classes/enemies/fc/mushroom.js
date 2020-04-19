@@ -1,12 +1,12 @@
-import {Game} from "../../game"
-import {ENEMY_TYPE, TILE_TYPE} from "../../enums";
-import {Enemy} from "./enemy";
-import {PoisonHazard} from "../hazards/poison";
-import {randomInt, randomChoice} from "../../utils/random_utils";
-import {getRelativelyEmptyHorizontalDirections} from "../../utils/map_utils";
-import {getPlayerOnTile, isEmpty, isNotAWall} from "../../map_checks";
-import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {Game} from "../../../game"
+import {ENEMY_TYPE, TILE_TYPE} from "../../../enums";
+import {Enemy} from "../enemy";
+import {PoisonHazard} from "../../hazards/poison";
+import {randomInt, randomChoice} from "../../../utils/random_utils";
+import {getRelativelyEmptyHorizontalDirections} from "../../../utils/map_utils";
+import {getPlayerOnTile, isEmpty, isNotAWall} from "../../../map_checks";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["mushroom.png"]) {

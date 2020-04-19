@@ -1,8 +1,8 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
-import {getPlayerOnTile, isRelativelyEmpty} from "../../map_checks";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE} from "../../../enums";
+import {getPlayerOnTile, isRelativelyEmpty} from "../../../map_checks";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Eel extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel.png"]) {

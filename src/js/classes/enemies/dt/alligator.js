@@ -1,18 +1,18 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE, RABBIT_TYPE, ROLE, STAGE} from "../../enums";
-import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall, isRelativelyEmpty} from "../../map_checks";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE, RABBIT_TYPE, ROLE, STAGE} from "../../../enums";
+import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall, isRelativelyEmpty} from "../../../map_checks";
 import {
     getChasingOptions,
     getRelativelyEmptyCardinalDirections,
     getRelativelyEmptyLitCardinalDirections
-} from "../../utils/map_utils";
-import {getRandomValue, randomChoice} from "../../utils/random_utils";
-import {PoisonHazard} from "../hazards/poison";
-import {ElectricBullet} from "./bullets/electric";
-import {FireBullet} from "./bullets/fire";
-import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+} from "../../../utils/map_utils";
+import {getRandomValue, randomChoice} from "../../../utils/random_utils";
+import {PoisonHazard} from "../../hazards/poison";
+import {ElectricBullet} from "../bullets/electric";
+import {FireBullet} from "../bullets/fire";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {Rabbit} from "./rabbit";
 
 export class Alligator extends Enemy {

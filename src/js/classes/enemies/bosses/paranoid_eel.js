@@ -14,10 +14,10 @@ import {
 import {randomChoice, randomChoiceSeveral} from "../../../utils/random_utils";
 import {get8Directions, get8DirectionsInRadius} from "../../../utils/map_utils";
 import {PoisonHazard} from "../../hazards/poison";
-import {Eel} from "../eel";
-import {PoisonEel} from "../eel_poison";
+import {Eel} from "../fc/eel";
+import {PoisonEel} from "../fc/eel_poison";
 import {shakeScreen} from "../../../animations";
-import {DarkEel} from "../eel_dark";
+import {DarkEel} from "../fc/eel_dark";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {ParanoidEelSpriteSheet} from "../../../loader";
 

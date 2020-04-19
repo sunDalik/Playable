@@ -1,9 +1,9 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
-import {removeObjectFromArray} from "../../utils/basic_utils";
-import {getPlayerOnTile, isEmpty} from "../../map_checks";
-import {RUEnemiesSpriteSheet} from "../../loader";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE} from "../../../enums";
+import {removeObjectFromArray} from "../../../utils/basic_utils";
+import {getPlayerOnTile, isEmpty} from "../../../map_checks";
+import {RUEnemiesSpriteSheet} from "../../../loader";
 
 export class SummonCircle extends Enemy {
     constructor(tilePositionX, tilePositionY, enemy, texture = RUEnemiesSpriteSheet["summon_circle.png"]) {

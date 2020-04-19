@@ -1,7 +1,7 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
-import {RUEnemiesSpriteSheet} from "../../loader";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE} from "../../../enums";
+import {RUEnemiesSpriteSheet} from "../../../loader";
 
 export class MudCubeZombie extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_cube_zombie.png"]) {

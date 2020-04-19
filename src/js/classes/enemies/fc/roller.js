@@ -1,8 +1,8 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE, TILE_TYPE} from "../../enums";
-import {getPlayerOnTile, isAnyWall, isInanimate, isRelativelyEmpty} from "../../map_checks";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE, TILE_TYPE} from "../../../enums";
+import {getPlayerOnTile, isAnyWall, isInanimate, isRelativelyEmpty} from "../../../map_checks";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 // I HAVE NO IDEA WHY BUT HIS ANIMATIONS ARE SUPPER BUGGY
 export class Roller extends Enemy {

@@ -1,18 +1,18 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
-import {closestPlayer, tileDistance} from "../../utils/game_utils";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE} from "../../../enums";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {
     getDirectionsWithConditions,
     getEmptyCardinalDirections,
     getEmptyHorizontalDirections
-} from "../../utils/map_utils";
-import {randomChoice} from "../../utils/random_utils";
-import {getPlayerOnTile, isEmpty} from "../../map_checks";
-import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
-import {TileElement} from "../tile_elements/tile_element";
-import {createEnemyAttackTile} from "../../animations";
-import {IntentsSpriteSheet, RUEnemiesSpriteSheet, WeaponsSpriteSheet} from "../../loader";
+} from "../../../utils/map_utils";
+import {randomChoice} from "../../../utils/random_utils";
+import {getPlayerOnTile, isEmpty} from "../../../map_checks";
+import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../../filters";
+import {TileElement} from "../../tile_elements/tile_element";
+import {createEnemyAttackTile} from "../../../animations";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 
 export class LizardWarrior extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["lizard_warrior.png"]) {

@@ -1,13 +1,13 @@
 import * as PIXI from "pixi.js";
-import {Game} from "../../game";
-import {Enemy} from "./enemy";
-import {ENEMY_TYPE, ROLE, STAGE} from "../../enums";
-import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
-import {createFadingAttack} from "../../animations";
-import {TileElement} from "../tile_elements/tile_element";
-import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
-import {wallTallness} from "../draw/wall";
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
+import {ENEMY_TYPE, ROLE, STAGE} from "../../../enums";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {getPlayerOnTile, isAnyWall, isInanimate} from "../../../map_checks";
+import {createFadingAttack} from "../../../animations";
+import {TileElement} from "../../tile_elements/tile_element";
+import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {wallTallness} from "../../draw/wall";
 
 export class LaserTurret extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["laser_turret_unready.png"]) {

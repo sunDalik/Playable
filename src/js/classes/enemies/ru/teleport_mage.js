@@ -1,16 +1,16 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
-import {closestPlayer, otherPlayer, tileDistance} from "../../utils/game_utils";
-import {getCardinalDirections, getEmptyCardinalDirections, getEmptyRunAwayOptions} from "../../utils/map_utils";
-import {blowAwayInDirection} from "../../special_move_logic";
-import {isEnemy} from "../../map_checks";
-import {createPlayerAttackTile, rotate} from "../../animations";
-import {randomChoice} from "../../utils/random_utils";
-import {camera} from "../game/camera";
-import {MILD_DARK_GLOW_FILTER, MILD_WHITE_GLOW_FILTER} from "../../filters";
-import {updateChain} from "../../drawing/draw_dunno";
-import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../loader";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE} from "../../../enums";
+import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
+import {getCardinalDirections, getEmptyCardinalDirections, getEmptyRunAwayOptions} from "../../../utils/map_utils";
+import {blowAwayInDirection} from "../../../special_move_logic";
+import {isEnemy} from "../../../map_checks";
+import {createPlayerAttackTile, rotate} from "../../../animations";
+import {randomChoice} from "../../../utils/random_utils";
+import {camera} from "../../game/camera";
+import {MILD_DARK_GLOW_FILTER, MILD_WHITE_GLOW_FILTER} from "../../../filters";
+import {updateChain} from "../../../drawing/draw_dunno";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 
 export class TeleportMage extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["teleport_mage.png"]) {

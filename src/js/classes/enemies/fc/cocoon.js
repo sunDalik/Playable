@@ -1,14 +1,14 @@
-import {Game} from "../../game"
-import {ENEMY_TYPE, STAGE} from "../../enums";
-import {Enemy} from "./enemy";
-import {randomInt, randomChoice} from "../../utils/random_utils";
-import {getEmptyCardinalDirections} from "../../utils/map_utils";
+import {Game} from "../../../game"
+import {ENEMY_TYPE, STAGE} from "../../../enums";
+import {Enemy} from "../enemy";
+import {randomInt, randomChoice} from "../../../utils/random_utils";
+import {getEmptyCardinalDirections} from "../../../utils/map_utils";
 import {Spider} from "./spider";
 import {GraySpider} from "./spider_gray";
-import {GreenSpider} from "./spider_green";
-import {RedSpider} from "./spider_red";
-import {ITEM_OUTLINE_FILTER_SMALL} from "../../filters";
-import {DTEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {GreenSpider} from "../dt/spider_green";
+import {RedSpider} from "../dt/spider_red";
+import {ITEM_OUTLINE_FILTER_SMALL} from "../../../filters";
+import {DTEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Cocoon extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["cocoon.png"]) {

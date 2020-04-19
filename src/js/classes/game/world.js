@@ -7,7 +7,7 @@ import {lightPlayerPosition} from "../../drawing/lighting";
 import {otherPlayer} from "../../utils/game_utils";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
 import {runDestroyAnimation} from "../../animations";
-import {SummonCircle} from "../enemies/summon_circle";
+import {SummonCircle} from "../enemies/ru/summon_circle";
 import {updateIntent} from "../../game_logic";
 
 export class World extends PIXI.Container {

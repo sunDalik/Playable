@@ -1,19 +1,19 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE, RABBIT_TYPE} from "../../enums";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE, RABBIT_TYPE} from "../../../enums";
 import {
     getEmptyRunAwayOptions,
     getRelativelyEmptyCardinalDirections,
     getRelativelyEmptyLitCardinalDirections,
     getRunAwayOptions
-} from "../../utils/map_utils";
-import {getRandomValue, randomChoice} from "../../utils/random_utils";
-import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
-import {FireHazard} from "../hazards/fire";
-import {PoisonHazard} from "../hazards/poison";
-import {ElectricBullet} from "./bullets/electric";
-import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+} from "../../../utils/map_utils";
+import {getRandomValue, randomChoice} from "../../../utils/random_utils";
+import {getPlayerOnTile, isAnyWall, isInanimate} from "../../../map_checks";
+import {FireHazard} from "../../hazards/fire";
+import {PoisonHazard} from "../../hazards/poison";
+import {ElectricBullet} from "../bullets/electric";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Rabbit extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["rabbit_x_energy.png"]) {

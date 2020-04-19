@@ -1,7 +1,7 @@
 import {Star} from "./star"
-import {ENEMY_TYPE} from "../../enums";
-import {getPlayerOnTile} from "../../map_checks";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {ENEMY_TYPE} from "../../../enums";
+import {getPlayerOnTile} from "../../../map_checks";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class RedStar extends Star {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star_b.png"]) {

@@ -1,10 +1,10 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {DIRECTIONS, ENEMY_TYPE} from "../../enums";
-import {getPlayerOnTile} from "../../map_checks";
-import {createEnemyAttackTile} from "../../animations";
-import {TileElement} from "../tile_elements/tile_element";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {DIRECTIONS, ENEMY_TYPE} from "../../../enums";
+import {getPlayerOnTile} from "../../../map_checks";
+import {createEnemyAttackTile} from "../../../animations";
+import {TileElement} from "../../tile_elements/tile_element";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Star extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star.png"]) {

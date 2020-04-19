@@ -32,7 +32,7 @@ export class BladeCrown {
             enemy.damage(wielder, this.bladeAtk, dirX, dirY, true, false)
         }
 
-        const bladeSprite = new TileElement(Game.resources["src/images/headwear/blade_crown_blade.png"].texture, wielder.tilePosition.x, wielder.tilePosition.y);
+        const bladeSprite = new TileElement(HeadWearSpriteSheet["blade_crown_blade.png"], wielder.tilePosition.x, wielder.tilePosition.y);
         Game.world.addChild(bladeSprite);
         wielder.animationSubSprites.push(bladeSprite);
         bladeSprite.zIndex = Game.primaryPlayer.zIndex + 1;

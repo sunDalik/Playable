@@ -1,17 +1,17 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
-import {randomChoice} from "../../utils/random_utils";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE} from "../../../enums";
+import {randomChoice} from "../../../utils/random_utils";
 import {
     getEmptyRunAwayOptions,
     getRelativelyEmptyCardinalDirections,
     getRelativelyEmptyLitCardinalDirections,
     getRunAwayOptions
-} from "../../utils/map_utils";
-import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "../../map_checks";
-import {PoisonHazard} from "../hazards/poison";
-import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+} from "../../../utils/map_utils";
+import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "../../../map_checks";
+import {PoisonHazard} from "../../hazards/poison";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Frog extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["frog.png"]) {

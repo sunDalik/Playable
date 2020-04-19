@@ -14,9 +14,9 @@ import {get8Directions, getCardinalDirections} from "../utils/map_utils";
 import {Necromancy} from "../classes/equipment/magic/necromancy";
 import {Obelisk} from "../classes/inanimate_objects/obelisk";
 import {pointTileDistance} from "../utils/game_utils";
-import {SpikyWallTrap} from "../classes/enemies/spiky_wall_trap";
+import {SpikyWallTrap} from "../classes/enemies/fc/spiky_wall_trap";
 import {DoorsTile} from "../classes/draw/doors";
-import {Mushroom} from "../classes/enemies/mushroom";
+import {Mushroom} from "../classes/enemies/fc/mushroom";
 import {LyingItem} from "../classes/equipment/lying_item";
 import {Torch} from "../classes/equipment/tools/torch";
 

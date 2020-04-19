@@ -1,9 +1,9 @@
-import {Game} from "../../game"
+import {Game} from "../../../game"
 import {Eel} from "./eel"
-import {ENEMY_TYPE} from "../../enums";
-import {PoisonHazard} from "../hazards/poison";
-import {getPlayerOnTile} from "../../map_checks";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {ENEMY_TYPE} from "../../../enums";
+import {PoisonHazard} from "../../hazards/poison";
+import {getPlayerOnTile} from "../../../map_checks";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class PoisonEel extends Eel {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel_poison.png"]) {

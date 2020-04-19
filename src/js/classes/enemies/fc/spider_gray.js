@@ -1,8 +1,8 @@
-import {Game} from "../../game"
+import {Game} from "../../../game"
 import {Spider} from "./spider"
-import {ENEMY_TYPE} from "../../enums";
-import {isEmpty, isNotAWall} from "../../map_checks";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {ENEMY_TYPE} from "../../../enums";
+import {isEmpty, isNotAWall} from "../../../map_checks";
+import {FCEnemiesSpriteSheet} from "../../../loader";
 
 export class GraySpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spider_b.png"]) {

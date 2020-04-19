@@ -1,7 +1,7 @@
-import {Game} from "../../game"
+import {Game} from "../../../game"
 import {Snail} from "./snail"
-import {ENEMY_TYPE} from "../../enums";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {ENEMY_TYPE} from "../../../enums";
+import {FCEnemiesSpriteSheet} from "../../../loader";
 
 export class SpikySnail extends Snail {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["snail_spiky.png"]) {

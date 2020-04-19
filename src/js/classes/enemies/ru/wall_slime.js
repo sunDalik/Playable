@@ -1,13 +1,13 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE, PLANE, STAGE} from "../../enums";
-import {randomChoice} from "../../utils/random_utils";
-import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../map_checks";
-import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {getHealthArray} from "../../drawing/draw_utils";
-import {getCardinalDirections, getChasingDirections} from "../../utils/map_utils";
-import {removeObjectFromArray} from "../../utils/basic_utils";
-import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../loader";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE, PLANE, STAGE} from "../../../enums";
+import {randomChoice} from "../../../utils/random_utils";
+import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../../map_checks";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {getHealthArray} from "../../../drawing/draw_utils";
+import {getCardinalDirections, getChasingDirections} from "../../../utils/map_utils";
+import {removeObjectFromArray} from "../../../utils/basic_utils";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import * as PIXI from "pixi.js";
 
 export class WallSlime extends Enemy {

@@ -1,9 +1,9 @@
-import {ENEMY_TYPE} from "../../enums";
-import {randomInt} from "../../utils/random_utils";
+import {ENEMY_TYPE} from "../../../enums";
+import {randomInt} from "../../../utils/random_utils";
 import {Mushroom} from "./mushroom";
-import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../utils/map_utils";
-import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class SmallMushroom extends Mushroom {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["mushroom_small.png"]) {

@@ -1,8 +1,8 @@
-import {Game} from "../../game"
-import {Spider} from "./spider"
-import {ENEMY_TYPE} from "../../enums";
-import {isEmpty, isNotAWall} from "../../map_checks";
-import {DTEnemiesSpriteSheet} from "../../loader";
+import {Game} from "../../../game"
+import {Spider} from "../fc/spider"
+import {ENEMY_TYPE} from "../../../enums";
+import {isEmpty, isNotAWall} from "../../../map_checks";
+import {DTEnemiesSpriteSheet} from "../../../loader";
 
 export class RedSpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["spider_red.png"]) {

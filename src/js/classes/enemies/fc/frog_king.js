@@ -1,7 +1,7 @@
-import {ENEMY_TYPE} from "../../enums";
+import {ENEMY_TYPE} from "../../../enums";
 import {Frog} from "./frog";
-import {getPlayerOnTile, isNotAWall} from "../../map_checks";
-import {FCEnemiesSpriteSheet} from "../../loader";
+import {getPlayerOnTile, isNotAWall} from "../../../map_checks";
+import {FCEnemiesSpriteSheet} from "../../../loader";
 
 export class KingFrog extends Frog {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["frog_king.png"]) {

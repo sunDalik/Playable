@@ -1,15 +1,15 @@
-import {Game} from "../../game";
-import {Enemy} from "./enemy";
-import {ENEMY_TYPE, ROLE} from "../../enums";
-import {getPlayerOnTile} from "../../map_checks";
-import {randomChoice} from "../../utils/random_utils";
-import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../utils/map_utils";
-import {TileElement} from "../tile_elements/tile_element";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
-import {runDestroyAnimation} from "../../animations";
-import {WallTrapBase} from "../draw/wall_trap_base";
-import {wallTallness} from "../draw/wall";
-import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
+import {ENEMY_TYPE, ROLE} from "../../../enums";
+import {getPlayerOnTile} from "../../../map_checks";
+import {randomChoice} from "../../../utils/random_utils";
+import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../../utils/map_utils";
+import {TileElement} from "../../tile_elements/tile_element";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {runDestroyAnimation} from "../../../animations";
+import {WallTrapBase} from "../../draw/wall_trap_base";
+import {wallTallness} from "../../draw/wall";
+import {getZIndexForLayer, Z_INDEXES} from "../../../z_indexing";
 
 export class SpikyWallTrap extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spiky_wall_trap_x.png"]) {

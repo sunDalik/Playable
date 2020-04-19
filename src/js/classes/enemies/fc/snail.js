@@ -1,12 +1,12 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
-import {PoisonHazard} from "../hazards/poison";
-import {getPlayerOnTile, isAnyWall, isInanimate} from "../../map_checks";
-import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../utils/map_utils";
-import {randomChoice} from "../../utils/random_utils";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../loader";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE} from "../../../enums";
+import {PoisonHazard} from "../../hazards/poison";
+import {getPlayerOnTile, isAnyWall, isInanimate} from "../../../map_checks";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
+import {randomChoice} from "../../../utils/random_utils";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Snail extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["snail.png"]) {

@@ -1,17 +1,17 @@
-import {Game} from "../../game"
-import {Enemy} from "./enemy"
-import {ENEMY_TYPE} from "../../enums";
-import {closestPlayer, tileDistance} from "../../utils/game_utils";
-import {randomInt, randomChoice} from "../../utils/random_utils";
+import {Game} from "../../../game"
+import {Enemy} from "../enemy"
+import {ENEMY_TYPE} from "../../../enums";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {randomInt, randomChoice} from "../../../utils/random_utils";
 import {
     get8Directions,
     getDirectionsOnSquare,
     getEmptyCardinalDirections,
     getEmptyRunAwayOptions
-} from "../../utils/map_utils";
+} from "../../../utils/map_utils";
 import {MudCubeZombie} from "./mud_cube_zombie";
-import {isNotAWall} from "../../map_checks";
-import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../loader";
+import {isNotAWall} from "../../../map_checks";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 
 export class MudMage extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_mage.png"]) {
