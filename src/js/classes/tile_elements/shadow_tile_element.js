@@ -49,7 +49,6 @@ export class ShadowTileElement extends TileElement {
     }
 
     placeShadow() {
-        //WHAT IS THIS???????? why isn't y position JUST determined by floorLevel? what are these calculations for????
         //todo:they do be still looking kinda weird on y steps
         if (this.noShadow || this.shadow === null) return;
         this.shadow.zIndex = this.zIndex - 1;

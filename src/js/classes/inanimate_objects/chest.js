@@ -7,12 +7,11 @@ import * as PIXI from "pixi.js";
 import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
-import {InanimatesSpriteSheet} from "../../loader";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 
 export class Chest extends TileElement {
     constructor(tilePositionX, tilePositionY, contents) {
-        super(InanimatesSpriteSheet["chest.png"], tilePositionX, tilePositionY);
+        super(Game.resources["src/images/inanimates/chest.png"].texture, tilePositionX, tilePositionY);
         this.contents = contents;
         this.contentsType = contents.equipmentType;
         this.role = ROLE.INANIMATE;
@@ -32,10 +31,14 @@ export class Chest extends TileElement {
         this.textObj.visible = false;
         this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
         Game.world.addChild(this.textObj);
+
+        this.tint = contents.rarity.color;
+        this.tallModifier = -15;
+        this.setScaleModifier(0.9 + contents.rarity.num / 16);
     }
 
     interact(player) {
-        this.texture = InanimatesSpriteSheet["chest_opened.png"];
+        this.texture = Game.resources["src/images/inanimates/chest_opened.png"].texture;
         if (this.opened) {
             if (this.contents) this.contents = swapEquipmentWithPlayer(player, this.contents);
             else this.contents = removeEquipmentFromPlayer(player, this.contentsType);

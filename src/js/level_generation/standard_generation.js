@@ -400,6 +400,9 @@ function setStartPosition(startRoom) {
         const bossRoom = rooms.find(r => r.type === ROOM_TYPE.BOSS);
         Game.startPos = {x: bossRoom.offsetX + 1, y: bossRoom.offsetY + 1};
     }
+    if (false) {
+        level[Game.startPos.y][Game.startPos.x + 1].entity = new Chest(Game.startPos.x + 1, Game.startPos.y, getRandomChestDrop());
+    }
 }
 
 function setBossRoomPosition(bossRoom) {
