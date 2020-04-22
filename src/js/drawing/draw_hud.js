@@ -178,7 +178,7 @@ export function redrawSlotsForPlayer(player) {
         const container = new PIXI.Container();
         const slot = new PIXI.Graphics();
         const lineWidth = 3;
-        slot.lineStyle(lineWidth, 0xffffff, 0.8);
+        slot.lineStyle(lineWidth, 0xeeeeee, 0.8);
         slot.drawRect(0, 0, slotSize, slotSize);
         const text = new PIXI.Text(name, HUDTextStyleSlot);
         text.alpha = 0.9;

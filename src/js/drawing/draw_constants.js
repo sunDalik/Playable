@@ -37,7 +37,8 @@ export const HUDTextStyleTitle = Object.assign({}, HUDTextStyle, {fontSize: HUDT
 export const HUDTextStyleGameOver = Object.assign({}, HUDTextStyle, {fontSize: HUDGameOverFontSize});
 export const HUDTextStyleSlot = Object.assign({}, HUDTextStyle, {
     fontSize: HUDSlotFontSize,
-    lineHeight: HUDSlotFontSize - 2
+    lineHeight: HUDSlotFontSize - 2,
+    fill: 0xeeeeee
 });
 
 export const HUDKeyBindFontsize = 13;

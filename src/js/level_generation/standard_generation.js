@@ -19,6 +19,7 @@ import {DoorsTile} from "../classes/draw/doors";
 import {Mushroom} from "../classes/enemies/fc/mushroom";
 import {LyingItem} from "../classes/equipment/lying_item";
 import {Torch} from "../classes/equipment/tools/torch";
+import {Roller} from "../classes/enemies/fc/roller";
 
 let settings;
 let level;
@@ -402,6 +403,9 @@ function setStartPosition(startRoom) {
     }
     if (false) {
         level[Game.startPos.y][Game.startPos.x + 1].entity = new Chest(Game.startPos.x + 1, Game.startPos.y, getRandomChestDrop());
+    }
+    if (false) {
+        level[startRoom.offsetY + 2][startRoom.offsetX + 2].entity = new Roller(startRoom.offsetX + 2, startRoom.offsetY + 2);
     }
 }
 
