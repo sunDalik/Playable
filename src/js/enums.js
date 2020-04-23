@@ -77,6 +77,8 @@ export const INANIMATE_TYPE = Object.freeze({
     PEDESTAL: 6
 });
 
+//uuuuuuuuuuuuuuuuhhhhhhhhhhhhhhhhhhhh it should probably contain a string value like "footwear"?
+// and so you can easily get the slot by equipment type?? dunno yet
 export const EQUIPMENT_TYPE = Object.freeze({
     WEAPON: 0,
     HEAD: 1,

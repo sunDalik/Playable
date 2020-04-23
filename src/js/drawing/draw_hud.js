@@ -58,6 +58,7 @@ export function drawSlots() {
 export function drawSlotsContents() {
     redrawSlotContentsForPlayer(Game.player);
     redrawSlotContentsForPlayer(Game.player2);
+    redrawKeysAmount();
 }
 
 export function redrawSlotContentsForPlayer(player) {
@@ -166,6 +167,7 @@ export function redrawSlotsForPlayer(player) {
     if (player === Game.player) {
         HUD.energy.position.set(slotBorderOffsetX, slotsYOffset + (slotSize + slotsRowOffset) * 5);
         HUD.fps.position.set(HUD.energy.position.x, HUD.energy.position.y);
+        HUD.keysAmount.position.set(HUD.fps.position.x, HUD.fps.position.y + 30);
     }
 
     function drawSlot(x, y, slot) {
@@ -332,6 +334,18 @@ export function redrawFootwear(player) {
 
 export function redrawBag(player) {
     redrawSlotContents(player, "bag");
+}
+
+export function redrawKeysAmount() {
+    const container = HUD.keysAmount;
+    removeAllChildrenFromContainer(container);
+    if (Game.keysAmount === 0) return;
+    const icon = new PIXI.Sprite(Game.resources["src/images/key.png"].texture);
+    icon.width = icon.height = 40;
+    const text = new PIXI.Text(Game.keysAmount.toString(), HUDTextStyle);
+    text.position.set(icon.width, (icon.height - text.height) / 3);
+    container.addChild(icon);
+    container.addChild(text);
 }
 
 export function drawMovementKeyBindings() {

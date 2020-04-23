@@ -86,3 +86,4 @@ Game.achievementPopUpQueue = [];
 Game.experimentalFeatures = false;
 Game.disableMouse = false;
 Game.showFPS = false;
+Game.keysAmount = 0;
