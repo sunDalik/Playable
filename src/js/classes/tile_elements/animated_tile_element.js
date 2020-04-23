@@ -18,6 +18,12 @@ export class AnimatedTileElement extends ShadowTileElement {
         this.animation = null;
     }
 
+    removeFromMap() {
+    }
+
+    placeOnMap() {
+    }
+
     step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {
         this.onAnimationEnd = onEnd;
         this.removeFromMap();

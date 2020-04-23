@@ -201,9 +201,9 @@ export function retry() {
         Game.world.clean();
         cleanGameState();
         initPlayers();
+        initGameState();
         drawHUD();
         bindKeys();
-        initGameState();
         initPools();
         initializeLevel();
         Game.state = GAME_STATE.PLAYING;
@@ -214,7 +214,6 @@ function initGameState() {
     Game.stage = STAGE.FLOODED_CAVE;
     Game.time = 0;
     Game.app.ticker.remove(speedrunTimer);
-    redrawSpeedRunTime(); // why???
     Game.keysAmount = 0;
 
     //otherwise players will have no shadow if you start on dt...

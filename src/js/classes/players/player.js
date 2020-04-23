@@ -120,8 +120,12 @@ export class Player extends AnimatedTileElement {
         }
         if (!attackResult) {
             if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
-                this.bump(tileStepX, tileStepY);
-                Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity.interact(this, tileStepX, tileStepY);
+                const result = Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity.interact(this, tileStepX, tileStepY);
+                if (result === false) {
+                    //ummm thats a hack for now
+                } else {
+                    this.bump(tileStepX, tileStepY);
+                }
             } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
                 if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
                     Game.unplayable = true;
