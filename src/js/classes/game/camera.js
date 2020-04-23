@@ -88,7 +88,7 @@ camera.moveToCenter = (animationTime) => {
                     consideredPoint.y -= (Game.app.renderer.screen.height / 2 - ((Game.endRoomBoundaries[1].y + voidVis + 0.5) * Game.TILESIZE - consideredPoint.y));
                 }
             }
-            camera.setNewPoint(consideredPoint.x, consideredPoint.y + Game.TILESIZE / 3, endRoomTime);
+            camera.setNewPoint(consideredPoint.x, consideredPoint.y, endRoomTime);
         } else {
             camera.setNewPoint(getEffectivePlayerCenter().x, getEffectivePlayerCenter().y, animationTime);
         }

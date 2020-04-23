@@ -25,6 +25,7 @@ export const HUDSlotFontSize = 13;
 export const HUDGameOverFontSize = 26;
 export const HUDTitleFontSize = 20;
 export const HUDTextStyle = {
+    fontFamily: "Roboto",
     fontSize: HUDFontSize,
     fill: 0xffffff,
     fontWeight: "bold",

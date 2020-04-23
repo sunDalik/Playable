@@ -5,6 +5,7 @@ import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
+import {floorLevel} from "../../tile_elements/tile_element";
 
 export class AssassinDagger {
     constructor() {
@@ -55,7 +56,7 @@ export class AssassinDagger {
                 newAnchor = {x: 0.5, y: 0};
             }
             const playerPositionXOld = wielder.tilePosition.x * Game.TILESIZE;
-            const playerPositionYOld = wielder.tilePosition.y * Game.TILESIZE;
+            const playerPositionYOld = wielder.tilePosition.y * Game.TILESIZE - floorLevel;
             centerAttackParticleToOldPlayer();
             Game.world.addChild(attackParticle);
             const stepX = Math.abs(tileDirX * 2) * Game.TILESIZE / (context.SLIDE_ANIMATION_TIME);
