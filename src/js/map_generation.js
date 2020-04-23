@@ -5,9 +5,12 @@ import {Bomb} from "./classes/equipment/bag/bomb";
 import {SmallHealingPotion} from "./classes/equipment/bag/small_healing_potion";
 import {tileInsideTheBossRoom} from "./map_checks";
 import {RustySword} from "./classes/equipment/weapons/rusty_sword";
+import {Key} from "./classes/equipment/key";
+import {keysOnEnemies} from "./level_generation/standard_generation";
 
 //todo change purpose of this file
 export function assignDrops() {
+    distributeDrops(Key, keysOnEnemies);
     distributeDrops(Bomb, randomInt(4, 5));
     distributeDrops(SmallHealingPotion, randomInt(1, 2));
 
@@ -32,7 +35,7 @@ function distributeDrops(dropConstructor, amount, enemyType = undefined) {
             if (enemy.drop !== null
                 || enemy.boss
                 || enemy.role === ROLE.WALL_TRAP
-                || enemy.type === ENEMY_TYPE.MUSHROOM
+                || enemy.type === ENEMY_TYPE.MUSHROOM && enemy.type !== enemyType
                 || enemy.type === ENEMY_TYPE.RABBIT && enemy.predator
                 || tileInsideTheBossRoom(enemy.tilePosition.x, enemy.tilePosition.y)
                 || (enemyType !== undefined && enemy.type !== enemyType)) {

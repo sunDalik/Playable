@@ -88,7 +88,9 @@ export const EQUIPMENT_TYPE = Object.freeze({
     BAG_ITEM: 8,
 
     //hmmm this is probably a stillborn idea and will be later changed into a passive type
-    ONE_TIME: 9
+    ONE_TIME: 9,
+
+    KEY: 10
 });
 export const WEAPON_TYPE = Object.freeze({
     KNIFE: 0,

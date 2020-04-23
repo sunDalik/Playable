@@ -58,6 +58,7 @@ export function drawEntities() {
             const entity = Game.map[i][j].item;
             if (entity !== null) {
                 Game.world.addChild(entity);
+                entity.visible = false;
             }
         }
     }

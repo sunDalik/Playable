@@ -20,10 +20,15 @@ import {Mushroom} from "../classes/enemies/fc/mushroom";
 import {LyingItem} from "../classes/equipment/lying_item";
 import {Torch} from "../classes/equipment/tools/torch";
 import {Roller} from "../classes/enemies/fc/roller";
+import {Key} from "../classes/equipment/key";
 
 let settings;
 let level;
 let rooms;
+
+//these are set later
+let chestsAmount = 0;
+export let keysOnEnemies = 0;
 
 //you HAVE to setup settings before you use generator
 export function setupGenerator(generatorSettings) {
@@ -55,7 +60,7 @@ export function generateStandard() {
     const unconnectedRooms = rooms.filter(room => !path.includes(room));
     unconnectedRooms.forEach(r => r.type = ROOM_TYPE.SECONDARY);
     let attempt = 0;
-    const secretRoomsAmount = Game.stage === STAGE.FLOODED_CAVE ? 1 : 0;
+    const secretRoomsAmount = Game.stage === STAGE.FLOODED_CAVE ? 0 : 0;
     while (unconnectedRooms.length > secretRoomsAmount) {
         const room = randomChoice(unconnectedRooms);
         const nextRoom = randomChoice(getAdjacentRooms(room).filter(r => !unconnectedRooms.includes(r) && r !== bossRoom));
@@ -78,6 +83,7 @@ export function generateStandard() {
     generateInanimates();
     generateEnemies();
     generateBoss();
+    generateKeys();
     setStartPosition(startRoom);
     setBossRoomPosition(bossRoom);
     return level;
@@ -424,12 +430,12 @@ function expandLevelAndRooms(expandX, expandY) {
 }
 
 function generateInanimates() {
-    const obelisksNumber = 1;
-    const statuesNumber = randomInt(1, 2);
-    const chestsNumber = Game.stage === STAGE.DARK_TUNNEL ? 3 - statuesNumber : 4 - statuesNumber;
-    placeInanimate(placeChest, chestsNumber);
-    placeInanimate(placeStatue, statuesNumber);
-    placeInanimate(placeObelisk, obelisksNumber);
+    const obelisksAmount = 1;
+    const statuesAmount = randomInt(1, 2);
+    chestsAmount = Game.stage === STAGE.DARK_TUNNEL ? 3 - statuesAmount : 4 - statuesAmount;
+    placeInanimate(placeChest, chestsAmount);
+    placeInanimate(placeStatue, statuesAmount);
+    placeInanimate(placeObelisk, obelisksAmount);
 }
 
 function placeInanimate(placeMethod, amount) {
@@ -757,6 +763,27 @@ function outlineLevelWithWalls() {
             if (i === 0 || i === level.length - 1 || j === 0 || j === level[0].length - 1) {
                 level[i][j] = LEVEL_SYMBOLS.WALL;
             }
+        }
+    }
+}
+
+function generateKeys() {
+    const keysAmount = Math.ceil(chestsAmount * 2.5);
+    keysOnEnemies = Math.ceil(keysAmount / 3);
+    let keysOnMap = keysAmount - keysOnEnemies;
+    let attempt = 0;
+    while (keysOnMap > 0 && attempt++ < 300 + keysOnMap) {
+        const point = {
+            x: randomInt(2, level[0].length - 3),
+            y: randomInt(2, level.length - 3)
+        };
+        const room = getRoom(point);
+        if (level[point.y][point.x].tileType === TILE_TYPE.NONE
+            && level[point.y][point.x].entity === null
+            && !isNearEntrance(point, room)
+            && (room.type === ROOM_TYPE.MAIN || room.type === ROOM_TYPE.SECONDARY)) {
+            level[point.y][point.x].item = new LyingItem(point.x, point.y, new Key());
+            keysOnMap--;
         }
     }
 }

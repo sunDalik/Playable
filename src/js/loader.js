@@ -9,8 +9,9 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
 export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/wall.png")
-        .add("src/images/inanimates/chest.png")
-        .add("src/images/inanimates/chest_opened.png")
+        .add("src/images/key.png")
+        .add("src/images/inanimates/chest.png") //todo move to spritesheet
+        .add("src/images/inanimates/chest_opened.png") //todo move to spritesheet
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
         .add("src/images/icons/obelisk_sacrifice.png")
