@@ -36,6 +36,8 @@ export class Obelisk extends TileElement {
         this.icon.anchor.set(0.5, 0.5);
         this.icon.position.x = this.position.x;
         this.icon.position.y = this.position.y - this.height / 2 - this.icon.height / 2;
+
+        this.tallModifier = -10;
     }
 
     placeGrails() {

@@ -27,6 +27,7 @@ export class Statue extends TileElement {
         this.textObj.visible = false;
         this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
         Game.world.addChild(this.textObj);
+        this.tallModifier = -10;
         this.updateTexture();
     }
 
