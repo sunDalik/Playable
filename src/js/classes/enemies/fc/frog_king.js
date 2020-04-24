@@ -6,8 +6,7 @@ import {FCEnemiesSpriteSheet} from "../../../loader";
 export class KingFrog extends Frog {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["frog_king.png"]) {
         super(tilePositionX, tilePositionY, texture);
-        this.maxHealth = 3;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 3;
         this.type = ENEMY_TYPE.FROG_KING;
         this.atk = 1.25;
         this.setScaleModifier(1.15);

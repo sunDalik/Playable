@@ -2,22 +2,17 @@ import {Game} from "../../../game"
 import {Enemy} from "../enemy"
 import {ENEMY_TYPE} from "../../../enums";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
-import {randomInt, randomChoice} from "../../../utils/random_utils";
-import {
-    get8Directions,
-    getDirectionsOnSquare,
-    getEmptyCardinalDirections,
-    getEmptyRunAwayOptions
-} from "../../../utils/map_utils";
+import {randomChoice, randomInt} from "../../../utils/random_utils";
+import {get8Directions, getDirectionsOnSquare} from "../../../utils/map_utils";
 import {MudCubeZombie} from "./mud_cube_zombie";
 import {isNotAWall} from "../../../map_checks";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
+import {randomAfraidAI} from "../../../enemy_movement_ai";
 
 export class MudMage extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_mage.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 3;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 3;
         this.type = ENEMY_TYPE.MUD_MAGE;
         this.atk = 0;
         this.SLIDE_ANIMATION_TIME = 5;
@@ -30,8 +25,7 @@ export class MudMage extends Enemy {
         this.dangerDistance = 3;
         this.castTime = 2;
         this.currentCastTime = this.castTime;
-        this.scaleModifier = 1.1;
-        this.fitToTile();
+        this.setScaleModifier(1.1);
         this.minions = [];
         this.minionsMax = 15;
     }
@@ -59,18 +53,7 @@ export class MudMage extends Enemy {
             this.currentCastTime = this.castTime;
             this.texture = RUEnemiesSpriteSheet["mud_mage_prepare.png"];
         } else if (this.currentTurnDelay <= 0) {
-            let movementOptions;
-            if (tileDistance(this, closestPlayer(this)) <= this.dangerDistance) {
-                movementOptions = getEmptyRunAwayOptions(this, closestPlayer(this));
-                if (movementOptions.length === 0) movementOptions = getEmptyCardinalDirections(this);
-            } else {
-                movementOptions = getEmptyCardinalDirections(this);
-            }
-            if (movementOptions.length !== 0) {
-                const moveDir = randomChoice(movementOptions);
-                this.slide(moveDir.x, moveDir.y);
-                this.currentTurnDelay = this.turnDelay;
-            }
+            randomAfraidAI(this, this.dangerDistance, false, true);
         } else {
             this.currentTurnDelay--;
         }

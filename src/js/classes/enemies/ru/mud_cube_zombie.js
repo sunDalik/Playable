@@ -6,8 +6,7 @@ import {RUEnemiesSpriteSheet} from "../../../loader";
 export class MudCubeZombie extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_cube_zombie.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 0.25;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 0.25;
         this.type = ENEMY_TYPE.MUD_CUBE_ZOMBIE;
         this.atk = 0;
         this.movable = false;

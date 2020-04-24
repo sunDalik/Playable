@@ -10,11 +10,12 @@ import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import * as PIXI from "pixi.js";
 
+//todo change it so wallslime is a singular entity
+//todo allow spawning with 2,3,4 length, not just 5
 export class WallSlime extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["wall_slime_middle.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 4;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 4;
         this.type = ENEMY_TYPE.WALL_SLIME;
         this.atk = 1;
         this.pane = randomChoice([PLANE.VERTICAL, PLANE.HORIZONTAL]);

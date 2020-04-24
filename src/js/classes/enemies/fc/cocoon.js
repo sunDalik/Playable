@@ -13,8 +13,7 @@ import {DTEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "..
 export class Cocoon extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["cocoon.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 3;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 3;
         this.type = ENEMY_TYPE.COCOON;
         this.atk = 0;
         this.spawnDelay = randomInt(3, 7);

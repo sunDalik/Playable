@@ -9,8 +9,7 @@ import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 export class Star extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 2;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 2;
         this.atk = 1;
         this.triggered = false;
         this.triggeredDirections = null;

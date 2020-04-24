@@ -2,7 +2,7 @@ import {Game} from "../../../game"
 import {Enemy} from "../enemy"
 import {ENEMY_TYPE} from "../../../enums";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
-import {getCardinalDirections, getEmptyCardinalDirections, getEmptyRunAwayOptions} from "../../../utils/map_utils";
+import {getCardinalDirections} from "../../../utils/map_utils";
 import {blowAwayInDirection} from "../../../special_move_logic";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, rotate} from "../../../animations";
@@ -11,12 +11,12 @@ import {camera} from "../../game/camera";
 import {MILD_DARK_GLOW_FILTER, MILD_WHITE_GLOW_FILTER} from "../../../filters";
 import {updateChain} from "../../../drawing/draw_dunno";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
+import {randomAfraidAI} from "../../../enemy_movement_ai";
 
 export class TeleportMage extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["teleport_mage.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 3;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 3;
         this.type = ENEMY_TYPE.TELEPORT_MAGE;
         this.atk = 0;
         this.SLIDE_ANIMATION_TIME = 5;
@@ -30,8 +30,7 @@ export class TeleportMage extends Enemy {
         this.castTime = 2;
         this.currentCastTime = this.castTime;
         this.targetedPlayer = null;
-        this.scaleModifier = 1.1;
-        this.fitToTile();
+        this.setScaleModifier(1.1);
     }
 
     move() {
@@ -66,18 +65,7 @@ export class TeleportMage extends Enemy {
             this.targetedPlayer = closestPlayer(this);
             this.texture = RUEnemiesSpriteSheet["teleport_mage_prepare.png"];
         } else if (this.currentTurnDelay <= 0) {
-            let movementOptions;
-            if (tileDistance(this, closestPlayer(this)) <= this.dangerDistance) {
-                movementOptions = getEmptyRunAwayOptions(this, closestPlayer(this));
-                if (movementOptions.length === 0) movementOptions = getEmptyCardinalDirections(this);
-            } else {
-                movementOptions = getEmptyCardinalDirections(this);
-            }
-            if (movementOptions.length !== 0) {
-                const moveDir = randomChoice(movementOptions);
-                this.slide(moveDir.x, moveDir.y);
-                this.currentTurnDelay = this.turnDelay;
-            }
+            randomAfraidAI(this, this.dangerDistance, false, true);
         } else {
             this.currentTurnDelay--;
         }

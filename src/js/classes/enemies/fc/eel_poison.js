@@ -8,8 +8,7 @@ import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 export class PoisonEel extends Eel {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel_poison.png"]) {
         super(tilePositionX, tilePositionY, texture);
-        this.maxHealth = 4;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 4;
         this.atk = 1.25;
         this.triggered = false;
         this.FULL_ROTATE_TIME = 15;

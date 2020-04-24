@@ -8,8 +8,7 @@ import {RUEnemiesSpriteSheet} from "../../../loader";
 export class SummonCircle extends Enemy {
     constructor(tilePositionX, tilePositionY, enemy, texture = RUEnemiesSpriteSheet["summon_circle.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 42;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 42;
         this.type = ENEMY_TYPE.SUMMON_CIRCLE;
         this.atk = 0;
         this.movable = false;

@@ -7,8 +7,7 @@ import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 export class Eel extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 2;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 2;
         this.atk = 1;
         this.turnDelay = 1;
         this.angle = 0;

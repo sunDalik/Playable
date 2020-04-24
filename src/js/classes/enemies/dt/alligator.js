@@ -14,12 +14,12 @@ import {FireBullet} from "../bullets/fire";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {Rabbit} from "./rabbit";
+import {moveEnemyInDirection} from "../../../enemy_movement_ai";
 
 export class Alligator extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["alligator_x.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 4;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 4;
         this.type = ENEMY_TYPE.ALLIGATOR;
         this.prey = null;
         this.initAlligator();
@@ -229,12 +229,8 @@ export class Alligator extends Enemy {
             this.prey = null;
             let movementOptions = [];
             if (this.triggeredDirection) {
-                if (isRelativelyEmpty(this.tilePosition.x + this.triggeredDirection.x, this.tilePosition.y + this.triggeredDirection.y)) {
-                    movementOptions = [this.triggeredDirection];
-                } else {
-                    this.bump(this.triggeredDirection.x, this.triggeredDirection.y);
-                    this.currentTurnDelay = this.turnDelay;
-                }
+                moveEnemyInDirection(this, this.triggeredDirection);
+                this.currentTurnDelay = this.turnDelay;
             } else {
                 if (this.alligatorType === RABBIT_TYPE.ENERGY) {
                     movementOptions = getRelativelyEmptyCardinalDirections(this, 2);

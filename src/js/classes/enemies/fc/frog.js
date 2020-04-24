@@ -1,23 +1,16 @@
 import {Game} from "../../../game"
 import {Enemy} from "../enemy"
 import {ENEMY_TYPE} from "../../../enums";
-import {randomChoice} from "../../../utils/random_utils";
-import {
-    getEmptyRunAwayOptions,
-    getRelativelyEmptyCardinalDirections,
-    getRelativelyEmptyLitCardinalDirections,
-    getRunAwayOptions
-} from "../../../utils/map_utils";
 import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "../../../map_checks";
 import {PoisonHazard} from "../../hazards/poison";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {randomAfraidAI} from "../../../enemy_movement_ai";
 
 export class Frog extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["frog.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 2;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 2;
         this.type = ENEMY_TYPE.FROG;
         this.atk = 1;
         this.turnDelay = 1;
@@ -44,26 +37,7 @@ export class Frog extends Enemy {
         } else if (this.arePlayersInAttackRange()) {
             this.triggered = true;
         } else if (this.currentTurnDelay <= 0) {
-            let movementOptions;
-            if (tileDistance(this, closestPlayer(this)) <= 2) {
-                movementOptions = getEmptyRunAwayOptions(this, closestPlayer(this));
-                if (movementOptions.length === 0) movementOptions = getRunAwayOptions(this, closestPlayer(this));
-                if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
-            } else movementOptions = getRelativelyEmptyLitCardinalDirections(this);
-            if (movementOptions.length !== 0) {
-                const moveDir = randomChoice(movementOptions);
-                if (moveDir.x !== 0 && Math.sign(moveDir.x) !== Math.sign(this.scale.x)) {
-                    this.scale.x *= -1;
-                }
-                const player = getPlayerOnTile(this.tilePosition.x + moveDir.x, this.tilePosition.y + moveDir.y);
-                if (player) {
-                    this.bump(moveDir.x, moveDir.y);
-                    player.damage(this.atk, this, true);
-                } else {
-                    this.step(moveDir.x, moveDir.y);
-                }
-                this.currentTurnDelay = this.turnDelay;
-            }
+            randomAfraidAI(this);
         } else this.currentTurnDelay--;
     }
 

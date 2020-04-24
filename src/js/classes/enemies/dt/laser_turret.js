@@ -12,8 +12,7 @@ import {wallTallness} from "../../draw/wall";
 export class LaserTurret extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["laser_turret_unready.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 1;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 1;
         this.atk = 1;
         this.triggered = false;
         this.type = ENEMY_TYPE.LASER_TURRET;

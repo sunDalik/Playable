@@ -10,8 +10,7 @@ import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 export class Spider extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spider.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 2;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 2;
         this.type = ENEMY_TYPE.SPIDER;
         this.atk = 1;
         if (Game.stage !== STAGE.DARK_TUNNEL) {

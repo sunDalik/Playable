@@ -1,38 +1,30 @@
 import {Game} from "../../../game"
 import {Enemy} from "../enemy"
 import {ENEMY_TYPE, RABBIT_TYPE} from "../../../enums";
-import {
-    getEmptyRunAwayOptions,
-    getRelativelyEmptyCardinalDirections,
-    getRelativelyEmptyLitCardinalDirections,
-    getRunAwayOptions
-} from "../../../utils/map_utils";
-import {getRandomValue, randomChoice} from "../../../utils/random_utils";
-import {getPlayerOnTile, isAnyWall, isInanimate} from "../../../map_checks";
+import {getRandomValue} from "../../../utils/random_utils";
+import {isAnyWall, isInanimate} from "../../../map_checks";
 import {FireHazard} from "../../hazards/fire";
 import {PoisonHazard} from "../../hazards/poison";
 import {ElectricBullet} from "../bullets/electric";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {randomAfraidAI} from "../../../enemy_movement_ai";
 
 export class Rabbit extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["rabbit_x_energy.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 0.5;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 0.5;
         this.type = ENEMY_TYPE.RABBIT;
         this.rabbitType = getRandomValue(RABBIT_TYPE);
         if (this.rabbitType === RABBIT_TYPE.ENERGY) this.rabbitType = getRandomValue(RABBIT_TYPE);
         this.atk = 0.5;
         this.predator = null;
-        this.turnDelay = 1;
-        this.currentTurnDelay = this.turnDelay;
+        this.currentTurnDelay = this.turnDelay = 1;
         this.stepXjumpHeight = Game.TILESIZE * 70 / 75;
         if (this.rabbitType === RABBIT_TYPE.ENERGY) {
             this.energyDrop = 30;
         }
-        this.scaleModifier = 0.8;
-        this.fitToTile();
+        this.setScaleModifier(0.8);
         this.updateTexture();
     }
 
@@ -48,32 +40,11 @@ export class Rabbit extends Enemy {
             return false;
         } else if (this.currentTurnDelay <= 0 || this.rabbitType === RABBIT_TYPE.ENERGY) {
             this.predator = null;
-            let movementOptions;
             if (this.rabbitType === RABBIT_TYPE.ENERGY) {
-                movementOptions = getEmptyRunAwayOptions(this, closestPlayer(this));
-                if (movementOptions.length === 0) movementOptions = getRunAwayOptions(this, closestPlayer(this));
+                randomAfraidAI(this, 99);
             } else {
-                if (tileDistance(this, closestPlayer(this)) <= 2) {
-                    movementOptions = getEmptyRunAwayOptions(this, closestPlayer(this));
-                    if (movementOptions.length === 0) movementOptions = getRunAwayOptions(this, closestPlayer(this));
-                    if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
-                } else movementOptions = getRelativelyEmptyLitCardinalDirections(this);
+                randomAfraidAI(this, 2);
             }
-            if (movementOptions.length !== 0) {
-                const moveDir = randomChoice(movementOptions);
-                if (moveDir.x !== 0 && Math.sign(moveDir.x) !== Math.sign(this.scale.x)) {
-                    this.scale.x *= -1;
-                }
-                const player = getPlayerOnTile(this.tilePosition.x + moveDir.x, this.tilePosition.y + moveDir.y);
-                if (player) {
-                    this.bump(moveDir.x, moveDir.y);
-                    player.damage(this.atk, this, true);
-                } else {
-                    this.step(moveDir.x, moveDir.y);
-                }
-                this.currentTurnDelay = this.turnDelay;
-            } else this.bump(Math.sign(this.tilePosition.x - closestPlayer(this).tilePosition.x), Math.sign(this.tilePosition.y - closestPlayer(this).tilePosition.y));
-
         } else this.currentTurnDelay--;
     }
 

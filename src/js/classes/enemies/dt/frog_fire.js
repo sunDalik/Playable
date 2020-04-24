@@ -8,14 +8,13 @@ import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 export class FireFrog extends Frog {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["frog_fire.png"]) {
         super(tilePositionX, tilePositionY, texture);
-        this.maxHealth = 2;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 2;
         this.type = ENEMY_TYPE.FROG_FIRE;
         this.atk = 1;
     }
 
     attackPlayer(tileX, tileY) {
-        let player = getPlayerOnTile(tileX, tileY);
+        const player = getPlayerOnTile(tileX, tileY);
         if (player) player.damage(this.atk, this, false);
     }
 

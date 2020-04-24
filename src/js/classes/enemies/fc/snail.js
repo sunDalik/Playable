@@ -11,12 +11,10 @@ import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 export class Snail extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["snail.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 2;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 2;
         this.type = ENEMY_TYPE.SNAIL;
         this.atk = 1;
-        this.turnDelay = 1;
-        this.currentTurnDelay = this.turnDelay;
+        this.currentTurnDelay = this.turnDelay = 1;
         this.noticeDistance = 5;
         this.setScaleModifier(0.95);
     }

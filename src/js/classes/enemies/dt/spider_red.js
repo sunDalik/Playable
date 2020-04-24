@@ -7,8 +7,7 @@ import {DTEnemiesSpriteSheet} from "../../../loader";
 export class RedSpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["spider_red.png"]) {
         super(tilePositionX, tilePositionY, texture);
-        this.maxHealth = 1;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 1;
         this.type = ENEMY_TYPE.SPIDER_RED;
         this.damageable = false;
         this.devilJumped = false;

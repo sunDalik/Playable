@@ -2,23 +2,19 @@ import {Game} from "../../../game"
 import {Enemy} from "../enemy"
 import {ENEMY_TYPE} from "../../../enums";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
-import {
-    getDirectionsWithConditions,
-    getEmptyCardinalDirections,
-    getEmptyHorizontalDirections
-} from "../../../utils/map_utils";
+import {getEmptyCardinalDirections, getEmptyHorizontalDirections} from "../../../utils/map_utils";
 import {randomChoice} from "../../../utils/random_utils";
 import {getPlayerOnTile, isEmpty} from "../../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../../filters";
 import {TileElement} from "../../tile_elements/tile_element";
 import {createEnemyAttackTile} from "../../../animations";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
+import {soldierAI} from "../../../enemy_movement_ai";
 
 export class LizardWarrior extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["lizard_warrior.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 4;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 4;
         this.type = ENEMY_TYPE.LIZARD_WARRIOR;
         this.atk = 1.5;
         this.zIndex = Game.primaryPlayer.zIndex + 1;
@@ -29,9 +25,7 @@ export class LizardWarrior extends Enemy {
         this.attackedLastTurn = false;
         this.attackDirection = {x: 0, y: 0};
         this.lockedPlayer = null;
-        this.scaleModifier = 1.1;
-        this.fitToTile();
-        this.place();
+        this.setScaleModifier(1.1);
         this.intentIcon2 = this.createIntentIcon();
     }
 
@@ -99,37 +93,7 @@ export class LizardWarrior extends Enemy {
             this.attackDirection = {x: Math.sign(this.lockedPlayer.tilePosition.x - this.tilePosition.x), y: 0};
         } else {
             this.attackedLastTurn = false;
-            const forward = {x: Math.sign(this.lockedPlayer.tilePosition.x - this.tilePosition.x), y: 0};
-            const align = {x: 0, y: Math.sign(this.lockedPlayer.tilePosition.y - this.tilePosition.y)};
-            if (this.tilePosition.y === this.lockedPlayer.tilePosition.y) {
-                const directions = [forward];
-                if (tileDistance(this, this.lockedPlayer) > 2) {
-                    directions.push(forward);
-                    directions.push({x: 0, y: 1});
-                    directions.push({x: 0, y: -1});
-                    directions.push({x: -forward.x, y: 0});
-                } else if (tileDistance(this, this.lockedPlayer) === 2) {
-                    if (this.lockedPlayer.lastTileStepX === -forward.x && isEmpty(this.tilePosition.x - forward.x, this.tilePosition.y)) {
-                        directions.push({x: -forward.x, y: 0});
-                    } else if (!isEmpty(this.tilePosition.x + forward.x, this.tilePosition.y + forward.y)) {
-                        directions.push({x: 0, y: 1});
-                        directions.push({x: 0, y: -1});
-                    }
-                } else if (tileDistance(this, this.lockedPlayer) === 1) {
-                    directions.push({x: 0, y: 1});
-                    directions.push({x: 0, y: -1});
-                }
-                const direction = randomChoice(getDirectionsWithConditions(this, directions, isEmpty));
-                if (direction !== undefined) {
-                    this.step(direction.x, direction.y);
-                }
-            } else {
-                const directions = [align, align, forward];
-                const direction = randomChoice(getDirectionsWithConditions(this, directions, isEmpty));
-                if (direction !== undefined) {
-                    this.step(direction.x, direction.y);
-                }
-            }
+            soldierAI(this, this.lockedPlayer);
         }
     }
 

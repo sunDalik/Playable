@@ -8,8 +8,7 @@ import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 export class KingFireFrog extends KingFrog {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["frog_king_fire.png"]) {
         super(tilePositionX, tilePositionY, texture);
-        this.maxHealth = 3;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 3;
         this.type = ENEMY_TYPE.FROG_KING_FIRE;
         this.atk = 1.25;
     }

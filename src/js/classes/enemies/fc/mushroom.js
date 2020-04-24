@@ -1,18 +1,18 @@
 import {Game} from "../../../game"
-import {ENEMY_TYPE, TILE_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums";
 import {Enemy} from "../enemy";
 import {PoisonHazard} from "../../hazards/poison";
-import {randomInt, randomChoice} from "../../../utils/random_utils";
+import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {getRelativelyEmptyHorizontalDirections} from "../../../utils/map_utils";
-import {getPlayerOnTile, isEmpty, isNotAWall} from "../../../map_checks";
+import {isNotAWall} from "../../../map_checks";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {moveEnemyInDirection} from "../../../enemy_movement_ai";
 
 export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["mushroom.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 2;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 2;
         this.type = ENEMY_TYPE.MUSHROOM;
         this.atk = 1.5;
         this.poisonDelay = 6; //half of poison hazard lifetime
@@ -42,16 +42,7 @@ export class Mushroom extends Enemy {
             this.standing = false;
             this.place();
         } else if (this.walking) {
-            if (isEmpty(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y)) {
-                this.step(this.direction.x, this.direction.y);
-            } else {
-                const player = getPlayerOnTile(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
-                if (player) {
-                    player.damage(this.atk, this, true);
-                    if (this.healOnHit) this.heal(this.healOnHit);
-                }
-                this.bump(this.direction.x, this.direction.y);
-            }
+            moveEnemyInDirection(this, this.direction);
             this.standing = true;
             this.walking = false;
         } else if (this.walkDelay <= 0) {

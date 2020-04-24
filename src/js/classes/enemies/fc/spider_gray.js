@@ -7,8 +7,7 @@ import {FCEnemiesSpriteSheet} from "../../../loader";
 export class GraySpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spider_b.png"]) {
         super(tilePositionX, tilePositionY, texture);
-        this.maxHealth = 3;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 3;
         this.type = ENEMY_TYPE.SPIDER_GRAY;
     }
 

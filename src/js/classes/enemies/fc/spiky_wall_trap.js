@@ -14,8 +14,7 @@ import {getZIndexForLayer, Z_INDEXES} from "../../../z_indexing";
 export class SpikyWallTrap extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spiky_wall_trap_x.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 1;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 1;
         this.atk = 1;
         this.triggered = false;
         this.type = ENEMY_TYPE.SPIKY_WALL_TRAP;
