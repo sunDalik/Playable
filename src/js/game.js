@@ -1,89 +1,71 @@
 import {STAGE} from "./enums";
 
-export const Game = {};
-Game.app = null;
-Game.loader = null;
-Game.resources = null;
-
-Game.world = null;
-
-Game.TILESIZE = 66;
-//Game.TILESIZE = 25;
-
-Game.followMode = false;
-Game.chainLength = 10;
-
-Game.stage = STAGE.FLOODED_CAVE;
-Game.map = [];
-Game.enemies = [];
-Game.hazards = [];
-Game.inanimates = [];
-Game.updateList = [];
-Game.delayList = [];
-Game.bullets = [];
-
-Game.darkTiles = [];
-Game.infiniteAnimations = [];
-
-Game.BGColor = 0xffffff;
-
-Game.player = null; //white player
-Game.player2 = null; //black player
-Game.BOTH_PLAYERS = {};
-Game.startPos = {x: 0, y: 0};
-Game.primaryPlayer = null;
-Game.lastPlayerMoved = Game.player;
-Game.actionsMade = 0;
-
-Game.enemiesTimeout = null;
-Game.maraudedStatues = [];
-Game.weaponPool = [];
-Game.magicPool = [];
-Game.chestItemPool = [];
-
-Game.TURNTIME = 15;
-Game.WEAPON_ATTACK_TIME = 6;
-Game.ITEM_FLOAT_ANIMATION_TIME = 50;
-Game.SHAKE_TIME = 6;
-Game.SHAKE_AMPLITUDE = 50;
-Game.shakeAnimation = null;
-Game.itemHelpAnimation = null;
-Game.itemHelp = null;
-
-Game.minimap = [];
-
-Game.afterTurn = false;
-
-Game.lightEnergy = 0;
-Game.darkEnergy = 0;
-
-Game.obelisks = [];
-Game.torchTile = {};
-
-Game.followChain = null;
-Game.limitChain = null;
-
-Game.unplayable = true;
-Game.paused = false;
-
-Game.endRoomBoundaries = [];
-Game.boss = null;
-Game.bossFight = false;
-Game.bossExit = null;
-Game.bossNoDamage = true;
-Game.savedTiles = [];
-
-Game.loadingText = null;
-Game.loadingTextAnimation = null;
-Game.state = null;
-Game.keys = [];
-
-Game.showTime = false;
-Game.time = 0; //MS
-Game.destroyParticles = [];
-Game.achievementPopUpQueue = [];
-
-Game.experimentalFeatures = false;
-Game.disableMouse = false;
-Game.showFPS = false;
-Game.keysAmount = 0;
+export const Game = {
+    app: null,
+    loader: null,
+    resources: null,
+    world: null,
+    TILESIZE: 66,
+    //TILESIZE : 25,
+    followMode: false,
+    chainLength: 10,
+    stage: STAGE.FLOODED_CAVE,
+    map: [],
+    enemies: [],
+    hazards: [],
+    inanimates: [],
+    updateList: [],
+    delayList: [],
+    bullets: [],
+    darkTiles: [],
+    infiniteAnimations: [],
+    BGColor: 0xffffff,
+    player: null, //white player
+    player2: null, //black player
+    BOTH_PLAYERS: {},
+    startPos: {x: 0, y: 0},
+    primaryPlayer: null,
+    lastPlayerMoved: null,
+    actionsMade: 0,
+    enemiesTimeout: null,
+    maraudedStatues: [],
+    weaponPool: [],
+    magicPool: [],
+    chestItemPool: [],
+    TURNTIME: 15,
+    WEAPON_ATTACK_TIME: 6,
+    ITEM_FLOAT_ANIMATION_TIME: 50,
+    SHAKE_TIME: 6,
+    SHAKE_AMPLITUDE: 50,
+    shakeAnimation: null,
+    itemHelpAnimation: null,
+    itemHelp: null,
+    minimap: [],
+    afterTurn: false,
+    lightEnergy: 0,
+    darkEnergy: 0,
+    obelisks: [],
+    torchTile: {},
+    followChain: null,
+    limitChain: null,
+    unplayable: true,
+    paused: false,
+    endRoomBoundaries: [],
+    boss: null,
+    bossFight: false,
+    bossExit: null,
+    bossNoDamage: true,
+    savedTiles: [],
+    loadingText: null,
+    loadingTextAnimation: null,
+    state: null,
+    keys: [],
+    showTime: false,
+    time: 0, //MS
+    destroyParticles: [],
+    achievementPopUpQueue: [],
+    experimentalFeatures: false,
+    disableMouse: false,
+    showFPS: false,
+    keysAmount: 0
+};
