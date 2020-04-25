@@ -1,6 +1,5 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY} from "../../../enums";
-import {redrawHeadwear} from "../../../drawing/draw_hud";
+import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY, SLOT} from "../../../enums";
+import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {HeadWearSpriteSheet} from "../../../loader";
 
 export class VampireCrown {
@@ -12,7 +11,7 @@ export class VampireCrown {
         this.killsMade = 0;
         this.healAmount = 1;
         this.name = "Vampire Crown";
-        this.description = "Kills heal";
+        this.description = "Every 10th kill heals";
         this.rarity = RARITY.B;
     }
 
@@ -22,6 +21,6 @@ export class VampireCrown {
             player.heal(this.healAmount);
             this.killsMade = 0;
         }
-        redrawHeadwear(player);
+        redrawSlotContents(player, SLOT.HEADWEAR);
     }
 }

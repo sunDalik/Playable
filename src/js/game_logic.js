@@ -1,7 +1,7 @@
 import {Game} from "./game"
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup"
-import {ACHIEVEMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "./enums"
+import {ACHIEVEMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, SLOT, STAGE, TILE_TYPE} from "./enums"
 import {
     drawInteractionKeys,
     redrawBag,
@@ -294,21 +294,21 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
     let slot;
     switch (equipment.equipmentType) {
         case EQUIPMENT_TYPE.WEAPON:
-            if (player.weapon) slot = "secondHand";
-            else slot = "weapon";
+            if (player.weapon) slot = SLOT.EXTRA;
+            else slot = SLOT.WEAPON;
             break;
         case EQUIPMENT_TYPE.TOOL:
         case EQUIPMENT_TYPE.SHIELD:
-            slot = "secondHand";
+            slot = SLOT.EXTRA;
             break;
         case EQUIPMENT_TYPE.HEAD:
-            slot = "headwear";
+            slot = SLOT.HEADWEAR;
             break;
         case EQUIPMENT_TYPE.ARMOR:
-            slot = "armor";
+            slot = SLOT.ARMOR;
             break;
         case EQUIPMENT_TYPE.FOOT:
-            slot = "footwear";
+            slot = SLOT.FOOTWEAR;
             break;
         case EQUIPMENT_TYPE.BAG_ITEM:
             if (player.bag && player.bag.type === equipment.type) {
@@ -355,21 +355,21 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
     let slot;
     switch (equipmentType) {
         case EQUIPMENT_TYPE.WEAPON:
-            if (player.secondHand && player.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) slot = "secondHand";
-            else slot = "weapon";
+            if (player.secondHand && player.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) slot = SLOT.EXTRA;
+            else slot = SLOT.WEAPON;
             break;
         case EQUIPMENT_TYPE.TOOL:
         case EQUIPMENT_TYPE.SHIELD:
-            slot = "secondHand";
+            slot = SLOT.EXTRA;
             break;
         case EQUIPMENT_TYPE.HEAD:
-            slot = "headwear";
+            slot = SLOT.HEADWEAR;
             break;
         case EQUIPMENT_TYPE.ARMOR:
-            slot = "armor";
+            slot = SLOT.ARMOR;
             break;
         case EQUIPMENT_TYPE.FOOT:
-            slot = "footwear";
+            slot = SLOT.FOOTWEAR;
             break;
     }
     if (!slot) return null;

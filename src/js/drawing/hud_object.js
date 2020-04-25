@@ -1,18 +1,17 @@
 import * as PIXI from "pixi.js"
+import {SLOT} from "../enums";
 
 export const HUD = new PIXI.Container();
 HUD.filters = [];
 HUD.zIndex = 2;
 HUD.hearts1 = new PIXI.Container();
 HUD.hearts2 = new PIXI.Container();
-HUD.slots1 = new PIXI.Container();
-HUD.slots2 = new PIXI.Container();
 HUD.movementGuide = new PIXI.Container();
 HUD.interactionGuide = new PIXI.Container();
 HUD.stats1 = new PIXI.Container();
 HUD.stats2 = new PIXI.Container();
-HUD.slots1Contents = generateSlotsContentsContainer();
-HUD.slots2Contents = generateSlotsContentsContainer();
+HUD.slots1 = generateSlotsContainer();
+HUD.slots2 = generateSlotsContainer();
 HUD.energy = new PIXI.Container();
 HUD.fps = new PIXI.Container();
 HUD.keysAmount = new PIXI.Container();
@@ -46,38 +45,19 @@ HUD.addChild(HUD.bossHealth);
 HUD.addChild(HUD.speedrunTime);
 HUD.addChild(HUD.keysAmount);
 
-const keys = Object.keys(HUD.slots1Contents);
-for (let i = 0; i < keys.length; i++) {
-    HUD.addChild(HUD.slots1Contents[keys[i]].meta);
-    HUD.addChild(HUD.slots1Contents[keys[i]].sprite);
-    HUD.addChild(HUD.slots2Contents[keys[i]].meta);
-    HUD.addChild(HUD.slots2Contents[keys[i]].sprite);
-}
-
 HUD.sortableChildren = true;
 HUD.interactionGuide.sortableChildren = true;
 
-HUD.bagSlot1 = null;
-HUD.bagSlot2 = null;
-
-function generateSlotsContentsContainer() {
-    const container = {
-        weapon: {},
-        secondHand: {},
-        headwear: {},
-        armor: {},
-        footwear: {},
-        magic1: {},
-        magic2: {},
-        magic3: {},
-        bag: {}
-    };
-    const keys = Object.keys(container);
-    for (let i = 0; i < keys.length; i++) {
-        container[keys[i]].meta = new PIXI.Container();
-        container[keys[i]].sprite = new PIXI.Container();
-        container[keys[i]].sprite.zIndex = -1;
+function generateSlotsContainer() {
+    const container = new PIXI.Container();
+    for (const slot of Object.values(SLOT)) {
+        container[slot] = {}; //maybe should make it container too? dunno
+        //accessory is temporarily invisible
+        container[slot].invisible = slot === SLOT.BAG || slot === SLOT.ACCESSORY; //invisible slots don't appear on screen if there is no item
+        container[slot].sprite = new PIXI.Container();
+        container[slot].slot = new PIXI.Container();
+        container[slot].meta = new PIXI.Container();
+        container.addChild(container[slot].sprite, container[slot].slot, container[slot].meta)
     }
-
     return container;
 }

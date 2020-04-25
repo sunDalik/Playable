@@ -27,7 +27,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, HEAD_TYPE, SHIELD_TYPE, STORAGE} from "../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, SHIELD_TYPE, SLOT, STORAGE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
 import {CommonSpriteSheet} from "../loader";
@@ -62,10 +62,8 @@ export function drawSlotsContents() {
 }
 
 export function redrawSlotContentsForPlayer(player) {
-    const container = player === Game.player ? HUD.slots1Contents : HUD.slots2Contents;
-    const slots = Object.keys(container);
-    for (let i = 0; i < slots.length; i++) {
-        redrawSlotContents(player, slots[i]);
+    for (const slot of Object.values(SLOT)) {
+        redrawSlotContents(player, slot);
     }
     drawStatsForPlayer(player);
 }
@@ -90,79 +88,33 @@ export function redrawHealthForPlayer(player) {
 
 export function redrawSlotsForPlayer(player) {
     const container = player === Game.player ? HUD.slots1 : HUD.slots2;
-    removeAllChildrenFromContainer(container);
-
-    const topRowSlots = [getSlotWithName("Magic"), getSlotWithName("Magic"),
-        getSlotWithName("Magic")];
-    const secondRowSlots = [getSlotWithName("Weapon"), getSlotWithName("Extra")];
-    const columnSlots = [getSlotWithName("Head"), getSlotWithName("Armor"), getSlotWithName("Feet")];
-    const bagSlot = getSlotWithName("Bag");
+    for (const slot of Object.values(SLOT)) {
+        if (container[slot]) removeAllChildrenFromContainer(container[slot].slot);
+    }
+    //each array of slots is a ROW of slots
+    const slots = [[createSlot("Magic", SLOT.MAGIC1), createSlot("Magic", SLOT.MAGIC2), createSlot("Magic", SLOT.MAGIC3)],
+        [createSlot("Weapon", SLOT.WEAPON), createSlot("Extra", SLOT.EXTRA)],
+        [createSlot("Head", SLOT.HEADWEAR), createSlot("Bag", SLOT.BAG)], //change to accessory later and move bag down
+        [createSlot("Armor", SLOT.ARMOR)],
+        [createSlot("Feet", SLOT.FOOTWEAR)]];
+    if (player === Game.player2) {
+        slots[2].reverse();
+        slots[3].reverse();
+    }
 
     const slotsYOffset = heartYOffset + (heartRowOffset + heartSize) * Math.ceil(player.maxHealth / healthBarLength) + slotOffsetFromHeartsY;
-    const slotsXOffset = player === Game.player ?
-        slotBorderOffsetX :
-        Game.app.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * topRowSlots.length + slotsColOffset;
-
-    const slotsEquipmentOffset = player === Game.player ?
-        slotsXOffset :
-        Game.app.renderer.screen.width - slotBorderOffsetX - slotSize;
-
-    const slotsSecondRowXOffset = player === Game.player ?
-        slotsXOffset :
-        Game.app.renderer.screen.width - slotBorderOffsetX - (slotSize + slotsColOffset) * 2 + slotsColOffset;
-
-    const contentsContainer = player === Game.player ? HUD.slots1Contents : HUD.slots2Contents;
-
-    for (let i = 0; i < topRowSlots.length; ++i) {
-        const x = slotsXOffset + (slotSize + slotsColOffset) * i;
-        const y = slotsYOffset;
-        drawSlot(x, y, topRowSlots[i]);
-        const magIdx = i + 1;
-        contentsContainer["magic" + magIdx].sprite.position.x = x;
-        contentsContainer["magic" + magIdx].sprite.position.y = y;
-        contentsContainer["magic" + magIdx].meta.position.x = x;
-        contentsContainer["magic" + magIdx].meta.position.y = y;
+    for (let i = 0; i < slots.length; i++) {
+        const y = slotsYOffset + (slotSize + slotsRowOffset) * i;
+        for (let j = 0; j < slots[i].length; j++) {
+            const x = player === Game.player
+                ? slotBorderOffsetX + (slotSize + slotsColOffset) * j
+                : Game.app.renderer.screen.width - slotBorderOffsetX - slots[i].length * slotSize - (slots[i].length - 1) * slotsColOffset + (slotSize + slotsColOffset) * j;
+            const slot = slots[i][j];
+            slot.position.set(x, y);
+            container[slot.slotName].sprite.position.set(x, y);
+            container[slot.slotName].meta.position.set(x, y);
+        }
     }
-
-    for (let i = 0; i < secondRowSlots.length; ++i) {
-        const x = slotsSecondRowXOffset + (slotSize + slotsColOffset) * i;
-        const y = slotsYOffset + slotSize + slotsRowOffset;
-        drawSlot(x, y, secondRowSlots[i]);
-        let slotContentsName;
-        if (i === 0) slotContentsName = "weapon";
-        else if (i === 1) slotContentsName = "secondHand";
-        contentsContainer[slotContentsName].sprite.position.x = x;
-        contentsContainer[slotContentsName].sprite.position.y = y;
-        contentsContainer[slotContentsName].meta.position.x = x;
-        contentsContainer[slotContentsName].meta.position.y = y;
-    }
-
-    for (let i = 0; i < columnSlots.length; ++i) {
-        const x = slotsEquipmentOffset;
-        const y = slotsYOffset + (slotSize + slotsRowOffset) * (i + 2);
-        drawSlot(x, y, columnSlots[i]);
-        let slotContentsName;
-        if (i === 0) slotContentsName = "headwear";
-        else if (i === 1) slotContentsName = "armor";
-        else if (i === 2) slotContentsName = "footwear";
-        contentsContainer[slotContentsName].sprite.position.x = x;
-        contentsContainer[slotContentsName].sprite.position.y = y;
-        contentsContainer[slotContentsName].meta.position.x = x;
-        contentsContainer[slotContentsName].meta.position.y = y;
-    }
-
-    let x;
-    if (player === Game.player) x = slotsEquipmentOffset + slotSize + slotsRowOffset;
-    else x = slotsSecondRowXOffset;
-    const y = slotsYOffset + (slotSize + slotsRowOffset) * 2;
-    drawSlot(x, y, bagSlot);
-    contentsContainer["bag"].sprite.position.x = x;
-    contentsContainer["bag"].sprite.position.y = y;
-    contentsContainer["bag"].meta.position.x = x;
-    contentsContainer["bag"].meta.position.y = y;
-    if (player === Game.player) HUD.bagSlot1 = bagSlot;
-    else if (player === Game.player2) HUD.bagSlot2 = bagSlot;
-    if (player.bag === null) bagSlot.visible = false;
 
     if (player === Game.player) {
         HUD.energy.position.set(slotBorderOffsetX, slotsYOffset + (slotSize + slotsRowOffset) * 5);
@@ -170,25 +122,19 @@ export function redrawSlotsForPlayer(player) {
         HUD.keysAmount.position.set(HUD.fps.position.x, HUD.fps.position.y + 30);
     }
 
-    function drawSlot(x, y, slot) {
-        slot.position.x = x;
-        slot.position.y = y;
-        container.addChild(slot);
-    }
-
-    function getSlotWithName(name) {
-        const container = new PIXI.Container();
+    function createSlot(displayName, slotName) {
+        const slotContainer = container[slotName].slot;
+        slotContainer.slotName = slotName;
         const slot = new PIXI.Graphics();
         const lineWidth = 3;
         slot.lineStyle(lineWidth, 0xeeeeee, 0.8);
         slot.drawRect(0, 0, slotSize, slotSize);
-        const text = new PIXI.Text(name, HUDTextStyleSlot);
+        const text = new PIXI.Text(displayName, HUDTextStyleSlot);
         text.alpha = 0.9;
-        container.addChild(slot);
+        slotContainer.addChild(slot);
         slot.addChild(text);
         text.position.set(slot.width / 2 - text.width / 2 - lineWidth / 2, slot.height - text.height - lineWidth);
-        if (name.match("\n")) text.position.y = slot.height - text.height / 2 - lineWidth - 3;
-        return container;
+        return slotContainer;
     }
 }
 
@@ -204,23 +150,23 @@ export function drawStatsForPlayer(player) {
 }
 
 export function redrawSlotContents(player, slot) {
-    const container = player === Game.player ? HUD.slots1Contents[slot] : HUD.slots2Contents[slot];
+    const container = player === Game.player ? HUD.slots1[slot] : HUD.slots2[slot];
     removeAllChildrenFromContainer(container.sprite);
     removeAllChildrenFromContainer(container.meta);
     const item = player[slot];
     if (item) {
+        container.slot.alpha = 1;
         drawSprite();
         drawUses();
         if (!player.dead) {
             const keyBind = getKeyBind(player, slot);
             if (keyBind !== false) drawKey(keyBind, container.meta);
         }
+    } else {
+        if (container.invisible) container.slot.alpha = 0;
+        else container.slot.alpha = 0.5;
     }
     drawStatsForPlayer(player);
-    if (slot === "bag") {
-        const bagSlot = player === Game.player ? HUD.bagSlot1 : HUD.bagSlot2;
-        bagSlot.visible = player[slot] !== null;
-    }
 
     function drawSprite() {
         const sprite = new PIXI.Sprite(item.texture);
@@ -300,40 +246,24 @@ export function drawKey(keyBind, container, posX = 0, posY = 0) {
     return key;
 }
 
-//should I do enum for all those symbolic values as well? e.g. headwear, secondHand etc...
+//todo remove these methods and instead use new convenient SLOT enum in place
 export function redrawAllMagicSlots(player) {
-    redrawSlotContents(player, "magic1");
-    redrawSlotContents(player, "magic2");
-    redrawSlotContents(player, "magic3");
-}
-
-export function redrawWeapon(player) {
-    redrawSlotContents(player, "weapon");
+    redrawSlotContents(player, SLOT.MAGIC1);
+    redrawSlotContents(player, SLOT.MAGIC2);
+    redrawSlotContents(player, SLOT.MAGIC3);
 }
 
 export function redrawSecondHand(player) {
-    redrawSlotContents(player, "secondHand");
+    redrawSlotContents(player, SLOT.EXTRA);
 }
 
 export function redrawWeaponAndSecondHand(player) {
-    redrawSlotContents(player, "weapon");
-    redrawSlotContents(player, "secondHand");
-}
-
-export function redrawHeadwear(player) {
-    redrawSlotContents(player, "headwear");
-}
-
-export function redrawArmor(player) {
-    redrawSlotContents(player, "armor");
-}
-
-export function redrawFootwear(player) {
-    redrawSlotContents(player, "footwear");
+    redrawSlotContents(player, SLOT.WEAPON);
+    redrawSlotContents(player, SLOT.EXTRA);
 }
 
 export function redrawBag(player) {
-    redrawSlotContents(player, "bag");
+    redrawSlotContents(player, SLOT.BAG);
 }
 
 export function redrawKeysAmount() {

@@ -77,23 +77,36 @@ export const INANIMATE_TYPE = Object.freeze({
     PEDESTAL: 6
 });
 
-//uuuuuuuuuuuuuuuuhhhhhhhhhhhhhhhhhhhh it should probably contain a string value like "footwear"?
-// and so you can easily get the slot by equipment type?? dunno yet
 export const EQUIPMENT_TYPE = Object.freeze({
     WEAPON: 0,
     HEAD: 1,
     ARMOR: 2,
     FOOT: 3,
     SHIELD: 5,
-    TOOL: 6,
+    TOOL: 6, //hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
     MAGIC: 7,
     BAG_ITEM: 8,
 
     //hmmm this is probably a stillborn idea and will be later changed into a passive type
     ONE_TIME: 9,
 
-    KEY: 10
+    KEY: 10,
+    ACCESSORY: 11
 });
+
+export const SLOT = Object.freeze({
+    WEAPON: "weapon",
+    EXTRA: "secondHand",
+    HEADWEAR: "headwear",
+    ARMOR: "armor",
+    FOOTWEAR: "footwear",
+    MAGIC1: "magic1",
+    MAGIC2: "magic2",
+    MAGIC3: "magic3",
+    BAG: "bag",
+    ACCESSORY: "accessory"
+});
+
 export const WEAPON_TYPE = Object.freeze({
     KNIFE: 0,
     LONG_SWORD: 1,

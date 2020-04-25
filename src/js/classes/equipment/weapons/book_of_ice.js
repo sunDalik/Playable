@@ -40,6 +40,7 @@ export class BookOfIce extends MagicBook {
         return true;
     }
 
+    //todo account for walls
     getEnemy(wielder, dirX, dirY) {
         for (let i = 1; i <= 2; i++) {
             const tile = {x: wielder.tilePosition.x + dirX * i, y: wielder.tilePosition.y + dirY * i};

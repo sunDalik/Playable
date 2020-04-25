@@ -6,7 +6,7 @@ import {
     EQUIPMENT_TYPE,
     MAGIC_TYPE,
     ROLE,
-    SHIELD_TYPE,
+    SHIELD_TYPE, SLOT,
     STAGE,
     TILE_TYPE,
     TOOL_TYPE,
@@ -49,15 +49,9 @@ export class Player extends AnimatedTileElement {
         this.SLIDE_BUMP_ANIMATION_TIME = 10;
         this.role = ROLE.PLAYER;
         this.dead = false;
-        this.weapon = null;
-        this.secondHand = null;
-        this.headwear = null;
-        this.armor = null;
-        this.footwear = null;
-        this.magic1 = null;
-        this.magic2 = null;
-        this.magic3 = null;
-        this.bag = null;
+        for (const slot of Object.values(SLOT)){
+            this[slot] = null;
+        }
         this.shielded = false;
         this.canDoubleAttack = false;
         this.attackTimeout = null;
