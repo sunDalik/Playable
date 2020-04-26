@@ -605,7 +605,7 @@ export class Player extends AnimatedTileElement {
         const step = 180 / animationTime;
         const itemSprite = new PIXI.Sprite(item.texture);
         itemSprite.anchor.set(0.5, 0.5);
-        itemSprite.position.set(this.position.x, this.position.y);
+        itemSprite.position.set(this.getTilePositionX(), this.getTilePositionY());
         itemSprite.width = itemSprite.height = Game.TILESIZE;
         itemSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(itemSprite);
