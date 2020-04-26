@@ -20,7 +20,8 @@ export class TemplateEquipment {
         this.def = 0;
         this.atk = 0;
         this.nonremoveable = true;
-        this.infinite = true
+        this.infinite = true;
+        this.passive = true;
     }
 
     //for weapons

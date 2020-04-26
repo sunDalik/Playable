@@ -2,15 +2,15 @@ import {EQUIPMENT_TYPE, RARITY, SHIELD_TYPE} from "../../../enums";
 import {ShieldsSpriteSheet} from "../../../loader";
 import {AbstractShield} from "./abstract_shield";
 
-export class Shield extends AbstractShield {
+export class GoldenShield extends AbstractShield {
     constructor() {
         super();
-        this.texture = ShieldsSpriteSheet["basic_shield.png"];
-        this.type = SHIELD_TYPE.BASIC;
+        this.texture = ShieldsSpriteSheet["golden_shield.png"];
+        this.type = SHIELD_TYPE.GOLDEN;
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
-        this.uses = this.maxUses = 2;
-        this.name = "Shield";
+        this.uses = this.maxUses = 6;
+        this.name = "Golden Shield";
         this.description = "Blocks incoming attacks";
-        this.rarity = RARITY.C;
+        this.rarity = RARITY.S;
     }
 }

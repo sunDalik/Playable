@@ -27,7 +27,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, HEAD_TYPE, SHIELD_TYPE, SLOT, STORAGE} from "../enums";
+import {EQUIPMENT_TYPE, HEAD_TYPE, SLOT, STORAGE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
 import {CommonSpriteSheet} from "../loader";
@@ -171,8 +171,7 @@ export function redrawSlotContents(player, slot) {
     function drawSprite() {
         const sprite = new PIXI.Sprite(item.texture);
         sprite.position.set(slotContentSizeMargin / 2, slotContentSizeMargin / 2);
-        sprite.width = slotSize - slotContentSizeMargin;
-        sprite.height = slotSize - slotContentSizeMargin;
+        sprite.width = sprite.height = slotSize - slotContentSizeMargin;
         sprite.filters = [ITEM_OUTLINE_FILTER];
         container.sprite.addChild(sprite);
     }
@@ -210,10 +209,7 @@ export function redrawSlotContents(player, slot) {
             if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_BAG_1P]);
             else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_BAG_2P]);
         } else if (item.uses > 0 && !item.passive) {
-            if (item.equipmentType === EQUIPMENT_TYPE.SHIELD && item.type !== SHIELD_TYPE.PASSIVE) {
-                if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_1P]);
-                else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_2P]);
-            } else if (player === Game.player) {
+            if (player === Game.player) {
                 if (item === player.magic1) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_1_1P]);
                 else if (item === player.magic2) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_2_1P]);
                 else if (item === player.magic3) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_3_1P]);

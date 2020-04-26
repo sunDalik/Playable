@@ -3,7 +3,6 @@ import {CommonSpriteSheet} from "../../loader";
 import {Spear} from "../equipment/weapons/spear";
 import {BasicArmor} from "../equipment/armor/basic";
 import {Z_INDEXES} from "../../z_indexing";
-import {Game} from "../../game";
 
 //aka player 1
 export class WhitePlayer extends Player {

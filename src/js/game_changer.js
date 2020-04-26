@@ -25,14 +25,12 @@ import {MaidenDagger} from "./classes/equipment/weapons/maiden_dagger";
 import {BookOfFlames} from "./classes/equipment/weapons/book_of_flames";
 import {Hammer} from "./classes/equipment/weapons/hammer";
 import {Pickaxe} from "./classes/equipment/tools/pickaxe";
-import {PassiveShield} from "./classes/equipment/shields/passive";
 import {SpikyShield} from "./classes/equipment/shields/spiky";
 import {StunningShield} from "./classes/equipment/shields/stunning";
 import {Game} from "./game";
 import {RARITY, STAGE} from "./enums";
 import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
-import {BasicShield} from "./classes/equipment/shields/basic_shield";
 import {EternalCross} from "./classes/equipment/magic/eternal_cross";
 import {Immortality} from "./classes/equipment/magic/immortality";
 import {Heart} from "./classes/equipment/one_time/heart";
@@ -46,13 +44,15 @@ import {DoubleGlaive} from "./classes/equipment/weapons/double_glaive";
 import {BookOfWebs} from "./classes/equipment/weapons/book_of_webs";
 import {BookOfThunders} from "./classes/equipment/weapons/book_of_thunders";
 import {BookOfIce} from "./classes/equipment/weapons/book_of_ice";
+import {GoldenShield} from "./classes/equipment/shields/golden";
+import {Shield} from "./classes/equipment/shields/shield";
 
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
         PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce];
     Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross, Immortality];
     Game.chestItemPool = [Pickaxe,
-        BasicShield, PassiveShield, SpikyShield, StunningShield, FellStarShield,
+        Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         SeerCirclet, WizardHat, VampireCrown, BattleHelmet, BladeCrown,
         BasicArmor, WizardRobe, HeavyArmor, ElectricArmor, Wings,
         AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes,

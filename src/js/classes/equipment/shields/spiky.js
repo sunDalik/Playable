@@ -1,18 +1,17 @@
 import {EQUIPMENT_TYPE, RARITY, SHIELD_TYPE} from "../../../enums";
-import {Shield} from "./shield";
 import {ShieldsSpriteSheet} from "../../../loader";
+import {AbstractShield} from "./abstract_shield";
 
-export class SpikyShield extends Shield {
+export class SpikyShield extends AbstractShield {
     constructor() {
         super();
         this.texture = ShieldsSpriteSheet["spiky_shield.png"];
         this.type = SHIELD_TYPE.SPIKY;
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
         this.shieldAtk = 1;
-        this.maxUses = 12;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 3;
         this.name = "Spiky Shield";
-        this.description = "Activate to block all attacks and hurt your opponents";
+        this.description = "Blocking attacks deals damage to enemies";
         this.rarity = RARITY.B;
     }
 

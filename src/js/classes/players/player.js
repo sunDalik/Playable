@@ -49,7 +49,7 @@ export class Player extends AnimatedTileElement {
         this.SLIDE_BUMP_ANIMATION_TIME = 10;
         this.role = ROLE.PLAYER;
         this.dead = false;
-        for (const slot of Object.values(SLOT)){
+        for (const slot of Object.values(SLOT)) {
             this[slot] = null;
         }
         this.shielded = false;
@@ -293,13 +293,13 @@ export class Player extends AnimatedTileElement {
             if (canBeShielded) {
                 const ally = otherPlayer(this);
                 if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
-                    && (this.shielded || this.secondHand.type === SHIELD_TYPE.PASSIVE && this.secondHand.activate())) {
+                    && (this.shielded || this.secondHand.activate(this))) {
                     this.secondHand.onBlock(source, this, directHit);
                     this.shielded = true;
                     blocked = true;
                 } else if (ally.tilePosition.x === this.tilePosition.x && ally.tilePosition.y === this.tilePosition.y
                     && ally.secondHand && ally.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
-                    && (ally.shielded || ally.secondHand.type === SHIELD_TYPE.PASSIVE && ally.secondHand.activate())) {
+                    && (ally.shielded || ally.secondHand.activate(ally))) {
                     ally.secondHand.onBlock(source, ally, directHit);
                     ally.shielded = true;
                     blocked = true;
@@ -554,13 +554,7 @@ export class Player extends AnimatedTileElement {
     useSecondHand() {
         if (this.charging) return false;
         if (!this.secondHand) return false;
-        if (this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD) {
-            if (this.secondHand.activate(this)) {
-                this.shielded = true;
-                this.spinItem(this.secondHand);
-                return true;
-            } else return false;
-        } else if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) {
+        if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) {
             if (this.weapon === null || this.secondHand.type !== this.weapon.type) {
                 [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
                 redrawWeaponAndSecondHand(this);
@@ -606,14 +600,13 @@ export class Player extends AnimatedTileElement {
         }, animationTime, maxDelta);
     }
 
-    spinItem(item, animationTime = 20, fullSpinTimes = 1) {
+    spinItem(item, animationTime = 15) {
         this.animationCounter = 0;
-        const step = 360 * fullSpinTimes / animationTime;
+        const step = 180 / animationTime;
         const itemSprite = new PIXI.Sprite(item.texture);
         itemSprite.anchor.set(0.5, 0.5);
-        itemSprite.position.set(this.tilePosition.x * Game.TILESIZE + Game.TILESIZE / 2, this.tilePosition.y * Game.TILESIZE + Game.TILESIZE / 2);
-        itemSprite.width = Game.TILESIZE * 0.9;
-        itemSprite.height = Game.TILESIZE * 0.9;
+        itemSprite.position.set(this.position.x, this.position.y);
+        itemSprite.width = itemSprite.height = Game.TILESIZE;
         itemSprite.zIndex = Game.primaryPlayer.zIndex + 1;
         Game.world.addChild(itemSprite);
 
@@ -633,23 +626,8 @@ export class Player extends AnimatedTileElement {
     }
 
     getPropertyNameOfItem(item) {
-        switch (item) {
-            case this.magic1:
-                return "magic1";
-            case this.magic2:
-                return "magic2";
-            case this.magic3:
-                return "magic3";
-            case this.weapon:
-                return "weapon";
-            case this.secondHand:
-                return "secondHand";
-            case this.headwear:
-                return "headwear";
-            case this.armor:
-                return "armor";
-            case this.footwear:
-                return "footwear";
+        for (const slot of Object.values(SLOT)) {
+            if (item === this[slot]) return slot;
         }
     }
 
