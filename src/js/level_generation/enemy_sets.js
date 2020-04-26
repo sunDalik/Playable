@@ -24,6 +24,7 @@ import {LizardWarrior} from "../classes/enemies/ru/lizard_warrior";
 import {MudMage} from "../classes/enemies/ru/mud_mage";
 import {TeleportMage} from "../classes/enemies/ru/teleport_mage";
 import {WallSlime} from "../classes/enemies/ru/wall_slime";
+import {Mushroom} from "../classes/enemies/fc/mushroom";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, GraySpider],
@@ -107,7 +108,26 @@ export const FCEnemySets = [
     [RedStar, Star],
     [RedStar, Roller, Roller, Roller, Roller],
     [RedStar, Roller, Roller],
-    [RedStar, Eel, Eel]
+    [RedStar, Eel, Eel],
+    [Mushroom],
+    [SmallMushroom, Mushroom],
+    [SmallMushroom, SmallMushroom, Mushroom],
+    [SmallMushroom, SmallMushroom, Mushroom, Mushroom],
+    [Roller, Mushroom, Roller],
+    [Star, Mushroom, Star, Mushroom],
+    [Mushroom, Mushroom],
+    [Frog, Mushroom, KingFrog],
+    [Eel, Mushroom, Eel],
+    [Roller, Roller, Roller, Mushroom, Mushroom],
+    [Cocoon, Mushroom, Mushroom],
+    [Mushroom, Spider, Mushroom],
+    [Mushroom, GraySpider, GraySpider],
+    [Mushroom, Snail],
+    [Mushroom, DarkEel, DarkEel],
+    [Mushroom, RedStar],
+    [Frog, Mushroom],
+    [KingFrog, Mushroom],
+    [Mushroom, SpikySnail, Snail]
 ];
 
 //boss comes first!

@@ -3,8 +3,7 @@ import {ENEMY_TYPE} from "../../../enums";
 import {Enemy} from "../enemy";
 import {PoisonHazard} from "../../hazards/poison";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
-import {getRelativelyEmptyHorizontalDirections} from "../../../utils/map_utils";
-import {isNotAWall} from "../../../map_checks";
+import {get8Directions, getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {moveEnemyInDirection} from "../../../enemy_movement_ai";
@@ -12,22 +11,19 @@ import {moveEnemyInDirection} from "../../../enemy_movement_ai";
 export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["mushroom.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 2;
+        this.health = this.maxHealth = 3;
         this.type = ENEMY_TYPE.MUSHROOM;
-        this.atk = 1.5;
+        this.atk = 1;
         this.poisonDelay = 6; //half of poison hazard lifetime
         this.currentPoisonDelay = this.poisonDelay;
-        this.poisonSpread = 2;
         this.walkDelay = this.getWalkDelay();
         this.canMoveInvisible = true;
         this.walking = false;
         this.walkingTexture = FCEnemiesSpriteSheet["mushroom_walking.png"];
         this.normalTexture = FCEnemiesSpriteSheet["mushroom.png"];
         this.standing = false;
-        this.direction = {x: 1, y: 0}; //just a default value
+        this.direction = null;
         this.setScaleModifier(0.95);
-        this.spillAreas = [];
-        this.healOnHit = 0;
     }
 
     afterMapGen() {
@@ -68,39 +64,16 @@ export class Mushroom extends Enemy {
     }
 
     spillPoison(invisiblePoison = false) {
-        this.spillAreas = [];
-        this.spillPoisonR(this.tilePosition.x, this.tilePosition.y, this.poisonSpread, invisiblePoison);
-    }
-
-    //probably will use it for some other enemies later too....
-    spillPoisonR(tileX, tileY, distance = 8, invisiblePoison = false, sourceDirX = 0, sourceDirY = 0) {
-        if (distance > -1 && isNotAWall(tileX, tileY)) {
-            if (sourceDirX !== 0 || sourceDirY !== 0) {
-                const hazard = new PoisonHazard(tileX, tileY);
-                if (invisiblePoison) hazard.visible = false;
-                Game.world.addHazard(hazard);
-            }
-            this.spillAreas.push({x: tileX, y: tileY});
-            if (sourceDirX === 0 && sourceDirY === 0) {
-                this.spillPoisonR(tileX + 1, tileY, distance - 1, invisiblePoison, -1, 0);
-                this.spillPoisonR(tileX - 1, tileY, distance - 1, invisiblePoison, 1, 0);
-                this.spillPoisonR(tileX, tileY + 1, distance - 1, invisiblePoison, 0, -1);
-                this.spillPoisonR(tileX, tileY - 1, distance - 1, invisiblePoison, 0, 1);
-            } else {
-                if (sourceDirY === 0) {
-                    if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) this.spillPoisonR(tileX, tileY - 1, distance - 1, invisiblePoison, sourceDirX, 1);
-                    if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) this.spillPoisonR(tileX, tileY + 1, distance - 1, invisiblePoison, sourceDirX, -1);
-                }
-                if (!this.spillAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) this.spillPoisonR(tileX, tileY - sourceDirY, distance - 1, invisiblePoison, sourceDirX, sourceDirY);
-                if (sourceDirX === 0) {
-                    if (!this.spillAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) this.spillPoisonR(tileX - 1, tileY, distance - 1, invisiblePoison, 1, sourceDirY);
-                    if (!this.spillAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) this.spillPoisonR(tileX + 1, tileY, distance - 1, invisiblePoison, -1, sourceDirY);
-                }
-                if (!this.spillAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) this.spillPoisonR(tileX - sourceDirX, tileY, distance - 1, invisiblePoison, sourceDirX, sourceDirY);
-            }
+        for (const dir of this.getPoisonDirs()) {
+            const hazard = new PoisonHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
+            if (invisiblePoison) hazard.visible = false;
+            Game.world.addHazard(hazard);
         }
     }
 
+    getPoisonDirs() {
+        return get8Directions();
+    }
 
     getWalkDelay() {
         return randomInt(8, 14);
@@ -129,13 +102,21 @@ export class Mushroom extends Enemy {
     }
 
     getDirections() {
-        return getRelativelyEmptyHorizontalDirections(this);
+        let movementOptions = [];
+        if (tileDistance(this, closestPlayer(this)) <= 2) {
+            movementOptions = getChasingOptions(this, closestPlayer(this));
+        }
+        if (movementOptions.length === 0) movementOptions = getRelativelyEmptyLitCardinalDirections(this);
+        return movementOptions;
     }
 
     updateIntentIcon() {
         super.updateIntentIcon();
         this.intentIcon.angle = 0;
-        if (this.walking) {
+        if (this.walking && tileDistance(this, closestPlayer(this)) <= 2) {
+            this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
+            this.intentIcon.angle = 0;
+        } else if (this.walking) {
             this.intentIcon.texture = IntentsSpriteSheet["arrow_right.png"];
             this.intentIcon.angle = this.getArrowRightAngleForDirection(this.direction);
         } else if (this.standing) {

@@ -664,7 +664,6 @@ function getRoomEntries(room) {
 function generateSpecificEnemies() {
     if (Game.stage === STAGE.FLOODED_CAVE) {
         generateSpikyWallTraps();
-        generateBigMushrooms();
     }
 }
 
@@ -689,25 +688,6 @@ function generateSpikyWallTraps() {
                     break;
                 }
             }
-        }
-    }
-}
-
-function generateBigMushrooms() {
-    let bigMushroomsAmount = Math.ceil((rooms.length - 3) / 5);
-    let attempt = 0;
-    while (bigMushroomsAmount > 0 && attempt++ < 200 + bigMushroomsAmount) {
-        const point = {
-            x: randomInt(2, level[0].length - 3),
-            y: randomInt(2, level.length - 3)
-        };
-        if (level[point.y][point.x].tileType === TILE_TYPE.NONE
-            && level[point.y][point.x].entity === null
-            && (isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.MAIN)) || isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.SECONDARY)))
-            && (level[point.y][point.x - 1].tileType === TILE_TYPE.NONE || level[point.y][point.x + 1].tileType === TILE_TYPE.NONE)) {
-            if (isNearEntrance(point, getRoom(point), 4)) continue;
-            level[point.y][point.x].entity = new Mushroom(point.x, point.y);
-            bigMushroomsAmount--;
         }
     }
 }
