@@ -177,6 +177,7 @@ export class Player extends AnimatedTileElement {
     }
 
     getAtkWithWeapon(weapon, presetAtk = 0) {
+        if (weapon === null) return 0;
         const atkBase = this.getAtkBaseWithWeapon(weapon, presetAtk);
         return (Math.round(atkBase * this.getAtkMul() * 4) / 4)
     }

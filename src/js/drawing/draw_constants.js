@@ -51,7 +51,3 @@ export const HUDGuideOffsetY = 0;
 export const HUDGuideKeyOffsetX = 4;
 export const HUDGuideKeyOffsetY = 4;
 export const healthBarLength = 5;
-
-export function getInanimateItemLabelTextStyle() {
-    return Object.assign({}, HUDTextStyle, {fontSize: Game.TILESIZE / 3.3, strokeThickness: 3});
-}

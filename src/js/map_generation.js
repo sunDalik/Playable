@@ -35,7 +35,6 @@ function distributeDrops(dropConstructor, amount, enemyType = undefined) {
             if (enemy.drop !== null
                 || enemy.boss
                 || enemy.role === ROLE.WALL_TRAP
-                || enemy.type === ENEMY_TYPE.MUSHROOM && enemy.type !== enemyType
                 || enemy.type === ENEMY_TYPE.RABBIT && enemy.predator
                 || tileInsideTheBossRoom(enemy.tilePosition.x, enemy.tilePosition.y)
                 || (enemyType !== undefined && enemy.type !== enemyType)) {

@@ -1,34 +1,29 @@
 import {Game} from "../../game"
-import {EQUIPMENT_TYPE, INANIMATE_TYPE, ROLE} from "../../enums";
-import {createFadingText} from "../../animations";
-import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
+import {EQUIPMENT_TYPE, INANIMATE_TYPE} from "../../enums";
 import * as PIXI from "pixi.js";
-import {getCardinalDirections} from "../../utils/map_utils";
-import {getPlayerOnTile} from "../../map_checks";
 import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import {InanimatesSpriteSheet} from "../../loader";
-import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
-import {TileElement} from "../tile_elements/tile_element";
+import {ItemInanimate} from "./item_inanimate";
 
 export const statueLeftHandPoint = {x: 195, y: 200};
 export const statueRightHandPoint = {x: 65, y: 108};
 
-export class Statue extends TileElement {
+export class Statue extends ItemInanimate {
     constructor(tilePositionX, tilePositionY, weapon) {
         super(InanimatesSpriteSheet["statue.png"], tilePositionX, tilePositionY);
         this.weapon = weapon;
-        this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.STATUE;
         this.marauded = false;
         this.customTexture = false;
-        this.textObj = new PIXI.Text("", getInanimateItemLabelTextStyle());
-        this.textObj.anchor.set(0.5, 0.5);
-        this.textObj.position.set(this.position.x, this.position.y - this.texture.frame.height * this.scale.y * 1.4);
-        this.textObj.visible = false;
-        this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
-        Game.world.addChild(this.textObj);
         this.tallModifier = -10;
+        this.createItemSprite(weapon);
+        this.createTextLabel(weapon, this.height * 3 / 5);
+        this.destroyItemSprite();
+    }
+
+    afterMapGen() {
         this.updateTexture();
+        this.onUpdate();
     }
 
     fitToTile() {
@@ -41,13 +36,6 @@ export class Statue extends TileElement {
     }
 
     updateTexture() {
-        if (this.weapon) {
-            this.textObj.text = this.weapon.name;
-            this.textObj.style.fill = this.weapon.rarity.color;
-        } else {
-            this.textObj.text = "";
-        }
-
         const container = new PIXI.Container();
         container.sortableChildren = true;
         const statue = new PIXI.Sprite(InanimatesSpriteSheet["statue.png"]);
@@ -112,7 +100,10 @@ export class Statue extends TileElement {
         this.generateEmptyTrim();
         this.fitToTile();
         this.place();
+        if (this.weapon) this.showItem(this.weapon);
+        else this.hideItem();
         this.customTexture = true;
+        this.destroyItemSprite();
     }
 
     interact(player) {
@@ -124,18 +115,13 @@ export class Statue extends TileElement {
 
     maraud() {
         this.marauded = true;
-        createFadingText("Marauder!", this.position.x, this.position.y);
+        //createFadingText("Marauder!", this.position.x, this.position.y);
         //longShakeScreen();
         Game.maraudedStatues.push(this.weapon);
     }
 
-    onUpdate() {
-        this.textObj.visible = false;
-        for (const dir of getCardinalDirections()) {
-            if (getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y) !== null) {
-                this.textObj.visible = true;
-                break;
-            }
-        }
+    destroyItemSprite() {
+        Game.world.removeChild(this.itemSprite);
+        if (this.animation) Game.app.ticker.remove(this.animation);
     }
 }

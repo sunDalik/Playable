@@ -1,40 +1,28 @@
 import {Game} from "../../game"
-import {INANIMATE_TYPE, MAGIC_ALIGNMENT, ROLE} from "../../enums";
-import {createFadingText, createFloatingItemAnimation} from "../../animations";
-import {TileElement} from "../tile_elements/tile_element";
+import {INANIMATE_TYPE, MAGIC_ALIGNMENT} from "../../enums";
+import {createFadingText} from "../../animations";
 import {removeItemFromPool} from "../../game_changer";
-import * as PIXI from "pixi.js";
-import {getInanimateItemLabelTextStyle} from "../../drawing/draw_constants";
-import {getCardinalDirections} from "../../utils/map_utils";
-import {getPlayerOnTile} from "../../map_checks";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
-import {InanimatesSpriteSheet, MagicSpriteSheet} from "../../loader";
-import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
+import {InanimatesSpriteSheet} from "../../loader";
+import {ItemInanimate} from "./item_inanimate";
+import {Aura} from "../equipment/magic/aura";
 
-export class Grail extends TileElement {
+export class Grail extends ItemInanimate {
     constructor(tilePositionX, tilePositionY, obelisk) {
         super(InanimatesSpriteSheet["grail.png"], tilePositionX, tilePositionY);
-        this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.GRAIL;
         this.obelisk = obelisk;
         this.magic = null;
-        this.magicSet = false;
-        this.magicSprite = new TileElement(MagicSpriteSheet["magic_aura.png"], 0, 0);
-        this.magicSprite.setScaleModifier(0.8);
-        this.magicSprite.visible = false;
-
-        this.textObj = new PIXI.Text("", getInanimateItemLabelTextStyle());
-        this.textObj.anchor.set(0.5, 0.5);
-        this.textObj.visible = false;
         this.tallModifier = -7;
     }
 
     placeGrail() {
         this.place();
-        this.magicSprite.tilePosition.set(this.tilePosition.x, this.tilePosition.y - 0.4);
-        this.magicSprite.zIndex = getZIndexForLayer(this.tilePosition.y) + 1;
-        this.magicSprite.place();
-        this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
+        if (!this.itemSprite) {
+            // Aura is a placeholder
+            this.createItemSprite(new Aura());
+            this.createTextLabel(new Aura());
+        }
     }
 
     interact(player) {
@@ -44,19 +32,12 @@ export class Grail extends TileElement {
     }
 
     setMagic(magic) {
+        if (!this.animation) this.initAnimations();
         this.magic = magic;
         if (this.magic) {
-            this.textObj.text = this.magic.name;
-            this.textObj.style.fill = this.magic.rarity.color;
-            Game.world.addChild(this.textObj);
-        } else this.textObj.text = "";
-
-        Game.app.ticker.remove(this.animation);
-        Game.app.ticker.remove(this.textObj.animation);
-        if (this.magic) {
-            this.textObj.style.strokeThickness = 3;
             switch (this.magic.alignment) {
                 case MAGIC_ALIGNMENT.WHITE:
+                    this.textObj.style.strokeThickness = 3;
                     this.textObj.filters = [GRAIL_TEXT_WHITE_FILTER];
                     break;
                 case MAGIC_ALIGNMENT.DARK:
@@ -64,25 +45,13 @@ export class Grail extends TileElement {
                     this.textObj.filters = [GRAIL_TEXT_DARK_FILTER];
                     break;
                 case MAGIC_ALIGNMENT.GRAY:
+                    this.textObj.style.strokeThickness = 3;
                     this.textObj.filters = [];
                     break;
             }
-            if (!this.magicSet) {
-                this.magicSet = true;
-                this.animation = createFloatingItemAnimation(this.magicSprite);
-                this.textObj.position.set(this.position.x, this.position.y - this.height * 5 / 6);
-                this.textObj.animation = createFloatingItemAnimation(this.textObj);
-                Game.app.ticker.remove(this.animation);
-                Game.app.ticker.remove(this.textObj.animation);
-            }
-            Game.app.ticker.add(this.animation);
-            Game.app.ticker.add(this.textObj.animation);
-            this.magicSprite.texture = this.magic.texture;
-            this.magicSprite.visible = true;
-            Game.world.addChild(this.magicSprite);
+            this.showItem(magic);
         } else {
-            this.magicSprite.visible = false;
-            this.texture = InanimatesSpriteSheet["grail.png"];
+            this.hideItem();
         }
     }
 
@@ -104,15 +73,7 @@ export class Grail extends TileElement {
     }
 
     onUpdate() {
-        if (this.magic === null) {
-            this.filters = [];
-        }
-        this.textObj.visible = false;
-        for (const dir of getCardinalDirections()) {
-            if (getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y) !== null) {
-                this.textObj.visible = true;
-                break;
-            }
-        }
+        if (this.magic) super.onUpdate();
+        if (this.magic === null) this.filters = [];
     }
 }

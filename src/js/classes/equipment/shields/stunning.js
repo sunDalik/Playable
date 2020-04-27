@@ -11,7 +11,7 @@ export class StunningShield extends AbstractShield {
         this.uses = this.maxUses = 3;
         this.name = "Stunning Shield";
         this.description = "Blocking attacks stuns enemies";
-        this.rarity = RARITY.C;
+        this.rarity = RARITY.B;
     }
 
     onBlock(source, wielder, directHit) {
