@@ -9,6 +9,7 @@ import {redrawMiniMapPixel} from "../../drawing/minimap";
 import {runDestroyAnimation} from "../../animations";
 import {SummonCircle} from "../enemies/ru/summon_circle";
 import {updateIntent} from "../../game_logic";
+import {camera} from "./camera";
 
 export class World extends PIXI.Container {
     constructor() {
@@ -19,6 +20,34 @@ export class World extends PIXI.Container {
         this.upWorld.zIndex = this.zIndex + 1;
         this.sortableChildren = true;
         this.upWorld.sortableChildren = true;
+    }
+
+    render(renderer) {
+        // if the object is not visible or the alpha is 0 then no need to render this element
+        if (!this.visible || this.worldAlpha <= 0 || !this.renderable) {
+            return;
+        }
+
+        // do a quick check to see if this element has a mask or a filter.
+        if (this._mask || (this.filters && this.filters.length)) {
+            this.renderAdvanced(renderer);
+        } else {
+            this._render(renderer);
+            // children rendering with custom culling!
+            const externalTiles = 2;
+            const left = Math.floor((camera.x - Game.app.renderer.screen.width / 2) / Game.TILESIZE) - externalTiles;
+            const right = Math.floor((camera.x + Game.app.renderer.screen.width / 2) / Game.TILESIZE) + externalTiles;
+            const up = Math.floor((camera.y - Game.app.renderer.screen.height / 2) / Game.TILESIZE) - externalTiles;
+            const down = Math.floor((camera.y + Game.app.renderer.screen.height / 2) / Game.TILESIZE) + externalTiles;
+            for (let i = 0, j = this.children.length; i < j; ++i) {
+                const child = this.children[i];
+                if (!child.tilePosition
+                    || (child.tilePosition.y >= up && child.tilePosition.y <= down
+                        && child.tilePosition.x >= left && child.tilePosition.x <= right)) {
+                    child.render(renderer);
+                }
+            }
+        }
     }
 
     addHazard(hazard) {

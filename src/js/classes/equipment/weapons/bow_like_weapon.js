@@ -32,14 +32,14 @@ export class BowLikeWeapon {
     }
 
     createBowAnimation(wielder, atkOffsetX, atkOffsetY) {
-        const weaponSprite = new TileElement(this.texture, 0, 0);
+        const weaponSprite = new TileElement(this.texture, wielder.tilePosition.x, wielder.tilePosition.y);
         weaponSprite.position.set(wielder.getTilePositionX(), wielder.getTilePositionY());
         Game.world.addChild(weaponSprite);
         wielder.animationSubSprites.push(weaponSprite);
         weaponSprite.zIndex = wielder.zIndex + 1;
         weaponSprite.angle = this.getAngleForDir(0, Math.sign(atkOffsetX), Math.sign(atkOffsetY));
 
-        const arrowSprite = new TileElement(this.arrowTexture, 0, 0);
+        const arrowSprite = new TileElement(this.arrowTexture, wielder.tilePosition.x, wielder.tilePosition.y);
         arrowSprite.position.set(wielder.getTilePositionX(), wielder.getTilePositionY());
         Game.world.addChild(arrowSprite);
         arrowSprite.zIndex = wielder.zIndex + 1;

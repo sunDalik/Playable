@@ -78,7 +78,7 @@ export class MagicBook {
     holdBookAnimation(wielder, dirX, dirY) {
         const offsetMod = 0.3;
         const offsetX = dirX !== 0 ? dirX * offsetMod : randomChoice([offsetMod, -offsetMod]);
-        const bookSprite = new TileElement(this.defaultTexture, 0, 0);
+        const bookSprite = new TileElement(this.defaultTexture, wielder.tilePosition.x, wielder.tilePosition.y);
         bookSprite.position.set(wielder.getTilePositionX() + offsetX * Game.TILESIZE, wielder.getTilePositionY());
         Game.world.addChild(bookSprite);
         wielder.animationSubSprites.push(bookSprite);

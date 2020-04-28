@@ -102,7 +102,7 @@ export class Star extends Enemy {
 
     createSpikeAnimation(offsetX, offsetY) {
         let prefix = this.type === ENEMY_TYPE.STAR ? "star" : "star_b";
-        const attack = new TileElement(FCEnemiesSpriteSheet[`${prefix}_spike.png`], 0, 0);
+        const attack = new TileElement(FCEnemiesSpriteSheet[`${prefix}_spike.png`], this.tilePosition.x, this.tilePosition.y);
         attack.position.set(this.getTilePositionX(), this.getTilePositionY());
         attack.zIndex = this.zIndex - 1;
         attack.anchor.set(0, 0.5);
@@ -116,7 +116,6 @@ export class Star extends Enemy {
         attack.width = 1;
         const delay = 6;
         let counter = 0;
-        let halfReached = false;
 
         const animation = (delta) => {
             if (Game.paused) return;
@@ -124,10 +123,7 @@ export class Star extends Enemy {
             if (counter < animationTime / 2) {
                 attack.width += widthStep;
             } else if (counter < animationTime / 2 + delay) {
-                if (!halfReached) {
-                    halfReached = true;
-                    attack.width = widthStep * animationTime / 2;
-                }
+                attack.width = widthStep * animationTime / 2;
             } else if (counter >= animationTime / 2 + delay) {
                 attack.width -= widthStep;
                 if (attack.width <= 0) attack.width = 1;

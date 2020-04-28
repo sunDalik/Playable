@@ -25,7 +25,7 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
         offsetX -= Math.sign(offsetX) * 0.5;
         offsetY -= Math.sign(offsetY) * 0.5;
     }
-    const weaponSprite = new TileElement(weapon.texture, 0, 0);
+    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
     weaponSprite.position.set(player.getTilePositionX() + playerOffsetX * Game.TILESIZE, player.getTilePositionY() + playerOffsetY * Game.TILESIZE);
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
@@ -76,7 +76,7 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
 
 // the picture is directed to the top left!
 export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1, lookingBottom = false, forceSwing = undefined, endAmplitude = angleAmplitude) {
-    const weaponSprite = new TileElement(weapon.texture, 0, 0);
+    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
     weaponSprite.position.set(player.getTilePositionX(), player.getTilePositionY());
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
@@ -126,7 +126,7 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
 
 // the picture is directed to the top left!
 export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationTime = 8, delay = 4, angleAmplitude = 90, scaleMod = 1.1, offset = 0, lookingRight = false) {
-    const weaponSprite = new TileElement(weapon.texture, 0, 0);
+    const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
     weaponSprite.position.set(player.getTilePositionX() + offset * Math.sign(dirX) * Game.TILESIZE, player.getTilePositionY() + offset * Math.sign(dirY) * Game.TILESIZE);
 
     Game.world.addChild(weaponSprite);
@@ -516,6 +516,8 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         {x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1},
         {x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}]) {
         const particle = new PIXI.Sprite(new PIXI.Texture(tileElement.texture.baseTexture, tileElement.texture.frame));
+        //hack to enable culling for death particles
+        particle.tilePosition = {x: tileElement.tilePosition.x, y: tileElement.tilePosition.y} ;
         let scaleMul = 1;
         if (scaleMod !== undefined) scaleMul = scaleMod;
         else if (playerDeath) scaleMul = 1;

@@ -41,7 +41,7 @@ export class DoubleGlaive {
     }
 
     spin(wielder, dirX, dirY) {
-        const weaponSprite = new TileElement(this.texture, 0, 0);
+        const weaponSprite = new TileElement(this.texture, wielder.tilePosition.x, wielder.tilePosition.y);
         weaponSprite.position.set(wielder.getTilePositionX() + dirX * wielder.width / 2, wielder.getTilePositionY() + dirY * wielder.height / 2);
         Game.world.addChild(weaponSprite);
         wielder.animationSubSprites.push(weaponSprite);
