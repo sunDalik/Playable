@@ -1,5 +1,5 @@
-import {Game} from "./game"
-import * as PIXI from "pixi.js"
+import {Game} from "./game";
+import * as PIXI from "pixi.js";
 import {randomInt, randomChoice} from "./utils/random_utils";
 import {ITEM_OUTLINE_FILTER} from "./filters";
 import {HUDTextStyle, HUDTextStyleTitle, miniMapBottomOffset} from "./drawing/draw_constants";
@@ -426,11 +426,11 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
 }
 
 export function createKissHeartAnimation(positionX, positionY) {
-    createHeartAnimation(positionX, positionY, Game.TILESIZE / 3, 60, true)
+    createHeartAnimation(positionX, positionY, Game.TILESIZE / 3, 60, true);
 }
 
 export function createStrongKissHeartAnimation(positionX, positionY) {
-    createHeartAnimation(positionX, positionY, Game.TILESIZE / 3, 70, true, true)
+    createHeartAnimation(positionX, positionY, Game.TILESIZE / 3, 70, true, true);
 }
 
 export function showHelpBox(item) {
@@ -517,7 +517,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         {x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}]) {
         const particle = new PIXI.Sprite(new PIXI.Texture(tileElement.texture.baseTexture, tileElement.texture.frame));
         //hack to enable culling for death particles
-        particle.tilePosition = {x: tileElement.tilePosition.x, y: tileElement.tilePosition.y} ;
+        particle.tilePosition = {x: tileElement.tilePosition.x, y: tileElement.tilePosition.y};
         let scaleMul = 1;
         if (scaleMod !== undefined) scaleMul = scaleMod;
         else if (playerDeath) scaleMul = 1;

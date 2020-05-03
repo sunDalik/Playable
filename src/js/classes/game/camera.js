@@ -48,7 +48,6 @@ camera.setup = (x, y) => {
 
 camera.onMove = () => {
     centerMiniMap();
-    //cullByView();
 };
 
 camera.center = () => {

@@ -152,7 +152,7 @@ export const RARITY = Object.freeze({
     B: {label: "B", color: 0x94c9f2, chanceFrom: 0, chanceTo: 0, num: 1},
     A: {label: "A", color: 0x84f081, chanceFrom: 0, chanceTo: 0, num: 2},
     S: {label: "S", color: 0xf5e476, chanceFrom: 0, chanceTo: 0, num: 3},
-    UNIQUE: {label: "Unique", color: 0xffffff, chanceFrom: 0, chanceTo: 0, num: 0},
+    UNIQUE: {label: "Unique", color: 0xffffff, chanceFrom: 0, chanceTo: 0, num: 0}
 });
 
 export const LEVEL_SYMBOLS = Object.freeze({

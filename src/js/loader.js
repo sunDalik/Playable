@@ -40,7 +40,7 @@ export function loadAll(afterLoad) {
 
         .load(() => {
             setSpriteSheets();
-            afterLoad()
+            afterLoad();
         });
 }
 

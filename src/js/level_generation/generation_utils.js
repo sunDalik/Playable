@@ -22,7 +22,7 @@ export function outlineWallsWithSuperWalls(level) {
             if (level[i][j] === LEVEL_SYMBOLS.WALL) {
                 for (const dir of get8Directions()) {
                     if (level[i + dir.y][j + dir.x] === LEVEL_SYMBOLS.VOID) {
-                        level[i + dir.y][j + dir.x] = LEVEL_SYMBOLS.SUPER_WALL
+                        level[i + dir.y][j + dir.x] = LEVEL_SYMBOLS.SUPER_WALL;
                     }
                 }
             }

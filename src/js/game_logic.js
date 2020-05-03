@@ -1,7 +1,7 @@
-import {Game} from "./game"
+import {Game} from "./game";
 import {incrementStage} from "./game_changer";
-import {initializeLevel} from "./setup"
-import {ACHIEVEMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, SLOT, STAGE, TILE_TYPE} from "./enums"
+import {initializeLevel} from "./setup";
+import {ACHIEVEMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, SLOT, STAGE, TILE_TYPE} from "./enums";
 import {
     drawInteractionKeys,
     redrawBag,

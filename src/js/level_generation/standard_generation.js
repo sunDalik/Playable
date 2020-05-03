@@ -45,7 +45,7 @@ export function generateStandard() {
         else shapeRoom(room, randomChoice(shapers));
         //shapeRoom(room, shapers[5]); //for testing
         //shapeRoom(room, randomChoice(shapers)); //for testing
-        randomlyRotateRoom(room)
+        randomlyRotateRoom(room);
     }
     if (settings.openSpace) outlineLevelWithWalls();
     const bossRoom = findBossRoom();
@@ -471,7 +471,7 @@ function placeChestOrStatue(room, isChest) {
             let good = false;
             if (level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
                 && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL) {
-                good = true
+                good = true;
             } else {
                 for (const dir of get8Directions()) {
                     good = true;
@@ -694,7 +694,7 @@ function generateSpikyWallTraps() {
 
 function isInsideRoom(point, room) {
     return point.x >= room.offsetX && point.x <= room.offsetX + room.width - 1
-        && point.y >= room.offsetY && point.y <= room.offsetY + room.height - 1
+        && point.y >= room.offsetY && point.y <= room.offsetY + room.height - 1;
 }
 
 function anyDoorsAround(point) {

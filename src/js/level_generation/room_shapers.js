@@ -40,7 +40,7 @@ export const shapers = [
         const freeWidth = Math.floor((width - 2 - size) / 2);
         const freeHeight = Math.floor((height - 2 - size) / 2);
         return (x > freeWidth && x < (width - freeWidth - 1) && y > freeHeight && y < (height - freeHeight - 1)
-            && !(Math.min(x, width - 1 - x) === freeWidth + 1 && Math.min(y, height - 1 - y) === freeHeight + 1)) || shapers[1](x, y, width, height)
+            && !(Math.min(x, width - 1 - x) === freeWidth + 1 && Math.min(y, height - 1 - y) === freeHeight + 1)) || shapers[1](x, y, width, height);
     },
 
     //10. T-shape
@@ -61,7 +61,7 @@ export const shapers = [
         const freeWidth = Math.floor((width - 2 - size) / 2);
         const freeHeight = Math.floor((height - 2 - size) / 2);
         return x > freeWidth && x < (width - freeWidth - 1) && y > freeHeight && y < (height - freeHeight - 1);
-    },
+    }
 ];
 
 //this array contains approved shaper combos
@@ -134,7 +134,7 @@ export const comboShapers = [
     (x, y, width, height) => shapers[5](x, y, width, height) || shapers[1](x, y, width, height),
 
     //22. small rect ring + 2-tile corners
-    (x, y, width, height) => shapers[14](x, y, width, height) || shapers[7](x, y, width, height),
+    (x, y, width, height) => shapers[14](x, y, width, height) || shapers[7](x, y, width, height)
 ];
 
 export const startingRoomShaper = (x, y, width, height) => Math.min(x, width - 1 - x) < (width - 7) / 2

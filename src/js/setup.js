@@ -8,7 +8,7 @@ import {assignDrops} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
-import {drawHUD, drawInteractionKeys, drawMovementKeyBindings, redrawSpeedRunTime} from "./drawing/draw_hud";
+import {drawHUD, drawInteractionKeys, drawMovementKeyBindings} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
@@ -69,7 +69,7 @@ function initApplication() {
     app.renderer.autoDensity = true;
     app.renderer.resize(window.innerWidth, window.innerHeight);
     document.body.appendChild(app.view);
-    return app
+    return app;
 }
 
 window.addEventListener("resize", () => {
@@ -243,7 +243,7 @@ function lightAllRealistic() {
                 if ([TILE_TYPE.WALL].includes(Game.map[i][j].tileType)) {
                     for (const dir of get8Directions()) {
                         if (![TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[i + dir.y][j + dir.x].tileType)) {
-                            lightTile(j, i)
+                            lightTile(j, i);
                         }
                     }
                 } else lightTile(j, i);

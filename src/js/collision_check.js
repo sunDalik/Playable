@@ -27,7 +27,7 @@ export function getLinesByVertexData(vertexData) {
     return [[vertexData[0], vertexData[1], vertexData[2], vertexData[3]],
         [vertexData[2], vertexData[3], vertexData[4], vertexData[5]],
         [vertexData[4], vertexData[5], vertexData[6], vertexData[7]],
-        [vertexData[6], vertexData[7], vertexData[0], vertexData[1]]]
+        [vertexData[6], vertexData[7], vertexData[0], vertexData[1]]];
 }
 
 // returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
