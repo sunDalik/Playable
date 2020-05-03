@@ -612,7 +612,8 @@ function generateEnemies() {
                 }
             }
             const randomBonus = settings.openSpace ? randomChoice([-3, -2, -1, 0]) : randomChoice([-2, -1, 0, 1]);
-            const enemyAmount = Math.round(emptyTiles / 7) + randomBonus;
+            let enemyAmount = Math.round(emptyTiles / 7) + randomBonus;
+            if (enemyAmount <= 0 && Math.random() < 0.75) enemyAmount = 1;
             let pack;
             for (let i = enemyAmount; i > 0; i--) {
                 pack = randomChoice(settings.enemySets.filter(set => set.length === i));
