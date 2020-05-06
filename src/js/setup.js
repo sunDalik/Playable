@@ -27,8 +27,6 @@ import {setupMenu} from "./menu/main_menu";
 import {WhitePlayer} from "./classes/players/player_white";
 import {BlackPlayer} from "./classes/players/player_black";
 
-const cinematic = false;
-
 PIXI.utils.skipHello();
 initLocalStorage();
 Game.app = initApplication();
@@ -79,8 +77,8 @@ window.addEventListener("resize", () => {
 export function setupGame() {
     if (Game.loadingText) Game.app.stage.removeChild(Game.loadingText);
     if (Game.loadingTextAnimation) Game.app.ticker.remove(Game.loadingTextAnimation);
-    if (cinematic) {
-        Game.TILESIZE = 100;
+    if (false) {
+        Game.TILESIZE = 80;
         HUD.visible = false;
     }
     Game.state = GAME_STATE.PLAYING;

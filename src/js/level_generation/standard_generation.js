@@ -16,7 +16,6 @@ import {Obelisk} from "../classes/inanimate_objects/obelisk";
 import {pointTileDistance} from "../utils/game_utils";
 import {SpikyWallTrap} from "../classes/enemies/fc/spiky_wall_trap";
 import {DoorsTile} from "../classes/draw/doors";
-import {Mushroom} from "../classes/enemies/fc/mushroom";
 import {LyingItem} from "../classes/equipment/lying_item";
 import {Torch} from "../classes/equipment/tools/torch";
 import {Roller} from "../classes/enemies/fc/roller";
