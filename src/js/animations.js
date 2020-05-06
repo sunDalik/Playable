@@ -228,6 +228,7 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
 export function createFadingText(caption, positionX, positionY, fontSize = Game.TILESIZE / 65 * 26, animationTime = 70) {
     let counter = 0;
     const text = new PIXI.Text(caption, {
+        fontFamily: "Roboto",
         fontSize: fontSize,
         fill: 0xffffff,
         fontWeight: "bold",

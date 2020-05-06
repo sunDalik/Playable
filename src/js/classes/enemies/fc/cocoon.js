@@ -22,7 +22,6 @@ export class Cocoon extends Enemy {
         if (this.minionType === Spider || this.minionType === RedSpider) this.getMinionType(); // lower chance for black spiders and red spiders
         this.minion = null;
         this.aboutToSpawn = false;
-        this.setScaleModifier(0.9);
     }
 
     move() {
