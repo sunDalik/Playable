@@ -1,5 +1,5 @@
-import * as PIXI from "pixi.js"
-import {Game} from "../../game"
+import * as PIXI from "pixi.js";
+import {Game} from "../../game";
 import {floorLevel, TileElement} from "./tile_element";
 import {STAGE} from "../../enums";
 
@@ -8,6 +8,8 @@ export class ShadowTileElement extends TileElement {
     constructor(texture, tilePositionX, tilePositionY, keepInside = false) {
         super(texture, tilePositionX, tilePositionY, keepInside);
         this.noShadow = false;
+        this.shadowInside = false;
+        this.shadowHeight = 8;
         this.regenerateShadow();
         this.place();
     }
@@ -28,7 +30,7 @@ export class ShadowTileElement extends TileElement {
 
     fitToTile() {
         super.fitToTile();
-        if (this.shadow) this.regenerateShadow()
+        if (this.shadow) this.regenerateShadow();
     }
 
     regenerateShadow() {
@@ -38,14 +40,19 @@ export class ShadowTileElement extends TileElement {
         //should shadow color be affected by floor? I have no idea
         if (Game.stage === STAGE.DARK_TUNNEL) this.shadow.beginFill(0x444444, 0.2);
         else this.shadow.beginFill(0x666666, 0.12);
-        const width = this.texture.trim ? (this.texture.trim.right - this.texture.trim.left) : this.texture.frame.width; //wait trim does have width as well no?
-        this.shadow.drawEllipse(0, 0, width * this.scale.y * 0.5, 8);
+        const width = this.texture.trim ? this.texture.trim.width : this.texture.frame.width;
+        this.shadow.drawEllipse(0, 0, width * this.scale.y * 0.5, this.shadowHeight);
         Game.world.addChild(this.shadow);
     }
 
     place() {
         super.place();
         if (this.shadow) this.placeShadow();
+    }
+
+    getTilePositionY() {
+        if (this.shadowInside) return super.getTilePositionY() + this.shadowHeight;
+        else return super.getTilePositionY();
     }
 
     placeShadow() {
