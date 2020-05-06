@@ -9,7 +9,7 @@ export class Room {
         this.type = type;
     }
 
-    area() {
+    get area() {
         return this.width * this.height;
     }
 }

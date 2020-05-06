@@ -1,7 +1,7 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {ENEMY_TYPE, STAGE} from "../../../enums";
 import {Enemy} from "../enemy";
-import {randomInt, randomChoice} from "../../../utils/random_utils";
+import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {getEmptyCardinalDirections} from "../../../utils/map_utils";
 import {Spider} from "./spider";
 import {GraySpider} from "./spider_gray";
@@ -9,6 +9,7 @@ import {GreenSpider} from "../dt/spider_green";
 import {RedSpider} from "../dt/spider_red";
 import {ITEM_OUTLINE_FILTER_SMALL} from "../../../filters";
 import {DTEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {SpiderSmall} from "./spider_small";
 
 export class Cocoon extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["cocoon.png"]) {
@@ -59,6 +60,8 @@ export class Cocoon extends Enemy {
                 this.intentIcon.texture = DTEnemiesSpriteSheet["spider_green.png"];
             else if (this.minionType === RedSpider)
                 this.intentIcon.texture = DTEnemiesSpriteSheet["spider_red.png"];
+            else if (this.minionType === SpiderSmall)
+                this.intentIcon.texture = FCEnemiesSpriteSheet["spider_small.png"];
             this.intentIcon.filters = [ITEM_OUTLINE_FILTER_SMALL];
         } else {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
@@ -68,9 +71,9 @@ export class Cocoon extends Enemy {
 
     getMinionType() {
         if (Game.stage === STAGE.FLOODED_CAVE) {
-            this.minionType = randomChoice([Spider, GraySpider]);
+            this.minionType = randomChoice([SpiderSmall, Spider, GraySpider]);
         } else {
-            this.minionType = randomChoice([Spider, GraySpider, GreenSpider, RedSpider]);
+            this.minionType = randomChoice([SpiderSmall, Spider, GraySpider, GreenSpider, RedSpider]);
         }
     }
 }

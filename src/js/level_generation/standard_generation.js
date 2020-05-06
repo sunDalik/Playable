@@ -221,7 +221,7 @@ function copyPartOf2dArray(array, offsetX, offsetY, width, height) {
 function findBossRoom() {
     let bossRoom = rooms[0];
     for (const room of rooms) {
-        if (room.width >= room.height && room.area() > bossRoom.area()) bossRoom = room;
+        if (room.width >= room.height && room.area > bossRoom.area) bossRoom = room;
     }
     return bossRoom;
 }

@@ -1,6 +1,6 @@
-import {Game} from "../../game"
-import * as PIXI from "pixi.js"
-import {AnimatedTileElement} from "../tile_elements/animated_tile_element"
+import {Game} from "../../game";
+import * as PIXI from "pixi.js";
+import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {HAZARD_TYPE, ROLE, STAGE} from "../../enums";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {redrawEnergy} from "../../drawing/draw_hud";
@@ -256,21 +256,21 @@ export class Enemy extends AnimatedTileElement {
     bump(tileStepX, tileStepY, onFrame = null, onEnd = null) {
         super.bump(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
-            this.onMoveFrame()
+            this.onMoveFrame();
         }, onEnd);
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         super.slide(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
-            this.onMoveFrame()
+            this.onMoveFrame();
         }, onEnd, animationTime);
     }
 
     slideBump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
         super.slideBump(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
-            this.onMoveFrame()
+            this.onMoveFrame();
         }, onEnd, animationTime);
     }
 
