@@ -3,7 +3,7 @@ import {Game} from "../../game";
 import {floorLevel, TileElement} from "./tile_element";
 import {STAGE} from "../../enums";
 
-
+//shadows should be invisible if the sprite is invisible... but how?
 export class ShadowTileElement extends TileElement {
     constructor(texture, tilePositionX, tilePositionY, keepInside = false) {
         super(texture, tilePositionX, tilePositionY, keepInside);
@@ -43,6 +43,7 @@ export class ShadowTileElement extends TileElement {
         const width = this.texture.trim ? this.texture.trim.width : this.texture.frame.width;
         this.shadow.drawEllipse(0, 0, width * this.scale.y * 0.5, this.shadowHeight);
         Game.world.addChild(this.shadow);
+        this.placeShadow();
     }
 
     place() {

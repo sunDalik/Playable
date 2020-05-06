@@ -1,4 +1,4 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {BAG_ITEM_TYPE, EQUIPMENT_TYPE, RARITY} from "../../../enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {get8Directions} from "../../../utils/map_utils";
@@ -8,6 +8,7 @@ import * as PIXI from "pixi.js";
 import {lightPlayerPosition} from "../../../drawing/lighting";
 import {TileElement} from "../../tile_elements/tile_element";
 import {BagSpriteSheet} from "../../../loader";
+import {ShadowTileElement} from "../../tile_elements/shadow_tile_element";
 
 export class Bomb {
     constructor() {
@@ -27,7 +28,7 @@ export class Bomb {
 
     useItem(player) {
         const placedBomb = new Bomb();
-        placedBomb.sprite = new TileElement(BagSpriteSheet["bomb_ticking.png"], player.tilePosition.x, player.tilePosition.y);
+        placedBomb.sprite = new ShadowTileElement(BagSpriteSheet["bomb_ticking.png"], player.tilePosition.x, player.tilePosition.y);
         Game.world.addChild(placedBomb.sprite);
         Game.updateList.push(placedBomb);
         this.amount--;
@@ -71,6 +72,7 @@ export class Bomb {
             lightPlayerPosition(Game.player2);
             removeObjectFromArray(this, Game.updateList);
             Game.world.removeChild(this.sprite);
+            Game.world.removeChild(this.sprite.shadow);
         } else {
             this.currentFuseDelay--;
             if (this.currentFuseDelay === 0) {
