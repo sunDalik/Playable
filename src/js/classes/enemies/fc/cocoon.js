@@ -22,8 +22,7 @@ export class Cocoon extends Enemy {
         if (this.minionType === Spider || this.minionType === RedSpider) this.getMinionType(); // lower chance for black spiders and red spiders
         this.minion = null;
         this.aboutToSpawn = false;
-        this.scaleModifier = 0.9;
-        this.fitToTile();
+        this.setScaleModifier(0.9);
     }
 
     move() {
@@ -35,8 +34,7 @@ export class Cocoon extends Enemy {
             } else {
                 this.minion = new this.minionType(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
                 this.minion.stun = 2;
-                this.minion.energyDrop = 0;
-                Game.world.addEnemy(this.minion);
+                Game.world.addEnemy(this.minion, true);
                 this.aboutToSpawn = false;
             }
         } else if (this.spawnDelay <= 0 && (this.minion === null || this.minion.dead)) {

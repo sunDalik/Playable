@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {getPlayerOnTile, isEmpty} from "../../../map_checks";
@@ -13,6 +13,7 @@ export class SummonCircle extends Enemy {
         this.atk = 0;
         this.movable = false;
         this.energyDrop = 0;
+        this.isMinion = true;
         this.delay = 3;
         this.currentDelay = this.delay;
         this.summonedEnemy = enemy;
@@ -30,10 +31,7 @@ export class SummonCircle extends Enemy {
             Game.app.ticker.remove(this.animation);
             removeObjectFromArray(this, Game.enemies);
             if (isEmpty(this.tilePosition.x, this.tilePosition.y)) {
-                this.summonedEnemy.placeOnMap();
-                Game.world.addChild(this.summonedEnemy);
-                this.summonedEnemy.updateIntentIcon();
-                Game.enemies.push(this.summonedEnemy);
+                Game.world.addEnemy(this.summonedEnemy, true);
             } else {
                 this.summonedEnemy.die();
                 const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y);

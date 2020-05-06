@@ -132,13 +132,17 @@ export const FCEnemySets = [
     [SpiderSmall],
     [SpiderSmall, SpiderSmall],
     [SpiderSmall, SpiderSmall, SpiderSmall],
+    [SpiderSmall, SpiderSmall, SpiderSmall, SpiderSmall],
     [Cocoon, SpiderSmall],
+    [Cocoon, SpiderSmall, SpiderSmall, SpiderSmall],
     [Cocoon, Cocoon, SpiderSmall, SpiderSmall],
     [SpiderSmall, SpiderSmall, Snail, Snail],
     [SpiderSmall, Snail],
     [SpiderSmall, Spider],
     [SpiderSmall, Star, Star],
-    [Roller, Roller, Roller, Roller, SpiderSmall, SpiderSmall]
+    [Roller, Roller, Roller, Roller, SpiderSmall, SpiderSmall],
+    [GraySpider, SpiderSmall, SpiderSmall],
+    [SpiderSmall, SpiderSmall, SpikySnail]
 ];
 
 //boss comes first!

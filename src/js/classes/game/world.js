@@ -102,12 +102,16 @@ export class World extends PIXI.Container {
         }
     }
 
-    addEnemy(enemy) {
+    addEnemy(enemy, isMinion = true) {
         enemy.placeOnMap();
         Game.world.addChild(enemy);
         updateIntent(enemy);
         Game.enemies.push(enemy);
         enemy.place();
+        if (isMinion) {
+            enemy.isMinion = true;
+            enemy.energyDrop = 0;
+        }
     }
 
     addInanimate(inanimate) {
@@ -146,7 +150,7 @@ export class World extends PIXI.Container {
                     lightPlayerPosition(remover);
                 } else if (!otherPlayer(remover).dead && otherPlayer(remover).secondHand && otherPlayer(remover).secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && otherPlayer(remover).secondHand.type === TOOL_TYPE.TORCH) {
                     lightPlayerPosition(otherPlayer(remover));
-                } else lightPlayerPosition(remover)
+                } else lightPlayerPosition(remover);
             } else lightPlayerPosition(remover);
         }
         redrawMiniMapPixel(x, y);

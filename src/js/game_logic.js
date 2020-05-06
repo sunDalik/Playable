@@ -449,6 +449,7 @@ export function deactivateBossMode() {
     for (const savedTile of Game.savedTiles) {
         Game.world.removeTile(savedTile.x, savedTile.y, null, false);
         Game.world.addTile(savedTile.tile, savedTile.tileType, savedTile.x, savedTile.y);
+        if (savedTile.tile && Game.map[savedTile.y][savedTile.x].lit) savedTile.tile.visible = true;
     }
     Game.bossFight = false;
     if (Game.bossNoDamage) completeAchievement(ACHIEVEMENT_ID.BEAT_ANY_BOSS_NO_DAMAGE);

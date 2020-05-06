@@ -10,6 +10,7 @@ import {isInanimate, isNotAWall} from "../../map_checks";
 import {runDestroyAnimation} from "../../animations";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import {IntentsSpriteSheet} from "../../loader";
+import {removeObjectFromArray} from "../../utils/basic_utils";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -28,6 +29,7 @@ export class Enemy extends AnimatedTileElement {
         this.energyDrop = undefined;
         this.fadingDestructionParticles = false;
         this.drop = null;
+        this.isMinion = false;
         this.healthContainer = new PIXI.Container();
         Game.world.addChild(this.healthContainer);
         this.healthContainer.visible = false;
@@ -175,6 +177,7 @@ export class Enemy extends AnimatedTileElement {
         runDestroyAnimation(this);
         Game.world.removeChild(this.shadow);
         this.shadow = null;
+        if (this.isMinion) removeObjectFromArray(this, Game.enemies);
     }
 
     heal(healHP) {

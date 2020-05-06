@@ -1,4 +1,4 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {ENEMY_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {
@@ -18,14 +18,13 @@ import {Eel} from "../fc/eel";
 import {PoisonEel} from "../fc/eel_poison";
 import {shakeScreen} from "../../../animations";
 import {DarkEel} from "../fc/eel_dark";
-import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {ParanoidEelSpriteSheet} from "../../../loader";
+import {removeObjectFromArray} from "../../../utils/basic_utils";
 
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = ParanoidEelSpriteSheet["paranoid_eel_neutral.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 25;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 25;
         this.type = ENEMY_TYPE.PARANOID_EEL;
         this.name = "Paranoid Eel";
         this.atk = 1;
@@ -58,9 +57,8 @@ export class ParanoidEel extends Boss {
 
         this.triggeredHorizontalRush = false;
 
-        this.scaleModifier = 3.7;
         this.direction = {x: 1, y: 0};
-        this.fitToTile();
+        this.setScaleModifier(3.7);
         this.zIndex = Game.primaryPlayer.zIndex + 1;
         this.normalScaleX = this.scale.x;
 
@@ -500,12 +498,12 @@ export class ParanoidEel extends Boss {
             directions = [{x: this.direction.x * 2, y: 0},
                 {x: this.direction.x * 3, y: 0},
                 {x: this.direction.x * 2, y: -1},
-                {x: this.direction.x * 2, y: 1}]
+                {x: this.direction.x * 2, y: 1}];
         } else if (this.direction.y !== 0) {
             directions = [{x: 0, y: this.direction.y * 2},
                 {x: 0, y: this.direction.y * 3},
                 {x: -1, y: this.direction.y * 2},
-                {x: 1, y: this.direction.y * 2}]
+                {x: 1, y: this.direction.y * 2}];
         }
         for (let i = 0; i < directions.length; i++) {
             const dir = directions[i];
@@ -591,13 +589,13 @@ export class ParanoidEel extends Boss {
     rotateDirectionBy90() {
         let direction = {};
         if (this.direction.x === 1) {
-            direction = {x: 0, y: 1}
+            direction = {x: 0, y: 1};
         } else if (this.direction.x === -1) {
-            direction = {x: 0, y: -1}
+            direction = {x: 0, y: -1};
         } else if (this.direction.y === 1) {
-            direction = {x: -1, y: 0}
+            direction = {x: -1, y: 0};
         } else if (this.direction.y === -1) {
-            direction = {x: 1, y: 0}
+            direction = {x: 1, y: 0};
         }
         if (this.canPlaceWithDirection(direction)) {
             this.direction = direction;
@@ -722,20 +720,18 @@ export class ParanoidEel extends Boss {
         super.die(source);
         for (const minion of this.minions) {
             minion.die(null);
-            removeObjectFromArray(minion, Game.enemies); //to prevent from respawning
         }
     }
 
     spawnMinion(constructor, x, y) {
         const minion = new constructor(x, y);
-        Game.world.addChild(minion);
-        Game.enemies.push(minion);
+        Game.world.addEnemy(minion, true);
         this.minions.push(minion);
-        minion.energyDrop = 0;
         return minion;
     }
 
     aliveMinionsCount() {
-        return this.minions.reduce((acc, minion) => !minion.dead ? ++acc : acc, 0);
+        this.minions = this.minions.filter(minion => !minion.dead);
+        return this.minions.length;
     }
 }
