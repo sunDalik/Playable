@@ -1,12 +1,12 @@
-import {Game} from "../../game"
-import * as PIXI from "pixi.js"
+import {Game} from "../../game";
+import * as PIXI from "pixi.js";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {
     ARMOR_TYPE,
     EQUIPMENT_TYPE,
     MAGIC_TYPE,
     ROLE,
-    SHIELD_TYPE, SLOT,
+    SLOT,
     STAGE,
     TILE_TYPE,
     TOOL_TYPE,
@@ -19,8 +19,7 @@ import {
     redrawHealthForPlayer,
     redrawSecondHand,
     redrawSlotContents,
-    redrawSlotContentsForPlayer,
-    redrawWeaponAndSecondHand
+    redrawSlotContentsForPlayer
 } from "../../drawing/draw_hud";
 import {amIInTheBossRoom, isInanimate, isRelativelyEmpty} from "../../map_checks";
 import {activateBossMode, gotoNextLevel, openDoors, updateInanimates} from "../../game_logic";
@@ -49,9 +48,7 @@ export class Player extends AnimatedTileElement {
         this.SLIDE_BUMP_ANIMATION_TIME = 10;
         this.role = ROLE.PLAYER;
         this.dead = false;
-        for (const slot of Object.values(SLOT)) {
-            this[slot] = null;
-        }
+        this.definePlayerSlots();
         this.shielded = false;
         this.canDoubleAttack = false;
         this.attackTimeout = null;
@@ -173,13 +170,12 @@ export class Player extends AnimatedTileElement {
         if (i === 1) this.magic1 = magic;
         else if (i === 2) this.magic2 = magic;
         else if (i === 3) this.magic3 = magic;
-        redrawSlotContents(this, "magic" + i);
     }
 
     getAtkWithWeapon(weapon, presetAtk = 0) {
         if (weapon === null) return 0;
         const atkBase = this.getAtkBaseWithWeapon(weapon, presetAtk);
-        return (Math.round(atkBase * this.getAtkMul() * 4) / 4)
+        return (Math.round(atkBase * this.getAtkMul() * 4) / 4);
     }
 
     getAtkBaseWithWeapon(weapon, presetAtk = 0) {
@@ -204,7 +200,7 @@ export class Player extends AnimatedTileElement {
 
     getDef() {
         const defBase = this.getDefBase();
-        return (Math.round(defBase * this.getDefMul() * 4) / 4)
+        return (Math.round(defBase * this.getDefMul() * 4) / 4);
     }
 
     getDefBase() {
@@ -411,7 +407,7 @@ export class Player extends AnimatedTileElement {
         this.maxHealth -= num;
         if (this.maxHealth < 1) this.maxHealth = 1;
         if (this.health > this.maxHealth) this.health = this.maxHealth;
-        drawHUD()
+        drawHUD();
     }
 
     addHealthContainers(num, heal = true) {
@@ -442,7 +438,6 @@ export class Player extends AnimatedTileElement {
             if (eq && eq.onEquipmentReceive) eq.onEquipmentReceive(this, magic);
         }
         if (magic.onWear) magic.onWear(this);
-        redrawSlotContents(this, this.getPropertyNameOfItem(magic));
         if (showHelp) showHelpBox(magic);
     }
 
@@ -558,7 +553,7 @@ export class Player extends AnimatedTileElement {
         if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) {
             if (this.weapon === null || this.secondHand.type !== this.weapon.type) {
                 [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
-                redrawWeaponAndSecondHand(this);
+                redrawSlotContents(this, SLOT.EXTRA);
                 return true;
             } else if (this.weapon && this.weapon.type === this.secondHand.type && this.secondHand.focus && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {
                 this.secondHand.focus(this);
@@ -676,5 +671,21 @@ export class Player extends AnimatedTileElement {
             }
         }
         redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
+    }
+
+    definePlayerSlots() {
+        for (const slot of Object.values(SLOT)) {
+            const privateSlot = "_" + slot;
+            this[privateSlot] = null;
+            Object.defineProperty(this, slot, {
+                set(value) {
+                    this[privateSlot] = value;
+                    redrawSlotContents(this, slot);
+                },
+                get() {
+                    return this[privateSlot];
+                }
+            });
+        }
     }
 }
