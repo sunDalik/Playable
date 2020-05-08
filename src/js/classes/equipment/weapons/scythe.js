@@ -4,9 +4,11 @@ import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
+import {Equipment} from "../equipment";
 
-export class Scythe {
+export class Scythe extends Equipment  {
     constructor() {
+        super();
         this.texture = WeaponsSpriteSheet["scythe.png"];
         this.type = WEAPON_TYPE.SCYTHE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;

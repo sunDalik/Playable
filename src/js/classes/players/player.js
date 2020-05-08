@@ -147,13 +147,10 @@ export class Player extends AnimatedTileElement {
     castMagic(magic) {
         if (otherPlayer(this).charging || this.charging) return false;
         if (magic) {
-            const magicResult = magic.cast(this);
-            if (magicResult === false) return false;
+            if (magic.cast() === false) return false;
             for (const eq of this.getEquipment()) {
                 if (eq && eq.onMagicCast) eq.onMagicCast(this);
             }
-            const pn = this.getPropertyNameOfItem(magic);
-            if (pn) redrawSlotContents(this, pn);
             return true;
         } else return false;
     }
@@ -165,7 +162,7 @@ export class Player extends AnimatedTileElement {
         else return null;
     }
 
-//only used by necromancy. should revise it
+    //only used by necromancy. should revise it
     setMagicById(i, magic) {
         if (i === 1) this.magic1 = magic;
         else if (i === 2) this.magic2 = magic;
@@ -471,7 +468,7 @@ export class Player extends AnimatedTileElement {
         if (this.chargingMagic) {
             const magicResult = this.chargingMagic.release(this, stepX, stepY);
             if (magicResult === true) {
-                const pn = this.getPropertyNameOfItem(this.chargingMagic);
+                const pn = this.getSlotNameOfItem(this.chargingMagic);
                 if (pn) redrawSlotContents(this, pn);
                 this.charging = false;
                 this.chargingMagic = null;
@@ -487,7 +484,7 @@ export class Player extends AnimatedTileElement {
                 if (mg && mg.release) {
                     const magicResult = mg.release(this, stepX, stepY);
                     if (magicResult === true) {
-                        const pn = this.getPropertyNameOfItem(mg);
+                        const pn = this.getSlotNameOfItem(mg);
                         if (pn) redrawSlotContents(this, pn);
                         this.charging = false;
                         for (const eq of this.getEquipment()) {
@@ -576,12 +573,9 @@ export class Player extends AnimatedTileElement {
 
     useBag() {
         if (this.bag && this.bag.amount > 0) {
-            if (this.bag.useItem) {
-                this.bag.useItem(this);
-                if (this.bag.amount <= 0) this.bag = null;
-                redrawBag(this);
-                return true;
-            }
+            this.bag.useItem();
+            if (this.bag.amount <= 0) this.bag = null;
+            return true;
         }
         return false;
     }
@@ -621,7 +615,11 @@ export class Player extends AnimatedTileElement {
         Game.app.ticker.add(animation);
     }
 
-    getPropertyNameOfItem(item) {
+    redrawEquipmentSlot(equipment) {
+        redrawSlotContents(this, this.getSlotNameOfItem(equipment));
+    }
+
+    getSlotNameOfItem(item) {
         for (const slot of Object.values(SLOT)) {
             if (item === this[slot]) return slot;
         }
@@ -678,8 +676,10 @@ export class Player extends AnimatedTileElement {
             const privateSlot = "_" + slot;
             this[privateSlot] = null;
             Object.defineProperty(this, slot, {
-                set(value) {
-                    this[privateSlot] = value;
+                set(item) {
+                    if (this[privateSlot]) this[privateSlot].wielder = null;
+                    this[privateSlot] = item;
+                    if (item) item.wielder = this;
                     redrawSlotContents(this, slot);
                 },
                 get() {

@@ -1,12 +1,14 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, RARITY, ROLE, WEAPON_TYPE} from "../../../enums";
 import {isDiggable, isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {ToolsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
+import {Equipment} from "../equipment";
 
-export class Pickaxe {
+export class Pickaxe extends Equipment {
     constructor() {
+        super();
         this.texture = ToolsSpriteSheet["pickaxe.png"];
         this.type = WEAPON_TYPE.PICKAXE;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;

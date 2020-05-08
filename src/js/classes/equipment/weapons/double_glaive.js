@@ -6,9 +6,11 @@ import {WeaponsSpriteSheet} from "../../../loader";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {TileElement} from "../../tile_elements/tile_element";
 import {easeOutQuad} from "../../../utils/math_utils";
+import {Equipment} from "../equipment";
 
-export class DoubleGlaive {
+export class DoubleGlaive  extends Equipment {
     constructor() {
+        super();
         this.texture = WeaponsSpriteSheet["double_glaive.png"];
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.type = WEAPON_TYPE.DOUBLE_GLAIVE;

@@ -4,9 +4,11 @@ import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
+import {Equipment} from "../equipment";
 
-export class LongSword {
+export class LongSword  extends Equipment {
     constructor() {
+        super();
         this.texture = WeaponsSpriteSheet["long_sword.png"];
         this.type = WEAPON_TYPE.LONG_SWORD;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;

@@ -1,21 +1,22 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../../../enums";
+import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY} from "../../../enums";
 import {isNotAWall, getPlayerOnTile, isEnemy, isObelisk} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {MagicSpriteSheet} from "../../../loader";
+import {ActiveEquipment} from "../active_equipment";
 
-export class Aura {
+export class Aura extends ActiveEquipment {
     constructor() {
+        super();
         this.texture = MagicSpriteSheet["magic_aura.png"];
         this.type = MAGIC_TYPE.AURA;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
         this.atk = 2;
         this.healAmount = 1;
-        this.maxUses = 3;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 3;
         this.name = "Aura";
         this.description = "Heal and enlighten";
         this.rarity = RARITY.A;

@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {BAG_ITEM_TYPE, EQUIPMENT_TYPE, RARITY} from "../../../enums";
+import {BAG_ITEM_TYPE, RARITY} from "../../../enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {get8Directions} from "../../../utils/map_utils";
 import {createFadingAttack, shakeScreen} from "../../../animations";
@@ -9,15 +9,15 @@ import {lightPlayerPosition} from "../../../drawing/lighting";
 import {TileElement} from "../../tile_elements/tile_element";
 import {BagSpriteSheet} from "../../../loader";
 import {ShadowTileElement} from "../../tile_elements/shadow_tile_element";
+import {BagEquipment} from "../bag_equipment";
 
-export class Bomb {
+export class Bomb extends BagEquipment {
     constructor() {
+        super();
         this.texture = BagSpriteSheet["bomb.png"];
         this.type = BAG_ITEM_TYPE.BOMB;
-        this.equipmentType = EQUIPMENT_TYPE.BAG_ITEM;
         this.name = "Bomb";
         this.description = "What will you explode with this?";
-        this.amount = 1;
         this.fuseDelay = 3;
         this.currentFuseDelay = this.fuseDelay;
         this.bombAtk = 3;
@@ -26,12 +26,12 @@ export class Bomb {
         this.rarity = RARITY.C;
     }
 
-    useItem(player) {
+    useItem() {
+        super.useItem();
         const placedBomb = new Bomb();
-        placedBomb.sprite = new ShadowTileElement(BagSpriteSheet["bomb_ticking.png"], player.tilePosition.x, player.tilePosition.y);
+        placedBomb.sprite = new ShadowTileElement(BagSpriteSheet["bomb_ticking.png"], this.wielder.tilePosition.x, this.wielder.tilePosition.y);
         Game.world.addChild(placedBomb.sprite);
         Game.updateList.push(placedBomb);
-        this.amount--;
     }
 
     update() {

@@ -7,16 +7,17 @@ import * as PIXI from "pixi.js";
 import {lightPlayerPosition} from "../../../drawing/lighting";
 import {otherPlayer} from "../../../utils/game_utils";
 import {MagicSpriteSheet} from "../../../loader";
+import {ActiveEquipment} from "../active_equipment";
 
-export class EternalCross {
+export class EternalCross extends ActiveEquipment {
     constructor() {
+        super();
         this.texture = MagicSpriteSheet["magic_eternal_cross.png"];
         this.type = MAGIC_TYPE.ETERNAL_CROSS;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
         this.atk = 3;
-        this.maxUses = 5;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 5;
         this.name = "Eternal Cross";
         this.description = "The unbounded divinity";
         this.rarity = RARITY.S;

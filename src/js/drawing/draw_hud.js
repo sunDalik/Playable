@@ -151,6 +151,7 @@ export function drawStatsForPlayer(player) {
 
 export function redrawSlotContents(player, slot) {
     const container = player === Game.player ? HUD.slots1[slot] : HUD.slots2[slot];
+    if (!container) return;
     removeAllChildrenFromContainer(container.sprite);
     removeAllChildrenFromContainer(container.meta);
     const item = player[slot];

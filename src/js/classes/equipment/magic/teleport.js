@@ -1,20 +1,21 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
+import {Game} from "../../../game";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
 import {drawInteractionKeys, drawMovementKeyBindings} from "../../../drawing/draw_hud";
 import {otherPlayer} from "../../../utils/game_utils";
 import {camera} from "../../game/camera";
 import {updateChain} from "../../../drawing/draw_dunno";
 import {MagicSpriteSheet} from "../../../loader";
+import {ActiveEquipment} from "../active_equipment";
 
-export class Teleport {
+export class Teleport extends ActiveEquipment {
     constructor() {
+        super();
         this.texture = MagicSpriteSheet["magic_teleport.png"];
         this.type = MAGIC_TYPE.TELEPORT;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 0;
-        this.maxUses = 20;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 20;
         this.name = "Teleport";
         this.description = "Teleport to her";
         this.rarity = RARITY.C;
@@ -30,7 +31,7 @@ export class Teleport {
         wielder.placeOnMap();
         wielder.place();
         updateChain();
-        drawMovementKeyBindings();
+        drawMovementKeyBindings(); //?
         drawInteractionKeys();
         camera.center();
         this.uses--;

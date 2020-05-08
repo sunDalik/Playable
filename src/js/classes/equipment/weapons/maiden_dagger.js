@@ -5,9 +5,11 @@ import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../anima
 import {WeaponsSpriteSheet} from "../../../loader";
 import {randomChoice} from "../../../utils/random_utils";
 import {statueLeftHandPoint, statueRightHandPoint} from "../../inanimate_objects/statue";
+import {Equipment} from "../equipment";
 
-export class MaidenDagger {
+export class MaidenDagger extends Equipment  {
     constructor() {
+        super();
         this.texture = WeaponsSpriteSheet["maiden_dagger.png"];
         this.type = WEAPON_TYPE.MAIDEN_DAGGER;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;

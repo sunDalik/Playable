@@ -1,19 +1,19 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
-import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
+import {ActiveEquipment} from "../active_equipment";
 
-export class RustySword {
+export class RustySword extends ActiveEquipment {
     constructor() {
+        super();
         this.texture = WeaponsSpriteSheet["rusty_sword.png"];
         this.type = WEAPON_TYPE.RUSTY_SWORD;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 2;
-        this.maxUses = 15;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 15;
         this.name = "Rusty Sword";
         this.description = "Powerful, but breakable";
         this.rarity = RARITY.UNIQUE;
@@ -49,7 +49,6 @@ export class RustySword {
             }
             this.uses--;
             if (this.uses <= 0) this.texture = WeaponsSpriteSheet["rusty_sword_broken.png"];
-            redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
             return true;
         } else return false;
     }

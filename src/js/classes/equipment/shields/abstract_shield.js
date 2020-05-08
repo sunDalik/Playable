@@ -1,10 +1,11 @@
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {SLOT} from "../../../enums";
+import {ActiveEquipment} from "../active_equipment";
 
-export class AbstractShield {
+export class AbstractShield extends ActiveEquipment {
     constructor() {
-        this.uses = this.maxUses = 0;
+        super();
     }
 
     activate(wielder) {
@@ -21,7 +22,7 @@ export class AbstractShield {
     onNextLevel(player) {
         this.uses += Math.ceil(this.maxUses / 2);
         if (this.uses > this.maxUses) this.uses = this.maxUses;
-        redrawSlotContents(player, SLOT.EXTRA)
+        redrawSlotContents(player, SLOT.EXTRA);
     }
 
     getStatuePlacement() {

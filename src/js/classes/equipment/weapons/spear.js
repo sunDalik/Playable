@@ -1,12 +1,14 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
+import {Equipment} from "../equipment";
 
-export class Spear {
+export class Spear extends Equipment {
     constructor() {
+        super();
         this.texture = WeaponsSpriteSheet["spear.png"];
         this.type = WEAPON_TYPE.SPEAR;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;

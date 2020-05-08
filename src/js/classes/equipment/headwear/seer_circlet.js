@@ -1,12 +1,14 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY, TILE_TYPE} from "../../../enums";
 import {darkenTile, lightTile} from "../../../drawing/lighting";
 import {otherPlayer} from "../../../utils/game_utils";
 import {tileInsideTheBossRoom} from "../../../map_checks";
 import {HeadWearSpriteSheet} from "../../../loader";
+import {Equipment} from "../equipment";
 
-export class SeerCirclet {
+export class SeerCirclet extends Equipment {
     constructor() {
+        super();
         this.texture = HeadWearSpriteSheet["seer_circlet.png"];
         this.type = HEAD_TYPE.SEER_CIRCLET;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
@@ -50,7 +52,7 @@ export class SeerCirclet {
 
     onNextLevel(wielder) {
         if (!wielder.dead) {
-            this.onWear()
+            this.onWear();
         }
     }
 }

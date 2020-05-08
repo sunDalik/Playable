@@ -1,9 +1,11 @@
 import {EQUIPMENT_TYPE, RARITY, TOOL_TYPE} from "../../../enums";
 import {ToolsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
+import {Equipment} from "../equipment";
 
-export class Torch {
+export class Torch extends Equipment{
     constructor() {
+        super();
         this.texture = ToolsSpriteSheet["torch.png"];
         this.type = TOOL_TYPE.TORCH;
         this.equipmentType = EQUIPMENT_TYPE.TOOL;

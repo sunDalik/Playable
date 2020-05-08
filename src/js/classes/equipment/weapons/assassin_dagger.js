@@ -1,14 +1,16 @@
-import {Game} from "../../../game"
-import * as PIXI from "pixi.js"
+import {Game} from "../../../game";
+import * as PIXI from "pixi.js";
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
 import {floorLevel} from "../../tile_elements/tile_element";
+import {Equipment} from "../equipment";
 
-export class AssassinDagger {
+export class AssassinDagger extends Equipment {
     constructor() {
+        super();
         this.texture = WeaponsSpriteSheet["assassin_dagger.png"];
         this.type = WEAPON_TYPE.ASSASSIN_DAGGER;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
@@ -71,12 +73,12 @@ export class AssassinDagger {
                 if (counter < context.SLIDE_ANIMATION_TIME) {
                     attackParticle.width += stepX * delta;
                     attackParticle.height += stepY * delta;
-                    centerAttackParticleToOldPlayer()
+                    centerAttackParticleToOldPlayer();
                 } else if (counter < context.SLIDE_ANIMATION_TIME + context.FINISH_SLIDE_TIME) {
                     attackParticle.width -= stepXFinish * delta;
                     attackParticle.height -= stepYFinish * delta;
                     attackParticle.anchor.set(newAnchor.x, newAnchor.y);
-                    centerAttackParticleToNewPlayer()
+                    centerAttackParticleToNewPlayer();
                 }
                 counter += delta;
                 if (counter >= context.SLIDE_ANIMATION_TIME + context.FINISH_SLIDE_TIME) {

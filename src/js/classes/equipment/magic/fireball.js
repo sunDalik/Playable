@@ -5,9 +5,11 @@ import {collisionCheck} from "../../../collision_check";
 import {createFadingAttack} from "../../../animations";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {MagicSpriteSheet} from "../../../loader";
+import {ActiveEquipment} from "../active_equipment";
 
-export class Fireball {
+export class Fireball extends ActiveEquipment{
     constructor() {
+        super();
         this.texture = MagicSpriteSheet["magic_fireball.png"];
         this.type = MAGIC_TYPE.FIREBALL;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
@@ -16,8 +18,7 @@ export class Fireball {
         this.multiplier = 0;
         this.castedThisTurn = true;
         this.multiplierDecreaseDelay = 2;
-        this.maxUses = 3;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 3;
         this.name = "Fireball";
         this.description = "It emanates power";
         this.rarity = RARITY.A;
@@ -106,7 +107,7 @@ export class Fireball {
                 this.multiplier--;
                 this.updateTexture();
                 this.multiplierDecreaseDelay = 2;
-                redrawSlotContents(player, player.getPropertyNameOfItem(this));
+                redrawSlotContents(player, player.getSlotNameOfItem(this));
             }
         }
         this.castedThisTurn = false;

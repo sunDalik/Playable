@@ -1,4 +1,4 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY} from "../../../enums";
 import {TileElement} from "../../tile_elements/tile_element";
 import {randomChoice} from "../../../utils/random_utils";
@@ -6,9 +6,11 @@ import {get8Directions} from "../../../utils/map_utils";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile} from "../../../animations";
 import {HeadWearSpriteSheet} from "../../../loader";
+import {Equipment} from "../equipment";
 
-export class BladeCrown {
+export class BladeCrown extends Equipment {
     constructor() {
+        super();
         this.texture = HeadWearSpriteSheet["blade_crown.png"];
         this.type = HEAD_TYPE.BLADE_CROWN;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
@@ -29,7 +31,7 @@ export class BladeCrown {
             createPlayerAttackTile(atkTile, 12, 0.5, 0xa67bbe);
         }
         for (const enemy of enemiesToAttack) {
-            enemy.damage(wielder, this.bladeAtk, dirX, dirY, true, false)
+            enemy.damage(wielder, this.bladeAtk, dirX, dirY, true, false);
         }
 
         const bladeSprite = new TileElement(HeadWearSpriteSheet["blade_crown_blade.png"], wielder.tilePosition.x, wielder.tilePosition.y);

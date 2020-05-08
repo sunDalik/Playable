@@ -1,16 +1,16 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
+import {ActiveEquipment} from "../active_equipment";
 
-export class Immortality {
+//maybe not active...?
+export class Immortality extends ActiveEquipment {
     constructor() {
+        super();
         this.texture = MagicSpriteSheet["magic_immortality.png"];
         this.type = MAGIC_TYPE.IMMORTALITY;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 0;
-        this.maxUses = 0;
-        this.uses = 0;
         this.infinite = true;
         this.passive = true;
         this.name = "Immortality";
@@ -19,7 +19,7 @@ export class Immortality {
         this.used = false;
     }
 
-    cast(wielder) {
+    cast() {
         return false;
     }
 

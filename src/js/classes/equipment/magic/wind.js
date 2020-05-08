@@ -3,9 +3,11 @@ import {EQUIPMENT_TYPE, HAZARD_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from 
 import {isEnemy} from "../../../map_checks";
 import {blowAwayInDirection} from "../../../special_move_logic";
 import {MagicSpriteSheet} from "../../../loader";
+import {ActiveEquipment} from "../active_equipment";
 
-export class Wind {
+export class Wind extends ActiveEquipment  {
     constructor() {
+        super();
         this.texture = MagicSpriteSheet["magic_wind.png"];
         this.type = MAGIC_TYPE.WIND;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
@@ -14,7 +16,7 @@ export class Wind {
         this.radius = 4;
         this.slideTime = 5;
         this.maxUses = 5;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 5;
         this.name = "Wind";
         this.description = "Push everybody away from you";
         this.rarity = RARITY.C;

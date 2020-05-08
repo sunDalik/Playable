@@ -5,17 +5,18 @@ import {isNotAWall, getPlayerOnTile, isEnemy, isObelisk} from "../../../map_chec
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {MagicSpriteSheet} from "../../../loader";
+import {ActiveEquipment} from "../active_equipment";
 
-export class Spikes {
+export class Spikes  extends ActiveEquipment {
     constructor() {
+        super();
         this.texture = MagicSpriteSheet["magic_spikes.png"];
         this.type = MAGIC_TYPE.SPIKES;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 3;
         this.friendlyFire = 1;
-        this.maxUses = 4;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 4;
         this.name = "Spikes";
         this.description = "Wield with care";
         this.rarity = RARITY.A;

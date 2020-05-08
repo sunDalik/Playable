@@ -6,9 +6,11 @@ import {createFadingText} from "../../../animations";
 import {randomChoice} from "../../../utils/random_utils";
 import {TileElement} from "../../tile_elements/tile_element";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
+import {ActiveEquipment} from "../active_equipment";
 
-export class MagicBook {
+export class MagicBook extends ActiveEquipment{
     constructor(texture) {
+        super();
         this.texture = this.defaultTexture = texture;
         this.magical = true;
         this.currentFocus = 0;
@@ -45,7 +47,7 @@ export class MagicBook {
             }
             this.texture = Game.app.renderer.generateTexture(container);
         }
-        redrawSlotContents(wielder, wielder.getPropertyNameOfItem(this));
+        redrawSlotContents(wielder, wielder.getSlotNameOfItem(this));
     }
 
     focus(wielder, createText = true) {

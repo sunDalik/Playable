@@ -1,6 +1,6 @@
-import {Game} from "../../../game"
-import {camera} from "../../game/camera"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
+import {Game} from "../../../game";
+import {camera} from "../../game/camera";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
@@ -10,16 +10,17 @@ import {
 } from "../../../drawing/draw_hud";
 import {otherPlayer} from "../../../utils/game_utils";
 import {MagicSpriteSheet} from "../../../loader";
+import {ActiveEquipment} from "../active_equipment";
 
-export class Necromancy {
+export class Necromancy extends ActiveEquipment {
     constructor() {
+        super();
         this.texture = MagicSpriteSheet["magic_necromancy.png"];
         this.type = MAGIC_TYPE.NECROMANCY;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.GRAY;
         this.atk = 0;
-        this.maxUses = 1;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 1;
         this.name = "Necromancy";
         this.description = "Return your beloved";
         this.rarity = RARITY.B;
@@ -51,7 +52,7 @@ export class Necromancy {
             }
             this.uses--;
             //maybe should shift all magic to left? who knows...
-            this.removeIfExhausted(wielder)
+            this.removeIfExhausted(wielder);
         } else return false;
         return true;
     }

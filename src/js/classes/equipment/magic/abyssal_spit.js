@@ -3,16 +3,17 @@ import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enu
 import {isNotAWall} from "../../../map_checks";
 import {DarkPoisonHazard} from "../../hazards/poison";
 import {MagicSpriteSheet} from "../../../loader";
+import {ActiveEquipment} from "../active_equipment";
 
-export class AbyssalSpit {
+export class AbyssalSpit extends ActiveEquipment {
     constructor() {
+        super();
         this.texture = MagicSpriteSheet["magic_abyssal_spit.png"];
         this.type = MAGIC_TYPE.ABYSSAL_SPIT;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 0;
-        this.maxUses = 5;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 5;
         this.name = "Abyssal Spit";
         this.description = "They get what they deserve";
         this.rarity = RARITY.C;

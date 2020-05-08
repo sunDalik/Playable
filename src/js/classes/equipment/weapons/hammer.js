@@ -4,9 +4,11 @@ import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
+import {Equipment} from "../equipment";
 
-export class Hammer {
+export class Hammer  extends Equipment {
     constructor() {
+        super();
         this.texture = WeaponsSpriteSheet["hammer.png"];
         this.type = WEAPON_TYPE.HAMMER;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;

@@ -1,9 +1,11 @@
 import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY, SLOT} from "../../../enums";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {HeadWearSpriteSheet} from "../../../loader";
+import {Equipment} from "../equipment";
 
-export class VampireCrown {
+export class VampireCrown extends Equipment {
     constructor() {
+        super();
         this.texture = HeadWearSpriteSheet["vampire_crown.png"];
         this.type = HEAD_TYPE.VAMPIRE_CROWN;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;

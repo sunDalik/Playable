@@ -1,9 +1,11 @@
 import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, HAZARD_TYPE, RARITY} from "../../../enums";
 import {FootwearSpriteSheet} from "../../../loader";
+import {Equipment} from "../equipment";
 
-export class DarkBoots {
+export class DarkBoots extends Equipment{
     constructor() {
+        super();
         this.texture = FootwearSpriteSheet["dark.png"];
         this.type = FOOTWEAR_TYPE.DARK;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;

@@ -1,9 +1,6 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE} from "../../../enums";
+import {Game} from "../../../game";
 import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
-import {createPlayerAttackTile, runDestroyAnimation} from "../../../animations";
-import {TileElement} from "../../tile_elements/tile_element";
-import {WeaponsSpriteSheet} from "../../../loader";
+import {createPlayerAttackTile} from "../../../animations";
 import {BowLikeWeapon} from "./bow_like_weapon";
 
 export class PiercingBowLikeWeapon extends BowLikeWeapon {

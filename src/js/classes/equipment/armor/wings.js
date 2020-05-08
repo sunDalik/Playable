@@ -1,9 +1,10 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, ARMOR_TYPE, RARITY} from "../../../enums";
+import {ARMOR_TYPE, EQUIPMENT_TYPE, RARITY} from "../../../enums";
 import {ArmorSpriteSheet} from "../../../loader";
+import {Equipment} from "../equipment";
 
-export class Wings {
+export class Wings extends Equipment {
     constructor() {
+        super();
         this.texture = ArmorSpriteSheet["wings.png"];
         this.type = ARMOR_TYPE.WINGS;
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;

@@ -4,9 +4,11 @@ import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, runDestroyAnimation} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {WeaponsSpriteSheet} from "../../../loader";
+import {Equipment} from "../equipment";
 
-export class BowLikeWeapon {
+export class BowLikeWeapon extends Equipment{
     constructor(texture) {
+        super();
         this.texture = texture;
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.arrowTexture = WeaponsSpriteSheet["arrow.png"];

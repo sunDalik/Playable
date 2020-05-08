@@ -2,9 +2,11 @@ import {Game} from "../../../game"
 import {EQUIPMENT_TYPE, HEAD_TYPE, MAGIC_TYPE, RARITY} from "../../../enums";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {HeadWearSpriteSheet} from "../../../loader";
+import {Equipment} from "../equipment";
 
-export class WizardHat {
+export class WizardHat extends Equipment {
     constructor() {
+        super();
         this.texture = HeadWearSpriteSheet["wizard_hat.png"];
         this.type = HEAD_TYPE.WIZARD_HAT;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
@@ -17,7 +19,7 @@ export class WizardHat {
     onWear(player) {
         for (const eq of [player.magic1, player.magic2, player.magic3, player.weapon, player.secondHand]) {
             if (this.upgradeMagicEquipment(eq)) {
-                redrawSlotContents(player, player.getPropertyNameOfItem(eq));
+                redrawSlotContents(player, player.getSlotNameOfItem(eq));
             }
         }
     }
@@ -31,7 +33,7 @@ export class WizardHat {
                     if (eq.equipmentType === EQUIPMENT_TYPE.MAGIC && eq.type === MAGIC_TYPE.NECROMANCY) {
                         eq.removeIfExhausted(player);
                     }
-                    redrawSlotContents(player, player.getPropertyNameOfItem(eq));
+                    redrawSlotContents(player, player.getSlotNameOfItem(eq));
                 }
             }
         }
