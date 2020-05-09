@@ -76,6 +76,7 @@ export const Game = {
 
     showTime: false,
     time: 0, //MS
+    turns: 0,
     destroyParticles: [],
     achievementPopUpQueue: [],
     

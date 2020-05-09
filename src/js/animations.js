@@ -473,27 +473,30 @@ export function showHelpBox(item) {
     const slideTime = 20;
     const startVal = Game.itemHelp.position.y;
     const endChange = -Game.itemHelp.height - miniMapBottomOffset;
-    const stayTime = 180;
+    const initTurns = Game.turns;
+    const stayTurns = 2;
     let placed = false;
     let counter = 0;
 
     const animation = (delta) => {
         if (Game.paused) return;
-        counter += delta;
+        if (counter < slideTime || Game.turns >= initTurns + stayTurns) {
+            counter += delta;
+        }
         if (Game.itemHelp === null) {
             Game.app.ticker.remove(animation);
             return;
         }
         if (counter < slideTime) {
             Game.itemHelp.position.y = startVal + easeOutQuad(counter / slideTime) * endChange;
-        } else if (counter >= slideTime + stayTime && counter < slideTime + stayTime + slideTime) {
-            Game.itemHelp.position.y = startVal + endChange - easeInQuad((counter - slideTime - stayTime) / slideTime) * endChange;
+        } else if (counter >= slideTime && counter < slideTime + slideTime) {
+            Game.itemHelp.position.y = startVal + endChange - easeInQuad((counter - slideTime) / slideTime) * endChange;
         }
         if (counter >= slideTime && !placed) {
             placed = true;
             Game.itemHelp.position.y = startVal + endChange;
         }
-        if (counter >= slideTime + stayTime + slideTime) {
+        if (counter >= slideTime + slideTime) {
             Game.app.ticker.remove(animation);
             HUD.removeChild(Game.itemHelp);
         }

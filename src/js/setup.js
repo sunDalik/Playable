@@ -211,6 +211,7 @@ function initGameState() {
     Game.time = 0;
     Game.app.ticker.remove(speedrunTimer);
     Game.keysAmount = 0;
+    Game.turns = 0;
 
     //otherwise players will have no shadow if you start on dt...
     Game.player.regenerateShadow();

@@ -48,6 +48,7 @@ function enemyTurn() {
     Game.player2.afterEnemyTurn();
     updateInanimates();
     cleanParticles();
+    Game.turns++;
 }
 
 export function moveEnemies() {
