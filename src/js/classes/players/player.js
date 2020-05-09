@@ -14,8 +14,7 @@ import {
 } from "../../enums";
 import {createHeartAnimation, rotate, runDestroyAnimation, shakeScreen, showHelpBox} from "../../animations";
 import {
-    drawHUD,
-    redrawBag,
+    drawMovementKeyBindings, drawOtherHUD,
     redrawHealthForPlayer,
     redrawSecondHand,
     redrawSlotContents,
@@ -38,8 +37,8 @@ import {redrawMiniMapPixel} from "../../drawing/minimap";
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 3;
-        this.health = this.maxHealth;
+        this._maxHealth = 3;
+        this._health = this._maxHealth;
         this.atkBase = 0;
         this.atkMul = 1;
         this.defBase = 0;
@@ -306,7 +305,6 @@ export class Player extends AnimatedTileElement {
                 let dmg = atk - this.getDef();
                 if (dmg < 0.25) dmg = 0.25;
                 this.health -= dmg;
-                redrawHealthForPlayer(this);
                 Game.bossNoDamage = false;
                 if (this.health <= 0) {
                     this.health = 0;
@@ -325,7 +323,6 @@ export class Player extends AnimatedTileElement {
             if (this.health <= 0) this.health = 0.25;
             if (toShake) shakeScreen();
             this.runHitAnimation();
-            redrawHealthForPlayer(this);
         }
     }
 
@@ -402,9 +399,6 @@ export class Player extends AnimatedTileElement {
 
     removeHealthContainers(num) {
         this.maxHealth -= num;
-        if (this.maxHealth < 1) this.maxHealth = 1;
-        if (this.health > this.maxHealth) this.health = this.maxHealth;
-        drawHUD();
     }
 
     addHealthContainers(num, heal = true) {
@@ -412,18 +406,38 @@ export class Player extends AnimatedTileElement {
         if (heal) this.heal(num);
         //might need to expand it to unlimited amount of heart containers later
         if (num === 2) setTickTimeout(() => createHeartAnimation(this.position.x, this.position.y), 20);
-        drawHUD();
     }
 
     heal(healHP, showHeart = true) {
         if (!this.dead) {
             this.health += healHP;
-            if (this.health > this.maxHealth) {
-                this.health = this.maxHealth;
-            }
-            redrawHealthForPlayer(this);
             if (showHeart) createHeartAnimation(this.position.x, this.position.y);
         }
+    }
+
+    get health() {
+        return this._health;
+    }
+
+    set health(value) {
+        if (value < 0) this._health = 0;
+        else if (value > this._maxHealth) this._health = this._maxHealth;
+        else this._health = value;
+        redrawHealthForPlayer(this);
+    }
+
+    get maxHealth() {
+        return this._maxHealth;
+    }
+
+    set maxHealth(value) {
+        if (value < 1) this._maxHealth = 1;
+        else if (value > 10) this._maxHealth = 10;
+        else this._maxHealth = value;
+        if (this._health > this._maxHealth) this._health = this._maxHealth;
+        redrawHealthForPlayer(this);
+        drawMovementKeyBindings();
+        drawOtherHUD();
     }
 
     giveNewMagic(magic, showHelp = true) {

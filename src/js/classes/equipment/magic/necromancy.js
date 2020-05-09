@@ -36,7 +36,6 @@ export class Necromancy extends Magic {
             revivedPlayer.regenerateShadow();
             Game.world.addChild(revivedPlayer);
             revivedPlayer.health = revivedPlayer.maxHealth;
-            redrawHealthForPlayer(revivedPlayer);
             revivedPlayer.tilePosition.set(wielder.tilePosition.x, wielder.tilePosition.y);
             revivedPlayer.placeOnMap();
             revivedPlayer.place();

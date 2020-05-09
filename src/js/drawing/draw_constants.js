@@ -1,9 +1,7 @@
-import {Game} from "../game";
-
 export const heartSize = 45;
 export const heartBorderOffsetX = 30;
 export const heartRowOffset = 0;
-export const heartColOffset = 0;
+export const maxHealthRowWidth = heartSize * 5;
 export const heartYOffset = 25;
 export const slotSize = 62;
 export const slotOffsetFromHeartsY = 20;
@@ -50,4 +48,3 @@ export const HUDGuideOffsetX = 15;
 export const HUDGuideOffsetY = 0;
 export const HUDGuideKeyOffsetX = 4;
 export const HUDGuideKeyOffsetY = 4;
-export const healthBarLength = 5;

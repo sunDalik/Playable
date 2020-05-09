@@ -29,7 +29,7 @@ export class Boss extends Enemy {
     }
 
     redrawHealth() {
-        removeAllChildrenFromContainer(HUD.bossHealth);
+        removeAllChildrenFromContainer(HUD.bossHealth, true);
         const healthArray = getHealthArray(this);
         HUD.bossHealth.position.y = Game.app.renderer.screen.height - bossHeartSize - bottomBossHeartOffset;
         HUD.bossHealth.position.x = Game.app.renderer.screen.width / 2 - (healthArray.length * (bossHeartSize + bossHeartOffset) - bossHeartOffset) / 2;
@@ -46,13 +46,17 @@ export class Boss extends Enemy {
 
     die(source) {
         super.die(source);
-        removeAllChildrenFromContainer(HUD.bossHealth);
+        removeAllChildrenFromContainer(HUD.bossHealth, true);
         deactivateBossMode();
         if (Game.bossNoDamage) this.spawnRewards(2);
         else this.spawnRewards(1);
     }
 
     updateIntentIcon() {
+        return false;
+    }
+
+    setStunIcon() {
         return false;
     }
 
