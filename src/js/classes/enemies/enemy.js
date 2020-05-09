@@ -3,7 +3,6 @@ import * as PIXI from "pixi.js";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {HAZARD_TYPE, ROLE, STAGE} from "../../enums";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
-import {redrawEnergy} from "../../drawing/draw_hud";
 import {LyingItem} from "../equipment/lying_item";
 import {get8Directions} from "../../utils/map_utils";
 import {isInanimate, isNotAWall} from "../../map_checks";
@@ -26,7 +25,6 @@ export class Enemy extends AnimatedTileElement {
         this.electricityImmunity = 1;
         this.onAnimationEnd = null;
         this.movable = true;
-        this.energyDrop = undefined;
         this.fadingDestructionParticles = false;
         this.drop = null;
         this.isMinion = false;
@@ -119,17 +117,6 @@ export class Enemy extends AnimatedTileElement {
 
     die(source) {
         if (this.dead) return;
-        let energyDrop;
-        if (this.energyDrop === undefined) energyDrop = Math.floor(this.atk + this.maxHealth / 2);
-        else energyDrop = this.energyDrop;
-        if (source === Game.player) Game.lightEnergy += energyDrop;
-        else if (source === Game.player2) Game.darkEnergy += energyDrop;
-        else if (source === Game.BOTH_PLAYERS) {
-            //not yet sure about the exact formula...
-            Game.lightEnergy += energyDrop;
-            Game.darkEnergy += energyDrop;
-        }
-
         if (source === Game.player || source === Game.BOTH_PLAYERS) {
             for (const eq of Game.player.getEquipment()) {
                 if (eq && eq.onKill) eq.onKill(Game.player);
@@ -140,8 +127,6 @@ export class Enemy extends AnimatedTileElement {
                 if (eq && eq.onKill) eq.onKill(Game.player2);
             }
         }
-
-        redrawEnergy();
         this.dead = true;
         this.removeFromMap();
         this.cancelAnimation();
@@ -192,7 +177,6 @@ export class Enemy extends AnimatedTileElement {
 
     revive() {
         if (Game.map[this.tilePosition.y][this.tilePosition.x].entity === null) {
-            this.energyDrop = 0;
             this.drop = null;
             this.dead = false;
             this.visible = true;

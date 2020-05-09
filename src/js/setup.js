@@ -177,8 +177,6 @@ function initPlayers() {
     Game.player2 = new BlackPlayer(0, 0);
     Game.primaryPlayer = Game.player;
     Game.lastPlayerMoved = Game.player;
-    Game.darkEnergy = 0;
-    Game.lightEnergy = 0;
 }
 
 export function retry() {

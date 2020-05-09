@@ -1,12 +1,8 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
-import {ENEMY_TYPE, RABBIT_TYPE, ROLE, STAGE} from "../../../enums";
-import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall, isRelativelyEmpty} from "../../../map_checks";
-import {
-    getChasingOptions,
-    getRelativelyEmptyCardinalDirections,
-    getRelativelyEmptyLitCardinalDirections
-} from "../../../utils/map_utils";
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
+import {ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../../enums";
+import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall} from "../../../map_checks";
+import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
 import {getRandomValue, randomChoice} from "../../../utils/random_utils";
 import {PoisonHazard} from "../../hazards/poison";
 import {ElectricBullet} from "../bullets/electric";
@@ -26,18 +22,13 @@ export class Alligator extends Enemy {
         this.shooting = false;
         this.shootingDelay = false;
         this.atk = 1;
-        if (this.alligatorType === RABBIT_TYPE.ELECTRIC || this.alligatorType === RABBIT_TYPE.FIRE || this.alligatorType === RABBIT_TYPE.POISON) {
-            this.turnDelay = 1;
-        } else this.turnDelay = 2;
+        this.turnDelay = 1;
         this.currentTurnDelay = 0;
         this.triggeredDirection = null;
         this.direction = {x: 1, y: 0};
         this.stepXjumpHeight = Game.TILESIZE * 24 / 75;
         this.maxShootingTimes = 5;
         this.currentShootingTimes = 0;
-        if (this.alligatorType === RABBIT_TYPE.ENERGY) {
-            this.energyDrop = 40;
-        }
         this.scaleModifier = 1.1;
         this.fitToTile();
         this.updateTexture();
@@ -46,18 +37,14 @@ export class Alligator extends Enemy {
 
     initAlligator() {
         if (Math.random() < 0.3) {
-            let type = getRandomValue(RABBIT_TYPE);
-            if (type === RABBIT_TYPE.ENERGY) {
-                //energy type is rarer than others so if we get it we reroll it once again
-                type = getRandomValue(RABBIT_TYPE)
-            }
+            const type = getRandomValue(RABBIT_TYPE);
             const rabbit = new Rabbit(this.tilePosition.x, this.tilePosition.y);
             rabbit.rabbitType = type;
             rabbit.updateTexture();
             rabbit.predator = this;
             this.prey = rabbit;
         } else {
-            this.alligatorType = randomChoice([RABBIT_TYPE.FIRE, RABBIT_TYPE.ELECTRIC, RABBIT_TYPE.POISON]);
+            this.alligatorType = getRandomValue(RABBIT_TYPE);
         }
     }
 
@@ -100,10 +87,7 @@ export class Alligator extends Enemy {
                 this.prey.die(this, true);
                 if (this.prey.rabbitType !== undefined) {
                     this.alligatorType = this.prey.rabbitType;
-                    if (this.alligatorType === RABBIT_TYPE.ENERGY) {
-                        this.stepXjumpHeight = Game.TILESIZE * 60 / 75;
-                        this.energyDrop = 40;
-                    } else this.turnDelay = 1;
+                    this.turnDelay = 1;
                     this.updateTexture();
                     this.lightItself();
                 }
@@ -137,21 +121,14 @@ export class Alligator extends Enemy {
                 this.prey.die(this, true);
                 if (this.prey.rabbitType !== undefined) {
                     this.alligatorType = this.prey.rabbitType;
-                    if (this.alligatorType === RABBIT_TYPE.ENERGY) {
-                        this.stepXjumpHeight = Game.TILESIZE * 60 / 75;
-                        this.energyDrop = 40;
-                        this.step(this.direction.x, this.direction.y);
+                    this.turnDelay = 1;
+                    this.shooting = true;
+                    this.step(this.direction.x, this.direction.y, null, () => {
+                        this.direction = {x: -this.direction.x, y: -this.direction.y};
                         this.updateTexture();
-                    } else {
-                        this.turnDelay = 1;
-                        this.shooting = true;
-                        this.step(this.direction.x, this.direction.y, null, () => {
-                            this.direction = {x: -this.direction.x, y: -this.direction.y};
-                            this.updateTexture();
-                            this.lightItself();
-                            this.shake(this.direction.y, this.direction.x);
-                        });
-                    }
+                        this.lightItself();
+                        this.shake(this.direction.y, this.direction.x);
+                    });
                 } else this.step(this.direction.x, this.direction.y);
                 this.prey = null;
             }
@@ -232,15 +209,10 @@ export class Alligator extends Enemy {
                 moveEnemyInDirection(this, this.triggeredDirection);
                 this.currentTurnDelay = this.turnDelay;
             } else {
-                if (this.alligatorType === RABBIT_TYPE.ENERGY) {
-                    movementOptions = getRelativelyEmptyCardinalDirections(this, 2);
-                    if (movementOptions.length === 0) movementOptions = getRelativelyEmptyCardinalDirections(this);
-                } else {
-                    if (tileDistance(this, closestPlayer(this)) <= 2) {
-                        movementOptions = getChasingOptions(this, closestPlayer(this));
-                        if (movementOptions.length === 0) movementOptions = getRelativelyEmptyLitCardinalDirections(this);
-                    } else movementOptions = getRelativelyEmptyLitCardinalDirections(this);
-                }
+                if (tileDistance(this, closestPlayer(this)) <= 2) {
+                    movementOptions = getChasingOptions(this, closestPlayer(this));
+                    if (movementOptions.length === 0) movementOptions = getRelativelyEmptyLitCardinalDirections(this);
+                } else movementOptions = getRelativelyEmptyLitCardinalDirections(this);
             }
             this.triggeredDirection = null;
             if (movementOptions.length !== 0) {
@@ -267,9 +239,6 @@ export class Alligator extends Enemy {
                 if (this.direction.x !== this.triggeredDirection.x || this.direction.y !== this.triggeredDirection.y) this.poisonCounter = 0;
                 this.direction = this.triggeredDirection;
                 this.updateTexture();
-                if (this.alligatorType === RABBIT_TYPE.ENERGY) {
-                    this.currentTurnDelay--;
-                }
             }
             if (Math.random() < 0.3 && (this.alligatorType === RABBIT_TYPE.ELECTRIC || this.alligatorType === RABBIT_TYPE.FIRE || this.alligatorType === RABBIT_TYPE.POISON)) {
                 if (!this.shooting) {
@@ -300,8 +269,7 @@ export class Alligator extends Enemy {
             } else if (this.alligatorType === RABBIT_TYPE.FIRE) {
                 if (this.shooting) this.texture = DTEnemiesSpriteSheet["alligator_x_fire_shooting.png"];
                 else this.texture = DTEnemiesSpriteSheet["alligator_x_fire.png"];
-            } else if (this.alligatorType === RABBIT_TYPE.ENERGY) this.texture = DTEnemiesSpriteSheet["alligator_x_energy.png"];
-            else if (this.alligatorType === RABBIT_TYPE.POISON) {
+            } else if (this.alligatorType === RABBIT_TYPE.POISON) {
                 if (this.shooting) this.texture = DTEnemiesSpriteSheet["alligator_x_poison_shooting.png"];
                 else this.texture = DTEnemiesSpriteSheet["alligator_x_poison.png"];
             }
@@ -319,8 +287,7 @@ export class Alligator extends Enemy {
             } else if (this.alligatorType === RABBIT_TYPE.FIRE) {
                 if (this.shooting) this.texture = DTEnemiesSpriteSheet["alligator_y_fire_shooting.png"];
                 else this.texture = DTEnemiesSpriteSheet["alligator_y_fire.png"];
-            } else if (this.alligatorType === RABBIT_TYPE.ENERGY) this.texture = DTEnemiesSpriteSheet["alligator_y_energy.png"];
-            else if (this.alligatorType === RABBIT_TYPE.POISON) {
+            } else if (this.alligatorType === RABBIT_TYPE.POISON) {
                 if (this.shooting) this.texture = DTEnemiesSpriteSheet["alligator_y_poison_shooting.png"];
                 else this.texture = DTEnemiesSpriteSheet["alligator_y_poison.png"];
             }
@@ -366,10 +333,8 @@ export class Alligator extends Enemy {
         } else if (this.triggeredDirection) {
             this.intentIcon.texture = IntentsSpriteSheet["arrow_right.png"];
             this.intentIcon.angle = this.getArrowRightAngleForDirection(this.triggeredDirection);
-        } else if (tileDistance(this, closestPlayer(this)) <= 2 && this.alligatorType !== RABBIT_TYPE.ENERGY) {
+        } else if (tileDistance(this, closestPlayer(this)) <= 2) {
             this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
-        } else if (this.alligatorType === RABBIT_TYPE.ENERGY) {
-            this.intentIcon.texture = IntentsSpriteSheet["question_mark.png"];
         } else {
             this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
         }

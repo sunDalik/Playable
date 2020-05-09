@@ -53,9 +53,6 @@ export const Game = {
 
     afterTurn: false,
 
-    lightEnergy: 0,
-    darkEnergy: 0,
-
     obelisks: [],
     torchTile: {},
 

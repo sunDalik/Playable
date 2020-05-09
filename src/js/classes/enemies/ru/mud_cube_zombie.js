@@ -11,7 +11,6 @@ export class MudCubeZombie extends Enemy {
         this.atk = 0;
         this.movable = false;
         this.fadingDestructionParticles = true;
-        this.energyDrop = 0;
         this.removeShadow();
     }
 

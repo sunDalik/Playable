@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
 import {ENEMY_TYPE, RABBIT_TYPE} from "../../../enums";
 import {getRandomValue} from "../../../utils/random_utils";
 import {isAnyWall, isInanimate} from "../../../map_checks";
@@ -11,19 +11,15 @@ import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {randomAfraidAI} from "../../../enemy_movement_ai";
 
 export class Rabbit extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["rabbit_x_energy.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["rabbit_x_fire.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 0.5;
         this.type = ENEMY_TYPE.RABBIT;
         this.rabbitType = getRandomValue(RABBIT_TYPE);
-        if (this.rabbitType === RABBIT_TYPE.ENERGY) this.rabbitType = getRandomValue(RABBIT_TYPE);
         this.atk = 0.5;
         this.predator = null;
         this.currentTurnDelay = this.turnDelay = 1;
         this.stepXjumpHeight = Game.TILESIZE * 70 / 75;
-        if (this.rabbitType === RABBIT_TYPE.ENERGY) {
-            this.energyDrop = 30;
-        }
         this.setScaleModifier(0.8);
         this.updateTexture();
     }
@@ -38,13 +34,9 @@ export class Rabbit extends Enemy {
     move() {
         if (this.predator && !this.predator.dead) {
             return false;
-        } else if (this.currentTurnDelay <= 0 || this.rabbitType === RABBIT_TYPE.ENERGY) {
+        } else if (this.currentTurnDelay <= 0) {
             this.predator = null;
-            if (this.rabbitType === RABBIT_TYPE.ENERGY) {
-                randomAfraidAI(this, 99);
-            } else {
-                randomAfraidAI(this, 2);
-            }
+            randomAfraidAI(this, 2);
         } else this.currentTurnDelay--;
     }
 
@@ -71,9 +63,6 @@ export class Rabbit extends Enemy {
 
     updateTexture() {
         switch (this.rabbitType) {
-            case RABBIT_TYPE.ENERGY:
-                this.texture = DTEnemiesSpriteSheet["rabbit_x_energy.png"];
-                break;
             case RABBIT_TYPE.ELECTRIC:
                 this.texture = DTEnemiesSpriteSheet["rabbit_x_electric.png"];
                 break;
@@ -89,8 +78,6 @@ export class Rabbit extends Enemy {
     updateIntentIcon() {
         super.updateIntentIcon();
         if (this.predator && !this.predator.dead) {
-            this.intentIcon.texture = IntentsSpriteSheet["fear.png"];
-        } else if (this.rabbitType === RABBIT_TYPE.ENERGY) {
             this.intentIcon.texture = IntentsSpriteSheet["fear.png"];
         } else if (this.currentTurnDelay > 0) {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];

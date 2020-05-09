@@ -110,7 +110,6 @@ export class World extends PIXI.Container {
         enemy.place();
         if (isMinion) {
             enemy.isMinion = true;
-            enemy.energyDrop = 0;
         }
     }
 

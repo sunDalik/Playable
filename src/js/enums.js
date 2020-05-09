@@ -37,7 +37,6 @@ export const ENEMY_TYPE = Object.freeze({
 });
 
 export const RABBIT_TYPE = Object.freeze({
-    ENERGY: 0,
     ELECTRIC: 1,
     FIRE: 2,
     POISON: 3

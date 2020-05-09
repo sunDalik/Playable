@@ -38,7 +38,6 @@ export function drawHUD() {
     drawMovementKeyBindings();
     drawInteractionKeys();
     redrawFps();
-    //redrawEnergy();
     drawSlotsContents();
     redrawSpeedRunTime();
     if (Game.bossFight) Game.boss.redrawHealth();
@@ -130,8 +129,7 @@ export function redrawSlotsForPlayer(player) {
     }
 
     if (player === Game.player) {
-        HUD.energy.position.set(slotBorderOffsetX, slotsYOffset + (slotSize + slotsRowOffset) * 5);
-        HUD.fps.position.set(HUD.energy.position.x, HUD.energy.position.y);
+        HUD.fps.position.set(slotBorderOffsetX, slotsYOffset + (slotSize + slotsRowOffset) * 5);
         HUD.keysAmount.position.set(HUD.fps.position.x, HUD.fps.position.y + 30);
     }
 
@@ -365,14 +363,6 @@ export function redrawFps() {
         }
     };
     Game.app.ticker.add(HUD.fps.animation);
-}
-
-export function redrawEnergy() {
-    return;
-    const container = HUD.energy;
-    removeAllChildrenFromContainer(container);
-    const text = new PIXI.Text(`LE ${Game.lightEnergy}\nDE ${Game.darkEnergy}`, HUDTextStyle);
-    container.addChild(text);
 }
 
 export function drawOtherHUD() {

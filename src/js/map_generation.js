@@ -41,7 +41,6 @@ function distributeDrops(dropConstructor, amount, enemyType = undefined) {
                 enemyIndex++;
             } else {
                 enemy.drop = new dropConstructor();
-                enemy.energyDrop = 0;
                 amount--;
                 enemyIndex++;
             }

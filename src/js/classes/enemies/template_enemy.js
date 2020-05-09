@@ -15,7 +15,6 @@ export class TemplateEnemy extends Enemy {
         this.movable = false;
         this.healOnHit = 1;
         this.fadingDestructionParticles = true;
-        this.energyDrop = 0;
         this.canMoveInvisible = true;
         this.fireImmunity = 0;
         this.electricityImmunity = 0;

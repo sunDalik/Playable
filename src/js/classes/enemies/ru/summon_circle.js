@@ -12,7 +12,6 @@ export class SummonCircle extends Enemy {
         this.type = ENEMY_TYPE.SUMMON_CIRCLE;
         this.atk = 0;
         this.movable = false;
-        this.energyDrop = 0;
         this.isMinion = true;
         this.delay = 3;
         this.currentDelay = this.delay;
