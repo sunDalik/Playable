@@ -203,10 +203,19 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
     }
 }
 
+let counter = 0;
+let timeAccumulated = 0;
+
 export function speedrunTimer() {
     if (!Game.paused && !Game.unplayable && !(Game.player.dead && Game.player2.dead)) {
-        Game.time += Game.app.ticker.elapsedMS;
-        redrawSpeedRunTime();
+        counter++;
+        timeAccumulated += Game.app.ticker.elapsedMS;
+        if (counter >= 2) { //redraw time every other frame
+            Game.time += timeAccumulated;
+            timeAccumulated = 0;
+            counter = 0;
+            redrawSpeedRunTime();
+        }
     }
 }
 

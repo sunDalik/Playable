@@ -70,7 +70,7 @@ export function redrawSlotContentsForPlayer(player) {
 
 export function redrawHealthForPlayer(player) {
     const container = player === Game.player ? HUD.hearts1 : HUD.hearts2;
-    removeAllChildrenFromContainer(container);
+    removeAllChildrenFromContainer(container, true);
     const heartXOffset = player === Game.player ?
         heartBorderOffsetX :
         Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * getHealthBarLength(player) + heartColOffset;
@@ -89,7 +89,7 @@ export function redrawHealthForPlayer(player) {
 export function redrawSlotsForPlayer(player) {
     const container = player === Game.player ? HUD.slots1 : HUD.slots2;
     for (const slot of Object.values(SLOT)) {
-        if (container[slot]) removeAllChildrenFromContainer(container[slot].slot);
+        if (container[slot]) removeAllChildrenFromContainer(container[slot].slot, true);
     }
     //each array of slots is a ROW of slots
     const slots = [[createSlot("Magic", SLOT.MAGIC1), createSlot("Magic", SLOT.MAGIC2), createSlot("Magic", SLOT.MAGIC3)],
@@ -140,7 +140,7 @@ export function redrawSlotsForPlayer(player) {
 
 export function drawStatsForPlayer(player) {
     const container = player === Game.player ? HUD.stats1 : HUD.stats2;
-    removeAllChildrenFromContainer(container);
+    removeAllChildrenFromContainer(container, true);
     const text = new PIXI.Text(`ATK ${player.getAtkWithWeapon(player.weapon)}\nDEF ${player.getDef()}`, HUDTextStyle);
 
     if (player === Game.player) text.position.x = slotBorderOffsetX + slotSize * 2 + slotsColOffset + statsOffsetX;
@@ -152,8 +152,8 @@ export function drawStatsForPlayer(player) {
 export function redrawSlotContents(player, slot) {
     const container = player === Game.player ? HUD.slots1[slot] : HUD.slots2[slot];
     if (!container) return;
-    removeAllChildrenFromContainer(container.sprite);
-    removeAllChildrenFromContainer(container.meta);
+    removeAllChildrenFromContainer(container.sprite, true);
+    removeAllChildrenFromContainer(container.meta, true);
     const item = player[slot];
     if (item) {
         container.slot.alpha = 1;
@@ -278,7 +278,7 @@ export function redrawKeysAmount() {
 
 export function drawMovementKeyBindings() {
     const container = HUD.movementGuide;
-    removeAllChildrenFromContainer(container);
+    removeAllChildrenFromContainer(container, true);
     if (!Game.player.dead) {
         const heartXOffset = heartBorderOffsetX + HUDGuideOffsetX;
         const topKey = getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_UP_1P]);
@@ -312,7 +312,7 @@ export function drawMovementKeyBindings() {
 
 export function drawInteractionKeys() {
     const container = HUD.interactionGuide;
-    removeAllChildrenFromContainer(container);
+    removeAllChildrenFromContainer(container, true);
     if (Game.player.dead || Game.player2.dead) return;
     const playerSize = 50;
     const offsetY = 20;
@@ -338,7 +338,7 @@ export function drawInteractionKeys() {
 
 export function redrawFps() {
     const container = HUD.fps;
-    removeAllChildrenFromContainer(container);
+    removeAllChildrenFromContainer(container, true);
     if (HUD.fps.animation) Game.app.ticker.remove(HUD.fps.animation);
     if (!Game.showFPS) return;
     const text = new PIXI.Text("FPS: ", HUDTextStyle);
@@ -364,7 +364,7 @@ export function redrawEnergy() {
 
 export function drawOtherHUD() {
     const container = HUD.other;
-    removeAllChildrenFromContainer(container);
+    removeAllChildrenFromContainer(container, true);
     const playerSize = 60;
     drawPlayer(Game.player, heartBorderOffsetX + heartSize / 2 - playerSize / 2, heartYOffset + heartSize / 2 - playerSize / 2);
     drawPlayer(Game.player2, Game.app.renderer.screen.width - heartBorderOffsetX - (heartSize + heartColOffset) * getHealthBarLength(Game.player2) + heartColOffset + heartSize / 2 - playerSize / 2,
@@ -421,9 +421,10 @@ export function getKeyBindSymbol(keyBind) {
     else return keyBind.slice(-1);
 }
 
+//todo change to bitmap text?
 export function redrawSpeedRunTime() {
     const container = HUD.speedrunTime;
-    removeAllChildrenFromContainer(container);
+    removeAllChildrenFromContainer(container, true);
     if (Game.showTime) {
         const time = getTimeFromMs(Game.time);
         const text = new PIXI.Text(`Time: ${padTime(time.minutes, 2)}:${padTime(time.seconds, 2)}.${padTime(time.ms, 3)}`, HUDTextStyleTitle);

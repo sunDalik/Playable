@@ -1,4 +1,3 @@
-import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {HUDSpriteSheet} from "../loader";
 
@@ -35,8 +34,10 @@ export function getHeartTexture(heartValue) {
     }
 }
 
-export function removeAllChildrenFromContainer(container) {
+export function removeAllChildrenFromContainer(container, destroy = false) {
     for (let i = container.children.length - 1; i >= 0; i--) {
-        container.removeChild(container.children[i]);
+        const child = container.children[i];
+        container.removeChild(child);
+        if (destroy) child.destroy();
     }
 }

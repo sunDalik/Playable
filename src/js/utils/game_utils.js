@@ -25,7 +25,7 @@ export function tileDistance(a, b) {
 //this is the method for objects of format {x: 0, y: 0}
 // I'm not very proud of it ;)
 export function pointTileDistance(a, b) {
-    return tileDistance({tilePosition: {x: a.x, y: a.y}}, {tilePosition: {x: b.x, y: b.y}})
+    return tileDistance({tilePosition: {x: a.x, y: a.y}}, {tilePosition: {x: b.x, y: b.y}});
 }
 
 export function tileDistanceDiagonal(a, b) {
