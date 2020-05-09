@@ -1,9 +1,9 @@
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {SLOT} from "../../../enums";
-import {ActiveEquipment} from "../active_equipment";
+import {Equipment} from "../equipment";
 
-export class AbstractShield extends ActiveEquipment {
+export class AbstractShield extends Equipment {
     constructor() {
         super();
     }

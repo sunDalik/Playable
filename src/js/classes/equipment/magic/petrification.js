@@ -1,9 +1,9 @@
-import {Game} from "../../../game"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, RARITY,} from "../../../enums";
+import {Game} from "../../../game";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
-import {ActiveEquipment} from "../active_equipment";
+import {Magic} from "../magic";
 
-export class Petrification extends ActiveEquipment{
+export class Petrification extends Magic{
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_petrification.png"];

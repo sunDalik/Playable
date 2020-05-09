@@ -1,13 +1,13 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../../../enums";
-import {isNotAWall, getPlayerOnTile, isEnemy, isObelisk} from "../../../map_checks";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, STAGE} from "../../../enums";
+import {getPlayerOnTile, isEnemy, isNotAWall, isObelisk} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {MagicSpriteSheet} from "../../../loader";
-import {ActiveEquipment} from "../active_equipment";
+import {Magic} from "../magic";
 
-export class Spikes  extends ActiveEquipment {
+export class Spikes  extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_spikes.png"];

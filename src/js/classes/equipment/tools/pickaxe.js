@@ -4,9 +4,9 @@ import {isDiggable, isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {ToolsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
-import {Equipment} from "../equipment";
+import {Weapon} from "../weapon";
 
-export class Pickaxe extends Equipment {
+export class Pickaxe extends Weapon{
     constructor() {
         super();
         this.texture = ToolsSpriteSheet["pickaxe.png"];

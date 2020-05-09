@@ -1,17 +1,16 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueLeftHandPoint, statueRightHandPoint} from "../../inanimate_objects/statue";
-import {Equipment} from "../equipment";
+import {Weapon} from "../weapon";
 
-export class PawnSwords extends Equipment {
+export class PawnSwords extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["pawn_swords.png"];
         this.type = WEAPON_TYPE.PAWN_SWORDS;
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
         this.name = "Pawn Swords";
         this.description = "Attack diagonally";

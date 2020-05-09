@@ -1,11 +1,11 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
+import {Game} from "../../../game";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
 import {isNotAWall} from "../../../map_checks";
 import {DarkPoisonHazard} from "../../hazards/poison";
 import {MagicSpriteSheet} from "../../../loader";
-import {ActiveEquipment} from "../active_equipment";
+import {Magic} from "../magic";
 
-export class AbyssalSpit extends ActiveEquipment {
+export class AbyssalSpit extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_abyssal_spit.png"];

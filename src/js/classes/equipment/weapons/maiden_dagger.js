@@ -1,18 +1,17 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {isAnyWall, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {randomChoice} from "../../../utils/random_utils";
 import {statueLeftHandPoint, statueRightHandPoint} from "../../inanimate_objects/statue";
-import {Equipment} from "../equipment";
+import {Weapon} from "../weapon";
 
-export class MaidenDagger extends Equipment  {
+export class MaidenDagger extends Weapon  {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["maiden_dagger.png"];
         this.type = WEAPON_TYPE.MAIDEN_DAGGER;
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1.25;
         this.name = "Maiden's Dagger";
         this.description = "1.25 atk\nBecomes more powerful with its pair";

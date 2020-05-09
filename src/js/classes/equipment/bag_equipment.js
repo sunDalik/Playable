@@ -1,7 +1,7 @@
-import {ActiveEquipment} from "./active_equipment";
 import {EQUIPMENT_TYPE} from "../../enums";
+import {Equipment} from "./equipment";
 
-export class BagEquipment extends ActiveEquipment {
+export class BagEquipment extends Equipment {
     constructor() {
         super();
         this.equipmentType = EQUIPMENT_TYPE.BAG_ITEM;

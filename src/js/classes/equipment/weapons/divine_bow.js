@@ -10,7 +10,6 @@ export class DivineBow extends PiercingBowLikeWeapon {
         this.type = WEAPON_TYPE.DIVINE_BOW;
         //atk 1 or range 4? hmmmmm
         this.atk = 1;
-        this.piercing = true;
         this.name = "Divine Bow";
         this.description = "Piercing bow from heaven";
         this.rarity = RARITY.S;
@@ -20,7 +19,6 @@ export class DivineBow extends PiercingBowLikeWeapon {
         return wielder.getAtkWithWeapon(this);
     }
 
-    //todo
     getStatuePlacement() {
         return {
             x: statueRightHandPoint.x + 50,

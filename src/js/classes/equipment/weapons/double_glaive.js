@@ -1,18 +1,17 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {Game} from "../../../game";
+import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
-import {createPlayerAttackTile, createWeaponAnimationStab, runDestroyAnimation} from "../../../animations";
+import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {TileElement} from "../../tile_elements/tile_element";
 import {easeOutQuad} from "../../../utils/math_utils";
-import {Equipment} from "../equipment";
+import {Weapon} from "../weapon";
 
-export class DoubleGlaive  extends Equipment {
+export class DoubleGlaive  extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["double_glaive.png"];
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.type = WEAPON_TYPE.DOUBLE_GLAIVE;
         this.atk = 1;
         this.name = "Double glaive";

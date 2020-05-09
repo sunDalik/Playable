@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {Game} from "../../../game";
+import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createFadingAttack} from "../../../animations";
 import * as PIXI from "pixi.js";
@@ -10,11 +10,9 @@ import {MagicBook} from "./magic_book";
 export class BookOfFlames extends MagicBook {
     constructor() {
         super(WeaponsSpriteSheet["book_of_flames.png"]);
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.type = WEAPON_TYPE.BOOK_OF_FLAMES;
         this.atk = 2;
-        this.maxUses = 2;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 2;
         this.focusTime = 3;
         this.primaryColor = 0x10afa6;
         this.holdTime = 20;

@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, STAGE,} from "../../../enums";
+import {Game} from "../../../game";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, STAGE} from "../../../enums";
 import {isDiggable, isEnemy, isImpassable, isObelisk, isWallTrap} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
@@ -7,9 +7,9 @@ import * as PIXI from "pixi.js";
 import {lightPlayerPosition} from "../../../drawing/lighting";
 import {otherPlayer} from "../../../utils/game_utils";
 import {MagicSpriteSheet} from "../../../loader";
-import {ActiveEquipment} from "../active_equipment";
+import {Magic} from "../magic";
 
-export class EternalCross extends ActiveEquipment {
+export class EternalCross extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_eternal_cross.png"];

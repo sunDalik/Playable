@@ -1,13 +1,13 @@
-import {Game} from "../../../game"
-import * as PIXI from "pixi.js"
-import {MAGIC_TYPE, MAGIC_ALIGNMENT, EQUIPMENT_TYPE, STAGE, RARITY,} from "../../../enums";
+import {Game} from "../../../game";
+import * as PIXI from "pixi.js";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, STAGE} from "../../../enums";
 import {collisionCheck} from "../../../collision_check";
 import {createFadingAttack} from "../../../animations";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {MagicSpriteSheet} from "../../../loader";
-import {ActiveEquipment} from "../active_equipment";
+import {Magic} from "../magic";
 
-export class Fireball extends ActiveEquipment{
+export class Fireball extends Magic{
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_fireball.png"];

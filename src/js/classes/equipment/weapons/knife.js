@@ -1,17 +1,16 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {Game} from "../../../game";
+import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
-import {Equipment} from "../equipment";
+import {Weapon} from "../weapon";
 
-export class Knife  extends Equipment {
+export class Knife  extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["knife.png"];
         this.type = WEAPON_TYPE.KNIFE;
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
         this.name = "Knife";
         this.description = "Basic weapon";

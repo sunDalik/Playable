@@ -5,9 +5,9 @@ import {otherPlayer} from "../../../utils/game_utils";
 import {camera} from "../../game/camera";
 import {updateChain} from "../../../drawing/draw_dunno";
 import {MagicSpriteSheet} from "../../../loader";
-import {ActiveEquipment} from "../active_equipment";
+import {Magic} from "../magic";
 
-export class Teleport extends ActiveEquipment {
+export class Teleport extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_teleport.png"];

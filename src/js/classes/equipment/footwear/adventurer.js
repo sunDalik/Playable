@@ -1,4 +1,3 @@
-import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, RARITY} from "../../../enums";
 import {FootwearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
@@ -12,13 +11,6 @@ export class AdventurerBoots extends Equipment {
         this.name = "Adventurer Boots";
         this.description = "Immunity to poison";
         this.rarity = RARITY.C;
-    }
-
-    onWear(wielder) {
-        wielder.poisonImmunity++;
-    }
-
-    onTakeOff(wielder) {
-        wielder.poisonImmunity--;
+        this.poisonImmunity = true;
     }
 }

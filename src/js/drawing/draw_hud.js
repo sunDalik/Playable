@@ -185,8 +185,9 @@ export function redrawSlotContents(player, slot) {
             text = new PIXI.Text("x" + item.amount, HUDTextStyle);
             text.position.set(slotSize - text.width, 0);
         } else {
-            if (item.uses == null || item.maxUses == null || item.infinite) return false;
-            text = new PIXI.Text(item.uses + "/" + item.maxUses, HUDTextStyle);
+            if (item.maxUses > 0) {
+                text = new PIXI.Text(item.uses + "/" + item.maxUses, HUDTextStyle);
+            } else return false;
         }
 
         if (item.equipmentType !== EQUIPMENT_TYPE.BAG_ITEM) {
@@ -197,19 +198,19 @@ export function redrawSlotContents(player, slot) {
 
     function getKeyBind(player, slot) {
         const item = player[slot];
-        if (slot === "secondHand" && player["secondHand"].equipmentType === EQUIPMENT_TYPE.WEAPON
-            && ((player["weapon"] === null || player["weapon"].type !== player["secondHand"].type)
-                || player["weapon"] && player["weapon"].type === player["secondHand"].type && player["secondHand"].uses < player["weapon"].uses && player["weapon"].uses === player["weapon"].maxUses)) {
+        if (slot === SLOT.EXTRA && player[SLOT.EXTRA].equipmentType === EQUIPMENT_TYPE.WEAPON
+            && ((player[SLOT.WEAPON] === null || player[SLOT.WEAPON].type !== player[SLOT.EXTRA].type)
+                || player[SLOT.WEAPON] && player[SLOT.WEAPON].type === player[SLOT.EXTRA].type && player[SLOT.EXTRA].uses < player[SLOT.WEAPON].uses && player[SLOT.WEAPON].uses === player[SLOT.WEAPON].maxUses)) {
             if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_1P]);
             else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_2P]);
 
-        } else if (slot === "weapon" && item.focus && item.uses < item.maxUses) {
+        } else if (slot === SLOT.WEAPON && item.focus && item.uses < item.maxUses) {
             if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_WEAPON_1P]);
             else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_WEAPON_2P]);
-        } else if (slot === "bag" && item.amount > 0) {
+        } else if (slot === SLOT.BAG && item.amount > 0) {
             if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_BAG_1P]);
             else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_BAG_2P]);
-        } else if (item.uses > 0 && !item.passive) {
+        } else if (item.uses > 0) {
             if (player === Game.player) {
                 if (item === player.magic1) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_1_1P]);
                 else if (item === player.magic2) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_MAGIC_2_1P]);

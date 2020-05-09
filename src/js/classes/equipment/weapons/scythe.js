@@ -1,17 +1,16 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
-import {Equipment} from "../equipment";
+import {Weapon} from "../weapon";
 
-export class Scythe extends Equipment  {
+export class Scythe extends Weapon  {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["scythe.png"];
         this.type = WEAPON_TYPE.SCYTHE;
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
         this.name = "Scythe";
         this.description = "Death to them all";

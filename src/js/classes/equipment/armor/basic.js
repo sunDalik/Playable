@@ -6,8 +6,8 @@ export class BasicArmor extends Equipment {
     constructor() {
         super();
         this.texture = ArmorSpriteSheet["basic.png"];
-        this.type = ARMOR_TYPE.BASIC;
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
+        this.type = ARMOR_TYPE.BASIC;
         this.name = "Basic Armor";
         this.description = "+0.5 defense";
         this.rarity = RARITY.C;

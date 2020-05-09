@@ -6,9 +6,9 @@ import {createFadingText} from "../../../animations";
 import {randomChoice} from "../../../utils/random_utils";
 import {TileElement} from "../../tile_elements/tile_element";
 import {statueLeftHandPoint} from "../../inanimate_objects/statue";
-import {ActiveEquipment} from "../active_equipment";
+import {Weapon} from "../weapon";
 
-export class MagicBook extends ActiveEquipment{
+export class MagicBook extends Weapon {
     constructor(texture) {
         super();
         this.texture = this.defaultTexture = texture;
@@ -17,8 +17,7 @@ export class MagicBook extends ActiveEquipment{
         this.focusedThisTurn = false;
 
         //you should override these values
-        this.maxUses = 1;
-        this.uses = this.maxUses;
+        this.uses = this.maxUses = 1;
         this.focusTime = 1;
         this.primaryColor = 0x000000;
         this.holdTime = 20;
@@ -43,7 +42,7 @@ export class MagicBook extends ActiveEquipment{
                 circle.lineStyle(11, this.primaryColor);
                 circle.drawCircle(0, 0, radius);
                 circle.position.set(book.width / 2, book.height / 2);
-                container.addChild(circle)
+                container.addChild(circle);
             }
             this.texture = Game.app.renderer.generateTexture(container);
         }

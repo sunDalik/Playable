@@ -1,18 +1,14 @@
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
-import {ActiveEquipment} from "../active_equipment";
+import {Magic} from "../magic";
 
 //maybe not active...?
-export class Immortality extends ActiveEquipment {
+export class Immortality extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_immortality.png"];
         this.type = MAGIC_TYPE.IMMORTALITY;
-        this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
-        this.atk = 0;
-        this.infinite = true;
-        this.passive = true;
         this.name = "Immortality";
         this.description = "Gain 2 heart containers";
         this.rarity = RARITY.C;

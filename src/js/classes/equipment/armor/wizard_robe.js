@@ -8,8 +8,8 @@ export class WizardRobe extends Equipment {
     constructor() {
         super();
         this.texture = ArmorSpriteSheet["wizard_robe.png"];
-        this.type = ARMOR_TYPE.WIZARD_ROBE;
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
+        this.type = ARMOR_TYPE.WIZARD_ROBE;
         this.magUses = 1;
         this.magAtk = 1;
         this.name = "Wizard Robe";

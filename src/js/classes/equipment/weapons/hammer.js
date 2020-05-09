@@ -1,17 +1,16 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {Game} from "../../../game";
+import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
-import {Equipment} from "../equipment";
+import {Weapon} from "../weapon";
 
-export class Hammer  extends Equipment {
+export class Hammer  extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["hammer.png"];
         this.type = WEAPON_TYPE.HAMMER;
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 0.75;
         this.name = "Hammer";
         this.description = "Stuns enemies";

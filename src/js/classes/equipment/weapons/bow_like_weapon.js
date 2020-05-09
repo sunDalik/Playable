@@ -1,16 +1,14 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE} from "../../../enums";
+import {Game} from "../../../game";
 import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, runDestroyAnimation} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {Equipment} from "../equipment";
+import {Weapon} from "../weapon";
 
-export class BowLikeWeapon extends Equipment{
+export class BowLikeWeapon extends Weapon {
     constructor(texture) {
         super();
         this.texture = texture;
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.arrowTexture = WeaponsSpriteSheet["arrow.png"];
         this.range = 3;
     }

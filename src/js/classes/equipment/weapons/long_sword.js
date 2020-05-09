@@ -1,17 +1,16 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {Game} from "../../../game";
+import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
-import {Equipment} from "../equipment";
+import {Weapon} from "../weapon";
 
-export class LongSword  extends Equipment {
+export class LongSword  extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["long_sword.png"];
         this.type = WEAPON_TYPE.LONG_SWORD;
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
         this.name = "Long Sword";
         this.description = "2-range weapon";

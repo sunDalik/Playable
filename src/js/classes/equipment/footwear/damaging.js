@@ -1,4 +1,3 @@
-import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, RARITY} from "../../../enums";
 import {FootwearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";

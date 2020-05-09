@@ -1,19 +1,18 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
 import {floorLevel} from "../../tile_elements/tile_element";
-import {Equipment} from "../equipment";
+import {Weapon} from "../weapon";
 
-export class AssassinDagger extends Equipment {
+export class AssassinDagger extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["assassin_dagger.png"];
         this.type = WEAPON_TYPE.ASSASSIN_DAGGER;
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.SLIDE_ANIMATION_TIME = 5;
         this.FINISH_SLIDE_TIME = 2;
         this.atk = 1.25;

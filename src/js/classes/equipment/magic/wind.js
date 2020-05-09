@@ -1,11 +1,11 @@
-import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, HAZARD_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY,} from "../../../enums";
+import {Game} from "../../../game";
+import {EQUIPMENT_TYPE, HAZARD_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {blowAwayInDirection} from "../../../special_move_logic";
 import {MagicSpriteSheet} from "../../../loader";
-import {ActiveEquipment} from "../active_equipment";
+import {Magic} from "../magic";
 
-export class Wind extends ActiveEquipment  {
+export class Wind extends Magic  {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_wind.png"];
@@ -15,7 +15,6 @@ export class Wind extends ActiveEquipment  {
         this.atk = 0;
         this.radius = 4;
         this.slideTime = 5;
-        this.maxUses = 5;
         this.uses = this.maxUses = 5;
         this.name = "Wind";
         this.description = "Push everybody away from you";

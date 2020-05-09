@@ -10,9 +10,9 @@ import {
 } from "../../../drawing/draw_hud";
 import {otherPlayer} from "../../../utils/game_utils";
 import {MagicSpriteSheet} from "../../../loader";
-import {ActiveEquipment} from "../active_equipment";
+import {Magic} from "../magic";
 
-export class Necromancy extends ActiveEquipment {
+export class Necromancy extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_necromancy.png"];

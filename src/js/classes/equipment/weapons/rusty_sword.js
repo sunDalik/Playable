@@ -1,17 +1,16 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {statueRightHandPoint} from "../../inanimate_objects/statue";
-import {ActiveEquipment} from "../active_equipment";
+import {Weapon} from "../weapon";
 
-export class RustySword extends ActiveEquipment {
+export class RustySword extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["rusty_sword.png"];
         this.type = WEAPON_TYPE.RUSTY_SWORD;
-        this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 2;
         this.uses = this.maxUses = 15;
         this.name = "Rusty Sword";

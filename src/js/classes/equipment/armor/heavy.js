@@ -6,8 +6,8 @@ export class HeavyArmor extends Equipment {
     constructor() {
         super();
         this.texture = ArmorSpriteSheet["heavy.png"];
-        this.type = ARMOR_TYPE.HEAVY;
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
+        this.type = ARMOR_TYPE.HEAVY;
         this.def = 2;
         this.magicPunishment = 0.25;
         this.name = "Heavy Armor";
