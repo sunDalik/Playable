@@ -34,7 +34,7 @@ export class Equipment {
 
     set uses(value) {
         this._uses = value;
-        if (this.wielder) redrawSlotContents(this.wielder, this.wielder.getSlotNameOfItem(this));
+        if (this.wielder) this.wielder.redrawEquipmentSlot(this);
     }
 
     get uses() {

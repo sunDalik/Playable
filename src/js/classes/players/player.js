@@ -14,7 +14,8 @@ import {
 } from "../../enums";
 import {createHeartAnimation, rotate, runDestroyAnimation, shakeScreen, showHelpBox} from "../../animations";
 import {
-    drawMovementKeyBindings, drawOtherHUD,
+    drawMovementKeyBindings,
+    drawOtherHUD,
     redrawHealthForPlayer,
     redrawSecondHand,
     redrawSlotContents,
@@ -179,8 +180,9 @@ export class Player extends AnimatedTileElement {
         let atkBase = this.atkBase + weaponAtk;
         const atkEquipment = [this.headwear, this.armor, this.footwear];
         for (const equipment of atkEquipment) {
-            if (equipment && equipment.atk) {
+            if (equipment) {
                 atkBase += equipment.atk;
+                if (weapon.magical) atkBase += equipment.magAtk;
             }
         }
         if (this.secondHand && this.secondHand.equipmentType !== EQUIPMENT_TYPE.WEAPON && this.secondHand.atk) {

@@ -1,4 +1,4 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {ENEMY_TYPE} from "../../../enums";
 import {Enemy} from "../enemy";
 import {PoisonHazard} from "../../hazards/poison";
@@ -26,8 +26,8 @@ export class Mushroom extends Enemy {
         this.setScaleModifier(0.95);
     }
 
-    afterMapGen() {
-        this.spillPoison(true);
+    immediateReaction() {
+        this.spillPoison();
     }
 
     move() {
@@ -63,10 +63,9 @@ export class Mushroom extends Enemy {
         }
     }
 
-    spillPoison(invisiblePoison = false) {
+    spillPoison() {
         for (const dir of this.getPoisonDirs()) {
             const hazard = new PoisonHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
-            if (invisiblePoison) hazard.visible = false;
             Game.world.addHazard(hazard);
         }
     }
@@ -93,7 +92,7 @@ export class Mushroom extends Enemy {
 
     correctScale() {
         if ((this.direction.x === 1 && this.scale.x < 0) || (this.direction.x === -1 && this.scale.x > 0)) {
-            this.scale.x *= -1
+            this.scale.x *= -1;
         } else if (this.direction.x === 0) {
             const playerDir = Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x);
             if (playerDir === 0 || tileDistance(this, closestPlayer(this)) > 2) this.scale.x *= randomChoice([-1, 1]);

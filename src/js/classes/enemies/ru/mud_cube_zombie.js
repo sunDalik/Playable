@@ -14,8 +14,7 @@ export class MudCubeZombie extends Enemy {
         this.removeShadow();
     }
 
-    move() {
-    }
+    move() {}
 
     updateIntentIcon() {
         super.updateIntentIcon();

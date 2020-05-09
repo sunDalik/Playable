@@ -215,7 +215,7 @@ export function speedrunTimer(delta) {
         if (counter >= 3) { //redraw time every 3rd frame
             Game.time += timeAccumulated;
             timeAccumulated = 0;
-            counter = 0;
+            counter -= 3;
             redrawSpeedRunTime();
         }
     }
@@ -339,10 +339,12 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
             return null;
     }
     if (!slot) return equipment;
-    if (player[slot] && player[slot].nonremoveable) return equipment;
-    if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);
-    for (const eq of player.getEquipment()) {
-        if (eq && eq.onEquipmentDrop) eq.onEquipmentDrop(player, player[slot]);
+    if (player[slot]) {
+        if (player[slot].nonremoveable) return equipment;
+        if (player[slot].onTakeOff) player[slot].onTakeOff(player);
+        for (const eq of player.getEquipment()) {
+            if (eq && eq.onEquipmentDrop) eq.onEquipmentDrop(player, player[slot]);
+        }
     }
     const swappedEquipment = player[slot];
     player[slot] = equipment;
@@ -375,9 +377,9 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
             slot = SLOT.FOOTWEAR;
             break;
     }
-    if (!slot) return null;
-    if (player[slot] && player[slot].nonremoveable) return null;
-    if (player[slot] && player[slot].onTakeOff) player[slot].onTakeOff(player);
+    if (!slot || !player[slot]) return null;
+    if (player[slot].nonremoveable) return null;
+    if (player[slot].onTakeOff) player[slot].onTakeOff(player);
     for (const eq of player.getEquipment()) {
         if (eq && eq.onEquipmentDrop) eq.onEquipmentDrop(player, player[slot]);
     }

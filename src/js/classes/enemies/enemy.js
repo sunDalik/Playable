@@ -37,6 +37,8 @@ export class Enemy extends AnimatedTileElement {
         this.setOwnZIndex(Z_INDEXES.ENEMY);
     }
 
+    move(){}
+
     correctZIndex() {
         super.correctZIndex();
         if (this.intentIcon) this.intentIcon.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.INTENT;
