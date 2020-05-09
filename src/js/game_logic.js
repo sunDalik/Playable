@@ -196,6 +196,8 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
             Game.player.cancellable = true;
             Game.player2.cancellable = true;
             if (Game.time === 0) {
+                counter = 0;
+                timeAccumulated = 0;
                 Game.app.ticker.remove(speedrunTimer);
                 Game.app.ticker.add(speedrunTimer);
             }
@@ -206,11 +208,11 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
 let counter = 0;
 let timeAccumulated = 0;
 
-export function speedrunTimer() {
+export function speedrunTimer(delta) {
     if (!Game.paused && !Game.unplayable && !(Game.player.dead && Game.player2.dead)) {
-        counter++;
+        counter += delta;
         timeAccumulated += Game.app.ticker.elapsedMS;
-        if (counter >= 2) { //redraw time every other frame
+        if (counter >= 3) { //redraw time every 3rd frame
             Game.time += timeAccumulated;
             timeAccumulated = 0;
             counter = 0;

@@ -436,7 +436,7 @@ export function redrawSpeedRunTime() {
     removeAllChildrenFromContainer(container, true);
     if (Game.showTime) {
         const time = getTimeFromMs(Game.time);
-        const text = new PIXI.Text(`Time: ${padTime(time.minutes, 2)}:${padTime(time.seconds, 2)}.${padTime(time.ms, 3)}`, HUDTextStyleTitle);
+        const text = new PIXI.Text(`Time: ${padTime(time.minutes, 1)}:${padTime(time.seconds, 2)}.${padTime(Math.floor(time.ms / 10), 2)}`, HUDTextStyleTitle);
         text.position.set(slotBorderOffsetX, Game.app.renderer.screen.height - text.height - miniMapBottomOffset);
         container.addChild(text);
     }
