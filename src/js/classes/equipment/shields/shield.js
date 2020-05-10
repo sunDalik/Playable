@@ -10,7 +10,7 @@ export class Shield extends AbstractShield {
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
         this.uses = this.maxUses = 2;
         this.name = "Shield";
-        this.description = "Blocks incoming attacks";
+        this.description = "Automatically blocks incoming attacks";
         this.rarity = RARITY.C;
     }
 }

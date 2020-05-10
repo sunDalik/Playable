@@ -13,7 +13,7 @@ export class PawnSwords extends Weapon {
         this.type = WEAPON_TYPE.PAWN_SWORDS;
         this.atk = 1;
         this.name = "Pawn Swords";
-        this.description = "Attack diagonally";
+        this.description = "Attacks two diagonal enemies";
         this.rarity = RARITY.C;
     }
 

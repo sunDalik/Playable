@@ -11,7 +11,7 @@ export class DivineBow extends PiercingBowLikeWeapon {
         //atk 1 or range 4? hmmmmm
         this.atk = 1;
         this.name = "Divine Bow";
-        this.description = "Piercing bow from heaven";
+        this.description = "Range 3\nAttack 1\nPiercing";
         this.rarity = RARITY.S;
     }
 

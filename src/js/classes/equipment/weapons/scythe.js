@@ -13,7 +13,7 @@ export class Scythe extends Weapon  {
         this.type = WEAPON_TYPE.SCYTHE;
         this.atk = 1;
         this.name = "Scythe";
-        this.description = "Death to them all";
+        this.description = "Attacks 5 enemies in front of you";
         this.rarity = RARITY.A;
     }
 

@@ -10,7 +10,7 @@ export class Crossbow extends BowLikeWeapon {
         this.type = WEAPON_TYPE.CROSSBOW;
         this.atk = 0.75;
         this.name = "Crossbow";
-        this.description = "Ranged weapon with no penalties";
+        this.description = "Range 3\nAttack 0.75";
         this.rarity = RARITY.A;
     }
 

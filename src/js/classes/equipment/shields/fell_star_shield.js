@@ -18,7 +18,7 @@ export class FellStarShield extends AbstractShield {
         this.shieldAtk = 3;
         this.usedOnThisTurn = false;
         this.name = "The Fell Star Shield";
-        this.description = "Radiates beams on block";
+        this.description = "Automatically blocks incoming attacks\nRadiates beams on block";
         this.rarity = RARITY.A;
     }
 

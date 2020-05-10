@@ -18,7 +18,7 @@ export class BookOfThunders extends MagicBook {
         this.primaryColor = 0xdec356;
         this.holdTime = 20;
         this.name = "Book of Thunders";
-        this.description = "Cast single thunders in a large area";
+        this.description = "Casts a thunder on the closest enemy in a direction\nHas enormous area of effect";
         this.rarity = RARITY.A;
         this.range = 5;
     }

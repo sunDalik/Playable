@@ -11,7 +11,7 @@ export class WizardRobe extends Equipment {
         this.magUses = 1;
         this.magAtk = 1;
         this.name = "Wizard Robe";
-        this.description = "+1 magic use, +1 magic attack";
+        this.description = "+1 magic use\n+1 magic attack";
         this.rarity = RARITY.A;
     }
 

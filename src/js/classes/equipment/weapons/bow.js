@@ -9,7 +9,7 @@ export class Bow extends BowLikeWeapon {
         this.type = WEAPON_TYPE.BOW;
         this.atk = 0.75;
         this.name = "Bow";
-        this.description = "Long range but weak in close combat";
+        this.description = "Range 3\nAttack = 0.25 * distance to target\n";
         this.rarity = RARITY.B;
     }
 

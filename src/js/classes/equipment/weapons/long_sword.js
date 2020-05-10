@@ -13,7 +13,7 @@ export class LongSword  extends Weapon {
         this.type = WEAPON_TYPE.LONG_SWORD;
         this.atk = 1;
         this.name = "Long Sword";
-        this.description = "2-range weapon";
+        this.description = "Range 2\nAttack 1";
         this.rarity = RARITY.B;
     }
 

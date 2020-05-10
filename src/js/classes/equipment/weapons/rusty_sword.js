@@ -14,7 +14,7 @@ export class RustySword extends Weapon {
         this.atk = 2;
         this.uses = this.maxUses = 15;
         this.name = "Rusty Sword";
-        this.description = "Powerful, but breakable";
+        this.description = `Attack 2\nBreaks after ${this.maxUses} uses`;
         this.rarity = RARITY.UNIQUE;
     }
 

@@ -17,7 +17,7 @@ export class BookOfWebs extends MagicBook {
         this.primaryColor = 0x3f3f3f;
         this.holdTime = 20;
         this.name = "Book of Webs";
-        this.description = "Cast a single huge web";
+        this.description = "Range 6\nAttack 2\nCasts 3 web lines";
         this.rarity = RARITY.A;
         this.range = 6;
         this.diagonalRange = 4;

@@ -11,7 +11,7 @@ export class HeavyArmor extends Equipment {
         this.def = 2;
         this.magicPunishment = 0.25;
         this.name = "Heavy Armor";
-        this.description = "+2 defense\nVulnerability to magic";
+        this.description = "+2 defense\nYou take damage whenever you cast magic";
         this.rarity = RARITY.A;
     }
 

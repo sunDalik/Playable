@@ -11,7 +11,7 @@ export class SpikyShield extends AbstractShield {
         this.shieldAtk = 1;
         this.uses = this.maxUses = 3;
         this.name = "Spiky Shield";
-        this.description = "Blocking attacks deals damage to enemies";
+        this.description = "Automatically blocks incoming attacks\nDamages attackers on block";
         this.rarity = RARITY.B;
     }
 

@@ -11,7 +11,7 @@ export class Torch extends Equipment{
         this.equipmentType = EQUIPMENT_TYPE.TOOL;
         this.lightSpread = 3;
         this.name = "Torch";
-        this.description = "You are safe now";
+        this.description = "Provides light in the Dark Tunnel";
         this.rarity = RARITY.UNIQUE;
     }
 

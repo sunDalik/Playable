@@ -9,7 +9,7 @@ export class AdventurerBoots extends Equipment {
         this.type = FOOTWEAR_TYPE.ADVENTURER;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
         this.name = "Adventurer Boots";
-        this.description = "Immunity to poison";
+        this.description = "Immunity to poison hazards";
         this.rarity = RARITY.C;
         this.poisonImmunity = true;
     }

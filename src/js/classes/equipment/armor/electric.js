@@ -11,7 +11,7 @@ export class ElectricArmor extends Equipment {
         this.def = 0.25;
         this.atk = 0.25;
         this.name = "Electric Armor";
-        this.description = "+0.25 atk, +0.25 def\nTake half damage from electricity";
+        this.description = "+0.25 attack\n+0.25 defense\nTake half damage from electric bullets";
         this.rarity = RARITY.B;
         this.electricityImmunity = true;
     }

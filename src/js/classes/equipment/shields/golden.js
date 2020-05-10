@@ -10,7 +10,7 @@ export class GoldenShield extends AbstractShield {
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
         this.uses = this.maxUses = 6;
         this.name = "Golden Shield";
-        this.description = "Blocks incoming attacks";
+        this.description = "Automatically blocks incoming attacks";
         this.rarity = RARITY.S;
     }
 }

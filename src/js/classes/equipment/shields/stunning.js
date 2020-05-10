@@ -10,7 +10,7 @@ export class StunningShield extends AbstractShield {
         this.equipmentType = EQUIPMENT_TYPE.SHIELD;
         this.uses = this.maxUses = 3;
         this.name = "Stunning Shield";
-        this.description = "Blocking attacks stuns enemies";
+        this.description = "Automatically blocks incoming attacks\nStuns attackers on block";
         this.rarity = RARITY.B;
     }
 

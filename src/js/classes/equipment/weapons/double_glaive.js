@@ -15,7 +15,7 @@ export class DoubleGlaive  extends Weapon {
         this.type = WEAPON_TYPE.DOUBLE_GLAIVE;
         this.atk = 1;
         this.name = "Double glaive";
-        this.description = "1 atk at range 2 or 2 atk at range 1";
+        this.description = "Range 2\nAttack 1\nDouble attack in close combat";
         this.rarity = RARITY.A;
         this.scaleModifier = 1.2
     }

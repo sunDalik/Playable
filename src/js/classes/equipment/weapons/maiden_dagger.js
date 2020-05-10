@@ -14,7 +14,7 @@ export class MaidenDagger extends Weapon  {
         this.type = WEAPON_TYPE.MAIDEN_DAGGER;
         this.atk = 1.25;
         this.name = "Maiden's Dagger";
-        this.description = "1.25 atk\nBecomes more powerful with its pair";
+        this.description = "Attack 1.25\nIf you wield two of these, it attacks 3 enemies in front of you, moves you and deals 2 damage to the middle enemy";
         this.rarity = RARITY.B;
     }
 

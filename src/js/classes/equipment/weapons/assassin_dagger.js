@@ -17,7 +17,7 @@ export class AssassinDagger extends Weapon {
         this.FINISH_SLIDE_TIME = 2;
         this.atk = 1.25;
         this.name = "Assassin's Dagger";
-        this.description = "Kill with style";
+        this.description = "Attack 1.25\nIf there is a space behind target, teleports you behind it and gives 1 stun. Otherwise attacks like a knife";
         this.rarity = RARITY.S;
     }
 
@@ -29,7 +29,7 @@ export class AssassinDagger extends Weapon {
             if (isRelativelyEmpty(wielder.tilePosition.x + tileDirX * 2, wielder.tilePosition.y + tileDirY * 2)) {
                 createAnimation(this);
                 wielder.slide(tileDirX * 2, tileDirY * 2, null, null, this.SLIDE_ANIMATION_TIME);
-                if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun = 1;
+                if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun++;
             } else {
                 createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4, 35, 1);
             }

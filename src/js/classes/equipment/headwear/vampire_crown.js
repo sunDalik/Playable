@@ -13,7 +13,7 @@ export class VampireCrown extends Equipment {
         this.killsMade = 0;
         this.healAmount = 1;
         this.name = "Vampire Crown";
-        this.description = "Every 10th kill heals";
+        this.description = "Every 10th kill heals you by 1 HP";
         this.rarity = RARITY.B;
     }
 

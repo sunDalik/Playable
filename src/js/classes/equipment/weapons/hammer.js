@@ -13,7 +13,7 @@ export class Hammer  extends Weapon {
         this.type = WEAPON_TYPE.HAMMER;
         this.atk = 0.75;
         this.name = "Hammer";
-        this.description = "Stuns enemies";
+        this.description = "Attack 0.75\nApplies stun";
         this.rarity = RARITY.C;
     }
 

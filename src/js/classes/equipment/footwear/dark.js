@@ -10,7 +10,7 @@ export class DarkBoots extends Equipment {
         this.type = FOOTWEAR_TYPE.DARK;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
         this.name = "Dark Boots";
-        this.description = "Turn hazards to your will...";
+        this.description = "Immunity to hazards\nHazards turn to dark hazards when you step on them\nDark hazards damage both enemies and players";
         this.rarity = RARITY.B;
         this.poisonImmunity = true;
         this.fireImmunity = true;

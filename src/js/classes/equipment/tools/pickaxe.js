@@ -14,7 +14,7 @@ export class Pickaxe extends Weapon{
         this.equipmentType = EQUIPMENT_TYPE.WEAPON;
         this.atk = 1;
         this.name = "Pickaxe";
-        this.description = "Dig walls";
+        this.description = "Can dig walls and attack enemies\nCan dig even if put in the \"Extra\" slot";
         this.rarity = RARITY.B;
     }
 

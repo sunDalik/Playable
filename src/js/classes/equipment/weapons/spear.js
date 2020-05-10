@@ -13,7 +13,7 @@ export class Spear extends Weapon {
         this.type = WEAPON_TYPE.SPEAR;
         this.atk = 0.75;
         this.name = "Spear";
-        this.description = "It isn't well suitable for a close-range combat...";
+        this.description = "Range 2\nAttack 0.75 at full range\nAttack 0.25 in close combat";
         this.rarity = RARITY.UNIQUE;
     }
 
