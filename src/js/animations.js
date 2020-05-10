@@ -1,6 +1,6 @@
 import {Game} from "./game";
 import * as PIXI from "pixi.js";
-import {randomInt, randomChoice} from "./utils/random_utils";
+import {randomChoice, randomInt} from "./utils/random_utils";
 import {ITEM_OUTLINE_FILTER} from "./filters";
 import {HUDTextStyle, HUDTextStyleTitle, miniMapBottomOffset} from "./drawing/draw_constants";
 import {HUD} from "./drawing/hud_object";
@@ -446,24 +446,31 @@ export function showHelpBox(item) {
 
     Game.itemHelp = new PIXI.Graphics();
     Game.itemHelp.beginFill(0x000000);
-    Game.itemHelp.lineStyle(3, 0xFFFFFF, 0.7);
-    Game.itemHelp.drawRoundedRect(0, 0, 600, 100, 6);
+    Game.itemHelp.lineStyle(3, 0xFFFFFF, 0.8, 0);
+    Game.itemHelp.drawRoundedRect(0, 0, 550, 120, 6);
     const itemSprite = new PIXI.Sprite(item.texture);
     itemSprite.filters = [ITEM_OUTLINE_FILTER];
     itemSprite.width = itemSprite.height = 65;
-    const itemOffsetX = 40;
-    const itemOffsetY = 15;
-    itemSprite.position.set(40, itemOffsetY);
+    const itemOffsetX = 30;
+    const topBias = 4;
+    const itemOffsetY = (Game.itemHelp.height - itemSprite.height) / 2 - topBias;
+    itemSprite.position.set(itemOffsetX, itemOffsetY);
     Game.itemHelp.addChild(itemSprite);
-    const textOffsetX = itemOffsetX + itemSprite.width;
+
+    const textOffsetX = itemSprite.width + itemOffsetX * 1.5;
+    const textSpace = Game.itemHelp.width - textOffsetX - itemOffsetX * 0.5;
     const nameText = new PIXI.Text(item.name, HUDTextStyleTitle);
+    const descriptionText = new PIXI.Text(item.description, HUDTextStyle);
+    nameText.anchor.x = descriptionText.anchor.x = 0.5;
+    nameText.style.wordWrap = descriptionText.style.wordWrap = true;
+    nameText.style.wordWrapWidth = descriptionText.style.wordWrapWidth = textSpace;
     nameText.style.fill = item.rarity.color;
     nameText.fontSize += 3;
-    nameText.position.set(textOffsetX + (Game.itemHelp.width - textOffsetX) / 2 - nameText.width / 2, itemOffsetY - 4);
+    const textBetweenOffset = 6;
+    const textOffsetY = (Game.itemHelp.height - (nameText.height + descriptionText.height + textBetweenOffset)) / 2 - topBias;
+    nameText.position.set(textOffsetX + textSpace / 2, textOffsetY);
+    descriptionText.position.set(textOffsetX + textSpace / 2, nameText.position.y + nameText.height + textBetweenOffset);
     Game.itemHelp.addChild(nameText);
-    const descriptionText = new PIXI.Text(item.description, HUDTextStyle);
-    descriptionText.position.set(textOffsetX + (Game.itemHelp.width - textOffsetX) / 2 - descriptionText.width / 2,
-        nameText.position.y + nameText.height + 10);
     Game.itemHelp.addChild(descriptionText);
 
     HUD.addChild(Game.itemHelp);
@@ -475,7 +482,6 @@ export function showHelpBox(item) {
     const endChange = -Game.itemHelp.height - miniMapBottomOffset;
     const initTurns = Game.turns;
     const stayTurns = 2;
-    let placed = false;
     let counter = 0;
 
     const animation = (delta) => {
@@ -489,11 +495,9 @@ export function showHelpBox(item) {
         }
         if (counter < slideTime) {
             Game.itemHelp.position.y = startVal + easeOutQuad(counter / slideTime) * endChange;
-        } else if (counter >= slideTime && counter < slideTime + slideTime) {
+        } else if (counter >= slideTime && counter < slideTime + slideTime && Game.turns >= initTurns + stayTurns) {
             Game.itemHelp.position.y = startVal + endChange - easeInQuad((counter - slideTime) / slideTime) * endChange;
-        }
-        if (counter >= slideTime && !placed) {
-            placed = true;
+        } else {
             Game.itemHelp.position.y = startVal + endChange;
         }
         if (counter >= slideTime + slideTime) {

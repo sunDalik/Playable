@@ -10,8 +10,8 @@ export class SeerCirclet extends Equipment {
     constructor() {
         super();
         this.texture = HeadWearSpriteSheet["seer_circlet.png"];
-        this.type = HEAD_TYPE.SEER_CIRCLET;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
+        this.type = HEAD_TYPE.SEER_CIRCLET;
         this.name = "Seer Circlet";
         this.description = "See your future";
         this.rarity = RARITY.A;
