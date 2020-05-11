@@ -432,9 +432,9 @@ function generateInanimates() {
     const obelisksAmount = 1;
     const statuesAmount = randomInt(1, 2);
     chestsAmount = Game.stage === STAGE.DARK_TUNNEL ? 3 - statuesAmount : 4 - statuesAmount;
+    placeInanimate(placeObelisk, obelisksAmount);
     placeInanimate(placeChest, chestsAmount);
     placeInanimate(placeStatue, statuesAmount);
-    placeInanimate(placeObelisk, obelisksAmount);
 }
 
 function placeInanimate(placeMethod, amount) {
@@ -458,15 +458,18 @@ function placeStatue(room) {
     return placeChestOrStatue(room, false);
 }
 
+// sometimes not all chests/statues succeed to generate!!!!!!!!!!!
+// todo fix somehow!!!!!!!!!!!!!!!!
 function placeChestOrStatue(room, isChest) {
     let attempt = 0;
-    while (attempt++ < 200) {
+    while (attempt++ < 300) {
         const point = {
             x: randomInt(room.offsetX + 1, room.offsetX + room.width - 2),
             y: randomInt(room.offsetY + 1, room.offsetY + room.height - 3)
         };
         if (level[point.y][point.x].tileType === TILE_TYPE.NONE) {
             if (!settings.openSpace && isNearEntrance(point, room)) continue;
+            if (otherInanimatesNear(point)) continue;
             let good = false;
             if (level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
                 && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL) {
@@ -495,7 +498,15 @@ function placeChestOrStatue(room, isChest) {
     return false;
 }
 
-//doesnt sometimes work????????? I dunno
+function otherInanimatesNear(point) {
+    for (const dir of getCardinalDirections()) {
+        if (level[point.y + dir.y][point.x + dir.x].entity && level[point.y + dir.y][point.x + dir.x].entity.role === ROLE.INANIMATE) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function ensureInanimateSurroundings(x, y) {
     if (level[y][x - 1].tileType === TILE_TYPE.NONE && level[y + 1][x - 1].tileType === TILE_TYPE.WALL) {
         level[y + 1][x - 1].tileType = TILE_TYPE.NONE;
