@@ -451,6 +451,7 @@ export class Player extends AnimatedTileElement {
             if (eq && eq.onEquipmentReceive) eq.onEquipmentReceive(this, magic);
         }
         if (magic.onWear) magic.onWear(this);
+        this.redrawEquipmentSlot(magic);
         if (showHelp) showHelpBox(magic);
     }
 
@@ -566,6 +567,7 @@ export class Player extends AnimatedTileElement {
         if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) {
             if (this.weapon === null || this.secondHand.type !== this.weapon.type) {
                 [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
+                redrawSlotContents(this, SLOT.WEAPON);
                 redrawSlotContents(this, SLOT.EXTRA);
                 return true;
             } else if (this.weapon && this.weapon.type === this.secondHand.type && this.secondHand.focus && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {
@@ -689,17 +691,7 @@ export class Player extends AnimatedTileElement {
 
     definePlayerSlots() {
         for (const slot of Object.values(SLOT)) {
-            const privateSlot = "_" + slot;
-            this[privateSlot] = null;
-            Object.defineProperty(this, slot, {
-                set(item) {
-                    this[privateSlot] = item;
-                    redrawSlotContents(this, slot);
-                },
-                get() {
-                    return this[privateSlot];
-                }
-            });
+            this[slot] = null;
         }
     }
 }

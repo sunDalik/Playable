@@ -2,7 +2,13 @@ import {Game} from "./game";
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup";
 import {ACHIEVEMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, SLOT, STAGE, TILE_TYPE} from "./enums";
-import {drawInteractionKeys, redrawBag, redrawKeysAmount, redrawSpeedRunTime} from "./drawing/draw_hud";
+import {
+    drawInteractionKeys,
+    redrawBag,
+    redrawKeysAmount, redrawSlotContents,
+    redrawSlotContentsForPlayer,
+    redrawSpeedRunTime
+} from "./drawing/draw_hud";
 import {createKissHeartAnimation, fadeOutAndDie, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
 import {updateChain} from "./drawing/draw_dunno";
@@ -324,6 +330,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
             } else {
                 const swappedItem = player.bag;
                 player.bag = equipment;
+                redrawSlotContents(player, SLOT.BAG); //???
                 if (showHelp) showHelpBox(player.bag);
                 return swappedItem;
             }
@@ -353,6 +360,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
     for (const eq of player.getEquipment()) {
         if (eq && eq.onEquipmentReceive) eq.onEquipmentReceive(player, equipment);
     }
+    redrawSlotContents(player, slot);
     if (showHelp) showHelpBox(player[slot]);
     return swappedEquipment;
 }
@@ -386,6 +394,7 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
     }
     const removedEquipment = player[slot];
     player[slot] = null;
+    redrawSlotContents(player, slot);
     return removedEquipment;
 }
 
