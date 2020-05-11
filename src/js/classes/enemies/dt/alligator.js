@@ -213,19 +213,20 @@ export class Alligator extends Enemy {
                     movementOptions = getChasingOptions(this, closestPlayer(this));
                     if (movementOptions.length === 0) movementOptions = getRelativelyEmptyLitCardinalDirections(this);
                 } else movementOptions = getRelativelyEmptyLitCardinalDirections(this);
-            }
-            this.triggeredDirection = null;
-            if (movementOptions.length !== 0) {
-                this.direction = randomChoice(movementOptions);
-                this.updateTexture();
-                const player = getPlayerOnTile(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
-                if (player) {
-                    this.bump(this.direction.x, this.direction.y);
-                    player.damage(this.atk, this, true);
-                } else {
-                    this.step(this.direction.x, this.direction.y);
+
+                this.triggeredDirection = null;
+                if (movementOptions.length !== 0) {
+                    this.direction = randomChoice(movementOptions);
+                    this.updateTexture();
+                    const player = getPlayerOnTile(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
+                    if (player) {
+                        this.bump(this.direction.x, this.direction.y);
+                        player.damage(this.atk, this, true);
+                    } else {
+                        this.step(this.direction.x, this.direction.y);
+                    }
+                    this.currentTurnDelay = this.turnDelay;
                 }
-                this.currentTurnDelay = this.turnDelay;
             }
         } else
             this.currentTurnDelay--;

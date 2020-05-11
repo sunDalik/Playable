@@ -8,10 +8,9 @@ export class Equipment {
         this.name = "NAME";
         this.description = "DESCRIPTION";
         this.rarity = RARITY.C;
-        this.wielder = null;
 
         // if maxUses <= 0 this means the item is NOT active and cannot gain uses/maxUses increases
-        this._uses = this.maxUses = 0;
+        this.uses = this.maxUses = 0;
 
         // immunity to hazards and bullets in some way
         this.poisonImmunity = false;
@@ -32,49 +31,40 @@ export class Equipment {
         this.nonremoveable = false;
     }
 
-    set uses(value) {
-        this._uses = value;
-        if (this.wielder) this.wielder.redrawEquipmentSlot(this);
-    }
-
-    get uses() {
-        return this._uses;
-    }
-
     //executes when wielder picks up this item
-    onWear() {
-        if (this.poisonImmunity) this.wielder.poisonImmunity++;
-        if (this.fireImmunity) this.wielder.fireImmunity++;
-        if (this.electricityImmunity) this.wielder.electricityImmunity++;
+    onWear(wielder) {
+        if (this.poisonImmunity) wielder.poisonImmunity++;
+        if (this.fireImmunity) wielder.fireImmunity++;
+        if (this.electricityImmunity) wielder.electricityImmunity++;
     }
 
     //executes when wielder drops this item
-    onTakeOff() {
-        if (this.poisonImmunity) this.wielder.poisonImmunity--;
-        if (this.fireImmunity) this.wielder.fireImmunity--;
-        if (this.electricityImmunity) this.wielder.electricityImmunity--;
+    onTakeOff(wielder) {
+        if (this.poisonImmunity) wielder.poisonImmunity--;
+        if (this.fireImmunity) wielder.fireImmunity--;
+        if (this.electricityImmunity) wielder.electricityImmunity--;
     }
 
     //executes AFTER enemy turn
-    onNewTurn() {}
+    onNewTurn(wielder) {}
 
     //executes when wielder changes his tilePosition (does step or slide)
-    onMove() {}
+    onMove(wielder) {}
 
     //executes after wielder attacks (double attacks don't count... or should they?)
-    afterAttack(dirX, dirY) {}
+    afterAttack(wielder, dirX, dirY) {}
 
     //executes whenever wielder kills an enemy
-    onKill() {}
+    onKill(wielder) {}
 
     //executes when the wielder dies
-    onDeath() {}
+    onDeath(wielder) {}
 
     //executes whenever the wielder is revived with necromancy
-    onRevive() {}
+    onRevive(wielder) {}
 
     //executes at the start of every new level
-    onNextLevel() {}
+    onNextLevel(wielder) {}
 
     //executes whenever wielder receives new equipment (this one included)
     onEquipmentReceive(wielder, equipment) {}

@@ -1,9 +1,9 @@
-import {Game} from "../../../game"
-import {ENEMY_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, RARITY} from "../../../enums";
+import {Game} from "../../../game";
+import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, RARITY} from "../../../enums";
 import {FootwearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 
-export class OldBalletShoes extends Equipment{
+export class OldBalletShoes extends Equipment {
     constructor() {
         super();
         this.texture = FootwearSpriteSheet["old_ballet_shoes.png"];
@@ -19,8 +19,7 @@ export class OldBalletShoes extends Equipment{
     onMove(wielder) {
         for (const enemy of Game.enemies) {
             if (enemy.visible) {
-                if (enemy.type === ENEMY_TYPE.SPIDER || enemy.type === ENEMY_TYPE.SPIDER_GRAY
-                    || enemy.type === ENEMY_TYPE.SPIDER_GREEN || enemy.type === ENEMY_TYPE.SPIDER_RED) {
+                if (enemy.spiderLike) {
                     enemy.stun++;
                 }
             }

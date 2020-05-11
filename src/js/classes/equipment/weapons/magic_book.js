@@ -46,7 +46,7 @@ export class MagicBook extends Weapon {
             }
             this.texture = Game.app.renderer.generateTexture(container);
         }
-        redrawSlotContents(wielder, wielder.getSlotNameOfItem(this));
+        wielder.redrawEquipmentSlot(this);
     }
 
     focus(wielder, createText = true) {

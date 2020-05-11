@@ -13,8 +13,8 @@ export class SmallHealingPotion extends BagEquipment {
         this.rarity = RARITY.C;
     }
 
-    useItem() {
+    useItem(wielder) {
         super.useItem();
-        this.wielder.heal(this.healAmount);
+        wielder.heal(this.healAmount);
     }
 }

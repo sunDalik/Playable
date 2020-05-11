@@ -21,6 +21,7 @@ export class Spider extends Enemy {
         this.shadowInside = true;
         this.STEP_ANIMATION_TIME = 6;
         this.BUMP_ANIMATION_TIME = 12;
+        this.spiderLike = true;
         this.setScaleModifier(1.0625);
     }
 

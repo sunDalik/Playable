@@ -8,15 +8,7 @@ export class BagEquipment extends Equipment {
         this.amount = 1;
     }
 
-    set amount(value) {
-        this.uses = value;
-    }
-
-    get amount() {
-        return this.uses;
-    }
-
-    useItem() {
+    useItem(wielder) {
         this.amount--;
     }
 }

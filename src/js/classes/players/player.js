@@ -147,7 +147,7 @@ export class Player extends AnimatedTileElement {
     castMagic(magic) {
         if (otherPlayer(this).charging || this.charging) return false;
         if (magic) {
-            if (magic.cast() === false) return false;
+            if (magic.cast(this) === false) return false;
             for (const eq of this.getEquipment()) {
                 if (eq && eq.onMagicCast) eq.onMagicCast(this);
             }
@@ -693,9 +693,7 @@ export class Player extends AnimatedTileElement {
             this[privateSlot] = null;
             Object.defineProperty(this, slot, {
                 set(item) {
-                    if (this[privateSlot]) this[privateSlot].wielder = null;
                     this[privateSlot] = item;
-                    if (item) item.wielder = this;
                     redrawSlotContents(this, slot);
                 },
                 get() {

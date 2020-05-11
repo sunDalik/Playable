@@ -8,5 +8,5 @@ export class Magic extends Equipment {
         this.magical = true;
     }
 
-    cast() {}
+    cast(wielder) {}
 }

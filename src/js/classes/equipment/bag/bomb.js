@@ -26,10 +26,10 @@ export class Bomb extends BagEquipment {
         this.rarity = RARITY.C;
     }
 
-    useItem() {
+    useItem(wielder) {
         super.useItem();
         const placedBomb = new Bomb();
-        placedBomb.sprite = new ShadowTileElement(BagSpriteSheet["bomb_ticking.png"], this.wielder.tilePosition.x, this.wielder.tilePosition.y);
+        placedBomb.sprite = new ShadowTileElement(BagSpriteSheet["bomb_ticking.png"], wielder.tilePosition.x, wielder.tilePosition.y);
         Game.world.addChild(placedBomb.sprite);
         Game.updateList.push(placedBomb);
     }
