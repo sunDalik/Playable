@@ -4,7 +4,7 @@ import {Enemy} from "../enemy";
 import {PoisonHazard} from "../../hazards/poison";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {get8Directions, getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
-import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, getAngleForDirection, tileDistance} from "../../../utils/game_utils";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {moveEnemyInDirection} from "../../../enemy_movement_ai";
 
@@ -117,7 +117,7 @@ export class Mushroom extends Enemy {
             this.intentIcon.angle = 0;
         } else if (this.walking) {
             this.intentIcon.texture = IntentsSpriteSheet["arrow_right.png"];
-            this.intentIcon.angle = this.getArrowRightAngleForDirection(this.direction);
+            this.intentIcon.angle = getAngleForDirection(this.direction);
         } else if (this.standing) {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else if (this.currentPoisonDelay === 0) {

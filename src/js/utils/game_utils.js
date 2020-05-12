@@ -1,5 +1,6 @@
 import {Game} from "../game";
 import {randomChoice} from "./random_utils";
+import {toDegrees} from "./math_utils";
 
 export function otherPlayer(player) {
     if (player === Game.player) return Game.player2;
@@ -70,4 +71,16 @@ export function getTimeFromMs(ms) {
     ms -= seconds * 1000;
     seconds -= minutes * 60;
     return {minutes: minutes, seconds: seconds, ms: Math.floor(ms)};
+}
+
+// add angle if your image doesn't look to right
+export function getAngleForDirection(direction, addAngle = 0) {
+    let newAngle;
+    if (direction.x === 0) {
+        newAngle = Math.sign(direction.y) === 1 ? 90 : 270;
+    } else {
+        newAngle = toDegrees(Math.atan(direction.y / direction.x));
+        if (direction.x <= 0) newAngle += 180;
+    }
+    return newAngle + addAngle;
 }

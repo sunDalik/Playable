@@ -1,9 +1,7 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Enemy} from "../enemy";
 import {DIRECTIONS, ENEMY_TYPE} from "../../../enums";
 import {getPlayerOnTile} from "../../../map_checks";
-import {createEnemyAttackTile} from "../../../animations";
-import {TileElement} from "../../tile_elements/tile_element";
+import {createEnemyAttackTile, createSpikeAnimation} from "../../../animations";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Star extends Enemy {
@@ -97,43 +95,11 @@ export class Star extends Enemy {
 
         createEnemyAttackTile({x: attackPositionX, y: attackPositionY}, 16, 0.3);
         if (Math.abs(tileOffsetX) + Math.abs(tileOffsetY) >= 2) return;
-        this.createSpikeAnimation(tileOffsetX, tileOffsetY)
+        this.createSpikeAnimation(tileOffsetX, tileOffsetY);
     }
 
     createSpikeAnimation(offsetX, offsetY) {
-        let prefix = this.type === ENEMY_TYPE.STAR ? "star" : "star_b";
-        const attack = new TileElement(FCEnemiesSpriteSheet[`${prefix}_spike.png`], this.tilePosition.x, this.tilePosition.y);
-        attack.position.set(this.getTilePositionX(), this.getTilePositionY());
-        attack.zIndex = this.zIndex - 1;
-        attack.anchor.set(0, 0.5);
-        attack.angle = this.getArrowRightAngleForDirection({x: Math.sign(offsetX), y: Math.sign(offsetY)});
-        Game.world.addChild(attack);
-        const animationTime = 10;
-        let sizeMod;
-        if (Math.max(Math.abs(offsetX), Math.abs(offsetY)) === 1) sizeMod = 1.5;
-        else sizeMod = 3.5;
-        const widthStep = attack.width * sizeMod / (animationTime / 2);
-        attack.width = 1;
-        const delay = 6;
-        let counter = 0;
-
-        const animation = (delta) => {
-            if (Game.paused) return;
-            counter += delta;
-            if (counter < animationTime / 2) {
-                attack.width += widthStep;
-            } else if (counter < animationTime / 2 + delay) {
-                attack.width = widthStep * animationTime / 2;
-            } else if (counter >= animationTime / 2 + delay) {
-                attack.width -= widthStep;
-                if (attack.width <= 0) attack.width = 1;
-            }
-            if (counter >= animationTime + delay) {
-                Game.app.ticker.remove(animation);
-                Game.world.removeChild(attack);
-            }
-        };
-        Game.app.ticker.add(animation);
+        createSpikeAnimation(this, offsetX, offsetY, this.type === ENEMY_TYPE.STAR ? 0xa4d352 : 0xdf403c);
     }
 
     updateIntentIcon() {

@@ -7,7 +7,7 @@ import {getRandomValue, randomChoice} from "../../../utils/random_utils";
 import {PoisonHazard} from "../../hazards/poison";
 import {ElectricBullet} from "../bullets/electric";
 import {FireBullet} from "../bullets/fire";
-import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, getAngleForDirection, tileDistance} from "../../../utils/game_utils";
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {Rabbit} from "./rabbit";
 import {moveEnemyInDirection} from "../../../enemy_movement_ai";
@@ -328,12 +328,12 @@ export class Alligator extends Enemy {
             }
         } else if (this.alligatorType === undefined && this.prey && !this.prey.dead) {
             this.intentIcon.texture = IntentsSpriteSheet["arrow_right.png"];
-            this.intentIcon.angle = this.getArrowRightAngleForDirection(this.direction);
+            this.intentIcon.angle = getAngleForDirection(this.direction);
         } else if (this.currentTurnDelay > 0) {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else if (this.triggeredDirection) {
             this.intentIcon.texture = IntentsSpriteSheet["arrow_right.png"];
-            this.intentIcon.angle = this.getArrowRightAngleForDirection(this.triggeredDirection);
+            this.intentIcon.angle = getAngleForDirection(this.triggeredDirection);
         } else if (tileDistance(this, closestPlayer(this)) <= 2) {
             this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
         } else {

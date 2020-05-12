@@ -274,17 +274,6 @@ export class Enemy extends AnimatedTileElement {
         if (this.intentIcon2) this.intentIcon2.visible = false;
     }
 
-    getArrowRightAngleForDirection(direction) {
-        if (direction.x === -1 && direction.y === 0) return 180;
-        else if (direction.x === 1 && direction.y === 0) return 0;
-        else if (direction.x === 0 && direction.y === -1) return -90;
-        else if (direction.x === 0 && direction.y === 1) return 90;
-        else if (direction.x === 1 && direction.y === 1) return 45;
-        else if (direction.x === 1 && direction.y === -1) return -45;
-        else if (direction.x === -1 && direction.y === 1) return 135;
-        else if (direction.x === -1 && direction.y === -1) return -135;
-    }
-
     createIntentIcon() {
         const intentIcon = new PIXI.Sprite(PIXI.Texture.WHITE);
         Game.world.addChild(intentIcon);

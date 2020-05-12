@@ -10,6 +10,7 @@ import {easeInOutQuad, easeInQuad, easeOutQuad, quadraticBezier} from "./utils/m
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {HUDSpriteSheet} from "./loader";
 import {getZIndexForLayer, Z_INDEXES} from "./z_indexing";
+import {getAngleForDirection} from "./utils/game_utils";
 
 // the picture is directed to the top left!
 export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {
@@ -622,6 +623,42 @@ export function fadeOutAndDie(object, destroyTexture = false) {
             Game.app.ticker.remove(animation);
             Game.world.removeChild(object);
             if (destroyTexture) object.texture.destroy();
+        }
+    };
+    Game.app.ticker.add(animation);
+}
+
+export function createSpikeAnimation(origin, offsetX, offsetY, color = 0xffffff) {
+    const attack = new TileElement(Game.resources["src/images/effects/spike_right.png"].texture, origin.tilePosition.x, origin.tilePosition.y);
+    attack.tint = color;
+    attack.position.set(origin.getTilePositionX(), origin.getTilePositionY());
+    attack.zIndex = origin.zIndex - 1;
+    attack.anchor.set(0, 0.5);
+    attack.angle = getAngleForDirection({x: offsetX, y: offsetY});
+    Game.world.addChild(attack);
+    const animationTime = 10;
+    const pythagorSideMul = Math.max(Math.abs(offsetX), Math.abs(offsetY)) === 2 ? 1.25 : 1.5;
+    const sizeMod = Math.sqrt((pythagorSideMul * Math.abs(offsetX)) ** 2 + (pythagorSideMul * Math.abs(offsetY)) ** 2);
+    const widthStep = attack.width * sizeMod / (animationTime / 2);
+    attack.width = 1;
+    const delay = 6;
+    let counter = 0;
+
+    const animation = (delta) => {
+        if (Game.paused) return;
+        counter += delta;
+        if (counter < animationTime / 2) {
+            attack.width += widthStep;
+        } else if (counter < animationTime / 2 + delay) {
+            attack.width = widthStep * animationTime / 2;
+        } else if (counter >= animationTime / 2 + delay) {
+            attack.width -= widthStep;
+            if (attack.width <= 0) attack.width = 1;
+        }
+        if (counter >= animationTime + delay) {
+            Game.app.ticker.remove(animation);
+            Game.world.removeChild(attack);
+            attack.destroy();
         }
     };
     Game.app.ticker.add(animation);

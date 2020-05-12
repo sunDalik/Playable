@@ -10,6 +10,7 @@ export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/wall.png")
         .add("src/images/key.png")
+        .add("src/images/effects/spike_right.png")
         .add("src/images/inanimates/chest.png") //todo move to spritesheet
         .add("src/images/inanimates/chest_opened.png") //todo move to spritesheet
         .add("src/images/player_hd.png")

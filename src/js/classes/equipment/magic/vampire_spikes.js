@@ -1,8 +1,7 @@
 import {MAGIC_TYPE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Spikes} from "./spikes";
-
-VampireSpikes.requiredMagic = Spikes;
+import {createSpikeAnimation} from "../../../animations";
 
 export class VampireSpikes extends Spikes {
     constructor() {
@@ -15,6 +14,19 @@ export class VampireSpikes extends Spikes {
         this.calculateRarity();
     }
 
-    cast(wielder) {
+
+    createAttackAnimation(wielder, color = 0x3a497d, showRedSpikes = true) {
+        if (showRedSpikes) {
+            const redColor = 0xd15036;
+            const sizeMul = 0.4;
+            createSpikeAnimation(wielder, sizeMul, 0, redColor);
+            createSpikeAnimation(wielder, -sizeMul, 0, redColor);
+            createSpikeAnimation(wielder, 0, -sizeMul, redColor);
+            createSpikeAnimation(wielder, 0, sizeMul, redColor);
+        }
+
+        super.createAttackAnimation(wielder, color);
     }
 }
+
+VampireSpikes.requiredMagic = Spikes;

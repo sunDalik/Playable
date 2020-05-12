@@ -10,6 +10,7 @@ import {runDestroyAnimation} from "../../../animations";
 import {WallTrapBase} from "../../draw/wall_trap_base";
 import {wallTallness} from "../../draw/wall";
 import {getZIndexForLayer, Z_INDEXES} from "../../../z_indexing";
+import {getAngleForDirection} from "../../../utils/game_utils";
 
 export class SpikyWallTrap extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spiky_wall_trap_x.png"]) {
@@ -47,7 +48,7 @@ export class SpikyWallTrap extends Enemy {
         this.spikesSprite.tilePosition.y = this.tilePosition.y + this.direction.y;
         this.spikesSprite.place();
         this.spikesSprite.position.y -= wallTallness / 2;
-        this.spikesSprite.angle = this.getArrowRightAngleForDirection(this.direction);
+        this.spikesSprite.angle = getAngleForDirection(this.direction);
         this.spikesSprite.ownZIndex = Z_INDEXES.PLAYER_PRIMARY + 1;
         this.spikesSprite.correctZIndex();
         this.updateTexture();
@@ -123,7 +124,7 @@ export class SpikyWallTrap extends Enemy {
         if (this.triggered) {
             this.intentIcon.texture = IntentsSpriteSheet["spikes.png"];
             this.intentIcon2.texture = IntentsSpriteSheet["arrow_right.png"];
-            this.intentIcon2.angle = this.getArrowRightAngleForDirection(this.direction);
+            this.intentIcon2.angle = getAngleForDirection(this.direction);
             this.intentIcon2.visible = true;
         } else if (this.currentTurnDelay > 0) {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];

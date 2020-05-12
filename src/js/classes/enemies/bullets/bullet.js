@@ -6,6 +6,7 @@ import * as PIXI from "pixi.js";
 import {IntentsSpriteSheet} from "../../../loader";
 import {Z_INDEXES} from "../../../z_indexing";
 import {ShadowTileElement} from "../../tile_elements/shadow_tile_element";
+import {getAngleForDirection} from "../../../utils/game_utils";
 
 export class Bullet extends ShadowTileElement {
     constructor(texture, tilePositionX, tilePositionY, pattern) {
@@ -164,19 +165,7 @@ export class Bullet extends ShadowTileElement {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else {
             this.intentIcon.texture = IntentsSpriteSheet["arrow_right.png"];
-            this.intentIcon.angle = this.getArrowRightAngle();
+            this.intentIcon.angle = getAngleForDirection(this.pattern[this.patternIndex]);
         }
-    }
-
-    getArrowRightAngle() {
-        const dir = this.pattern[this.patternIndex];
-        if (dir.x === -1 && dir.y === 0) return 180;
-        else if (dir.x === 1 && dir.y === 0) return 0;
-        else if (dir.x === 0 && dir.y === -1) return -90;
-        else if (dir.x === 0 && dir.y === 1) return 90;
-        else if (dir.x === 1 && dir.y === 1) return 45;
-        else if (dir.x === 1 && dir.y === -1) return -45;
-        else if (dir.x === -1 && dir.y === 1) return 135;
-        else if (dir.x === -1 && dir.y === -1) return -135;
     }
 }

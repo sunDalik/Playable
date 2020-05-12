@@ -151,6 +151,7 @@ export class Player extends AnimatedTileElement {
             for (const eq of this.getEquipment()) {
                 if (eq && eq.onMagicCast) eq.onMagicCast(this);
             }
+            this.redrawEquipmentSlot(magic);
             return true;
         } else return false;
     }
@@ -591,8 +592,9 @@ export class Player extends AnimatedTileElement {
 
     useBag() {
         if (this.bag && this.bag.amount > 0) {
-            this.bag.useItem();
+            this.bag.useItem(this);
             if (this.bag.amount <= 0) this.bag = null;
+            redrawSlotContents(this, SLOT.BAG);
             return true;
         }
         return false;

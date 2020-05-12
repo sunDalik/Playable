@@ -13,7 +13,7 @@ export function getCrossProduct(x1, y1, x2, y2, a1, b1, a2, b2) {
 }
 
 export function distanceBetweenPoints(x1, y1, x2, y2) {
-    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2))
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
 
 export function average(array) {
@@ -39,4 +39,8 @@ export function easeOutQuad(time) {
 
 export function easeInQuad(time) {
     return time * time;
+}
+
+export function toDegrees(radians) {
+    return radians * (180 / Math.PI);
 }

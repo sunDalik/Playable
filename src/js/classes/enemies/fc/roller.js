@@ -4,6 +4,7 @@ import {ENEMY_TYPE, TILE_TYPE} from "../../../enums";
 import {getPlayerOnTile, isAnyWall, isInanimate, isRelativelyEmpty} from "../../../map_checks";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {quadraticBezier} from "../../../utils/math_utils";
+import {getAngleForDirection} from "../../../utils/game_utils";
 
 export class Roller extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["roller.png"]) {
@@ -82,6 +83,6 @@ export class Roller extends Enemy {
     updateIntentIcon() {
         super.updateIntentIcon();
         this.intentIcon.texture = IntentsSpriteSheet["arrow_right.png"];
-        this.intentIcon.angle = this.getArrowRightAngleForDirection({x: this.direction, y: 0});
+        this.intentIcon.angle = getAngleForDirection({x: this.direction, y: 0});
     }
 }

@@ -1,7 +1,7 @@
 import {Game} from "../../../game"
 import {Enemy} from "../enemy"
 import {ENEMY_TYPE} from "../../../enums";
-import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, getAngleForDirection, tileDistance} from "../../../utils/game_utils";
 import {getEmptyCardinalDirections, getEmptyHorizontalDirections} from "../../../utils/map_utils";
 import {randomChoice} from "../../../utils/random_utils";
 import {getPlayerOnTile, isEmpty} from "../../../map_checks";
@@ -186,7 +186,7 @@ export class LizardWarrior extends Enemy {
             this.intentIcon.height = this.intentIcon.texture.height / this.intentIcon.texture.width * this.intentIcon.width;
             this.intentIcon2.visible = true;
             this.intentIcon2.texture = IntentsSpriteSheet["arrow_right.png"];
-            this.intentIcon2.angle = this.getArrowRightAngleForDirection(this.attackDirection);
+            this.intentIcon2.angle = getAngleForDirection(this.attackDirection);
         } else if (this.triggeredForwardPierce) {
             this.intentIcon.filters = [];
             this.intentIcon.texture = IntentsSpriteSheet["two_tiles_forward.png"];
