@@ -1,7 +1,7 @@
 import {Enemy} from "../enemy";
 import {DIRECTIONS, ENEMY_TYPE} from "../../../enums";
 import {getPlayerOnTile} from "../../../map_checks";
-import {createEnemyAttackTile, createSpikeAnimation} from "../../../animations";
+import {createCrazySpikeAnimation, createEnemyAttackTile, createSpikeAnimation} from "../../../animations";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Star extends Enemy {
@@ -99,7 +99,7 @@ export class Star extends Enemy {
     }
 
     createSpikeAnimation(offsetX, offsetY) {
-        createSpikeAnimation(this, offsetX, offsetY, this.type === ENEMY_TYPE.STAR ? 0xa4d352 : 0xdf403c);
+        createCrazySpikeAnimation(this, offsetX, offsetY, this.type === ENEMY_TYPE.STAR ? 0xa4d352 : 0xdf403c);
     }
 
     updateIntentIcon() {

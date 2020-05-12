@@ -10,7 +10,7 @@ import {easeInOutQuad, easeInQuad, easeOutQuad, quadraticBezier} from "./utils/m
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {HUDSpriteSheet} from "./loader";
 import {getZIndexForLayer, Z_INDEXES} from "./z_indexing";
-import {getAngleForDirection} from "./utils/game_utils";
+import {getAngleForDirection, setTickTimeout} from "./utils/game_utils";
 
 // the picture is directed to the top left!
 export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {
@@ -628,11 +628,11 @@ export function fadeOutAndDie(object, destroyTexture = false) {
     Game.app.ticker.add(animation);
 }
 
-export function createSpikeAnimation(origin, offsetX, offsetY, color = 0xffffff) {
+export function createSpikeAnimation(origin, offsetX, offsetY, color = 0xffffff, zIndex = origin.zIndex - 1) {
     const attack = new TileElement(Game.resources["src/images/effects/spike_right.png"].texture, origin.tilePosition.x, origin.tilePosition.y);
     attack.tint = color;
     attack.position.set(origin.getTilePositionX(), origin.getTilePositionY());
-    attack.zIndex = origin.zIndex - 1;
+    attack.zIndex = zIndex;
     attack.anchor.set(0, 0.5);
     attack.angle = getAngleForDirection({x: offsetX, y: offsetY});
     Game.world.addChild(attack);
@@ -662,4 +662,13 @@ export function createSpikeAnimation(origin, offsetX, offsetY, color = 0xffffff)
         }
     };
     Game.app.ticker.add(animation);
+}
+
+export function createCrazySpikeAnimation(origin, offsetX, offsetY, color, bottom = false) {
+    const sideDiff = 0.07;
+    setTickTimeout(() =>
+            createSpikeAnimation(origin,
+                offsetX + Math.random() * sideDiff * 2 - sideDiff,
+                offsetY + Math.random() * sideDiff * 2 - sideDiff, color, bottom ? origin.zIndex - 2 : origin.zIndex - 1),
+        Math.random() * 4);
 }

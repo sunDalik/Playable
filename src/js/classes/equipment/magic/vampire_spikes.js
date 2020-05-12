@@ -1,7 +1,7 @@
 import {MAGIC_TYPE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Spikes} from "./spikes";
-import {createSpikeAnimation} from "../../../animations";
+import {createCrazySpikeAnimation, createSpikeAnimation} from "../../../animations";
 
 export class VampireSpikes extends Spikes {
     constructor() {
@@ -14,18 +14,22 @@ export class VampireSpikes extends Spikes {
         this.calculateRarity();
     }
 
-
     createAttackAnimation(wielder, color = 0x3a497d, showRedSpikes = true) {
         if (showRedSpikes) {
             const redColor = 0xd15036;
             const sizeMul = 0.4;
-            createSpikeAnimation(wielder, sizeMul, 0, redColor);
-            createSpikeAnimation(wielder, -sizeMul, 0, redColor);
-            createSpikeAnimation(wielder, 0, -sizeMul, redColor);
-            createSpikeAnimation(wielder, 0, sizeMul, redColor);
+            createCrazySpikeAnimation(wielder, sizeMul, 0, redColor, true);
+            createCrazySpikeAnimation(wielder, -sizeMul, 0, redColor, true);
+            createCrazySpikeAnimation(wielder, 0, -sizeMul, redColor, true);
+            createCrazySpikeAnimation(wielder, 0, sizeMul, redColor, true);
         }
 
         super.createAttackAnimation(wielder, color);
+    }
+
+    attackEffect(wielder, enemiesDamaged, playerDamaged) {
+        wielder.heal(Math.floor(enemiesDamaged / 2));
+        if (playerDamaged) wielder.heal(1);
     }
 }
 

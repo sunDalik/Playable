@@ -412,7 +412,7 @@ export class Player extends AnimatedTileElement {
     }
 
     heal(healHP, showHeart = true) {
-        if (!this.dead) {
+        if (!this.dead && healHP > 0) {
             this.health += healHP;
             if (showHeart) createHeartAnimation(this.position.x, this.position.y);
         }

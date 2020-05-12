@@ -1,7 +1,7 @@
 import {MAGIC_TYPE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {VampireSpikes} from "./vampire_spikes";
-import {createSpikeAnimation} from "../../../animations";
+import {createCrazySpikeAnimation} from "../../../animations";
 
 export class InfernalSpikes extends VampireSpikes {
     constructor() {
@@ -11,6 +11,7 @@ export class InfernalSpikes extends VampireSpikes {
         this.uses = this.maxUses = 6;
         this.name = "Infernal Spikes";
         this.description = "EDIT";
+        this.attackDirs = this.attackDirs.concat([{x: 1, y: 0}, {x: 0, y: 1}, {x: -1, y: 0}, {x: 0, y: -1}]);
         this.calculateRarity();
     }
 
@@ -19,14 +20,14 @@ export class InfernalSpikes extends VampireSpikes {
         const redColor = 0xd15036;
         const spikes = [{x: 1, y: 0}, {x: -1, y: 0}, {x: 0, y: -1}, {x: 0, y: 1}];
         for (const spike of spikes) {
-            createSpikeAnimation(wielder, spike.x, spike.y, redColor);
+            createCrazySpikeAnimation(wielder, spike.x, spike.y, redColor, true);
         }
 
         const sideMulDiff = 0.2;
         const sideMul = () => 0.4 + Math.random() * sideMulDiff * 2 - sideMulDiff;
         for (const spike of spikes.flatMap(s => [{x: s.x === 0 ? sideMul() : s.x, y: s.y === 0 ? sideMul() : s.y},
             {x: s.x === 0 ? -sideMul() : s.x, y: s.y === 0 ? -sideMul() : s.y}])) {
-            createSpikeAnimation(wielder, spike.x, spike.y, redColor);
+            createCrazySpikeAnimation(wielder, spike.x, spike.y, redColor, true);
         }
 
         super.createAttackAnimation(wielder, 0x3a497d, false);
