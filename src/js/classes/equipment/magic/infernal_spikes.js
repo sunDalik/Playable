@@ -1,7 +1,7 @@
 import {MAGIC_TYPE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {VampireSpikes} from "./vampire_spikes";
-import {createCrazySpikeAnimation} from "../../../animations";
+import {createCrazySpikeAnimation, shakeScreen} from "../../../animations";
 
 export class InfernalSpikes extends VampireSpikes {
     constructor() {
@@ -15,6 +15,11 @@ export class InfernalSpikes extends VampireSpikes {
         this.calculateRarity();
     }
 
+    cast(wielder) {
+        if (super.cast(wielder)) {
+            shakeScreen(5, 1, 20);
+        }
+    }
 
     createAttackAnimation(wielder) {
         const redColor = 0xd15036;
