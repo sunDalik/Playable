@@ -1,11 +1,12 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
 import {ENEMY_TYPE, STAGE} from "../../../enums";
 import {getPlayerOnTile, isEmpty} from "../../../map_checks";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
 import {randomChoice} from "../../../utils/random_utils";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {easeInOutQuad} from "../../../utils/math_utils";
 
 export class Spider extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spider.png"]) {
@@ -71,6 +72,35 @@ export class Spider extends Enemy {
         this.step(throwX, throwY);
         this.thrown = true;
         this.cancellable = false;
+    }
+
+    idleAnimation() {
+        return;
+        const animationTime = 60;
+        let counter = animationTime / 2;
+        const originalScaleY = this.scale.y;
+        const amplitude = originalScaleY * 0.06;
+        let goUp = true;
+
+
+        const animation = delta => {
+            if (Game.paused) return;
+            counter += delta;
+            this.scale.y = originalScaleY * (counter % animationTime) * 2;
+
+            if (goUp) this.scale.y = originalScaleY - amplitude + easeInOutQuad(counter / animationTime) * amplitude * 2;
+            else this.scale.y = originalScaleY + amplitude - easeInOutQuad(counter / animationTime) * amplitude * 2;
+            this.place();
+
+            if (counter >= animationTime) {
+                counter -= animationTime;
+                if (goUp) this.scale.y = originalScaleY + amplitude;
+                else this.scale.y = originalScaleY - amplitude;
+                goUp = !goUp;
+            }
+        };
+        this.animation = animation;
+        Game.app.ticker.add(animation);
     }
 
     updateIntentIcon() {

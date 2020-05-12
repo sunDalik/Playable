@@ -12,14 +12,13 @@ export class Spikes  extends Magic {
         super();
         this.texture = MagicSpriteSheet["magic_spikes.png"];
         this.type = MAGIC_TYPE.SPIKES;
-        this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
-        this.atk = 3;
+        this.atk = 2;
         this.friendlyFire = 1;
         this.uses = this.maxUses = 4;
         this.name = "Spikes";
-        this.description = "Wield with care";
-        this.rarity = RARITY.A;
+        this.description = "EDIT";
+        this.calculateRarity();
     }
 
     cast(wielder) {
