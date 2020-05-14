@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
 import {ENEMY_TYPE, TILE_TYPE} from "../../../enums";
 import {getPlayerOnTile, isAnyWall, isInanimate, isRelativelyEmpty} from "../../../map_checks";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
@@ -31,9 +31,8 @@ export class Roller extends Enemy {
     }
 
     move() {
-        if (isRelativelyEmpty(this.tilePosition.x + this.direction, this.tilePosition.y)
-            && Game.map[this.tilePosition.y][this.tilePosition.x + this.direction].tileType !== TILE_TYPE.ENTRY) {
-            let player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
+        if (isRelativelyEmpty(this.tilePosition.x + this.direction, this.tilePosition.y)) {
+            const player = getPlayerOnTile(this.tilePosition.x + this.direction, this.tilePosition.y);
             if (player !== null) {
                 player.damage(this.atk, this);
                 this.rollBump();

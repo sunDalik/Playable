@@ -102,7 +102,7 @@ export class Player extends AnimatedTileElement {
                 } else {
                     this.bump(tileStepX, tileStepY);
                 }
-            } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
+            } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY, true)) {
                 if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
                     Game.unplayable = true;
                     this.toCloseBlackBars = true;
