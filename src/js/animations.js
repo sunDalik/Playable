@@ -629,7 +629,7 @@ export function fadeOutAndDie(object, destroyTexture = false) {
 }
 
 export function createSpikeAnimation(origin, offsetX, offsetY, color = 0xffffff, zIndex = origin.zIndex - 1) {
-    const attack = new TileElement(Game.resources["src/images/effects/spike_right.png"].texture, origin.tilePosition.x, origin.tilePosition.y);
+    const attack = new TileElement(Game.resources["src/images/effects/spike.png"].texture, origin.tilePosition.x, origin.tilePosition.y);
     attack.tint = color;
     attack.position.set(origin.getTilePositionX(), origin.getTilePositionY());
     attack.zIndex = zIndex;

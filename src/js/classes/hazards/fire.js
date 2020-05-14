@@ -1,16 +1,16 @@
-import {Game} from "../../game"
+import {Game} from "../../game";
 import {Hazard} from "./hazard";
 import {HAZARD_TYPE, STAGE} from "../../enums";
 import {get8Directions, getCardinalDirections} from "../../utils/map_utils";
 import {isNotAWall} from "../../map_checks";
-import {randomShuffle} from "../../utils/random_utils";
-import {HazardsSpriteSheet} from "../../loader";
+import {randomFloat, randomInt, randomShuffle} from "../../utils/random_utils";
+import {removeObjectFromArray} from "../../utils/basic_utils";
+import * as PIXI from "pixi.js";
 
 export class FireHazard extends Hazard {
-    constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = HazardsSpriteSheet["hazard_fire.png"]) {
+    constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
-        this.normalTexture = HazardsSpriteSheet["hazard_fire.png"];
-        this.smallTexture = HazardsSpriteSheet["hazard_fire_small.png"];
+        this.tint = 0xd67443;
         this.LIFETIME = 14;
         this.actualAtk = 0.5;
         this.small = small;
@@ -22,7 +22,6 @@ export class FireHazard extends Hazard {
         this.currentSpreadDelay = this.spreadDelay;
         if (this.small) {
             this.tileSpread = 1;
-            this.texture = this.smallTexture;
             this.atk = 0;
         } else {
             this.tileSpread = 5;
@@ -30,6 +29,9 @@ export class FireHazard extends Hazard {
         }
         this.turnsLeft = this.LIFETIME;
         this.type = HAZARD_TYPE.FIRE;
+        this.dead = false;
+        this.initParticles();
+        this.setUpOwnAnimation();
     }
 
     addToWorld() {
@@ -43,6 +45,8 @@ export class FireHazard extends Hazard {
 
     removeFromWorld() {
         super.removeFromWorld();
+        this.dead = true;
+        if (this.animation) Game.world.addChild(this);
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
         }
@@ -51,7 +55,6 @@ export class FireHazard extends Hazard {
     updateLifetime() {
         if (super.updateLifetime()) {
             if (this.small && this.turnsLeft > 0) {
-                this.texture = this.normalTexture;
                 this.small = false;
                 this.atk = this.actualAtk;
             } else if (!this.small && this.spreadTimes > 0 && this.currentSpreadDelay <= 0) {
@@ -60,7 +63,7 @@ export class FireHazard extends Hazard {
                 if (!this.subFire) directionsArray = this.getDirectionsWithNoHazardsOfType(false);
                 else {
                     if (Math.random() < 0.8) directionsArray = this.getDirectionsWithNoHazardsOfType(true);
-                    else directionsArray = this.getDirectionsWithNoHazardsOfType(false)
+                    else directionsArray = this.getDirectionsWithNoHazardsOfType(false);
                 }
                 for (const dir of randomShuffle(directionsArray)) {
                     if (spreadCounter <= 0) break;
@@ -86,7 +89,6 @@ export class FireHazard extends Hazard {
 
     extinguish() {
         this.small = true;
-        this.texture = this.smallTexture;
         this.atk = 0;
         this.spreadTimes = 0;
         this.turnsLeft = 1;
@@ -113,8 +115,6 @@ export class FireHazard extends Hazard {
     turnToDark() {
         if (this.type === HAZARD_TYPE.FIRE) {
             this.type = HAZARD_TYPE.DARK_FIRE;
-            this.normalTexture = HazardsSpriteSheet["hazard_dark_fire.png"];
-            this.smallTexture = HazardsSpriteSheet["hazard_dark_fire_small.png"];
             if (this.subFire) {
                 if (Math.random() < 0.5) {
                     this.tileSpread++;
@@ -124,19 +124,138 @@ export class FireHazard extends Hazard {
                     this.spreadTimes++;
                 }
             }
-            if (this.small) this.texture = this.smallTexture;
-            else this.texture = this.normalTexture;
             this.turnsLeft += 3;
+        }
+    }
+
+    initParticles() {
+        this.particles = [];
+        const particlesAmount = 9;
+        const rows = Math.floor(Math.sqrt(particlesAmount)); // = cols
+        for (let i = 0; i < particlesAmount; i++) {
+            const row = Math.floor(i / rows);
+            const col = i % rows;
+            const particle = new PIXI.Sprite(this.small ? Game.resources["src/images/effects/fire_effect_small.png"].texture : Game.resources["src/images/effects/fire_effect.png"].texture);
+            particle.zIndex = this.zIndex + 1;
+            Game.world.addChild(particle);
+            const gridOffset = this.width / rows * 0.25;
+            particle.setRandomPosition = () => {
+                particle.position.set(
+                    randomInt((this.position.x - this.width / 2) + col * this.width / rows + gridOffset, (this.position.x - this.width / 2) + (col + 1) * this.width / rows - gridOffset),
+                    randomInt((this.position.y - this.height / 2) + row * this.height / rows + gridOffset, (this.position.y - this.height / 2) + (row + 1) * this.height / rows - gridOffset));
+            };
+
+            let counter = 0;
+            let init = true;
+            const maxScaleStep = 0.005;
+            const scaleMod = {
+                min: 0.30 * Game.TILESIZE / particle.width + maxScaleStep,
+                max: 0.40 * Game.TILESIZE / particle.width - maxScaleStep
+            };
+            const angleConstraints = {min: -6, max: 6};
+            const initAnimationTime = randomInt(8, 12);
+            let chosenScaleMod = randomFloat(scaleMod.min, scaleMod.max);
+            let beforeDeadScale = 1;
+            let animationTime = 0;
+            particle.anchor.set(0.5, 0.5);
+            particle.setRandomPosition();
+            const animation = delta => {
+                if (Game.paused) return;
+                counter += delta;
+                if (!this.small) particle.texture = Game.resources["src/images/effects/fire_effect.png"].texture;
+                if (init) {
+                    particle.scale.x = particle.scale.y = (counter / initAnimationTime) * chosenScaleMod;
+                    beforeDeadScale = particle.scale.x;
+                    const endAlpha = this.small ? 0.75 : 1;
+                    particle.alpha = (counter / initAnimationTime) * endAlpha;
+                    if (counter >= initAnimationTime) {
+                        counter = 0;
+                        init = false;
+                        particle.alpha = endAlpha;
+                    }
+                } else if (this.dead) {
+                    particle.scale.x = particle.scale.y = Math.max(particle.scale.x - delta / (initAnimationTime) * beforeDeadScale, 0);
+                } else {
+                    if (!this.small && particle.alpha < 1) particle.alpha += delta / initAnimationTime * 0.25;
+                    if (Math.random() < 0.5) {
+                        counter -= delta;
+                        return;
+                    }
+                    let scaleStep = randomFloat(-maxScaleStep, maxScaleStep);
+                    if (particle.scale.x + scaleStep > scaleMod.max) scaleStep = -Math.abs(scaleStep);
+                    else if (particle.scale.x + scaleStep < scaleMod.min) scaleStep = Math.abs(scaleStep);
+                    particle.scale.x = particle.scale.y = particle.scale.x + scaleStep;
+                    beforeDeadScale = particle.scale.x;
+                    let angleStep = randomFloat(-0.5, 0.5);
+                    if (particle.angle + angleStep > angleConstraints.max || particle.angle + angleStep < angleConstraints.min) angleStep *= -1;
+                    particle.angle += angleStep;
+                    if (counter >= animationTime) {
+                        animationTime = randomInt(8, 12);
+                        counter = 0;
+                    }
+                }
+            };
+            Game.infiniteAnimations.push(animation);
+            Game.app.ticker.add(animation);
+            particle.animation = animation;
+            this.particles.push(particle);
+        }
+    }
+
+    setUpOwnAnimation() {
+        let counter = 0;
+        let init = true;
+        const colorConstraints = {min: 0x006800, max: 0x00a000};
+        const initAnimationTime = randomInt(8, 12);
+        const animation = delta => {
+            if (Game.paused) return;
+            if (init) {
+                counter += delta;
+                const endAlpha = this.small ? 0.5 : 1;
+                this.alpha = (counter / initAnimationTime) * endAlpha;
+                if (counter >= initAnimationTime) {
+                    counter = 0;
+                    init = false;
+                    this.alpha = endAlpha;
+                }
+            } else if (this.dead) {
+                this.alpha -= delta / (initAnimationTime);
+                if (this.alpha < 0) this.purge();
+            } else {
+                if (!this.small && this.alpha < 1)
+                    this.alpha += delta / initAnimationTime * 0.5;
+                if (Math.random() < 0.5) return;
+                let colorStep = randomInt(-2, 2) * 0x100;
+                const middleTint = this.tint - 0xd60000 - 0x000043;
+                if (middleTint + colorStep > colorConstraints.max) colorStep = -Math.abs(colorStep);
+                else if (middleTint + colorStep < colorConstraints.min) colorStep = Math.abs(colorStep);
+                this.tint += colorStep;
+            }
+        };
+        Game.infiniteAnimations.push(animation);
+        Game.app.ticker.add(animation);
+        this.animation = animation;
+    }
+
+    purge() {
+        if (this.particles) {
+            for (const particle of this.particles) {
+                Game.world.removeChild(particle);
+                particle.destroy();
+                Game.app.ticker.remove(particle.animation);
+                removeObjectFromArray(particle.animation, Game.infiniteAnimations);
+            }
+        }
+        if (this.animation) {
+            Game.app.ticker.remove(this.animation);
+            removeObjectFromArray(this.animation, Game.infiniteAnimations);
         }
     }
 }
 
 export class DarkFireHazard extends FireHazard {
-    constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = Game.resources["src/images/hazards/dark_fire.png"].texture) {
+    constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = PIXI.Texture.WHITE) {
         super(tilePositionX, tilePositionY, small, spreadTimes, texture);
         this.type = HAZARD_TYPE.DARK_FIRE;
-        this.normalTexture =  HazardsSpriteSheet["hazard_dark_fire.png"];
-        this.smallTexture =  HazardsSpriteSheet["hazard_dark_fire_small.png"];
-        if (small) this.texture = this.smallTexture;
     }
 }

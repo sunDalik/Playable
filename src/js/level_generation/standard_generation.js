@@ -20,6 +20,7 @@ import {LyingItem} from "../classes/equipment/lying_item";
 import {Torch} from "../classes/equipment/tools/torch";
 import {Roller} from "../classes/enemies/fc/roller";
 import {Key} from "../classes/equipment/key";
+import {FireFrog} from "../classes/enemies/dt/frog_fire";
 
 let settings;
 let level;
@@ -409,8 +410,8 @@ function setStartPosition(startRoom) {
     if (false) {
         level[Game.startPos.y][Game.startPos.x + 1].entity = new Chest(Game.startPos.x + 1, Game.startPos.y, getRandomChestDrop());
     }
-    if (false) {
-        level[startRoom.offsetY + 2][startRoom.offsetX + 2].entity = new Roller(startRoom.offsetX + 2, startRoom.offsetY + 2);
+    if (true) {
+        level[startRoom.offsetY + 2][startRoom.offsetX + 2].entity = new FireFrog(startRoom.offsetX + 2, startRoom.offsetY + 2);
     }
 }
 

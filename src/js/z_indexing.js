@@ -6,7 +6,7 @@ export const Z_INDEXES = Object.freeze({
     HEART: 0,
     META: 20,
     WALL: 0,
-    HAZARD: -3,
+    HAZARD: -1,
     BULLET: 5,
     DOOR: 0,
     DARKNESS: 6,
