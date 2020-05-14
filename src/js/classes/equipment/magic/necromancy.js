@@ -1,11 +1,11 @@
 import {Game} from "../../../game";
 import {camera} from "../../game/camera";
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
+import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, SLOT} from "../../../enums";
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
     redrawAllMagicSlots,
-    redrawHealthForPlayer,
+    redrawSlotContents, redrawSlotContentsForPlayer,
     redrawWeaponAndSecondHand
 } from "../../../drawing/draw_hud";
 import {otherPlayer} from "../../../utils/game_utils";
@@ -16,13 +16,12 @@ export class Necromancy extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_necromancy.png"];
-        this.type = MAGIC_TYPE.NECROMANCY;
         this.equipmentType = EQUIPMENT_TYPE.MAGIC;
+        this.type = MAGIC_TYPE.NECROMANCY;
         this.alignment = MAGIC_ALIGNMENT.GRAY;
-        this.atk = 0;
         this.uses = this.maxUses = 1;
         this.name = "Necromancy";
-        this.description = "Return your beloved";
+        this.description = "Revive a fallen character\nThis magic vanishes when exhausted";
         this.rarity = RARITY.B;
     }
 
@@ -30,7 +29,8 @@ export class Necromancy extends Magic {
         if (this.removeIfExhausted(wielder)) return false;
         const revivedPlayer = otherPlayer(wielder);
         if (revivedPlayer.dead) {
-            //todo add revive method probably and also restore shadow
+            //todo add revive method probably
+            //todo add animation
             revivedPlayer.dead = false;
             revivedPlayer.visible = true;
             revivedPlayer.regenerateShadow();
@@ -41,8 +41,7 @@ export class Necromancy extends Magic {
             revivedPlayer.place();
             drawMovementKeyBindings();
             drawInteractionKeys();
-            redrawWeaponAndSecondHand(revivedPlayer);
-            redrawAllMagicSlots(revivedPlayer);
+            redrawSlotContentsForPlayer(revivedPlayer);
             camera.center();
             for (const eq of revivedPlayer.getEquipment()) {
                 if (eq && eq.onRevive) {
@@ -52,15 +51,16 @@ export class Necromancy extends Magic {
             this.uses--;
             //maybe should shift all magic to left? who knows...
             this.removeIfExhausted(wielder);
+            return true;
         } else return false;
-        return true;
     }
 
     removeIfExhausted(wielder) {
         if (this.uses <= 0) {
-            for (let i = 1; i <= 4; ++i) {
-                if (wielder.getMagicById(i) === this) {
-                    wielder.setMagicById(i, null);
+            for (const slot of [SLOT.MAGIC1, SLOT.MAGIC2, SLOT.MAGIC3]) {
+                if (wielder[slot] === this) {
+                    wielder[slot] = null;
+                    redrawSlotContents(wielder, slot);
                     return true;
                 }
             }

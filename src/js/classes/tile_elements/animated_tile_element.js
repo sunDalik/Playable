@@ -1,4 +1,4 @@
-import {Game} from "../../game"
+import {Game} from "../../game";
 import {cubicBezier, quadraticBezier} from "../../utils/math_utils";
 import {BLACK_INVERT_FILTER, HIT_FILTER} from "../../filters";
 import {removeObjectFromArray} from "../../utils/basic_utils";
@@ -328,7 +328,7 @@ export class AnimatedTileElement extends ShadowTileElement {
         this.filters.push(BLACK_INVERT_FILTER);
         this.filters.push(HIT_FILTER);
 
-        const time = 6;
+        const time = 7;
         let counter = 0;
 
         const animation = delta => {

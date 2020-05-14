@@ -156,20 +156,6 @@ export class Player extends AnimatedTileElement {
         } else return false;
     }
 
-    getMagicById(i) {
-        if (i === 1) return this.magic1;
-        else if (i === 2) return this.magic2;
-        else if (i === 3) return this.magic3;
-        else return null;
-    }
-
-    //only used by necromancy. should revise it
-    setMagicById(i, magic) {
-        if (i === 1) this.magic1 = magic;
-        else if (i === 2) this.magic2 = magic;
-        else if (i === 3) this.magic3 = magic;
-    }
-
     getAtkWithWeapon(weapon, presetAtk = 0) {
         if (weapon === null) return 0;
         const atkBase = this.getAtkBaseWithWeapon(weapon, presetAtk);
