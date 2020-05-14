@@ -94,22 +94,7 @@ export class Player extends AnimatedTileElement {
         this.lastTileStepX = tileStepX;
         this.lastTileStepY = tileStepY;
 
-        let attackResult = false;
-        if (!event.shiftKey && this.weapon !== null) {
-            attackResult = this.weapon.attack(this, tileStepX, tileStepY);
-            if (attackResult) {
-                this.canDoubleAttack = true;
-            } else if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type
-                && this.weapon.uses !== undefined && this.weapon.uses === 0 && this.secondHand.uses !== 0) {
-                attackResult = this.secondHand.attack(this, tileStepX, tileStepY);
-            }
-        }
-        if (attackResult) {
-            for (const eq of this.getEquipmentAndMagic()) {
-                if (eq && eq.afterAttack) eq.afterAttack(this, tileStepX, tileStepY);
-            }
-        }
-        if (!attackResult) {
+        if (!this.attack(tileStepX, tileStepY, event)) {
             if (isInanimate(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY)) {
                 const result = Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].entity.interact(this, tileStepX, tileStepY);
                 if (result === false) {
@@ -143,6 +128,25 @@ export class Player extends AnimatedTileElement {
         return true;
     }
 
+    attack(tileStepX, tileStepY, event) {
+        let attackResult = false;
+        if (!event.shiftKey && this.weapon !== null) {
+            attackResult = this.weapon.attack(this, tileStepX, tileStepY);
+            if (attackResult) {
+                this.canDoubleAttack = true;
+            } else if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type
+                && this.weapon.uses !== undefined && this.weapon.uses === 0 && this.secondHand.uses !== 0) {
+                attackResult = this.secondHand.attack(this, tileStepX, tileStepY);
+            }
+        }
+        if (attackResult) {
+            for (const eq of this.getEquipmentAndMagic()) {
+                if (eq && eq.afterAttack) eq.afterAttack(this, tileStepX, tileStepY);
+            }
+        }
+
+        return attackResult;
+    }
 
     castMagic(magic) {
         if (otherPlayer(this).charging || this.charging) return false;
