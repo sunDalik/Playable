@@ -147,6 +147,7 @@ export class FireHazard extends Hazard {
 
             let counter = 0;
             let init = true;
+            let decayPhase = false;
             const maxScaleStep = 0.005;
             const scaleMod = {
                 min: 0.30 * Game.TILESIZE / particle.width + maxScaleStep,
@@ -156,6 +157,7 @@ export class FireHazard extends Hazard {
             const initAnimationTime = randomInt(8, 12);
             let chosenScaleMod = randomFloat(scaleMod.min, scaleMod.max);
             let beforeDeadScale = 1;
+            let lastScaleStepSign = 1;
             let animationTime = 0;
             particle.anchor.set(0.5, 0.5);
             particle.setRandomPosition();
@@ -164,34 +166,42 @@ export class FireHazard extends Hazard {
                 counter += delta;
                 if (!this.small) particle.texture = Game.resources["src/images/effects/fire_effect.png"].texture;
                 if (init) {
-                    particle.scale.x = particle.scale.y = (counter / initAnimationTime) * chosenScaleMod;
+                    particle.scale.x = particle.scale.y = (counter / (initAnimationTime)) * chosenScaleMod;
                     beforeDeadScale = particle.scale.x;
-                    const endAlpha = this.small ? 0.75 : 1;
-                    particle.alpha = (counter / initAnimationTime) * endAlpha;
+                    particle.alpha = this.small ? 0.75 : 1;
                     if (counter >= initAnimationTime) {
                         counter = 0;
                         init = false;
-                        particle.alpha = endAlpha;
                     }
-                } else if (this.dead) {
+                } else if (this.dead || decayPhase) {
                     particle.scale.x = particle.scale.y = Math.max(particle.scale.x - delta / (initAnimationTime) * beforeDeadScale, 0);
+                    if (particle.scale.x <= 0 && decayPhase) {
+                        particle.setRandomPosition();
+                        decayPhase = false;
+                        init = true;
+                        counter = 0;
+                    }
                 } else {
                     if (!this.small && particle.alpha < 1) particle.alpha += delta / initAnimationTime * 0.25;
-                    if (Math.random() < 0.5) {
-                        counter -= delta;
+                    if (Math.random() < 0.65) {
                         return;
                     }
                     let scaleStep = randomFloat(-maxScaleStep, maxScaleStep);
+                    if (Math.random() < 0.8) scaleStep = Math.abs(scaleStep) * lastScaleStepSign;
                     if (particle.scale.x + scaleStep > scaleMod.max) scaleStep = -Math.abs(scaleStep);
                     else if (particle.scale.x + scaleStep < scaleMod.min) scaleStep = Math.abs(scaleStep);
                     particle.scale.x = particle.scale.y = particle.scale.x + scaleStep;
                     beforeDeadScale = particle.scale.x;
+                    lastScaleStepSign = Math.sign(scaleStep);
                     let angleStep = randomFloat(-0.5, 0.5);
                     if (particle.angle + angleStep > angleConstraints.max || particle.angle + angleStep < angleConstraints.min) angleStep *= -1;
                     particle.angle += angleStep;
                     if (counter >= animationTime) {
-                        animationTime = randomInt(8, 12);
-                        counter = 0;
+                        if (animationTime > 0) {
+                            decayPhase = true;
+                            counter = 0;
+                        }
+                        animationTime = randomInt(10, 500);
                     }
                 }
             };
