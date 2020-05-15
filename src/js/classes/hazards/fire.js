@@ -30,12 +30,14 @@ export class FireHazard extends Hazard {
         this.turnsLeft = this.LIFETIME;
         this.type = HAZARD_TYPE.FIRE;
         this.dead = false;
-        this.initParticles();
-        this.setUpOwnAnimation();
     }
 
     addToWorld() {
         super.addToWorld();
+        if (!this.animation) {
+            this.initParticles();
+            this.setUpOwnAnimation();
+        }
         if (Game.stage === STAGE.DARK_TUNNEL) {
             //this.maskLayer = new PIXI.Sprite(PIXI.Texture.WHITE);
             this.maskLayer = {};
@@ -148,9 +150,9 @@ export class FireHazard extends Hazard {
             let counter = 0;
             let init = true;
             let decayPhase = false;
-            const maxScaleStep = 0.005;
+            const maxScaleStep = 0.007;
             const scaleMod = {
-                min: 0.30 * Game.TILESIZE / particle.width + maxScaleStep,
+                min: 0.28 * Game.TILESIZE / particle.width + maxScaleStep,
                 max: 0.40 * Game.TILESIZE / particle.width - maxScaleStep
             };
             const angleConstraints = {min: -6, max: 6};
@@ -165,21 +167,21 @@ export class FireHazard extends Hazard {
                 if (Game.paused) return;
                 counter += delta;
                 if (!this.small) particle.texture = Game.resources["src/images/effects/fire_effect.png"].texture;
-                if (init) {
-                    particle.scale.x = particle.scale.y = (counter / (initAnimationTime)) * chosenScaleMod;
-                    beforeDeadScale = particle.scale.x;
-                    particle.alpha = this.small ? 0.75 : 1;
-                    if (counter >= initAnimationTime) {
-                        counter = 0;
-                        init = false;
-                    }
-                } else if (this.dead || decayPhase) {
+                if (this.dead || decayPhase) {
                     particle.scale.x = particle.scale.y = Math.max(particle.scale.x - delta / (initAnimationTime) * beforeDeadScale, 0);
                     if (particle.scale.x <= 0 && decayPhase) {
                         particle.setRandomPosition();
                         decayPhase = false;
                         init = true;
                         counter = 0;
+                    }
+                } else if (init) {
+                    particle.scale.x = particle.scale.y = (counter / (initAnimationTime)) * chosenScaleMod;
+                    beforeDeadScale = particle.scale.x;
+                    particle.alpha = this.small ? 0.75 : 1;
+                    if (counter >= initAnimationTime) {
+                        counter = 0;
+                        init = false;
                     }
                 } else {
                     if (!this.small && particle.alpha < 1) particle.alpha += delta / initAnimationTime * 0.25;
@@ -216,10 +218,14 @@ export class FireHazard extends Hazard {
         let counter = 0;
         let init = true;
         const colorConstraints = {min: 0x006800, max: 0x00a000};
+        this.tint = 0xd60000 + randomInt(colorConstraints.min / 0x100, colorConstraints.max / 0x100) * 0x100 + 0x000043;
         const initAnimationTime = randomInt(8, 12);
         const animation = delta => {
             if (Game.paused) return;
-            if (init) {
+            if (this.dead) {
+                this.alpha -= delta / (initAnimationTime);
+                if (this.alpha < 0) this.purge();
+            } else if (init) {
                 counter += delta;
                 const endAlpha = this.small ? 0.5 : 1;
                 this.alpha = (counter / initAnimationTime) * endAlpha;
@@ -228,12 +234,8 @@ export class FireHazard extends Hazard {
                     init = false;
                     this.alpha = endAlpha;
                 }
-            } else if (this.dead) {
-                this.alpha -= delta / (initAnimationTime);
-                if (this.alpha < 0) this.purge();
             } else {
-                if (!this.small && this.alpha < 1)
-                    this.alpha += delta / initAnimationTime * 0.5;
+                if (!this.small && this.alpha < 1) this.alpha += delta / initAnimationTime * 0.5;
                 if (Math.random() < 0.5) return;
                 let colorStep = randomInt(-2, 2) * 0x100;
                 const middleTint = this.tint - 0xd60000 - 0x000043;
