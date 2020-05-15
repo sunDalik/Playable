@@ -11,6 +11,7 @@ export function loadAll(afterLoad) {
         .add("src/images/wall.png")
         .add("src/images/key.png")
         .add("src/images/effects/spike.png")
+        .add("src/images/effects/poison_bubble.png")
         .add("src/images/effects/fire_effect.png")
         .add("src/images/effects/fire_effect_small.png")
         .add("src/images/inanimates/chest.png") //todo move to spritesheet

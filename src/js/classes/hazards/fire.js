@@ -185,9 +185,7 @@ export class FireHazard extends Hazard {
                     }
                 } else {
                     if (!this.small && particle.alpha < 1) particle.alpha += delta / initAnimationTime * 0.25;
-                    if (Math.random() < 0.65) {
-                        return;
-                    }
+                    if (Math.random() < 0.65) return;
                     let scaleStep = randomFloat(-maxScaleStep, maxScaleStep);
                     if (Math.random() < 0.8) scaleStep = Math.abs(scaleStep) * lastScaleStepSign;
                     if (particle.scale.x + scaleStep > scaleMod.max) scaleStep = -Math.abs(scaleStep);

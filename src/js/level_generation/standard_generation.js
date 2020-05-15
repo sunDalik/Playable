@@ -18,9 +18,9 @@ import {SpikyWallTrap} from "../classes/enemies/fc/spiky_wall_trap";
 import {DoorsTile} from "../classes/draw/doors";
 import {LyingItem} from "../classes/equipment/lying_item";
 import {Torch} from "../classes/equipment/tools/torch";
-import {Roller} from "../classes/enemies/fc/roller";
 import {Key} from "../classes/equipment/key";
-import {FireFrog} from "../classes/enemies/dt/frog_fire";
+import {KingFrog} from "../classes/enemies/fc/frog_king";
+import {SpikySnail} from "../classes/enemies/fc/snail_spiky";
 
 let settings;
 let level;
@@ -410,8 +410,9 @@ function setStartPosition(startRoom) {
     if (false) {
         level[Game.startPos.y][Game.startPos.x + 1].entity = new Chest(Game.startPos.x + 1, Game.startPos.y, getRandomChestDrop());
     }
-    if (true) {
-        level[startRoom.offsetY + 2][startRoom.offsetX + 2].entity = new FireFrog(startRoom.offsetX + 2, startRoom.offsetY + 2);
+    if (false) {
+        level[startRoom.offsetY + 2][startRoom.offsetX + 2].entity = new KingFrog(startRoom.offsetX + 2, startRoom.offsetY + 2);
+        level[startRoom.offsetY + startRoom.height - 3][startRoom.offsetX + startRoom.width - 3].entity = new SpikySnail(startRoom.offsetX + startRoom.width - 3, startRoom.offsetY + startRoom.height - 3);
     }
 }
 
