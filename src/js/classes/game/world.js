@@ -19,6 +19,8 @@ export class World extends PIXI.Container {
         this.upWorld.zIndex = this.zIndex + 1;
         this.sortableChildren = true;
         this.upWorld.sortableChildren = true;
+        this.interactiveChildren = false;
+        this.upWorld.interactiveChildren = false;
     }
 
     render(renderer) {

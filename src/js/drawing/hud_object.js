@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js"
 import {SLOT} from "../enums";
 
 export const HUD = new PIXI.Container();
+HUD.interactiveChildren = false;
 HUD.filters = [];
 HUD.zIndex = 2;
 HUD.hearts1 = new PIXI.Container();
