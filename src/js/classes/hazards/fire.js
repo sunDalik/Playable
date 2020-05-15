@@ -262,6 +262,7 @@ export class FireHazard extends Hazard {
             Game.app.ticker.remove(this.animation);
             removeObjectFromArray(this.animation, Game.infiniteAnimations);
         }
+        this.purged = true;
     }
 }
 

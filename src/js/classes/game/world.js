@@ -2,7 +2,6 @@ import * as PIXI from "pixi.js";
 import {Game} from "../../game";
 import {canBeFliedOverByBullet, getPlayerOnTile, isAnyWall, isEnemy} from "../../map_checks";
 import {EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE, TOOL_TYPE} from "../../enums";
-import {removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {lightPlayerPosition} from "../../drawing/lighting";
 import {otherPlayer} from "../../utils/game_utils";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
@@ -129,7 +128,11 @@ export class World extends PIXI.Container {
     }
 
     clean() {
-        removeAllChildrenFromContainer(this);
+        for (let i = this.children.length - 1; i >= 0; i--) {
+            const child = this.children[i];
+            this.removeChild(child);
+            if (child.purge && !child.purged) child.purge();
+        }
         for (const animation of Game.infiniteAnimations) {
             Game.app.ticker.remove(animation);
         }
