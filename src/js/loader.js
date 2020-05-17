@@ -2,7 +2,7 @@ import {Game} from "./game";
 
 export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnemiesSpriteSheet,
     ParanoidEelSpriteSheet, GotLSpriteSheet, IntentsSpriteSheet, InanimatesSpriteSheet,
-    HazardsSpriteSheet, WeaponsSpriteSheet, AchievementsSpriteSheet, HUDSpriteSheet,
+    WeaponsSpriteSheet, AchievementsSpriteSheet, HUDSpriteSheet,
     BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
     HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet;
 
@@ -30,7 +30,6 @@ export function loadAll(afterLoad) {
         .add("src/textures/common.json")
         .add("src/textures/intents.json")
         .add("src/textures/achievements.json")
-        .add("src/textures/hazards.json")
         .add("src/textures/fc_enemies.json")
         .add("src/textures/dt_enemies.json")
         .add("src/textures/ru_enemies.json")
@@ -63,7 +62,6 @@ function setSpriteSheets() {
     GotLSpriteSheet = Game.loader.resources["src/textures/gotl.json"].textures;
     IntentsSpriteSheet = Game.loader.resources["src/textures/intents.json"].textures;
     InanimatesSpriteSheet = Game.loader.resources["src/textures/inanimates.json"].textures;
-    HazardsSpriteSheet = Game.loader.resources["src/textures/hazards.json"].textures;
     WeaponsSpriteSheet = Game.loader.resources["src/textures/weapons.json"].textures;
     AchievementsSpriteSheet = Game.loader.resources["src/textures/achievements.json"].textures;
     ArmorSpriteSheet = Game.loader.resources["src/textures/armor.json"].textures;
