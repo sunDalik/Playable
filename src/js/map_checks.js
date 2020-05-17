@@ -19,19 +19,20 @@ export function isDiggable(tilePosX, tilePosY) {
     return false;
 }
 
-export function isAnyWall(tilePosX, tilePosY, wallTrapIncluded = true) {
+export function isAnyWall(tilePosX, tilePosY, wallTrapIncluded = true, doorsIncluded = true) {
     if (isNotOutOfMap(tilePosX, tilePosY)) {
         if (Game.map[tilePosY][tilePosX].tileType === TILE_TYPE.WALL
             || Game.map[tilePosY][tilePosX].tileType === TILE_TYPE.SUPER_WALL
-            || Game.map[tilePosY][tilePosX].entity && Game.map[tilePosY][tilePosX].entity.role === ROLE.WALL_TRAP && wallTrapIncluded) {
+            || Game.map[tilePosY][tilePosX].entity && Game.map[tilePosY][tilePosX].entity.role === ROLE.WALL_TRAP && wallTrapIncluded
+            || Game.map[tilePosY][tilePosX].tileType === TILE_TYPE.ENTRY && doorsIncluded) {
             return true;
         }
     }
     return false;
 }
 
-export function isNotAWall(tilePosX, tilePosY, wallTrapsIncluded = true) {
-    return !isAnyWall(tilePosX, tilePosY, wallTrapsIncluded);
+export function isNotAWall(tilePosX, tilePosY, wallTrapsIncluded = true, doorsIncluded = true) {
+    return !isAnyWall(tilePosX, tilePosY, wallTrapsIncluded, doorsIncluded);
 }
 
 export function isDoor(tilePosX, tilePosY) {
@@ -76,9 +77,8 @@ export function isAnyWallOrInanimate(tilePosX, tilePosY) {
 export function isRelativelyEmpty(tilePosX, tilePosY, canOpenDoors = false) {
     if (isNotOutOfMap(tilePosX, tilePosY)) {
         const entity = Game.map[tilePosY][tilePosX].entity;
-        if (isNotAWall(tilePosX, tilePosY)
-            && (entity === null || entity.role === ROLE.PLAYER || entity.role === ROLE.BULLET)
-            && (Game.map[tilePosY][tilePosX].tileType !== TILE_TYPE.ENTRY || canOpenDoors)) {
+        if (isNotAWall(tilePosX, tilePosY, true, !canOpenDoors)
+            && (entity === null || entity.role === ROLE.PLAYER || entity.role === ROLE.BULLET)) {
             return true;
         }
     }
@@ -99,8 +99,8 @@ export function canBeFliedOverByBullet(tilePosX, tilePosY) {
 
 export function isEmpty(tilePosX, tilePosY, canOpenDoors = false) {
     if (isNotOutOfMap(tilePosX, tilePosY)) {
-        if (Game.map[tilePosY][tilePosX].entity === null && isNotAWall(tilePosX, tilePosY) &&
-            (Game.map[tilePosY][tilePosX].tileType !== TILE_TYPE.ENTRY || canOpenDoors)) {
+        if (Game.map[tilePosY][tilePosX].entity === null
+            && isNotAWall(tilePosX, tilePosY, true, !canOpenDoors)) {
             return true;
         }
     }

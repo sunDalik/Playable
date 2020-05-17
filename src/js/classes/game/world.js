@@ -52,7 +52,7 @@ export class World extends PIXI.Container {
     }
 
     addHazard(hazard) {
-        if (isAnyWall(hazard.tilePosition.x, hazard.tilePosition.y)) return false;
+        if (isAnyWall(hazard.tilePosition.x, hazard.tilePosition.y, true, false)) return false;
 
         const competingHazard = Game.map[hazard.tilePosition.y][hazard.tilePosition.x].hazard;
         if (competingHazard === null) {

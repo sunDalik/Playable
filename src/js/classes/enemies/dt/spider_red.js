@@ -1,5 +1,4 @@
-import {Game} from "../../../game"
-import {Spider} from "../fc/spider"
+import {Spider} from "../fc/spider";
 import {ENEMY_TYPE} from "../../../enums";
 import {isEmpty, isNotAWall} from "../../../map_checks";
 import {DTEnemiesSpriteSheet} from "../../../loader";

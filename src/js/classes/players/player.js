@@ -472,12 +472,12 @@ export class Player extends AnimatedTileElement {
         return this.getEquipment().concat(this.getMagic());
     }
 
+    // I hate this (:
     releaseMagic(stepX = 0, stepY = 0) {
         if (this.chargingMagic) {
             const magicResult = this.chargingMagic.release(this, stepX, stepY);
             if (magicResult === true) {
-                const pn = this.getSlotNameOfItem(this.chargingMagic);
-                if (pn) redrawSlotContents(this, pn);
+                this.redrawEquipmentSlot(this.chargingMagic);
                 this.charging = false;
                 this.chargingMagic = null;
                 for (const eq of this.getEquipment()) {
@@ -492,8 +492,7 @@ export class Player extends AnimatedTileElement {
                 if (mg && mg.release) {
                     const magicResult = mg.release(this, stepX, stepY);
                     if (magicResult === true) {
-                        const pn = this.getSlotNameOfItem(mg);
-                        if (pn) redrawSlotContents(this, pn);
+                        this.redrawEquipmentSlot(mg);
                         this.charging = false;
                         for (const eq of this.getEquipment()) {
                             if (eq && eq.onMagicCast) {

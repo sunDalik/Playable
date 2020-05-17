@@ -1,9 +1,10 @@
 import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
-import {isNotAWall} from "../../../map_checks";
+import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {DarkPoisonHazard} from "../../hazards/poison";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
+import {randomShuffle} from "../../../utils/random_utils";
 
 export class AbyssalSpit extends Magic {
     constructor() {
@@ -14,8 +15,9 @@ export class AbyssalSpit extends Magic {
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 0;
         this.uses = this.maxUses = 5;
+        this.range = 4;
         this.name = "Abyssal Spit";
-        this.description = "They get what they deserve";
+        this.description = "EDIT";
         this.rarity = RARITY.C;
     }
 
@@ -31,14 +33,14 @@ export class AbyssalSpit extends Magic {
         return false;
     }
 
-    release(wielder, stepX, stepY) {
-        if (stepX === 0 && stepY === 0) return false;
+    release(wielder, dirX, dirY) {
+        if (dirX === 0 && dirY === 0) return false;
         wielder.cancelAnimation();
-        wielder.bump(stepX, stepY);
+        wielder.bump(dirX, dirY);
         this.uses--;
         for (let i = 1; ; i++) {
-            if (isNotAWall(wielder.tilePosition.x + stepX * i, wielder.tilePosition.y + stepY * i)) {
-                Game.world.addHazard(new DarkPoisonHazard(wielder.tilePosition.x + stepX * i, wielder.tilePosition.y + stepY * i));
+            if (isNotAWall(wielder.tilePosition.x + dirX * i, wielder.tilePosition.y + dirY * i)) {
+                Game.world.addHazard(new DarkPoisonHazard(wielder.tilePosition.x + dirX * i, wielder.tilePosition.y + dirY * i));
             } else break;
         }
         return true;
