@@ -10,10 +10,16 @@ export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/wall.png")
         .add("src/images/key.png")
+
+        //todo create effects spritesheet
         .add("src/images/effects/spike.png")
         .add("src/images/effects/poison_bubble.png")
+        .add("src/images/effects/dark_poison_bubble.png")
         .add("src/images/effects/fire_effect.png")
         .add("src/images/effects/fire_effect_small.png")
+        .add("src/images/effects/dark_fire_effect.png")
+        .add("src/images/effects/dark_fire_effect_small.png")
+
         .add("src/images/inanimates/chest.png") //todo move to spritesheet
         .add("src/images/inanimates/chest_opened.png") //todo move to spritesheet
         .add("src/images/player_hd.png")
