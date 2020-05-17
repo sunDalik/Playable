@@ -82,8 +82,15 @@ export class World extends PIXI.Container {
                 competingHazard.turnToDark();
             }
         } else if (hazard.type === HAZARD_TYPE.DARK_FIRE) {
-            if (competingHazard.type === HAZARD_TYPE.FIRE
-                || competingHazard.type === HAZARD_TYPE.DARK_POISON
+            if (competingHazard.type === HAZARD_TYPE.FIRE) {
+                competingHazard.removeFromWorld();
+                if (!competingHazard.small && hazard.small) {
+                    hazard.small = false;
+                    hazard.atk = hazard.actualAtk;
+                }
+                hazard.addToWorld();
+            }
+            if (competingHazard.type === HAZARD_TYPE.DARK_POISON
                 || competingHazard.type === HAZARD_TYPE.POISON) {
                 competingHazard.removeFromWorld();
                 hazard.addToWorld();

@@ -10,7 +10,6 @@ import * as PIXI from "pixi.js";
 export class FireHazard extends Hazard {
     constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
-        this.tint = 0xd67443;
         this.LIFETIME = 14;
         this.actualAtk = 0.5;
         this.small = small;
@@ -31,6 +30,12 @@ export class FireHazard extends Hazard {
         this.type = HAZARD_TYPE.FIRE;
         this.dark = false;
         this.dead = false;
+
+        this.particleTexture = Game.resources["src/images/effects/fire_effect.png"].texture;
+        this.particleSmallTexture = Game.resources["src/images/effects/fire_effect_small.png"].texture;
+        this.staticColor = 0xd60043;
+        this.colorConstraints = {min: 0x006800, max: 0x00a000};
+        this.tint = 0xd67443;
     }
 
     addToWorld() {
@@ -71,12 +76,7 @@ export class FireHazard extends Hazard {
                 for (const dir of randomShuffle(directionsArray)) {
                     if (spreadCounter <= 0) break;
                     if (isNotAWall(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
-                        let newHazard;
-                        if (this.type === HAZARD_TYPE.FIRE) {
-                            newHazard = new FireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1);
-                        } else if (this.type === HAZARD_TYPE.DARK_FIRE) {
-                            newHazard = new DarkFireHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1);
-                        }
+                        const newHazard = new this.constructor(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true, this.spreadTimes - 1);
                         Game.world.addHazard(newHazard);
                         newHazard.LIFETIME = newHazard.turnsLeft = this.LIFETIME;
                     }
@@ -117,24 +117,30 @@ export class FireHazard extends Hazard {
 
     turnToDark() {
         if (this.type === HAZARD_TYPE.FIRE) {
-            this.type = HAZARD_TYPE.DARK_FIRE;
-            this.dark = true;
+            const clone = this.darkClone();
+            this.removeFromWorld();
+            clone.addToWorld();
 
-            const darkStaticColor = 0x340070;
-            const darkColorConstraints = {min: 0x002300, max: 0x004500};
-            this.tint = darkStaticColor + randomInt(darkColorConstraints.min / 0x100, darkColorConstraints.max / 0x100) * 0x100;
-
-            if (this.subFire) {
+            if (clone.subFire || clone.spreadTimes === 0) {
                 if (Math.random() < 0.5) {
-                    this.tileSpread++;
-                    this.spreadTimes += 2;
+                    clone.tileSpread = 2;
+                    clone.spreadTimes += 2;
                 } else {
-                    this.tileSpread += 2;
-                    this.spreadTimes++;
+                    clone.tileSpread = 3;
+                    clone.spreadTimes++;
                 }
             }
-            this.turnsLeft += 3;
+            clone.turnsLeft += 3;
         }
+    }
+
+    darkClone() {
+        const darkClone = new DarkFireHazard(this.tilePosition.x, this.tilePosition.y, this.small, this.spreadTimes);
+        darkClone.tileSpread = this.tileSpread;
+        darkClone.turnsLeft = this.turnsLeft;
+        darkClone.subFire = this.subFire;
+        darkClone.dead = this.dead;
+        return darkClone;
     }
 
     initParticles() {
@@ -144,7 +150,7 @@ export class FireHazard extends Hazard {
         for (let i = 0; i < particlesAmount; i++) {
             const row = Math.floor(i / rows);
             const col = i % rows;
-            const particle = new PIXI.Sprite(this.small ? Game.resources[`src/images/effects/${this.dark ? "dark_" : ""}fire_effect_small.png`].texture : Game.resources[`src/images/effects/${this.dark ? "dark_" : ""}fire_effect.png`].texture);
+            const particle = new PIXI.Sprite(this.small ? this.particleSmallTexture : this.particleTexture);
             particle.zIndex = this.zIndex + 1;
             Game.world.addChild(particle);
             const gridOffset = this.width / rows * 0.25;
@@ -170,16 +176,11 @@ export class FireHazard extends Hazard {
             let animationTime = 0;
             particle.anchor.set(0.5, 0.7);
             particle.setRandomPosition();
+            particle.scale.x = particle.scale.y = 0;
             const animation = delta => {
                 if (Game.paused) return;
                 counter += delta;
-                if (this.dark) {
-                    if (this.small) particle.texture = Game.resources["src/images/effects/dark_fire_effect_small.png"].texture;
-                    else particle.texture = Game.resources["src/images/effects/dark_fire_effect.png"].texture;
-                } else {
-                    if (this.small) particle.texture = Game.resources["src/images/effects/fire_effect_small.png"].texture;
-                    else particle.texture = Game.resources["src/images/effects/fire_effect.png"].texture;
-                }
+                if (!this.small) particle.texture = this.particleTexture;
                 if (this.dead || decayPhase) {
                     particle.scale.x = particle.scale.y = Math.max(particle.scale.x - delta / (initAnimationTime) * beforeDeadScale, 0);
                     if (particle.scale.x <= 0 && decayPhase) {
@@ -228,17 +229,14 @@ export class FireHazard extends Hazard {
     setUpOwnAnimation() {
         let counter = 0;
         let init = true;
-        const normalStaticColor = 0xd60043;
-        const darkStaticColor = 0x340070;
-        const normalColorConstraints = {min: 0x006800, max: 0x00a000};
-        const darkColorConstraints = {min: 0x002300, max: 0x004500};
-        this.tint = this.dark ? darkStaticColor + randomInt(darkColorConstraints.min / 0x100, darkColorConstraints.max / 0x100) * 0x100
-            : normalStaticColor + randomInt(normalColorConstraints.min / 0x100, normalColorConstraints.max / 0x100) * 0x100;
+
+        this.tint = this.staticColor + randomInt(this.colorConstraints.min / 0x100, this.colorConstraints.max / 0x100) * 0x100;
         const initAnimationTime = randomInt(5, 9);
+        this.alpha = 0;
         const animation = delta => {
             if (Game.paused) return;
             if (this.dead) {
-                this.alpha -= delta / (initAnimationTime);
+                this.alpha -= delta / initAnimationTime;
                 if (this.alpha < 0) this.purge();
             } else if (init) {
                 counter += delta;
@@ -250,14 +248,12 @@ export class FireHazard extends Hazard {
                     this.alpha = endAlpha;
                 }
             } else {
-                const colorConstraints = this.dark ? darkColorConstraints : normalColorConstraints;
-                const staticColor = this.dark ? darkStaticColor : normalStaticColor;
                 if (!this.small && this.alpha < 1) this.alpha += delta / initAnimationTime * 0.5;
                 if (Math.random() < 0.5) return;
                 let colorStep = randomInt(-2, 2) * 0x100;
-                const middleTint = this.tint - staticColor;
-                if (middleTint + colorStep > colorConstraints.max) colorStep = -Math.abs(colorStep);
-                else if (middleTint + colorStep < colorConstraints.min) colorStep = Math.abs(colorStep);
+                const middleTint = this.tint - this.staticColor;
+                if (middleTint + colorStep > this.colorConstraints.max) colorStep = -Math.abs(colorStep);
+                else if (middleTint + colorStep < this.colorConstraints.min) colorStep = Math.abs(colorStep);
                 this.tint += colorStep;
             }
         };
@@ -288,5 +284,9 @@ export class DarkFireHazard extends FireHazard {
         super(tilePositionX, tilePositionY, small, spreadTimes, texture);
         this.type = HAZARD_TYPE.DARK_FIRE;
         this.dark = true;
+        this.particleTexture = Game.resources["src/images/effects/dark_fire_effect.png"].texture;
+        this.particleSmallTexture = Game.resources["src/images/effects/dark_fire_effect_small.png"].texture;
+        this.staticColor = 0x340070;
+        this.colorConstraints = {min: 0x002300, max: 0x004500};
     }
 }
