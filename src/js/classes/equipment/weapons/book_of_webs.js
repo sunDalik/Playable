@@ -69,7 +69,7 @@ export class BookOfWebs extends MagicBook {
                 webSprite.scale.x = webSprite.scale.y = counter / appearTime * finalScale;
             } else if (counter >= appearTime && counter < appearTime + stayTime) {
                 webSprite.scale.x = webSprite.scale.y = finalScale;
-            } else if (counter >= appearTime + stayTime) {
+            } else if (counter >= appearTime + stayTime && counter < appearTime + stayTime + stayTime) {
                 webSprite.scale.x = webSprite.scale.y = Math.max(finalScale - (counter - appearTime - stayTime) / appearTime * finalScale, 0);
             } else {
                 Game.world.removeChild(webSprite);

@@ -4,9 +4,8 @@ import {MagicBook} from "./magic_book";
 import {isEnemy, isLit} from "../../../map_checks";
 import {Game} from "../../../game";
 import {TileElement} from "../../tile_elements/tile_element";
-import * as PIXI from "pixi.js";
-import {createFadingAttack} from "../../../animations";
-import {randomShuffle} from "../../../utils/random_utils";
+import {createPlayerAttackTile} from "../../../animations";
+import {randomInt, randomShuffle} from "../../../utils/random_utils";
 
 export class BookOfThunders extends MagicBook {
     constructor() {
@@ -30,13 +29,48 @@ export class BookOfThunders extends MagicBook {
         const atk = wielder.getAtkWithWeapon(this);
         const tile = {x: enemy.tilePosition.x, y: enemy.tilePosition.y};
         enemy.damage(wielder, atk, dirX, dirY, this.magical);
-        const attackSprite = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y, true);
-        attackSprite.tint = this.primaryColor;
-        createFadingAttack(attackSprite);
+        this.createThunderAnimation(tile, enemy);
         this.uses--;
         this.updateTexture(wielder);
         this.holdBookAnimation(wielder, dirX, dirY);
         return true;
+    }
+
+    createThunderAnimation(tile, enemy) {
+        const strikeTime = 4;
+        const angleStayTime = 3;
+
+        createPlayerAttackTile(tile, strikeTime + angleStayTime * 2);
+
+        const thunderSprite = new TileElement(Game.resources["src/images/effects/thunder_effect.png"].texture, tile.x, tile.y);
+        thunderSprite.zIndex = enemy.zIndex + 1;
+        Game.world.addChild(thunderSprite);
+        thunderSprite.anchor.set(0.5, 1);
+        thunderSprite.position.set(enemy.position.x, enemy.position.y);
+        const offsetY = Game.TILESIZE * 0.75;
+        thunderSprite.position.y -= offsetY;
+        const initPos = thunderSprite.position.y;
+        let counter = 0;
+        let firstAngle = randomInt(12, 18);
+        let secondAngle = randomInt(-12, -18);
+        if (Math.random() < 0.5) [firstAngle, secondAngle] = [secondAngle, firstAngle];
+        const animation = (delta) => {
+            if (Game.paused) return;
+            counter += delta;
+            if (counter < strikeTime) {
+                thunderSprite.position.y = initPos + counter / strikeTime * offsetY;
+            } else if (counter >= strikeTime && counter < strikeTime + angleStayTime) {
+                thunderSprite.position.y = initPos + offsetY;
+                thunderSprite.angle = firstAngle;
+            } else if (counter >= strikeTime + angleStayTime && counter < strikeTime + angleStayTime * 2) {
+                thunderSprite.angle = secondAngle;
+            } else {
+                Game.world.removeChild(thunderSprite);
+                Game.app.ticker.remove(animation);
+            }
+        };
+
+        Game.app.ticker.add(animation);
     }
 
     getEnemy(wielder, dirX, dirY) {
