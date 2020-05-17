@@ -302,9 +302,8 @@ export class ParanoidEel extends Boss {
                         else if (wall.x === Game.endRoomBoundaries[1].x) minionEel.setAngle(90);
                         else if (wall.y === Game.endRoomBoundaries[0].y) minionEel.setAngle(0);
                         else if (wall.y === Game.endRoomBoundaries[1].y) minionEel.setAngle(180);
-                        minionEel.placeOnMap();
+                        minionEel.turnDelay = 0;
                         minionEel.move();
-                        minionEel.updateIntentIcon();
                     }
                 }, Math.abs(i) * 1.5, true);
                 break;
