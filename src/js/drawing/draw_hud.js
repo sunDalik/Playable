@@ -420,15 +420,16 @@ export function getKeyBindSymbol(keyBind) {
     else return keyBind.slice(-1);
 }
 
-//todo change to bitmap text?
+//todo change to bitmap text!!
 export function redrawSpeedRunTime() {
     const container = HUD.speedrunTime;
     removeAllChildrenFromContainer(container, true);
     if (Game.showTime) {
         const time = getTimeFromMs(Game.time);
-        const text = new PIXI.Text(`Time: ${padTime(time.minutes, 1)}:${padTime(time.seconds, 2)}.${padTime(Math.floor(time.ms / 10), 2)}`, HUDTextStyleTitle);
-        text.position.set(slotBorderOffsetX, Game.app.renderer.screen.height - text.height - miniMapBottomOffset);
-        container.addChild(text);
+        const timeText = `Time: ${padTime(time.minutes, 1)}:${padTime(time.seconds, 2)}.${padTime(Math.floor(time.ms / 10), 2)}`;
+        const textSprite = new PIXI.Text(timeText, HUDTextStyleTitle);
+        textSprite.position.set(slotBorderOffsetX, Game.app.renderer.screen.height - textSprite.height - miniMapBottomOffset);
+        container.addChild(textSprite);
     }
 }
 

@@ -156,12 +156,12 @@ export class FireHazard extends Hazard {
                 max: 0.40 * Game.TILESIZE / particle.width - maxScaleStep
             };
             const angleConstraints = {min: -6, max: 6};
-            const initAnimationTime = randomInt(8, 12);
+            const initAnimationTime = randomInt(5, 9);
             let chosenScaleMod = randomFloat(scaleMod.min, scaleMod.max);
             let beforeDeadScale = 1;
             let lastScaleStepSign = 1;
             let animationTime = 0;
-            particle.anchor.set(0.5, 0.5);
+            particle.anchor.set(0.5, 0.7);
             particle.setRandomPosition();
             const animation = delta => {
                 if (Game.paused) return;
@@ -217,7 +217,7 @@ export class FireHazard extends Hazard {
         let init = true;
         const colorConstraints = {min: 0x006800, max: 0x00a000};
         this.tint = 0xd60000 + randomInt(colorConstraints.min / 0x100, colorConstraints.max / 0x100) * 0x100 + 0x000043;
-        const initAnimationTime = randomInt(8, 12);
+        const initAnimationTime = randomInt(5, 9);
         const animation = delta => {
             if (Game.paused) return;
             if (this.dead) {

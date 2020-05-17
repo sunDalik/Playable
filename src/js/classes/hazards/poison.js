@@ -77,7 +77,7 @@ export class PoisonHazard extends Hazard {
                 particle.scale.x = particle.scale.y = 0;
                 animationTime = randomInt(15, 55);
             }
-            const initAnimationTime = randomInt(12, 16);
+            const initAnimationTime = randomInt(9, 13);
             let chosenScaleMod = randomFloat(scaleMod.min, scaleMod.max);
             let beforeDeadScale = 1;
             let lastScaleStepSign = 1;
@@ -133,7 +133,7 @@ export class PoisonHazard extends Hazard {
         let init = true;
         const colorConstraints = {min: 0x6a0000, max: 0x840000};
         this.tint = randomInt(colorConstraints.min / 0x10000, colorConstraints.max / 0x10000) * 0x10000 + 0x005200 + 0x0000a7;
-        const initAnimationTime = randomInt(8, 12);
+        const initAnimationTime = randomInt(5, 9);
         const animation = delta => {
             if (Game.paused) return;
             if (this.dead) {
