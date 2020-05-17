@@ -1,7 +1,6 @@
 import {Game} from "../../game";
 import {Hazard} from "./hazard";
 import {HAZARD_TYPE} from "../../enums";
-import {HazardsSpriteSheet} from "../../loader";
 import {randomFloat, randomInt} from "../../utils/random_utils";
 import * as PIXI from "pixi.js";
 import {removeObjectFromArray} from "../../utils/basic_utils";
@@ -16,15 +15,28 @@ export class PoisonHazard extends Hazard {
         if (startAt0Atk) this.atk = 0;
         else this.atk = 0.5;
         this.dead = false;
+
+        this.particleTexture = Game.resources["src/images/effects/poison_bubble.png"].texture;
+        this.staticColor = 0x0052a7;
+        this.colorConstraints = {min: 0x6a0000, max: 0x840000};
         this.tint = 0x7752a7;
     }
 
     turnToDark() {
         if (this.type === HAZARD_TYPE.POISON) {
-            this.type = HAZARD_TYPE.DARK_POISON;
-            this.texture = HazardsSpriteSheet["hazard_dark_poison.png"];
-            this.turnsLeft += 3;
+            const clone = this.darkClone();
+            this.removeFromWorld();
+            clone.addToWorld();
+            clone.turnsLeft += 3;
         }
+    }
+
+    darkClone() {
+        const darkClone = new DarkPoisonHazard(this.tilePosition.x, this.tilePosition.y, false);
+        darkClone.atk = this.atk;
+        darkClone.turnsLeft = this.turnsLeft;
+        darkClone.dead = this.dead;
+        return darkClone;
     }
 
     updateLifetime() {
@@ -53,7 +65,7 @@ export class PoisonHazard extends Hazard {
         for (let i = 0; i < particlesAmount; i++) {
             const row = Math.floor(i / rows);
             const col = i % rows;
-            const particle = new PIXI.Sprite(Game.resources["src/images/effects/poison_bubble.png"].texture);
+            const particle = new PIXI.Sprite(this.particleTexture);
             particle.zIndex = this.zIndex + 1;
             Game.world.addChild(particle);
             const gridOffset = this.width / rows * 0.3;
@@ -83,11 +95,12 @@ export class PoisonHazard extends Hazard {
             let lastScaleStepSign = 1;
             particle.anchor.set(0.5, 0.8);
             particle.setRandomPosition();
+            particle.scale.x = particle.scale.y = 0;
             const animation = delta => {
                 if (Game.paused) return;
                 counter += delta;
                 if (this.dead) {
-                    particle.scale.x = particle.scale.y = Math.max(particle.scale.x - delta / (initAnimationTime) * beforeDeadScale, 0);
+                    particle.scale.x = particle.scale.y = Math.max(particle.scale.x - delta / initAnimationTime * beforeDeadScale, 0);
                 } else if (poppedPhase) {
                     if (counter >= animationTime) {
                         particle.setRandomPosition();
@@ -131,13 +144,13 @@ export class PoisonHazard extends Hazard {
     setUpOwnAnimation() {
         let counter = 0;
         let init = true;
-        const colorConstraints = {min: 0x6a0000, max: 0x840000};
-        this.tint = randomInt(colorConstraints.min / 0x10000, colorConstraints.max / 0x10000) * 0x10000 + 0x005200 + 0x0000a7;
+        this.tint = this.staticColor + randomInt(this.colorConstraints.min / 0x10000, this.colorConstraints.max / 0x10000) * 0x10000;
         const initAnimationTime = randomInt(5, 9);
+        this.alpha = 0;
         const animation = delta => {
             if (Game.paused) return;
             if (this.dead) {
-                this.alpha -= delta / (initAnimationTime);
+                this.alpha -= delta / initAnimationTime;
                 if (this.alpha < 0) this.purge();
             } else if (init) {
                 counter += delta;
@@ -150,9 +163,9 @@ export class PoisonHazard extends Hazard {
             } else {
                 if (Math.random() < 0.5) return;
                 let colorStep = randomInt(-2, 2) * 0x10000;
-                const topTint = this.tint - 0x005200 - 0x0000a7;
-                if (topTint + colorStep > colorConstraints.max) colorStep = -Math.abs(colorStep);
-                else if (topTint + colorStep < colorConstraints.min) colorStep = Math.abs(colorStep);
+                const topTint = this.tint - this.staticColor;
+                if (topTint + colorStep > this.colorConstraints.max) colorStep = -Math.abs(colorStep);
+                else if (topTint + colorStep < this.colorConstraints.min) colorStep = Math.abs(colorStep);
                 this.tint += colorStep;
             }
         };
@@ -179,8 +192,12 @@ export class PoisonHazard extends Hazard {
 }
 
 export class DarkPoisonHazard extends PoisonHazard {
-    constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = HazardsSpriteSheet["hazard_dark_poison.png"]) {
+    constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = PIXI.Texture.WHITE) {
         super(tilePositionX, tilePositionY, startAt0Atk, texture);
         this.type = HAZARD_TYPE.DARK_POISON;
+        this.dark = true;
+        this.particleTexture = Game.resources["src/images/effects/dark_poison_bubble.png"].texture;
+        this.staticColor = 0x00377d;
+        this.colorConstraints = {min: 0x160000, max: 0x410000};
     }
 }
