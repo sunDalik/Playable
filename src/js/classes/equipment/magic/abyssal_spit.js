@@ -1,10 +1,9 @@
 import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
-import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
+import {isAnyWall} from "../../../map_checks";
 import {DarkPoisonHazard} from "../../hazards/poison";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
-import {randomShuffle} from "../../../utils/random_utils";
 
 export class AbyssalSpit extends Magic {
     constructor() {
@@ -38,10 +37,23 @@ export class AbyssalSpit extends Magic {
         wielder.cancelAnimation();
         wielder.bump(dirX, dirY);
         this.uses--;
-        for (let i = 1; ; i++) {
-            if (isNotAWall(wielder.tilePosition.x + dirX * i, wielder.tilePosition.y + dirY * i)) {
-                Game.world.addHazard(new DarkPoisonHazard(wielder.tilePosition.x + dirX * i, wielder.tilePosition.y + dirY * i));
-            } else break;
+
+        let endI = this.range;
+        for (let i = 1; i <= endI; i++) {
+            let tile = {x: wielder.tilePosition.x + dirX * i, y: wielder.tilePosition.y + dirY * i};
+            if (isAnyWall(tile.x, tile.y)) endI = i;
+            Game.world.addHazard(new DarkPoisonHazard(tile.x, tile.y));
+
+            const endJ = i === 4 ? 2 : i - 1;
+            for (const sign of [-1, 1]) {
+                for (let j = 1; j <= endJ; j++) {
+                    tile = dirX !== 0 ? {x: wielder.tilePosition.x + dirX * i, y: wielder.tilePosition.y + j * sign}
+                        : {x: wielder.tilePosition.x + j * sign, y: wielder.tilePosition.y + dirY * i};
+
+                    if (isAnyWall(tile.x, tile.y)) break;
+                    Game.world.addHazard(new DarkPoisonHazard(tile.x, tile.y));
+                }
+            }
         }
         return true;
     }
