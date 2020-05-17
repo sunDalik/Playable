@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE, HAZARD_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {
     getPlayerOnTile,
@@ -19,7 +19,6 @@ import {PoisonEel} from "../fc/eel_poison";
 import {shakeScreen} from "../../../animations";
 import {DarkEel} from "../fc/eel_dark";
 import {ParanoidEelSpriteSheet} from "../../../loader";
-import {removeObjectFromArray} from "../../../utils/basic_utils";
 
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = ParanoidEelSpriteSheet["paranoid_eel_neutral.png"]) {
@@ -434,10 +433,25 @@ export class ParanoidEel extends Boss {
         this.bump(this.direction.x, this.direction.y, null, () => this.rotateDirectionBy90());
     }
 
-    //todo dont react on hazard damage?
+    damageWithHazards() {
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                if (Game.map[this.tilePosition.y + y][this.tilePosition.x + x].entity === this) {
+                    const hazard = Game.map[this.tilePosition.y][this.tilePosition.x].hazard;
+                    if (hazard) {
+                        if (hazard.type === HAZARD_TYPE.DARK_FIRE || hazard.type === HAZARD_TYPE.DARK_POISON) {
+                            this.damage(hazard, hazard.atk, 0, 0, false, true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
         if (!this.dead) {
+            if (hazardDamage) return;
             if (this.triggeredSpinAttack || this.triggeredVerticalRush || this.triggeredSneezeAttack || this.triggeredHorizontalRush) return;
             if ((this.direction.x !== -inputX || this.direction.y !== -inputY)
                 && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit) this.waitingToMove = true;

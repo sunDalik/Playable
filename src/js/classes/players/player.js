@@ -347,6 +347,12 @@ export class Player extends AnimatedTileElement {
         }
 
         setTickTimeout(() => {
+            // don't do anything if you aren't relevant anymore...
+            // fixes the bug when you hit retry when you are dying
+            // although maybe... we should forbid opening pauseScreen when we die !!!
+            // potential todo
+            if (this !== Game.player && this !== Game.player2) return;
+
             Game.paused = false;
             if (otherPlayer(this).dead) pullUpGameOverScreen();
             else {
@@ -384,6 +390,7 @@ export class Player extends AnimatedTileElement {
         for (const eq of this.getEquipment()) {
             if (eq && eq.onDeath) eq.onDeath(this);
         }
+        redrawSlotContentsForPlayer(this);
         this.removeHealthContainers(1);
         otherPlayer(this).removeHealthContainers(1);
         updateInanimates();

@@ -9,6 +9,7 @@ import {runDestroyAnimation} from "../../animations";
 import {SummonCircle} from "../enemies/ru/summon_circle";
 import {updateIntent} from "../../game_logic";
 import {camera} from "./camera";
+import {removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 
 export class World extends PIXI.Container {
     constructor() {
@@ -137,6 +138,7 @@ export class World extends PIXI.Container {
     }
 
     clean() {
+        removeAllChildrenFromContainer(this.upWorld);
         for (let i = this.children.length - 1; i >= 0; i--) {
             const child = this.children[i];
             this.removeChild(child);
