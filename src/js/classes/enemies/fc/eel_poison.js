@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {Eel} from "./eel"
+import {Game} from "../../../game";
+import {Eel} from "./eel";
 import {ENEMY_TYPE} from "../../../enums";
 import {PoisonHazard} from "../../hazards/poison";
 import {getPlayerOnTile} from "../../../map_checks";
@@ -8,15 +8,17 @@ import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 export class PoisonEel extends Eel {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel_poison.png"]) {
         super(tilePositionX, tilePositionY, texture);
+        this.type = ENEMY_TYPE.POISON_EEL;
         this.health = this.maxHealth = 4;
         this.atk = 1.25;
         this.triggered = false;
         this.FULL_ROTATE_TIME = 15;
-        this.type = ENEMY_TYPE.POISON_EEL;
+        this.attackedLastTime = false;
         this.setScaleModifier(1.1);
     }
 
     move() {
+        this.attackedLastTime = false;
         if (this.triggered && this.turnDelay === 0) {
             this.attack();
             this.triggered = false;
@@ -32,7 +34,7 @@ export class PoisonEel extends Eel {
     damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
         const savedAngle = this.angle;
         super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
-        if (!hazardDamage) {
+        if (!hazardDamage && !this.attackedLastTime) {
             if (this.turnDelay === 0) {
                 this.cancelAnimation();
                 this.angle = savedAngle;
@@ -47,14 +49,14 @@ export class PoisonEel extends Eel {
         for (let x = -1; x <= 1; x++) {
             for (let y = -1; y <= 1; y++) {
                 if (!(x === 0 && y === 0)) {
-                    const attackPositionX = this.tilePosition.x + x;
-                    const attackPositionY = this.tilePosition.y + y;
-                    Game.world.addHazard(new PoisonHazard(attackPositionX, attackPositionY));
-                    const player = getPlayerOnTile(attackPositionX, attackPositionY);
+                    const attackTile = {x: this.tilePosition.x + x, y: this.tilePosition.y + y};
+                    Game.world.addHazard(new PoisonHazard(attackTile.x, attackTile.y));
+                    const player = getPlayerOnTile(attackTile.x, attackTile.y);
                     if (player) player.damage(this.atk, this);
                 }
             }
         }
+        this.attackedLastTime = true;
     }
 
     rotateByAngleMaximal(angle, rotateTime = this.FULL_ROTATE_TIME) {
