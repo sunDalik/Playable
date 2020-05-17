@@ -40,15 +40,18 @@ export class FireHazard extends Hazard {
 
     addToWorld() {
         super.addToWorld();
-        if (!this.animation) {
-            this.initParticles();
-            this.setUpOwnAnimation();
-        }
+        if (!this.animation) this.startAnimation();
+
+        // hmmm why do we not define maskLayer in the constructor?...
         if (Game.stage === STAGE.DARK_TUNNEL) {
-            //this.maskLayer = new PIXI.Sprite(PIXI.Texture.WHITE);
             this.maskLayer = {};
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
         }
+    }
+
+    startAnimation() {
+        this.initParticles();
+        this.setUpOwnAnimation();
     }
 
     removeFromWorld() {
@@ -169,7 +172,7 @@ export class FireHazard extends Hazard {
                 max: 0.40 * Game.TILESIZE / particle.width - maxScaleStep
             };
             const angleConstraints = {min: -6, max: 6};
-            const initAnimationTime = randomInt(5, 9);
+            const initAnimationTime = this.getInitAnimationTime();
             let chosenScaleMod = randomFloat(scaleMod.min, scaleMod.max);
             let beforeDeadScale = 1;
             let lastScaleStepSign = 1;
@@ -190,12 +193,12 @@ export class FireHazard extends Hazard {
                         counter = 0;
                     }
                 } else if (init) {
-                    particle.scale.x = particle.scale.y = (counter / (initAnimationTime)) * chosenScaleMod;
-                    beforeDeadScale = particle.scale.x;
+                    beforeDeadScale = particle.scale.x = particle.scale.y = (counter / (initAnimationTime)) * chosenScaleMod;
                     particle.alpha = this.small ? 0.75 : 1;
                     if (counter >= initAnimationTime) {
                         counter = 0;
                         init = false;
+                        beforeDeadScale = particle.scale.x = particle.scale.y = chosenScaleMod;
                     }
                 } else {
                     if (!this.small && particle.alpha < 1) particle.alpha += delta / initAnimationTime * 0.25;
@@ -204,8 +207,7 @@ export class FireHazard extends Hazard {
                     if (Math.random() < 0.8) scaleStep = Math.abs(scaleStep) * lastScaleStepSign;
                     if (particle.scale.x + scaleStep > scaleMod.max) scaleStep = -Math.abs(scaleStep);
                     else if (particle.scale.x + scaleStep < scaleMod.min) scaleStep = Math.abs(scaleStep);
-                    particle.scale.x = particle.scale.y = particle.scale.x + scaleStep;
-                    beforeDeadScale = particle.scale.x;
+                    beforeDeadScale = particle.scale.x = particle.scale.y = particle.scale.x + scaleStep;
                     lastScaleStepSign = Math.sign(scaleStep);
                     let angleStep = randomFloat(-0.5, 0.5);
                     if (particle.angle + angleStep > angleConstraints.max || particle.angle + angleStep < angleConstraints.min) angleStep *= -1;
@@ -231,7 +233,7 @@ export class FireHazard extends Hazard {
         let init = true;
 
         this.tint = this.staticColor + randomInt(this.colorConstraints.min / 0x100, this.colorConstraints.max / 0x100) * 0x100;
-        const initAnimationTime = randomInt(5, 9);
+        const initAnimationTime = this.getInitAnimationTime();
         this.alpha = 0;
         const animation = delta => {
             if (Game.paused) return;
@@ -260,6 +262,10 @@ export class FireHazard extends Hazard {
         Game.infiniteAnimations.push(animation);
         Game.app.ticker.add(animation);
         this.animation = animation;
+    }
+
+    getInitAnimationTime() {
+        return randomInt(5, 9);
     }
 
     purge() {

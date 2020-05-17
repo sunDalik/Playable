@@ -110,11 +110,11 @@ export class PoisonHazard extends Hazard {
                         animationTime = randomInt(20, 80);
                     }
                 } else if (init) {
-                    particle.scale.x = particle.scale.y = (counter / (initAnimationTime)) * chosenScaleMod;
-                    beforeDeadScale = particle.scale.x;
+                    beforeDeadScale = particle.scale.x = particle.scale.y = (counter / (initAnimationTime)) * chosenScaleMod;
                     if (counter >= initAnimationTime) {
                         counter = 0;
                         init = false;
+                        beforeDeadScale = particle.scale.x = particle.scale.y = chosenScaleMod;
                     }
                 } else {
                     let scaleStep = randomFloat(-maxScaleStep, maxScaleStep);

@@ -1,11 +1,10 @@
 import {Game} from "../../../game";
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {RARITY, STAGE, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
-import {createFadingAttack} from "../../../animations";
-import * as PIXI from "pixi.js";
-import {TileElement} from "../../tile_elements/tile_element";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
+import {FireHazard} from "../../hazards/fire";
+import {setTickTimeout} from "../../../utils/game_utils";
 
 export class BookOfFlames extends MagicBook {
     constructor() {
@@ -56,12 +55,19 @@ export class BookOfFlames extends MagicBook {
                 }
                 const attackTile = attackTiles[i];
                 if (isNotAWall(attackTile.x, attackTile.y)) {
-                    const attackSprite = new TileElement(PIXI.Texture.WHITE, attackTile.x, attackTile.y, true);
-                    attackSprite.tint = 0x10afa6;
-                    createFadingAttack(attackSprite);
+                    let timeout;
+                    if (i === 0) timeout = 0;
+                    else if (i === 4) timeout = 2;
+                    else timeout = 1;
+                    timeout *= 2;
+                    if (timeout > 0) {
+                        setTickTimeout(() => {this.createBlueFire(attackTile);}, timeout);
+                    } else {
+                        this.createBlueFire(attackTile);
+                    }
                 }
                 if (isEnemy(attackTile.x, attackTile.y)) {
-                    enemiesToAttack.push(Game.map[attackTile.y][attackTile.x].entity)
+                    enemiesToAttack.push(Game.map[attackTile.y][attackTile.x].entity);
                 }
             }
 
@@ -73,5 +79,34 @@ export class BookOfFlames extends MagicBook {
             this.holdBookAnimation(wielder, dirX, dirY);
             return true;
         } else return false;
+    }
+
+    createBlueFire(tile) {
+        const blueFire = new BlueFireEffect(tile.x, tile.y);
+        Game.world.addChild(blueFire);
+        blueFire.startAnimation();
+        if (Game.stage === STAGE.DARK_TUNNEL) {
+            blueFire.maskLayer = {};
+            Game.darkTiles[tile.y][tile.x].addLightSource(blueFire.maskLayer);
+        }
+        setTickTimeout(() => {
+            blueFire.dead = true;
+            if (blueFire.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
+                Game.darkTiles[tile.y][tile.x].removeLightSource(blueFire.maskLayer);
+            }
+        }, 11);
+    }
+}
+
+class BlueFireEffect extends FireHazard {
+    constructor(tilePositionX, tilePositionY) {
+        super(tilePositionX, tilePositionY, false);
+        this.particleTexture = Game.resources["src/images/effects/blue_fire_effect.png"].texture;
+        this.staticColor = 0x47007e;
+        this.colorConstraints = {min: 0x009900, max: 0x00ac00};
+    }
+
+    getInitAnimationTime() {
+        return 3;
     }
 }

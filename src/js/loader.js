@@ -19,6 +19,7 @@ export function loadAll(afterLoad) {
         .add("src/images/effects/fire_effect_small.png")
         .add("src/images/effects/dark_fire_effect.png")
         .add("src/images/effects/dark_fire_effect_small.png")
+        .add("src/images/effects/blue_fire_effect.png")
 
         .add("src/images/inanimates/chest.png") //todo move to spritesheet
         .add("src/images/inanimates/chest_opened.png") //todo move to spritesheet
