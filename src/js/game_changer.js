@@ -1,9 +1,6 @@
 import {Aura} from "./classes/equipment/magic/aura";
 import {Spikes} from "./classes/equipment/magic/spikes";
-import {Fireball} from "./classes/equipment/magic/fireball";
 import {Necromancy} from "./classes/equipment/magic/necromancy";
-import {Petrification} from "./classes/equipment/magic/petrification";
-import {Teleport} from "./classes/equipment/magic/teleport";
 import {Wind} from "./classes/equipment/magic/wind";
 import {BasicArmor} from "./classes/equipment/armor/basic";
 import {WizardRobe} from "./classes/equipment/armor/wizard_robe";
@@ -31,7 +28,6 @@ import {Game} from "./game";
 import {RARITY, STAGE} from "./enums";
 import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
-import {EternalCross} from "./classes/equipment/magic/eternal_cross";
 import {Immortality} from "./classes/equipment/magic/immortality";
 import {Heart} from "./classes/equipment/one_time/heart";
 import {BattleHelmet} from "./classes/equipment/headwear/battle_helmet";
@@ -50,7 +46,7 @@ import {Shield} from "./classes/equipment/shields/shield";
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
         PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce];
-    Game.magicPool = [Aura, Spikes, Fireball, Necromancy, Petrification, Teleport, Wind, AbyssalSpit, EternalCross, Immortality];
+    Game.magicPool = [Aura, Spikes, Necromancy, Wind, AbyssalSpit, Immortality];
     Game.chestItemPool = [Pickaxe,
         Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         SeerCirclet, WizardHat, VampireCrown, BattleHelmet, BladeCrown,

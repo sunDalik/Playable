@@ -4,9 +4,8 @@ import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, SLOT} from "../../.
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
-    redrawAllMagicSlots,
-    redrawSlotContents, redrawSlotContentsForPlayer,
-    redrawWeaponAndSecondHand
+    redrawSlotContents,
+    redrawSlotContentsForPlayer
 } from "../../../drawing/draw_hud";
 import {otherPlayer} from "../../../utils/game_utils";
 import {MagicSpriteSheet} from "../../../loader";
