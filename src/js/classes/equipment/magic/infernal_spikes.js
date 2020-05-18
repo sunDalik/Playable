@@ -10,7 +10,7 @@ export class InfernalSpikes extends VampireSpikes {
         this.type = MAGIC_TYPE.INFERNAL_SPIKES;
         this.uses = this.maxUses = 6;
         this.name = "Infernal Spikes";
-        this.description = "EDIT";
+        this.description = "Upgrade to Vampire Spikes\nYou now cast both diagonal and cardinal spikes";
         this.attackDirs = this.attackDirs.concat([{x: 1, y: 0}, {x: 0, y: 1}, {x: -1, y: 0}, {x: 0, y: -1}]);
         this.calculateRarity();
     }

@@ -15,7 +15,7 @@ export class Spikes extends Magic {
         this.friendlyFire = 1;
         this.uses = this.maxUses = 4;
         this.name = "Spikes";
-        this.description = "EDIT";
+        this.description = `Cast 4 diagonal spikes that deal ${this.atk} damage to enemies\nIt can also hurt allies and deal ${this.friendlyFire} damage to them`;
         this.attackDirs = [{x: -1, y: -1}, {x: 1, y: -1}, {x: 1, y: 1}, {x: -1, y: 1}]
             .flatMap(d => [d, {x: d.x * 2, y: d.y * 2}]);
         this.calculateRarity();
