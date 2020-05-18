@@ -42,11 +42,14 @@ import {BookOfThunders} from "./classes/equipment/weapons/book_of_thunders";
 import {BookOfIce} from "./classes/equipment/weapons/book_of_ice";
 import {GoldenShield} from "./classes/equipment/shields/golden";
 import {Shield} from "./classes/equipment/shields/shield";
+import {Transcendence} from "./classes/equipment/magic/transcendence";
+import {VampireSpikes} from "./classes/equipment/magic/vampire_spikes";
+import {InfernalSpikes} from "./classes/equipment/magic/infernal_spikes";
 
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
         PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce];
-    Game.magicPool = [Aura, Spikes, Necromancy, Wind, AbyssalSpit, Immortality];
+    Game.magicPool = [Aura, Spikes, VampireSpikes, InfernalSpikes, Necromancy, Wind, AbyssalSpit, Immortality, Transcendence];
     Game.chestItemPool = [Pickaxe,
         Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         SeerCirclet, WizardHat, VampireCrown, BattleHelmet, BladeCrown,

@@ -1,8 +1,7 @@
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
+import {MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 
-//maybe not active...?
 export class Immortality extends Magic {
     constructor() {
         super();
@@ -10,9 +9,9 @@ export class Immortality extends Magic {
         this.type = MAGIC_TYPE.IMMORTALITY;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.name = "Immortality";
-        this.description = "Gain 2 heart containers";
-        this.rarity = RARITY.C;
+        this.description = "Gain 1 heart container";
         this.used = false;
+        this.calculateRarity();
     }
 
     cast() {
@@ -22,7 +21,7 @@ export class Immortality extends Magic {
     onWear(wielder) {
         if (!this.used) {
             this.used = true;
-            wielder.addHealthContainers(2);
+            wielder.addHealthContainers(1);
         }
     }
 }

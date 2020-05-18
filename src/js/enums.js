@@ -44,18 +44,15 @@ export const RABBIT_TYPE = Object.freeze({
 
 export const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});
 export const MAGIC_TYPE = Object.freeze({
-    FIREBALL: 0,
     AURA: 1,
     SPIKES: 2,
-    TELEPORT: 3,
     NECROMANCY: 4,
-    PETRIFICATION: 5,
     WIND: 6,
     ABYSSAL_SPIT: 7,
-    ETERNAL_CROSS: 8,
     IMMORTALITY: 9,
     VAMPIRE_SPIKES: 10,
-    INFERNAL_SPIKES: 11
+    INFERNAL_SPIKES: 11,
+    TRANSCENDENCE: 12
 });
 
 export const STAGE = Object.freeze({
