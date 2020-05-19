@@ -1,15 +1,18 @@
-import {Game} from "../../game"
-import {INANIMATE_TYPE, ROLE} from "../../enums";
-import {Grail} from "./grail";
+import {Game} from "../../game";
+import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "../../enums";
 import {createFadingText, longShakeScreen, runDestroyAnimation} from "../../animations";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 import {TileElement} from "../tile_elements/tile_element";
 import {InanimatesSpriteSheet} from "../../loader";
+import {randomInt} from "../../utils/random_utils";
+import {Necromancy} from "../equipment/magic/necromancy";
+import {getRandomSpell} from "../../utils/pool_utils";
+import {Grail} from "./grail";
 
 export class Obelisk extends TileElement {
-    constructor(tilePositionX, tilePositionY, magic, onDestroyMagic) {
+    constructor(tilePositionX, tilePositionY, level) {
         super(InanimatesSpriteSheet["obelisk.png"], tilePositionX, tilePositionY);
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.OBELISK;
@@ -18,16 +21,9 @@ export class Obelisk extends TileElement {
         this.destroyed = false;
         this.timesDamaged = 0;
         this.timesDonated = 0;
-        this.magic1 = magic[0];
-        this.magic2 = magic[1];
-        this.magic3 = magic[2];
-        this.magic4 = magic[3];
-        this.onDestroyMagic = onDestroyMagic;
-        this.grail1 = new Grail(0, 0, this);
-        this.grail2 = new Grail(0, 0, this);
-        this.grail3 = new Grail(0, 0, this);
-        this.grail4 = new Grail(0, 0, this);
-
+        this.generateMagic();
+        this.generateGrails(level);
+        Game.obelisks.push(this);
         this.icon = new PIXI.Sprite(Game.resources["src/images/icons/obelisk_sacrifice.png"].texture);
         Game.world.addChild(this.icon);
         this.icon.visible = false;
@@ -40,9 +36,84 @@ export class Obelisk extends TileElement {
         this.tallModifier = -10;
     }
 
-    placeGrails() {
-        for (const grail of [this.grail1, this.grail2, this.grail3, this.grail4]) {
+    generateMagic() {
+        if (Game.magicPool.length >= 4) {
+            let necromancyIndex = -1;
+            let alivePlayer = null;
+            if (Game.player.dead) alivePlayer = Game.player2;
+            else if (Game.player2.dead) alivePlayer = Game.player;
+            if (alivePlayer !== null) {
+                if (alivePlayer.health >= 3.5) necromancyIndex = randomInt(0, 3);
+                else if (alivePlayer.health >= 2.5) necromancyIndex = randomInt(0, 2);
+                else necromancyIndex = randomInt(0, 1);
+            }
+
+            const magicPool = [];
+            let attempt = 0;
+            for (let i = 0; i < 4; ++i) {
+                if (i === necromancyIndex) {
+                    magicPool[i] = new Necromancy();
+                } else {
+                    while (attempt++ < 200) {
+                        const randomSpell = getRandomSpell();
+                        if (!magicPool.some(magic => magic.type === randomSpell.type)) {
+                            magicPool[i] = randomSpell;
+                            break;
+                        }
+                    }
+                    if (attempt >= 200) magicPool[i] = new Necromancy();
+                }
+            }
+            let onDestroyMagicPool = [];
+            attempt = 0;
+            for (let i = 0; i < 2; ++i) {
+                while (attempt++ < 200) {
+                    const randomSpell = getRandomSpell();
+                    if (!onDestroyMagicPool.some(magic => magic.type === randomSpell.type)) {
+                        onDestroyMagicPool[i] = randomSpell;
+                        break;
+                    }
+                }
+                if (attempt >= 200) onDestroyMagicPool[i] = new Necromancy();
+            }
+            this.magic = magicPool;
+            this.onDestroyMagic = onDestroyMagicPool;
+        }
+    }
+
+    generateGrails(level) {
+        this.grails = [];
+        for (let i = 0; i < 4; i++) {
+            this.grails[i] = new Grail(0, 0, this);
+        }
+        if (level[this.tilePosition.y - 1][this.tilePosition.x - 2].tileType === TILE_TYPE.WALL && level[this.tilePosition.y - 1][this.tilePosition.x + 2].tileType === TILE_TYPE.WALL) {
+            level[this.tilePosition.y][this.tilePosition.x - 1].entity = this.grails[0];
+            this.grails[0].tilePosition.set(this.tilePosition.x - 1, this.tilePosition.y);
+            level[this.tilePosition.y][this.tilePosition.x + 1].entity = this.grails[1];
+            this.grails[1].tilePosition.set(this.tilePosition.x + 1, this.tilePosition.y);
+            level[this.tilePosition.y][this.tilePosition.x - 2].entity = this.grails[2];
+            this.grails[2].tilePosition.set(this.tilePosition.x - 2, this.tilePosition.y);
+            level[this.tilePosition.y][this.tilePosition.x + 2].entity = this.grails[3];
+            this.grails[3].tilePosition.set(this.tilePosition.x + 2, this.tilePosition.y);
+        } else {
+            level[this.tilePosition.y + 1][this.tilePosition.x - 1].entity = this.grails[0];
+            this.grails[0].tilePosition.set(this.tilePosition.x - 1, this.tilePosition.y + 1);
+            level[this.tilePosition.y + 1][this.tilePosition.x + 1].entity = this.grails[1];
+            this.grails[1].tilePosition.set(this.tilePosition.x + 1, this.tilePosition.y + 1);
+            level[this.tilePosition.y + 2][this.tilePosition.x - 1].entity = this.grails[2];
+            this.grails[2].tilePosition.set(this.tilePosition.x - 1, this.tilePosition.y + 2);
+            level[this.tilePosition.y + 2][this.tilePosition.x + 1].entity = this.grails[3];
+            this.grails[3].tilePosition.set(this.tilePosition.x + 1, this.tilePosition.y + 2);
+        }
+        for (const grail of this.grails) {
             grail.placeGrail();
+        }
+        const clearDirs = [{x: 0, y: 0}, {x: -1, y: 0}, {x: +1, y: 0}, {x: -1, y: +1}, {x: +1, y: +1}, {x: 0, y: +1}];
+        for (const grail of this.grails) {
+            for (const dir of clearDirs) {
+                level[grail.tilePosition.y + dir.y][grail.tilePosition.x + dir.x].tileType = TILE_TYPE.NONE;
+                level[grail.tilePosition.y + dir.y][grail.tilePosition.x + dir.x].tile = null;
+            }
         }
     }
 
@@ -55,8 +126,8 @@ export class Obelisk extends TileElement {
 
     activate() {
         if (!this.activated && this.working) {
-            this.grail1.setMagic(this.magic1);
-            this.grail2.setMagic(this.magic2);
+            this.grails[0].setMagic(this.magic[0]);
+            this.grails[1].setMagic(this.magic[1]);
             this.activated = true;
             createFadingText("Choose one...", this.position.x, this.position.y);
             longShakeScreen();
@@ -69,10 +140,7 @@ export class Obelisk extends TileElement {
             this.working = false;
             if (this.timesDamaged > 0) this.texture = InanimatesSpriteSheet["obelisk_used_damaged.png"];
             else this.texture = InanimatesSpriteSheet["obelisk_used.png"];
-            this.grail1.setMagic(null);
-            this.grail2.setMagic(null);
-            this.grail3.setMagic(null);
-            this.grail4.setMagic(null);
+            this.grails.map(grail => grail.setMagic(null));
             createFadingText("Goodbye...", this.position.x, this.position.y);
             longShakeScreen();
         } else if (this.destroyed) {
@@ -86,8 +154,8 @@ export class Obelisk extends TileElement {
                 if (player.health > 1) {
                     player.voluntaryDamage(1);
                     this.timesDonated++;
-                    if (this.timesDonated === 1) this.grail3.setMagic(this.magic3);
-                    else this.grail4.setMagic(this.magic4);
+                    if (this.timesDonated === 1) this.grails[2].setMagic(this.magic3);
+                    else this.grails[3].setMagic(this.magic[3]);
                     createFadingText("Be blessed...", this.position.x, this.position.y);
                     longShakeScreen();
                 } else {
@@ -109,10 +177,10 @@ export class Obelisk extends TileElement {
         }
         if (this.working) {
             this.working = false;
-            this.grail1.setMagic(this.onDestroyMagic[0]);
-            this.grail2.setMagic(this.onDestroyMagic[1]);
-            this.grail3.setMagic(null);
-            this.grail4.setMagic(null);
+            this.grails[0].setMagic(this.onDestroyMagic[0]);
+            this.grails[1].setMagic(this.onDestroyMagic[1]);
+            this.grails[2].setMagic(null);
+            this.grails[3].setMagic(null);
             for (const enemy of Game.enemies) {
                 if (enemy.dead) {
                     enemy.revive();
