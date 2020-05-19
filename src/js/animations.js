@@ -183,7 +183,7 @@ export function createEnemyAttackTile(tile, animationTime = 8, alpha = 0.5) {
     const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y, true);
     fadingTile.tint = 0xf4524a;
     fadingTile.alpha = alpha;
-    fadingTile.zIndex = -2;
+    fadingTile.zIndex = Z_INDEXES.HAZARD;
     createFadingAttack(fadingTile, animationTime);
 }
 
@@ -191,7 +191,7 @@ export function createPlayerAttackTile(tile, animationTime = 8, alpha = 0.5, tin
     const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y, true);
     fadingTile.tint = tint;
     fadingTile.alpha = alpha;
-    fadingTile.zIndex = -2;
+    fadingTile.zIndex = Z_INDEXES.HAZARD;
     createFadingAttack(fadingTile, animationTime);
 }
 
@@ -221,6 +221,7 @@ export function createFadingAttack(attack, animationTime = Game.TURNTIME) {
                     Game.darkTiles[attack.tilePosition.y][attack.tilePosition.x].removeLightSource(attack.maskLayer);
                 }
             }
+            attack.destroy();
         }
     };
     Game.app.ticker.add(animation);
