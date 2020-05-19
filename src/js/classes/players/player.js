@@ -1,5 +1,4 @@
 import {Game} from "../../game";
-import * as PIXI from "pixi.js";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {
     ARMOR_TYPE,
@@ -604,31 +603,6 @@ export class Player extends AnimatedTileElement {
             if (onEnd) onEnd();
             updateChain();
         }, animationTime, maxDelta);
-    }
-
-    spinItem(item, animationTime = 15) {
-        this.animationCounter = 0;
-        const step = 180 / animationTime;
-        const itemSprite = new PIXI.Sprite(item.texture);
-        itemSprite.anchor.set(0.5, 0.5);
-        itemSprite.position.set(this.getTilePositionX(), this.getTilePositionY());
-        itemSprite.width = itemSprite.height = Game.TILESIZE;
-        itemSprite.zIndex = Game.primaryPlayer.zIndex + 1;
-        Game.world.addChild(itemSprite);
-
-        this.cancelAnimation();
-        this.animationSubSprites.push(itemSprite);
-        const animation = (delta) => {
-            if (Game.paused) return;
-            itemSprite.angle += step * delta;
-            this.animationCounter += delta;
-            if (this.animationCounter >= animationTime) {
-                Game.app.ticker.remove(animation);
-                this.cancelAnimation();
-            }
-        };
-        this.animation = animation;
-        Game.app.ticker.add(animation);
     }
 
     redrawEquipmentSlot(equipment) {
