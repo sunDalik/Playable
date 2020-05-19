@@ -86,7 +86,6 @@ export const EQUIPMENT_TYPE = Object.freeze({
     MAGIC: 7,
     BAG_ITEM: 8,
 
-    //hmmm this is probably a stillborn idea and will be later changed into a passive type
     ONE_TIME: 9,
 
     KEY: 10,
@@ -138,7 +137,7 @@ export const FOOTWEAR_TYPE = Object.freeze({ADVENTURER: 0, DAMAGING: 1, DARK: 2,
 export const SHIELD_TYPE = Object.freeze({GOLDEN: 0, STUNNING: 1, SPIKY: 2, BASIC: 3, FELL_STAR_SHIELD: 4});
 export const TOOL_TYPE = Object.freeze({TORCH: 0});
 export const BAG_ITEM_TYPE = Object.freeze({BOMB: 0, SMALL_HEALING_POTION: 1});
-export const ONE_TIME_ITEM_TYPE = Object.freeze({HEART: 0});
+export const ONE_TIME_ITEM_TYPE = Object.freeze({LIFE_FRUIT: 0});
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
 

@@ -28,7 +28,8 @@ export function loadAll(afterLoad) {
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
         .add("src/images/icons/obelisk_sacrifice.png")
-        .add("src/images/one_time/heart.png")
+
+        .add("src/images/one_time/life_fruit.png")
 
         .add("src/textures/common.json")
         .add("src/textures/intents.json")

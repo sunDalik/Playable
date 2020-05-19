@@ -29,7 +29,7 @@ import {RARITY, STAGE} from "./enums";
 import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
 import {Immortality} from "./classes/equipment/magic/immortality";
-import {Heart} from "./classes/equipment/one_time/heart";
+import {LifeFruit} from "./classes/equipment/one_time/life_fruit";
 import {BattleHelmet} from "./classes/equipment/headwear/battle_helmet";
 import {FellStarShield} from "./classes/equipment/shields/fell_star_shield";
 import {OldBalletShoes} from "./classes/equipment/footwear/old_ballet_shoes";
@@ -55,7 +55,7 @@ export function initPools() {
         SeerCirclet, WizardHat, VampireCrown, BattleHelmet, BladeCrown,
         BasicArmor, WizardRobe, HeavyArmor, ElectricArmor, Wings,
         AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes,
-        Heart];
+        LifeFruit];
 }
 
 export function removeItemFromPool(item, pool) {
