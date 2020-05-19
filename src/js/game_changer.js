@@ -45,6 +45,7 @@ import {Shield} from "./classes/equipment/shields/shield";
 import {Transcendence} from "./classes/equipment/magic/transcendence";
 import {VampireSpikes} from "./classes/equipment/magic/vampire_spikes";
 import {InfernalSpikes} from "./classes/equipment/magic/infernal_spikes";
+import {HeartShapedKey} from "./classes/equipment/one_time/heart_shaped_key";
 
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
@@ -55,7 +56,7 @@ export function initPools() {
         SeerCirclet, WizardHat, VampireCrown, BattleHelmet, BladeCrown,
         BasicArmor, WizardRobe, HeavyArmor, ElectricArmor, Wings,
         AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes,
-        LifeFruit];
+        LifeFruit, HeartShapedKey];
 }
 
 export function removeItemFromPool(item, pool) {

@@ -30,6 +30,7 @@ export function loadAll(afterLoad) {
         .add("src/images/icons/obelisk_sacrifice.png")
 
         .add("src/images/one_time/life_fruit.png")
+        .add("src/images/one_time/heart_shaped_key.png")
 
         .add("src/textures/common.json")
         .add("src/textures/intents.json")
