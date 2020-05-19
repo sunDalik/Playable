@@ -1,11 +1,11 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_TYPE, HAZARD_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY} from "../../../enums";
+import {HAZARD_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {blowAwayInDirection} from "../../../special_move_logic";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 
-export class Wind extends Magic  {
+export class Wind extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_wind.png"];
@@ -14,10 +14,10 @@ export class Wind extends Magic  {
         this.atk = 0;
         this.radius = 4;
         this.slideTime = 5;
-        this.uses = this.maxUses = 5;
+        this.uses = this.maxUses = 4;
         this.name = "Wind";
-        this.description = "Push everybody away from you";
-        this.rarity = RARITY.C;
+        this.description = "EDIT";
+        this.calculateRarity();
     }
 
     cast(wielder) {
@@ -32,7 +32,7 @@ export class Wind extends Magic  {
                         }
                         if (isEnemy(wielder.tilePosition.x + x, wielder.tilePosition.y + y)) {
                             Game.map[wielder.tilePosition.y + y][wielder.tilePosition.x + x].entity.stun++;
-                            blowAwayInDirection(wielder.tilePosition, {x: x, y: y}, this.slideTime)
+                            blowAwayInDirection(wielder.tilePosition, {x: x, y: y}, this.slideTime);
                         }
                     }
                 }

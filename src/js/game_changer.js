@@ -46,6 +46,7 @@ import {Transcendence} from "./classes/equipment/magic/transcendence";
 import {VampireSpikes} from "./classes/equipment/magic/vampire_spikes";
 import {InfernalSpikes} from "./classes/equipment/magic/infernal_spikes";
 import {HeartShapedKey} from "./classes/equipment/one_time/heart_shaped_key";
+import {Light} from "./classes/equipment/magic/light";
 
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
