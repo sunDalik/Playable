@@ -10,7 +10,6 @@ export class AbyssalSpit extends Magic {
         super();
         this.texture = MagicSpriteSheet["magic_abyssal_spit.png"];
         this.type = MAGIC_TYPE.ABYSSAL_SPIT;
-        this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 0;
         this.uses = this.maxUses = 5;

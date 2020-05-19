@@ -15,7 +15,6 @@ export class Necromancy extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_necromancy.png"];
-        this.equipmentType = EQUIPMENT_TYPE.MAGIC;
         this.type = MAGIC_TYPE.NECROMANCY;
         this.alignment = MAGIC_ALIGNMENT.GRAY;
         this.uses = this.maxUses = 1;

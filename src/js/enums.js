@@ -44,6 +44,7 @@ export const RABBIT_TYPE = Object.freeze({
 
 export const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});
 export const MAGIC_TYPE = Object.freeze({
+    LIGHT: 0,
     AURA: 1,
     SPIKES: 2,
     NECROMANCY: 4,

@@ -1,23 +1,23 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, STAGE} from "../../../enums";
+import {MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, STAGE} from "../../../enums";
 import {getPlayerOnTile, isEnemy, isNotAWall, isObelisk} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 
-export class Aura extends Magic {
+export class Light extends Magic {
     constructor() {
         super();
-        this.texture = MagicSpriteSheet["magic_aura.png"];
-        this.type = MAGIC_TYPE.AURA;
+        this.texture = MagicSpriteSheet["magic_light.png"];
+        this.type = MAGIC_TYPE.LIGHT;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
-        this.atk = 2;
-        this.healAmount = 1;
-        this.uses = this.maxUses = 3;
-        this.name = "Aura";
-        this.description = "Heal and enlighten";
+        this.atk = 1;
+        this.healAmount = 0.5;
+        this.uses = this.maxUses = 5;
+        this.name = "Light";
+        this.description = `Creates a circle of light around you that damages all enemies inside by ${this.atk} dmg and heals allies inside it by ${this.healAmount} HP`;
         this.rarity = RARITY.A;
     }
 
