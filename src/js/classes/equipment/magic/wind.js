@@ -11,7 +11,6 @@ export class Wind extends Magic {
         this.texture = MagicSpriteSheet["magic_wind.png"];
         this.type = MAGIC_TYPE.WIND;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
-        this.atk = 0;
         this.radius = 4;
         this.slideTime = 5;
         this.uses = this.maxUses = 4;

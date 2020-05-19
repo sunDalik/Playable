@@ -1,19 +1,21 @@
 import {MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
-import {Light} from "./light";
+import {ForceShield} from "./force_shield";
 
-export class Aura extends Magic {
+export class Escape extends Magic {
     constructor() {
         super();
-        this.texture = MagicSpriteSheet["magic_aura.png"];
-        this.type = MAGIC_TYPE.AURA;
-        this.alignment = MAGIC_ALIGNMENT.WHITE;
+        this.texture = MagicSpriteSheet["magic_escape.png"];
+        this.type = MAGIC_TYPE.ESCAPE;
+        this.alignment = MAGIC_ALIGNMENT.DARK;
         this.uses = this.maxUses = 6;
-        this.name = "Aura";
+        this.name = "Escape";
         this.description = "EDIT";
         this.calculateRarity();
     }
-}
 
-Aura.requiredMagic = Light;
+    cast(wielder) {
+
+    }
+}

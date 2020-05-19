@@ -9,7 +9,6 @@ export class ForceShield extends Magic {
         this.texture = MagicSpriteSheet["magic_force_shield.png"];
         this.type = MAGIC_TYPE.FORCE_SHIELD;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
-        this.atk = 0;
         this.uses = this.maxUses = 5;
         this.name = "Force Shield";
         this.description = "EDIT";
@@ -21,4 +20,4 @@ export class ForceShield extends Magic {
     }
 }
 
-this.requiredMagic = Wind;
+ForceShield.requiredMagic = Wind;

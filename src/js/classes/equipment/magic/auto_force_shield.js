@@ -9,7 +9,6 @@ export class AutoForceShield extends Magic {
         this.texture = MagicSpriteSheet["magic_auto_force_shield.png"];
         this.type = MAGIC_TYPE.AUTO_FORCE_SHIELD;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
-        this.atk = 0;
         this.uses = this.maxUses = 6;
         this.name = "Auto Force Shield";
         this.description = "EDIT";
@@ -21,4 +20,4 @@ export class AutoForceShield extends Magic {
     }
 }
 
-this.requiredMagic = ForceShield;
+AutoForceShield.requiredMagic = ForceShield;
