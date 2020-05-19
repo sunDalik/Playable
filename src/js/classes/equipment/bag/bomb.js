@@ -39,7 +39,7 @@ export class Bomb extends BagEquipment {
             for (const dir of get8Directions().concat({x: 0, y: 0})) {
                 const posX = this.sprite.tilePosition.x + dir.x;
                 const posY = this.sprite.tilePosition.y + dir.y;
-                const sprite = new TileElement(PIXI.Texture.WHITE, posX, posY);
+                const sprite = new TileElement(PIXI.Texture.WHITE, posX, posY, true);
                 sprite.tint = 0xfa794d;
                 if (isEnemy(posX, posY)) {
                     Game.map[posY][posX].entity.damage(this, this.bombAtk, 0, 0, false, true);

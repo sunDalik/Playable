@@ -340,8 +340,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
             if (showHelp) showHelpBox(equipment);
             return null;
         case EQUIPMENT_TYPE.KEY:
-            Game.keysAmount++;
-            redrawKeysAmount();
+            addKeys(1);
             if (showHelp) showHelpBox(equipment);
             return null;
     }
@@ -362,6 +361,11 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
     redrawSlotContents(player, slot);
     if (showHelp) showHelpBox(player[slot]);
     return swappedEquipment;
+}
+
+export function addKeys(keyAmount) {
+    Game.keysAmount += keyAmount;
+    redrawKeysAmount();
 }
 
 export function removeEquipmentFromPlayer(player, equipmentType) {

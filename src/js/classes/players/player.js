@@ -60,6 +60,7 @@ export class Player extends AnimatedTileElement {
         this.electricityImmunity = 0;
         this.charging = false;
         this.chargingMagic = null;
+        this.onMoveFrameSubscribers = [];
         this.doubleAttackCallback = () => {
         };
         this.setScaleModifier(0.87);
@@ -249,6 +250,9 @@ export class Player extends AnimatedTileElement {
         if (extra) extra();
         updateChain();
         this.placeShadow();
+        for (const moveFrameSubscriber of this.onMoveFrameSubscribers) {
+            moveFrameSubscriber(this);
+        }
     }
 
     onMove(animationTime, tileStepX, tileStepY) {

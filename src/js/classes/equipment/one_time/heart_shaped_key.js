@@ -1,7 +1,7 @@
 import {Game} from "../../../game";
 import {EQUIPMENT_TYPE, ONE_TIME_ITEM_TYPE, RARITY} from "../../../enums";
 import {Equipment} from "../equipment";
-import {redrawKeysAmount} from "../../../drawing/draw_hud";
+import {addKeys} from "../../../game_logic";
 
 export class HeartShapedKey extends Equipment {
     constructor() {
@@ -16,7 +16,6 @@ export class HeartShapedKey extends Equipment {
 
     useItem(player) {
         player.addHealthContainers(1);
-        Game.keys += 2;
-        redrawKeysAmount();
+        addKeys(2);
     }
 }

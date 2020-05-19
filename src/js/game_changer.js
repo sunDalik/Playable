@@ -1,4 +1,3 @@
-import {Aura} from "./classes/equipment/magic/aura";
 import {Spikes} from "./classes/equipment/magic/spikes";
 import {Necromancy} from "./classes/equipment/magic/necromancy";
 import {Wind} from "./classes/equipment/magic/wind";
@@ -51,7 +50,7 @@ import {Light} from "./classes/equipment/magic/light";
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
         PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce];
-    Game.magicPool = [Light, Aura, Spikes, VampireSpikes, InfernalSpikes, Necromancy, Wind, AbyssalSpit, Immortality, Transcendence];
+    Game.magicPool = [Light, Spikes, VampireSpikes, InfernalSpikes, Necromancy, Wind, AbyssalSpit, Immortality, Transcendence];
     Game.chestItemPool = [Pickaxe,
         Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         SeerCirclet, WizardHat, VampireCrown, BattleHelmet, BladeCrown,
