@@ -1,5 +1,4 @@
 import {redrawSlotContents} from "../../../drawing/draw_hud";
-import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {SLOT} from "../../../enums";
 import {Equipment} from "../equipment";
 
@@ -23,15 +22,5 @@ export class AbstractShield extends Equipment {
         this.uses += Math.ceil(this.maxUses / 2);
         if (this.uses > this.maxUses) this.uses = this.maxUses;
         redrawSlotContents(player, SLOT.EXTRA);
-    }
-
-    getStatuePlacement() {
-        return {
-            x: statueLeftHandPoint.x,
-            y: statueLeftHandPoint.y,
-            angle: 0,
-            scaleModifier: 0.8,
-            zIndex: 3
-        };
     }
 }

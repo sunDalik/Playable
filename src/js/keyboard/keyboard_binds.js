@@ -1,9 +1,8 @@
 import {Game} from "../game";
-import {keyboard, keyboardS} from "./keyboard_handler";
-import {playerTurn, swapEquipmentWithPlayer, switchPlayers} from "../game_logic";
+import {keyboardS} from "./keyboard_handler";
+import {playerTurn, switchPlayers} from "../game_logic";
 import {toggleMiniMap} from "../drawing/minimap";
 import {STORAGE} from "../enums";
-import {getRandomChestDrop} from "../utils/pool_utils";
 
 const upKeyP1 = keyboardS(STORAGE.KEY_MOVE_UP_1P);
 const leftKeyP1 = keyboardS(STORAGE.KEY_MOVE_LEFT_1P);
@@ -68,5 +67,15 @@ export function bindKeys() {
     mapKey.press = () => toggleMiniMap();
 
     //keyboard("KeyN").press = gotoNextLevel;
-    keyboard("KeyN").press = () => swapEquipmentWithPlayer(Game.player, getRandomChestDrop());
+
+    /*
+    keyboard("BracketRight").press = () => {
+        Game.world.scale.x = Game.world.scale.y = Game.world.scale.x + 0.05;
+        camera.center();
+    };
+    keyboard("BracketLeft").press = () => {
+        Game.world.scale.x = Game.world.scale.y = Game.world.scale.x - 0.05;
+        camera.center();
+    }
+     */
 }

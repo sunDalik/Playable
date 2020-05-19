@@ -67,7 +67,6 @@ export const STAGE = Object.freeze({
 export const TILE_TYPE = Object.freeze({VOID: 0, NONE: 1, WALL: 2, ENTRY: 4, SUPER_WALL: 5, EXIT: 6});
 export const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1, INANIMATE: 2, BULLET: 3, WALL_TRAP: 4});
 export const INANIMATE_TYPE = Object.freeze({
-    STATUE: 0,
     OBELISK: 1,
     GRAIL: 2,
     CHEST: 3,

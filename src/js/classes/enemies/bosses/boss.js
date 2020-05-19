@@ -76,7 +76,7 @@ export class Boss extends Enemy {
                     if (isEnemy(x, y)) {
                         Game.map[y][x].entity.die();
                     }
-                    const item = Math.random() < 0.5 ? getRandomChestDrop() : getRandomWeapon();
+                    const item = Math.random() < 0.6 ? getRandomChestDrop() : getRandomWeapon();
                     Game.world.addInanimate(new Pedestal(x, y, item));
                 }
                 break;

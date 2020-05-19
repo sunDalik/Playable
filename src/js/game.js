@@ -35,7 +35,6 @@ export const Game = {
     actionsMade: 0,
 
     enemiesTimeout: null,
-    maraudedStatues: [],
     weaponPool: [],
     magicPool: [],
     chestItemPool: [],

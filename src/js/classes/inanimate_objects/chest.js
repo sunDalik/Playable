@@ -1,4 +1,4 @@
-import {Game} from "../../game"
+import {Game} from "../../game";
 import {INANIMATE_TYPE} from "../../enums";
 import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import * as PIXI from "pixi.js";
@@ -9,16 +9,17 @@ import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {redrawKeysAmount} from "../../drawing/draw_hud";
 import {BLACK_COLOR_OVERLAY} from "../../filters";
 import {ItemInanimate} from "./item_inanimate";
+import {getRandomChestDrop, getRandomWeapon} from "../../utils/pool_utils";
 
 export class Chest extends ItemInanimate {
-    constructor(tilePositionX, tilePositionY, contents) {
+    constructor(tilePositionX, tilePositionY) {
         super(Game.resources["src/images/inanimates/chest.png"].texture, tilePositionX, tilePositionY);
-        this.contents = contents;
-        this.contentsType = contents.equipmentType;
+        this.contents = Math.random() < 0.70 ? getRandomChestDrop() : getRandomWeapon();
+        this.contentsType = this.contents.equipmentType;
         this.type = INANIMATE_TYPE.CHEST;
         this.opened = false;
-        this.createItemSprite(contents, this.height * 0.4);
-        this.createTextLabel(contents, this.height * 1.15);
+        this.createItemSprite(this.contents, this.height * 0.4);
+        this.createTextLabel(this.contents, this.height * 1.15);
 
         this.keysRequiredSprite = new PIXI.Sprite(PIXI.Texture.WHITE, 0, 0);
         this.keysRequiredSprite.anchor.set(0.5, 0.5);
@@ -27,10 +28,10 @@ export class Chest extends ItemInanimate {
         this.keysRequiredSprite.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
         Game.world.addChild(this.keysRequiredSprite);
 
-        this.tint = contents.rarity.color;
+        this.tint = this.contents.rarity.color;
         this.tallModifier = -15;
-        this.setScaleModifier(0.9 + contents.rarity.num / 16);
-        this.keysRequired = this.totalKeysRequired = contents.rarity.num + 1;
+        this.setScaleModifier(0.9 + this.contents.rarity.num / 16);
+        this.keysRequired = this.totalKeysRequired = this.contents.rarity.num + 1;
         this.updateKeysRequiredSprite();
     }
 
@@ -68,7 +69,7 @@ export class Chest extends ItemInanimate {
         //umm todo refactor angle determination
         if (tileStepX === -1) {
             keyElement.scale.x *= -1;
-            keyElement.angle = 45
+            keyElement.angle = 45;
         } else if (tileStepX === 1) {
             keyElement.angle = -45;
         } else if (tileStepY === 1) {

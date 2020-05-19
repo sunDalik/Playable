@@ -3,7 +3,6 @@ import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {statueRightHandPoint} from "../../inanimate_objects/statue";
 import {Weapon} from "../weapon";
 
 export class RustySword extends Weapon {
@@ -50,9 +49,5 @@ export class RustySword extends Weapon {
             if (this.uses <= 0) this.texture = WeaponsSpriteSheet["rusty_sword_broken.png"];
             return true;
         } else return false;
-    }
-
-    getStatuePlacement() {
-        return {x: statueRightHandPoint.x - 24, y: statueRightHandPoint.y - 100, angle: 30, scaleModifier: 0.9};
     }
 }

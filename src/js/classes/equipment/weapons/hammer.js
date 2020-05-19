@@ -3,7 +3,6 @@ import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {statueRightHandPoint} from "../../inanimate_objects/statue";
 import {Weapon} from "../weapon";
 
 export class Hammer  extends Weapon {
@@ -29,14 +28,5 @@ export class Hammer  extends Weapon {
             enemy.stun++;
             return true;
         } else return false;
-    }
-
-    getStatuePlacement() {
-        return {
-            x: statueRightHandPoint.x - 25,
-            y: statueRightHandPoint.y - 80,
-            angle: 30,
-            scaleModifier: 0.7
-        };
     }
 }

@@ -36,6 +36,7 @@ export class Obelisk extends TileElement {
         this.tallModifier = -10;
     }
 
+    //todo change magic generation logic
     generateMagic() {
         if (Game.magicPool.length >= 4) {
             let necromancyIndex = -1;

@@ -3,7 +3,6 @@ import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {TileElement} from "../../tile_elements/tile_element";
 import {easeOutQuad} from "../../../utils/math_utils";
 import {Weapon} from "../weapon";
@@ -64,14 +63,5 @@ export class DoubleGlaive  extends Weapon {
 
         wielder.animation = animation;
         Game.app.ticker.add(animation);
-    }
-
-    getStatuePlacement() {
-        return {
-            x: statueLeftHandPoint.x + 1,
-            y: statueLeftHandPoint.y,
-            angle: 90,
-            scaleModifier: this.scaleModifier
-        };
     }
 }

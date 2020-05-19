@@ -3,7 +3,6 @@ import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {Weapon} from "../weapon";
 
 export class Spear extends Weapon {
@@ -36,15 +35,5 @@ export class Spear extends Weapon {
         }
 
         return false;
-    }
-
-    getStatuePlacement() {
-        return {
-            x: statueLeftHandPoint.x - 55,
-            y: statueLeftHandPoint.y + 40,
-            angle: -70,
-            scaleModifier: 0.85,
-            mirrorX: true
-        };
     }
 }

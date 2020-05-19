@@ -1,11 +1,9 @@
-import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {DESATURATE_FILTER} from "../../../filters";
 import * as PIXI from "pixi.js";
 import {Game} from "../../../game";
 import {createFadingText} from "../../../animations";
 import {randomChoice} from "../../../utils/random_utils";
 import {TileElement} from "../../tile_elements/tile_element";
-import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {Weapon} from "../weapon";
 
 export class MagicBook extends Weapon {
@@ -99,15 +97,5 @@ export class MagicBook extends Weapon {
 
         wielder.animation = animation;
         Game.app.ticker.add(animation);
-    }
-
-    getStatuePlacement() {
-        return {
-            x: statueLeftHandPoint.x + 15,
-            y: statueLeftHandPoint.y + 20,
-            angle: 20,
-            scaleModifier: 0.60,
-            texture: this.defaultTexture
-        };
     }
 }

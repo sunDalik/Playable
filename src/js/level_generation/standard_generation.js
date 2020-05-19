@@ -8,8 +8,7 @@ import {WallTile} from "../classes/draw/wall";
 import {SuperWallTile} from "../classes/draw/super_wall";
 import {Room, ROOM_TYPE} from "./room";
 import {Chest} from "../classes/inanimate_objects/chest";
-import {getRandomChestDrop, getRandomWeapon} from "../utils/pool_utils";
-import {Statue} from "../classes/inanimate_objects/statue";
+import {getRandomChestDrop} from "../utils/pool_utils";
 import {get8Directions, getCardinalDirections} from "../utils/map_utils";
 import {Obelisk} from "../classes/inanimate_objects/obelisk";
 import {pointTileDistance} from "../utils/game_utils";
@@ -410,7 +409,7 @@ function setStartPosition(startRoom) {
         Game.startPos = {x: bossRoom.offsetX + 1, y: bossRoom.offsetY + 1};
     }
     if (false) {
-        level[Game.startPos.y][Game.startPos.x + 1].entity = new Chest(Game.startPos.x + 1, Game.startPos.y, getRandomChestDrop());
+        level[Game.startPos.y][Game.startPos.x + 1].entity = new Chest(Game.startPos.x + 1, Game.startPos.y);
     }
     if (false) {
         level[startRoom.offsetY + 2][startRoom.offsetX + 2].entity = new KingFrog(startRoom.offsetX + 2, startRoom.offsetY + 2);
@@ -434,11 +433,9 @@ function expandLevelAndRooms(expandX, expandY) {
 
 function generateInanimates() {
     const obelisksAmount = 1;
-    const statuesAmount = randomInt(1, 2);
-    chestsAmount = Game.stage === STAGE.DARK_TUNNEL ? 3 - statuesAmount : 4 - statuesAmount;
+    chestsAmount = Game.stage === STAGE.DARK_TUNNEL ? 3 : 4;
     placeInanimate(placeObelisk, obelisksAmount);
     placeInanimate(placeChest, chestsAmount);
-    placeInanimate(placeStatue, statuesAmount);
 }
 
 function placeInanimate(placeMethod, amount) {
@@ -454,17 +451,9 @@ function placeInanimate(placeMethod, amount) {
     }
 }
 
-function placeChest(room) {
-    return placeChestOrStatue(room, true);
-}
-
-function placeStatue(room) {
-    return placeChestOrStatue(room, false);
-}
-
-// sometimes not all chests/statues succeed to generate!!!!!!!!!!!
+// sometimes not all chests succeed to generate!!!!!!!!!!!
 // todo fix somehow!!!!!!!!!!!!!!!!
-function placeChestOrStatue(room, isChest) {
+function placeChest(room) {
     let attempt = 0;
     while (attempt++ < 300) {
         const point = {
@@ -489,12 +478,7 @@ function placeChestOrStatue(room, isChest) {
             }
             if (good) {
                 ensureInanimateSurroundings(point.x, point.y);
-                if (isChest) level[point.y][point.x].entity = new Chest(point.x, point.y, getRandomChestDrop());
-                else {
-                    if (Game.weaponPool.length > 0) {
-                        level[point.y][point.x].entity = new Statue(point.x, point.y, getRandomWeapon());
-                    }
-                }
+                level[point.y][point.x].entity = new Chest(point.x, point.y);
                 return true;
             }
         }

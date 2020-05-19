@@ -37,7 +37,7 @@ export class BookOfFlames extends MagicBook {
                 {x: wielder.tilePosition.x, y: wielder.tilePosition.y + dirY * 3}];
         }
         if (attackTiles.length !== 5) return false;
-        //maybe ranged attacks should be blocked by chests and statues? who knows...
+        //maybe ranged attacks should be blocked by inanimates? who knows...
         if (isNotAWall(attackTiles[0].x, attackTiles[0].y) &&
             (isEnemy(attackTiles[0].x, attackTiles[0].y)
                 || isEnemy(attackTiles[1].x, attackTiles[1].y)

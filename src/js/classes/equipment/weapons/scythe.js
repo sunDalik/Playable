@@ -3,7 +3,6 @@ import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {statueLeftHandPoint} from "../../inanimate_objects/statue";
 import {Weapon} from "../weapon";
 
 export class Scythe extends Weapon  {
@@ -53,9 +52,5 @@ export class Scythe extends Weapon  {
             createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, 180, 1.2);
             return true;
         } else return false;
-    }
-
-    getStatuePlacement() {
-        return {x: statueLeftHandPoint.x - 70, y: statueLeftHandPoint.y + 90, angle: -90, scaleModifier: 1};
     }
 }

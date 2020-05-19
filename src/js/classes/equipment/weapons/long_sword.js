@@ -3,7 +3,6 @@ import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {statueRightHandPoint} from "../../inanimate_objects/statue";
 import {Weapon} from "../weapon";
 
 export class LongSword  extends Weapon {
@@ -34,9 +33,5 @@ export class LongSword  extends Weapon {
             Game.map[attackTileY2][attackTileX2].entity.damage(wielder, atk, dirX, dirY, false);
             return true;
         } else return false;
-    }
-
-    getStatuePlacement() {
-        return {x: statueRightHandPoint.x - 10, y: statueRightHandPoint.y - 110, angle: 40, scaleModifier: 0.9};
     }
 }

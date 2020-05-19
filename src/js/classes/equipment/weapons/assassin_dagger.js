@@ -4,7 +4,6 @@ import {RARITY, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {statueRightHandPoint} from "../../inanimate_objects/statue";
 import {floorLevel} from "../../tile_elements/tile_element";
 import {Weapon} from "../weapon";
 
@@ -97,9 +96,5 @@ export class AssassinDagger extends Weapon {
                 attackParticle.position.y = wielder.tilePosition.y * Game.TILESIZE + (Game.TILESIZE - wielder.height) / 2 + wielder.height / 2;
             }
         }
-    }
-
-    getStatuePlacement() {
-        return {x: statueRightHandPoint.x - 27, y: statueRightHandPoint.y + 37, angle: -100, scaleModifier: 0.58};
     }
 }
