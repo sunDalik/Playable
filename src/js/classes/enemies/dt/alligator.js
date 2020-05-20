@@ -208,13 +208,13 @@ export class Alligator extends Enemy {
             if (this.triggeredDirection) {
                 moveEnemyInDirection(this, this.triggeredDirection);
                 this.currentTurnDelay = this.turnDelay;
+                this.triggeredDirection = null;
             } else {
                 if (tileDistance(this, closestPlayer(this)) <= 2) {
                     movementOptions = getChasingOptions(this, closestPlayer(this));
                     if (movementOptions.length === 0) movementOptions = getRelativelyEmptyLitCardinalDirections(this);
                 } else movementOptions = getRelativelyEmptyLitCardinalDirections(this);
 
-                this.triggeredDirection = null;
                 if (movementOptions.length !== 0) {
                     this.direction = randomChoice(movementOptions);
                     this.updateTexture();
