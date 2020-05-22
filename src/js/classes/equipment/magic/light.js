@@ -18,7 +18,7 @@ export class Light extends Magic {
         this.uses = this.maxUses = 5;
         this.name = "Light";
         this.description = `Creates a circle of light around you that damages all enemies inside by ${this.atk} dmg and heals allies inside it by ${this.healAmount} HP`;
-        this.rarity = RARITY.A;
+        this.calculateRarity();
     }
 
     cast(wielder) {

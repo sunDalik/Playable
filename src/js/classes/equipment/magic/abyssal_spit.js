@@ -16,7 +16,7 @@ export class AbyssalSpit extends Magic {
         this.range = 4;
         this.name = "Abyssal Spit";
         this.description = "Spit out a huge pool of dark poison in a given direction\nDark poison damages both players and enemies";
-        this.rarity = RARITY.C;
+        this.calculateRarity();
     }
 
     //todo: dont draw unusable key bindings while charging

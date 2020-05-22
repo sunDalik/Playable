@@ -17,6 +17,7 @@ export class Equipment {
         this.electricityImmunity = false;
 
         // give passive attack and defense bonuses
+        // TODO rename it to passiveAtk probably to avoid confusion
         this.atk = 0;
         this.def = 0;
 

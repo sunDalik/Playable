@@ -1,7 +1,6 @@
 import {MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
-import {ForceShield} from "./force_shield";
 
 export class Escape extends Magic {
     constructor() {

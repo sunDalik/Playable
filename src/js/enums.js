@@ -58,7 +58,8 @@ export const MAGIC_TYPE = Object.freeze({
     CRYSTAL_GUARDIAN: 14,
     ESCAPE: 15,
     DEFENSE_LINK: 16,
-    ATTACK_LINK: 17
+    ATTACK_LINK: 17,
+    THUNDERSTORM: 18
 });
 
 export const STAGE = Object.freeze({
