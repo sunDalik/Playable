@@ -20,7 +20,7 @@ export class Necromancy extends Magic {
         this.uses = this.maxUses = 1;
         this.name = "Necromancy";
         this.description = "Revive a fallen character\nThis magic vanishes when exhausted";
-        this.rarity = RARITY.B;
+        this.calculateRarity();
     }
 
     cast(wielder) {

@@ -27,7 +27,7 @@ export class Obelisk extends TileElement {
         this.icon = new PIXI.Sprite(Game.resources["src/images/icons/obelisk_sacrifice.png"].texture);
         Game.world.addChild(this.icon);
         this.icon.visible = false;
-        this.icon.zIndex = Game.primaryPlayer.zIndex + 1;
+        this.icon.zIndex = this.zIndex + 1;
         this.icon.width = this.icon.height = 25;
         this.icon.anchor.set(0.5, 0.5);
         this.icon.position.x = this.position.x;
