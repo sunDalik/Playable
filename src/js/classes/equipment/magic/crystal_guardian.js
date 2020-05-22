@@ -1,16 +1,16 @@
 import {MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
-import {ForceShield} from "./force_shield";
+import {CrystalWind} from "./crystal_wind";
 
-export class AutoForceShield extends Magic {
+export class CrystalGuardian extends Magic {
     constructor() {
         super();
-        this.texture = MagicSpriteSheet["magic_auto_force_shield.png"];
-        this.type = MAGIC_TYPE.AUTO_FORCE_SHIELD;
+        this.texture = MagicSpriteSheet["magic_crystal_guardian.png"];
+        this.type = MAGIC_TYPE.CRYSTAL_GUARDIAN;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
         this.uses = this.maxUses = 6;
-        this.name = "Auto Force Shield";
+        this.name = "Crystal Guardian";
         this.description = "EDIT";
         this.calculateRarity();
     }
@@ -20,4 +20,4 @@ export class AutoForceShield extends Magic {
     }
 }
 
-AutoForceShield.requiredMagic = ForceShield;
+CrystalGuardian.requiredMagic = CrystalWind;
