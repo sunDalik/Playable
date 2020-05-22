@@ -1,6 +1,5 @@
 import * as PIXI from "pixi.js";
 import {RARITY} from "../../enums";
-import {removeObjectFromArray} from "../../utils/basic_utils";
 
 export class Equipment {
     constructor() {
@@ -29,8 +28,6 @@ export class Equipment {
 
         // forbid players from taking this item off
         this.nonremoveable = false;
-
-        this.onMoveFrameSubscriber = null;
     }
 
     //executes when wielder picks up this item
@@ -38,10 +35,6 @@ export class Equipment {
         if (this.poisonImmunity) wielder.poisonImmunity++;
         if (this.fireImmunity) wielder.fireImmunity++;
         if (this.electricityImmunity) wielder.electricityImmunity++;
-        if (this.onMoveFrameSubscriber) {
-            wielder.onMoveFrameSubscribers.push(this.onMoveFrameSubscriber);
-            this.onMoveFrameSubscriber(wielder);
-        }
     }
 
     //executes when wielder drops this item
@@ -49,10 +42,6 @@ export class Equipment {
         if (this.poisonImmunity) wielder.poisonImmunity--;
         if (this.fireImmunity) wielder.fireImmunity--;
         if (this.electricityImmunity) wielder.electricityImmunity--;
-        if (this.onMoveFrameSubscriber) {
-            removeObjectFromArray(this.onMoveFrameSubscriber, wielder.onMoveFrameSubscribers);
-            this.onMoveFrameSubscriber(wielder, true);
-        }
     }
 
     //executes AFTER enemy turn

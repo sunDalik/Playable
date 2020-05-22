@@ -1,11 +1,11 @@
-import {Game} from "../../game"
+import {Game} from "../../game";
 import {INANIMATE_TYPE, MAGIC_ALIGNMENT} from "../../enums";
 import {createFadingText} from "../../animations";
 import {removeItemFromPool} from "../../game_changer";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";
 import {InanimatesSpriteSheet} from "../../loader";
 import {ItemInanimate} from "./item_inanimate";
-import {Aura} from "../equipment/magic/aura";
+import {Light} from "../equipment/magic/light";
 
 export class Grail extends ItemInanimate {
     constructor(tilePositionX, tilePositionY, obelisk) {
@@ -19,9 +19,9 @@ export class Grail extends ItemInanimate {
     placeGrail() {
         this.place();
         if (!this.itemSprite) {
-            // Aura is a placeholder
-            this.createItemSprite(new Aura());
-            this.createTextLabel(new Aura());
+            // Light is a placeholder
+            this.createItemSprite(new Light());
+            this.createTextLabel(new Light());
         }
     }
 
