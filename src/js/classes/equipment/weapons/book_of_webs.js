@@ -1,5 +1,5 @@
 import {RARITY, WEAPON_TYPE} from "../../../enums";
-import {WeaponsSpriteSheet} from "../../../loader";
+import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
 import {Game} from "../../../game";
@@ -57,7 +57,7 @@ export class BookOfWebs extends MagicBook {
 
         createPlayerAttackTile(tile, appearTime + stayTime + appearTime / 2);
 
-        const webSprite = new TileElement(Game.resources["src/images/effects/web_effect.png"].texture, tile.x, tile.y, true);
+        const webSprite = new TileElement(EffectsSpriteSheet["web_effect.png"], tile.x, tile.y, true);
         Game.world.addChild(webSprite);
         let counter = 0;
         const finalScale = webSprite.scale.x * 1.2;

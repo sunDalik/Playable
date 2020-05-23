@@ -6,6 +6,7 @@ import {isNotAWall} from "../../map_checks";
 import {randomFloat, randomInt, randomShuffle} from "../../utils/random_utils";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import * as PIXI from "pixi.js";
+import {EffectsSpriteSheet} from "../../loader";
 
 export class FireHazard extends Hazard {
     constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = PIXI.Texture.WHITE) {
@@ -31,8 +32,8 @@ export class FireHazard extends Hazard {
         this.dark = false;
         this.dead = false;
 
-        this.particleTexture = Game.resources["src/images/effects/fire_effect.png"].texture;
-        this.particleSmallTexture = Game.resources["src/images/effects/fire_effect_small.png"].texture;
+        this.particleTexture = EffectsSpriteSheet["fire_effect.png"];
+        this.particleSmallTexture = EffectsSpriteSheet["fire_effect_small.png"];
         this.staticColor = 0xd60043;
         this.colorConstraints = {min: 0x006800, max: 0x00a000};
         this.tint = 0xd67443;
@@ -290,8 +291,8 @@ export class DarkFireHazard extends FireHazard {
         super(tilePositionX, tilePositionY, small, spreadTimes, texture);
         this.type = HAZARD_TYPE.DARK_FIRE;
         this.dark = true;
-        this.particleTexture = Game.resources["src/images/effects/dark_fire_effect.png"].texture;
-        this.particleSmallTexture = Game.resources["src/images/effects/dark_fire_effect_small.png"].texture;
+        this.particleTexture = EffectsSpriteSheet["dark_fire_effect.png"];
+        this.particleSmallTexture = EffectsSpriteSheet["dark_fire_effect_small.png"];
         this.staticColor = 0x340070;
         this.colorConstraints = {min: 0x002300, max: 0x004500};
     }

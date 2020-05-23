@@ -1,7 +1,7 @@
 import {Game} from "../../../game";
 import {RARITY, STAGE, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
-import {WeaponsSpriteSheet} from "../../../loader";
+import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {FireHazard} from "../../hazards/fire";
 import {setTickTimeout} from "../../../utils/game_utils";
@@ -101,7 +101,7 @@ export class BookOfFlames extends MagicBook {
 class BlueFireEffect extends FireHazard {
     constructor(tilePositionX, tilePositionY) {
         super(tilePositionX, tilePositionY, false);
-        this.particleTexture = Game.resources["src/images/effects/blue_fire_effect.png"].texture;
+        this.particleTexture = EffectsSpriteSheet["blue_fire_effect.png"];
         this.staticColor = 0x47007e;
         this.colorConstraints = {min: 0x009900, max: 0x00ac00};
     }

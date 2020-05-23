@@ -1,5 +1,5 @@
 import {RARITY, WEAPON_TYPE} from "../../../enums";
-import {WeaponsSpriteSheet} from "../../../loader";
+import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isEnemy, isLit} from "../../../map_checks";
 import {Game} from "../../../game";
@@ -42,7 +42,7 @@ export class BookOfThunders extends MagicBook {
 
         createPlayerAttackTile(tile, strikeTime + angleStayTime * 2);
 
-        const thunderSprite = new TileElement(Game.resources["src/images/effects/thunder_effect.png"].texture, tile.x, tile.y);
+        const thunderSprite = new TileElement(EffectsSpriteSheet["thunder_effect.png"], tile.x, tile.y);
         thunderSprite.zIndex = enemy.zIndex + 1;
         Game.world.addChild(thunderSprite);
         thunderSprite.anchor.set(0.5, 1);

@@ -4,25 +4,13 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
     ParanoidEelSpriteSheet, GotLSpriteSheet, IntentsSpriteSheet, InanimatesSpriteSheet,
     WeaponsSpriteSheet, AchievementsSpriteSheet, HUDSpriteSheet,
     BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
-    HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet;
+    HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/wall.png")
         .add("src/images/key.png")
         .add("src/images/player2.png")
-
-        //todo create effects spritesheet
-        .add("src/images/effects/spike.png")
-        .add("src/images/effects/poison_bubble.png")
-        .add("src/images/effects/dark_poison_bubble.png")
-        .add("src/images/effects/fire_effect.png")
-        .add("src/images/effects/fire_effect_small.png")
-        .add("src/images/effects/dark_fire_effect.png")
-        .add("src/images/effects/dark_fire_effect_small.png")
-        .add("src/images/effects/blue_fire_effect.png")
-        .add("src/images/effects/web_effect.png")
-        .add("src/images/effects/thunder_effect.png")
 
         .add("src/images/inanimates/chest.png") //todo move to spritesheet
         .add("src/images/inanimates/chest_opened.png") //todo move to spritesheet
@@ -34,6 +22,7 @@ export function loadAll(afterLoad) {
         .add("src/images/one_time/heart_shaped_key.png")
 
         .add("src/textures/common.json")
+        .add("src/textures/effects.json")
         .add("src/textures/intents.json")
         .add("src/textures/achievements.json")
         .add("src/textures/fc_enemies.json")
@@ -79,4 +68,5 @@ function setSpriteSheets() {
     HUDSpriteSheet = Game.loader.resources["src/textures/hud.json"].textures;
     BagSpriteSheet = Game.loader.resources["src/textures/bag.json"].textures;
     BulletsSpriteSheet = Game.loader.resources["src/textures/bullets.json"].textures;
+    EffectsSpriteSheet = Game.loader.resources["src/textures/effects.json"].textures;
 }

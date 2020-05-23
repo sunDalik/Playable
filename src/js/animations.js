@@ -8,7 +8,7 @@ import {camera} from "./classes/game/camera";
 import {ROLE, STAGE, WEAPON_TYPE} from "./enums";
 import {easeInOutQuad, easeInQuad, easeOutQuad, quadraticBezier} from "./utils/math_utils";
 import {TileElement} from "./classes/tile_elements/tile_element";
-import {HUDSpriteSheet} from "./loader";
+import {EffectsSpriteSheet, HUDSpriteSheet} from "./loader";
 import {getZIndexForLayer, Z_INDEXES} from "./z_indexing";
 import {getAngleForDirection, setTickTimeout} from "./utils/game_utils";
 
@@ -630,7 +630,7 @@ export function fadeOutAndDie(object, destroyTexture = false) {
 }
 
 export function createSpikeAnimation(origin, offsetX, offsetY, color = 0xffffff, zIndex = origin.zIndex - 1) {
-    const attack = new TileElement(Game.resources["src/images/effects/spike.png"].texture, origin.tilePosition.x, origin.tilePosition.y);
+    const attack = new TileElement(EffectsSpriteSheet["spike.png"], origin.tilePosition.x, origin.tilePosition.y);
     attack.tint = color;
     attack.position.set(origin.getTilePositionX(), origin.getTilePositionY());
     attack.zIndex = zIndex;

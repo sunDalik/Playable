@@ -4,6 +4,7 @@ import {HAZARD_TYPE} from "../../enums";
 import {randomFloat, randomInt} from "../../utils/random_utils";
 import * as PIXI from "pixi.js";
 import {removeObjectFromArray} from "../../utils/basic_utils";
+import {EffectsSpriteSheet} from "../../loader";
 
 export class PoisonHazard extends Hazard {
     constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = PIXI.Texture.WHITE) {
@@ -16,7 +17,7 @@ export class PoisonHazard extends Hazard {
         else this.atk = 0.5;
         this.dead = false;
 
-        this.particleTexture = Game.resources["src/images/effects/poison_bubble.png"].texture;
+        this.particleTexture = EffectsSpriteSheet["poison_bubble.png"];
         this.staticColor = 0x0052a7;
         this.colorConstraints = {min: 0x6a0000, max: 0x840000};
         this.tint = 0x7752a7;
@@ -196,7 +197,7 @@ export class DarkPoisonHazard extends PoisonHazard {
         super(tilePositionX, tilePositionY, startAt0Atk, texture);
         this.type = HAZARD_TYPE.DARK_POISON;
         this.dark = true;
-        this.particleTexture = Game.resources["src/images/effects/dark_poison_bubble.png"].texture;
+        this.particleTexture = EffectsSpriteSheet["dark_poison_bubble.png"];
         this.staticColor = 0x00377d;
         this.colorConstraints = {min: 0x160000, max: 0x410000};
     }
