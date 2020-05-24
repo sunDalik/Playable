@@ -19,6 +19,7 @@ export function isDiggable(tilePosX, tilePosY) {
     return false;
 }
 
+//umm wall traps now spawn WITH tiletype.wall so ummm... umm???
 export function isAnyWall(tilePosX, tilePosY, wallTrapIncluded = true, doorsIncluded = true) {
     if (isNotOutOfMap(tilePosX, tilePosY)) {
         if (Game.map[tilePosY][tilePosX].tileType === TILE_TYPE.WALL

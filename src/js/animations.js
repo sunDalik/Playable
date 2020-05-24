@@ -673,3 +673,40 @@ export function createCrazySpikeAnimation(origin, offsetX, offsetY, color, botto
                 offsetY + Math.random() * sideDiff * 2 - sideDiff, color, bottom ? origin.zIndex - 2 : origin.zIndex - 1),
         Math.random() * 4);
 }
+
+export function createThunderAnimation(enemy) {
+    const strikeTime = 4;
+    const angleStayTime = 3;
+
+    createPlayerAttackTile(enemy.tilePosition, strikeTime + angleStayTime * 2);
+
+    const thunderSprite = new TileElement(EffectsSpriteSheet["thunder_effect.png"], enemy.tilePosition.x, enemy.tilePosition.y);
+    thunderSprite.zIndex = enemy.zIndex + 1;
+    Game.world.addChild(thunderSprite);
+    thunderSprite.anchor.set(0.5, 1);
+    thunderSprite.position.set(enemy.position.x, enemy.position.y);
+    const offsetY = Game.TILESIZE * 0.75;
+    thunderSprite.position.y -= offsetY;
+    const initPos = thunderSprite.position.y;
+    let counter = 0;
+    let firstAngle = randomInt(12, 18);
+    let secondAngle = randomInt(-12, -18);
+    if (Math.random() < 0.5) [firstAngle, secondAngle] = [secondAngle, firstAngle];
+    const animation = (delta) => {
+        if (Game.paused) return;
+        counter += delta;
+        if (counter < strikeTime) {
+            thunderSprite.position.y = initPos + counter / strikeTime * offsetY;
+        } else if (counter >= strikeTime && counter < strikeTime + angleStayTime) {
+            thunderSprite.position.y = initPos + offsetY;
+            thunderSprite.angle = firstAngle;
+        } else if (counter >= strikeTime + angleStayTime && counter < strikeTime + angleStayTime * 2) {
+            thunderSprite.angle = secondAngle;
+        } else {
+            Game.world.removeChild(thunderSprite);
+            Game.app.ticker.remove(animation);
+        }
+    };
+
+    Game.app.ticker.add(animation);
+}

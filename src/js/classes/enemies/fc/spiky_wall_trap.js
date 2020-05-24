@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE, ROLE} from "../../../enums";
+import {ENEMY_TYPE, ROLE, TILE_TYPE} from "../../../enums";
 import {getPlayerOnTile} from "../../../map_checks";
 import {randomChoice} from "../../../utils/random_utils";
 import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../../utils/map_utils";
@@ -140,5 +140,6 @@ export class SpikyWallTrap extends Enemy {
         this.spikesSprite.visible = false;
         runDestroyAnimation(this.wallBase);
         this.wallBase.visible = false;
+        Game.map[this.tilePosition.y][this.tilePosition.x].tileType = TILE_TYPE.NONE;
     }
 }
