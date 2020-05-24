@@ -463,12 +463,13 @@ export class Player extends AnimatedTileElement {
             }
         }
         redrawSlotContentsForPlayer(this);
-        this.regenerateShadow();
+        if (!this.dead) this.regenerateShadow();
     }
 
     getEquipment() {
         return Object.values(SLOT).map(slot => this[slot]);
     }
+
     getMagic() {
         return [this.magic1, this.magic2, this.magic3];
     }

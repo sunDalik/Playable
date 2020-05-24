@@ -21,6 +21,10 @@ export class SummonCircle extends Enemy {
         this.setCenterPreservation();
     }
 
+    damageWithHazards() {
+        return false;
+    }
+
     move() {
         if (this.currentDelay === 1) {
             this.spin();
