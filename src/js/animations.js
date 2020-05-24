@@ -705,6 +705,48 @@ export function createThunderAnimation(enemy) {
         } else {
             Game.world.removeChild(thunderSprite);
             Game.app.ticker.remove(animation);
+            thunderSprite.destroy();
+        }
+    };
+
+    Game.app.ticker.add(animation);
+}
+
+export function createEmpyrealWrathAnimation(enemy) {
+
+
+    const wrathSprite = new TileElement(EffectsSpriteSheet["empyreal_wrath_effect.png"], enemy.tilePosition.x, enemy.tilePosition.y);
+    wrathSprite.setScaleModifier(1.3);
+    wrathSprite.zIndex = enemy.zIndex + 1;
+    Game.world.addChild(wrathSprite);
+    wrathSprite.anchor.set(0.5, 1);
+    wrathSprite.position.set(enemy.position.x, enemy.position.y);
+    const angle = randomInt(-45, 45);
+    wrathSprite.angle = angle;
+    const offsetY = Game.TILESIZE * 2;
+    const offsetX = offsetY * angle / 45;
+    wrathSprite.position.y -= offsetY;
+    wrathSprite.position.x += offsetX;
+    const initPos = {x: wrathSprite.position.x, y: wrathSprite.position.y};
+
+    const strikeTime = 5 + Math.abs(offsetX) / offsetY * 3;
+    const stayTime = 3;
+    createPlayerAttackTile(enemy.tilePosition, strikeTime + stayTime);
+
+    let counter = 0;
+    const animation = delta => {
+        if (Game.paused) return;
+        counter += delta;
+        if (counter < strikeTime) {
+            wrathSprite.position.y = initPos.y + counter / strikeTime * offsetY;
+            wrathSprite.position.x = initPos.x - counter / strikeTime * offsetX;
+        } else if (counter >= strikeTime && counter < strikeTime + stayTime) {
+            wrathSprite.position.y = initPos.y + offsetY;
+            wrathSprite.position.x = initPos.x - offsetX;
+        } else {
+            Game.world.removeChild(wrathSprite);
+            Game.app.ticker.remove(animation);
+            wrathSprite.destroy();
         }
     };
 
