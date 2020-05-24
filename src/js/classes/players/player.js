@@ -139,7 +139,7 @@ export class Player extends AnimatedTileElement {
             }
         }
         if (attackResult) {
-            for (const eq of this.getEquipmentAndMagic()) {
+            for (const eq of this.getEquipment()) {
                 if (eq && eq.afterAttack) eq.afterAttack(this, tileStepX, tileStepY);
             }
         }
@@ -467,15 +467,10 @@ export class Player extends AnimatedTileElement {
     }
 
     getEquipment() {
-        return [this.weapon, this.secondHand, this.headwear, this.armor, this.footwear];
+        return Object.values(SLOT).map(slot => this[slot]);
     }
-
     getMagic() {
         return [this.magic1, this.magic2, this.magic3];
-    }
-
-    getEquipmentAndMagic() {
-        return this.getEquipment().concat(this.getMagic());
     }
 
     // I hate this (:
@@ -516,7 +511,7 @@ export class Player extends AnimatedTileElement {
     afterEnemyTurn() {
         if (this.dead) return false;
         this.shielded = false;
-        for (const eq of this.getEquipmentAndMagic()) {
+        for (const eq of this.getEquipment()) {
             if (eq && eq.onNewTurn) eq.onNewTurn(this);
         }
         if (this.secondHand) {
@@ -550,7 +545,7 @@ export class Player extends AnimatedTileElement {
         this.rotation = 0; //added because of wings. But what if we want the player to rotate when he is attacking with some weapon?...
         const atkRes = this.secondHand.attack(this, dirX, dirY);
         if (atkRes) {
-            for (const eq of this.getEquipmentAndMagic()) {
+            for (const eq of this.getEquipment()) {
                 if (eq && eq.afterAttack) eq.afterAttack(this, dirX, dirY);
             }
         }

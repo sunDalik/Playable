@@ -47,6 +47,7 @@ import {InfernalSpikes} from "./classes/equipment/magic/infernal_spikes";
 import {HeartShapedKey} from "./classes/equipment/one_time/heart_shaped_key";
 import {Light} from "./classes/equipment/magic/light";
 
+//todo add all new magic to pool
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
         PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce];

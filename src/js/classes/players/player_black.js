@@ -1,5 +1,4 @@
 import {Player} from "./player";
-import {CommonSpriteSheet} from "../../loader";
 import {Z_INDEXES} from "../../z_indexing";
 import {Knife} from "../equipment/weapons/knife";
 import {Game} from "../../game";
