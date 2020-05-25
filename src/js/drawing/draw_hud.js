@@ -1,6 +1,5 @@
 import {Game} from "../game";
 import {
-    maxHealthRowWidth,
     heartBorderOffsetX,
     heartRowOffset,
     heartSize,
@@ -14,6 +13,7 @@ import {
     HUDTextStyle,
     HUDTextStyleSlot,
     HUDTextStyleTitle,
+    maxHealthRowWidth,
     miniMapBottomOffset,
     slotBorderOffsetX,
     slotContentSizeMargin,
@@ -420,16 +420,42 @@ export function getKeyBindSymbol(keyBind) {
     else return keyBind.slice(-1);
 }
 
+let timerRunning = false;
+
+export function setTimerRunning(value) {
+    timerRunning = value;
+}
+
 //todo change to bitmap text!!
 export function redrawSpeedRunTime() {
     const container = HUD.speedrunTime;
     removeAllChildrenFromContainer(container, true);
+    if (HUD.speedrunTime.animation) Game.app.ticker.remove(HUD.speedrunTime.animation);
     if (Game.showTime) {
-        const time = getTimeFromMs(Game.time);
-        const timeText = `Time: ${padTime(time.minutes, 1)}:${padTime(time.seconds, 2)}.${padTime(Math.floor(time.ms / 10), 2)}`;
-        const textSprite = new PIXI.Text(timeText, HUDTextStyleTitle);
+        const getTimeText = () => {
+            const time = getTimeFromMs(Game.time);
+            return `Time: ${padTime(time.minutes, 1)}:${padTime(time.seconds, 2)}.${padTime(Math.floor(time.ms / 10), 2)}`;
+        };
+        const textSprite = new PIXI.Text(getTimeText(), HUDTextStyleTitle);
         textSprite.position.set(slotBorderOffsetX, Game.app.renderer.screen.height - textSprite.height - miniMapBottomOffset);
         container.addChild(textSprite);
+
+        let counter = 0;
+        let timeAccumulated = 0;
+
+        HUD.speedrunTime.animation = delta => {
+            if (timerRunning && !Game.paused && !Game.unplayable && !(Game.player.dead && Game.player2.dead)) {
+                counter += delta;
+                timeAccumulated += Game.app.ticker.elapsedMS;
+                if (counter >= 3) { //redraw time every 3rd frame
+                    Game.time += timeAccumulated;
+                    textSprite.text = getTimeText();
+                    timeAccumulated = 0;
+                    counter -= 3;
+                }
+            }
+        };
+        Game.app.ticker.add(HUD.speedrunTime.animation);
     }
 }
 

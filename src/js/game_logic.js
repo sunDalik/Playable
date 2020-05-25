@@ -5,9 +5,9 @@ import {ACHIEVEMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, SLOT, STAGE, TILE_TYPE} fro
 import {
     drawInteractionKeys,
     redrawBag,
-    redrawKeysAmount, redrawSlotContents,
-    redrawSlotContentsForPlayer,
-    redrawSpeedRunTime
+    redrawKeysAmount,
+    redrawSlotContents,
+    setTimerRunning
 } from "./drawing/draw_hud";
 import {createKissHeartAnimation, fadeOutAndDie, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
@@ -202,28 +202,7 @@ export function playerTurn(player, playerMove, bothPlayers = false) {
             setEnemyTurnTimeout();
             Game.player.cancellable = true;
             Game.player2.cancellable = true;
-            if (Game.time === 0) {
-                counter = 0;
-                timeAccumulated = 0;
-                Game.app.ticker.remove(speedrunTimer);
-                Game.app.ticker.add(speedrunTimer);
-            }
-        }
-    }
-}
-
-let counter = 0;
-let timeAccumulated = 0;
-
-export function speedrunTimer(delta) {
-    if (!Game.paused && !Game.unplayable && !(Game.player.dead && Game.player2.dead)) {
-        counter += delta;
-        timeAccumulated += Game.app.ticker.elapsedMS;
-        if (counter >= 3) { //redraw time every 3rd frame
-            Game.time += timeAccumulated;
-            timeAccumulated = 0;
-            counter -= 3;
-            redrawSpeedRunTime();
+            setTimerRunning(true);
         }
     }
 }

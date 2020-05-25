@@ -8,12 +8,12 @@ import {assignDrops} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
-import {drawHUD, drawInteractionKeys, drawMovementKeyBindings} from "./drawing/draw_hud";
+import {drawHUD, drawInteractionKeys, drawMovementKeyBindings, setTimerRunning} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8Directions, get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
-import {cleanGameState, kiss, speedrunTimer, swapEquipmentWithPlayer} from "./game_logic";
+import {cleanGameState, kiss, swapEquipmentWithPlayer} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";
@@ -170,6 +170,7 @@ export function initializeLevel() {
         //lightAllRealistic();
         //camera.setup(Game.world.width / 2, Game.world.height / 2);
     }
+    setTimerRunning(false);
 }
 
 function initPlayers() {
@@ -209,7 +210,6 @@ export function retry() {
 function initGameState() {
     Game.stage = STAGE.FLOODED_CAVE;
     Game.time = 0;
-    Game.app.ticker.remove(speedrunTimer);
     Game.keysAmount = 0;
     Game.turns = 0;
 
