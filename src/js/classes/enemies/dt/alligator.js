@@ -244,6 +244,7 @@ export class Alligator extends Enemy {
             if (Math.random() < 0.3 && (this.alligatorType === RABBIT_TYPE.ELECTRIC || this.alligatorType === RABBIT_TYPE.FIRE || this.alligatorType === RABBIT_TYPE.POISON)) {
                 if (!this.shooting) {
                     this.shooting = true;
+                    this.triggeredDirection = null;
                     this.shootingDelay = true;
                     this.currentShootingTimes = 0;
                     this.poisonCounter = 0;
