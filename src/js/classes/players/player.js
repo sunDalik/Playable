@@ -58,6 +58,7 @@ export class Player extends AnimatedTileElement {
         this.fireImmunity = 0;
         this.poisonImmunity = 0;
         this.electricityImmunity = 0;
+        this.linkedHealing = 0;
         this.charging = false;
         this.chargingMagic = null;
         this.doubleAttackCallback = () => {
@@ -407,8 +408,11 @@ export class Player extends AnimatedTileElement {
         if (num === 2) setTickTimeout(() => createHeartAnimation(this.position.x, this.position.y), 20);
     }
 
-    heal(healHP, showHeart = true) {
+    heal(healHP, showHeart = true, linkEnabled = true) {
         if (!this.dead && healHP > 0) {
+            if ((this.linkedHealing > 0 || otherPlayer(this).linkedHealing > 0) && linkEnabled) {
+                otherPlayer(this).heal(healHP, showHeart, false);
+            }
             this.health += healHP;
             if (showHeart) createHeartAnimation(this.position.x, this.position.y);
         }

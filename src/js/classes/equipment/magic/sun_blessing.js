@@ -7,10 +7,20 @@ export class SunBlessing extends Light {
         super();
         this.texture = MagicSpriteSheet["magic_sun_blessing.png"];
         this.type = MAGIC_TYPE.SUN_BLESSING;
-        this.uses = this.maxUses = 6;
+        this.uses = this.maxUses = 8;
         this.name = "Sun's Blessing";
         this.description = "EDIT";
         this.calculateRarity();
+    }
+
+    onWear(wielder) {
+        super.onWear(wielder);
+        wielder.linkedHealing++;
+    }
+
+    onTakeOff(wielder) {
+        super.onTakeOff(wielder);
+        wielder.linkedHealing--;
     }
 }
 
