@@ -4,7 +4,9 @@ import {CrystalWind} from "./crystal_wind";
 import {AnimatedTileElement} from "../../tile_elements/animated_tile_element";
 import {Game} from "../../../game";
 import {runDestroyAnimation} from "../../../animations";
+import {easeInQuad} from "../../../utils/math_utils";
 
+// current bugs: crystal guardian doesn't react to its uses being changed by e.g. wizard hat and wizard robe
 export class CrystalGuardian extends CrystalWind {
     constructor() {
         super();
@@ -12,10 +14,24 @@ export class CrystalGuardian extends CrystalWind {
         this.type = MAGIC_TYPE.CRYSTAL_GUARDIAN;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
         this.uses = this.maxUses = 7;
+        this.radius = 4;
         this.name = "Crystal Guardian";
         this.follower = null;
         this.description = "EDIT";
         this.calculateRarity();
+    }
+
+    cast(wielder) {
+        const castResult = super.cast(wielder);
+        if (castResult && this.follower) {
+            if (this.uses > 0) {
+                this.follower.animate();
+            } else {
+                runDestroyAnimation(this.follower);
+                Game.world.removeChild(this.follower);
+            }
+        }
+        return castResult;
     }
 
     onWear(wielder) {
@@ -29,8 +45,10 @@ export class CrystalGuardian extends CrystalWind {
     }
 
     onMove(wielder, tileStepX, tileStepY) {
-        this.follower.cancelAnimation();
-        this.follower.slide(tileStepX, tileStepY);
+        if (this.follower) {
+            this.follower.cancelAnimation();
+            this.follower.slide(tileStepX, tileStepY);
+        }
     }
 
     onNextLevel(wielder) {
@@ -52,6 +70,7 @@ export class CrystalGuardian extends CrystalWind {
     }
 
     resurrectFollower(wielder) {
+        if (this.uses <= 0) return;
         if (!this.follower) this.follower = new CrystalGuardianFollower(wielder.tilePosition.x, wielder.tilePosition.y);
         this.follower.tilePosition.set(wielder.tilePosition.x, wielder.tilePosition.y);
         this.follower.place();
@@ -98,6 +117,28 @@ class CrystalGuardianFollower extends AnimatedTileElement {
             }
         };
         this.animation = animation;
+        Game.app.ticker.add(animation);
+    }
+
+    animate() {
+        const initSize = this.width;
+        const bigSize = this.width * 1.7;
+        const animationTimeS = 4;
+        const animationTimeB = 4;
+        let counter = 0;
+
+        const animation = delta => {
+            if (Game.paused) return;
+            counter += delta;
+            if (counter <= animationTimeS) {
+                this.width = this.height = initSize + easeInQuad(counter / animationTimeS) * (bigSize - initSize);
+            } else if (counter <= animationTimeS + animationTimeB) {
+                this.width = this.height = bigSize - easeInQuad((counter - animationTimeS) / animationTimeB) * (bigSize - initSize);
+            } else {
+                this.width = this.height = initSize;
+                Game.app.ticker.remove(animation);
+            }
+        };
         Game.app.ticker.add(animation);
     }
 }

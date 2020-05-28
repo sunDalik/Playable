@@ -217,9 +217,9 @@ export function damagePlayerWithHazards(player) {
         const hazard = Game.map[player.tilePosition.y][player.tilePosition.x].hazard;
         if (hazard) {
             if ((hazard.type === HAZARD_TYPE.POISON || hazard.type === HAZARD_TYPE.DARK_POISON) && player.poisonImmunity <= 0) {
-                player.damage(hazard.atk, hazard, false, false);
+                player.damage(hazard.atk, hazard, false, false, true);
             } else if ((hazard.type === HAZARD_TYPE.FIRE || hazard.type === HAZARD_TYPE.DARK_FIRE) && player.fireImmunity <= 0) {
-                player.damage(hazard.atk, hazard, false, false);
+                player.damage(hazard.atk, hazard, false, false, true);
             }
         }
 
@@ -229,12 +229,12 @@ export function damagePlayerWithHazards(player) {
                 && Game.darkTiles[player.tilePosition.y - 1][player.tilePosition.x].dark
                 && Game.darkTiles[player.tilePosition.y][player.tilePosition.x + 1].dark
                 && Game.darkTiles[player.tilePosition.y][player.tilePosition.x - 1].dark)
-                player.damage(0.25, null, false, false);
+                player.damage(0.25, null, false, false, false);
         }
 
         if (!otherPlayer(player).dead) {
             if (tileDistanceDiagonal(Game.player, Game.player2) > Game.chainLength) {
-                player.damage(0.25, Game.limitChain, false, false);
+                player.damage(0.25, Game.limitChain, false, false, false);
             }
         }
     }

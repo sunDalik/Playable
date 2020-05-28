@@ -25,7 +25,7 @@ import {activateBossMode, gotoNextLevel, openDoors, updateInanimates} from "../.
 import {lightPlayerPosition} from "../../drawing/lighting";
 import {LyingItem} from "../equipment/lying_item";
 import {randomChoice} from "../../utils/random_utils";
-import {otherPlayer, setTickTimeout} from "../../utils/game_utils";
+import {otherPlayer, setTickTimeout, tileDistance} from "../../utils/game_utils";
 import {camera} from "../game/camera";
 import {updateChain} from "../../drawing/draw_dunno";
 import {closeBlackBars, pullUpGameOverScreen} from "../../drawing/hud_animations";
@@ -33,6 +33,7 @@ import {DEATH_FILTER} from "../../filters";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import {HUD} from "../../drawing/hud_object";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
+import {CrystalGuardian} from "../equipment/magic/crystal_guardian";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -49,6 +50,7 @@ export class Player extends AnimatedTileElement {
         this.dead = false;
         this.definePlayerSlots();
         this.shielded = false;
+        this.crystalShielded = false; // is used only with crystal guardian
         this.canDoubleAttack = false;
         this.attackTimeout = null;
         this.lastTileStepX = 0;
@@ -272,11 +274,33 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    damage(atk, source, directHit = true, canBeShielded = true) {
+    damage(atk, source, directHit = true, canBeShielded = true, canBeCrystalWinded = true) {
         if (atk === 0) return;
         if (!this.dead) {
             let blocked = false;
-            if (canBeShielded) {
+            //hack for now :)
+            if (canBeCrystalWinded) {
+                for (const player of [this, otherPlayer(this)]) {
+                    if (player.dead) continue;
+                    if (player.crystalShielded) {
+                        blocked = true;
+                        break;
+                    }
+                    // 3 is the radius of activation
+                    if (player !== this && tileDistance(this, player) > 3) continue;
+                    const magic = player.getMagicByConstructor(CrystalGuardian);
+                    if (!magic) continue;
+                    if (magic.uses > 0) {
+                        magic.cast(player);
+                        // we don't call onMagicCast methods here!!
+                        player.redrawEquipmentSlot(magic);
+                        player.crystalShielded = true;
+                        blocked = true;
+                        break;
+                    }
+                }
+            }
+            if (!blocked && canBeShielded) {
                 const ally = otherPlayer(this);
                 if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
                     && (this.shielded || this.secondHand.activate(this))) {
@@ -456,22 +480,22 @@ export class Player extends AnimatedTileElement {
         if (showHelp) showHelpBox(magic);
     }
 
-    hasMagic(magicConstructor) {
+    getMagicByConstructor(magicConstructor) {
         for (const magic of this.getMagic()) {
-            if (magic && magic.constructor === magicConstructor) return true;
+            if (magic && magic.constructor === magicConstructor) return magic;
         }
-        return false;
+        return null;
     }
 
     applyNextLevelMethods() {
-        for (const eq of this.getEquipment()) {
-            if (eq && eq.onNextLevel) eq.onNextLevel(this);
-        }
         for (const mg of this.getMagic()) {
             if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) {
                 mg.uses += Math.ceil(mg.maxUses / 2);
                 if (mg.uses > mg.maxUses) mg.uses = mg.maxUses;
             }
+        }
+        for (const eq of this.getEquipment()) {
+            if (eq && eq.onNextLevel) eq.onNextLevel(this);
         }
         redrawSlotContentsForPlayer(this);
         if (!this.dead) this.regenerateShadow();
@@ -523,6 +547,7 @@ export class Player extends AnimatedTileElement {
     afterEnemyTurn() {
         if (this.dead) return false;
         this.shielded = false;
+        this.crystalShielded = false;
         for (const eq of this.getEquipment()) {
             if (eq && eq.onNewTurn) eq.onNewTurn(this);
         }
