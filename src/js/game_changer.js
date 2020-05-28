@@ -46,12 +46,21 @@ import {VampireSpikes} from "./classes/equipment/magic/vampire_spikes";
 import {InfernalSpikes} from "./classes/equipment/magic/infernal_spikes";
 import {HeartShapedKey} from "./classes/equipment/one_time/heart_shaped_key";
 import {Light} from "./classes/equipment/magic/light";
+import {SunBlessing} from "./classes/equipment/magic/sun_blessing";
+import {CrystalWind} from "./classes/equipment/magic/crystal_wind";
+import {CrystalGuardian} from "./classes/equipment/magic/crystal_guardian";
+import {AttackLink} from "./classes/equipment/magic/attack_link";
+import {DefenseLink} from "./classes/equipment/magic/defense_link";
+import {Thunderstorm} from "./classes/equipment/magic/thunderstorm";
+import {EmpyrealWrath} from "./classes/equipment/magic/empyreal_wrath";
+import {Escape} from "./classes/equipment/magic/escape";
 
-//todo add all new magic to pool
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
         PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce];
-    Game.magicPool = [Light, Spikes, VampireSpikes, InfernalSpikes, Necromancy, Wind, AbyssalSpit, Immortality, Transcendence];
+    Game.magicPool = [Light, SunBlessing, Wind, CrystalWind, CrystalGuardian, DefenseLink, Thunderstorm, EmpyrealWrath,
+        Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape,
+        Necromancy];
     Game.chestItemPool = [Pickaxe,
         Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         SeerCirclet, WizardHat, VampireCrown, BattleHelmet, BladeCrown,

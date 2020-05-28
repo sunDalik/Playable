@@ -8,7 +8,6 @@ import {WallTile} from "../classes/draw/wall";
 import {SuperWallTile} from "../classes/draw/super_wall";
 import {Room, ROOM_TYPE} from "./room";
 import {Chest} from "../classes/inanimate_objects/chest";
-import {getRandomChestDrop} from "../utils/pool_utils";
 import {get8Directions, getCardinalDirections} from "../utils/map_utils";
 import {Obelisk} from "../classes/inanimate_objects/obelisk";
 import {pointTileDistance} from "../utils/game_utils";

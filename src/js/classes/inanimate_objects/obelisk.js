@@ -21,7 +21,6 @@ export class Obelisk extends TileElement {
         this.destroyed = false;
         this.timesDamaged = 0;
         this.timesDonated = 0;
-        this.generateMagic();
         this.generateGrails(level);
         Game.obelisks.push(this);
         this.icon = new PIXI.Sprite(Game.resources["src/images/icons/obelisk_sacrifice.png"].texture);
@@ -36,50 +35,34 @@ export class Obelisk extends TileElement {
         this.tallModifier = -10;
     }
 
-    //todo change magic generation logic
     generateMagic() {
-        if (Game.magicPool.length >= 4) {
-            let necromancyIndex = -1;
-            let alivePlayer = null;
-            if (Game.player.dead) alivePlayer = Game.player2;
-            else if (Game.player2.dead) alivePlayer = Game.player;
-            if (alivePlayer !== null) {
-                if (alivePlayer.health >= 3.5) necromancyIndex = randomInt(0, 3);
-                else if (alivePlayer.health >= 2.5) necromancyIndex = randomInt(0, 2);
-                else necromancyIndex = randomInt(0, 1);
-            }
+        let necromancyIndex = -1;
+        let alivePlayer = null;
+        if (Game.player.dead) alivePlayer = Game.player2;
+        else if (Game.player2.dead) alivePlayer = Game.player;
+        if (alivePlayer !== null) {
+            if (alivePlayer.health >= 3.5) necromancyIndex = randomInt(0, 3);
+            else if (alivePlayer.health >= 2.5) necromancyIndex = randomInt(0, 2);
+            else necromancyIndex = randomInt(0, 1);
+        }
 
-            const magicPool = [];
-            let attempt = 0;
-            for (let i = 0; i < 4; ++i) {
-                if (i === necromancyIndex) {
-                    magicPool[i] = new Necromancy();
-                } else {
-                    while (attempt++ < 200) {
-                        const randomSpell = getRandomSpell();
-                        if (!magicPool.some(magic => magic.type === randomSpell.type)) {
-                            magicPool[i] = randomSpell;
-                            break;
-                        }
-                    }
-                    if (attempt >= 200) magicPool[i] = new Necromancy();
-                }
-            }
-            let onDestroyMagicPool = [];
-            attempt = 0;
-            for (let i = 0; i < 2; ++i) {
+        const magicPool = [];
+        for (let i = 0; i < 4; ++i) {
+            if (i === necromancyIndex) {
+                magicPool[i] = new Necromancy();
+            } else {
+                let attempt = 0;
                 while (attempt++ < 200) {
                     const randomSpell = getRandomSpell();
-                    if (!onDestroyMagicPool.some(magic => magic.type === randomSpell.type)) {
-                        onDestroyMagicPool[i] = randomSpell;
+                    if (!magicPool.some(magic => magic.type === randomSpell.type)) {
+                        magicPool[i] = randomSpell;
                         break;
                     }
                 }
-                if (attempt >= 200) onDestroyMagicPool[i] = new Necromancy();
+                if (attempt >= 200) magicPool[i] = new Necromancy();
             }
-            this.magic = magicPool;
-            this.onDestroyMagic = onDestroyMagicPool;
         }
+        this.magic = magicPool;
     }
 
     generateGrails(level) {
@@ -127,6 +110,7 @@ export class Obelisk extends TileElement {
 
     activate() {
         if (!this.activated && this.working) {
+            this.generateMagic();
             this.grails[0].setMagic(this.magic[0]);
             this.grails[1].setMagic(this.magic[1]);
             this.activated = true;
@@ -155,7 +139,7 @@ export class Obelisk extends TileElement {
                 if (player.health > 1) {
                     player.voluntaryDamage(1);
                     this.timesDonated++;
-                    if (this.timesDonated === 1) this.grails[2].setMagic(this.magic3);
+                    if (this.timesDonated === 1) this.grails[2].setMagic(this.magic[2]);
                     else this.grails[3].setMagic(this.magic[3]);
                     createFadingText("Be blessed...", this.position.x, this.position.y);
                     longShakeScreen();
@@ -178,8 +162,9 @@ export class Obelisk extends TileElement {
         }
         if (this.working) {
             this.working = false;
-            this.grails[0].setMagic(this.onDestroyMagic[0]);
-            this.grails[1].setMagic(this.onDestroyMagic[1]);
+            this.generateMagic();
+            this.grails[0].setMagic(this.magic[0]);
+            this.grails[1].setMagic(this.magic[1]);
             this.grails[2].setMagic(null);
             this.grails[3].setMagic(null);
             for (const enemy of Game.enemies) {

@@ -1,8 +1,9 @@
 import {Game} from "../game";
 import {Bomb} from "../classes/equipment/bag/bomb";
 import {removeItemFromPool} from "../game_changer";
-import {RARITY} from "../enums";
+import {RARITY, SLOT} from "../enums";
 import {randomChoice, randomShuffle} from "./random_utils";
+import {Necromancy} from "../classes/equipment/magic/necromancy";
 
 export function getRandomWeapon() {
     if (Game.weaponPool.length === 0) return null;
@@ -11,9 +12,39 @@ export function getRandomWeapon() {
 }
 
 export function getRandomSpell() {
-    if (Game.magicPool.length === 0) return null;
-    const constructor = getItemFromPool(Game.magicPool);
-    return new constructor();
+    if (Game.magicPool.length === 0) return new Necromancy();
+    randomShuffle(Game.magicPool);
+    let constructor = null;
+    const playersMagic = [];
+    for (const player of [Game.player, Game.player2]) {
+        playersMagic.push(player[SLOT.MAGIC1]);
+        playersMagic.push(player[SLOT.MAGIC2]);
+        playersMagic.push(player[SLOT.MAGIC3]);
+    }
+    const totalMagicSlots = 6;
+    const advancedChance = playersMagic.reduce((acc, val) => val !== null ? ++acc : acc, 0) / totalMagicSlots;
+    let pickAdvanced = Math.random() < advancedChance;
+    for (let i = 0; i < 2; i++) {
+        if (pickAdvanced) {
+            const advancedMagic = Game.magicPool.filter(m => m.requiredMagic !== null
+                && (Game.player.getMagicByConstructor(m.requiredMagic) !== null || Game.player2.getMagicByConstructor(m.requiredMagic) !== null));
+            if (advancedMagic.length > 0) {
+                constructor = randomChoice(advancedMagic);
+            } else {
+                pickAdvanced = false;
+            }
+        } else {
+            const basicMagic = Game.magicPool.filter(m => m.requiredMagic === null);
+            if (basicMagic.length > 0) {
+                constructor = randomChoice(basicMagic);
+            } else {
+                pickAdvanced = true;
+            }
+        }
+    }
+
+    if (constructor === null) return new Necromancy();
+    else return new constructor();
 }
 
 export function getRandomChestDrop() {

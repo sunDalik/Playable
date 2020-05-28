@@ -468,10 +468,17 @@ export class Player extends AnimatedTileElement {
     }
 
     giveNewMagic(magic, showHelp = true) {
-        if (this.magic1 === null) this.magic1 = magic;
-        else if (this.magic2 === null) this.magic2 = magic;
-        else if (this.magic3 === null) this.magic3 = magic;
-        else return;
+        if (magic.constructor.requiredMagic) {
+            const replacedMagic = this.getMagicByConstructor(magic.constructor.requiredMagic);
+            if (replacedMagic === null) return false;
+            else this[this.getSlotNameOfItem(replacedMagic)] = magic;
+            if (replacedMagic.onTakeOff) replacedMagic.onTakeOff(this);
+        } else {
+            if (this.magic1 === null) this.magic1 = magic;
+            else if (this.magic2 === null) this.magic2 = magic;
+            else if (this.magic3 === null) this.magic3 = magic;
+            else return;
+        }
         for (const eq of this.getEquipment()) {
             if (eq && eq.onEquipmentReceive) eq.onEquipmentReceive(this, magic);
         }

@@ -60,15 +60,26 @@ export class Grail extends ItemInanimate {
             ((this.magic.alignment === MAGIC_ALIGNMENT.WHITE && player === Game.player)
                 || (this.magic.alignment === MAGIC_ALIGNMENT.DARK && player === Game.player2)
                 || this.magic.alignment === MAGIC_ALIGNMENT.GRAY)
-            && (player.magic3 === null || player.magic2 === null || player.magic1 === null)) { //not sure about the last part yet. What to do when the player has no free magic slots?...
+            && ((this.magic.constructor.requiredMagic === null && (player.magic3 === null || player.magic2 === null || player.magic1 === null))
+                || player.getMagicByConstructor(this.magic.constructor.requiredMagic) !== null)) {
             player.giveNewMagic(this.magic);
             removeItemFromPool(this.magic, Game.magicPool);
             this.obelisk.deactivate(this);
         }
-        if (this.magic && this.magic.alignment === MAGIC_ALIGNMENT.DARK && player === Game.player) {
-            createFadingText("I cannot use dark magic", player.position.x, player.position.y, Game.TILESIZE / 65 * 22, 50);
-        } else if (this.magic && this.magic.alignment === MAGIC_ALIGNMENT.WHITE && player === Game.player2) {
-            createFadingText("I cannot use white magic", player.position.x, player.position.y, Game.TILESIZE / 65 * 22, 50);
+        if (this.magic) {
+            let errorMessage = "";
+            if (this.magic.alignment === MAGIC_ALIGNMENT.DARK && player === Game.player) {
+                errorMessage = "I cannot use dark magic";
+            } else if (this.magic.alignment === MAGIC_ALIGNMENT.WHITE && player === Game.player2) {
+                errorMessage = "I cannot use light magic";
+            } else if (this.magic.constructor.requiredMagic !== null && player.getMagicByConstructor(this.magic.constructor.requiredMagic) === null) {
+                errorMessage = "I don't have a required magic";
+            } else if (player.magic1 !== null && player.magic2 !== null && player.magic3 !== null) {
+                errorMessage = "I have exhausted my magic capacity";
+            }
+            if (errorMessage !== "") {
+                createFadingText(errorMessage, player.position.x, player.position.y, Game.TILESIZE / 65 * 22, 50);
+            }
         }
     }
 
