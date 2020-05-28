@@ -612,8 +612,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
     if (!tileElement.fadingDestructionParticles) Game.destroyParticles.push(particles);
 }
 
-export function fadeOutAndDie(object, destroyTexture = false) {
-    const animationTime = 10;
+export function fadeOutAndDie(object, destroyTexture = false, animationTime = 10) {
     let counter = 0;
 
     const animation = (delta) => {
