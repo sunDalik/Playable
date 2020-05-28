@@ -17,7 +17,6 @@ export class Mushroom extends Enemy {
         this.poisonDelay = 6; //half of poison hazard lifetime
         this.currentPoisonDelay = this.poisonDelay;
         this.walkDelay = this.getWalkDelay();
-        this.canMoveInvisible = true;
         this.walking = false;
         this.walkingTexture = FCEnemiesSpriteSheet["mushroom_walking.png"];
         this.normalTexture = FCEnemiesSpriteSheet["mushroom.png"];
