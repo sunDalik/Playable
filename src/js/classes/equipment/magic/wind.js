@@ -1,10 +1,13 @@
 import {Game} from "../../../game";
 import {MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
 import {isBullet, isEmpty, isEnemy, isNotOutOfMap} from "../../../map_checks";
-import {MagicSpriteSheet} from "../../../loader";
+import {EffectsSpriteSheet, MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 import {randomChoice} from "../../../utils/random_utils";
 import {tileDistanceDiagonal} from "../../../utils/game_utils";
+import {TileElement} from "../../tile_elements/tile_element";
+import {toRadians} from "../../../utils/math_utils";
+import {fadeOutAndDie} from "../../../animations";
 
 export class Wind extends Magic {
     constructor() {
@@ -85,7 +88,45 @@ export class Wind extends Magic {
                 }
             }
         }
+        this.animateWind(wielder.tilePosition.x, wielder.tilePosition.y);
         this.uses--;
         return true;
+    }
+
+    animateWind(x, y) {
+        const particlesAmount = this.crystal ? 6 : 4;
+        for (let i = 0; i < particlesAmount; i++) {
+            const texture = this.crystal ? EffectsSpriteSheet["crystal_wind_effect.png"] : EffectsSpriteSheet["leaf_effect.png"];
+            const windParticle = new TileElement(texture, x, y);
+            windParticle.angle = (360 / particlesAmount) / 2 + i * (360 / particlesAmount);
+            const formulaAngle = () => {
+                return toRadians(windParticle.angle * -1 - 90);
+            };
+            Game.world.addChild(windParticle);
+            windParticle.width = windParticle.height = Game.TILESIZE;
+            const animationTime = 12;
+            windParticle.x += Game.TILESIZE / 2 * Math.cos(formulaAngle());
+            windParticle.y -= Game.TILESIZE / 2 * Math.sin(formulaAngle());
+            const angleStep = -25;
+            let radius = Game.TILESIZE / 2;
+            windParticle.position.set(windParticle.getTilePositionX() + Math.cos(formulaAngle()) * radius,
+                windParticle.getTilePositionY() - Math.sin(formulaAngle()) * radius);
+            const radiusStep = (Game.TILESIZE * 2.5 - radius) / animationTime;
+            let counter = 0;
+
+            const animation = delta => {
+                counter += delta;
+                if (counter <= animationTime) {
+                    windParticle.angle += angleStep * delta;
+                    radius += radiusStep * delta;
+                    windParticle.position.set(windParticle.getTilePositionX() + Math.cos(formulaAngle()) * radius,
+                        windParticle.getTilePositionY() - Math.sin(formulaAngle()) * radius);
+                } else {
+                    Game.app.ticker.remove(animation);
+                    fadeOutAndDie(windParticle);
+                }
+            };
+            Game.app.ticker.add(animation);
+        }
     }
 }
