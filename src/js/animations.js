@@ -624,6 +624,7 @@ export function fadeOutAndDie(object, destroyTexture = false) {
             Game.app.ticker.remove(animation);
             Game.world.removeChild(object);
             if (destroyTexture) object.texture.destroy();
+            object.destroy();
         }
     };
     Game.app.ticker.add(animation);
@@ -713,8 +714,6 @@ export function createThunderAnimation(enemy) {
 }
 
 export function createEmpyrealWrathAnimation(enemy) {
-
-
     const wrathSprite = new TileElement(EffectsSpriteSheet["empyreal_wrath_effect.png"], enemy.tilePosition.x, enemy.tilePosition.y);
     wrathSprite.setScaleModifier(1.3);
     wrathSprite.zIndex = enemy.zIndex + 1;
@@ -732,8 +731,8 @@ export function createEmpyrealWrathAnimation(enemy) {
     const strikeTime = 5 + Math.abs(offsetX) / offsetY * 3;
     const stayTime = 3;
     createPlayerAttackTile(enemy.tilePosition, strikeTime + stayTime);
-
     let counter = 0;
+    shakeScreen(2, 1, 10);
     const animation = delta => {
         if (Game.paused) return;
         counter += delta;

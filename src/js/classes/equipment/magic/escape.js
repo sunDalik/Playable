@@ -1,12 +1,15 @@
 import {MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
-import {MagicSpriteSheet} from "../../../loader";
+import {EffectsSpriteSheet, MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 import {isBullet, isEmpty, isEnemy, isLit, isNotAWall, isNotOutOfMap, tileInsideTheBossRoom} from "../../../map_checks";
 import {Game} from "../../../game";
-import {randomChoice} from "../../../utils/random_utils";
-import {otherPlayer} from "../../../utils/game_utils";
+import {randomChoice, randomInt} from "../../../utils/random_utils";
+import {otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {lightPlayerPosition} from "../../../drawing/lighting";
 import {camera} from "../../game/camera";
+import {TileElement} from "../../tile_elements/tile_element";
+import {easeOutQuad, toRadians} from "../../../utils/math_utils";
+import {fadeOutAndDie} from "../../../animations";
 
 export class Escape extends Magic {
     constructor() {
@@ -43,15 +46,57 @@ export class Escape extends Magic {
                     }
                 }
             }
+            this.createSmokeAnimation(wielder.tilePosition.x, wielder.tilePosition.y);
         } else {
             const tile = randomChoice(safeTiles);
+            const cameraTime = Math.max(tileDistance({tilePosition: {x: tile.x, y: tile.y}}, wielder),
+                otherPlayer(wielder).dead ? 0 :
+                    tileDistance({tilePosition: {x: tile.x, y: tile.y}}, otherPlayer(wielder)));
+            this.createSmokeAnimation(wielder.tilePosition.x, wielder.tilePosition.y);
             wielder.setTilePosition(tile.x, tile.y);
-            if (!otherPlayer(wielder).dead) otherPlayer(wielder).setTilePosition(tile.x, tile.y);
+            if (!otherPlayer(wielder).dead) {
+                this.createSmokeAnimation(otherPlayer(wielder).tilePosition.x, otherPlayer(wielder).tilePosition.y);
+                otherPlayer(wielder).setTilePosition(tile.x, tile.y);
+            }
+            this.createSmokeAnimation(tile.x, tile.y);
             lightPlayerPosition(wielder);
-            camera.moveToCenter(5);
-        }
+            camera.moveToCenter(cameraTime);
+            }
         this.uses--;
         return true;
+    }
+
+    createSmokeAnimation(x, y) {
+        const particlesAmount = 4;
+        for (let i = 0; i < particlesAmount; i++) {
+            const smokeParticle = new TileElement(EffectsSpriteSheet["smoke_effect.png"], x, y);
+            smokeParticle.angle = -90 + randomInt(0, 360 / particlesAmount) + i * (360 / particlesAmount);
+            Game.world.addChild(smokeParticle);
+            const initSize = Game.TILESIZE * 0.8;
+            const finalSize = Game.TILESIZE * 1.2;
+            smokeParticle.width = smokeParticle.height = initSize;
+            const animationTime = 20;
+            const startSpeed = Game.TILESIZE / animationTime;
+            smokeParticle.x += Game.TILESIZE / 2 * Math.cos(toRadians(smokeParticle.angle * -1));
+            smokeParticle.y -= Game.TILESIZE / 2 * Math.sin(toRadians(smokeParticle.angle * -1));
+            const initPos = smokeParticle.position;
+            let counter = 0;
+
+            const animation = delta => {
+                counter += delta;
+                if (counter <= animationTime) {
+                    smokeParticle.width = smokeParticle.height = initSize + (finalSize - initSize) * easeOutQuad(counter / animationTime);
+                    smokeParticle.position.y = initPos.y - (startSpeed - easeOutQuad(counter / animationTime) * startSpeed) *
+                        Math.sin(toRadians(smokeParticle.angle * -1));
+                    smokeParticle.position.x = initPos.x + (startSpeed - easeOutQuad(counter / animationTime) * startSpeed) *
+                        Math.cos(toRadians(smokeParticle.angle * -1));
+                } else {
+                    Game.app.ticker.remove(animation);
+                    fadeOutAndDie(smokeParticle);
+                }
+            };
+            Game.app.ticker.add(animation);
+        }
     }
 
     noEnemiesInRange(tile, range) {

@@ -44,3 +44,7 @@ export function easeInQuad(time) {
 export function toDegrees(radians) {
     return radians * (180 / Math.PI);
 }
+
+export function toRadians(degrees) {
+    return degrees * (Math.PI / 180);
+}
