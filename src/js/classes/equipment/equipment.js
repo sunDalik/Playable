@@ -49,7 +49,7 @@ export class Equipment {
     onNewTurn(wielder) {}
 
     //executes AFTER wielder changes its tilePosition (does step or slide)
-    onMove(wielder) {}
+    onMove(wielder, tileStepX, tileStepY) {}
 
     //executes after wielder attacks (double attacks don't count... or should they?)
     afterAttack(wielder, dirX, dirY) {}

@@ -174,8 +174,8 @@ export function initializeLevel() {
 }
 
 function initPlayers() {
-    Game.player = new WhitePlayer(0, 0);
-    Game.player2 = new BlackPlayer(0, 0);
+    Game.player = new WhitePlayer(1, 1);
+    Game.player2 = new BlackPlayer(1, 1);
     Game.primaryPlayer = Game.player;
     Game.lastPlayerMoved = Game.player;
 }

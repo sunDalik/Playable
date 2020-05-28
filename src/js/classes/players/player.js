@@ -258,7 +258,7 @@ export class Player extends AnimatedTileElement {
         Game.delayList.push(() => this.pickUpItems());
         camera.moveToCenter(animationTime);
         for (const eq of this.getEquipment()) {
-            if (eq && eq.onMove) eq.onMove(this);
+            if (eq && eq.onMove) eq.onMove(this, tileStepX, tileStepY);
         }
     }
 
@@ -454,6 +454,13 @@ export class Player extends AnimatedTileElement {
         if (magic.onWear) magic.onWear(this);
         this.redrawEquipmentSlot(magic);
         if (showHelp) showHelpBox(magic);
+    }
+
+    hasMagic(magicConstructor) {
+        for (const magic of this.getMagic()) {
+            if (magic && magic.constructor === magicConstructor) return true;
+        }
+        return false;
     }
 
     applyNextLevelMethods() {
