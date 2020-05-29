@@ -417,6 +417,7 @@ export function createHeartAnimation(positionX, positionY, heartSize = Game.TILE
         if (counter >= animationTime) {
             Game.world.removeChild(heart);
             Game.app.ticker.remove(animation);
+            heart.destroy();
         }
     };
 

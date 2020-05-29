@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {camera} from "../../game/camera";
-import {EQUIPMENT_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, SLOT} from "../../../enums";
+import {MAGIC_ALIGNMENT, MAGIC_TYPE, SLOT} from "../../../enums";
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
@@ -10,6 +10,8 @@ import {
 import {otherPlayer} from "../../../utils/game_utils";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
+import {TileElement} from "../../tile_elements/tile_element";
+import {easeOutQuad} from "../../../utils/math_utils";
 
 export class Necromancy extends Magic {
     constructor() {
@@ -28,7 +30,6 @@ export class Necromancy extends Magic {
         const revivedPlayer = otherPlayer(wielder);
         if (revivedPlayer.dead) {
             //todo add revive method probably
-            //todo add animation
             revivedPlayer.dead = false;
             revivedPlayer.visible = true;
             revivedPlayer.regenerateShadow();
@@ -40,12 +41,13 @@ export class Necromancy extends Magic {
             drawMovementKeyBindings();
             drawInteractionKeys();
             redrawSlotContentsForPlayer(revivedPlayer);
-            camera.center();
+            camera.moveToCenter(10);
             for (const eq of revivedPlayer.getEquipment()) {
                 if (eq && eq.onRevive) {
                     eq.onRevive(revivedPlayer);
                 }
             }
+            this.animate(wielder);
             this.uses--;
             //maybe should shift all magic to left? who knows...
             this.removeIfExhausted(wielder);
@@ -64,5 +66,36 @@ export class Necromancy extends Magic {
             }
         }
         return false;
+    }
+
+    animate(wielder) {
+        const skull = new TileElement(MagicSpriteSheet["magic_necromancy.png"], wielder.tilePosition.x, wielder.tilePosition.y - 0.5);
+        Game.world.addChild(skull);
+        const initSize = skull.width;
+        const sizeChange = Game.TILESIZE / 4;
+        const startPosY = skull.position.y;
+        const posYEndChange = -Game.TILESIZE / 2;
+        skull.zIndex = otherPlayer(Game.primaryPlayer).zIndex - 1;
+
+        const animationTime = 50;
+        let counter = 0;
+
+        const animation = delta => {
+            if (Game.paused) return;
+            counter += delta;
+            skull.position.y = startPosY + easeOutQuad(counter / animationTime) * posYEndChange;
+            skull.height = skull.width = initSize + easeOutQuad(counter / animationTime) * sizeChange;
+            if (counter >= animationTime * 3 / 4) {
+                skull.alpha = 1 - easeOutQuad((counter - animationTime * 3 / 4) / (animationTime / 4));
+            }
+
+            if (counter >= animationTime) {
+                Game.app.ticker.remove(animation);
+                Game.world.removeChild(skull);
+                skull.destroy();
+            }
+        };
+
+        Game.app.ticker.add(animation);
     }
 }
