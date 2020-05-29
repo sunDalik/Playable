@@ -12,8 +12,6 @@ export function loadAll(afterLoad) {
         .add("src/images/key.png")
         .add("src/images/player2.png")
 
-        .add("src/images/inanimates/chest.png") //todo move to spritesheet
-        .add("src/images/inanimates/chest_opened.png") //todo move to spritesheet
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
         .add("src/images/icons/obelisk_sacrifice.png")

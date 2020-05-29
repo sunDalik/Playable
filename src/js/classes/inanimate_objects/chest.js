@@ -10,10 +10,11 @@ import {redrawKeysAmount} from "../../drawing/draw_hud";
 import {BLACK_COLOR_OVERLAY} from "../../filters";
 import {ItemInanimate} from "./item_inanimate";
 import {getRandomChestDrop, getRandomWeapon} from "../../utils/pool_utils";
+import {InanimatesSpriteSheet} from "../../loader";
 
 export class Chest extends ItemInanimate {
     constructor(tilePositionX, tilePositionY) {
-        super(Game.resources["src/images/inanimates/chest.png"].texture, tilePositionX, tilePositionY);
+        super(InanimatesSpriteSheet["chest.png"], tilePositionX, tilePositionY);
         this.contents = Math.random() < 0.70 ? getRandomChestDrop() : getRandomWeapon();
         this.contentsType = this.contents.equipmentType;
         this.type = INANIMATE_TYPE.CHEST;
@@ -44,7 +45,7 @@ export class Chest extends ItemInanimate {
     }
 
     takeItem(player) {
-        this.texture = Game.resources["src/images/inanimates/chest_opened.png"].texture;
+        this.texture = InanimatesSpriteSheet["chest_opened.png"];
         if (this.opened) {
             if (this.contents) this.contents = swapEquipmentWithPlayer(player, this.contents);
             else this.contents = removeEquipmentFromPlayer(player, this.contentsType);
