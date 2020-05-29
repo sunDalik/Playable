@@ -21,7 +21,7 @@ export class ItemInanimate extends TileElement {
         this.itemSprite.width = this.itemSprite.height = Game.TILESIZE * 0.9;
         this.itemSprite.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
         this.itemSprite.visible = false;
-        this.itemSprite.alpha = 0.3;
+        this.itemSprite.alpha = 0.35;
         Game.world.addChild(this.itemSprite);
     }
 
@@ -35,7 +35,7 @@ export class ItemInanimate extends TileElement {
         this.textObj.position.set(this.position.x, this.position.y - offsetY);
         this.textObj.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
         this.textObj.visible = false;
-        this.textObj.alpha = 0.3;
+        this.textObj.alpha = 0.35;
         Game.world.addChild(this.textObj);
     }
 

@@ -1,8 +1,6 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY, TILE_TYPE} from "../../../enums";
-import {darkenTile, lightTile} from "../../../drawing/lighting";
+import {EQUIPMENT_TYPE, HEAD_TYPE, INANIMATE_TYPE, RARITY, SLOT} from "../../../enums";
 import {otherPlayer} from "../../../utils/game_utils";
-import {tileInsideTheBossRoom} from "../../../map_checks";
 import {HeadWearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 
@@ -13,46 +11,49 @@ export class SeerCirclet extends Equipment {
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.type = HEAD_TYPE.SEER_CIRCLET;
         this.name = "Seer Circlet";
-        this.description = "See your future";
+        this.description = "Shows chest contents before opening them";
         this.rarity = RARITY.A;
     }
 
-    onWear() {
-        for (let i = 0; i < Game.darkTiles.length; i++) {
-            for (let j = 0; j < Game.darkTiles[0].length; j++) {
-                if (Game.map[i][j].tileType === TILE_TYPE.NONE && !Game.map[i][j].lit && !tileInsideTheBossRoom(j, i)) {
-                    lightTile(j, i);
-                    Game.map[i][j].lit = false;
-                }
-            }
-        }
+    onWear(wielder) {
+        this.enableVision(wielder);
     }
 
     onTakeOff(wielder) {
-        if (otherPlayer(wielder).headwear && otherPlayer(wielder).headwear.type === this.type && !otherPlayer(wielder).dead) {
-            return false;
-        } else {
-            for (let i = 0; i < Game.darkTiles.length; i++) {
-                for (let j = 0; j < Game.darkTiles[0].length; j++) {
-                    if (!Game.map[i][j].lit) {
-                        darkenTile(j, i);
-                    }
-                }
-            }
-        }
+        this.disableVision(wielder);
     }
 
     onDeath(wielder) {
-        this.onTakeOff(wielder);
+        this.disableVision(wielder);
     }
 
     onRevive(wielder) {
-        this.onWear();
+        this.enableVision(wielder);
     }
 
     onNextLevel(wielder) {
         if (!wielder.dead) {
-            this.onWear();
+            this.enableVision(wielder);
+        }
+    }
+
+    enableVision(wielder) {
+        for (const inanimate of Game.inanimates) {
+            if (inanimate.type === INANIMATE_TYPE.CHEST && !inanimate.opened) {
+                inanimate.itemSprite.visible = inanimate.textObj.visible = true;
+            }
+        }
+    }
+
+    disableVision(wielder) {
+        if (otherPlayer(wielder)[SLOT.HEADWEAR] && otherPlayer(wielder)[SLOT.HEADWEAR].type === this.type && !otherPlayer(wielder).dead) {
+            return false;
+        } else {
+            for (const inanimate of Game.inanimates) {
+                if (inanimate.type === INANIMATE_TYPE.CHEST && !inanimate.opened) {
+                    inanimate.itemSprite.visible = inanimate.textObj.visible = false;
+                }
+            }
         }
     }
 }
