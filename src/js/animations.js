@@ -5,7 +5,7 @@ import {ITEM_OUTLINE_FILTER} from "./filters";
 import {HUDTextStyle, HUDTextStyleTitle, miniMapBottomOffset} from "./drawing/draw_constants";
 import {HUD} from "./drawing/hud_object";
 import {camera} from "./classes/game/camera";
-import {ROLE, STAGE, WEAPON_TYPE} from "./enums";
+import {ROLE, STAGE} from "./enums";
 import {easeInOutQuad, easeInQuad, easeOutQuad, quadraticBezier} from "./utils/math_utils";
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {EffectsSpriteSheet, HUDSpriteSheet} from "./loader";
@@ -76,7 +76,10 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
 }
 
 // the picture is directed to the top left!
-export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1, lookingBottom = false, forceSwing = undefined, endAmplitude = angleAmplitude) {
+export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1, baseAngle = -135, handleAnchor = {
+    x: 1,
+    y: 1
+}, forceSwing = undefined, endAmplitude = angleAmplitude) {
     const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
     weaponSprite.position.set(player.getTilePositionX(), player.getTilePositionY());
     Game.world.addChild(weaponSprite);
@@ -84,24 +87,16 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
     weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
-    weaponSprite.anchor.set(1, 1);
-    let baseAngle = 0;
-    if (lookingBottom) {
-        weaponSprite.anchor.set(1, 0);
-        baseAngle = 90;
-    }
-    if (weapon.type === WEAPON_TYPE.SCYTHE) baseAngle = -27; //temp solution
+    weaponSprite.anchor.set(handleAnchor.x, handleAnchor.y);
     let swingDir = forceSwing === 1 || forceSwing === -1 ? forceSwing : randomChoice([-1, 1]);
-    if (dirX === 1) weaponSprite.angle = baseAngle + 135 - angleAmplitude / 2 * swingDir;
-    else if (dirX === -1) weaponSprite.angle = baseAngle - 45 - angleAmplitude / 2 * swingDir;
-    else if (dirY === 1) weaponSprite.angle = baseAngle - 135 - angleAmplitude / 2 * swingDir;
-    else if (dirY === -1) weaponSprite.angle = baseAngle + 45 - angleAmplitude / 2 * swingDir;
+    if (dirX === 1) weaponSprite.angle = -baseAngle - angleAmplitude / 2 * swingDir;
+    else if (dirX === -1) weaponSprite.angle = -baseAngle + 180 - angleAmplitude / 2 * swingDir;
+    else if (dirY === 1) weaponSprite.angle = -baseAngle + 90 - angleAmplitude / 2 * swingDir;
+    else if (dirY === -1) weaponSprite.angle = -baseAngle + 270 - angleAmplitude / 2 * swingDir;
 
-    //assuming that the blade looks to the left on the picture
-    //SCYTHE PROBLEMS
-    if (swingDir === 1 && !lookingBottom) {
+    if (swingDir === 1) {
         weaponSprite.scale.x *= -1;
-        weaponSprite.angle -= 90;
+        weaponSprite.angle -= (-baseAngle - 90) * 2;
     }
 
     const endChange = endAmplitude * swingDir;

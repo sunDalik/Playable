@@ -5,7 +5,7 @@ import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../anima
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
 
-export class Scythe extends Weapon  {
+export class Scythe extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["scythe.png"];
@@ -49,7 +49,7 @@ export class Scythe extends Weapon  {
             for (const enemy of enemiesToAttack) {
                 enemy.damage(wielder, atk, tileDirX, tileDirY, false);
             }
-            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, 180, 1.2);
+            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, 180, 1.2, -108);
             return true;
         } else return false;
     }

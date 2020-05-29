@@ -163,7 +163,6 @@ export class Player extends AnimatedTileElement {
     }
 
     getAtkWithWeapon(weapon, presetAtk = 0) {
-        if (weapon === null) return 0;
         const atkBase = this.getAtkBaseWithWeapon(weapon, presetAtk);
         return (Math.round(atkBase * this.getAtkMul() * 4) / 4);
     }
@@ -175,7 +174,7 @@ export class Player extends AnimatedTileElement {
         for (const equipment of atkEquipment) {
             if (equipment) {
                 atkBase += equipment.atk;
-                if (weapon.magical) atkBase += equipment.magAtk;
+                if (weapon && weapon.magical) atkBase += equipment.magAtk;
             }
         }
         if (this.secondHand && this.secondHand.equipmentType !== EQUIPMENT_TYPE.WEAPON && this.secondHand.atk) {

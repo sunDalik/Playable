@@ -5,7 +5,7 @@ import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../anima
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
 
-export class MaidenDagger extends Weapon  {
+export class MaidenDagger extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["maiden_dagger.png"];
@@ -59,8 +59,10 @@ export class MaidenDagger extends Weapon  {
                 wielder.bump(tileDirX, tileDirY);
             }
             const amplitude = 180;
-            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1, true, 1, amplitude / 2 + 30);
-            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1, true, -1, amplitude / 2 + 30);
+            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1,
+                135, {x: 1, y: 0}, 1, amplitude / 2 + 30);
+            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1,
+                135, {x: 1, y: 0}, -1, amplitude / 2 + 30);
             for (let i = 0; i < enemiesToAttack.length; i++) {
                 if (enemiesToAttack[i] === null) continue;
                 enemiesToAttack[i].damage(wielder, wielder.getAtkWithWeapon(null, enemyDmgValues[i]), tileDirX, tileDirY, false);
@@ -74,7 +76,7 @@ export class MaidenDagger extends Weapon  {
             const attackTileY = wielder.tilePosition.y + tileDirY;
             const atk = wielder.getAtkWithWeapon(this);
             if (isEnemy(attackTileX, attackTileY)) {
-                createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4.5, 40, 1, true);
+                createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4.5, 40, 1, 135, {x: 1, y: 0});
                 createPlayerAttackTile({x: attackTileX, y: attackTileY});
                 Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);
                 return true;

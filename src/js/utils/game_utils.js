@@ -1,6 +1,6 @@
 import {Game} from "../game";
 import {randomChoice} from "./random_utils";
-import {toDegrees} from "./math_utils";
+import {toDegrees, toRadians} from "./math_utils";
 
 export function otherPlayer(player) {
     if (player === Game.player) return Game.player2;
@@ -83,4 +83,15 @@ export function getAngleForDirection(direction, addAngle = 0) {
         if (direction.x <= 0) newAngle += 180;
     }
     return newAngle + addAngle;
+}
+
+export function getDirectionForAngle(angle) {
+    const direction = {};
+    angle = toRadians(-angle);
+    const triangleSide = Math.min(Math.abs(Math.cos(angle)), Math.abs(Math.sin(angle)));
+    const hypotenuse = Math.sqrt(triangleSide ** 2 + 1);
+
+    direction.x = Math.cos(angle) * hypotenuse;
+    direction.y = -Math.sin(angle) * hypotenuse;
+    return direction;
 }
