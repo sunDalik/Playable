@@ -15,48 +15,50 @@ export class WizardRobe extends Equipment {
         this.rarity = RARITY.A;
     }
 
-    onWear(player) {
-        for (const eq of [player.magic1, player.magic2, player.magic3, player.weapon, player.secondHand]) {
-            if (eq) this.upgradeMagicEquipment(eq);
+    onWear(wielder) {
+        for (const eq of [wielder.magic1, wielder.magic2, wielder.magic3, wielder.weapon, wielder.secondHand]) {
+            if (eq) this.upgradeMagicEquipment(wielder, eq);
         }
     }
 
-    onTakeOff(player) {
-        for (const eq of [player.magic1, player.magic2, player.magic3, player.weapon, player.secondHand]) {
+    onTakeOff(wielder) {
+        for (const eq of [wielder.magic1, wielder.magic2, wielder.magic3, wielder.weapon, wielder.secondHand]) {
             if (eq) {
                 const preserveUses = eq.equipmentType === EQUIPMENT_TYPE.WEAPON;
-                if (this.degradeMagicEquipment(eq, preserveUses)) {
+                if (this.degradeMagicEquipment(wielder, eq, preserveUses)) {
                     if (eq.equipmentType === EQUIPMENT_TYPE.MAGIC && eq.type === MAGIC_TYPE.NECROMANCY) {
-                        eq.removeIfExhausted(player);
+                        eq.removeIfExhausted(wielder);
                     }
                 }
             }
         }
     }
 
-    onEquipmentReceive(player, equipment) {
-        this.upgradeMagicEquipment(equipment);
+    onEquipmentReceive(wielder, equipment) {
+        this.upgradeMagicEquipment(wielder, equipment);
     }
 
-    onEquipmentDrop(player, equipment) {
-        this.degradeMagicEquipment(equipment);
+    onEquipmentDrop(wielder, equipment) {
+        this.degradeMagicEquipment(wielder, equipment);
     }
 
-    upgradeMagicEquipment(equipment) {
+    upgradeMagicEquipment(wielder, equipment) {
         if (equipment.magical) {
             if (equipment.maxUses > 0) {
                 equipment.maxUses += this.magUses;
                 equipment.uses += this.magUses;
+                wielder.redrawEquipmentSlot(equipment);
             }
             return true;
         } else return false;
     }
 
-    degradeMagicEquipment(equipment, preserveUses = false) {
+    degradeMagicEquipment(wielder, equipment, preserveUses = false) {
         if (equipment.magical) {
             if (equipment.maxUses > 0) {
                 equipment.maxUses -= this.magUses;
                 if (!preserveUses || equipment.uses > 0) equipment.uses -= this.magUses;
+                wielder.redrawEquipmentSlot(equipment);
             }
             return true;
         } else return false;
