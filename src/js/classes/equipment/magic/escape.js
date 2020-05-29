@@ -19,7 +19,7 @@ export class Escape extends Magic {
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.uses = this.maxUses = 6;
         this.name = "Escape";
-        this.description = "EDIT";
+        this.description = "Teleports both characters to a random safe location not too far away from you\nIf can't find a safe tile, it will stun enemies around you";
         this.calculateRarity();
     }
 

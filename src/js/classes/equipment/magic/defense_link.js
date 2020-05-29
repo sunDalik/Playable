@@ -11,7 +11,7 @@ export class DefenseLink extends Magic {
         this.type = MAGIC_TYPE.DEFENSE_LINK;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
         this.name = "Defense Link";
-        this.description = "EDIT";
+        this.description = "Other character gets +0.5 to def multiplier, which effectively doubles its defense\nThe bonus is only active while both souls are alive";
         this.gainedIncreasement = false;
         this.calculateRarity();
     }

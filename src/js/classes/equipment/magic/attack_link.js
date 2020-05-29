@@ -11,7 +11,7 @@ export class AttackLink extends Magic {
         this.type = MAGIC_TYPE.ATTACK_LINK;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.name = "Attack Link";
-        this.description = "EDIT";
+        this.description = "Other character gets +0.5 to atk multiplier, which effectively doubles its attack\nThe bonus is only active while both souls are alive";
         this.gainedIncreasement = false;
         this.calculateRarity();
     }

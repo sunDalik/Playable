@@ -21,7 +21,7 @@ export class Wind extends Magic {
         this.atk = 1;
         this.uses = this.maxUses = 5;
         this.name = "Wind";
-        this.description = "EDIT";
+        this.description = `Push away all enemies in radius ${this.radius} by 2 tiles\nIf an enemy can't be pushed enough it takes ${this.atk} damage`;
         this.calculateRarity();
     }
 

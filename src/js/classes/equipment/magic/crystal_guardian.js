@@ -17,7 +17,7 @@ export class CrystalGuardian extends CrystalWind {
         this.radius = 4;
         this.name = "Crystal Guardian";
         this.follower = null;
-        this.description = "EDIT";
+        this.description = "Upgrade to Crystal Wind\nCrystal Guardian will automatically activate Crystal Wind before you or your ally (if ≤ 3 tiles away from you) takes damage";
         this.calculateRarity();
     }
 

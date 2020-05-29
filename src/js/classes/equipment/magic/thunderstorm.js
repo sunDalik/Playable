@@ -18,7 +18,7 @@ export class Thunderstorm extends Magic {
         this.verticalRange = 5;
         this.thundersAmount = 10;
         this.name = "Thunderstorm";
-        this.description = `EDIT`;
+        this.description = `Damages up to ${this.thundersAmount} enemies in a huge area around you`;
         this.calculateRarity();
     }
 

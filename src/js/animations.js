@@ -471,6 +471,19 @@ export function showHelpBox(item) {
     Game.itemHelp.addChild(nameText);
     Game.itemHelp.addChild(descriptionText);
 
+    if (textOffsetY < 0) {
+        // expand help box by one line if too many lines...
+        // kinda hacky for now
+        Game.itemHelp.clear();
+        Game.itemHelp.beginFill(0x000000);
+        Game.itemHelp.lineStyle(3, 0xFFFFFF, 0.8, 0);
+        const expand = 20;
+        Game.itemHelp.drawRoundedRect(0, 0, 550, 120 + expand, 6);
+        nameText.position.y += expand / 2;
+        descriptionText.position.y += expand / 2;
+        itemSprite.position.y += expand / 2;
+    }
+
     HUD.addChild(Game.itemHelp);
     Game.itemHelp.position.set(Game.app.renderer.screen.width / 2 - Game.itemHelp.width / 2, Game.app.renderer.screen.height);
     Game.itemHelp.zIndex = 1;

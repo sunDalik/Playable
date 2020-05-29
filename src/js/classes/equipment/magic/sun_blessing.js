@@ -9,7 +9,7 @@ export class SunBlessing extends Light {
         this.type = MAGIC_TYPE.SUN_BLESSING;
         this.uses = this.maxUses = 8;
         this.name = "Sun's Blessing";
-        this.description = "EDIT";
+        this.description = "Upgrade to Light\nProvides linked healing: whenever any character gets healed in any way, other character gets healed by the same amount";
         this.calculateRarity();
     }
 

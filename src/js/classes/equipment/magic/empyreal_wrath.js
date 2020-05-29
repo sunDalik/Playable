@@ -12,7 +12,7 @@ export class EmpyrealWrath extends Thunderstorm {
         this.type = MAGIC_TYPE.EMPYREAL_WRATH;
         this.uses = this.maxUses = 6;
         this.name = "Empyreal Wrath";
-        this.description = `EDIT`;
+        this.description = `Upgrade to Thunderstorm\nIf there are not enough enemies around you, empyreal strikes will damage some enemies multiple times but subsequent strikes only deal half dmg`;
         this.thundersAmount = 12;
         this.calculateRarity();
     }

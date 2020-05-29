@@ -48,3 +48,7 @@ export function toDegrees(radians) {
 export function toRadians(degrees) {
     return degrees * (Math.PI / 180);
 }
+
+export function roundToQuarter(value) {
+    return (Math.round(value * 4) / 4);
+}

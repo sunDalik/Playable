@@ -11,7 +11,7 @@ export class CrystalWind extends Wind {
         this.uses = this.maxUses = 6;
         this.crystal = true;
         this.name = "Crystal Wind";
-        this.description = "EDIT";
+        this.description = "Upgrade to Wind\nCan also destroy hazards and bullets around you";
         this.calculateRarity();
     }
 }
