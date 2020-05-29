@@ -30,6 +30,7 @@ export function getRandomSpell() {
                 && (Game.player.getMagicByConstructor(m.requiredMagic) !== null || Game.player2.getMagicByConstructor(m.requiredMagic) !== null));
             if (advancedMagic.length > 0) {
                 constructor = randomChoice(advancedMagic);
+                break;
             } else {
                 pickAdvanced = false;
             }
@@ -37,6 +38,7 @@ export function getRandomSpell() {
             const basicMagic = Game.magicPool.filter(m => m.requiredMagic === null);
             if (basicMagic.length > 0) {
                 constructor = randomChoice(basicMagic);
+                break;
             } else {
                 pickAdvanced = true;
             }
