@@ -34,7 +34,7 @@ export class RustySword extends Weapon {
             || isEnemy(attackTiles[1].x, attackTiles[1].y) && isLit(attackTiles[1].x, attackTiles[1].y)
             || isEnemy(attackTiles[2].x, attackTiles[2].y) && isLit(attackTiles[2].x, attackTiles[2].y)) {
             createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY);
-            const atk = wielder.getAtkWithWeapon(this);
+            const atk = wielder.getAtk(this);
             const enemiesToAttack = [];
             for (const attackTile of attackTiles) {
                 createPlayerAttackTile(attackTile);

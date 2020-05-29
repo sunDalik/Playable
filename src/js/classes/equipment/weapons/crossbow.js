@@ -14,6 +14,6 @@ export class Crossbow extends BowLikeWeapon {
     }
 
     getAtk(wielder, range) {
-        return wielder.getAtkWithWeapon(this);
+        return wielder.getAtk(this);
     }
 }

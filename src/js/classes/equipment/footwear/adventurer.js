@@ -6,8 +6,8 @@ export class AdventurerBoots extends Equipment {
     constructor() {
         super();
         this.texture = FootwearSpriteSheet["adventurer.png"];
-        this.type = FOOTWEAR_TYPE.ADVENTURER;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
+        this.type = FOOTWEAR_TYPE.ADVENTURER;
         this.name = "Adventurer Boots";
         this.description = "Immunity to poison hazards";
         this.rarity = RARITY.C;

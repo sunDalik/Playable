@@ -23,7 +23,7 @@ export class AssassinDagger extends Weapon {
     attack(wielder, tileDirX, tileDirY) {
         const attackTileX = wielder.tilePosition.x + tileDirX;
         const attackTileY = wielder.tilePosition.y + tileDirY;
-        const atk = wielder.getAtkWithWeapon(this);
+        const atk = wielder.getAtk(this);
         if (isEnemy(attackTileX, attackTileY)) {
             if (isRelativelyEmpty(wielder.tilePosition.x + tileDirX * 2, wielder.tilePosition.y + tileDirY * 2)) {
                 createAnimation(this);

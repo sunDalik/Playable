@@ -18,7 +18,7 @@ export class Thunderstorm extends Magic {
         this.verticalRange = 5;
         this.thundersAmount = 10;
         this.name = "Thunderstorm";
-        this.description = `Damages up to ${this.thundersAmount} enemies in a huge area around you`;
+        this.description = `Damages up to ${this.thundersAmount} enemies in a huge area around you by ${this.atk}`;
         this.calculateRarity();
     }
 
@@ -37,7 +37,7 @@ export class Thunderstorm extends Magic {
             if (randomTimeout === 0) createThunderAnimation(enemy);
             else setTickTimeout(() => createThunderAnimation(enemy), randomTimeout);
             enemy.stun++;
-            enemy.damage(wielder, this.atk, 0, 0, true);
+            enemy.damage(wielder, wielder.getAtk(this), 0, 0, true);
             thundersAmount--;
         }
         if (vulnerableEnemies.length !== 0) this.uses--;

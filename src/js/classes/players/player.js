@@ -34,6 +34,7 @@ import {removeObjectFromArray} from "../../utils/basic_utils";
 import {HUD} from "../../drawing/hud_object";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
 import {CrystalGuardian} from "../equipment/magic/crystal_guardian";
+import {roundToQuarter} from "../../utils/math_utils";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -44,6 +45,7 @@ export class Player extends AnimatedTileElement {
         this.atkMul = 1;
         this.defBase = 0;
         this.defMul = 1;
+        this.magAtkBase = 0;
         this.SLIDE_ANIMATION_TIME = 8;
         this.SLIDE_BUMP_ANIMATION_TIME = 10;
         this.role = ROLE.PLAYER;
@@ -162,50 +164,21 @@ export class Player extends AnimatedTileElement {
         } else return false;
     }
 
-    getAtkWithWeapon(weapon, presetAtk = 0) {
-        const atkBase = this.getAtkBaseWithWeapon(weapon, presetAtk);
-        return (Math.round(atkBase * this.getAtkMul() * 4) / 4);
-    }
-
-    getAtkBaseWithWeapon(weapon, presetAtk = 0) {
-        const weaponAtk = presetAtk ? presetAtk : weapon.atk;
-        let atkBase = this.atkBase + weaponAtk;
-        const atkEquipment = [this.headwear, this.armor, this.footwear];
-        for (const equipment of atkEquipment) {
-            if (equipment) {
-                atkBase += equipment.atk;
-                if (weapon && weapon.magical) atkBase += equipment.magAtk;
-            }
+    getAtk(weapon, presetAtk = 0) {
+        if (weapon === null && presetAtk === 0) return 0;
+        let atkBase = presetAtk !== 0 ? presetAtk : weapon.atk;
+        atkBase = roundToQuarter(atkBase);
+        let multiplier = this.atkMul;
+        if (weapon) {
+            if (weapon.equipmentType === EQUIPMENT_TYPE.WEAPON) atkBase += this.atkBase;
+            if (weapon.magical) atkBase += this.magAtkBase;
+            if (weapon.equipmentType === EQUIPMENT_TYPE.MAGIC) multiplier = 1;
         }
-        if (this.secondHand && this.secondHand.equipmentType !== EQUIPMENT_TYPE.WEAPON && this.secondHand.atk) {
-            atkBase += this.secondHand.atk;
-        }
-        return atkBase;
-
-    }
-
-    getAtkMul() {
-        return this.atkMul;
+        return roundToQuarter(atkBase * multiplier);
     }
 
     getDef() {
-        const defBase = this.getDefBase();
-        return (Math.round(defBase * this.getDefMul() * 4) / 4);
-    }
-
-    getDefBase() {
-        const defEquipment = [this.headwear, this.armor, this.footwear, this.secondHand];
-        let defBase = this.defBase;
-        for (const equipment of defEquipment) {
-            if (equipment && equipment.def) {
-                defBase += equipment.def;
-            }
-        }
-        return defBase;
-    }
-
-    getDefMul() {
-        return this.defMul;
+        return roundToQuarter(this.defBase * this.defMul);
     }
 
     step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {

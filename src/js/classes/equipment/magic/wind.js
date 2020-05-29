@@ -80,7 +80,7 @@ export class Wind extends Magic {
                             } else {
                                 enemy.slide(newTilePosition.x - enemy.tilePosition.x, newTilePosition.y - enemy.tilePosition.y, null, () => {
                                     enemy.slideBump(direction.x, direction.y, null, null, this.slideTime);
-                                    enemy.damage(wielder, this.atk, direction.x, direction.y, true);
+                                    enemy.damage(wielder, wielder.getAtk(this), direction.x, direction.y, true);
                                 }, animationTime);
                             }
                         }

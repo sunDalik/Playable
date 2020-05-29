@@ -45,7 +45,6 @@ export class BookOfFlames extends MagicBook {
                 || isEnemy(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[3].x, attackTiles[3].y)
                 || isEnemy(attackTiles[4].x, attackTiles[4].y) && isNotAWall(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[4].x, attackTiles[4].y))) {
 
-            const atk = wielder.getAtkWithWeapon(this);
             const enemiesToAttack = [];
             for (let i = 0; i < attackTiles.length; i++) {
                 if (i === 3) {
@@ -72,7 +71,7 @@ export class BookOfFlames extends MagicBook {
             }
 
             for (const enemy of enemiesToAttack) {
-                enemy.damage(wielder, atk, dirX, dirY, this.magical);
+                enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, this.magical);
             }
             this.uses--;
             this.updateTexture(wielder);

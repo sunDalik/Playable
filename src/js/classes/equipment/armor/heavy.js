@@ -8,7 +8,7 @@ export class HeavyArmor extends Equipment {
         this.texture = ArmorSpriteSheet["heavy.png"];
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.type = ARMOR_TYPE.HEAVY;
-        this.def = 2;
+        this.passiveDef = 2;
         this.magicPunishment = 0.25;
         this.name = "Heavy Armor";
         this.description = "+2 defense\nYou take 0.25 damage whenever you cast magic";

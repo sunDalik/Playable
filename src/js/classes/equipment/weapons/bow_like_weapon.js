@@ -84,7 +84,7 @@ export class BowLikeWeapon extends Weapon {
     }
 
     getAtk(wielder, range) {
-        return wielder.getAtkWithWeapon(this);
+        return wielder.getAtk(this);
     }
 
     //relative to upper left pointing position

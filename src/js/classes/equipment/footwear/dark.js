@@ -7,8 +7,8 @@ export class DarkBoots extends Equipment {
     constructor() {
         super();
         this.texture = FootwearSpriteSheet["dark.png"];
-        this.type = FOOTWEAR_TYPE.DARK;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
+        this.type = FOOTWEAR_TYPE.DARK;
         this.name = "Dark Boots";
         this.description = "Immunity to hazards\nHazards turn to dark hazards when you step on them\nDark hazards damage both enemies and players";
         this.rarity = RARITY.B;

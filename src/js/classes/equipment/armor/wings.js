@@ -8,7 +8,7 @@ export class Wings extends Equipment {
         this.texture = ArmorSpriteSheet["wings.png"];
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.type = ARMOR_TYPE.WINGS;
-        this.def = 0;
+        this.passiveDef = 0;
         this.dodgeChance = 0.5;
         this.name = "Wings";
         this.description = "50% to dodge any attack\nImmunity to hazards";

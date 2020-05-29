@@ -40,7 +40,7 @@ export class PawnSwords extends Weapon {
         createPlayerAttackTile(attackTiles[0]);
         createPlayerAttackTile(attackTiles[1]);
 
-        const atk = wielder.getAtkWithWeapon(this);
+        const atk = wielder.getAtk(this);
         for (const enemy of enemiesToAttack) {
             enemy.damage(wielder, atk, tileDirX, tileDirY, false, false);
         }

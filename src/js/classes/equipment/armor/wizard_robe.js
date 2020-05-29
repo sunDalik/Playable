@@ -9,7 +9,7 @@ export class WizardRobe extends Equipment {
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.type = ARMOR_TYPE.WIZARD_ROBE;
         this.magUses = 1;
-        this.magAtk = 1;
+        this.passiveMagAtk = 1;
         this.name = "Wizard Robe";
         this.description = "+1 magic use\n+1 magic attack";
         this.rarity = RARITY.A;

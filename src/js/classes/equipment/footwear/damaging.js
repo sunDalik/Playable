@@ -6,9 +6,9 @@ export class DamagingBoots extends Equipment {
     constructor() {
         super();
         this.texture = FootwearSpriteSheet["damaging.png"];
-        this.type = FOOTWEAR_TYPE.DAMAGING;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
-        this.atk = 0.5;
+        this.type = FOOTWEAR_TYPE.DAMAGING;
+        this.passiveAtk = 0.5;
         this.name = "Damaging Boots";
         this.description = "+0.5 attack";
         this.rarity = RARITY.B;

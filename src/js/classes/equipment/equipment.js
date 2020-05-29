@@ -16,13 +16,12 @@ export class Equipment {
         this.fireImmunity = false;
         this.electricityImmunity = false;
 
-        // give passive attack and defense bonuses
-        // TODO rename it to passiveAtk probably to avoid confusion
         this.atk = 0;
-        this.def = 0;
 
-        // give passive atk bonus to magic and magical weapons
-        this.magAtk = 0;
+        // give passive bonuses to wielder holding item
+        this.passiveAtk = 0;
+        this.passiveDef = 0;
+        this.passiveMagAtk = 0;
 
         // magical items get magic bonuses
         this.magical = false;
@@ -36,6 +35,9 @@ export class Equipment {
         if (this.poisonImmunity) wielder.poisonImmunity++;
         if (this.fireImmunity) wielder.fireImmunity++;
         if (this.electricityImmunity) wielder.electricityImmunity++;
+        wielder.atkBase += this.passiveAtk;
+        wielder.defBase += this.passiveDef;
+        wielder.magAtkBase += this.passiveMagAtk;
     }
 
     //executes when wielder drops this item
@@ -43,6 +45,9 @@ export class Equipment {
         if (this.poisonImmunity) wielder.poisonImmunity--;
         if (this.fireImmunity) wielder.fireImmunity--;
         if (this.electricityImmunity) wielder.electricityImmunity--;
+        wielder.atkBase -= this.passiveAtk;
+        wielder.defBase -= this.passiveDef;
+        wielder.magAtkBase -= this.passiveMagAtk;
     }
 
     //executes AFTER enemy turn

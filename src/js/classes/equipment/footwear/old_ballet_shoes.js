@@ -7,8 +7,8 @@ export class OldBalletShoes extends Equipment {
     constructor() {
         super();
         this.texture = FootwearSpriteSheet["old_ballet_shoes.png"];
-        this.type = FOOTWEAR_TYPE.OLD_BALLET_SHOES;
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
+        this.type = FOOTWEAR_TYPE.OLD_BALLET_SHOES;
         this.name = "Old Ballet Shoes";
         this.description = "Spiders don't move when you move";
         this.rarity = RARITY.C;

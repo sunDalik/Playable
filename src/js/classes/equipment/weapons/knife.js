@@ -20,7 +20,7 @@ export class Knife  extends Weapon {
         const attackTileX = wielder.tilePosition.x + tileDirX;
         const attackTileY = wielder.tilePosition.y + tileDirY;
         if (isEnemy(attackTileX, attackTileY)) {
-            const atk = wielder.getAtkWithWeapon(this);
+            const atk = wielder.getAtk(this);
             createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4, 35, 1);
             createPlayerAttackTile({x: attackTileX, y: attackTileY});
             Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);

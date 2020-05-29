@@ -21,7 +21,7 @@ export class LongSword  extends Weapon {
         const attackTileY1 = wielder.tilePosition.y + dirY;
         const attackTileX2 = wielder.tilePosition.x + dirX * 2;
         const attackTileY2 = wielder.tilePosition.y + dirY * 2;
-        const atk = wielder.getAtkWithWeapon(this);
+        const atk = wielder.getAtk(this);
         if (isEnemy(attackTileX1, attackTileY1)) {
             createWeaponAnimationStab(wielder, this, dirX, dirY, 6, 5, 1.2);
             createPlayerAttackTile({x: attackTileX1, y: attackTileY1});

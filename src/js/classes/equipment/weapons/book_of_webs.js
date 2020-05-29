@@ -33,9 +33,8 @@ export class BookOfWebs extends MagicBook {
             }
         }
         if (enemies.length === 0) return false;
-        const atk = wielder.getAtkWithWeapon(this);
         for (const enemy of enemies) {
-            enemy.damage(wielder, atk, dirX, dirY, this.magical);
+            enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, this.magical);
         }
         for (const tile of tiles) {
             const timeout = tileDistance(wielder, {tilePosition: {x: tile.x, y: tile.y}}) - 1;

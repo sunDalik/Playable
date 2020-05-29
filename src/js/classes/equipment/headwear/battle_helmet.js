@@ -11,6 +11,6 @@ export class BattleHelmet extends Equipment{
         this.name = "Battle Helmet";
         this.description = "+0.5 defense";
         this.rarity = RARITY.B;
-        this.def = 0.5;
+        this.passiveDef = 0.5;
     }
 }

@@ -20,7 +20,7 @@ export class Hammer  extends Weapon {
         const attackTileX = wielder.tilePosition.x + dirX;
         const attackTileY = wielder.tilePosition.y + dirY;
         if (isEnemy(attackTileX, attackTileY)) {
-            const atk = wielder.getAtkWithWeapon(this);
+            const atk = wielder.getAtk(this);
             createWeaponAnimationClub(wielder, this, dirX, dirY, 6, 5, 90, 1);
             createPlayerAttackTile({x: attackTileX, y: attackTileY});
             const enemy = Game.map[attackTileY][attackTileX].entity;

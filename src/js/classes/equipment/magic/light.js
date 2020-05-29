@@ -33,7 +33,7 @@ export class Light extends Magic {
                     if (Game.stage === STAGE.DARK_TUNNEL) attackSprite.maskLayer = {};
                     createFadingAttack(attackSprite);
                     if (isEnemy(attackPositionX, attackPositionY)) {
-                        Game.map[attackPositionY][attackPositionX].entity.damage(wielder, this.atk, 0, 0, true);
+                        Game.map[attackPositionY][attackPositionX].entity.damage(wielder, wielder.getAtk(this), 0, 0, true);
                     } else if (isObelisk(attackPositionX, attackPositionY)) {
                         Game.map[attackPositionY][attackPositionX].entity.damage();
                     }

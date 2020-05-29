@@ -29,7 +29,7 @@ export class Spikes extends Magic {
             const attackTile = {x: wielder.tilePosition.x + attackDir.x, y: wielder.tilePosition.y + attackDir.y};
             if (isNotAWall(attackTile.x, attackTile.y)) {
                 if (isEnemy(attackTile.x, attackTile.y)) {
-                    Game.map[attackTile.y][attackTile.x].entity.damage(wielder, this.atk, attackTile.x - wielder.tilePosition.x, attackTile.y - wielder.tilePosition.y, true);
+                    Game.map[attackTile.y][attackTile.x].entity.damage(wielder, wielder.getAtk(this), attackTile.x - wielder.tilePosition.x, attackTile.y - wielder.tilePosition.y, true);
                     enemiesDamaged++;
                 } else if (isObelisk(attackTile.x, attackTile.y)) {
                     Game.map[attackTile.y][attackTile.x].entity.damage();

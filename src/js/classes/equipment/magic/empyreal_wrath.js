@@ -34,7 +34,8 @@ export class EmpyrealWrath extends Thunderstorm {
                 if (thundersAmount <= 0) break;
                 setTickTimeout(() => createEmpyrealWrathAnimation(enemy), (this.thundersAmount - thundersAmount) * 1.5);
                 if (iteration === 1) enemy.stun += 3;
-                const atk = iteration === 1 ? this.atk : this.atk / 2;
+                let atk = iteration === 1 ? this.atk : this.atk / 2;
+                atk = wielder.getAtk(this, atk);
                 enemy.damage(wielder, atk, 0, 0, true);
                 thundersAmount--;
             }

@@ -25,13 +25,13 @@ export class DoubleGlaive  extends Weapon {
         const attackTileX2 = wielder.tilePosition.x + dirX * 2;
         const attackTileY2 = wielder.tilePosition.y + dirY * 2;
         if (isEnemy(attackTileX1, attackTileY1)) {
-            const atk = wielder.getAtkWithWeapon(this, this.atk * 2);
+            const atk = wielder.getAtk(this, this.atk * 2);
             this.spin(wielder, dirX, dirY);
             createPlayerAttackTile({x: attackTileX1, y: attackTileY1});
             Game.map[attackTileY1][attackTileX1].entity.damage(wielder, atk, dirX, dirY, false);
             return true;
         } else if (isEnemy(attackTileX2, attackTileY2) && isRelativelyEmpty(attackTileX1, attackTileY1) && isLit(attackTileX2, attackTileY2)) {
-            const atk = wielder.getAtkWithWeapon(this);
+            const atk = wielder.getAtk(this);
             createWeaponAnimationStab(wielder, this, dirX * 2, dirY * 2, 7, 3, this.scaleModifier);
             createPlayerAttackTile({x: attackTileX2, y: attackTileY2});
             Game.map[attackTileY2][attackTileX2].entity.damage(wielder, atk, dirX, dirY, false);

@@ -65,7 +65,7 @@ export class MaidenDagger extends Weapon {
                 135, {x: 1, y: 0}, -1, amplitude / 2 + 30);
             for (let i = 0; i < enemiesToAttack.length; i++) {
                 if (enemiesToAttack[i] === null) continue;
-                enemiesToAttack[i].damage(wielder, wielder.getAtkWithWeapon(null, enemyDmgValues[i]), tileDirX, tileDirY, false);
+                enemiesToAttack[i].damage(wielder, wielder.getAtk(this, enemyDmgValues[i]), tileDirX, tileDirY, false);
             }
             for (const attackTile of atkPositions) {
                 createPlayerAttackTile(attackTile);
@@ -74,7 +74,7 @@ export class MaidenDagger extends Weapon {
         } else {
             const attackTileX = wielder.tilePosition.x + tileDirX;
             const attackTileY = wielder.tilePosition.y + tileDirY;
-            const atk = wielder.getAtkWithWeapon(this);
+            const atk = wielder.getAtk(this);
             if (isEnemy(attackTileX, attackTileY)) {
                 createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4.5, 40, 1, 135, {x: 1, y: 0});
                 createPlayerAttackTile({x: attackTileX, y: attackTileY});

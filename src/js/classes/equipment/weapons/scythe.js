@@ -38,7 +38,7 @@ export class Scythe extends Weapon {
             || isEnemy(attackTiles[3].x, attackTiles[3].y)
             || isEnemy(attackTiles[4].x, attackTiles[4].y)) {
 
-            const atk = wielder.getAtkWithWeapon(this);
+            const atk = wielder.getAtk(this);
             const enemiesToAttack = [];
             for (const attackTile of attackTiles) {
                 createPlayerAttackTile(attackTile);

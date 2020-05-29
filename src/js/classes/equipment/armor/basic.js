@@ -11,6 +11,6 @@ export class BasicArmor extends Equipment {
         this.name = "Basic Armor";
         this.description = "+0.5 defense";
         this.rarity = RARITY.C;
-        this.def = 0.5;
+        this.passiveDef = 0.5;
     }
 }
