@@ -1,7 +1,7 @@
 import {Spikes} from "./classes/equipment/magic/spikes";
 import {Necromancy} from "./classes/equipment/magic/necromancy";
 import {Wind} from "./classes/equipment/magic/wind";
-import {BasicArmor} from "./classes/equipment/armor/basic";
+import {LeatherArmor} from "./classes/equipment/armor/leather";
 import {WizardRobe} from "./classes/equipment/armor/wizard_robe";
 import {HeavyArmor} from "./classes/equipment/armor/heavy";
 import {ElectricArmor} from "./classes/equipment/armor/electric";
@@ -64,7 +64,7 @@ export function initPools() {
     Game.chestItemPool = [Pickaxe,
         Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         SeerCirclet, WizardHat, VampireCrown, BattleHelmet, BladeCrown,
-        BasicArmor, WizardRobe, HeavyArmor, ElectricArmor, Wings,
+        LeatherArmor, WizardRobe, HeavyArmor, ElectricArmor, Wings,
         AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes,
         LifeFruit, HeartShapedKey];
 }
