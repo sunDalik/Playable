@@ -66,7 +66,7 @@ export class Bomb extends BagEquipment {
                     player.damage(this.friendlyFire, sprite, false, true);
                 }
                 createFadingAttack(sprite, 9);
-                shakeScreen(5, 1, 40);
+                shakeScreen(10, 5);
             }
             lightPlayerPosition(Game.player);
             lightPlayerPosition(Game.player2);

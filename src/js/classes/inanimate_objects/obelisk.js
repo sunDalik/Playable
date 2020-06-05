@@ -1,6 +1,6 @@
 import {Game} from "../../game";
 import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "../../enums";
-import {createFadingText, longShakeScreen, runDestroyAnimation} from "../../animations";
+import {createFadingText, runDestroyAnimation} from "../../animations";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
@@ -115,7 +115,6 @@ export class Obelisk extends TileElement {
             this.grails[1].setMagic(this.magic[1]);
             this.activated = true;
             createFadingText("Choose one...", this.position.x, this.position.y);
-            longShakeScreen();
             this.onUpdate();
         }
     }
@@ -127,7 +126,6 @@ export class Obelisk extends TileElement {
             else this.texture = InanimatesSpriteSheet["obelisk_used.png"];
             this.grails.map(grail => grail.setMagic(null));
             createFadingText("Goodbye...", this.position.x, this.position.y);
-            longShakeScreen();
         } else if (this.destroyed) {
             grail.setMagic(null);
         }
@@ -142,7 +140,6 @@ export class Obelisk extends TileElement {
                     if (this.timesDonated === 1) this.grails[2].setMagic(this.magic[2]);
                     else this.grails[3].setMagic(this.magic[3]);
                     createFadingText("Be blessed...", this.position.x, this.position.y);
-                    longShakeScreen();
                 } else {
                     createFadingText("Your offer is fictitious...", this.position.x, this.position.y);
                 }
@@ -174,7 +171,6 @@ export class Obelisk extends TileElement {
                 } else enemy.atk += 0.25;
             }
             //createFadingText("Live with it... you will not...", this.position.x, this.position.y);
-            longShakeScreen();
         }
         this.onUpdate();
     }
@@ -186,7 +182,6 @@ export class Obelisk extends TileElement {
                 this.timesDamaged++;
                 this.texture = InanimatesSpriteSheet["obelisk_damaged.png"];
                 createFadingText("Don't", this.position.x, this.position.y);
-                longShakeScreen();
             }
         }
     }

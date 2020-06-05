@@ -42,9 +42,6 @@ export const Game = {
     TURNTIME: 15,
     WEAPON_ATTACK_TIME: 6,
     ITEM_FLOAT_ANIMATION_TIME: 50,
-    SHAKE_TIME: 6,
-    SHAKE_AMPLITUDE: 50,
-    shakeAnimation: null,
     itemHelpAnimation: null,
     itemHelp: null,
 

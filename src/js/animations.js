@@ -301,69 +301,32 @@ export function createFloatingItemAnimation(item, height = item.height) {
     return animation;
 }
 
-export function shakeScreen(shakeAnimationTime = Game.SHAKE_TIME, shakeCount = 1, shakeAmplitude = Game.SHAKE_AMPLITUDE, xOnly = false) {
+export function shakeScreen(shakeAmplitude = 12, shakeAnimationTime = 8) {
+    let currentShakeAmplitude = shakeAmplitude;
+    let offsetX = 0;
+    let offsetY = 0;
     let counter = 0;
-    let shakeCounter = 0;
-    const step = shakeAmplitude / shakeAnimationTime;
-    const stepY = xOnly ? 0 : randomChoice([-1, 1]) * step / 2;
-    if (Game.shakeAnimation) {
-        Game.app.ticker.remove(Game.shakeAnimation);
-        if (camera.animation === null) camera.center();
-    }
 
     const animation = (delta) => {
         if (Game.paused) return;
-        if (counter < shakeAnimationTime / 4) {
-            Game.world.position.x -= step * delta;
-            Game.world.position.y -= stepY * delta;
-        } else if (counter < shakeAnimationTime * 3 / 4) {
-            Game.world.position.x += step * delta;
-            Game.world.position.y += stepY * delta;
-        } else if (counter < shakeAnimationTime) {
-            Game.world.position.x -= step * delta;
-            Game.world.position.y -= stepY * delta;
-        }
         counter += delta;
-        if (counter >= shakeAnimationTime) {
-            counter = 0;
-            shakeCounter++;
-        }
-        if (shakeCounter >= shakeCount) {
-            Game.app.ticker.remove(animation);
-            if (camera.animation === null) camera.center();
-        }
-    };
-
-    Game.shakeAnimation = animation;
-    Game.app.ticker.add(animation);
-}
-
-export function shakeDirectional(x, y, amplitude, animationTime) {
-    const stepX = x * amplitude / animationTime;
-    const stepY = y * amplitude / animationTime;
-    let counter = 0;
-
-    const animation = delta => {
-        if (Game.paused) return;
-        counter += delta;
-        if (counter < animationTime / 2) {
-            Game.world.position.x -= stepX * delta;
-            Game.world.position.y -= stepY * delta;
+        if (counter < shakeAnimationTime) {
+            Game.world.position.x -= offsetX;
+            Game.world.position.y -= offsetY;
+            offsetX = randomInt(-currentShakeAmplitude, currentShakeAmplitude);
+            offsetY = randomInt(-currentShakeAmplitude, currentShakeAmplitude);
+            Game.world.position.x += offsetX;
+            Game.world.position.y += offsetY;
+            currentShakeAmplitude = shakeAmplitude - easeOutQuad(counter / shakeAnimationTime);
         } else {
-            Game.world.position.x += stepX * delta;
-            Game.world.position.y += stepY * delta;
-        }
-        if (counter >= animationTime) {
+            Game.world.position.x -= offsetX;
+            Game.world.position.y -= offsetY;
             Game.app.ticker.remove(animation);
-            if (camera.animation === null) camera.center();
+            if (camera.animation === null) camera.center(); // just in case...
         }
     };
 
     Game.app.ticker.add(animation);
-}
-
-export function longShakeScreen() {
-    //shakeScreen(8, 1, 40);
 }
 
 export function createHeartAnimation(positionX, positionY, heartSize = Game.TILESIZE / 3, animationTime = 26, pound = false, poundTwice = false) {
@@ -740,7 +703,7 @@ export function createEmpyrealWrathAnimation(enemy) {
     const stayTime = 3;
     createPlayerAttackTile(enemy.tilePosition, strikeTime + stayTime);
     let counter = 0;
-    shakeScreen(2, 1, 10);
+    shakeScreen(6, 3);
     const animation = delta => {
         if (Game.paused) return;
         counter += delta;
