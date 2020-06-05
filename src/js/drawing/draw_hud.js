@@ -182,8 +182,18 @@ export function redrawSlotContents(player, slot) {
 
     function drawSprite() {
         const sprite = new PIXI.Sprite(item.texture);
+        const size = slotSize - slotContentSizeMargin;
         sprite.position.set(slotContentSizeMargin / 2, slotContentSizeMargin / 2);
-        sprite.width = sprite.height = slotSize - slotContentSizeMargin;
+        if (false && sprite.texture.trim) {
+            const mul = sprite.texture.trim.width > sprite.texture.trim.height ?
+                sprite.texture.width / sprite.texture.trim.width
+                : sprite.texture.height / sprite.texture.trim.height;
+            sprite.width = sprite.height = slotSize * mul - slotContentSizeMargin;
+            sprite.position.x -= (sprite.width - size) / 2;
+            sprite.position.y -= (sprite.height - size) / 2;
+        } else {
+            sprite.width = sprite.height = size;
+        }
         sprite.filters = [ITEM_OUTLINE_FILTER];
         container.sprite.addChild(sprite);
     }

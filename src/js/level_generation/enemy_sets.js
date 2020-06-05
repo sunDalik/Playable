@@ -85,7 +85,7 @@ export const FCEnemySets = [
     [Eel, Eel, Eel, DarkEel, DarkEel, PoisonEel],
     [Eel, Frog, Snail],
     [Frog, Frog, Star, Star],
-    [GraySpider, GraySpider, Snail, Snail],
+    [GraySpider, SpiderSmall, Snail, Snail],
     [Cocoon, Cocoon, Cocoon],
     [Cocoon],
     [Cocoon, Spider],

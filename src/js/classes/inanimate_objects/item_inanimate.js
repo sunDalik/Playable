@@ -3,10 +3,12 @@ import {ROLE} from "../../enums";
 import {Game} from "../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import * as PIXI from "pixi.js";
-import {HUDTextStyle} from "../../drawing/draw_constants";
+import {HUDTextStyle, slotContentSizeMargin, slotSize} from "../../drawing/draw_constants";
 import {createFloatingItemAnimation} from "../../animations";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
+
+const itemSize = Game.TILESIZE * 0.9;
 
 export class ItemInanimate extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -18,7 +20,7 @@ export class ItemInanimate extends TileElement {
         this.itemSprite = new PIXI.Sprite(item.texture);
         this.itemSprite.anchor.set(0.5, 0.5);
         this.itemSprite.position.set(this.position.x, this.position.y - offsetY);
-        this.itemSprite.width = this.itemSprite.height = Game.TILESIZE * 0.9;
+        this.recalculateSize();
         this.itemSprite.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
         this.itemSprite.visible = false;
         this.itemSprite.alpha = 0.35;
@@ -42,13 +44,24 @@ export class ItemInanimate extends TileElement {
     showItem(item) {
         this.itemSprite.alpha = this.textObj.alpha = 1;
         this.itemSprite.visible = this.textObj.visible = true;
-        this.itemSprite.width = this.itemSprite.height = Game.TILESIZE * 0.9; //not sure if necessary anymore
+        this.recalculateSize();
         this.itemSprite.texture = item.texture;
 
         this.textObj.text = item.name;
         this.textObj.style.fill = item.rarity.color;
         this.playAnimation();
         this.onUpdate();
+    }
+
+    recalculateSize() {
+        if (false && this.itemSprite.texture.trim) {
+            const mul = this.itemSprite.texture.trim.width > this.itemSprite.texture.trim.height ?
+                this.itemSprite.texture.width / this.itemSprite.texture.trim.width
+                : this.itemSprite.texture.height / this.itemSprite.texture.trim.height;
+            this.itemSprite.width = this.itemSprite.height = itemSize * mul;
+        } else {
+            this.itemSprite.width = this.itemSprite.height = itemSize;
+        }
     }
 
     hideItem() {
