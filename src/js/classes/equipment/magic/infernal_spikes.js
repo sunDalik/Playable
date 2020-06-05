@@ -16,9 +16,11 @@ export class InfernalSpikes extends VampireSpikes {
     }
 
     cast(wielder) {
-        if (super.cast(wielder)) {
+        const res = super.cast(wielder);
+        if (res) {
             shakeScreen(8, 5);
         }
+        return res;
     }
 
     createAttackAnimation(wielder) {

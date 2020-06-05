@@ -301,6 +301,7 @@ export function createFloatingItemAnimation(item, height = item.height) {
     return animation;
 }
 
+// makes about (shakeAnimationTime - 1) random shakes
 export function shakeScreen(shakeAmplitude = 12, shakeAnimationTime = 8) {
     let currentShakeAmplitude = shakeAmplitude;
     let offsetX = 0;
