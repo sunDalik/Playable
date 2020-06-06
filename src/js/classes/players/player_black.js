@@ -1,11 +1,11 @@
 import {Player} from "./player";
 import {Z_INDEXES} from "../../z_indexing";
 import {Knife} from "../equipment/weapons/knife";
-import {Game} from "../../game";
+import {CommonSpriteSheet} from "../../loader";
 
 //aka player 2
 export class BlackPlayer extends Player {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/player2.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = CommonSpriteSheet["player2.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.atkMul = 1;
         this.defMul = 0.5;

@@ -73,7 +73,7 @@ function createControlsButtonSet() {
     const buttonOffsetY = 10;
     const overallWidth = keyBindWidth * 2 + textWidth + buttonOffsetX * 2;
     const initialButtonOffsetX = Game.app.renderer.screen.width / 2 - overallWidth / 2;
-    const playerIconSize = 50;
+    const playerIconSize = 55;
     const playerIconOffsetY = 20;
     const initialButtonOffsetY = playerIconSize + playerIconOffsetY * 2;
     const bg = new PIXI.Graphics();
@@ -94,7 +94,9 @@ function createControlsButtonSet() {
         if (i === 0) {
             const player1 = new PIXI.Sprite(CommonSpriteSheet["player.png"]);
             const player2 = new PIXI.Sprite(CommonSpriteSheet["player2.png"]);
-            player1.width = player1.height = player2.width = player2.height = playerIconSize;
+            const scale = playerIconSize / Math.max(player1.width, player1.height);
+            player1.scale.set(scale, scale);
+            player2.scale.set(scale, scale);
             player1.position.x = keyBindP1.position.x + keyBindP1.width / 2 - player1.width / 2;
             player2.position.x = keyBindP2.position.x + keyBindP2.width / 2 - player2.width / 2;
             player1.position.y = player2.position.y = playerIconOffsetY;
@@ -187,7 +189,7 @@ function createControlsButtonSet() {
         else buttons[i].downButton = buttons[i % 2];
     }
 
-    return buttons
+    return buttons;
 }
 
 function setButtonClickHandlers() {

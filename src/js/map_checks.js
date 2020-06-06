@@ -33,7 +33,7 @@ export function isAnyWall(tilePosX, tilePosY, wallTrapIncluded = true, doorsIncl
 }
 
 export function isNotAWall(tilePosX, tilePosY, wallTrapsIncluded = true, doorsIncluded = true) {
-    return !isAnyWall(tilePosX, tilePosY, wallTrapsIncluded, doorsIncluded);
+    return isNotOutOfMap(tilePosX, tilePosY) && !isAnyWall(tilePosX, tilePosY, wallTrapsIncluded, doorsIncluded);
 }
 
 export function isDoor(tilePosX, tilePosY) {
