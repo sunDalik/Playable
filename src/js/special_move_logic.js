@@ -1,6 +1,7 @@
 import {isEmpty} from "./map_checks";
 import {Game} from "./game";
 
+//deprecated
 export function blowAwayInDirection(source, offset, slideTime = 5) {
     if (isEmpty(source.x + offset.x + Math.sign(offset.x), source.y + offset.y + Math.sign(offset.y))) {
         Game.map[source.y + offset.y][source.x + offset.x].entity.slide(Math.sign(offset.x), Math.sign(offset.y), null, null, slideTime);

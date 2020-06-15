@@ -69,6 +69,7 @@ function lightWorld(tileX, tileY, distance, crossEntries = false, sourceDirX = 0
                     if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) lightWorld(tileX, tileY - 1, distance - 1, crossEntries, sourceDirX, 1, false);
                     if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) lightWorld(tileX, tileY + 1, distance - 1, crossEntries, sourceDirX, -1, false);
                 }
+                //todo should be else????
                 if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorld(tileX, tileY - sourceDirY, distance - 1, crossEntries, sourceDirX, sourceDirY, false);
                 if (sourceDirX === 0) {
                     if (!litAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) lightWorld(tileX - 1, tileY, distance - 1, crossEntries, 1, sourceDirY, false);
@@ -165,6 +166,7 @@ export function darkenTile(tileX, tileY) {
 //const torchLightSprite = new PIXI.Sprite(PIXI.Texture.WHITE);
 const torchLightSprite = {};
 
+//todo dont cross entries!
 function lightWorldDT(tileX, tileY, distance, sourceDirX = 0, sourceDirY = 0) {
     if (distance > -1) {
         if (Game.map[tileY][tileX].tileType !== TILE_TYPE.WALL && Game.map[tileY][tileX].tileType !== TILE_TYPE.SUPER_WALL) {

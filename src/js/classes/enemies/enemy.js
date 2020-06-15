@@ -10,6 +10,7 @@ import {runDestroyAnimation} from "../../animations";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import {IntentsSpriteSheet} from "../../loader";
 import {removeObjectFromArray} from "../../utils/basic_utils";
+import {dropItem} from "../../game_logic";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -37,7 +38,7 @@ export class Enemy extends AnimatedTileElement {
         this.setOwnZIndex(Z_INDEXES.ENEMY);
     }
 
-    move(){}
+    move() {}
 
     correctZIndex() {
         super.correctZIndex();
@@ -142,23 +143,7 @@ export class Enemy extends AnimatedTileElement {
         }
 
         if (this.drop) {
-            if (Game.map[this.tilePosition.y][this.tilePosition.x].item === null) {
-                const item = new LyingItem(this.tilePosition.x, this.tilePosition.y, this.drop);
-                Game.map[this.tilePosition.y][this.tilePosition.x].item = item;
-                Game.world.addChild(item);
-            } else {
-                for (const dir of get8Directions()) {
-                    const posY = this.tilePosition.y + dir.y;
-                    const posX = this.tilePosition.x + dir.x;
-                    if (isNotAWall(posX, posY) && !isInanimate(posX, posY) && Game.map[posY][posX].item === null) {
-                        const item = new LyingItem(posX, posY, this.drop);
-                        Game.map[posY][posX].item = item;
-                        Game.world.addChild(item);
-                        break;
-                    }
-                    //else? what will we do if all 8 tiles are busy? think about it later...
-                }
-            }
+            dropItem(this.drop, this.tilePosition.x, this.tilePosition.y);
             this.drop = null;
         }
         runDestroyAnimation(this);

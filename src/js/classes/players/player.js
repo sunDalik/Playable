@@ -21,7 +21,7 @@ import {
     redrawSlotContentsForPlayer
 } from "../../drawing/draw_hud";
 import {amIInTheBossRoom, isInanimate, isRelativelyEmpty} from "../../map_checks";
-import {activateBossMode, gotoNextLevel, openDoors, updateInanimates} from "../../game_logic";
+import {activateBossMode, dropItem, gotoNextLevel, openDoors, updateInanimates} from "../../game_logic";
 import {lightPlayerPosition} from "../../drawing/lighting";
 import {LyingItem} from "../equipment/lying_item";
 import {randomChoice} from "../../utils/random_utils";
@@ -373,12 +373,9 @@ export class Player extends AnimatedTileElement {
         Game.followMode = false;
         updateChain();
         this.removeFromMap();
-        //doesn't drop sometimes???
         if (Game.stage === STAGE.DARK_TUNNEL) {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.TORCH) {
-                const item = new LyingItem(this.tilePosition.x, this.tilePosition.y, this.secondHand);
-                Game.world.addChild(item);
-                Game.map[this.tilePosition.y][this.tilePosition.x].item = item;
+                dropItem(this.secondHand);
                 this.secondHand = null;
             }
         }

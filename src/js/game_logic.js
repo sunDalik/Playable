@@ -17,15 +17,16 @@ import {removeAllChildrenFromContainer} from "./drawing/draw_utils";
 import {HUD} from "./drawing/hud_object";
 import {camera} from "./classes/game/camera";
 import {get8Directions, getCardinalDirections} from "./utils/map_utils";
-import {getPlayerOnTile} from "./map_checks";
+import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "./map_checks";
 import {ITEM_OUTLINE_FILTER} from "./filters";
 import {TileElement} from "./classes/tile_elements/tile_element";
-import {randomChoice} from "./utils/random_utils";
+import {randomChoice, randomShuffle} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
 import {completeAchievement, completeBeatStageAchievements} from "./achievements";
 import {Z_INDEXES} from "./z_indexing";
 import {SuperWallTile} from "./classes/draw/super_wall";
 import {CommonSpriteSheet} from "./loader";
+import {LyingItem} from "./classes/equipment/lying_item";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -462,4 +463,67 @@ export function deactivateBossMode() {
 
     lightPosition(Game.bossExit);
     camera.moveToCenter(15);
+}
+
+export function dropItem(item, tilePosX, tilePosY) {
+    const freeSpaceSearch = (tileX, tileY) => {
+        class Tile {
+            constructor(x, y, sourceDirX, sourceDirY) {
+                this.x = x;
+                this.y = y;
+                this.sourceDirX = sourceDirX;
+                this.sourceDirY = sourceDirY;
+            }
+        }
+
+        let currentTiles = [new Tile(tileX, tileY, 0, 0)];
+        const badTiles = [];
+
+        // stop searching if 12 tiles away. This is to prevent infinite recursion
+        for (let i = 0; i < 12; i++) {
+            const newTiles = [];
+
+            for (const tile of currentTiles) {
+                if (badTiles.some(t => t.x === tile.x && t.y === tile.y)) continue;
+                badTiles.push(tile);
+                if (isAnyWall(tile.x, tile.y)) continue;
+
+                if (isNotAWall(tile.x, tile.y) && !isInanimate(tile.x, tile.y) && Game.map[tile.y][tile.x].item === null) {
+                    return {x: tile.x, y: tile.y};
+                } else {
+                    if (tile.sourceDirX === 0 && tile.sourceDirY === 0) {
+                        newTiles.push(new Tile(tile.x + 1, tile.y, -1, 0));
+                        newTiles.push(new Tile(tile.x - 1, tile.y, 1, 0));
+                        newTiles.push(new Tile(tile.x, tile.y + 1, 0, -1));
+                        newTiles.push(new Tile(tile.x, tile.y - 1, 0, 1));
+                    } else {
+                        if (tile.sourceDirY === 0) {
+                            newTiles.push(new Tile(tile.x, tile.y - 1, tile.sourceDirX, 1));
+                            newTiles.push(new Tile(tile.x, tile.y + 1, tile.sourceDirX, -1));
+                        } else {
+                            newTiles.push(new Tile(tile.x, tile.y - tile.sourceDirY, tile.sourceDirX, tile.sourceDirY));
+                        }
+                        if (tile.sourceDirX === 0) {
+                            newTiles.push(new Tile(tile.x - 1, tile.y, 1, tile.sourceDirY));
+                            newTiles.push(new Tile(tile.x + 1, tile.y, -1, tile.sourceDirY));
+                        } else {
+                            newTiles.push(new Tile(tile.x - tile.sourceDirX, tile.y, tile.sourceDirX, tile.sourceDirY));
+                        }
+                    }
+                }
+            }
+
+            currentTiles = randomShuffle(newTiles);
+        }
+
+        return null;
+    };
+
+
+    const freeSpace = freeSpaceSearch(tilePosX, tilePosY);
+    if (freeSpace) {
+        const lyingItem = new LyingItem(freeSpace.x, freeSpace.y, item);
+        Game.map[freeSpace.y][freeSpace.x].item = lyingItem;
+        Game.world.addChild(lyingItem);
+    }
 }
