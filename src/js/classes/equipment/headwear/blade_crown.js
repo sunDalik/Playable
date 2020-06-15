@@ -7,6 +7,7 @@ import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile} from "../../../animations";
 import {HeadWearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
+import {Z_INDEXES} from "../../../z_indexing";
 
 export class BladeCrown extends Equipment {
     constructor() {
@@ -37,7 +38,7 @@ export class BladeCrown extends Equipment {
         const bladeSprite = new TileElement(HeadWearSpriteSheet["blade_crown_blade.png"], wielder.tilePosition.x, wielder.tilePosition.y);
         Game.world.addChild(bladeSprite);
         wielder.animationSubSprites.push(bladeSprite);
-        bladeSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+        bladeSprite.zIndex = wielder.zIndex + Z_INDEXES.PLAYER_PRIMARY - Z_INDEXES.PLAYER + 1;
         bladeSprite.scaleModifier = 1.3;
         bladeSprite.fitToTile();
         bladeSprite.anchor.set(0.5, 1.3);

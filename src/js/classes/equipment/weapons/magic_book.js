@@ -5,6 +5,7 @@ import {createFadingText} from "../../../animations";
 import {randomChoice} from "../../../utils/random_utils";
 import {TileElement} from "../../tile_elements/tile_element";
 import {Weapon} from "../weapon";
+import {Z_INDEXES} from "../../../z_indexing";
 
 export class MagicBook extends Weapon {
     constructor(texture) {
@@ -81,7 +82,7 @@ export class MagicBook extends Weapon {
         bookSprite.position.set(wielder.getTilePositionX() + offsetX * Game.TILESIZE, wielder.getTilePositionY());
         Game.world.addChild(bookSprite);
         wielder.animationSubSprites.push(bookSprite);
-        bookSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+        bookSprite.zIndex = wielder.zIndex + Z_INDEXES.PLAYER_PRIMARY - Z_INDEXES.PLAYER + 1;
         bookSprite.scaleModifier = 0.85;
         bookSprite.fitToTile();
         if (Math.sign(offsetX) === -1) bookSprite.scale.x *= -1;

@@ -30,7 +30,7 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
     weaponSprite.position.set(player.getTilePositionX() + playerOffsetX * Game.TILESIZE, player.getTilePositionY() + playerOffsetY * Game.TILESIZE);
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
-    weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+    weaponSprite.zIndex = player.zIndex + Z_INDEXES.PLAYER_PRIMARY - Z_INDEXES.PLAYER + 1;
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
     weaponSprite.anchor.set(0.5, 0.5);
@@ -84,7 +84,7 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
     weaponSprite.position.set(player.getTilePositionX(), player.getTilePositionY());
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
-    weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+    weaponSprite.zIndex = player.zIndex + Z_INDEXES.PLAYER_PRIMARY - Z_INDEXES.PLAYER + 1;
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
     weaponSprite.anchor.set(handleAnchor.x, handleAnchor.y);
@@ -127,7 +127,7 @@ export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationT
 
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
-    weaponSprite.zIndex = Game.primaryPlayer.zIndex + 1;
+    weaponSprite.zIndex = player.zIndex + Z_INDEXES.PLAYER_PRIMARY - Z_INDEXES.PLAYER + 1;
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
     weaponSprite.anchor.set(1, 1);

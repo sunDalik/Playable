@@ -131,7 +131,11 @@ export const WEAPON_TYPE = Object.freeze({
     BOOK_OF_THUNDERS: 14,
     BOOK_OF_WEBS: 15,
     BOOK_OF_ICE: 16,
-    DOUBLE_GLAIVE: 17
+    DOUBLE_GLAIVE: 17,
+    GOLDEN_DAGGER: 18,
+    BOOMERAXE: 19,
+    PRISMAXE: 20,
+    CERBERUS_BOW: 21
 });
 export const HEAD_TYPE = Object.freeze({
     WIZARD_HAT: 0,
