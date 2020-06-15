@@ -55,6 +55,7 @@ import {Thunderstorm} from "./classes/equipment/magic/thunderstorm";
 import {EmpyrealWrath} from "./classes/equipment/magic/empyreal_wrath";
 import {Escape} from "./classes/equipment/magic/escape";
 import {BronzeArmor} from "./classes/equipment/armor/bronze";
+import {WitchHat} from "./classes/equipment/headwear/witch_hat";
 
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
@@ -64,7 +65,7 @@ export function initPools() {
         Necromancy];
     Game.chestItemPool = [Pickaxe,
         Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
-        SeerCirclet, WizardHat, VampireCrown, BattleHelmet, BladeCrown,
+        WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, BladeCrown,
         LeatherArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,
         AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes,
         LifeFruit, HeartShapedKey];

@@ -7,8 +7,8 @@ export class VampireCrown extends Equipment {
     constructor() {
         super();
         this.texture = HeadWearSpriteSheet["vampire_crown.png"];
-        this.type = HEAD_TYPE.VAMPIRE_CROWN;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
+        this.type = HEAD_TYPE.VAMPIRE_CROWN;
         this.killsNeeded = 10;
         this.killsMade = 0;
         this.healAmount = 1;

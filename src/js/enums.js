@@ -138,7 +138,8 @@ export const HEAD_TYPE = Object.freeze({
     SEER_CIRCLET: 1,
     VAMPIRE_CROWN: 2,
     BATTLE_HELMET: 3,
-    BLADE_CROWN: 4
+    BLADE_CROWN: 4,
+    WITCH_HAT: 5
 });
 export const ARMOR_TYPE = Object.freeze({LEATHER: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4, BRONZE: 5});
 export const FOOTWEAR_TYPE = Object.freeze({ADVENTURER: 0, DAMAGING: 1, DARK: 2, OLD_BALLET_SHOES: 3});

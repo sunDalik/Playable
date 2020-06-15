@@ -12,8 +12,8 @@ export class BladeCrown extends Equipment {
     constructor() {
         super();
         this.texture = HeadWearSpriteSheet["blade_crown.png"];
-        this.type = HEAD_TYPE.BLADE_CROWN;
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
+        this.type = HEAD_TYPE.BLADE_CROWN;
         this.nonremoveable = true;
         this.bladeAtk = 1;
         this.name = "Blade Crown";
