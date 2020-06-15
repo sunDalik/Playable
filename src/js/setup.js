@@ -87,7 +87,6 @@ export function setupGame() {
     Game.app.stage.addChild(HUD);
     setupSuperHud();
     initPlayers();
-    drawHUD();
     bindKeys();
     window.addEventListener("resize", () => {
         drawHUD();
@@ -96,6 +95,7 @@ export function setupGame() {
     });
 
     initGameState();
+    drawHUD();
     initPools();
     initializeLevel();
     //test();

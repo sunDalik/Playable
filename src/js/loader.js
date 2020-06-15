@@ -4,7 +4,7 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
     ParanoidEelSpriteSheet, GotLSpriteSheet, IntentsSpriteSheet, InanimatesSpriteSheet,
     WeaponsSpriteSheet, AchievementsSpriteSheet, HUDSpriteSheet,
     BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
-    HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet;
+    HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet, OneTimeSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
@@ -14,9 +14,6 @@ export function loadAll(afterLoad) {
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
         .add("src/images/icons/obelisk_sacrifice.png")
-
-        .add("src/images/one_time/life_fruit.png")
-        .add("src/images/one_time/heart_shaped_key.png")
 
         .add("src/textures/common.json")
         .add("src/textures/effects.json")
@@ -36,6 +33,7 @@ export function loadAll(afterLoad) {
         .add("src/textures/footwear.json")
         .add("src/textures/headwear.json")
         .add("src/textures/bag.json")
+        .add("src/textures/one_time.json")
         .add("src/textures/inanimates.json")
         .add("src/textures/magic.json")
 
@@ -66,4 +64,5 @@ function setSpriteSheets() {
     BagSpriteSheet = Game.loader.resources["src/textures/bag.json"].textures;
     BulletsSpriteSheet = Game.loader.resources["src/textures/bullets.json"].textures;
     EffectsSpriteSheet = Game.loader.resources["src/textures/effects.json"].textures;
+    OneTimeSpriteSheet = Game.loader.resources["src/textures/one_time.json"].textures;
 }

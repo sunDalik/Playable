@@ -56,6 +56,7 @@ import {EmpyrealWrath} from "./classes/equipment/magic/empyreal_wrath";
 import {Escape} from "./classes/equipment/magic/escape";
 import {BronzeArmor} from "./classes/equipment/armor/bronze";
 import {WitchHat} from "./classes/equipment/headwear/witch_hat";
+import {VialOfIchor} from "./classes/equipment/one_time/vial_of_ichor";
 
 export function initPools() {
     Game.weaponPool = [Knife, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
@@ -68,7 +69,7 @@ export function initPools() {
         WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, BladeCrown,
         LeatherArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,
         AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes,
-        LifeFruit, HeartShapedKey];
+        LifeFruit, HeartShapedKey, VialOfIchor];
 }
 
 export function removeItemFromPool(item, pool) {
