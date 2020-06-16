@@ -61,6 +61,7 @@ import {GoldenDagger} from "./classes/equipment/weapons/golden_dagger";
 import {Boomeraxe} from "./classes/equipment/weapons/boomeraxe";
 import {Prismaxe} from "./classes/equipment/weapons/prismaxe";
 import {CerberusBow} from "./classes/equipment/weapons/cerberus_bow";
+import {FlaskOfFire} from "./classes/equipment/accessories/flask_of_fire";
 
 export function initPools() {
     Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
@@ -68,7 +69,9 @@ export function initPools() {
     Game.magicPool = [Light, SunBlessing, Wind, CrystalWind, CrystalGuardian, DefenseLink, Thunderstorm, EmpyrealWrath,
         Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape,
         Necromancy];
-    Game.chestItemPool = [Pickaxe,
+    //might want to remove pickaxe from the pool?
+    Game.chestItemPool = [FlaskOfFire,
+        Pickaxe,
         Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, BladeCrown,
         LeatherArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,
