@@ -59,10 +59,11 @@ import {WitchHat} from "./classes/equipment/headwear/witch_hat";
 import {VialOfIchor} from "./classes/equipment/one_time/vial_of_ichor";
 import {GoldenDagger} from "./classes/equipment/weapons/golden_dagger";
 import {Boomeraxe} from "./classes/equipment/weapons/boomeraxe";
+import {Prismaxe} from "./classes/equipment/weapons/prismaxe";
 
 export function initPools() {
     Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
-        PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce];
+        PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe];
     Game.magicPool = [Light, SunBlessing, Wind, CrystalWind, CrystalGuardian, DefenseLink, Thunderstorm, EmpyrealWrath,
         Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape,
         Necromancy];

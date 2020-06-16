@@ -85,7 +85,8 @@ export class Boomeraxe extends Weapon {
         let forceSwing = undefined;
         if (dirX === 1) forceSwing = 1;
         else if (dirX === -1) forceSwing = -1;
-        createWeaponAnimationSwing(player, this, dirX, dirY, 7, 100, 1, -15, {x: 0, y: 1}, forceSwing, 100, false);
+        const scaleMod = this.type === WEAPON_TYPE.PRISMAXE ? 1.2 : 1;
+        createWeaponAnimationSwing(player, this, dirX, dirY, 7, 100, scaleMod, -15, {x: 0, y: 1}, forceSwing, 100, false);
     }
 
     getAtk(wielder, range) {
