@@ -13,7 +13,7 @@ export class FlaskOfFire extends Equipment {
         this.equipmentType = EQUIPMENT_TYPE.ACCESSORY;
         this.type = ACCESSORY_TYPE.FLASK_OF_FIRE;
         this.name = "Flask of Fire";
-        this.description = "???????";
+        this.description = "Deal additional 0.5 damage whenever you attack with a non-magical weapon\nThis damage ignores your attack multiplier";
         this.rarity = RARITY.C;
     }
 
