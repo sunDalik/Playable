@@ -51,8 +51,7 @@ function generateSlotsContainer() {
     const container = new PIXI.Container();
     for (const slot of Object.values(SLOT)) {
         container[slot] = {}; //maybe should make it container too? dunno
-        //accessory is temporarily invisible
-        container[slot].invisible = slot === SLOT.BAG || slot === SLOT.ACCESSORY; //invisible slots don't appear on screen if there is no item
+        container[slot].invisible = slot === SLOT.BAG; //invisible slots don't appear on screen if there is no item
         container[slot].sprite = new PIXI.Container();
         container[slot].slot = new PIXI.Container();
         container[slot].meta = new PIXI.Container();

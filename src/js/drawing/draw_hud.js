@@ -106,8 +106,8 @@ export function redrawSlotsForPlayer(player) {
     //each array of slots is a ROW of slots
     const slots = [[createSlot("Magic", SLOT.MAGIC1), createSlot("Magic", SLOT.MAGIC2), createSlot("Magic", SLOT.MAGIC3)],
         [createSlot("Weapon", SLOT.WEAPON), createSlot("Extra", SLOT.EXTRA)],
-        [createSlot("Head", SLOT.HEADWEAR), createSlot("Bag", SLOT.BAG)], //change to accessory later and move bag down
-        [createSlot("Armor", SLOT.ARMOR)],
+        [createSlot("Head", SLOT.HEADWEAR), createSlot("Accessory", SLOT.ACCESSORY)],
+        [createSlot("Armor", SLOT.ARMOR), createSlot("Bag", SLOT.BAG)],
         [createSlot("Feet", SLOT.FOOTWEAR)]];
     if (player === Game.player2) {
         slots[2].reverse();
