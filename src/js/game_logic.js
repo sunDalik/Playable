@@ -302,6 +302,9 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
         case EQUIPMENT_TYPE.FOOT:
             slot = SLOT.FOOTWEAR;
             break;
+        case EQUIPMENT_TYPE.ACCESSORY:
+            slot = SLOT.ACCESSORY;
+            break;
         case EQUIPMENT_TYPE.BAG_ITEM:
             if (player.bag && player.bag.type === equipment.type) {
                 player.bag.amount += equipment.amount;
@@ -367,6 +370,9 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
             break;
         case EQUIPMENT_TYPE.FOOT:
             slot = SLOT.FOOTWEAR;
+            break;
+        case EQUIPMENT_TYPE.ACCESSORY:
+            slot = SLOT.ACCESSORY;
             break;
     }
     if (!slot || !player[slot]) return null;

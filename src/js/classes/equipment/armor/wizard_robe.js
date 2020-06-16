@@ -16,12 +16,14 @@ export class WizardRobe extends Equipment {
     }
 
     onWear(wielder) {
+        super.onWear(wielder);
         for (const eq of [wielder.magic1, wielder.magic2, wielder.magic3, wielder.weapon, wielder.secondHand]) {
             if (eq) this.upgradeMagicEquipment(wielder, eq);
         }
     }
 
     onTakeOff(wielder) {
+        super.onTakeOff(wielder);
         for (const eq of [wielder.magic1, wielder.magic2, wielder.magic3, wielder.weapon, wielder.secondHand]) {
             if (eq) {
                 const preserveUses = eq.equipmentType === EQUIPMENT_TYPE.WEAPON;

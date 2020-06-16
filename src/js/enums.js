@@ -151,6 +151,12 @@ export const SHIELD_TYPE = Object.freeze({GOLDEN: 0, STUNNING: 1, SPIKY: 2, BASI
 export const TOOL_TYPE = Object.freeze({TORCH: 0});
 export const BAG_ITEM_TYPE = Object.freeze({BOMB: 0, SMALL_HEALING_POTION: 1});
 export const ONE_TIME_ITEM_TYPE = Object.freeze({LIFE_FRUIT: 0, HEART_SHAPED_KEY: 1, VIAL_OF_ICHOR: 2});
+export const ACCESSORY_TYPE = Object.freeze({
+    FLASK_OF_FIRE: 0,
+    WEAPON_MASTER_EMBLEM: 1,
+    HERO_KEY: 2,
+    QUIVER_OF_THE_FOREST_SPIRIT: 3
+});
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
 
