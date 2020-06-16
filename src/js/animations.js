@@ -30,7 +30,7 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
     weaponSprite.position.set(player.getTilePositionX() + playerOffsetX * Game.TILESIZE, player.getTilePositionY() + playerOffsetY * Game.TILESIZE);
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
-    weaponSprite.zIndex = player.zIndex + Z_INDEXES.PLAYER_PRIMARY - Z_INDEXES.PLAYER + 1;
+    weaponSprite.zIndex = player.zIndex + 1;
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
     weaponSprite.anchor.set(0.5, 0.5);
@@ -79,12 +79,12 @@ export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, anim
 export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animationTime = 5, angleAmplitude = 90, scaleMod = 1.1, baseAngle = -135, handleAnchor = {
     x: 1,
     y: 1
-}, forceSwing = undefined, endAmplitude = angleAmplitude) {
+}, forceSwing = undefined, endAmplitude = angleAmplitude, bladeLookingLeft = true) {
     const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
     weaponSprite.position.set(player.getTilePositionX(), player.getTilePositionY());
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
-    weaponSprite.zIndex = player.zIndex + Z_INDEXES.PLAYER_PRIMARY - Z_INDEXES.PLAYER + 1;
+    weaponSprite.zIndex = player.zIndex + 1;
     weaponSprite.scaleModifier = scaleMod;
     weaponSprite.fitToTile();
     weaponSprite.anchor.set(handleAnchor.x, handleAnchor.y);
@@ -94,7 +94,7 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
     else if (dirY === 1) weaponSprite.angle = -baseAngle + 90 - angleAmplitude / 2 * swingDir;
     else if (dirY === -1) weaponSprite.angle = -baseAngle + 270 - angleAmplitude / 2 * swingDir;
 
-    if (swingDir === 1) {
+    if (swingDir === 1 && bladeLookingLeft || swingDir === -1 && !bladeLookingLeft) {
         weaponSprite.scale.x *= -1;
         weaponSprite.angle -= (-baseAngle - 90) * 2;
     }
@@ -121,15 +121,14 @@ export function createWeaponAnimationSwing(player, weapon, dirX, dirY, animation
 }
 
 // the picture is directed to the top left!
-export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationTime = 8, delay = 4, angleAmplitude = 90, scaleMod = 1.1, offset = 0, lookingRight = false) {
+export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationTime = 8, delay = 4, angleAmplitude = 90, scaleMod = 1, offset = 0, lookingRight = false) {
     const weaponSprite = new TileElement(weapon.texture, player.tilePosition.x, player.tilePosition.y);
     weaponSprite.position.set(player.getTilePositionX() + offset * Math.sign(dirX) * Game.TILESIZE, player.getTilePositionY() + offset * Math.sign(dirY) * Game.TILESIZE);
 
     Game.world.addChild(weaponSprite);
     player.animationSubSprites.push(weaponSprite);
-    weaponSprite.zIndex = player.zIndex + Z_INDEXES.PLAYER_PRIMARY - Z_INDEXES.PLAYER + 1;
-    weaponSprite.scaleModifier = scaleMod;
-    weaponSprite.fitToTile();
+    weaponSprite.zIndex = player.zIndex + 1;
+    weaponSprite.setScaleModifier(scaleMod);
     weaponSprite.anchor.set(1, 1);
     let baseAngle = 0;
     if (lookingRight) {
@@ -323,6 +322,7 @@ export function shakeScreen(shakeAmplitude = 12, shakeAnimationTime = 8) {
             Game.world.position.x -= offsetX;
             Game.world.position.y -= offsetY;
             Game.app.ticker.remove(animation);
+            //this might backstab later...
             if (camera.animation === null) camera.center(); // just in case...
         }
     };

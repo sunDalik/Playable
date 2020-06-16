@@ -16,7 +16,7 @@ export class GoldenDagger extends Weapon {
         this.type = WEAPON_TYPE.GOLDEN_DAGGER;
         this.atk = 1;
         this.name = "Golden Dagger";
-        this.description = "Attack 1, Range 1\nKilling an enemy with this weapon grants additional 30% chance to drop a healing potion, a bomb or a key";
+        this.description = "Attack 1, Range 1\nKilling an enemy with this weapon gives it additional 30% chance to drop a healing potion, a bomb or a key";
         this.rarity = RARITY.B;
     }
 

@@ -40,7 +40,6 @@ export const Game = {
     chestItemPool: [],
 
     TURNTIME: 15,
-    WEAPON_ATTACK_TIME: 6,
     ITEM_FLOAT_ANIMATION_TIME: 50,
     itemHelpAnimation: null,
     itemHelp: null,

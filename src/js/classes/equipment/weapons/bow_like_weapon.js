@@ -4,6 +4,7 @@ import {createPlayerAttackTile, runDestroyAnimation} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
+import {getAngleForDirection} from "../../../utils/game_utils";
 
 export class BowLikeWeapon extends Weapon {
     constructor(texture) {
@@ -37,7 +38,7 @@ export class BowLikeWeapon extends Weapon {
         Game.world.addChild(weaponSprite);
         wielder.animationSubSprites.push(weaponSprite);
         weaponSprite.zIndex = wielder.zIndex + 1;
-        weaponSprite.angle = this.getAngleForDir(0, Math.sign(atkOffsetX), Math.sign(atkOffsetY));
+        weaponSprite.angle = getAngleForDirection({x: Math.sign(atkOffsetX), y: Math.sign(atkOffsetY)}, 135);
 
         const arrowSprite = new TileElement(this.arrowTexture, wielder.tilePosition.x, wielder.tilePosition.y);
         arrowSprite.position.set(wielder.getTilePositionX(), wielder.getTilePositionY());
@@ -45,7 +46,7 @@ export class BowLikeWeapon extends Weapon {
         arrowSprite.zIndex = wielder.zIndex + 1;
         arrowSprite.scaleModifier = 0.8;
         arrowSprite.fitToTile();
-        arrowSprite.angle = this.getAngleForDir(0, Math.sign(atkOffsetX), Math.sign(atkOffsetY));
+        arrowSprite.angle = getAngleForDirection({x: Math.sign(atkOffsetX), y: Math.sign(atkOffsetY)}, 135);
         arrowSprite.tilePosition.set(wielder.tilePosition.x + atkOffsetX, wielder.tilePosition.y + atkOffsetY);
 
         const arrowAnimationTime = 2.5 * Math.max(Math.abs(atkOffsetX), Math.abs(atkOffsetY));
@@ -85,13 +86,5 @@ export class BowLikeWeapon extends Weapon {
 
     getAtk(wielder, range) {
         return wielder.getAtk(this);
-    }
-
-    //relative to upper left pointing position
-    getAngleForDir(baseAngle, dirX, dirY) {
-        if (dirX === 1) return baseAngle + 135;
-        else if (dirX === -1) return baseAngle - 45;
-        else if (dirY === 1) return baseAngle - 135;
-        else if (dirY === -1) return baseAngle + 45;
     }
 }
