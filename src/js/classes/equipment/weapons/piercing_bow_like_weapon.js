@@ -6,6 +6,7 @@ import {BowLikeWeapon} from "./bow_like_weapon";
 export class PiercingBowLikeWeapon extends BowLikeWeapon {
     constructor(texture) {
         super(texture);
+        this.piercingBow = true;
     }
 
     attack(wielder, dirX, dirY) {
@@ -36,7 +37,7 @@ export class PiercingBowLikeWeapon extends BowLikeWeapon {
                 createPlayerAttackTile({
                     x: wielder.tilePosition.x + dirX * range,
                     y: wielder.tilePosition.y + dirY * range
-                });
+                }, this.getArrowAnimationTime(range, 0) * 1.5 + 2);
             }
             return true;
         }

@@ -24,7 +24,6 @@ export class BowLikeWeapon extends Weapon {
                 const atk = this.getAtk(wielder, range);
                 Game.map[atkPos.y][atkPos.x].entity.damage(wielder, atk, dirX, dirY);
                 this.createBowAnimation(wielder, dirX * range, dirY * range);
-                createPlayerAttackTile(atkPos);
                 return true;
             }
         }
@@ -39,49 +38,67 @@ export class BowLikeWeapon extends Weapon {
         wielder.animationSubSprites.push(weaponSprite);
         weaponSprite.zIndex = wielder.zIndex + 1;
         weaponSprite.angle = getAngleForDirection({x: Math.sign(atkOffsetX), y: Math.sign(atkOffsetY)}, 135);
+        if (atkOffsetX > 0) {
+            weaponSprite.scale.x *= -1;
+            weaponSprite.angle -= 90;
+        }
 
+        this.createArrowAnimation(wielder, atkOffsetX, atkOffsetY);
+
+        const animationTime = 9;
+        let counter = 0;
+
+        const bowAnimation = delta => {
+            counter += delta;
+            if (counter >= animationTime) {
+                Game.world.removeChild(weaponSprite);
+                Game.app.ticker.remove(bowAnimation);
+            }
+        };
+
+        wielder.animation = bowAnimation;
+        Game.app.ticker.add(bowAnimation);
+    }
+
+    createArrowAnimation(wielder, atkOffsetX, atkOffsetY) {
         const arrowSprite = new TileElement(this.arrowTexture, wielder.tilePosition.x, wielder.tilePosition.y);
         arrowSprite.position.set(wielder.getTilePositionX(), wielder.getTilePositionY());
         Game.world.addChild(arrowSprite);
         arrowSprite.zIndex = wielder.zIndex + 1;
         arrowSprite.scaleModifier = 0.8;
         arrowSprite.fitToTile();
-        arrowSprite.angle = getAngleForDirection({x: Math.sign(atkOffsetX), y: Math.sign(atkOffsetY)}, 135);
+        arrowSprite.angle = getAngleForDirection({x: atkOffsetX, y: atkOffsetY}, 135);
         arrowSprite.tilePosition.set(wielder.tilePosition.x + atkOffsetX, wielder.tilePosition.y + atkOffsetY);
 
-        const arrowAnimationTime = 2.5 * Math.max(Math.abs(atkOffsetX), Math.abs(atkOffsetY));
+        const arrowAnimationTime = this.getArrowAnimationTime(atkOffsetX, atkOffsetY);
         const arrowDelay = 1;
-        const weaponAnimationTime = 9;
+        if (!this.piercingBow) {
+            createPlayerAttackTile({x: wielder.tilePosition.x + atkOffsetX, y: wielder.tilePosition.y + atkOffsetY},
+                arrowAnimationTime + arrowDelay + 2);
+        }
         const stepX = atkOffsetX * Game.TILESIZE / arrowAnimationTime;
         const stepY = atkOffsetY * Game.TILESIZE / arrowAnimationTime;
-        let counterB = 0;
-        let counterA = 0;
+        let counter = 0;
 
-        const bowAnimation = delta => {
-            counterB += delta;
-            if (counterB >= weaponAnimationTime) {
-                Game.world.removeChild(weaponSprite);
-                Game.app.ticker.remove(bowAnimation);
-            }
-        };
-
-        const arrowAnimation = delta => {
-            counterA += delta;
-            if (counterA < arrowAnimationTime) {
+        const animation = delta => {
+            counter += delta;
+            if (counter < arrowAnimationTime) {
                 arrowSprite.position.x += stepX * delta;
                 arrowSprite.position.y += stepY * delta;
             }
 
-            if (counterA >= arrowAnimationTime + arrowDelay) {
-                Game.app.ticker.remove(arrowAnimation);
+            if (counter >= arrowAnimationTime + arrowDelay) {
+                Game.app.ticker.remove(animation);
                 runDestroyAnimation(arrowSprite, false, 0, 0.6);
                 Game.world.removeChild(arrowSprite);
             }
         };
 
-        wielder.animation = bowAnimation;
-        Game.app.ticker.add(bowAnimation);
-        Game.app.ticker.add(arrowAnimation);
+        Game.app.ticker.add(animation);
+    }
+
+    getArrowAnimationTime(atkOffsetX, atkOffsetY) {
+        return 2.5 * Math.max(Math.abs(atkOffsetX), Math.abs(atkOffsetY));
     }
 
     getAtk(wielder, range) {

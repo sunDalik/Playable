@@ -16,4 +16,8 @@ export class Crossbow extends BowLikeWeapon {
     getAtk(wielder, range) {
         return wielder.getAtk(this);
     }
+
+    getArrowAnimationTime(atkOffsetX, atkOffsetY) {
+        return 2 * (Math.abs(atkOffsetX) + Math.abs(atkOffsetY));
+    }
 }

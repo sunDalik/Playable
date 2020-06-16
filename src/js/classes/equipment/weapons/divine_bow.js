@@ -17,4 +17,8 @@ export class DivineBow extends PiercingBowLikeWeapon {
     getAtk(wielder, range) {
         return wielder.getAtk(this);
     }
+
+    getArrowAnimationTime(atkOffsetX, atkOffsetY) {
+        return 1.5 * (Math.abs(atkOffsetX) + Math.abs(atkOffsetY));
+    }
 }
