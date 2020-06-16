@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ENEMY_TYPE, EQUIPMENT_TYPE, INANIMATE_TYPE, TOOL_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, EQUIPMENT_TYPE, INANIMATE_TYPE, TOOL_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {randomInt, randomChoice} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
@@ -433,8 +433,8 @@ export class GuardianOfTheLight extends Boss {
         this.patience.damage = randomInt(3, 4);
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
-        super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+        super.damage(source, dmg, inputX, inputY, damageType);
         if (inputX !== 0) {
             this.scale.x = -inputX * Math.abs(this.scale.x);
             this.dontChangeLook = true;

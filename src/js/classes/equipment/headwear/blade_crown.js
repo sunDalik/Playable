@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_TYPE, HEAD_TYPE, RARITY} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_TYPE, HEAD_TYPE, RARITY} from "../../../enums";
 import {TileElement} from "../../tile_elements/tile_element";
 import {randomChoice} from "../../../utils/random_utils";
 import {get8Directions} from "../../../utils/map_utils";
@@ -32,7 +32,7 @@ export class BladeCrown extends Equipment {
             createPlayerAttackTile(atkTile, 12, 0.5, 0xa67bbe);
         }
         for (const enemy of enemiesToAttack) {
-            enemy.damage(wielder, this.bladeAtk, dirX, dirY, true, false);
+            enemy.damage(wielder, this.bladeAtk, dirX, dirY, DAMAGE_TYPE.MAGICAL);
         }
 
         const bladeSprite = new TileElement(HeadWearSpriteSheet["blade_crown_blade.png"], wielder.tilePosition.x, wielder.tilePosition.y);

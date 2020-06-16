@@ -1,4 +1,4 @@
-import {MAGIC_ALIGNMENT, MAGIC_TYPE, ROLE} from "../../../enums";
+import {DAMAGE_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, ROLE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 import {Game} from "../../../game";
@@ -37,7 +37,7 @@ export class Thunderstorm extends Magic {
             if (randomTimeout === 0) createThunderAnimation(enemy);
             else setTickTimeout(() => createThunderAnimation(enemy), randomTimeout);
             enemy.stun++;
-            enemy.damage(wielder, wielder.getAtk(this), 0, 0, true);
+            enemy.damage(wielder, wielder.getAtk(this), 0, 0, DAMAGE_TYPE.MAGICAL);
             thundersAmount--;
         }
         if (vulnerableEnemies.length !== 0) this.uses--;

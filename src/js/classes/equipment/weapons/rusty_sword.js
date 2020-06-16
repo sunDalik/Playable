@@ -43,7 +43,7 @@ export class RustySword extends Weapon {
                 }
             }
             for (const enemy of enemiesToAttack) {
-                enemy.damage(wielder, atk, tileDirX, tileDirY, false);
+                enemy.damage(wielder, atk, tileDirX, tileDirY);
             }
             this.uses--;
             if (this.uses <= 0) this.texture = WeaponsSpriteSheet["rusty_sword_broken.png"];

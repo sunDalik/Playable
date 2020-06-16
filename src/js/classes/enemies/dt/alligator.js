@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../../enums";
 import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall} from "../../../map_checks";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
 import {getRandomValue, randomChoice} from "../../../utils/random_utils";
@@ -232,10 +232,10 @@ export class Alligator extends Enemy {
             this.currentTurnDelay--;
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
-        super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+        super.damage(source, dmg, inputX, inputY, damageType);
         if (!this.dead) {
-            if (!hazardDamage && (inputY !== 0 || inputX !== 0) && (!this.prey || this.prey.dead)) {
+            if (damageType !== DAMAGE_TYPE.HAZARDAL && (inputY !== 0 || inputX !== 0) && (!this.prey || this.prey.dead)) {
                 this.triggeredDirection = {x: -inputX, y: -inputY};
                 if (this.direction.x !== this.triggeredDirection.x || this.direction.y !== this.triggeredDirection.y) this.poisonCounter = 0;
                 this.direction = this.triggeredDirection;

@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ROLE, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, ROLE, STAGE} from "../../../enums";
 import {canBeFliedOverByBullet, getPlayerOnTile, isEnemy} from "../../../map_checks";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import * as PIXI from "pixi.js";
@@ -80,7 +80,7 @@ export class Bullet extends ShadowTileElement {
 
     attack(entity) {
         if (entity.role === ROLE.ENEMY) {
-            entity.damage(this, this.atk, 0, 0, false, true);
+            entity.damage(this, this.atk, 0, 0, DAMAGE_TYPE.HAZARDAL);
         } else if (entity.role === ROLE.PLAYER) {
             entity.damage(this.atk, this, false, true);
         }

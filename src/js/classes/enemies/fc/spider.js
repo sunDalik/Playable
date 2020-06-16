@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, STAGE} from "../../../enums";
 import {getPlayerOnTile, isEmpty} from "../../../map_checks";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
@@ -50,9 +50,9 @@ export class Spider extends Enemy {
         } else this.thrown = false;
     }
 
-    damage(source, dmg, inputX, inputY, magical = false, hazardDamage = false) {
-        super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
-        if (!this.dead && this.stun === 0 && !magical) this.throwAway(inputX, inputY);
+    damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL) {
+        super.damage(source, dmg, inputX, inputY, damageType);
+        if (!this.dead && this.stun === 0 && damageType !== DAMAGE_TYPE.MAGICAL && damageType !== DAMAGE_TYPE.HAZARDAL) this.throwAway(inputX, inputY);
         if (Game.afterTurn) {
             this.thrown = false;
         }

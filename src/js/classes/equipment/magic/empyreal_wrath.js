@@ -1,4 +1,4 @@
-import {MAGIC_TYPE, ROLE} from "../../../enums";
+import {DAMAGE_TYPE, MAGIC_TYPE, ROLE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Thunderstorm} from "./thunderstorm";
 import {Game} from "../../../game";
@@ -36,7 +36,7 @@ export class EmpyrealWrath extends Thunderstorm {
                 if (iteration === 1) enemy.stun += 3;
                 let atk = iteration === 1 ? this.atk : this.atk / 2;
                 atk = wielder.getAtk(this, atk);
-                enemy.damage(wielder, atk, 0, 0, true);
+                enemy.damage(wielder, atk, 0, 0, DAMAGE_TYPE.MAGICAL);
                 thundersAmount--;
             }
         }

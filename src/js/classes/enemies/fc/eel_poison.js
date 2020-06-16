@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Eel} from "./eel";
-import {ENEMY_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums";
 import {PoisonHazard} from "../../hazards/poison";
 import {getPlayerOnTile} from "../../../map_checks";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
@@ -31,10 +31,10 @@ export class PoisonEel extends Eel {
         } else super.move();
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
         const savedAngle = this.angle;
-        super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
-        if (!hazardDamage && !this.attackedLastTime) {
+        super.damage(source, dmg, inputX, inputY, damageType);
+        if (damageType !== DAMAGE_TYPE.HAZARDAL && !this.attackedLastTime) {
             if (this.turnDelay === 0) {
                 this.cancelAnimation();
                 this.angle = savedAngle;

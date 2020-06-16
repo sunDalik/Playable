@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {ENEMY_TYPE, HAZARD_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, HAZARD_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {
     getPlayerOnTile,
@@ -439,7 +439,7 @@ export class ParanoidEel extends Boss {
                     const hazard = Game.map[this.tilePosition.y][this.tilePosition.x].hazard;
                     if (hazard) {
                         if (hazard.type === HAZARD_TYPE.DARK_FIRE || hazard.type === HAZARD_TYPE.DARK_POISON) {
-                            this.damage(hazard, hazard.atk, 0, 0, false, true);
+                            this.damage(hazard, hazard.atk, 0, 0, DAMAGE_TYPE.HAZARDAL);
                         }
                     }
                 }
@@ -447,10 +447,10 @@ export class ParanoidEel extends Boss {
         }
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
-        super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+        super.damage(source, dmg, inputX, inputY, damageType);
         if (!this.dead) {
-            if (hazardDamage) return;
+            if (damageType === DAMAGE_TYPE.HAZARDAL) return;
             if (this.triggeredSpinAttack || this.triggeredVerticalRush || this.triggeredSneezeAttack || this.triggeredHorizontalRush) return;
             if ((this.direction.x !== -inputX || this.direction.y !== -inputY)
                 && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit) this.waitingToMove = true;

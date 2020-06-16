@@ -1,6 +1,6 @@
 import {Game} from "../../../game"
 import {Enemy} from "../enemy"
-import {ENEMY_TYPE, PLANE, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, PLANE, STAGE} from "../../../enums";
 import {randomChoice} from "../../../utils/random_utils";
 import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../../map_checks";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
@@ -226,17 +226,17 @@ export class WallSlime extends Enemy {
         return true;
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
         if (this.baseSlime) {
             if (dmg >= this.baseSlime.health) {
                 this.baseSlime.health = this.baseSlime.maxHealth;
-                super.damage(source, this.health, inputX, inputY, magical, hazardDamage);
+                super.damage(source, this.health, inputX, inputY, damageType);
                 this.baseSlime.divide(this);
             } else {
-                this.baseSlime.damage(source, dmg, inputX, inputY, magical, hazardDamage);
+                this.baseSlime.damage(source, dmg, inputX, inputY, damageType);
             }
         } else {
-            super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
+            super.damage(source, dmg, inputX, inputY, damageType);
             for (const slime of this.subSlimes) {
                 slime.runHitAnimation();
             }

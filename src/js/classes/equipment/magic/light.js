@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
-import {MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, STAGE} from "../../../enums";
 import {getPlayerOnTile, isEnemy, isNotAWall, isObelisk} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
@@ -33,7 +33,7 @@ export class Light extends Magic {
                     if (Game.stage === STAGE.DARK_TUNNEL) attackSprite.maskLayer = {};
                     createFadingAttack(attackSprite);
                     if (isEnemy(attackPositionX, attackPositionY)) {
-                        Game.map[attackPositionY][attackPositionX].entity.damage(wielder, wielder.getAtk(this), 0, 0, true);
+                        Game.map[attackPositionY][attackPositionX].entity.damage(wielder, wielder.getAtk(this), 0, 0, DAMAGE_TYPE.MAGICAL);
                     } else if (isObelisk(attackPositionX, attackPositionY)) {
                         Game.map[attackPositionY][attackPositionX].entity.damage();
                     }

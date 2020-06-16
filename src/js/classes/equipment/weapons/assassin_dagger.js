@@ -33,7 +33,7 @@ export class AssassinDagger extends Weapon {
                 createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4, 35, 1);
             }
             createPlayerAttackTile({x: attackTileX, y: attackTileY});
-            Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY, false);
+            Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY);
             return true;
         } else return false;
 

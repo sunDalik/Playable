@@ -23,7 +23,7 @@ export class Pickaxe extends Weapon{
             const atk = wielder.getAtk(this);
             createWeaponAnimationClub(wielder, this, dirX, dirY, 8, 3, 90, 1);
             createPlayerAttackTile(attackTile);
-            Game.map[attackTile.y][attackTile.x].entity.damage(wielder, atk, dirX, dirY, false);
+            Game.map[attackTile.y][attackTile.x].entity.damage(wielder, atk, dirX, dirY);
             return true;
         } else return false;
     }

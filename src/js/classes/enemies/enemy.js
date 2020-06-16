@@ -1,11 +1,8 @@
 import {Game} from "../../game";
 import * as PIXI from "pixi.js";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
-import {HAZARD_TYPE, ROLE, STAGE} from "../../enums";
+import {DAMAGE_TYPE, HAZARD_TYPE, ROLE, STAGE} from "../../enums";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
-import {LyingItem} from "../equipment/lying_item";
-import {get8Directions} from "../../utils/map_utils";
-import {isInanimate, isNotAWall} from "../../map_checks";
 import {runDestroyAnimation} from "../../animations";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import {IntentsSpriteSheet} from "../../loader";
@@ -62,7 +59,7 @@ export class Enemy extends AnimatedTileElement {
         }
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
         if (dmg === 0) return;
         if (!this.dead) {
             this.health -= dmg;
@@ -80,11 +77,11 @@ export class Enemy extends AnimatedTileElement {
         const hazard = Game.map[this.tilePosition.y][this.tilePosition.x].hazard;
         if (hazard) {
             if (hazard.type === HAZARD_TYPE.POISON && this.poisonImmunity <= 0) {
-                this.damage(hazard, hazard.atk, 0, 0, false, true);
+                this.damage(hazard, hazard.atk, 0, 0, DAMAGE_TYPE.HAZARDAL);
             } else if (hazard.type === HAZARD_TYPE.FIRE && this.fireImmunity <= 0) {
-                this.damage(hazard, hazard.atk, 0, 0, false, true);
+                this.damage(hazard, hazard.atk, 0, 0, DAMAGE_TYPE.HAZARDAL);
             } else if (hazard.type === HAZARD_TYPE.DARK_FIRE || hazard.type === HAZARD_TYPE.DARK_POISON) {
-                this.damage(hazard, hazard.atk, 0, 0, false, true);
+                this.damage(hazard, hazard.atk, 0, 0, DAMAGE_TYPE.HAZARDAL);
             }
         }
     }

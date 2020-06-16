@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {RARITY, STAGE, WEAPON_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, RARITY, STAGE, WEAPON_TYPE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
@@ -71,7 +71,7 @@ export class BookOfFlames extends MagicBook {
             }
 
             for (const enemy of enemiesToAttack) {
-                enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, this.magical);
+                enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL);
             }
             this.uses--;
             this.updateTexture(wielder);

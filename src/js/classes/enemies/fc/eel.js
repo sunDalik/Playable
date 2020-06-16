@@ -1,6 +1,6 @@
 import {Game} from "../../../game"
 import {Enemy} from "../enemy"
-import {ENEMY_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums";
 import {getPlayerOnTile, isRelativelyEmpty} from "../../../map_checks";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
@@ -70,9 +70,9 @@ export class Eel extends Enemy {
         } else this.turnAround();
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, magical = false, hazardDamage = false) {
-        super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
-        if (!this.dead && !hazardDamage) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+        super.damage(source, dmg, inputX, inputY, damageType);
+        if (!this.dead && damageType !== DAMAGE_TYPE.HAZARDAL) {
             if (inputX !== 0) {
                 if (inputX > 0) {
                     this.rotateByAngleMinimal(90 - this.inMemoryAngle);

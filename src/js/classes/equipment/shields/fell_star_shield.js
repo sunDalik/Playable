@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {EQUIPMENT_TYPE, RARITY, SHIELD_TYPE, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_TYPE, RARITY, SHIELD_TYPE, STAGE} from "../../../enums";
 import {isAnyWall, isEnemy, isObelisk} from "../../../map_checks";
 import {TileElement} from "../../tile_elements/tile_element";
 import * as PIXI from "pixi.js";
@@ -44,7 +44,7 @@ export class FellStarShield extends AbstractShield {
             if (Game.stage === STAGE.DARK_TUNNEL) attackSprite.maskLayer = {};
             createFadingAttack(attackSprite);
             if (isEnemy(x, y)) {
-                Game.map[y][x].entity.damage(wielder, this.shieldAtk, 0, 0, true, false);
+                Game.map[y][x].entity.damage(wielder, this.shieldAtk, 0, 0, DAMAGE_TYPE.MAGICAL);
             } else if (isObelisk(x, y)) {
                 Game.map[y][x].entity.destroy();
             }

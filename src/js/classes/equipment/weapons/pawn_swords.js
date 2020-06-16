@@ -42,7 +42,7 @@ export class PawnSwords extends Weapon {
 
         const atk = wielder.getAtk(this);
         for (const enemy of enemiesToAttack) {
-            enemy.damage(wielder, atk, tileDirX, tileDirY, false, false);
+            enemy.damage(wielder, atk, tileDirX, tileDirY);
         }
         return true;
     }

@@ -47,7 +47,7 @@ export class Scythe extends Weapon {
                 }
             }
             for (const enemy of enemiesToAttack) {
-                enemy.damage(wielder, atk, tileDirX, tileDirY, false);
+                enemy.damage(wielder, atk, tileDirX, tileDirY);
             }
             createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, 180, 1.2, -108);
             return true;

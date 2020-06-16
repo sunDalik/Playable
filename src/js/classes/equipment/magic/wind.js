@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
 import {isBullet, isEmpty, isEnemy, isNotOutOfMap} from "../../../map_checks";
 import {EffectsSpriteSheet, MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
@@ -80,7 +80,7 @@ export class Wind extends Magic {
                             } else {
                                 enemy.slide(newTilePosition.x - enemy.tilePosition.x, newTilePosition.y - enemy.tilePosition.y, null, () => {
                                     enemy.slideBump(direction.x, direction.y, null, null, this.slideTime);
-                                    enemy.damage(wielder, wielder.getAtk(this), direction.x, direction.y, true);
+                                    enemy.damage(wielder, wielder.getAtk(this), direction.x, direction.y, DAMAGE_TYPE.MAGICAL);
                                 }, animationTime);
                             }
                         }

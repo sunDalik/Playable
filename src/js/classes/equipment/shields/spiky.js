@@ -17,7 +17,7 @@ export class SpikyShield extends AbstractShield {
 
     onBlock(source, wielder, directHit) {
         if (directHit) {
-            source.damage(wielder, this.shieldAtk, 0, 0, false);
+            source.damage(wielder, this.shieldAtk, 0, 0);
         }
     }
 }

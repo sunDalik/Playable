@@ -158,6 +158,12 @@ export const ACCESSORY_TYPE = Object.freeze({
     QUIVER_OF_THE_FOREST_SPIRIT: 3
 });
 
+export const DAMAGE_TYPE = Object.freeze({
+    PHYSICAL: 0,
+    MAGICAL: 1,
+    HAZARDAL: 2
+});
+
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
 
 export const PLANE = Object.freeze({HORIZONTAL: 0, VERTICAL: 1});

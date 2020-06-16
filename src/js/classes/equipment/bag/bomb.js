@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {BAG_ITEM_TYPE, RARITY} from "../../../enums";
+import {BAG_ITEM_TYPE, DAMAGE_TYPE, RARITY} from "../../../enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {get8Directions} from "../../../utils/map_utils";
 import {createFadingAttack, shakeScreen} from "../../../animations";
@@ -42,7 +42,7 @@ export class Bomb extends BagEquipment {
                 const sprite = new TileElement(PIXI.Texture.WHITE, posX, posY, true);
                 sprite.tint = 0xfa794d;
                 if (isEnemy(posX, posY)) {
-                    Game.map[posY][posX].entity.damage(this, this.bombAtk, 0, 0, false, true);
+                    Game.map[posY][posX].entity.damage(this, this.bombAtk, 0, 0, DAMAGE_TYPE.HAZARDAL);
                 }
                 if (isWallTrap(posX, posY)) {
                     Game.map[posY][posX].entity.die(this);

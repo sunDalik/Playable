@@ -1,5 +1,5 @@
 import {Spider} from "../fc/spider";
-import {ENEMY_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums";
 import {isEmpty, isNotAWall} from "../../../map_checks";
 import {DTEnemiesSpriteSheet} from "../../../loader";
 
@@ -20,9 +20,9 @@ export class RedSpider extends Spider {
         super.move();
     }
 
-    damage(source, dmg, inputX, inputY, magical, hazardDamage = false) {
-        if (this.damageable || magical || hazardDamage) {
-            super.damage(source, dmg, inputX, inputY, magical, hazardDamage);
+    damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL) {
+        if (this.damageable || damageType === DAMAGE_TYPE.MAGICAL || damageType === DAMAGE_TYPE.HAZARDAL) {
+            super.damage(source, dmg, inputX, inputY, damageType);
         } else {
             if (this.devilJump(source, inputX, inputY)) {
                 this.devilJumped = true;

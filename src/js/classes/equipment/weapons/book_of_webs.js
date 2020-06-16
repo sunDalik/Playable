@@ -1,4 +1,4 @@
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
@@ -34,7 +34,7 @@ export class BookOfWebs extends MagicBook {
         }
         if (enemies.length === 0) return false;
         for (const enemy of enemies) {
-            enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, this.magical);
+            enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL);
         }
         for (const tile of tiles) {
             const timeout = tileDistance(wielder, {tilePosition: {x: tile.x, y: tile.y}}) - 1;

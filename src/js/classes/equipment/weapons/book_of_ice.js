@@ -1,4 +1,4 @@
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
@@ -27,7 +27,7 @@ export class BookOfIce extends MagicBook {
         if (enemy === null) return false;
         const tile = {x: enemy.tilePosition.x, y: enemy.tilePosition.y};
         this.shootIceBolt(wielder, tile, enemy);
-        enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, this.magical);
+        enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL);
         enemy.stun += 4;
         this.uses--;
         this.updateTexture(wielder);
