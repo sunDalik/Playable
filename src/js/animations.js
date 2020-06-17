@@ -461,7 +461,7 @@ export function showHelpBox(item) {
 
     const animation = (delta) => {
         if (Game.paused) return;
-        if (counter < slideTime || Game.turns >= initTurns + stayTurns) {
+        if (counter < slideTime || Game.turns >= initTurns + stayTurns || Game.turns < initTurns) {
             counter += delta;
         }
         if (Game.itemHelp === null) {
