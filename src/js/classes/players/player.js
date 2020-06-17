@@ -242,6 +242,7 @@ export class Player extends AnimatedTileElement {
     }
 
     pickUpItems() {
+        if (this.dead) return;
         if (Game.map[this.tilePosition.y][this.tilePosition.x].item) {
             Game.map[this.tilePosition.y][this.tilePosition.x].item.pickUp(this);
         }
@@ -378,6 +379,7 @@ export class Player extends AnimatedTileElement {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.TORCH) {
                 dropItem(this.secondHand, this.tilePosition.x, this.tilePosition.y);
                 this.secondHand = null;
+
             }
         }
         camera.moveToCenter(this.STEP_ANIMATION_TIME);
