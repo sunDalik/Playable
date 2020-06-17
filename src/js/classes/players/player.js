@@ -376,7 +376,7 @@ export class Player extends AnimatedTileElement {
         this.removeFromMap();
         if (Game.stage === STAGE.DARK_TUNNEL) {
             if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.TORCH) {
-                dropItem(this.secondHand);
+                dropItem(this.secondHand, this.tilePosition.x, this.tilePosition.y);
                 this.secondHand = null;
             }
         }
