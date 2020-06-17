@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js"
+import * as PIXI from "pixi.js";
 import {SLOT} from "../enums";
 
 export const HUD = new PIXI.Container();
@@ -55,7 +55,7 @@ function generateSlotsContainer() {
         container[slot].sprite = new PIXI.Container();
         container[slot].slot = new PIXI.Container();
         container[slot].meta = new PIXI.Container();
-        container.addChild(container[slot].sprite, container[slot].slot, container[slot].meta)
+        container.addChild(container[slot].sprite, container[slot].slot, container[slot].meta);
     }
     return container;
 }

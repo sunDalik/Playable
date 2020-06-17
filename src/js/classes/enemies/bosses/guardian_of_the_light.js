@@ -1,7 +1,7 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {DAMAGE_TYPE, ENEMY_TYPE, EQUIPMENT_TYPE, INANIMATE_TYPE, TOOL_TYPE} from "../../../enums";
 import {Boss} from "./boss";
-import {randomInt, randomChoice} from "../../../utils/random_utils";
+import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
 import {getChasingDirections} from "../../../utils/map_utils";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
@@ -400,12 +400,12 @@ export class GuardianOfTheLight extends Boss {
             if (location.x !== oldLocation.x && location.y !== oldLocation.y) {
                 if (Math.abs(location.x - oldLocation.x) === Math.abs(location.y - oldLocation.y)) {
                     if (Math.random() < 0.5) oldLocation.x += Math.sign(location.x - oldLocation.x);
-                    else oldLocation.y += Math.sign(location.y - oldLocation.y)
+                    else oldLocation.y += Math.sign(location.y - oldLocation.y);
                 } else if (Math.abs(location.x - oldLocation.x) > Math.abs(location.y - oldLocation.y)) oldLocation.x += Math.sign(location.x - oldLocation.x);
                 else oldLocation.y += Math.sign(location.y - oldLocation.y);
             } else {
                 if (location.x !== oldLocation.x) oldLocation.x += Math.sign(location.x - oldLocation.x);
-                else oldLocation.y += Math.sign(location.y - oldLocation.y)
+                else oldLocation.y += Math.sign(location.y - oldLocation.y);
             }
         }
     }
@@ -482,8 +482,8 @@ export class GuardianOfTheLight extends Boss {
             Game.bullets[i].die();
         }
 
-        const torchX = Game.endRoomBoundaries[0].x + Math.floor((Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x) / 2);
-        const torchY = Game.endRoomBoundaries[0].y + Math.floor((Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y) / 2);
+        const torchX = Game.endRoomBoundaries[0].x + Math.floor((Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x + 1) / 2);
+        const torchY = Game.endRoomBoundaries[0].y + Math.floor((Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y + 1) / 2);
         const torch = new LyingItem(torchX, torchY, new Torch());
         Game.map[torchY][torchX].item = torch;
         Game.world.addChild(torch);
@@ -500,22 +500,22 @@ export class GuardianOfTheLight extends Boss {
         const positions = [];
         if (room.height >= 11) {
             positions.push({x: this.tilePosition.x, y: this.tilePosition.y - 3},
-                {x: this.tilePosition.x, y: this.tilePosition.y + 3})
+                {x: this.tilePosition.x, y: this.tilePosition.y + 3});
         } else if (room.height >= 9) {
             positions.push({x: this.tilePosition.x, y: this.tilePosition.y - 2},
-                {x: this.tilePosition.x, y: this.tilePosition.y + 2})
+                {x: this.tilePosition.x, y: this.tilePosition.y + 2});
         } else {
-            positions.push({x: this.tilePosition.x, y: this.tilePosition.y + randomChoice([-1, 1])})
+            positions.push({x: this.tilePosition.x, y: this.tilePosition.y + randomChoice([-1, 1])});
         }
 
         if (room.width >= 11) {
             positions.push({x: this.tilePosition.x - 3, y: this.tilePosition.y},
-                {x: this.tilePosition.x + 3, y: this.tilePosition.y})
+                {x: this.tilePosition.x + 3, y: this.tilePosition.y});
         } else if (room.width >= 9) {
             positions.push({x: this.tilePosition.x - 2, y: this.tilePosition.y},
-                {x: this.tilePosition.x + 2, y: this.tilePosition.y})
+                {x: this.tilePosition.x + 2, y: this.tilePosition.y});
         } else {
-            positions.push({x: this.tilePosition.x + randomChoice([-1, 1]), y: this.tilePosition.y})
+            positions.push({x: this.tilePosition.x + randomChoice([-1, 1]), y: this.tilePosition.y});
         }
 
         for (const pos of positions) {

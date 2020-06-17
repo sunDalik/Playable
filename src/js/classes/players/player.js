@@ -23,7 +23,6 @@ import {
 import {amIInTheBossRoom, isInanimate, isRelativelyEmpty} from "../../map_checks";
 import {activateBossMode, dropItem, gotoNextLevel, openDoors, updateInanimates} from "../../game_logic";
 import {lightPlayerPosition} from "../../drawing/lighting";
-import {LyingItem} from "../equipment/lying_item";
 import {randomChoice} from "../../utils/random_utils";
 import {otherPlayer, setTickTimeout, tileDistance} from "../../utils/game_utils";
 import {camera} from "../game/camera";
