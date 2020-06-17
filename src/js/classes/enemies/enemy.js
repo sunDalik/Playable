@@ -123,12 +123,12 @@ export class Enemy extends AnimatedTileElement {
         if (this.dead) return;
         if (source === Game.player || source === Game.BOTH_PLAYERS) {
             for (const eq of Game.player.getEquipment()) {
-                if (eq && eq.onKill) eq.onKill(Game.player);
+                if (eq && eq.onKill) eq.onKill(Game.player, this);
             }
         }
         if (source === Game.player2 || source === Game.BOTH_PLAYERS) {
             for (const eq of Game.player2.getEquipment()) {
-                if (eq && eq.onKill) eq.onKill(Game.player2);
+                if (eq && eq.onKill) eq.onKill(Game.player2, this);
             }
         }
         this.dead = true;

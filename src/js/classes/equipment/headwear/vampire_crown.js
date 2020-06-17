@@ -17,12 +17,14 @@ export class VampireCrown extends Equipment {
         this.rarity = RARITY.B;
     }
 
-    onKill(player) {
-        this.killsMade++;
-        if (this.killsMade >= this.killsNeeded) {
-            player.heal(this.healAmount);
-            this.killsMade = 0;
+    onKill(player, enemy) {
+        if (!enemy.isMinion) {
+            this.killsMade++;
+            if (this.killsMade >= this.killsNeeded) {
+                player.heal(this.healAmount);
+                this.killsMade = 0;
+            }
+            redrawSlotContents(player, SLOT.HEADWEAR);
         }
-        redrawSlotContents(player, SLOT.HEADWEAR);
     }
 }

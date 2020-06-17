@@ -60,7 +60,7 @@ export class Equipment {
     afterAttack(wielder, dirX, dirY) {}
 
     //executes whenever wielder kills an enemy
-    onKill(wielder) {}
+    onKill(wielder, enemy) {}
 
     //executes when the wielder dies
     onDeath(wielder) {}
