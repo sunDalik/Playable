@@ -12,7 +12,7 @@ export class MaidenDagger extends Weapon {
         this.type = WEAPON_TYPE.MAIDEN_DAGGER;
         this.atk = 1.25;
         this.name = "Maiden's Dagger";
-        this.description = "Attack 1.25\nIf you wield two of these, it attacks 3 enemies in front of you, moves you and deals 2 damage to the middle enemy";
+        this.description = "Attack 1.25\nIf you wield two of these, it attacks 3 enemies in front of you, moves you and deals 2.5 damage to the middle enemy";
         this.rarity = RARITY.B;
     }
 
@@ -24,7 +24,7 @@ export class MaidenDagger extends Weapon {
         if (wielder.secondHand && wielder.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && wielder.secondHand.type === this.type) {
             const ATStepX = tileDirX === 0 ? 1 : 0;
             const ATStepY = tileDirY === 0 ? 1 : 0;
-            const enemyDmgValues = [1, 2, 1];
+            const enemyDmgValues = [1.25, 2.5, 1.25];
             const playerStepPosition = {x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y + tileDirY};
             const atkPositions = [
                 {x: wielder.tilePosition.x + tileDirX - ATStepX, y: wielder.tilePosition.y + tileDirY - ATStepY},
