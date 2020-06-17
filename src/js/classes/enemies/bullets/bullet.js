@@ -1,14 +1,14 @@
-import {Game} from "../../../game"
+import {Game} from "../../../game";
 import {DAMAGE_TYPE, ROLE, STAGE} from "../../../enums";
 import {canBeFliedOverByBullet, getPlayerOnTile, isEnemy} from "../../../map_checks";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import * as PIXI from "pixi.js";
 import {IntentsSpriteSheet} from "../../../loader";
 import {Z_INDEXES} from "../../../z_indexing";
-import {ShadowTileElement} from "../../tile_elements/shadow_tile_element";
 import {getAngleForDirection} from "../../../utils/game_utils";
+import {TileElement} from "../../tile_elements/tile_element";
 
-export class Bullet extends ShadowTileElement {
+export class Bullet extends TileElement {
     constructor(texture, tilePositionX, tilePositionY, pattern) {
         super(texture, tilePositionX, tilePositionY);
         this.pattern = pattern;
@@ -72,7 +72,6 @@ export class Bullet extends ShadowTileElement {
 
     removeFromWorld() {
         Game.world.removeChild(this);
-        Game.world.removeChild(this.shadow);
         if (this.maskLayer && Game.stage === STAGE.DARK_TUNNEL) {
             Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
         }

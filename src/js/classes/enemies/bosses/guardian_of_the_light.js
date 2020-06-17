@@ -137,7 +137,6 @@ export class GuardianOfTheLight extends Boss {
             if (bullet.delay <= 0) {
                 bullet.delay = 1;
                 Game.world.addBullet(bullet);
-                Game.world.addChild(bullet.shadow);
                 removeObjectFromArray(bullet, this.bulletQueue);
             }
         }
@@ -467,7 +466,6 @@ export class GuardianOfTheLight extends Boss {
         this.createWarningBullet(tilePosX, tilePosY, pattern);
         for (let n = 1; n <= amount; n++) {
             const bullet = new ElectricBullet(tilePosX, tilePosY, pattern);
-            Game.world.removeChild(bullet.shadow);
             bullet.delay = n;
             this.bulletQueue.push(bullet);
         }
