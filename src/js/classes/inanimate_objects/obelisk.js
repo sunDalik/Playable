@@ -165,7 +165,7 @@ export class Obelisk extends TileElement {
             this.grails[2].setMagic(null);
             this.grails[3].setMagic(null);
             for (const enemy of Game.enemies) {
-                if (enemy.dead) {
+                if (enemy.dead && !enemy.boss) {
                     enemy.revive();
                     enemy.stun = 2;
                 } else enemy.atk += 0.25;
