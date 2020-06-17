@@ -54,12 +54,13 @@ export class Escape extends Magic {
                     tileDistance({tilePosition: {x: tile.x, y: tile.y}}, otherPlayer(wielder)));
             this.createSmokeAnimation(wielder.tilePosition.x, wielder.tilePosition.y);
             wielder.setTilePosition(tile.x, tile.y);
+            lightPlayerPosition(wielder);
             if (!otherPlayer(wielder).dead) {
                 this.createSmokeAnimation(otherPlayer(wielder).tilePosition.x, otherPlayer(wielder).tilePosition.y);
                 otherPlayer(wielder).setTilePosition(tile.x, tile.y);
+                lightPlayerPosition(otherPlayer(wielder));
             }
             this.createSmokeAnimation(tile.x, tile.y);
-            lightPlayerPosition(wielder);
             camera.moveToCenter(cameraTime);
             }
         this.uses--;
