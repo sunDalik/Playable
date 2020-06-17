@@ -146,7 +146,13 @@ export const HEAD_TYPE = Object.freeze({
     WITCH_HAT: 5
 });
 export const ARMOR_TYPE = Object.freeze({LEATHER: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4, BRONZE: 5});
-export const FOOTWEAR_TYPE = Object.freeze({ADVENTURER: 0, DAMAGING: 1, DARK: 2, OLD_BALLET_SHOES: 3});
+export const FOOTWEAR_TYPE = Object.freeze({
+    ADVENTURER: 0,
+    DAMAGING: 1,
+    DARK: 2,
+    OLD_BALLET_SHOES: 3,
+    POSSESSED_SANDALS: 4
+});
 export const SHIELD_TYPE = Object.freeze({GOLDEN: 0, STUNNING: 1, SPIKY: 2, BASIC: 3, FELL_STAR_SHIELD: 4});
 export const TOOL_TYPE = Object.freeze({TORCH: 0});
 export const BAG_ITEM_TYPE = Object.freeze({BOMB: 0, SMALL_HEALING_POTION: 1});

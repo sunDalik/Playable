@@ -62,6 +62,7 @@ import {Boomeraxe} from "./classes/equipment/weapons/boomeraxe";
 import {Prismaxe} from "./classes/equipment/weapons/prismaxe";
 import {CerberusBow} from "./classes/equipment/weapons/cerberus_bow";
 import {FlaskOfFire} from "./classes/equipment/accessories/flask_of_fire";
+import {PossessedSandals} from "./classes/equipment/footwear/possessed_sandals";
 
 export function initPools() {
     Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
@@ -75,7 +76,7 @@ export function initPools() {
         Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, BladeCrown,
         LeatherArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,
-        AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes,
+        AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes, PossessedSandals,
         LifeFruit, HeartShapedKey, VialOfIchor];
 }
 
