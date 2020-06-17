@@ -132,6 +132,8 @@ export class Player extends AnimatedTileElement {
     }
 
     attack(tileStepX, tileStepY, event) {
+        if (Game.map[this.tilePosition.y][this.tilePosition.x].entity === otherPlayer(this)) return false;
+
         let attackResult = false;
         if (!event.shiftKey && this.weapon !== null) {
             attackResult = this.weapon.attack(this, tileStepX, tileStepY);
