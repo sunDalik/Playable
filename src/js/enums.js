@@ -120,7 +120,7 @@ export const WEAPON_TYPE = Object.freeze({
     BOW: 3,
     BOOK_OF_FLAMES: 4,
     SCYTHE: 5,
-    MAIDEN_DAGGER: 6,
+    MAIDEN_SHORT_SWORD: 6,
     HAMMER: 7,
     PICKAXE: 8,
     SPEAR: 9,

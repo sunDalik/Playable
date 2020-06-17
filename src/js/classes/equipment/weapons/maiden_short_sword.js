@@ -5,13 +5,13 @@ import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../anima
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
 
-export class MaidenDagger extends Weapon {
+export class MaidenShortSword extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["maiden_dagger.png"];
-        this.type = WEAPON_TYPE.MAIDEN_DAGGER;
+        this.type = WEAPON_TYPE.MAIDEN_SHORT_SWORD;
         this.atk = 1.25;
-        this.name = "Maiden's Dagger";
+        this.name = "Maiden's Short Sword";
         this.description = "Attack 1.25\nIf you wield two of these, it attacks 3 enemies in front of you, moves you and deals 2.5 damage to the middle enemy";
         this.rarity = RARITY.B;
     }
@@ -59,9 +59,9 @@ export class MaidenDagger extends Weapon {
                 wielder.bump(tileDirX, tileDirY);
             }
             const amplitude = 180;
-            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1,
+            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1.15,
                 135, {x: 1, y: 0}, 1, amplitude / 2 + 30);
-            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1,
+            createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1.15,
                 135, {x: 1, y: 0}, -1, amplitude / 2 + 30);
             for (let i = 0; i < enemiesToAttack.length; i++) {
                 if (enemiesToAttack[i] === null) continue;
@@ -76,7 +76,7 @@ export class MaidenDagger extends Weapon {
             const attackTileY = wielder.tilePosition.y + tileDirY;
             const atk = wielder.getAtk(this);
             if (isEnemy(attackTileX, attackTileY)) {
-                createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4.5, 40, 1, 135, {x: 1, y: 0});
+                createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 5, 55, 1.15, 135, {x: 1, y: 0});
                 createPlayerAttackTile({x: attackTileX, y: attackTileY});
                 Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY);
                 return true;

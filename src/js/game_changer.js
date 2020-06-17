@@ -17,7 +17,7 @@ import {AssassinDagger} from "./classes/equipment/weapons/assassin_dagger";
 import {LongSword} from "./classes/equipment/weapons/long_sword";
 import {Bow} from "./classes/equipment/weapons/bow";
 import {Scythe} from "./classes/equipment/weapons/scythe";
-import {MaidenDagger} from "./classes/equipment/weapons/maiden_dagger";
+import {MaidenShortSword} from "./classes/equipment/weapons/maiden_short_sword";
 import {BookOfFlames} from "./classes/equipment/weapons/book_of_flames";
 import {Hammer} from "./classes/equipment/weapons/hammer";
 import {Pickaxe} from "./classes/equipment/tools/pickaxe";
@@ -64,7 +64,7 @@ import {CerberusBow} from "./classes/equipment/weapons/cerberus_bow";
 import {FlaskOfFire} from "./classes/equipment/accessories/flask_of_fire";
 
 export function initPools() {
-    Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenDagger, BookOfFlames, Hammer, Pickaxe,
+    Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
         PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow];
     Game.magicPool = [Light, SunBlessing, Wind, CrystalWind, CrystalGuardian, DefenseLink, Thunderstorm, EmpyrealWrath,
         Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape,

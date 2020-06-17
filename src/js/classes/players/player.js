@@ -529,7 +529,7 @@ export class Player extends AnimatedTileElement {
             if (eq && eq.onNewTurn) eq.onNewTurn(this);
         }
         if (this.secondHand) {
-            if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type && this.weapon.type !== WEAPON_TYPE.MAIDEN_DAGGER) {
+            if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type && this.weapon.type !== WEAPON_TYPE.MAIDEN_SHORT_SWORD) {
                 if (this.canDoubleAttack) {
                     const dirX = this.lastTileStepX;
                     const dirY = this.lastTileStepY;
