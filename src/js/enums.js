@@ -33,7 +33,8 @@ export const ENEMY_TYPE = Object.freeze({
     WALL_SLIME: 31,
     PING_PONG_BUDDY: 32,
     SUMMON_CIRCLE: 33,
-    SPIDER_SMALL: 34
+    SPIDER_SMALL: 34,
+    HEX_EYE: 35
 });
 
 export const RABBIT_TYPE = Object.freeze({
