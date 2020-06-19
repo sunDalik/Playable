@@ -11,7 +11,7 @@ export function lightPosition(pos, distance = 3, bright = false) {
     if (Game.stage === STAGE.DARK_TUNNEL && bright) {
         lightWorldDT(pos.x, pos.y, distance);
     } else {
-        lightWorld(pos.x, pos.y, distance, true);
+        lightWorld(pos.x, pos.y, distance);
     }
 }
 
@@ -37,7 +37,7 @@ export function lightPlayerPosition(player) {
             torchedAreas = [];
             lightWorldDT(px, py, player.secondHand.lightSpread);
         } else {
-            lightWorld(px, py, 1, true);
+            lightWorld(px, py, 1);
         }
     } else if (Game.stage === STAGE.RUINS) {
         //return;
@@ -52,30 +52,28 @@ export function lightPlayerPosition(player) {
     }
 }
 
-function lightWorld(tileX, tileY, distance, crossEntries = false, sourceDirX = 0, sourceDirY = 0, spreadStart = true) {
+function lightWorld(tileX, tileY, distance, sourceDirX = 0, sourceDirY = 0) {
     const tileType = Game.map[tileY][tileX].tileType;
     if (distance > -1) {
-        if ((tileType === TILE_TYPE.ENTRY && (crossEntries === true || spreadStart === true))
-            || tileType === TILE_TYPE.NONE || tileType === TILE_TYPE.EXIT) {
+        if (tileType === TILE_TYPE.NONE || tileType === TILE_TYPE.EXIT) {
             if (!Game.map[tileY][tileX].lit) lightTile(tileX, tileY);
             litAreas.push({x: tileX, y: tileY});
             if (sourceDirX === 0 && sourceDirY === 0) {
-                lightWorld(tileX + 1, tileY, distance - 1, crossEntries, -1, 0, false);
-                lightWorld(tileX - 1, tileY, distance - 1, crossEntries, 1, 0, false);
-                lightWorld(tileX, tileY + 1, distance - 1, crossEntries, 0, -1, false);
-                lightWorld(tileX, tileY - 1, distance - 1, crossEntries, 0, 1, false);
+                lightWorld(tileX + 1, tileY, distance - 1, -1, 0);
+                lightWorld(tileX - 1, tileY, distance - 1, 1, 0);
+                lightWorld(tileX, tileY + 1, distance - 1, 0, -1);
+                lightWorld(tileX, tileY - 1, distance - 1, 0, 1);
             } else {
                 if (sourceDirY === 0) {
-                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) lightWorld(tileX, tileY - 1, distance - 1, crossEntries, sourceDirX, 1, false);
-                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) lightWorld(tileX, tileY + 1, distance - 1, crossEntries, sourceDirX, -1, false);
+                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) lightWorld(tileX, tileY - 1, distance - 1, sourceDirX, 1);
+                    if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) lightWorld(tileX, tileY + 1, distance - 1, sourceDirX, -1);
                 }
-                //todo should be else????
-                if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorld(tileX, tileY - sourceDirY, distance - 1, crossEntries, sourceDirX, sourceDirY, false);
+                else if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorld(tileX, tileY - sourceDirY, distance - 1, sourceDirX, sourceDirY);
                 if (sourceDirX === 0) {
-                    if (!litAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) lightWorld(tileX - 1, tileY, distance - 1, crossEntries, 1, sourceDirY, false);
-                    if (!litAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) lightWorld(tileX + 1, tileY, distance - 1, crossEntries, -1, sourceDirY, false);
+                    if (!litAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) lightWorld(tileX - 1, tileY, distance - 1, 1, sourceDirY);
+                    if (!litAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) lightWorld(tileX + 1, tileY, distance - 1, -1, sourceDirY);
                 }
-                if (!litAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorld(tileX - sourceDirX, tileY, distance - 1, crossEntries, sourceDirX, sourceDirY, false);
+                else if (!litAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorld(tileX - sourceDirX, tileY, distance - 1, sourceDirX, sourceDirY);
             }
 
             //light diagonal walls

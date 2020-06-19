@@ -218,8 +218,8 @@ export class Player extends AnimatedTileElement {
     }
 
     onMove(animationTime, tileStepX, tileStepY) {
-        lightPlayerPosition(this);
         openDoors(tileStepX, tileStepY);
+        lightPlayerPosition(this);
         Game.delayList.push(() => this.pickUpItems());
         camera.moveToCenter(animationTime);
         for (const eq of this.getEquipment()) {
