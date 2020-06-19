@@ -166,10 +166,10 @@ export function darkenTile(tileX, tileY) {
 //const torchLightSprite = new PIXI.Sprite(PIXI.Texture.WHITE);
 const torchLightSprite = {};
 
-//todo dont cross entries!
 function lightWorldDT(tileX, tileY, distance, sourceDirX = 0, sourceDirY = 0) {
     if (distance > -1) {
-        if (Game.map[tileY][tileX].tileType !== TILE_TYPE.WALL && Game.map[tileY][tileX].tileType !== TILE_TYPE.SUPER_WALL) {
+        if (Game.map[tileY][tileX].tileType !== TILE_TYPE.WALL && Game.map[tileY][tileX].tileType !== TILE_TYPE.SUPER_WALL
+            && Game.map[tileY][tileX].tileType !== TILE_TYPE.ENTRY) {
             lightTileDT(tileX, tileY);
             if (sourceDirX === 0 && sourceDirY === 0) {
                 lightWorldDT(tileX + 1, tileY, distance - 1, -1, 0);
