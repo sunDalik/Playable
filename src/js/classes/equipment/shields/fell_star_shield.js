@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {DAMAGE_TYPE, EQUIPMENT_TYPE, RARITY, SHIELD_TYPE, STAGE} from "../../../enums";
+import {Game} from "../../../game";
+import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY, STAGE} from "../../../enums";
 import {isAnyWall, isEnemy, isObelisk} from "../../../map_checks";
 import {TileElement} from "../../tile_elements/tile_element";
 import * as PIXI from "pixi.js";
@@ -12,8 +12,7 @@ export class FellStarShield extends AbstractShield {
     constructor() {
         super();
         this.texture = ShieldsSpriteSheet["fell_star_shield.png"];
-        this.type = SHIELD_TYPE.FELL_STAR_SHIELD;
-        this.equipmentType = EQUIPMENT_TYPE.SHIELD;
+        this.id = EQUIPMENT_ID.FELL_STAR_SHIELD;
         this.uses = this.maxUses = 4;
         this.shieldAtk = 3;
         this.usedOnThisTurn = false;

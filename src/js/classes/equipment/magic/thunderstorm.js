@@ -1,4 +1,4 @@
-import {DAMAGE_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, ROLE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT, ROLE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 import {Game} from "../../../game";
@@ -10,7 +10,7 @@ export class Thunderstorm extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_thunderstorm.png"];
-        this.type = MAGIC_TYPE.THUNDERSTORM;
+        this.id = EQUIPMENT_ID.THUNDERSTORM;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
         this.atk = 1.5;
         this.uses = this.maxUses = 5;

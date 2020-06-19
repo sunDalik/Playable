@@ -1,4 +1,4 @@
-import {EQUIPMENT_TYPE, RARITY, SHIELD_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {ShieldsSpriteSheet} from "../../../loader";
 import {AbstractShield} from "./abstract_shield";
 
@@ -6,8 +6,7 @@ export class SpikyShield extends AbstractShield {
     constructor() {
         super();
         this.texture = ShieldsSpriteSheet["spiky_shield.png"];
-        this.type = SHIELD_TYPE.SPIKY;
-        this.equipmentType = EQUIPMENT_TYPE.SHIELD;
+        this.id = EQUIPMENT_ID.SPIKY_SHIELD;
         this.shieldAtk = 1;
         this.uses = this.maxUses = 3;
         this.name = "Spiky Shield";

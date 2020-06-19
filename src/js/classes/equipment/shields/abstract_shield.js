@@ -1,5 +1,5 @@
 import {redrawSlotContents} from "../../../drawing/draw_hud";
-import {SLOT} from "../../../enums";
+import {EQUIPMENT_TYPE, SLOT} from "../../../enums";
 import {Equipment} from "../equipment";
 import * as PIXI from "pixi.js";
 import {Game} from "../../../game";
@@ -9,6 +9,7 @@ import {easeInQuad} from "../../../utils/math_utils";
 export class AbstractShield extends Equipment {
     constructor() {
         super();
+        this.equipmentType = EQUIPMENT_TYPE.SHIELD;
     }
 
     activate(wielder) {

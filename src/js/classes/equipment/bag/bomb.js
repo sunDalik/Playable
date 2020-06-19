@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {BAG_ITEM_TYPE, DAMAGE_TYPE, RARITY} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {get8Directions} from "../../../utils/map_utils";
 import {createFadingAttack, shakeScreen} from "../../../animations";
@@ -15,7 +15,7 @@ export class Bomb extends BagEquipment {
     constructor() {
         super();
         this.texture = BagSpriteSheet["bomb.png"];
-        this.type = BAG_ITEM_TYPE.BOMB;
+        this.id = EQUIPMENT_ID.BOMB;
         this.name = "Bomb";
         this.description = "Creates explosion that destroys walls\nIt also deals 3 damage to enemies and 1 damage to players that got caught in the blast";
         this.fuseDelay = 3;

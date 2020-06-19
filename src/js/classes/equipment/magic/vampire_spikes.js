@@ -1,4 +1,4 @@
-import {MAGIC_TYPE} from "../../../enums";
+import {EQUIPMENT_ID} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Spikes} from "./spikes";
 import {createCrazySpikeAnimation} from "../../../animations";
@@ -7,7 +7,7 @@ export class VampireSpikes extends Spikes {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_vampire_spikes.png"];
-        this.type = MAGIC_TYPE.VAMPIRE_SPIKES;
+        this.id = EQUIPMENT_ID.VAMPIRE_SPIKES;
         this.uses = this.maxUses = 5;
         this.name = "Vampire Spikes";
         this.description = "Upgrade to Spikes\nYou heal 1 HP for every 2 enemies damaged with spikes\nYou also heal 1 HP if you damage your ally";

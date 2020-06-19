@@ -1,4 +1,4 @@
-import {ARMOR_TYPE, EQUIPMENT_TYPE, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums";
 import {ArmorSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 
@@ -7,7 +7,7 @@ export class HeavyArmor extends Equipment {
         super();
         this.texture = ArmorSpriteSheet["heavy.png"];
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
-        this.type = ARMOR_TYPE.HEAVY;
+        this.id = EQUIPMENT_ID.HEAVY_ARMOR;
         this.passiveDef = 2;
         this.magicPunishment = 0.25;
         this.name = "Heavy Armor";

@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
-import {DAMAGE_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE, RARITY, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT, STAGE} from "../../../enums";
 import {getPlayerOnTile, isEnemy, isNotAWall, isObelisk} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
@@ -11,7 +11,7 @@ export class Light extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_light.png"];
-        this.type = MAGIC_TYPE.LIGHT;
+        this.id = EQUIPMENT_ID.LIGHT;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
         this.atk = 1;
         this.healAmount = 0.5;

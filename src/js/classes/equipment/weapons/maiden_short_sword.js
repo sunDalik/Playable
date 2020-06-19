@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums";
 import {isAnyWall, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
@@ -9,7 +9,7 @@ export class MaidenShortSword extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["maiden_dagger.png"];
-        this.type = WEAPON_TYPE.MAIDEN_SHORT_SWORD;
+        this.id = EQUIPMENT_ID.MAIDEN_SHORT_SWORD;
         this.atk = 1.25;
         this.name = "Maiden's Short Sword";
         this.description = "Attack 1.25\nIf you wield two of these, it attacks 3 enemies in front of you, moves you and deals 2.5 damage to the middle enemy";
@@ -21,7 +21,7 @@ export class MaidenShortSword extends Weapon {
     }
 
     attack(wielder, tileDirX, tileDirY) {
-        if (wielder.secondHand && wielder.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && wielder.secondHand.type === this.type) {
+        if (wielder.secondHand && wielder.secondHand.id === this.id) {
             const ATStepX = tileDirX === 0 ? 1 : 0;
             const ATStepY = tileDirY === 0 ? 1 : 0;
             const enemyDmgValues = [1.25, 2.5, 1.25];

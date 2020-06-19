@@ -54,7 +54,7 @@ export class Obelisk extends TileElement {
                 let attempt = 0;
                 while (attempt++ < 200) {
                     const randomSpell = getRandomSpell();
-                    if (!magicPool.some(magic => magic.type === randomSpell.type)) {
+                    if (!magicPool.some(magic => magic.id === randomSpell.id)) {
                         magicPool[i] = randomSpell;
                         break;
                     }

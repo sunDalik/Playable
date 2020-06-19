@@ -1,5 +1,5 @@
 import {Game} from "../game";
-import {EQUIPMENT_TYPE, STAGE, TILE_TYPE, TOOL_TYPE} from "../enums";
+import {EQUIPMENT_ID, STAGE, TILE_TYPE} from "../enums";
 import {getCardinalDirections} from "../utils/map_utils";
 import {isNotOutOfMap} from "../map_checks";
 
@@ -29,7 +29,7 @@ export function lightPlayerPosition(player) {
     const py = player.tilePosition.y;
 
     if (Game.stage === STAGE.DARK_TUNNEL) {
-        if (player.secondHand && player.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && player.secondHand.type === TOOL_TYPE.TORCH) {
+        if (player.secondHand && player.secondHand.id === EQUIPMENT_ID.TORCH) {
             for (const lightSource of torchedAreas) {
                 if (isNotOutOfMap(lightSource.x, lightSource.y))//this is bad...
                     Game.darkTiles[lightSource.y][lightSource.x].removeLightSource(torchLightSprite);

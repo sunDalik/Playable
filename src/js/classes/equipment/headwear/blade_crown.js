@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, EQUIPMENT_TYPE, HEAD_TYPE, RARITY} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums";
 import {TileElement} from "../../tile_elements/tile_element";
 import {randomChoice} from "../../../utils/random_utils";
 import {get8Directions} from "../../../utils/map_utils";
@@ -14,7 +14,7 @@ export class BladeCrown extends Equipment {
         super();
         this.texture = HeadWearSpriteSheet["blade_crown.png"];
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
-        this.type = HEAD_TYPE.BLADE_CROWN;
+        this.id = EQUIPMENT_ID.BLADE_CROWN;
         this.nonremoveable = true;
         this.bladeAtk = 1;
         this.name = "Blade Crown";

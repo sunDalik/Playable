@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
 import {getPlayerOnTile, isEnemy, isNotAWall, isObelisk} from "../../../map_checks";
 import {createCrazySpikeAnimation, createPlayerAttackTile, rotate} from "../../../animations";
 import {MagicSpriteSheet} from "../../../loader";
@@ -9,7 +9,7 @@ export class Spikes extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_spikes.png"];
-        this.type = MAGIC_TYPE.SPIKES;
+        this.id = EQUIPMENT_ID.SPIKES;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 2;
         this.friendlyFire = 1;

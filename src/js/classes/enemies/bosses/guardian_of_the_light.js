@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, ENEMY_TYPE, EQUIPMENT_TYPE, INANIMATE_TYPE, TOOL_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, INANIMATE_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
@@ -60,9 +60,9 @@ export class GuardianOfTheLight extends Boss {
     }
 
     onBossModeActivate() {
-        if (Game.player.secondHand && Game.player.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && Game.player.secondHand.type === TOOL_TYPE.TORCH) {
+        if (Game.player.secondHand && Game.player.secondHand.id === EQUIPMENT_ID.TORCH) {
             removeEquipmentFromPlayer(Game.player, EQUIPMENT_TYPE.TOOL);
-        } else if (Game.player2.secondHand && Game.player2.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && Game.player2.secondHand.type === TOOL_TYPE.TORCH) {
+        } else if (Game.player2.secondHand && Game.player2.secondHand.id === EQUIPMENT_ID.TORCH) {
             removeEquipmentFromPlayer(Game.player2, EQUIPMENT_TYPE.TOOL);
         }
         extinguishTorch();

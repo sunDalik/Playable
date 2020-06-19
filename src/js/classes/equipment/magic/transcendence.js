@@ -1,4 +1,4 @@
-import {MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 import {Immortality} from "./immortality";
@@ -7,7 +7,7 @@ export class Transcendence extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_transcendence.png"];
-        this.type = MAGIC_TYPE.TRANSCENDENCE;
+        this.id = EQUIPMENT_ID.TRANSCENDENCE;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.name = "Transcendence";
         this.description = "Upgrade to Immortality\nGain 2 more heart containers";

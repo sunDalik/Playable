@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
@@ -10,7 +10,7 @@ export class Spear extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["spear.png"];
-        this.type = WEAPON_TYPE.SPEAR;
+        this.id = EQUIPMENT_ID.SPEAR;
         this.atk = 0.75;
         this.name = "Spear";
         this.description = "Range 2\nAttack 0.75 at full range\nAttack 0.25 in close combat";

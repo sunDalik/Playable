@@ -1,4 +1,4 @@
-import {DAMAGE_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isEnemy, isLit} from "../../../map_checks";
@@ -9,7 +9,7 @@ import {randomShuffle} from "../../../utils/random_utils";
 export class BookOfThunders extends MagicBook {
     constructor() {
         super(WeaponsSpriteSheet["book_of_thunders.png"]);
-        this.type = WEAPON_TYPE.BOOK_OF_THUNDERS;
+        this.id = EQUIPMENT_ID.BOOK_OF_THUNDERS;
         this.atk = 1;
         this.uses = this.maxUses = 5;
         this.focusTime = 4;

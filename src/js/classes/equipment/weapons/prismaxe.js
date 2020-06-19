@@ -2,7 +2,7 @@ import {Game} from "../../../game";
 import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {Boomeraxe} from "./boomeraxe";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {TileElement} from "../../tile_elements/tile_element";
@@ -13,7 +13,7 @@ export class Prismaxe extends Boomeraxe {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["prismaxe.png"];
-        this.type = WEAPON_TYPE.PRISMAXE;
+        this.id = EQUIPMENT_ID.PRISMAXE;
         this.atk = 1;
         this.prismAtk = 0.5;
         this.name = "Prismaxe";

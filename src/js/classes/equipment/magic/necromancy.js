@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {camera} from "../../game/camera";
-import {MAGIC_ALIGNMENT, MAGIC_TYPE, SLOT} from "../../../enums";
+import {EQUIPMENT_ID, MAGIC_ALIGNMENT, SLOT} from "../../../enums";
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,
@@ -17,7 +17,7 @@ export class Necromancy extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_necromancy.png"];
-        this.type = MAGIC_TYPE.NECROMANCY;
+        this.id = EQUIPMENT_ID.NECROMANCY;
         this.alignment = MAGIC_ALIGNMENT.GRAY;
         this.uses = this.maxUses = 1;
         this.name = "Necromancy";

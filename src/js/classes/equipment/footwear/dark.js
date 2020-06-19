@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_TYPE, FOOTWEAR_TYPE, HAZARD_TYPE, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, RARITY} from "../../../enums";
 import {FootwearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 
@@ -8,7 +8,7 @@ export class DarkBoots extends Equipment {
         super();
         this.texture = FootwearSpriteSheet["dark.png"];
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
-        this.type = FOOTWEAR_TYPE.DARK;
+        this.id = EQUIPMENT_ID.DARK_BOOTS;
         this.name = "Dark Boots";
         this.description = "Immunity to hazards\nHazards turn to dark hazards when you step on them\nDark hazards damage both enemies and players";
         this.rarity = RARITY.B;

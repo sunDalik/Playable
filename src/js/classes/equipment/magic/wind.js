@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
 import {isBullet, isEmpty, isEnemy, isNotOutOfMap} from "../../../map_checks";
 import {EffectsSpriteSheet, MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
@@ -13,7 +13,7 @@ export class Wind extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_wind.png"];
-        this.type = MAGIC_TYPE.WIND;
+        this.id = EQUIPMENT_ID.WIND;
         this.alignment = MAGIC_ALIGNMENT.WHITE;
         this.radius = 3;
         this.crystal = false;

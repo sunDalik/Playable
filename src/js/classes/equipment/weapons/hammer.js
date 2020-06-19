@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
@@ -9,7 +9,7 @@ export class Hammer  extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["hammer.png"];
-        this.type = WEAPON_TYPE.HAMMER;
+        this.id = EQUIPMENT_ID.HAMMER;
         this.atk = 0.75;
         this.name = "Hammer";
         this.description = "Attack 0.75\nApplies stun";

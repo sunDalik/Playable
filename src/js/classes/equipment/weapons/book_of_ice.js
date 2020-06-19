@@ -1,4 +1,4 @@
-import {DAMAGE_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
@@ -10,7 +10,7 @@ import {getAngleForDirection, pointTileDistance} from "../../../utils/game_utils
 export class BookOfIce extends MagicBook {
     constructor() {
         super(WeaponsSpriteSheet["book_of_ice.png"]);
-        this.type = WEAPON_TYPE.BOOK_OF_ICE;
+        this.id = EQUIPMENT_ID.BOOK_OF_ICE;
         this.atk = 1;
         this.uses = this.maxUses = 3;
         this.focusTime = 3;

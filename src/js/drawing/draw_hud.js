@@ -26,7 +26,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_TYPE, HEAD_TYPE, SLOT, STORAGE} from "../enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, SLOT, STORAGE} from "../enums";
 import {ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
 import {CommonSpriteSheet} from "../loader";
@@ -200,7 +200,7 @@ export function redrawSlotContents(player, slot) {
 
     function drawUses() {
         let text;
-        if (item.equipmentType === EQUIPMENT_TYPE.HEAD && item.type === HEAD_TYPE.VAMPIRE_CROWN) {
+        if (item.id === EQUIPMENT_ID.VAMPIRE_CROWN) {
             text = new PIXI.Text(item.killsMade + "/" + item.killsNeeded, HUDTextStyle);
         } else if (item.equipmentType === EQUIPMENT_TYPE.BAG_ITEM) {
             text = new PIXI.Text("x" + item.amount, HUDTextStyle);
@@ -220,8 +220,8 @@ export function redrawSlotContents(player, slot) {
     function getKeyBind(player, slot) {
         const item = player[slot];
         if (slot === SLOT.EXTRA && player[SLOT.EXTRA].equipmentType === EQUIPMENT_TYPE.WEAPON
-            && ((player[SLOT.WEAPON] === null || player[SLOT.WEAPON].type !== player[SLOT.EXTRA].type)
-                || player[SLOT.WEAPON] && player[SLOT.WEAPON].type === player[SLOT.EXTRA].type && player[SLOT.EXTRA].uses < player[SLOT.WEAPON].uses && player[SLOT.WEAPON].uses === player[SLOT.WEAPON].maxUses)) {
+            && ((player[SLOT.WEAPON] === null || player[SLOT.WEAPON].id !== player[SLOT.EXTRA].id)
+                || player[SLOT.WEAPON] && player[SLOT.WEAPON].id === player[SLOT.EXTRA].id && player[SLOT.EXTRA].uses < player[SLOT.WEAPON].uses && player[SLOT.WEAPON].uses === player[SLOT.WEAPON].maxUses)) {
             if (player === Game.player) return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_1P]);
             else return getKeyBindSymbol(window.localStorage[STORAGE.KEY_EXTRA_2P]);
 

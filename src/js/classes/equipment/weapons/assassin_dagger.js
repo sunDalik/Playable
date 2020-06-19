@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
@@ -11,7 +11,7 @@ export class AssassinDagger extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["assassin_dagger.png"];
-        this.type = WEAPON_TYPE.ASSASSIN_DAGGER;
+        this.id = EQUIPMENT_ID.ASSASSIN_DAGGER;
         this.SLIDE_ANIMATION_TIME = 5;
         this.FINISH_SLIDE_TIME = 2;
         this.atk = 1.25;

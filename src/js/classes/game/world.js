@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import {Game} from "../../game";
 import {canBeFliedOverByBullet, getPlayerOnTile, isAnyWall, isEnemy} from "../../map_checks";
-import {EQUIPMENT_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE, TOOL_TYPE} from "../../enums";
+import {EQUIPMENT_ID, HAZARD_TYPE, STAGE, TILE_TYPE} from "../../enums";
 import {lightPlayerPosition} from "../../drawing/lighting";
 import {otherPlayer} from "../../utils/game_utils";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
@@ -159,9 +159,9 @@ export class World extends PIXI.Container {
         Game.map[y][x].tileType = TILE_TYPE.NONE;
         if (remover) {
             if (Game.stage === STAGE.DARK_TUNNEL) {
-                if (remover.secondHand && remover.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && remover.secondHand.type === TOOL_TYPE.TORCH) {
+                if (remover.secondHand && remover.secondHand.id === EQUIPMENT_ID.TORCH) {
                     lightPlayerPosition(remover);
-                } else if (!otherPlayer(remover).dead && otherPlayer(remover).secondHand && otherPlayer(remover).secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && otherPlayer(remover).secondHand.type === TOOL_TYPE.TORCH) {
+                } else if (!otherPlayer(remover).dead && otherPlayer(remover).secondHand && otherPlayer(remover).secondHand.id === EQUIPMENT_ID.TORCH) {
                     lightPlayerPosition(otherPlayer(remover));
                 } else lightPlayerPosition(remover);
             } else lightPlayerPosition(remover);

@@ -1,4 +1,4 @@
-import {MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
 import {EffectsSpriteSheet, MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 import {isBullet, isEmpty, isEnemy, isLit, isNotAWall, isNotOutOfMap, tileInsideTheBossRoom} from "../../../map_checks";
@@ -15,7 +15,7 @@ export class Escape extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_escape.png"];
-        this.type = MAGIC_TYPE.ESCAPE;
+        this.id = EQUIPMENT_ID.ESCAPE;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.uses = this.maxUses = 6;
         this.name = "Escape";

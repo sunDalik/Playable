@@ -1,4 +1,4 @@
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {PiercingBowLikeWeapon} from "./piercing_bow_like_weapon";
 
@@ -6,7 +6,7 @@ export class DivineBow extends PiercingBowLikeWeapon {
     constructor() {
         super(WeaponsSpriteSheet["divine_bow.png"]);
         this.arrowTexture = WeaponsSpriteSheet["divine_arrow.png"];
-        this.type = WEAPON_TYPE.DIVINE_BOW;
+        this.id = EQUIPMENT_ID.DIVINE_BOW;
         //atk 1 or range 4? hmmmmm
         this.atk = 1;
         this.name = "Divine Bow";

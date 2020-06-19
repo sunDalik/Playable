@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
@@ -9,7 +9,7 @@ export class Scythe extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["scythe.png"];
-        this.type = WEAPON_TYPE.SCYTHE;
+        this.id = EQUIPMENT_ID.SCYTHE;
         this.atk = 1;
         this.name = "Scythe";
         this.description = "Attacks 5 enemies in front of you";

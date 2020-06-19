@@ -1,16 +1,6 @@
 import {Game} from "../../game";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
-import {
-    ARMOR_TYPE,
-    EQUIPMENT_TYPE,
-    MAGIC_TYPE,
-    ROLE,
-    SLOT,
-    STAGE,
-    TILE_TYPE,
-    TOOL_TYPE,
-    WEAPON_TYPE
-} from "../../enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, ROLE, SLOT, STAGE, TILE_TYPE} from "../../enums";
 import {createHeartAnimation, rotate, runDestroyAnimation, shakeScreen, showHelpBox} from "../../animations";
 import {
     drawMovementKeyBindings,
@@ -139,7 +129,7 @@ export class Player extends AnimatedTileElement {
             attackResult = this.weapon.attack(this, tileStepX, tileStepY);
             if (attackResult) {
                 this.canDoubleAttack = true;
-            } else if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type
+            } else if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.id === this.weapon.id
                 && this.weapon.uses !== undefined && this.weapon.uses === 0 && this.secondHand.uses !== 0) {
                 attackResult = this.secondHand.attack(this, tileStepX, tileStepY);
             }
@@ -183,7 +173,7 @@ export class Player extends AnimatedTileElement {
     }
 
     step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {
-        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
+        if (this[SLOT.ARMOR] && this[SLOT.ARMOR].id === EQUIPMENT_ID.WINGS) {
             this.slide(tileStepX, tileStepY, onFrame, onEnd);
         } else {
             super.step(tileStepX, tileStepY, () => {
@@ -196,7 +186,7 @@ export class Player extends AnimatedTileElement {
     }
 
     bump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
-        if (this.armor && this.armor.type === ARMOR_TYPE.WINGS) {
+        if (this[SLOT.ARMOR] && this[SLOT.ARMOR].id === EQUIPMENT_ID.WINGS) {
             this.slideBump(tileStepX, tileStepY, () => {
                 this.onMoveFrame(onFrame);
             }, () => {
@@ -287,7 +277,7 @@ export class Player extends AnimatedTileElement {
                     ally.secondHand.onBlock(source, ally, directHit);
                     ally.shielded = true;
                     blocked = true;
-                } else if (this.armor && this.armor.type === ARMOR_TYPE.WINGS && Math.random() < this.armor.dodgeChance) {
+                } else if (this[SLOT.ARMOR] && this[SLOT.ARMOR].id === EQUIPMENT_ID.WINGS && Math.random() < this[SLOT.ARMOR].dodgeChance) {
                     rotate(this, randomChoice([true, false]));
                     blocked = true;
                 }
@@ -376,7 +366,7 @@ export class Player extends AnimatedTileElement {
         updateChain();
         this.removeFromMap();
         if (Game.stage === STAGE.DARK_TUNNEL) {
-            if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.TOOL && this.secondHand.type === TOOL_TYPE.TORCH) {
+            if (this.secondHand && this.secondHand.id === EQUIPMENT_ID.TORCH) {
                 dropItem(this.secondHand, this.tilePosition.x, this.tilePosition.y);
                 this.secondHand = null;
 
@@ -468,7 +458,7 @@ export class Player extends AnimatedTileElement {
 
     applyNextLevelMethods() {
         for (const mg of this.getMagic()) {
-            if (mg && mg.type !== MAGIC_TYPE.NECROMANCY) {
+            if (mg && mg.id !== EQUIPMENT_ID.NECROMANCY) {
                 mg.uses += Math.ceil(mg.maxUses / 2);
                 if (mg.uses > mg.maxUses) mg.uses = mg.maxUses;
             }
@@ -531,7 +521,7 @@ export class Player extends AnimatedTileElement {
             if (eq && eq.onNewTurn) eq.onNewTurn(this);
         }
         if (this.secondHand) {
-            if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.type === this.weapon.type && this.weapon.type !== WEAPON_TYPE.MAIDEN_SHORT_SWORD) {
+            if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.weapon && this.secondHand.id === this.weapon.id && this.weapon.id !== EQUIPMENT_ID.MAIDEN_SHORT_SWORD) {
                 if (this.canDoubleAttack) {
                     const dirX = this.lastTileStepX;
                     const dirY = this.lastTileStepY;
@@ -553,7 +543,7 @@ export class Player extends AnimatedTileElement {
     doubleAttack(dirX, dirY) {
         this.attackTimeout = null;
         if (this.dead) return;
-        if (this.weapon.type === WEAPON_TYPE.ASSASSIN_DAGGER) {
+        if (this.weapon.id === EQUIPMENT_ID.ASSASSIN_DAGGER) {
             dirX *= -1;
             dirY *= -1;
         }
@@ -572,12 +562,12 @@ export class Player extends AnimatedTileElement {
         if (this.charging) return false;
         if (!this.secondHand) return false;
         if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) {
-            if (this.weapon === null || this.secondHand.type !== this.weapon.type) {
+            if (this.weapon === null || this.secondHand.id !== this.weapon.id) {
                 [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
                 redrawSlotContents(this, SLOT.WEAPON);
                 redrawSlotContents(this, SLOT.EXTRA);
                 return true;
-            } else if (this.weapon && this.weapon.type === this.secondHand.type && this.secondHand.focus && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {
+            } else if (this.weapon && this.weapon.id === this.secondHand.id && this.secondHand.focus && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {
                 this.secondHand.focus(this);
                 redrawSecondHand(this);
                 return true;
@@ -589,7 +579,7 @@ export class Player extends AnimatedTileElement {
         if (this.charging) return false;
         if (!this.weapon || !this.weapon.focus) return false;
         if (this.weapon.focus(this)) {
-            if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.type === this.weapon.type) {
+            if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON && this.secondHand.id === this.weapon.id) {
                 this.secondHand.focus(this, false);
             }
             return true;

@@ -306,7 +306,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
             slot = SLOT.ACCESSORY;
             break;
         case EQUIPMENT_TYPE.BAG_ITEM:
-            if (player.bag && player.bag.type === equipment.type) {
+            if (player.bag && player.bag.id === equipment.id) {
                 player.bag.amount += equipment.amount;
                 redrawBag(player);
                 return null;

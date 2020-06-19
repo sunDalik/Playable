@@ -4,14 +4,14 @@ import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../anima
 import {TileElement} from "../../tile_elements/tile_element";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {getAngleForDirection} from "../../../utils/game_utils";
 
 export class Boomeraxe extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["boomeraxe.png"];
-        this.type = WEAPON_TYPE.BOOMERAXE;
+        this.id = EQUIPMENT_ID.BOOMERAXE;
         this.atk = 1;
         this.name = "Boomeraxe";
         this.description = "Range 3\nAttack 1 in melee\nAttack 0.5 at range 2\nAttack 0.25 at range 3";
@@ -85,7 +85,7 @@ export class Boomeraxe extends Weapon {
         let forceSwing = undefined;
         if (dirX === 1) forceSwing = 1;
         else if (dirX === -1) forceSwing = -1;
-        const scaleMod = this.type === WEAPON_TYPE.PRISMAXE ? 1.2 : 1;
+        const scaleMod = this.id === EQUIPMENT_ID.PRISMAXE ? 1.2 : 1;
         createWeaponAnimationSwing(player, this, dirX, dirY, 7, 100, scaleMod, -15, {x: 0, y: 1}, forceSwing, 100, false);
     }
 

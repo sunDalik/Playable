@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
@@ -13,7 +13,7 @@ export class GoldenDagger extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["golden_dagger.png"];
-        this.type = WEAPON_TYPE.GOLDEN_DAGGER;
+        this.id = EQUIPMENT_ID.GOLDEN_DAGGER;
         this.atk = 1;
         this.name = "Golden Dagger";
         this.description = "Attack 1, Range 1\nKilling an enemy with this weapon gives it additional 30% chance to drop a healing potion, a bomb or a key";

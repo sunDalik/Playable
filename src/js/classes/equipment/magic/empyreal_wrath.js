@@ -1,4 +1,4 @@
-import {DAMAGE_TYPE, MAGIC_TYPE, ROLE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, ROLE} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Thunderstorm} from "./thunderstorm";
 import {Game} from "../../../game";
@@ -9,7 +9,7 @@ export class EmpyrealWrath extends Thunderstorm {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_empyreal_wrath.png"];
-        this.type = MAGIC_TYPE.EMPYREAL_WRATH;
+        this.id = EQUIPMENT_ID.EMPYREAL_WRATH;
         this.uses = this.maxUses = 6;
         this.name = "Empyreal Wrath";
         this.description = `Upgrade to Thunderstorm\nIf there are not enough enemies around you, empyreal strikes will damage some enemies multiple times but subsequent strikes only deal half dmg`;

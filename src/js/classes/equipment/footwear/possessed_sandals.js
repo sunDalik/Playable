@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, EQUIPMENT_TYPE, FOOTWEAR_TYPE, RARITY} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums";
 import {FootwearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 import {isEnemy} from "../../../map_checks";
@@ -13,7 +13,7 @@ export class PossessedSandals extends Equipment {
         super();
         this.texture = FootwearSpriteSheet["possessed_sandals.png"];
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
-        this.type = FOOTWEAR_TYPE.POSSESSED_SANDALS;
+        this.id = EQUIPMENT_ID.POSSESSED_SANDALS;
         this.name = "Possessed Sandals";
         this.description = "Moving from a tile damages all enemies that stood near that tile by 1 atk";
         this.rarity = RARITY.A;

@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
@@ -9,7 +9,7 @@ export class LongSword  extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["long_sword.png"];
-        this.type = WEAPON_TYPE.LONG_SWORD;
+        this.id = EQUIPMENT_ID.LONG_SWORD;
         this.atk = 1;
         this.name = "Long Sword";
         this.description = "Range 2\nAttack 1";

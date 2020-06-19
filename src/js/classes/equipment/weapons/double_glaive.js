@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {isEnemy, isLit, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
@@ -11,7 +11,7 @@ export class DoubleGlaive  extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["double_glaive.png"];
-        this.type = WEAPON_TYPE.DOUBLE_GLAIVE;
+        this.id = EQUIPMENT_ID.DOUBLE_GLAIVE;
         this.atk = 1;
         this.name = "Double glaive";
         this.description = "Range 2\nAttack 1\nDouble attack in close combat";

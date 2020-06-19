@@ -44,25 +44,6 @@ export const RABBIT_TYPE = Object.freeze({
 });
 
 export const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});
-export const MAGIC_TYPE = Object.freeze({
-    LIGHT: 0,
-    SUN_BLESSING: 1,
-    SPIKES: 2,
-    NECROMANCY: 4,
-    WIND: 6,
-    ABYSSAL_SPIT: 7,
-    IMMORTALITY: 9,
-    VAMPIRE_SPIKES: 10,
-    INFERNAL_SPIKES: 11,
-    TRANSCENDENCE: 12,
-    CRYSTAL_WIND: 13,
-    CRYSTAL_GUARDIAN: 14,
-    ESCAPE: 15,
-    DEFENSE_LINK: 16,
-    ATTACK_LINK: 17,
-    THUNDERSTORM: 18,
-    EMPYREAL_WRATH: 19
-});
 
 export const STAGE = Object.freeze({
     FLOODED_CAVE: 0,
@@ -113,8 +94,7 @@ export const SLOT = Object.freeze({
     ACCESSORY: "accessory"
 });
 
-//remove equipmentType-specific enums and create one EQUIPMENT_ID enum with all items?
-export const WEAPON_TYPE = Object.freeze({
+export const EQUIPMENT_ID = Object.freeze({
     KNIFE: 0,
     LONG_SWORD: 1,
     ASSASSIN_DAGGER: 2,
@@ -136,33 +116,56 @@ export const WEAPON_TYPE = Object.freeze({
     GOLDEN_DAGGER: 18,
     BOOMERAXE: 19,
     PRISMAXE: 20,
-    CERBERUS_BOW: 21
-});
-export const HEAD_TYPE = Object.freeze({
-    WIZARD_HAT: 0,
-    SEER_CIRCLET: 1,
-    VAMPIRE_CROWN: 2,
-    BATTLE_HELMET: 3,
-    BLADE_CROWN: 4,
-    WITCH_HAT: 5
-});
-export const ARMOR_TYPE = Object.freeze({LEATHER: 0, WIZARD_ROBE: 1, WINGS: 2, HEAVY: 3, ELECTRIC: 4, BRONZE: 5});
-export const FOOTWEAR_TYPE = Object.freeze({
-    ADVENTURER: 0,
-    DAMAGING: 1,
-    DARK: 2,
-    OLD_BALLET_SHOES: 3,
-    POSSESSED_SANDALS: 4
-});
-export const SHIELD_TYPE = Object.freeze({GOLDEN: 0, STUNNING: 1, SPIKY: 2, BASIC: 3, FELL_STAR_SHIELD: 4});
-export const TOOL_TYPE = Object.freeze({TORCH: 0});
-export const BAG_ITEM_TYPE = Object.freeze({BOMB: 0, SMALL_HEALING_POTION: 1});
-export const ONE_TIME_ITEM_TYPE = Object.freeze({LIFE_FRUIT: 0, HEART_SHAPED_KEY: 1, VIAL_OF_ICHOR: 2});
-export const ACCESSORY_TYPE = Object.freeze({
-    FLASK_OF_FIRE: 0,
-    WEAPON_MASTER_EMBLEM: 1,
-    HERO_KEY: 2,
-    QUIVER_OF_THE_FOREST_SPIRIT: 3
+    CERBERUS_BOW: 21,
+    WIZARD_HAT: 22,
+    SEER_CIRCLET: 23,
+    VAMPIRE_CROWN: 24,
+    BATTLE_HELMET: 25,
+    BLADE_CROWN: 26,
+    WITCH_HAT: 27,
+    LEATHER_ARMOR: 28,
+    WIZARD_ROBE: 29,
+    WINGS: 30,
+    HEAVY_ARMOR: 31,
+    ELECTRIC_ARMOR: 32,
+    BRONZE_ARMOR: 33,
+    ADVENTURER_BOOTS: 34,
+    DAMAGING_BOOTS: 35,
+    DARK_BOOTS: 36,
+    OLD_BALLET_SHOES: 37,
+    POSSESSED_SANDALS: 38,
+    GOLDEN_SHIELD: 39,
+    STUNNING_SHIELD: 40,
+    SPIKY_SHIELD: 41,
+    SHIELD: 42,
+    FELL_STAR_SHIELD: 43,
+    TORCH: 44,
+    BOMB: 45,
+    HEALING_POTION: 46,
+    LIFE_FRUIT: 47,
+    HEART_SHAPED_KEY: 48,
+    VIAL_OF_ICHOR: 49,
+    FLASK_OF_FIRE: 50,
+    WEAPON_MASTER_EMBLEM: 51,
+    HERO_KEY: 52,
+    QUIVER_OF_THE_FOREST_SPIRIT: 53,
+    LIGHT: 54,
+    SUN_BLESSING: 55,
+    SPIKES: 56,
+    NECROMANCY: 57,
+    WIND: 58,
+    ABYSSAL_SPIT: 59,
+    IMMORTALITY: 60,
+    VAMPIRE_SPIKES: 61,
+    INFERNAL_SPIKES: 62,
+    TRANSCENDENCE: 63,
+    CRYSTAL_WIND: 64,
+    CRYSTAL_GUARDIAN: 65,
+    ESCAPE: 66,
+    DEFENSE_LINK: 67,
+    ATTACK_LINK: 68,
+    THUNDERSTORM: 69,
+    EMPYREAL_WRATH: 70
 });
 
 export const DAMAGE_TYPE = Object.freeze({

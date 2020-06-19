@@ -1,4 +1,4 @@
-import {MAGIC_ALIGNMENT, MAGIC_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 import {otherPlayer} from "../../../utils/game_utils";
@@ -8,7 +8,7 @@ export class AttackLink extends Magic {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_attack_link.png"];
-        this.type = MAGIC_TYPE.ATTACK_LINK;
+        this.id = EQUIPMENT_ID.ATTACK_LINK;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.name = "Attack Link";
         this.description = "Other character gets +0.5 to atk multiplier, which effectively doubles its attack\nThe bonus is only active while both souls are alive";

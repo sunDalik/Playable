@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, RARITY, STAGE, WEAPON_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY, STAGE} from "../../../enums";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
@@ -9,7 +9,7 @@ import {setTickTimeout} from "../../../utils/game_utils";
 export class BookOfFlames extends MagicBook {
     constructor() {
         super(WeaponsSpriteSheet["book_of_flames.png"]);
-        this.type = WEAPON_TYPE.BOOK_OF_FLAMES;
+        this.id = EQUIPMENT_ID.BOOK_OF_FLAMES;
         this.atk = 2;
         this.uses = this.maxUses = 2;
         this.focusTime = 3;

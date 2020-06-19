@@ -1,9 +1,10 @@
 import * as PIXI from "pixi.js";
-import {RARITY} from "../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../enums";
 
 export class Equipment {
     constructor() {
         this.texture = PIXI.Texture.WHITE;
+        this.id = EQUIPMENT_ID.KNIFE;
         this.name = "NAME";
         this.description = "DESCRIPTION";
         this.rarity = RARITY.C;

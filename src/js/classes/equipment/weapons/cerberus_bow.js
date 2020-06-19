@@ -1,16 +1,14 @@
-import {RARITY, WEAPON_TYPE} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {BowLikeWeapon} from "./bow_like_weapon";
-import {Bow} from "./bow";
 import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
 import {Game} from "../../../game";
-import {createPlayerAttackTile} from "../../../animations";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 
 export class CerberusBow extends BowLikeWeapon {
     constructor() {
         super(WeaponsSpriteSheet["cerberus_bow.png"]);
-        this.type = WEAPON_TYPE.CERBERUS_BOW;
+        this.id = EQUIPMENT_ID.CERBERUS_BOW;
         this.arrowTexture = WeaponsSpriteSheet["hell_arrow.png"];
         this.atk = 0.75;
         this.name = "Cerberus Bow";

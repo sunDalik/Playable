@@ -1,4 +1,4 @@
-import {ACCESSORY_TYPE, DAMAGE_TYPE, EQUIPMENT_TYPE, RARITY} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums";
 import {AccessoriesSpriteSheet, EffectsSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 import {TileElement} from "../../tile_elements/tile_element";
@@ -11,7 +11,7 @@ export class FlaskOfFire extends Equipment {
         super();
         this.texture = AccessoriesSpriteSheet["flask_of_fire.png"];
         this.equipmentType = EQUIPMENT_TYPE.ACCESSORY;
-        this.type = ACCESSORY_TYPE.FLASK_OF_FIRE;
+        this.id = EQUIPMENT_ID.FLASK_OF_FIRE;
         this.name = "Flask of Fire";
         this.description = "Deal additional 0.5 damage whenever you attack with a non-magical weapon\nThis damage ignores your attack multiplier";
         this.rarity = RARITY.C;

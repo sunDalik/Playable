@@ -1,4 +1,4 @@
-import {DAMAGE_TYPE, RARITY, WEAPON_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
@@ -10,7 +10,7 @@ import {createPlayerAttackTile} from "../../../animations";
 export class BookOfWebs extends MagicBook {
     constructor() {
         super(WeaponsSpriteSheet["book_of_webs.png"]);
-        this.type = WEAPON_TYPE.BOOK_OF_WEBS;
+        this.id = EQUIPMENT_ID.BOOK_OF_WEBS;
         this.atk = 2;
         this.uses = this.maxUses = 1;
         this.focusTime = 3;

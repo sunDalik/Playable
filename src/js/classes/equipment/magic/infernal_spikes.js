@@ -1,4 +1,4 @@
-import {MAGIC_TYPE} from "../../../enums";
+import {EQUIPMENT_ID} from "../../../enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {VampireSpikes} from "./vampire_spikes";
 import {createCrazySpikeAnimation, shakeScreen} from "../../../animations";
@@ -7,7 +7,7 @@ export class InfernalSpikes extends VampireSpikes {
     constructor() {
         super();
         this.texture = MagicSpriteSheet["magic_infernal_spikes.png"];
-        this.type = MAGIC_TYPE.INFERNAL_SPIKES;
+        this.id = EQUIPMENT_ID.INFERNAL_SPIKES;
         this.uses = this.maxUses = 6;
         this.name = "Infernal Spikes";
         this.description = "Upgrade to Vampire Spikes\nYou now cast both diagonal and cardinal spikes";
