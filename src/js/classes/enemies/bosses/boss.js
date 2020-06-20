@@ -9,11 +9,12 @@ import {
     bottomBossHeartOffset,
     HUDTextStyleTitle
 } from "../../../drawing/draw_constants";
-import {deactivateBossMode} from "../../../game_logic";
-import {randomShuffle} from "../../../utils/random_utils";
+import {deactivateBossMode, dropItem} from "../../../game_logic";
+import {randomInt, randomShuffle} from "../../../utils/random_utils";
 import {getPlayerOnTile, isEnemy} from "../../../map_checks";
 import {getRandomChestDrop, getRandomWeapon} from "../../../utils/pool_utils";
 import {Pedestal} from "../../inanimate_objects/pedestal";
+import {SmallHealingPotion} from "../../equipment/bag/small_healing_potion";
 
 export class Boss extends Enemy {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -21,6 +22,7 @@ export class Boss extends Enemy {
         this.boss = true;
         this.name = "";
         this.drops = [];
+        this.assignRandomDrops();
         Game.boss = this;
         Game.world.removeChild(this.healthContainer);
     }
@@ -50,6 +52,9 @@ export class Boss extends Enemy {
         deactivateBossMode();
         if (Game.bossNoDamage) this.spawnRewards(2);
         else this.spawnRewards(1);
+        for (const drop of this.drops) {
+            dropItem(drop, this.tilePosition.x, this.tilePosition.y);
+        }
     }
 
     updateIntentIcon() {
@@ -81,6 +86,13 @@ export class Boss extends Enemy {
                 }
                 break;
             }
+        }
+    }
+
+    assignRandomDrops() {
+        const healingPotionsAmount = randomInt(2, 3);
+        for (let i = 0; i < healingPotionsAmount; i++) {
+            this.drops.push(new SmallHealingPotion());
         }
     }
 }
