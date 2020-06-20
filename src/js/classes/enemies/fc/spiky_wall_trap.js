@@ -11,6 +11,7 @@ import {WallTrapBase} from "../../draw/wall_trap_base";
 import {wallTallness} from "../../draw/wall";
 import {getZIndexForLayer, Z_INDEXES} from "../../../z_indexing";
 import {getAngleForDirection} from "../../../utils/game_utils";
+import {redrawMiniMapPixel} from "../../../drawing/minimap";
 
 export class SpikyWallTrap extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spiky_wall_trap_x.png"]) {
@@ -141,5 +142,6 @@ export class SpikyWallTrap extends Enemy {
         runDestroyAnimation(this.wallBase);
         this.wallBase.visible = false;
         Game.map[this.tilePosition.y][this.tilePosition.x].tileType = TILE_TYPE.NONE;
+        redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
     }
 }

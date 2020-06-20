@@ -1,12 +1,13 @@
 import * as PIXI from "pixi.js";
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE, ROLE, STAGE} from "../../../enums";
+import {ENEMY_TYPE, ROLE, STAGE, TILE_TYPE} from "../../../enums";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../../map_checks";
 import {createFadingAttack} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {redrawMiniMapPixel} from "../../../drawing/minimap";
 
 export class LaserTurret extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["laser_turret_unready.png"]) {
@@ -121,5 +122,11 @@ export class LaserTurret extends Enemy {
         if (this.healthContainer) {
             this.onMoveFrame();
         }
+    }
+
+    die(source) {
+        super.die(source);
+        Game.map[this.tilePosition.y][this.tilePosition.x].tileType = TILE_TYPE.NONE;
+        redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
     }
 }
