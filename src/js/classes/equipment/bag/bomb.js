@@ -1,15 +1,10 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
-import {get8Directions} from "../../../utils/map_utils";
-import {createFadingAttack, shakeScreen} from "../../../animations";
-import {getPlayerOnTile, isDiggable, isEnemy, isObelisk, isWallTrap} from "../../../map_checks";
-import * as PIXI from "pixi.js";
-import {lightPlayerPosition} from "../../../drawing/lighting";
-import {TileElement} from "../../tile_elements/tile_element";
 import {BagSpriteSheet} from "../../../loader";
 import {ShadowTileElement} from "../../tile_elements/shadow_tile_element";
 import {BagEquipment} from "../bag_equipment";
+import {explode} from "../../../game_logic";
 
 export class Bomb extends BagEquipment {
     constructor() {
@@ -36,40 +31,7 @@ export class Bomb extends BagEquipment {
 
     update() {
         if (this.currentFuseDelay <= 0) {
-            for (const dir of get8Directions().concat({x: 0, y: 0})) {
-                const posX = this.sprite.tilePosition.x + dir.x;
-                const posY = this.sprite.tilePosition.y + dir.y;
-                const sprite = new TileElement(PIXI.Texture.WHITE, posX, posY, true);
-                sprite.tint = 0xfa794d;
-                if (isEnemy(posX, posY)) {
-                    Game.map[posY][posX].entity.damage(this, this.bombAtk, 0, 0, DAMAGE_TYPE.HAZARDAL);
-                }
-                if (isWallTrap(posX, posY)) {
-                    Game.map[posY][posX].entity.die(this);
-                }
-                if (isDiggable(posX, posY)) {
-                    Game.world.removeTile(posX, posY);
-                }
-                if (isObelisk(posX, posY)) {
-                    Game.map[posY][posX].entity.destroy();
-                }
-                if (Game.map[posY][posX].hazard) {
-                    Game.map[posY][posX].hazard.removeFromWorld();
-                }
-                for (let i = Game.bullets.length - 1; i >= 0; i--) {
-                    if (Game.bullets[i].tilePosition.x === posX && Game.bullets[i].tilePosition.y === posY) {
-                        Game.bullets[i].die();
-                    }
-                }
-                const player = getPlayerOnTile(posX, posY);
-                if (player) {
-                    player.damage(this.friendlyFire, sprite, false, true);
-                }
-                createFadingAttack(sprite, 9);
-                shakeScreen(10, 5);
-            }
-            lightPlayerPosition(Game.player);
-            lightPlayerPosition(Game.player2);
+            explode(this.sprite.tilePosition.x, this.sprite.tilePosition.y, this.bombAtk, this.friendlyFire);
             removeObjectFromArray(this, Game.updateList);
             Game.world.removeChild(this.sprite);
             Game.world.removeChild(this.sprite.shadow);

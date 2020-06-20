@@ -27,7 +27,7 @@ export class Snail extends Enemy {
     }
 
     move() {
-        if (this.currentTurnDelay === 0) {
+        if (this.currentTurnDelay <= 0) {
             if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
                 const movementOptions = getChasingOptions(this, closestPlayer(this));
                 if (movementOptions.length !== 0) {

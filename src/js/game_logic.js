@@ -1,7 +1,7 @@
 import {Game} from "./game";
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup";
-import {ACHIEVEMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, SLOT, STAGE, TILE_TYPE} from "./enums";
+import {ACHIEVEMENT_ID, DAMAGE_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, SLOT, STAGE, TILE_TYPE} from "./enums";
 import {
     drawInteractionKeys,
     redrawBag,
@@ -9,15 +9,24 @@ import {
     redrawSlotContents,
     setTimerRunning
 } from "./drawing/draw_hud";
-import {createKissHeartAnimation, fadeOutAndDie, showHelpBox} from "./animations";
+import {createFadingAttack, createKissHeartAnimation, fadeOutAndDie, shakeScreen, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
 import {updateChain} from "./drawing/draw_dunno";
-import {lightPosition, lightTile} from "./drawing/lighting";
+import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
 import {removeAllChildrenFromContainer} from "./drawing/draw_utils";
 import {HUD} from "./drawing/hud_object";
 import {camera} from "./classes/game/camera";
 import {get8Directions, getCardinalDirections} from "./utils/map_utils";
-import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "./map_checks";
+import {
+    getPlayerOnTile,
+    isAnyWall,
+    isDiggable,
+    isEnemy,
+    isInanimate,
+    isNotAWall,
+    isObelisk,
+    isWallTrap
+} from "./map_checks";
 import {ITEM_OUTLINE_FILTER} from "./filters";
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {randomChoice, randomShuffle} from "./utils/random_utils";
@@ -27,6 +36,7 @@ import {Z_INDEXES} from "./z_indexing";
 import {SuperWallTile} from "./classes/draw/super_wall";
 import {CommonSpriteSheet} from "./loader";
 import {LyingItem} from "./classes/equipment/lying_item";
+import * as PIXI from "pixi.js";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -532,4 +542,41 @@ export function dropItem(item, tilePosX, tilePosY) {
         Game.map[freeSpace.y][freeSpace.x].item = lyingItem;
         Game.world.addChild(lyingItem);
     }
+}
+
+export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
+    for (const dir of get8Directions().concat({x: 0, y: 0})) {
+        const posX = tilePosX + dir.x;
+        const posY = tilePosY + dir.y;
+        const sprite = new TileElement(PIXI.Texture.WHITE, posX, posY, true);
+        sprite.tint = 0xfa794d;
+        if (isEnemy(posX, posY)) {
+            Game.map[posY][posX].entity.damage(this, enemyDamage, 0, 0, DAMAGE_TYPE.HAZARDAL);
+        }
+        if (isWallTrap(posX, posY)) {
+            Game.map[posY][posX].entity.die(this);
+        }
+        if (isDiggable(posX, posY)) {
+            Game.world.removeTile(posX, posY);
+        }
+        if (isObelisk(posX, posY)) {
+            Game.map[posY][posX].entity.destroy();
+        }
+        if (Game.map[posY][posX].hazard) {
+            Game.map[posY][posX].hazard.removeFromWorld();
+        }
+        for (let i = Game.bullets.length - 1; i >= 0; i--) {
+            if (Game.bullets[i].tilePosition.x === posX && Game.bullets[i].tilePosition.y === posY) {
+                Game.bullets[i].die();
+            }
+        }
+        const player = getPlayerOnTile(posX, posY);
+        if (player) {
+            player.damage(playerDamage, sprite, false, true);
+        }
+        createFadingAttack(sprite, 9);
+        shakeScreen(10, 5);
+    }
+    if (!Game.player.dead) lightPlayerPosition(Game.player);
+    if (!Game.player2.dead) lightPlayerPosition(Game.player2);
 }

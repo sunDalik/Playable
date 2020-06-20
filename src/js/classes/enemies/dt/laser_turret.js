@@ -7,7 +7,6 @@ import {getPlayerOnTile, isAnyWall, isInanimate} from "../../../map_checks";
 import {createFadingAttack} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
-import {wallTallness} from "../../draw/wall";
 
 export class LaserTurret extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["laser_turret_unready.png"]) {
