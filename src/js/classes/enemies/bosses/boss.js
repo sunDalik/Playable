@@ -14,7 +14,7 @@ import {randomInt, randomShuffle} from "../../../utils/random_utils";
 import {getPlayerOnTile, isEnemy} from "../../../map_checks";
 import {getRandomChestDrop, getRandomWeapon} from "../../../utils/pool_utils";
 import {Pedestal} from "../../inanimate_objects/pedestal";
-import {SmallHealingPotion} from "../../equipment/bag/small_healing_potion";
+import {HealingPotion} from "../../equipment/bag/healing_potion";
 
 export class Boss extends Enemy {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -92,7 +92,7 @@ export class Boss extends Enemy {
     assignRandomDrops() {
         const healingPotionsAmount = randomInt(2, 3);
         for (let i = 0; i < healingPotionsAmount; i++) {
-            this.drops.push(new SmallHealingPotion());
+            this.drops.push(new HealingPotion());
         }
     }
 }

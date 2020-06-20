@@ -6,8 +6,8 @@ import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
 import {dropItem} from "../../../game_logic";
 import {Bomb} from "../bag/bomb";
-import {SmallHealingPotion} from "../bag/small_healing_potion";
 import {Key} from "../key";
+import {HealingPotion} from "../bag/healing_potion";
 
 export class GoldenDagger extends Weapon {
     constructor() {
@@ -33,7 +33,7 @@ export class GoldenDagger extends Weapon {
                 if (Math.random() < 0.3) {
                     const roll = Math.random();
                     if (roll < 0.15) {
-                        dropItem(new SmallHealingPotion(), enemy.tilePosition.x, enemy.tilePosition.y);
+                        dropItem(new HealingPotion(), enemy.tilePosition.x, enemy.tilePosition.y);
                     } else if (roll < 0.35) {
                         dropItem(new Bomb(), enemy.tilePosition.x, enemy.tilePosition.y);
                     } else {

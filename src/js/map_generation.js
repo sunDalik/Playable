@@ -2,7 +2,7 @@ import {Game} from "./game";
 import {ENEMY_TYPE, ROLE, STAGE} from "./enums";
 import {randomInt, randomShuffle} from "./utils/random_utils";
 import {Bomb} from "./classes/equipment/bag/bomb";
-import {SmallHealingPotion} from "./classes/equipment/bag/small_healing_potion";
+import {HealingPotion} from "./classes/equipment/bag/healing_potion";
 import {tileInsideTheBossRoom} from "./map_checks";
 import {RustySword} from "./classes/equipment/weapons/rusty_sword";
 import {Key} from "./classes/equipment/key";
@@ -12,7 +12,7 @@ import {keysOnEnemies} from "./level_generation/standard_generation";
 export function assignDrops() {
     distributeDrops(Key, keysOnEnemies);
     distributeDrops(Bomb, randomInt(4, 5));
-    distributeDrops(SmallHealingPotion, randomInt(1, 2));
+    distributeDrops(HealingPotion, randomInt(1, 2));
 
     if (Game.stage === STAGE.RUINS) {
         if (Math.random() < 0.5) {
