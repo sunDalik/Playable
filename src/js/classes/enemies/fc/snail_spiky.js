@@ -8,7 +8,7 @@ export class SpikySnail extends Snail {
         super(tilePositionX, tilePositionY, texture);
         this.health = this.maxHealth = 5;
         this.currentTurnDelay = this.turnDelay = 2;
-        this.atk = 1.5;
+        this.atk = 1.25;
         this.type = ENEMY_TYPE.SNAIL_SPIKY;
     }
 }
