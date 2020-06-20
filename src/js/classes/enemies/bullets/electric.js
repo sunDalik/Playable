@@ -11,6 +11,10 @@ export class ElectricBullet extends Bullet {
         }
     }
 
+    getBulletAngle(future = false) {
+        return this.angle
+    }
+
     attack(entity) {
         if (entity.electricityImmunity > 0) {
             if (entity.role === ROLE.PLAYER) {

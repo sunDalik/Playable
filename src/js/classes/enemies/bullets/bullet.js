@@ -7,6 +7,7 @@ import {IntentsSpriteSheet} from "../../../loader";
 import {Z_INDEXES} from "../../../z_indexing";
 import {getAngleForDirection} from "../../../utils/game_utils";
 import {TileElement} from "../../tile_elements/tile_element";
+import {easeInQuad} from "../../../utils/math_utils";
 
 export class Bullet extends TileElement {
     constructor(texture, tilePositionX, tilePositionY, pattern) {
@@ -29,6 +30,7 @@ export class Bullet extends TileElement {
         this.intentIcon.anchor.set(0.5, 0.5);
         this.updateIntentIcon();
         this.place();
+        this.angle = this.getBulletAngle();
     }
 
     place() {
@@ -36,6 +38,13 @@ export class Bullet extends TileElement {
         if (this.intentIcon) {
             this.moveIntentIcon();
         }
+    }
+
+    getBulletAngle(future = false) {
+        const patternIndex = future ? this.patternIndex + 1 : this.patternIndex;
+        const trueIndex = patternIndex >= this.pattern.length ? 0 : patternIndex;
+        const dir = this.pattern[trueIndex];
+        return getAngleForDirection(dir);
     }
 
     move() {
@@ -120,15 +129,19 @@ export class Bullet extends TileElement {
         this.tilePosition.y += tileStepY;
         this.placeOnMap();
         let counter = 0;
+        const oldAngle = this.getBulletAngle();
+        const newAngle = this.getBulletAngle(true);
 
         Game.app.ticker.remove(this.animation);
         const animation = (delta) => {
             if (Game.paused) return;
+            counter += delta;
             this.position.x += stepX * delta;
             this.position.y += stepY * delta;
-            counter += delta;
+            this.angle = oldAngle + easeInQuad(counter / animationTime) * (newAngle - oldAngle);
             this.moveIntentIcon();
             if (counter >= animationTime) {
+                this.angle = newAngle;
                 Game.app.ticker.remove(animation);
                 this.place();
             }
