@@ -21,6 +21,7 @@ export class ExplosivePixie extends Enemy {
         this.explodeDelay = 1;
         this.SLIDE_ANIMATION_TIME = 8;
         this.setRandomColor();
+        this.tallModifier = Game.TILESIZE / 3;
     }
 
     move() {

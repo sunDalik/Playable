@@ -482,6 +482,7 @@ export function deactivateBossMode() {
 }
 
 export function dropItem(item, tilePosX, tilePosY) {
+    //todo stack bag items of the same type?? (also keys)
     const freeSpaceSearch = (tileX, tileY) => {
         class Tile {
             constructor(x, y, sourceDirX, sourceDirY) {
