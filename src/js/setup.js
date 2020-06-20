@@ -148,7 +148,7 @@ export function initializeLevel() {
     assignDrops();
     retreatBlackBars();
     setTickTimeout(() => {
-        if (Math.random() < 1 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {
+        if (Math.random() < 0 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {
             Game.player.microSlide(Game.player2.tilePosition.x - Game.player.tilePosition.x,
                 Game.player2.tilePosition.y - Game.player.tilePosition.y,
                 null, () => setTickTimeout(() =>
@@ -161,7 +161,7 @@ export function initializeLevel() {
                 10, 2.5);
             kiss();
         } else Game.unplayable = false;
-    }, 8, 2.5);
+    }, 8);
 
     if (Game.stage === STAGE.RUINS) {
         //lightAll();
