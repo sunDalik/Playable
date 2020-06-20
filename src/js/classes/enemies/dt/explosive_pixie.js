@@ -1,6 +1,6 @@
 import {Enemy} from "../enemy";
 import {DAMAGE_TYPE, ENEMY_TYPE, STAGE} from "../../../enums";
-import {DTEnemiesSpriteSheet} from "../../../loader";
+import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {Game} from "../../../game";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
@@ -96,6 +96,12 @@ export class ExplosivePixie extends Enemy {
     }
 
     updateIntentIcon() {
+        //todo add explosion icon
         super.updateIntentIcon();
+        if (this.angry) {
+            this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
+        } else {
+            this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
+        }
     }
 }
