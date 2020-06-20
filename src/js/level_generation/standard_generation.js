@@ -411,7 +411,7 @@ function setStartPosition(startRoom) {
         level[Game.startPos.y][Game.startPos.x + 1].entity = new Chest(Game.startPos.x + 1, Game.startPos.y);
     }
     if (false) {
-        level[startRoom.offsetY + 2][startRoom.offsetX + 2].entity = new KingFrog(startRoom.offsetX + 2, startRoom.offsetY + 2);
+        //level[startRoom.offsetY + 2][startRoom.offsetX + 2].entity = new KingFrog(startRoom.offsetX + 2, startRoom.offsetY + 2);
         level[startRoom.offsetY + startRoom.height - 3][startRoom.offsetX + startRoom.width - 3].entity = new KingFireFrog(startRoom.offsetX + startRoom.width - 3, startRoom.offsetY + startRoom.height - 3);
     }
 }

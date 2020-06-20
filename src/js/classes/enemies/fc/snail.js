@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums";
 import {PoisonHazard} from "../../hazards/poison";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../../map_checks";
@@ -37,20 +37,24 @@ export class Snail extends Enemy {
                         this.slideBump(dir.x, dir.y);
                         player.damage(this.atk, this, true);
                     } else {
-                        Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
+                        this.createHazard();
                         this.slide(dir.x, dir.y);
                     }
                 } else this.slideBump(Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x), Math.sign(closestPlayer(this).tilePosition.y - this.tilePosition.y));
             } else {
                 const movementOptions = getRelativelyEmptyLitCardinalDirections(this);
                 if (movementOptions.length !== 0) {
+                    this.createHazard();
                     const dir = randomChoice(movementOptions);
-                    Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
                     this.slide(dir.x, dir.y);
                 }
             }
             this.currentTurnDelay = this.turnDelay;
         } else this.currentTurnDelay--;
+    }
+
+    createHazard() {
+        Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y));
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
