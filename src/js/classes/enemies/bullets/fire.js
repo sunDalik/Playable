@@ -1,7 +1,7 @@
 import {Bullet} from "./bullet";
 import {FireHazard} from "../../hazards/fire";
 import {Game} from "../../../game";
-import {STAGE} from "../../../enums";
+import {ROLE, STAGE} from "../../../enums";
 import {BulletsSpriteSheet} from "../../../loader";
 
 export class FireBullet extends Bullet {
@@ -13,8 +13,7 @@ export class FireBullet extends Bullet {
     }
 
     attack(entity) {
-        //should fireImmunity affect taking damage from bullets? I am not sure
-        if (entity.fireImmunity > 0) {
+        if (entity.role === ROLE.ENEMY) {
             this.die(false);
             this.dieFly(entity.tilePosition.x - this.tilePosition.x, entity.tilePosition.y - this.tilePosition.y);
         } else super.attack(entity);
