@@ -26,6 +26,8 @@ import {TeleportMage} from "../classes/enemies/ru/teleport_mage";
 import {WallSlime} from "../classes/enemies/ru/wall_slime";
 import {Mushroom} from "../classes/enemies/fc/mushroom";
 import {SpiderSmall} from "../classes/enemies/fc/spider_small";
+import {FireSnail} from "../classes/enemies/dt/fire_snail";
+import {ExplosivePixie} from "../classes/enemies/dt/explosive_pixie";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, GraySpider],
@@ -183,7 +185,40 @@ export const DTEnemySets = [
     [KingFireFrog, FireFrog, FireFrog],
     [KingFireFrog, Alligator],
     [Cocoon, KingFireFrog],
-    [FireFrog, Alligator, Alligator]
+    [FireFrog, Alligator, Alligator],
+    [GreenSpider, KingFireFrog],
+    [GreenSpider, Rabbit, Rabbit, Rabbit],
+    [RedSpider, Rabbit, Rabbit, Rabbit],
+    [FireSnail],
+    [ExplosivePixie],
+    [FireSnail, FireSnail],
+    [ExplosivePixie, ExplosivePixie],
+    [ExplosivePixie, ExplosivePixie, ExplosivePixie],
+    [ExplosivePixie, FireFrog, FireFrog],
+    [ExplosivePixie, Rabbit, ExplosivePixie],
+    [FireSnail, ExplosivePixie],
+    [FireSnail, FireFrog, FireFrog],
+    [FireSnail, KingFireFrog],
+    [ExplosivePixie, Alligator, Alligator],
+    [FireSnail, Alligator],
+    [FireSnail, Cocoon],
+    [ExplosivePixie, Cocoon],
+    [FireSnail, FireSnail, FireSnail, ExplosivePixie, ExplosivePixie],
+    [FireSnail, FireSnail, FireSnail],
+    [ExplosivePixie, FireFrog, FireFrog, FireFrog, ExplosivePixie],
+    [Cocoon, FireSnail, FireSnail],
+    [FireSnail, FireSnail, Rabbit, Rabbit, Rabbit],
+    [Cocoon, ExplosivePixie, Rabbit],
+    [GreenSpider, ExplosivePixie],
+    [GreenSpider, FireSnail],
+    [RedSpider, FireSnail],
+    [RedSpider, FireFrog, FireFrog],
+    [ExplosivePixie, ExplosivePixie, Alligator, Alligator],
+    [ExplosivePixie, Alligator, Alligator, Alligator, FireSnail],
+    [ExplosivePixie, Alligator, Alligator, Alligator, Alligator],
+    [FireSnail, Alligator, Alligator, Alligator, Alligator],
+    [FireSnail, Alligator, Alligator],
+    [ExplosivePixie, Alligator]
 ];
 
 export const DTBossSets = [

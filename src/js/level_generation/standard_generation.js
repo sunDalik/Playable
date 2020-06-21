@@ -533,7 +533,9 @@ function generateEnemies() {
                     }
                 }
             }
-            const randomBonus = settings.openSpace ? randomChoice([-3, -2, -1, 0]) : randomChoice([-2, -1, 0, 1]);
+            let randomBonus = randomChoice([-2, -1, 0, 1]);
+            if (settings.openSpace) randomBonus = randomChoice([-3, -2, -1, 0]);
+            else if (Game.stage === STAGE.DARK_TUNNEL) randomBonus = randomChoice([-2, -1, 0]);
             let enemyAmount = Math.round(emptyTiles / 7) + randomBonus;
             if (enemyAmount <= 0 && Math.random() < 0.75) enemyAmount = 1;
             let pack;
