@@ -3,46 +3,28 @@ import {Game} from "../../../game";
 import {Enemy} from "../enemy";
 import {ENEMY_TYPE, ROLE, STAGE, TILE_TYPE} from "../../../enums";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
-import {getPlayerOnTile, isAnyWall, isInanimate} from "../../../map_checks";
+import {getPlayerOnTile, isAnyWall} from "../../../map_checks";
 import {createFadingAttack} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {redrawMiniMapPixel} from "../../../drawing/minimap";
 
 export class LaserTurret extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["laser_turret_unready.png"]) {
+    constructor(tilePositionX, tilePositionY, directionX, texture = DTEnemiesSpriteSheet["laser_turret_unready.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 1;
         this.atk = 1;
         this.triggered = false;
         this.type = ENEMY_TYPE.LASER_TURRET;
-        this.turnDelay = 3;
+        this.turnDelay = 4;
         this.currentTurnDelay = 1;
         this.movable = false;
         this.role = ROLE.WALL_TRAP;
         this.noticeTileDistance = 5;
         this.canMoveInvisible = true;
-        this.directionX = 1;
+        this.directionX = directionX;
+        this.scale.x = Math.abs(this.scale.x) * this.directionX;
         this.removeShadow();
-    }
-
-    afterMapGen() {
-        if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)
-            || isInanimate(this.tilePosition.x + 1, this.tilePosition.y)) {
-            this.scale.x *= -1;
-            this.directionX = -1;
-        } else if (isAnyWall(this.tilePosition.x - 1, this.tilePosition.y)
-            || isInanimate(this.tilePosition.x - 1, this.tilePosition.y)) {
-            this.directionX = 1;
-        } else {
-            if (Math.random() < 0.5) {
-                this.scale.x *= -1;
-                this.directionX = -1;
-            } else {
-                this.directionX = 1;
-            }
-        }
-
     }
 
     move() {
@@ -116,12 +98,12 @@ export class LaserTurret extends Enemy {
         }
     }
 
-    place() {
-        this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
-        this.position.y = Game.TILESIZE * this.tilePosition.y - Game.TILESIZE + (Game.TILESIZE * 2 - this.height) + this.height * this.anchor.y;
-        if (this.healthContainer) {
-            this.onMoveFrame();
-        }
+    getTilePositionX() {
+        return Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
+    }
+
+    getTilePositionY() {
+        return Game.TILESIZE * this.tilePosition.y - Game.TILESIZE + (Game.TILESIZE * 2 - this.height) + this.height * this.anchor.y;
     }
 
     die(source) {

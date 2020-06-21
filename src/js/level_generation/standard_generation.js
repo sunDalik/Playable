@@ -1,4 +1,4 @@
-import {randomChoice, randomInt} from "../utils/random_utils";
+import {randomChoice, randomInt, randomShuffle} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
 import {LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums";
 import {Game} from "../game";
@@ -8,7 +8,7 @@ import {WallTile} from "../classes/draw/wall";
 import {SuperWallTile} from "../classes/draw/super_wall";
 import {Room, ROOM_TYPE} from "./room";
 import {Chest} from "../classes/inanimate_objects/chest";
-import {get8Directions, getCardinalDirections} from "../utils/map_utils";
+import {get8Directions, getCardinalDirections, getHorizontalDirections} from "../utils/map_utils";
 import {Obelisk} from "../classes/inanimate_objects/obelisk";
 import {pointTileDistance} from "../utils/game_utils";
 import {SpikyWallTrap} from "../classes/enemies/fc/spiky_wall_trap";
@@ -18,6 +18,7 @@ import {Torch} from "../classes/equipment/tools/torch";
 import {Key} from "../classes/equipment/key";
 import {KingFrog} from "../classes/enemies/fc/frog_king";
 import {KingFireFrog} from "../classes/enemies/dt/frog_king_fire";
+import {LaserTurret} from "../classes/enemies/dt/laser_turret";
 
 let settings;
 let level;
@@ -589,6 +590,8 @@ function getRoomEntries(room) {
 function generateSpecificEnemies() {
     if (Game.stage === STAGE.FLOODED_CAVE) {
         generateSpikyWallTraps();
+    } else if (Game.stage === STAGE.DARK_TUNNEL) {
+        generateLaserTurrets();
     }
 }
 
@@ -603,12 +606,51 @@ function generateSpikyWallTraps() {
         if (level[point.y][point.x].tileType === TILE_TYPE.WALL && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
             && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))) {
             if (anyDoorsAround(point)) continue;
-            for (const dir of getCardinalDirections()) {
+            for (const dir of randomShuffle(getCardinalDirections())) {
                 if (level[point.y + dir.y][point.x + dir.x].tileType === TILE_TYPE.NONE
                     && (level[point.y + dir.y][point.x + dir.x].entity === null
                         || level[point.y + dir.y][point.x + dir.x].entity.role !== ROLE.INANIMATE)) {
                     level[point.y][point.x].entity = new SpikyWallTrap(point.x, point.y);
                     spikyWallTrapsAmount--;
+                    level[point.y][point.x].tile = null;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+function generateLaserTurrets() {
+    let laserTurretsAmount = Math.ceil(rooms.length * 1);
+    let attempt = 0;
+    while (laserTurretsAmount > 0 && attempt++ < 600 + laserTurretsAmount) {
+        const point = {
+            x: randomInt(1, level[0].length - 2),
+            y: randomInt(1, level.length - 2)
+        };
+        if (level[point.y][point.x].tileType === TILE_TYPE.WALL && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
+            && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))
+            && level[point.y + 1][point.x].tileType === TILE_TYPE.NONE) {
+            for (const dir of randomShuffle(getHorizontalDirections())) {
+                if (level[point.y][point.x + dir.x].entity === null
+                    || level[point.y][point.x + dir.x].entity.role !== ROLE.INANIMATE) {
+                    const maxRange = 6;
+                    const minRange = 2;
+                    let bad = false;
+                    for (let x = dir.x; ; x += dir.x) {
+                        if (level[point.y][point.x + x].tileType === TILE_TYPE.ENTRY) {
+                            bad = true;
+                            break;
+                        }
+                        if (level[point.y][point.x + x].tileType === TILE_TYPE.WALL || level[point.y][point.x + x].tileType === TILE_TYPE.SUPER_WALL) {
+                            const range = Math.abs(x) - 1;
+                            if (range < minRange || range > maxRange) bad = true;
+                            break;
+                        }
+                    }
+                    if (bad) continue;
+                    level[point.y][point.x].entity = new LaserTurret(point.x, point.y, dir.x);
+                    laserTurretsAmount--;
                     level[point.y][point.x].tile = null;
                     break;
                 }

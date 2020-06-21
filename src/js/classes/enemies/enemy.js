@@ -153,7 +153,7 @@ export class Enemy extends AnimatedTileElement {
         if (this.isMinion) removeObjectFromArray(this, Game.enemies);
     }
 
-    runDestroyAnimation(){
+    runDestroyAnimation() {
         runDestroyAnimation(this);
     }
 
