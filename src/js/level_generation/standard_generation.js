@@ -19,10 +19,11 @@ import {Key} from "../classes/equipment/key";
 import {KingFrog} from "../classes/enemies/fc/frog_king";
 import {KingFireFrog} from "../classes/enemies/dt/frog_king_fire";
 import {LaserTurret} from "../classes/enemies/dt/laser_turret";
+import {Boss} from "../classes/enemies/bosses/boss";
 
 let settings;
 let level;
-let rooms;
+let rooms = [];
 
 //these are set later
 let chestsAmount = 0;
@@ -33,10 +34,21 @@ export function setupGenerator(generatorSettings) {
     settings = generatorSettings;
 }
 
-//todo add boss
 export function generateStandard() {
+    rooms = [];
     level = initEmptyLevel();
-    rooms = splitRoomAMAP(new Room(0, 0, level[0].length, level.length));
+    const bossSet = randomChoice(settings.bossSets);
+    const bossRoomStats = bossSet[0].getBossRoomStats ? bossSet[0].getBossRoomStats() : Boss.getBossRoomStats();
+    const sectors = createBossRoom(bossRoomStats);
+    let bossRoom;
+    for (const sector of sectors) {
+        if (sector.type === ROOM_TYPE.BOSS) {
+            bossRoom = sector;
+            rooms.push(sector);
+        } else {
+            rooms = rooms.concat(splitRoomAMAP(sector));
+        }
+    }
     for (const room of rooms) {
         if (!settings.openSpace) outlineRoomWithWalls(room);
         if (Math.random() > 0.4) shapeRoom(room, randomChoice(comboShapers));
@@ -46,7 +58,6 @@ export function generateStandard() {
         randomlyRotateRoom(room);
     }
     if (settings.openSpace) outlineLevelWithWalls();
-    const bossRoom = findBossRoom();
     clearShape(bossRoom);
     const path = planPath(bossRoom);
 
@@ -83,7 +94,7 @@ export function generateStandard() {
     }
     generateInanimates();
     generateEnemies();
-    generateBoss();
+    generateBoss(bossSet);
     generateKeys();
     setStartPosition(startRoom);
     setBossRoomPosition(bossRoom);
@@ -94,6 +105,29 @@ function initEmptyLevel() {
     const width = randomInt(settings.minLevelWidth, settings.maxLevelWidth);
     const height = randomInt(settings.minLevelHeight, settings.maxLevelHeight);
     return init2dArray(height, width, LEVEL_SYMBOLS.NONE);
+}
+
+function createBossRoom(bossRoomStats) {
+    let xs = [0, level[0].length - bossRoomStats.width];
+    for (let i = settings.minRoomSize; i <= level[0].length - 1 - settings.minRoomSize - bossRoomStats.width; i++) {
+        xs.push(i);
+    }
+    let ys = [0, level.length - bossRoomStats.height];
+    for (let i = settings.minRoomSize; i <= level.length - 1 - settings.minRoomSize - bossRoomStats.height; i++) {
+        ys.push(i);
+    }
+    const x = randomChoice(xs);
+    const y = randomChoice(ys);
+    let sectors = [new Room(x, y, bossRoomStats.width, bossRoomStats.height, ROOM_TYPE.BOSS)];
+    if (x !== 0 && y !== 0) sectors.push(new Room(0, 0, x, y));
+    if (y !== 0) sectors.push(new Room(x, 0, bossRoomStats.width, y));
+    if (y !== 0 && x !== level[0].length - bossRoomStats.width) sectors.push(new Room(x + bossRoomStats.width, 0, level[0].length - x - bossRoomStats.width, y));
+    if (x !== 0) sectors.push(new Room(0, y, x, bossRoomStats.height));
+    if (x !== level[0].length - bossRoomStats.width) sectors.push(new Room(x + bossRoomStats.width, y, level[0].length - x - bossRoomStats.width, bossRoomStats.height));
+    if (x !== 0 && y !== level.length - bossRoomStats.height) sectors.push(new Room(0, y + bossRoomStats.height, x, level.length - y - bossRoomStats.height));
+    if (y !== level.length - bossRoomStats.height) sectors.push(new Room(x, y + bossRoomStats.height, bossRoomStats.width, level.length - y - bossRoomStats.height));
+    if (y !== level.length - bossRoomStats.height && x !== level[0].length - bossRoomStats.width) sectors.push(new Room(x + bossRoomStats.width, y + bossRoomStats.height, level[0].length - x - bossRoomStats.width, level.length - y - bossRoomStats.height));
+    return sectors;
 }
 
 function splitRoomAMAP(initialRoom) {
@@ -217,14 +251,6 @@ function copyPartOf2dArray(array, offsetX, offsetY, width, height) {
         newArray[i] = array[i + offsetY].slice(offsetX, offsetX + width);
     }
     return newArray;
-}
-
-function findBossRoom() {
-    let bossRoom = rooms[0];
-    for (const room of rooms) {
-        if (room.width >= room.height && room.area > bossRoom.area) bossRoom = room;
-    }
-    return bossRoom;
 }
 
 function planPath(startRoom) {
@@ -445,7 +471,7 @@ function placeInanimate(placeMethod, amount) {
     for (let i = 0; i < amount; i++) {
         attempt = 0;
         while (attempt++ < 200) {
-            const room = Math.random() < 0.4 ? randomChoice(mainRooms) : randomChoice(secondaryRooms);
+            const room = Math.random() < 0.4 || secondaryRooms.length === 0 ? randomChoice(mainRooms) : randomChoice(secondaryRooms);
             if (placeMethod(room)) break;
         }
     }
@@ -679,9 +705,8 @@ function getRoom(point) {
     }
 }
 
-function generateBoss() {
+function generateBoss(set) {
     const room = rooms.find(r => r.type === ROOM_TYPE.BOSS);
-    const set = randomChoice(settings.bossSets);
     const bossPos = {
         x: room.offsetX + Math.floor(room.width / 2),
         y: room.offsetY + Math.floor(room.height / 2)

@@ -53,6 +53,10 @@ export class GuardianOfTheLight extends Boss {
         this.setCenterPreservation();
     }
 
+    static getBossRoomStats() {
+        return {width: randomInt(11, 12), height: randomInt(11, 12)};
+    }
+
     cancelAnimation() {
         super.cancelAnimation();
         this.alpha = 1;

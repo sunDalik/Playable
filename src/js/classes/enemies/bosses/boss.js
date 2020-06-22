@@ -27,7 +27,7 @@ export class Boss extends Enemy {
         Game.world.removeChild(this.healthContainer);
     }
 
-    getBossRoomStats() {
+    static getBossRoomStats() {
         return {width: randomInt(9, 12), height: randomInt(9, 12)};
     }
 
