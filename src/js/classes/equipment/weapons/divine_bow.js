@@ -9,13 +9,14 @@ export class DivineBow extends PiercingBowLikeWeapon {
         this.id = EQUIPMENT_ID.DIVINE_BOW;
         //atk 1 or range 4? hmmmmm
         this.atk = 1;
+        this.range = 4;
         this.name = "Divine Bow";
-        this.description = "Range 3\nAttack 1\nPiercing";
+        this.description = "Range 4\nPiercing\nAttack = 2 at full range | 1.5 at range 3 | 1 at range 2 | 0.5 at range 1";
         this.rarity = RARITY.S;
     }
 
     getAtk(wielder, range) {
-        return wielder.getAtk(this);
+        return wielder.getAtk(this, 0.5 + (range - 1) * 0.5);
     }
 
     getArrowAnimationTime(atkOffsetX, atkOffsetY) {

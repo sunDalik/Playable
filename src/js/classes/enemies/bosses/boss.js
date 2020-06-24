@@ -28,7 +28,7 @@ export class Boss extends Enemy {
     }
 
     static getBossRoomStats() {
-        return {width: randomInt(9, 12), height: randomInt(9, 12)};
+        return {width: randomInt(10, 12), height: randomInt(10, 12)};
     }
 
     onMoveFrame() {

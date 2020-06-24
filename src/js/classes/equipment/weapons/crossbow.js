@@ -7,9 +7,9 @@ export class Crossbow extends BowLikeWeapon {
         super(WeaponsSpriteSheet["crossbow.png"]);
         this.arrowTexture = WeaponsSpriteSheet["crossbow_bolt.png"];
         this.id = EQUIPMENT_ID.CROSSBOW;
-        this.atk = 0.75;
+        this.atk = 1;
         this.name = "Crossbow";
-        this.description = "Range 3\nAttack 0.75";
+        this.description = "Range 3\nAttack 1";
         this.rarity = RARITY.A;
     }
 

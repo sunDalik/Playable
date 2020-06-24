@@ -6,13 +6,15 @@ export class Bow extends BowLikeWeapon {
     constructor() {
         super(WeaponsSpriteSheet["bow.png"]);
         this.id = EQUIPMENT_ID.BOW;
-        this.atk = 0.75;
+        this.atk = 1;
         this.name = "Bow";
-        this.description = "Range 3\nAttack = 0.25 * distance to target\n";
+        this.description = "Range 3\nAttack = 1 at full range | 0.75 at range 2 | 0.25 at range 1";
         this.rarity = RARITY.B;
     }
 
     getAtk(wielder, range) {
-        return wielder.getAtk(this, this.atk * (range / 3));
+        if (range === 1) return wielder.getAtk(this, 0.25);
+        else if (range === 2) return wielder.getAtk(this, 0.75);
+        else return wielder.getAtk(this, 1);
     }
 }

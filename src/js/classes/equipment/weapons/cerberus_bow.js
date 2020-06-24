@@ -10,9 +10,9 @@ export class CerberusBow extends BowLikeWeapon {
         super(WeaponsSpriteSheet["cerberus_bow.png"]);
         this.id = EQUIPMENT_ID.CERBERUS_BOW;
         this.arrowTexture = WeaponsSpriteSheet["hell_arrow.png"];
-        this.atk = 0.75;
+        this.atk = 1;
         this.name = "Cerberus Bow";
-        this.description = "Range 3\nAttack = 0.25 * distance to target\nThis bow can fire up to 2 additional diagonal arrows";
+        this.description = "Range 3\nAttack = 1 at full range | 0.75 at range 2 | 0.25 at range 1\nThis bow can fire up to 2 additional diagonal arrows";
         this.rarity = RARITY.A;
     }
 
@@ -63,7 +63,9 @@ export class CerberusBow extends BowLikeWeapon {
     }
 
     getAtk(wielder, range) {
-        return wielder.getAtk(this, this.atk * (range / 3));
+        if (range === 1) return wielder.getAtk(this, 0.25);
+        else if (range === 2) return wielder.getAtk(this, 0.75);
+        else return wielder.getAtk(this, 1);
     }
 
     getDiagonalAtk(wielder, atkTile) {
