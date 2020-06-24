@@ -80,6 +80,18 @@ export class ParanoidEel extends Boss {
     afterMapGen() {
         Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
         this.placeOnMap();
+        for (let x = Game.endRoomBoundaries[0].x + 1; x < Game.endRoomBoundaries[1].x; x++) {
+            for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
+                if (isEnemy(x, y)) {
+                    const entity = Game.map[y][x].entity;
+                    if ([ENEMY_TYPE.EEL, ENEMY_TYPE.DARK_EEL, ENEMY_TYPE.POISON_EEL].includes(entity.type)) {
+                        this.minions.push(entity);
+                    }
+                }
+            }
+        }
+        this.minionsLimit = (Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x - 1) *
+            (Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y - 1) * 0.12;
     }
 
     move() {
@@ -116,7 +128,7 @@ export class ParanoidEel extends Boss {
             //bugs when it slides into wall then spits and all that happens quickly because you double tap player. Dont know why.
             if (roll < 2) {
                 if (this.emptyInFront()) {
-                    if (this.aliveMinionsCount() < this.minionsLimit) {
+                    if (this.canSpawnMinions()) {
                         this.triggeredPoisonEelSpit = true;
                         this.waitingToMove = true;
                         this.correctLook();
@@ -126,7 +138,7 @@ export class ParanoidEel extends Boss {
                 }
             } else if (roll < 7) {
                 if (this.emptyInFront()) {
-                    if (this.aliveMinionsCount() < this.minionsLimit) {
+                    if (this.canSpawnMinions()) {
                         this.triggeredEelSpit = true;
                         this.currentEelSpitCounter = 0;
                         this.correctLook();
@@ -293,17 +305,19 @@ export class ParanoidEel extends Boss {
                 if (player) player.damage(this.atk, this, true, true);
                 this.slide(0, i - 2 * Math.sign(i), null, () => {
                     if (isAnyWall(this.tilePosition.x, this.tilePosition.y + this.direction.y * 2)) {
-                        const wall = this.randomEndRoomWall();
                         shakeScreen();
-                        if (wall === undefined) return;
-                        Game.world.removeTile(wall.x, wall.y);
-                        const minionEel = this.spawnMinion(Eel, wall.x, wall.y);
-                        if (wall.x === Game.endRoomBoundaries[0].x) minionEel.setAngle(270);
-                        else if (wall.x === Game.endRoomBoundaries[1].x) minionEel.setAngle(90);
-                        else if (wall.y === Game.endRoomBoundaries[0].y) minionEel.setAngle(0);
-                        else if (wall.y === Game.endRoomBoundaries[1].y) minionEel.setAngle(180);
-                        minionEel.turnDelay = 0;
-                        minionEel.move();
+                        if (this.canSpawnMinions()) {
+                            const wall = this.randomEndRoomWall();
+                            if (wall === undefined) return;
+                            Game.world.removeTile(wall.x, wall.y);
+                            const minionEel = this.spawnMinion(Eel, wall.x, wall.y);
+                            if (wall.x === Game.endRoomBoundaries[0].x) minionEel.setAngle(270);
+                            else if (wall.x === Game.endRoomBoundaries[1].x) minionEel.setAngle(90);
+                            else if (wall.y === Game.endRoomBoundaries[0].y) minionEel.setAngle(0);
+                            else if (wall.y === Game.endRoomBoundaries[1].y) minionEel.setAngle(180);
+                            minionEel.turnDelay = 0;
+                            minionEel.move();
+                        }
                     }
                 }, Math.abs(i) * 1.5, true);
                 break;
@@ -314,7 +328,7 @@ export class ParanoidEel extends Boss {
     }
 
     horizontalRush() {
-        if (isEmpty(this.tilePosition.x - this.direction.x * 2, this.tilePosition.y)) {
+        if (isEmpty(this.tilePosition.x - this.direction.x * 2, this.tilePosition.y) && this.canSpawnMinions()) {
             const minionEel = this.spawnMinion(DarkEel, this.tilePosition.x - this.direction.x, this.tilePosition.y);
             minionEel.stun = 1;
             minionEel.setAngle(90 * (-this.direction.x + 2));
@@ -743,8 +757,8 @@ export class ParanoidEel extends Boss {
         return minion;
     }
 
-    aliveMinionsCount() {
+    canSpawnMinions() {
         this.minions = this.minions.filter(minion => !minion.dead);
-        return this.minions.length;
+        return this.minions.length < this.minionsLimit;
     }
 }
