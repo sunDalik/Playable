@@ -579,6 +579,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
                 }
             }
         };
+        particle.animation = animation;
         Game.app.ticker.add(animation);
         particles.push(particle);
     }

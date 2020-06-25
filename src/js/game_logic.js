@@ -148,6 +148,8 @@ function cleanParticles() {
         const particleArray = Game.destroyParticles[0]; //remove oldest particles
         const particle = randomChoice(particleArray);
         removeObjectFromArray(particle, particleArray);
+        //we might destroy a particle that is still being animated so to prevent exceptions we should remove this animation
+        if (particle.animation) Game.app.ticker.remove(particle.animation);
         fadeOutAndDie(particle, true);
         if (particleArray.length === 0) removeObjectFromArray(particleArray, Game.destroyParticles);
         else if (particleArray.length <= 3) {
