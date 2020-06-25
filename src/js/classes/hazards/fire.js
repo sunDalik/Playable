@@ -11,7 +11,7 @@ import {EffectsSpriteSheet} from "../../loader";
 export class FireHazard extends Hazard {
     constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
-        this.LIFETIME = 14;
+        this.LIFETIME = 10;
         this.actualAtk = 0.5;
         this.small = small;
         this.subFire = small;
@@ -24,7 +24,7 @@ export class FireHazard extends Hazard {
             this.tileSpread = 1;
             this.atk = 0;
         } else {
-            this.tileSpread = 5;
+            this.tileSpread = 4;
             this.atk = this.actualAtk;
         }
         this.turnsLeft = this.LIFETIME;
