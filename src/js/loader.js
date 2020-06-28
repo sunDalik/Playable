@@ -4,7 +4,8 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
     ParanoidEelSpriteSheet, GotLSpriteSheet, IntentsSpriteSheet, InanimatesSpriteSheet,
     WeaponsSpriteSheet, AchievementsSpriteSheet, HUDSpriteSheet,
     BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
-    HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet, OneTimeSpriteSheet, AccessoriesSpriteSheet;
+    HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet, OneTimeSpriteSheet,
+    AccessoriesSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
@@ -13,6 +14,8 @@ export function loadAll(afterLoad) {
 
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
+        .add("src/images/npc/shopkeeper.png")
+        .add("src/images/inanimates/shop_stand.png")
         .add("src/images/icons/obelisk_sacrifice.png")
 
         .add("src/textures/common.json")

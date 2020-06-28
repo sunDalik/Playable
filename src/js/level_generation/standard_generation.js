@@ -16,10 +16,14 @@ import {DoorsTile} from "../classes/draw/doors";
 import {LyingItem} from "../classes/equipment/lying_item";
 import {Torch} from "../classes/equipment/tools/torch";
 import {Key} from "../classes/equipment/key";
-import {KingFrog} from "../classes/enemies/fc/frog_king";
 import {KingFireFrog} from "../classes/enemies/dt/frog_king_fire";
 import {LaserTurret} from "../classes/enemies/dt/laser_turret";
 import {Boss} from "../classes/enemies/bosses/boss";
+import {Shopkeeper} from "../classes/npc/shopkeeper";
+import {ShopStand} from "../classes/inanimate_objects/shop_stand";
+import {Bomb} from "../classes/equipment/bag/bomb";
+import {HealingPotion} from "../classes/equipment/bag/healing_potion";
+import {getRandomShopItem} from "../utils/pool_utils";
 
 let settings;
 let level;
@@ -80,6 +84,7 @@ export function generateStandard() {
             removeObjectFromArray(room, unconnectedRooms);
         }
     }
+
     for (const secretRoom of unconnectedRooms) {
         secretRoom.type = ROOM_TYPE.SECRET;
         reshapeRoom(secretRoom, shapers[1]);
@@ -459,8 +464,11 @@ function expandLevelAndRooms(expandX, expandY) {
 
 function generateInanimates() {
     const obelisksAmount = 1;
+    const shopAmount = 0;
+    //todo change to 2 3 once you come up with big structure generation algorithm
     chestsAmount = Game.stage === STAGE.DARK_TUNNEL ? 3 : 4;
     placeInanimate(placeObelisk, obelisksAmount);
+    placeInanimate(placeShop, shopAmount);
     placeInanimate(placeChest, chestsAmount);
 }
 
@@ -530,6 +538,45 @@ function ensureInanimateSurroundings(x, y) {
         level[y + 1][x + 1].tileType = TILE_TYPE.NONE;
         level[y + 1][x + 1].tile = null;
     }
+}
+
+function placeShop(room) {
+    const acceptable = (x, y) => {
+        for (let i = y - 1; i <= y + 2; i++) {
+            for (let j = x - 3; j <= x + 3; j++) {
+                if ((level[i][j].tileType !== TILE_TYPE.NONE && level[i][j].tileType !== TILE_TYPE.WALL) || level[i][j].entity !== null) return false;
+            }
+        }
+        return true;
+    };
+
+    const clearSurroundings = (x, y) => {
+        for (let i = y - 1; i <= y + 2; i++) {
+            for (let j = x - 3; j <= x + 3; j++) {
+                if (level[i][j].tile) level[i][j].tile = null;
+                level[i][j].tileType = TILE_TYPE.NONE;
+            }
+        }
+    };
+
+    let attempt = 0;
+    while (attempt++ < 200) {
+        const point = {
+            x: randomInt(room.offsetX + 4, room.offsetX + room.width - 5),
+            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 6)
+        };
+        if (acceptable(point.x, point.y)) {
+            clearSurroundings(point.x, point.y);
+            level[point.y][point.x].entity = new Shopkeeper(point.x, point.y);
+            level[point.y][point.x - 2].entity = new ShopStand(point.x - 2, point.y, new Bomb());
+            level[point.y][point.x + 2].entity = new ShopStand(point.x + 2, point.y, new HealingPotion());
+            level[point.y + 1][point.x].entity = new ShopStand(point.x, point.y + 1, getRandomShopItem());
+            level[point.y + 1][point.x + 1].entity = new ShopStand(point.x + 1, point.y + 1, getRandomShopItem());
+            level[point.y + 1][point.x - 1].entity = new ShopStand(point.x - 1, point.y + 1, getRandomShopItem());
+            return true;
+        }
+    }
+    return false;
 }
 
 function placeObelisk(room) {

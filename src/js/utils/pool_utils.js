@@ -5,10 +5,18 @@ import {RARITY, SLOT} from "../enums";
 import {randomChoice, randomShuffle} from "./random_utils";
 import {Necromancy} from "../classes/equipment/magic/necromancy";
 
-export function getRandomWeapon() {
+export function getRandomWeapon(canGetS = true) {
     if (Game.weaponPool.length === 0) return null;
-    const constructor = getItemFromPool(Game.weaponPool);
+    const constructor = getItemFromPool(Game.weaponPool, canGetS);
     return new constructor();
+}
+
+export function getRandomShopItem() {
+    if (Math.random() * (Game.chestItemPool.length + Game.weaponPool.length) < Game.chestItemPool.length) {
+        return getRandomChestDrop(false);
+    } else {
+        return getRandomWeapon(false);
+    }
 }
 
 export function getRandomSpell() {
@@ -49,9 +57,9 @@ export function getRandomSpell() {
     else return new constructor();
 }
 
-export function getRandomChestDrop() {
+export function getRandomChestDrop(canGetS = true) {
     if (Game.chestItemPool.length === 0) return new Bomb();
-    const constructor = getItemFromPool(Game.chestItemPool);
+    const constructor = getItemFromPool(Game.chestItemPool, canGetS);
     const item = new constructor();
     removeItemFromPool(item, Game.chestItemPool);
     return item;
@@ -60,9 +68,10 @@ export function getRandomChestDrop() {
 /**
  * Returns random item from the pool considering current rarity distribution
  * @param pool {Class[]}
+ * @param canGetS {Boolean}
  * @returns {null|Class}
  */
-function getItemFromPool(pool) {
+function getItemFromPool(pool, canGetS = true) {
     if (pool.length === 0) return null;
     randomShuffle(pool);
     let attempt = 0;
@@ -70,6 +79,7 @@ function getItemFromPool(pool) {
     while (attempt++ < 200 && item === null) {
         const rand = Math.random() * 100;
         for (const rarity of [RARITY.C, RARITY.B, RARITY.A, RARITY.S]) {
+            if (rarity === RARITY.S && canGetS === false) continue;
             if (rand >= rarity.chanceFrom && rand <= rarity.chanceTo) {
                 const filteredPool = pool.filter(item => (new item()).rarity === rarity);
                 if (filteredPool.length !== 0) item = randomChoice(filteredPool);

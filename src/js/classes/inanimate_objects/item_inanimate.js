@@ -3,7 +3,7 @@ import {ROLE} from "../../enums";
 import {Game} from "../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import * as PIXI from "pixi.js";
-import {HUDTextStyle, slotContentSizeMargin, slotSize} from "../../drawing/draw_constants";
+import {HUDTextStyle} from "../../drawing/draw_constants";
 import {createFloatingItemAnimation} from "../../animations";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
@@ -11,8 +11,8 @@ import {getPlayerOnTile} from "../../map_checks";
 const itemSize = Game.TILESIZE * 0.9;
 
 export class ItemInanimate extends TileElement {
-    constructor(texture, tilePositionX, tilePositionY) {
-        super(texture, tilePositionX, tilePositionY);
+    constructor(texture, tilePositionX, tilePositionY, keepInside = false) {
+        super(texture, tilePositionX, tilePositionY, keepInside);
         this.role = ROLE.INANIMATE;
     }
 

@@ -1,7 +1,16 @@
 import {Game} from "./game";
 import {incrementStage} from "./game_changer";
 import {initializeLevel} from "./setup";
-import {ACHIEVEMENT_ID, DAMAGE_TYPE, EQUIPMENT_TYPE, HAZARD_TYPE, SLOT, STAGE, TILE_TYPE} from "./enums";
+import {
+    ACHIEVEMENT_ID,
+    DAMAGE_TYPE,
+    EQUIPMENT_TYPE,
+    HAZARD_TYPE,
+    INANIMATE_TYPE,
+    SLOT,
+    STAGE,
+    TILE_TYPE
+} from "./enums";
 import {
     drawInteractionKeys,
     redrawBag,
@@ -401,6 +410,7 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
 
 export function gotoNextLevel() {
     Game.world.clean();
+    returnShopItems();
     cleanGameState();
     completeBeatStageAchievements(Game.stage);
     incrementStage();
@@ -429,6 +439,14 @@ export function cleanGameState() {
     }
     removeAllChildrenFromContainer(HUD.bossHealth);
     Game.destroyParticles = [];
+}
+
+function returnShopItems() {
+    for (const inanimate of Game.inanimates) {
+        if (inanimate.type === INANIMATE_TYPE.SHOP_STAND && !inanimate.bought && inanimate.contentsType !== EQUIPMENT_TYPE.WEAPON) {
+            Game.chestItemPool.push(inanimate.contents.constructor);
+        }
+    }
 }
 
 export function activateBossMode(player) {

@@ -54,8 +54,12 @@ export function redrawMiniMapPixel(x, y) {
         return;
         //pixel.beginFill(0x000000);
     } else if (Game.map[y][x].entity && Game.map[y][x].entity.role === ROLE.INANIMATE
+        && Game.map[y][x].entity.type === INANIMATE_TYPE.SHOPKEEPER) {
+        pixel.beginFill(0xfcf514);
+    } else if (Game.map[y][x].entity && Game.map[y][x].entity.role === ROLE.INANIMATE
         && Game.map[y][x].entity.type !== INANIMATE_TYPE.GRAIL
-        && Game.map[y][x].entity.type !== INANIMATE_TYPE.FIRE_GOBLET) {
+        && Game.map[y][x].entity.type !== INANIMATE_TYPE.FIRE_GOBLET
+        && Game.map[y][x].entity.type !== INANIMATE_TYPE.SHOP_STAND) {
         pixel.beginFill(0xffb03b);
     } else if (Game.map[y][x].tileType === TILE_TYPE.EXIT) {
         pixel.beginFill(0xff4adb);
