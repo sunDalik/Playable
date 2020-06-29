@@ -463,9 +463,8 @@ function expandLevelAndRooms(expandX, expandY) {
 
 function generateInanimates() {
     const obelisksAmount = 1;
-    const shopAmount = 0;
-    //todo change to 2 3 once you come up with big structure generation algorithm
-    chestsAmount = Game.stage === STAGE.DARK_TUNNEL ? 3 : 4;
+    const shopAmount = 1;
+    chestsAmount = Game.stage === STAGE.DARK_TUNNEL ? 2 : 3;
     placeInanimate(placeObelisk, obelisksAmount);
     placeInanimate(placeShop, shopAmount);
     placeInanimate(placeChest, chestsAmount);
@@ -539,28 +538,51 @@ function ensureInanimateSurroundings(x, y) {
 
 function placeShop(room) {
     const acceptable = (x, y) => {
+        //check that all 5 tiles behind us are walls
+        for (let j = x - 2; j <= x + 2; j++) {
+            if (level[y - 1][j].tileType !== TILE_TYPE.WALL) return false;
+        }
+
+        //minimal and kinda arbitrary check for emptiness
+        for (let j = x - 1; j <= x + 1; j++) {
+            if (level[y][j].tileType !== TILE_TYPE.NONE) return false;
+        }
+
+        //check that not near doors
+        // I think you should remove the openspace part because almost no doors generate in openspace level anyway?
+        if (!settings.openSpace && isNearEntrance({x: x, y: y}, room, 4)) return false;
+
+        // check that no entity is even near the shop. Usually at this point of generation only entities you can encounter are obelisks
         for (let i = y - 1; i <= y + 2; i++) {
             for (let j = x - 3; j <= x + 3; j++) {
-                if ((level[i][j].tileType !== TILE_TYPE.NONE && level[i][j].tileType !== TILE_TYPE.WALL) || level[i][j].entity !== null) return false;
+                if (level[i][j].entity !== null) return false;
             }
         }
+
         return true;
     };
 
+    const clearPathToTile = (x, y, dirX) => {
+        if ([TILE_TYPE.ENTRY, TILE_TYPE.NONE].includes(level[y][x + dirX].tileType)) {
+            clearWall(x + dirX, y + 1);
+        }
+    };
+
     const clearSurroundings = (x, y) => {
-        for (let i = y - 1; i <= y + 2; i++) {
-            for (let j = x - 3; j <= x + 3; j++) {
-                if (level[i][j].tile) level[i][j].tile = null;
-                level[i][j].tileType = TILE_TYPE.NONE;
+        for (let i = y; i <= y + 2; i++) {
+            for (let j = x - 2; j <= x + 2; j++) {
+                clearWall(j, i);
             }
         }
+        clearPathToTile(x - 2, y, -1);
+        clearPathToTile(x + 2, y, 1);
     };
 
     let attempt = 0;
     while (attempt++ < 200) {
         const point = {
-            x: randomInt(room.offsetX + 4, room.offsetX + room.width - 5),
-            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 6)
+            x: randomInt(room.offsetX + 3, room.offsetX + room.width - 4),
+            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 5)
         };
         if (acceptable(point.x, point.y)) {
             clearSurroundings(point.x, point.y);
@@ -581,7 +603,7 @@ function placeObelisk(room) {
     while (attempt++ < 200) {
         const point = {
             x: randomInt(room.offsetX + 3, room.offsetX + room.width - 4),
-            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 4)
+            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 5)
         };
         if (!settings.openSpace && isNearEntrance(point, room)) continue;
         if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL
