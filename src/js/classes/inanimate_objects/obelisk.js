@@ -82,6 +82,8 @@ export class Obelisk extends TileElement {
             }
         };
 
+        const clearPathToPoint = (x, y, dirX) => clearPathToGrail({tilePosition: {x: x, y: y}}, dirX);
+
         if (level[this.tilePosition.y - 1][this.tilePosition.x - 2].tileType === TILE_TYPE.WALL && level[this.tilePosition.y - 1][this.tilePosition.x + 2].tileType === TILE_TYPE.WALL) {
             // g g o g g
             placeGrail(this.grails[0], this.tilePosition.x - 1, this.tilePosition.y);
@@ -100,6 +102,8 @@ export class Obelisk extends TileElement {
             placeGrail(this.grails[3], this.tilePosition.x + 1, this.tilePosition.y + 2);
             clearWall(this.tilePosition.x, this.tilePosition.y + 2);
             clearWall(this.tilePosition.x, this.tilePosition.y + 3);
+            clearPathToPoint(this.tilePosition.x + 1, this.tilePosition.y, 1);
+            clearPathToPoint(this.tilePosition.x - 1, this.tilePosition.y, -1);
             clearPathToGrail(this.grails[0], -1);
             clearPathToGrail(this.grails[1], 1);
             clearPathToGrail(this.grails[2], -1);
