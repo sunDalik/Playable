@@ -10,6 +10,7 @@ import {randomInt} from "../../utils/random_utils";
 import {Necromancy} from "../equipment/magic/necromancy";
 import {getRandomSpell} from "../../utils/pool_utils";
 import {Grail} from "./grail";
+import {clearWall} from "../../level_generation/standard_generation";
 
 export class Obelisk extends TileElement {
     constructor(tilePositionX, tilePositionY, level) {
@@ -70,33 +71,46 @@ export class Obelisk extends TileElement {
         for (let i = 0; i < 4; i++) {
             this.grails[i] = new Grail(0, 0, this);
         }
+        const placeGrail = (grail, x, y) => {
+            level[y][x].entity = grail;
+            grail.tilePosition.set(x, y);
+        };
+
+        const clearPathToGrail = (grail, dirX) => {
+            if ([TILE_TYPE.ENTRY, TILE_TYPE.NONE].includes(level[grail.tilePosition.y][grail.tilePosition.x + dirX].tileType)) {
+                clearWall(grail.tilePosition.x + dirX, grail.tilePosition.y + 1);
+            }
+        };
+
         if (level[this.tilePosition.y - 1][this.tilePosition.x - 2].tileType === TILE_TYPE.WALL && level[this.tilePosition.y - 1][this.tilePosition.x + 2].tileType === TILE_TYPE.WALL) {
-            level[this.tilePosition.y][this.tilePosition.x - 1].entity = this.grails[0];
-            this.grails[0].tilePosition.set(this.tilePosition.x - 1, this.tilePosition.y);
-            level[this.tilePosition.y][this.tilePosition.x + 1].entity = this.grails[1];
-            this.grails[1].tilePosition.set(this.tilePosition.x + 1, this.tilePosition.y);
-            level[this.tilePosition.y][this.tilePosition.x - 2].entity = this.grails[2];
-            this.grails[2].tilePosition.set(this.tilePosition.x - 2, this.tilePosition.y);
-            level[this.tilePosition.y][this.tilePosition.x + 2].entity = this.grails[3];
-            this.grails[3].tilePosition.set(this.tilePosition.x + 2, this.tilePosition.y);
+            // g g o g g
+            placeGrail(this.grails[0], this.tilePosition.x - 1, this.tilePosition.y);
+            placeGrail(this.grails[1], this.tilePosition.x + 1, this.tilePosition.y);
+            placeGrail(this.grails[2], this.tilePosition.x - 2, this.tilePosition.y);
+            placeGrail(this.grails[3], this.tilePosition.x + 2, this.tilePosition.y);
+            clearPathToGrail(this.grails[2], -1);
+            clearPathToGrail(this.grails[3], 1);
         } else {
-            level[this.tilePosition.y + 1][this.tilePosition.x - 1].entity = this.grails[0];
-            this.grails[0].tilePosition.set(this.tilePosition.x - 1, this.tilePosition.y + 1);
-            level[this.tilePosition.y + 1][this.tilePosition.x + 1].entity = this.grails[1];
-            this.grails[1].tilePosition.set(this.tilePosition.x + 1, this.tilePosition.y + 1);
-            level[this.tilePosition.y + 2][this.tilePosition.x - 1].entity = this.grails[2];
-            this.grails[2].tilePosition.set(this.tilePosition.x - 1, this.tilePosition.y + 2);
-            level[this.tilePosition.y + 2][this.tilePosition.x + 1].entity = this.grails[3];
-            this.grails[3].tilePosition.set(this.tilePosition.x + 1, this.tilePosition.y + 2);
+            // o
+            //g g
+            //g g
+            placeGrail(this.grails[0], this.tilePosition.x - 1, this.tilePosition.y + 1);
+            placeGrail(this.grails[1], this.tilePosition.x + 1, this.tilePosition.y + 1);
+            placeGrail(this.grails[2], this.tilePosition.x - 1, this.tilePosition.y + 2);
+            placeGrail(this.grails[3], this.tilePosition.x + 1, this.tilePosition.y + 2);
+            clearWall(this.tilePosition.x, this.tilePosition.y + 2);
+            clearWall(this.tilePosition.x, this.tilePosition.y + 3);
+            clearPathToGrail(this.grails[0], -1);
+            clearPathToGrail(this.grails[1], 1);
+            clearPathToGrail(this.grails[2], -1);
+            clearPathToGrail(this.grails[3], 1);
         }
         for (const grail of this.grails) {
-            grail.placeGrail();
+            grail.initGrail();
         }
-        const clearDirs = [{x: 0, y: 0}, {x: -1, y: 0}, {x: +1, y: 0}, {x: -1, y: +1}, {x: +1, y: +1}, {x: 0, y: +1}];
-        for (const grail of this.grails) {
-            for (const dir of clearDirs) {
-                level[grail.tilePosition.y + dir.y][grail.tilePosition.x + dir.x].tileType = TILE_TYPE.NONE;
-                level[grail.tilePosition.y + dir.y][grail.tilePosition.x + dir.x].tile = null;
+        for (const object of this.grails.concat([this])) {
+            for (const dir of [{x: 0, y: 0}, {x: 0, y: 1}]) {
+                clearWall(object.tilePosition.x + dir.x, object.tilePosition.y + dir.y);
             }
         }
     }

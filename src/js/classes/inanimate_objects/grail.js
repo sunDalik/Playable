@@ -17,7 +17,7 @@ export class Grail extends ItemInanimate {
         this.tallModifier = -7;
     }
 
-    placeGrail() {
+    initGrail() {
         this.place();
         if (!this.itemSprite) {
             // Light is a placeholder

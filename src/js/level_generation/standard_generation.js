@@ -424,8 +424,7 @@ function setStartPosition(startRoom) {
         y: startRoom.offsetY + Math.floor(startRoom.height / 2)
     };
     for (const dir of get8Directions().concat({x: 0, y: 0})) {
-        level[Game.startPos.y + dir.y][Game.startPos.x + dir.x].tile = null;
-        level[Game.startPos.y + dir.y][Game.startPos.x + dir.x].tileType = TILE_TYPE.NONE;
+        clearWall(Game.startPos.x + dir.x, Game.startPos.y + dir.y);
     }
     if (Game.stage === STAGE.DARK_TUNNEL) {
         const dir = randomChoice(get8Directions());
@@ -531,12 +530,10 @@ function otherInanimatesNear(point) {
 
 function ensureInanimateSurroundings(x, y) {
     if (level[y][x - 1].tileType === TILE_TYPE.NONE && level[y + 1][x - 1].tileType === TILE_TYPE.WALL) {
-        level[y + 1][x - 1].tileType = TILE_TYPE.NONE;
-        level[y + 1][x - 1].tile = null;
+        clearWall(x - 1, y + 1);
     }
     if (level[y][x + 1].tileType === TILE_TYPE.NONE && level[y + 1][x + 1].tileType === TILE_TYPE.WALL) {
-        level[y + 1][x + 1].tileType = TILE_TYPE.NONE;
-        level[y + 1][x + 1].tile = null;
+        clearWall(x + 1, y + 1);
     }
 }
 
@@ -586,6 +583,7 @@ function placeObelisk(room) {
             x: randomInt(room.offsetX + 3, room.offsetX + room.width - 4),
             y: randomInt(room.offsetY + 1, room.offsetY + room.height - 4)
         };
+        if (!settings.openSpace && isNearEntrance(point, room)) continue;
         if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL
             && level[point.y - 1][point.x - 1].tileType === TILE_TYPE.WALL && level[point.y - 1][point.x + 1].tileType === TILE_TYPE.WALL) {
             level[point.y][point.x].entity = new Obelisk(point.x, point.y, level);
@@ -815,4 +813,9 @@ function createSecrets(secretRoom) {
         };
         level[point.y][point.x].entity = new Obelisk(point.x, point.y, level);
     }
+}
+
+export function clearWall(x, y) {
+    level[y][x].tile = null;
+    level[y][x].tileType = TILE_TYPE.NONE;
 }
