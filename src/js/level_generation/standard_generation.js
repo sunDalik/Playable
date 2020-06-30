@@ -265,7 +265,7 @@ function planPath(startRoom) {
     while (path.length < maxPath) {
         const nextRoom = randomChoice(getAdjacentRooms(path[path.length - 1]).filter(r => !path.includes(r)));
         if (nextRoom === undefined) {
-            if (attempt++ > 100 || path.length > 4) break;
+            if (attempt++ > 200 || path.length > 4) break;
             else path = [startRoom];
             continue;
         }
@@ -799,12 +799,9 @@ function generateKeys() {
     const keysAmount = Math.ceil(chestsAmount * 2.5);
     keysOnEnemies = Math.ceil(keysAmount / 3);
     let keysOnMap = keysAmount - keysOnEnemies;
-    let attempt = 0;
-    while (keysOnMap > 0 && attempt++ < 300 + keysOnMap) {
-        const point = {
-            x: randomInt(2, level[0].length - 3),
-            y: randomInt(2, level.length - 3)
-        };
+
+    for (const point of getValidRoomPoints(new Room(1, 1, level[0].length - 2, level.length - 2))) {
+        if (keysOnMap <= 0) break;
         const room = getRoom(point);
         if (level[point.y][point.x].tileType === TILE_TYPE.NONE
             && level[point.y][point.x].entity === null

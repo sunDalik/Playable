@@ -166,7 +166,7 @@ export function initializeLevel() {
     if (Game.stage === STAGE.RUINS) {
         //lightAll();
     }
-    if (true) {
+    if (false) {
         lightAllRealistic();
         camera.setup(Game.world.width / 2, Game.world.height / 2);
     }

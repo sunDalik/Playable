@@ -7,8 +7,8 @@ export const Game = {
 
     world: null,
 
-    //TILESIZE: 66,
-    TILESIZE : 25,
+    TILESIZE: 66,
+    //TILESIZE : 25,
 
     followMode: false,
     chainLength: 10,
