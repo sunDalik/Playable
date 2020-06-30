@@ -1,6 +1,6 @@
 import {randomChoice, randomInt, randomShuffle} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
-import {LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums";
+import {INANIMATE_TYPE, LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums";
 import {Game} from "../game";
 import {expandLevel, outlineWallsWithSuperWalls} from "./generation_utils";
 import {comboShapers, shapers} from "./room_shapers";
@@ -543,10 +543,8 @@ function placeShop(room) {
             if (level[y - 1][j].tileType !== TILE_TYPE.WALL) return false;
         }
 
-        //minimal and kinda arbitrary check for emptiness
-        for (let j = x - 1; j <= x + 1; j++) {
-            if (level[y][j].tileType !== TILE_TYPE.NONE) return false;
-        }
+        //minimal check for emptiness
+        if (level[y][x].tileType !== TILE_TYPE.NONE) return false;
 
         //check that not near doors
         // I think you should remove the openspace part because almost no doors generate in openspace level anyway?
@@ -646,7 +644,15 @@ function generateEnemies() {
                         x: randomInt(room.offsetX + 1, room.offsetX + room.width - 2),
                         y: randomInt(room.offsetY + 1, room.offsetY + room.height - 2)
                     };
+                    const nearShopkeeper = (point) => {
+                        for (const dir of getCardinalDirections()) {
+                            const entity = level[point.y + dir.y][point.x + dir.x].entity;
+                            if (entity && entity.role === ROLE.INANIMATE && entity.type === INANIMATE_TYPE.SHOPKEEPER) return true;
+                        }
+                        return false;
+                    };
                     if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
+                        if (nearShopkeeper(point)) continue;
                         if (!settings.openSpace && isNearEntrance(point, room)) continue;
                         else level[point.y][point.x].entity = new enemy(point.x, point.y);
                         break;
