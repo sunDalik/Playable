@@ -1,10 +1,6 @@
-import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums";
-import {AccessoriesSpriteSheet, EffectsSpriteSheet} from "../../../loader";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums";
+import {AccessoriesSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
-import {TileElement} from "../../tile_elements/tile_element";
-import {Game} from "../../../game";
-import {easeOutQuad} from "../../../utils/math_utils";
-import {randomChoice, randomInt} from "../../../utils/random_utils";
 
 //todo increase chance of finding a bow?
 export class QuiverOfTheForestSpirit extends Equipment {
