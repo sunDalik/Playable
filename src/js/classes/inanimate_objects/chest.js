@@ -1,6 +1,6 @@
 import {Game} from "../../game";
-import {INANIMATE_TYPE} from "../../enums";
-import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
+import {EQUIPMENT_ID, INANIMATE_TYPE, SLOT} from "../../enums";
+import {addKeys, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
@@ -10,7 +10,7 @@ import {redrawKeysAmount} from "../../drawing/draw_hud";
 import {BLACK_COLOR_OVERLAY} from "../../filters";
 import {ItemInanimate} from "./item_inanimate";
 import {getRandomChestDrop, getRandomWeapon} from "../../utils/pool_utils";
-import {InanimatesSpriteSheet} from "../../loader";
+import {AccessoriesSpriteSheet, InanimatesSpriteSheet} from "../../loader";
 
 export class Chest extends ItemInanimate {
     constructor(tilePositionX, tilePositionY) {
@@ -33,12 +33,16 @@ export class Chest extends ItemInanimate {
         this.tallModifier = -15;
         this.setScaleModifier(0.9 + this.contents.rarity.num / 16);
         this.keysRequired = this.totalKeysRequired = this.contents.rarity.num + 1;
+
+        if (this.contents.id === EQUIPMENT_ID.HERO_KEY) this.keysRequired--;
+        this.heroKeyed = false;
+
         this.updateKeysRequiredSprite();
     }
 
     interact(player) {
         if (this.keysRequired <= 0) this.takeItem(player);
-        else if (Game.keysAmount > 0) {
+        else if (Game.keysAmount > 0 || this.canBeHeroKeyed(player)) {
             this.consumeKey(player);
             return false;
         }
@@ -57,8 +61,11 @@ export class Chest extends ItemInanimate {
         else this.hideItem();
     }
 
+    canBeHeroKeyed(player) {
+        return !this.heroKeyed && player[SLOT.ACCESSORY] && player[SLOT.ACCESSORY].id === EQUIPMENT_ID.HERO_KEY;
+    }
+
     consumeKey(player) {
-        if (Game.keysAmount <= 0) return;
         Game.keysAmount--;
         redrawKeysAmount();
         this.keysRequired--;
@@ -78,6 +85,17 @@ export class Chest extends ItemInanimate {
         } else if (tileStepY === -1) {
             keyElement.angle = -135;
         }
+
+        if (this.canBeHeroKeyed(player)) {
+            addKeys(1);
+            keyElement.texture = AccessoriesSpriteSheet["hero_key.png"];
+            keyElement.scale.x *= -1;
+            keyElement.angle -= 45;
+            if (tileStepX === -1) keyElement.angle += 90;
+            keyElement.setScaleModifier(1);
+            this.heroKeyed = true;
+        }
+
         keyElement.zIndex = player.zIndex + 1;
         Game.world.addChild(keyElement);
         keyElement.step(tileStepX, tileStepY, null, () => Game.world.removeChild(keyElement));
