@@ -166,9 +166,9 @@ export function initializeLevel() {
     if (Game.stage === STAGE.RUINS) {
         //lightAll();
     }
-    if (Game.experimentalFeatures) {
-        //lightAllRealistic();
-        //camera.setup(Game.world.width / 2, Game.world.height / 2);
+    if (true) {
+        lightAllRealistic();
+        camera.setup(Game.world.width / 2, Game.world.height / 2);
     }
     setTimerRunning(false);
 }

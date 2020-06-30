@@ -7,8 +7,8 @@ export const Game = {
 
     world: null,
 
-    TILESIZE: 66,
-    //TILESIZE : 25,
+    //TILESIZE: 66,
+    TILESIZE : 25,
 
     followMode: false,
     chainLength: 10,
@@ -75,7 +75,6 @@ export const Game = {
     destroyParticles: [],
     achievementPopUpQueue: [],
     
-    experimentalFeatures: false,
     disableMouse: false,
     showFPS: false,
     keysAmount: 0

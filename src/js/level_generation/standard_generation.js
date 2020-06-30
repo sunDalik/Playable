@@ -622,7 +622,8 @@ function generateEnemies() {
             let emptyTiles = 0;
             for (let i = 1; i < room.height - 2; i++) {
                 for (let j = 1; j < room.width - 2; j++) {
-                    if (level[i + room.offsetY][j + room.offsetX].tileType === TILE_TYPE.NONE) {
+                    if (level[i + room.offsetY][j + room.offsetX].tileType === TILE_TYPE.NONE
+                        && level[i + room.offsetY][j + room.offsetX].entity === null) {
                         emptyTiles++;
                     }
                 }
