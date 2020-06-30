@@ -12,6 +12,7 @@ export class BowLikeWeapon extends Weapon {
         this.texture = texture;
         this.arrowTexture = WeaponsSpriteSheet["arrow.png"];
         this.range = 3;
+        this.bowLike = true;
     }
 
     attack(wielder, dirX, dirY) {

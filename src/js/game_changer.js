@@ -63,6 +63,7 @@ import {Prismaxe} from "./classes/equipment/weapons/prismaxe";
 import {CerberusBow} from "./classes/equipment/weapons/cerberus_bow";
 import {FlaskOfFire} from "./classes/equipment/accessories/flask_of_fire";
 import {PossessedSandals} from "./classes/equipment/footwear/possessed_sandals";
+import {QuiverOfTheForestSpirit} from "./classes/equipment/accessories/quiver_of_the_forest_spirit";
 
 export function initPools() {
     Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
@@ -71,7 +72,7 @@ export function initPools() {
         Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape,
         Necromancy];
     //might want to remove pickaxe from the pool?
-    Game.chestItemPool = [FlaskOfFire,
+    Game.chestItemPool = [FlaskOfFire, QuiverOfTheForestSpirit,
         Pickaxe,
         Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, BladeCrown,
