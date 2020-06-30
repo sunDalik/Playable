@@ -471,14 +471,20 @@ function generateInanimates() {
 }
 
 function placeInanimate(placeMethod, amount) {
-    const mainRooms = rooms.filter(r => r.type === ROOM_TYPE.MAIN);
-    const secondaryRooms = rooms.filter(r => r.type === ROOM_TYPE.SECONDARY);
-    let attempt = 0;
     for (let i = 0; i < amount; i++) {
-        attempt = 0;
-        while (attempt++ < 200) {
-            const room = Math.random() < 0.4 || secondaryRooms.length === 0 ? randomChoice(mainRooms) : randomChoice(secondaryRooms);
+        //we separate rooms into main rooms and secondary rooms because we are biased towards secondary rooms here
+        const mainRooms = rooms.filter(r => r.type === ROOM_TYPE.MAIN);
+        const secondaryRooms = rooms.filter(r => r.type === ROOM_TYPE.SECONDARY);
+        while (mainRooms.length > 0 || secondaryRooms.length > 0) {
+            let room;
+            if (mainRooms.length === 0) room = randomChoice(secondaryRooms);
+            else if (secondaryRooms.length === 0) room = randomChoice(mainRooms);
+            else room = Math.random() < 0.4 ? randomChoice(mainRooms) : randomChoice(secondaryRooms);
             if (placeMethod(room)) break;
+            else {
+                removeObjectFromArray(room, mainRooms);
+                removeObjectFromArray(room, secondaryRooms);
+            }
         }
     }
 }
