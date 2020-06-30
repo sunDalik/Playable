@@ -488,17 +488,20 @@ function placeInanimate(placeMethod, amount) {
 }
 
 function placeInARoom(placeMethod, room) {
+    for (const point of getValidRoomPoints(room)) {
+        if (placeMethod(point, room)) return true;
+    }
+    return false;
+}
+
+function getValidRoomPoints(room) {
     const points = [];
     for (let i = 1; i < room.height - 1; i++) {
         for (let j = 1; j < room.width - 1; j++) {
             points.push({x: j + room.offsetX, y: i + room.offsetY});
         }
     }
-
-    for (const point of randomShuffle(points)) {
-        if (placeMethod(point, room)) return true;
-    }
-    return false;
+    return randomShuffle(points);
 }
 
 function placeChest(point, room) {
@@ -618,30 +621,30 @@ function generateEnemies() {
                 if (pack !== undefined) break;
             }
             if (pack === undefined) continue;
+            const points = getValidRoomPoints(room);
             for (const enemy of pack) {
-                let attempt = 0;
-                while (attempt++ < 100) {
-                    const point = {
-                        x: randomInt(room.offsetX + 1, room.offsetX + room.width - 2),
-                        y: randomInt(room.offsetY + 1, room.offsetY + room.height - 2)
-                    };
-                    const nearShopkeeper = (point) => {
-                        for (const dir of getCardinalDirections()) {
-                            const entity = level[point.y + dir.y][point.x + dir.x].entity;
-                            if (entity && entity.role === ROLE.INANIMATE && entity.type === INANIMATE_TYPE.SHOPKEEPER) return true;
-                        }
-                        return false;
-                    };
+                for (let i = points.length - 1; i >= 0; i--) {
+                    const point = points[i];
+                    removeObjectFromArray(point, points);
+
                     if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
                         if (nearShopkeeper(point)) continue;
-                        if (!settings.openSpace && isNearEntrance(point, room)) continue;
-                        else level[point.y][point.x].entity = new enemy(point.x, point.y);
+                        if (isNearEntrance(point, room)) continue;
+                        level[point.y][point.x].entity = new enemy(point.x, point.y);
                         break;
                     }
                 }
             }
         }
     }
+}
+
+function nearShopkeeper(point) {
+    for (const dir of getCardinalDirections()) {
+        const entity = level[point.y + dir.y][point.x + dir.x].entity;
+        if (entity && entity.role === ROLE.INANIMATE && entity.type === INANIMATE_TYPE.SHOPKEEPER) return true;
+    }
+    return false;
 }
 
 function isNearEntrance(point, room, maxDistance = 3) {
@@ -656,10 +659,11 @@ function isNearEntrance(point, room, maxDistance = 3) {
 
 function getRoomEntries(room) {
     const entries = [];
+    const entranceTiles = settings.openSpace ? [TILE_TYPE.ENTRY] : [TILE_TYPE.NONE, TILE_TYPE.ENTRY];
     for (let i = 0; i < room.height; i++) {
         for (let j = 0; j < room.width; j++) {
             if (i === 0 || i === room.height - 1 || j === 0 || j === room.width - 1) {
-                if ([TILE_TYPE.NONE, TILE_TYPE.ENTRY].includes(level[i + room.offsetY][j + room.offsetX].tileType)) {
+                if (entranceTiles.includes(level[i + room.offsetY][j + room.offsetX].tileType)) {
                     entries.push({x: room.offsetX + j, y: room.offsetY + i});
                 }
             }
@@ -678,12 +682,8 @@ function generateSpecificEnemies() {
 
 function generateSpikyWallTraps() {
     let spikyWallTrapsAmount = Math.ceil(rooms.length * 1.1);
-    let attempt = 0;
-    while (spikyWallTrapsAmount > 0 && attempt++ < 200 + spikyWallTrapsAmount) {
-        const point = {
-            x: randomInt(1, level[0].length - 2),
-            y: randomInt(1, level.length - 2)
-        };
+    for (const point of getValidRoomPoints(new Room(0, 0, level[0].length, level.length))) {
+        if (spikyWallTrapsAmount <= 0) break;
         if (level[point.y][point.x].tileType === TILE_TYPE.WALL && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
             && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))) {
             if (anyDoorsAround(point)) continue;
@@ -702,13 +702,9 @@ function generateSpikyWallTraps() {
 }
 
 function generateLaserTurrets() {
-    let laserTurretsAmount = Math.ceil(rooms.length * 1);
-    let attempt = 0;
-    while (laserTurretsAmount > 0 && attempt++ < 600 + laserTurretsAmount) {
-        const point = {
-            x: randomInt(1, level[0].length - 2),
-            y: randomInt(1, level.length - 2)
-        };
+    let laserTurretsAmount = Math.ceil(rooms.length);
+    for (const point of getValidRoomPoints(new Room(0, 0, level[0].length, level.length))) {
+        if (laserTurretsAmount <= 0) break;
         if (level[point.y][point.x].tileType === TILE_TYPE.WALL && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
             && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))
             && level[point.y + 1][point.x].tileType === TILE_TYPE.NONE) {
@@ -766,18 +762,23 @@ function generateBoss(set) {
         x: room.offsetX + Math.floor(room.width / 2),
         y: room.offsetY + Math.floor(room.height / 2)
     };
-    for (let i = 0; i < set.length; i++) {
-        let attempt = 0;
-        while (attempt++ < 300) {
-            const point = i === 0 ? bossPos : { //boss is the first in the set
-                x: randomInt(room.offsetX + 2, room.offsetX + room.width - 3),
-                y: randomInt(room.offsetY + 2, room.offsetY + room.height - 3)
-            };
+
+    const points = getValidRoomPoints(room);
+    for (let e = 0; e < set.length; e++) {
+        for (let i = points.length - 1; i >= 0; i--) {
+            let point;
+            if (e === 0) {
+                point = bossPos;
+            } else {
+                point = points[i];
+                removeObjectFromArray(point, points);
+            }
+
             if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
-                if (i !== 0 && pointTileDistance(point, bossPos) < 3) continue;
-                if (i !== 0 && isNearEntrance(point, room)) continue;
-                else level[point.y][point.x].entity = new set[i](point.x, point.y);
-                if (i === 0 && level[point.y][point.x].entity.applyRoomLayout) level[point.y][point.x].entity.applyRoomLayout(level, room);
+                if (e !== 0 && pointTileDistance(point, bossPos) < 3) continue;
+                if (e !== 0 && isNearEntrance(point, room)) continue;
+                else level[point.y][point.x].entity = new set[e](point.x, point.y);
+                if (e === 0 && level[point.y][point.x].entity.applyRoomLayout) level[point.y][point.x].entity.applyRoomLayout(level, room);
                 break;
             }
         }
