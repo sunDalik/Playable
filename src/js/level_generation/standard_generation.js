@@ -480,55 +480,51 @@ function placeInanimate(placeMethod, amount) {
             if (mainRooms.length === 0) room = randomChoice(secondaryRooms);
             else if (secondaryRooms.length === 0) room = randomChoice(mainRooms);
             else room = Math.random() < 0.4 ? randomChoice(mainRooms) : randomChoice(secondaryRooms);
-            if (placeMethod(room)) break;
-            else {
-                removeObjectFromArray(room, mainRooms);
-                removeObjectFromArray(room, secondaryRooms);
-            }
+            if (placeInARoom(placeMethod, room)) break;
+            removeObjectFromArray(room, mainRooms);
+            removeObjectFromArray(room, secondaryRooms);
         }
     }
 }
 
-// sometimes not all chests succeed to generate!!!!!!!!!!!
-// todo fix somehow!!!!!!!!!!!!!!!!
-function placeChest(room) {
-    let attempt = 0;
-    while (attempt++ < 300) {
-        const point = {
-            x: randomInt(room.offsetX + 1, room.offsetX + room.width - 2),
-            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 3)
-        };
-        if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
-            if (!settings.openSpace && isNearEntrance(point, room)) continue;
-            if (otherInanimatesNear(point)) continue;
-            let good = false;
-            if (level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
-                && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL) {
-                good = true;
-            } else {
-                for (const dir of get8Directions()) {
-                    good = true;
-                    if (level[point.y + dir.y][point.x + dir.x].tileType !== TILE_TYPE.NONE) {
-                        good = false;
-                        break;
-                    }
-                }
-            }
-            if (good) {
-                ensureInanimateSurroundings(point.x, point.y);
-                level[point.y][point.x].entity = new Chest(point.x, point.y);
-                return true;
-            }
+function placeInARoom(placeMethod, room) {
+    const points = [];
+    for (let i = 1; i < room.height - 1; i++) {
+        for (let j = 1; j < room.width - 1; j++) {
+            points.push({x: j + room.offsetX, y: i + room.offsetY});
         }
+    }
+
+    for (const point of randomShuffle(points)) {
+        if (placeMethod(point, room)) return true;
     }
     return false;
 }
 
-function otherInanimatesNear(point) {
-    for (const dir of getCardinalDirections()) {
-        if (level[point.y + dir.y][point.x + dir.x].entity && level[point.y + dir.y][point.x + dir.x].entity.role === ROLE.INANIMATE) {
-            return true;
+function placeChest(point, room) {
+    if (point.y > room.offsetY + room.height - 3) return false;
+    if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
+        //not near a door
+        if (isNearEntrance(point, room)) return false;
+        //no inanimates on 8 tiles nearby
+        for (const dir of get8Directions()) {
+            if (level[point.y + dir.y][point.x + dir.x].entity && level[point.y + dir.y][point.x + dir.x].entity.role === ROLE.INANIMATE) {
+                return false;
+            }
         }
+        //the chest either stands with a wall behind it or in a completely open area
+        if (!(level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
+            && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL)) {
+            for (const dir of get8Directions()) {
+                if (level[point.y + dir.y][point.x + dir.x].tileType !== TILE_TYPE.NONE) {
+                    return false;
+                }
+            }
+        }
+
+        ensureInanimateSurroundings(point.x, point.y);
+        level[point.y][point.x].entity = new Chest(point.x, point.y);
+        return true;
     }
     return false;
 }
@@ -542,79 +538,58 @@ function ensureInanimateSurroundings(x, y) {
     }
 }
 
-function placeShop(room) {
-    const acceptable = (x, y) => {
-        //check that all 5 tiles behind us are walls
-        for (let j = x - 2; j <= x + 2; j++) {
-            if (level[y - 1][j].tileType !== TILE_TYPE.WALL) return false;
-        }
+function placeShop(point, room) {
+    if (point.x < room.offsetX + 3 || point.x > room.offsetX + room.width - 4 || point.y > room.offsetY + room.height - 5) return false;
 
-        //minimal check for emptiness
-        if (level[y][x].tileType !== TILE_TYPE.NONE) return false;
+    //check that all 5 tiles behind us are walls
+    for (let j = point.x - 2; j <= point.x + 2; j++) {
+        if (level[point.y - 1][j].tileType !== TILE_TYPE.WALL) return false;
+    }
 
-        //check that not near doors
-        // I think you should remove the openspace part because almost no doors generate in openspace level anyway?
-        if (!settings.openSpace && isNearEntrance({x: x, y: y}, room, 4)) return false;
+    //minimal check for emptiness
+    if (level[point.y][point.x].tileType !== TILE_TYPE.NONE) return false;
 
-        // check that no entity is even near the shop. Usually at this point of generation only entities you can encounter are obelisks
-        for (let i = y - 1; i <= y + 2; i++) {
-            for (let j = x - 3; j <= x + 3; j++) {
-                if (level[i][j].entity !== null) return false;
-            }
-        }
+    //check that not near doors
+    if (isNearEntrance({x: point.x, y: point.y}, room, 4)) return false;
 
-        return true;
-    };
-
-    const clearPathToTile = (x, y, dirX) => {
-        if ([TILE_TYPE.ENTRY, TILE_TYPE.NONE].includes(level[y][x + dirX].tileType)) {
-            clearWall(x + dirX, y + 1);
-        }
-    };
-
-    const clearSurroundings = (x, y) => {
-        for (let i = y; i <= y + 2; i++) {
-            for (let j = x - 2; j <= x + 2; j++) {
-                clearWall(j, i);
-            }
-        }
-        clearPathToTile(x - 2, y, -1);
-        clearPathToTile(x + 2, y, 1);
-    };
-
-    let attempt = 0;
-    while (attempt++ < 200) {
-        const point = {
-            x: randomInt(room.offsetX + 3, room.offsetX + room.width - 4),
-            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 5)
-        };
-        if (acceptable(point.x, point.y)) {
-            clearSurroundings(point.x, point.y);
-            level[point.y][point.x].entity = new Shopkeeper(point.x, point.y);
-            level[point.y][point.x - 2].entity = new ShopStand(point.x - 2, point.y, new Bomb());
-            level[point.y][point.x + 2].entity = new ShopStand(point.x + 2, point.y, new HealingPotion());
-            level[point.y + 1][point.x].entity = new ShopStand(point.x, point.y + 1, getRandomShopItem());
-            level[point.y + 1][point.x + 1].entity = new ShopStand(point.x + 1, point.y + 1, getRandomShopItem());
-            level[point.y + 1][point.x - 1].entity = new ShopStand(point.x - 1, point.y + 1, getRandomShopItem());
-            return true;
+    // check that no entity is even near the shop. Usually at this point of generation only entities you can encounter are obelisks
+    for (let i = point.y - 1; i <= point.y + 2; i++) {
+        for (let j = point.x - 3; j <= point.x + 3; j++) {
+            if (level[i][j].entity !== null) return false;
         }
     }
-    return false;
+
+
+    const clearPathToTile = (x, y, dirX) => {
+        if ([TILE_TYPE.ENTRY, TILE_TYPE.NONE].includes(level[y][x + dirX].tileType)) clearWall(x + dirX, y + 1);
+    };
+
+
+    //clear surroundings
+    for (let i = point.y; i <= point.y + 2; i++) {
+        for (let j = point.x - 2; j <= point.x + 2; j++) {
+            clearWall(j, i);
+        }
+    }
+    clearPathToTile(point.x - 2, point.y, -1);
+    clearPathToTile(point.x + 2, point.y, 1);
+
+    level[point.y][point.x].entity = new Shopkeeper(point.x, point.y);
+    level[point.y][point.x - 2].entity = new ShopStand(point.x - 2, point.y, new Bomb());
+    level[point.y][point.x + 2].entity = new ShopStand(point.x + 2, point.y, new HealingPotion());
+    level[point.y + 1][point.x].entity = new ShopStand(point.x, point.y + 1, getRandomShopItem());
+    level[point.y + 1][point.x + 1].entity = new ShopStand(point.x + 1, point.y + 1, getRandomShopItem());
+    level[point.y + 1][point.x - 1].entity = new ShopStand(point.x - 1, point.y + 1, getRandomShopItem());
+    return true;
 }
 
-function placeObelisk(room) {
-    let attempt = 0;
-    while (attempt++ < 200) {
-        const point = {
-            x: randomInt(room.offsetX + 3, room.offsetX + room.width - 4),
-            y: randomInt(room.offsetY + 1, room.offsetY + room.height - 5)
-        };
-        if (!settings.openSpace && isNearEntrance(point, room)) continue;
-        if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL
-            && level[point.y - 1][point.x - 1].tileType === TILE_TYPE.WALL && level[point.y - 1][point.x + 1].tileType === TILE_TYPE.WALL) {
-            level[point.y][point.x].entity = new Obelisk(point.x, point.y, level);
-            return true;
-        }
+function placeObelisk(point, room) {
+    if (point.x < room.offsetX + 3 || point.x > room.offsetX + room.width - 4 || point.y > room.offsetY + room.height - 5) return false;
+    if (isNearEntrance(point, room)) return false;
+    if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL
+        && level[point.y - 1][point.x - 1].tileType === TILE_TYPE.WALL && level[point.y - 1][point.x + 1].tileType === TILE_TYPE.WALL) {
+        level[point.y][point.x].entity = new Obelisk(point.x, point.y, level);
+        return true;
     }
     return false;
 }
