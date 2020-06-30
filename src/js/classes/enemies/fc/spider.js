@@ -28,6 +28,8 @@ export class Spider extends Enemy {
 
     move() {
         if (!this.thrown) {
+            //todo: if there are multiple closest players and you can't go to one of them you MUST go to the other!!!
+            //maybe you should also go to the other player if it is NOT closest but you can't go to closest
             if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
                 const movementOptions = getChasingOptions(this, closestPlayer(this));
                 if (movementOptions.length !== 0) {

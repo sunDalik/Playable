@@ -27,6 +27,10 @@ export class LaserTurret extends Enemy {
         this.removeShadow();
     }
 
+    revive() {
+        return false;
+    }
+
     move() {
         if (this.maskLayer === undefined) {
             if (tileDistance(this, closestPlayer(this)) <= this.noticeTileDistance) {

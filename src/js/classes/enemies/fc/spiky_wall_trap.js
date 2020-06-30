@@ -55,6 +55,10 @@ export class SpikyWallTrap extends Enemy {
         this.updateTexture();
     }
 
+    revive() {
+        return false;
+    }
+
     place() {
         super.place();
         this.position.y -= wallTallness;
