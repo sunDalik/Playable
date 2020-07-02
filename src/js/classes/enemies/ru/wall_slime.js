@@ -1,125 +1,127 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
-import {DAMAGE_TYPE, ENEMY_TYPE, PLANE, STAGE} from "../../../enums";
-import {randomChoice} from "../../../utils/random_utils";
-import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../../map_checks";
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
+import {DAMAGE_TYPE, ENEMY_TYPE, PLANE} from "../../../enums";
+import {randomChoice, randomShuffle} from "../../../utils/random_utils";
+import {getPlayerOnTile, isEmpty, isNotOutOfMap, isRelativelyEmpty} from "../../../map_checks";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
-import {getHealthArray} from "../../../drawing/draw_utils";
 import {getCardinalDirections, getChasingDirections} from "../../../utils/map_utils";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
-import * as PIXI from "pixi.js";
+import {wallTallness} from "../../draw/wall";
 
-//todo change it so wallslime is a singular entity
-//todo allow spawning with 2,3,4 length, not just 5
 export class WallSlime extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["wall_slime_middle.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["wall_slime_single.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 4;
         this.type = ENEMY_TYPE.WALL_SLIME;
         this.atk = 1;
-        this.pane = randomChoice([PLANE.VERTICAL, PLANE.HORIZONTAL]);
-        this.turnDelay = 4;
-        this.currentTurnDelay = this.turnDelay;
-        this.STEP_ANIMATION_TIME = 14;
-        this.spawnAttempt = false;
         this.baseSlime = null;
         this.subSlimes = [];
-        this.eyes = [];
+        //default parameters
+        this.currentTurnDelay = this.turnDelay = 4;
+        this.plane = PLANE.HORIZONTAL;
+        this.ord = 0;
         this.removeShadow();
     }
 
-    regenerateShadow() {
-        if (!this.subSlimes) return;
-        Game.world.removeChild(this.shadow);
-        if (this.noShadow || (this.pane === PLANE.VERTICAL && this.subSlimes.length > 0)) return;
-        this.shadow = new PIXI.Graphics();
-        this.shadow.beginFill(0x666666, 0.12);
-        this.shadow.drawEllipse(0, 0, (this.texture.trim.right - this.texture.trim.left) * (this.subSlimes.length + 1) * this.scale.y * 0.5, 8);
-
-        Game.world.addChild(this.shadow);
+    fitToTile() {
+        if (this.plane === PLANE.HORIZONTAL) {
+            const scaleY = (Game.TILESIZE + wallTallness) / this.getUnscaledHeight() * this.scaleModifier;
+            const scaleX = Math.abs(scaleY);
+            this.scale.set(scaleX, scaleY);
+        } else {
+            const scaleX = Game.TILESIZE / this.getUnscaledWidth() * this.scaleModifier;
+            const scaleY = Math.abs(scaleX) * 1.01; // without "*1.01" there would be micro gaps between subslimes
+            this.scale.set(scaleX, scaleY);
+        }
     }
 
-    placeShadow() {
-        if (this.shadow) {
-            super.placeShadow();
-            if (this.subSlimes.length === 1 || this.subSlimes.length === 3) {
-                this.shadow.position.x -= this.width / 2;
-            }
-        }
+    getTilePositionY() {
+        return Game.TILESIZE * this.tilePosition.y - Game.TILESIZE + (Game.TILESIZE * 2 - this.height) + this.height * this.anchor.y;
     }
 
     afterMapGen() {
-        if (this.baseSlime) return;
-        if (this.pane === PLANE.VERTICAL) {
-            if (isEmpty(this.tilePosition.x, this.tilePosition.y - 1)
-                && isEmpty(this.tilePosition.x, this.tilePosition.y - 2)
-                && isEmpty(this.tilePosition.x, this.tilePosition.y + 1)
-                && isEmpty(this.tilePosition.x, this.tilePosition.y + 2)) {
-                const subSlimes = [new WallSlime(this.tilePosition.x, this.tilePosition.y - 1),
-                    new WallSlime(this.tilePosition.x, this.tilePosition.y - 2),
-                    new WallSlime(this.tilePosition.x, this.tilePosition.y + 1),
-                    new WallSlime(this.tilePosition.x, this.tilePosition.y + 2)];
-                this.subSlimes = subSlimes;
-                for (const slime of subSlimes) {
-                    slime.baseSlime = this;
-                    slime.pane = this.pane;
-                    Game.world.addChild(slime);
-                    Game.enemies.push(slime);
-                    slime.placeOnMap()
-                }
-                this.correctScale();
-                subSlimes[0].texture = subSlimes[2].texture = RUEnemiesSpriteSheet["wall_slime_middle.png"];
-                subSlimes[1].texture = subSlimes[3].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
-                subSlimes[0].angle = subSlimes[2].angle = 90;
-                subSlimes[1].angle = 270;
-                subSlimes[3].angle = 90;
-            } else {
-                if (this.spawnAttempt) {
-                    this.texture = RUEnemiesSpriteSheet["wall_slime_single.png"];
+        for (const plane of randomShuffle([PLANE.VERTICAL, PLANE.HORIZONTAL])) {
+            for (const size of [5, 4, 3, 2, 1]) {
+                if (this.canPlace(size, plane)) {
+                    this.plane = plane;
+                    this.createSubSlimes(size, plane);
                     return;
                 }
-                this.pane = PLANE.HORIZONTAL;
-                this.spawnAttempt = true;
-                this.afterMapGen();
-            }
-        } else if (this.pane === PLANE.HORIZONTAL) {
-            if (isEmpty(this.tilePosition.x - 1, this.tilePosition.y)
-                && isEmpty(this.tilePosition.x - 2, this.tilePosition.y)
-                && isEmpty(this.tilePosition.x + 1, this.tilePosition.y)
-                && isEmpty(this.tilePosition.x + 2, this.tilePosition.y)) {
-                const subSlimes = [new WallSlime(this.tilePosition.x - 1, this.tilePosition.y),
-                    new WallSlime(this.tilePosition.x - 2, this.tilePosition.y),
-                    new WallSlime(this.tilePosition.x + 1, this.tilePosition.y),
-                    new WallSlime(this.tilePosition.x + 2, this.tilePosition.y)];
-                this.subSlimes = subSlimes;
-                for (const slime of subSlimes) {
-                    slime.baseSlime = this;
-                    slime.pane = this.pane;
-                    Game.world.addChild(slime);
-                    Game.enemies.push(slime);
-                    slime.placeOnMap()
-                }
-                subSlimes[0].texture = subSlimes[2].texture = RUEnemiesSpriteSheet["wall_slime_middle.png"];
-                subSlimes[1].texture = subSlimes[3].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
-                subSlimes[1].angle = 180;
-            } else {
-                if (this.spawnAttempt) {
-                    this.texture = RUEnemiesSpriteSheet["wall_slime_single.png"];
-                    return;
-                }
-                this.pane = PLANE.VERTICAL;
-                this.spawnAttempt = true;
-                this.afterMapGen();
             }
         }
-        this.setShadow();
     }
 
-    //stunning sub slimes will probably not work...
+    createSubSlimes(size, plane) {
+        this.subSlimes = [];
+        const offset = Math.ceil((size - 1) / 2);
+        for (let i = 0; i < size; i++) {
+            if (i === Math.floor(size / 2)) continue;
+
+            if (plane === PLANE.HORIZONTAL) this.subSlimes.push(new WallSlime(this.tilePosition.x - offset + i, this.tilePosition.y));
+            else this.subSlimes.push(new WallSlime(this.tilePosition.x, this.tilePosition.y - offset + i));
+        }
+        this.baseSlime = null;
+        const sortedSlime = this.getSortedSlime();
+        for (let i = 0; i < sortedSlime.length; i++) {
+            const slime = sortedSlime[i];
+            slime.setTexture(size, plane, i);
+            slime.setParameters(size);
+            if (slime !== this) {
+                slime.baseSlime = this;
+                slime.subSlimes = this.subSlimes.slice();
+                slime.plane = this.plane;
+                Game.world.addChild(slime);
+                Game.enemies.push(slime);
+                slime.placeOnMap();
+            }
+        }
+    }
+
+    canPlace(size, plane) {
+        const offset = Math.ceil((size - 1) / 2);
+        for (let i = 0; i < size; i++) {
+            // don't check center tile for emptiness
+            if (i === Math.floor(size / 2)) continue;
+
+            if ((plane === PLANE.VERTICAL && !isEmpty(this.tilePosition.x, this.tilePosition.y - offset + i))
+                || (plane === PLANE.HORIZONTAL) && !isEmpty(this.tilePosition.x - offset + i, this.tilePosition.y)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    setParameters(size) {
+        this.STEP_ANIMATION_TIME = Math.ceil(size * 1.3 + 5);
+        this.currentTurnDelay = this.turnDelay = Math.ceil(size * 0.8);
+        if (size === 5 || size === 4) this.maxHealth = 4;
+        else if (size === 3 || size === 2) this.maxHealth = 3;
+        else if (size === 1) this.maxHealth = 2;
+        this.health = this.maxHealth;
+    }
+
+    setTexture(size, plane, pos) {
+        this.ord = pos;
+        this.scale.x = Math.abs(this.scale.x);
+        if (size === 1) this.texture = RUEnemiesSpriteSheet["wall_slime_single.png"];
+        else if (plane === PLANE.HORIZONTAL) {
+            if (pos === 0) this.texture = RUEnemiesSpriteSheet["wall_slime_h_edge.png"];
+            else if (pos === size - 1) {
+                this.texture = RUEnemiesSpriteSheet["wall_slime_h_edge.png"];
+                this.scale.x *= -1;
+            } else this.texture = RUEnemiesSpriteSheet["wall_slime_h_middle.png"];
+        } else {
+            if (pos === 0) this.texture = RUEnemiesSpriteSheet["wall_slime_v_top_edge.png"];
+            else if (pos === size - 1) this.texture = RUEnemiesSpriteSheet["wall_slime_v_bottom_edge.png"];
+            else this.texture = RUEnemiesSpriteSheet["wall_slime_v_middle.png"];
+        }
+    }
+
+    //stunning sub slimes will not work...
     move() {
+        this.reformIfSeparated();
         if (this.baseSlime) return;
-        this.correctScale();
         if (this.currentTurnDelay <= 0) {
             let movementOptions = this.closestSlimeToPlayer().getChasingOptionsForSlime(closestPlayer(this));
             if (movementOptions.length === 0) movementOptions = this.getRelativelyEmptyCardinalDirectionsForSlime();
@@ -145,10 +147,84 @@ export class WallSlime extends Enemy {
                         if (Game.enemies.indexOf(slime) < Game.enemies.indexOf(this)) slime.cancellable = false;
                     }
                 }
-                this.currentTurnDelay = this.turnDelay;
             }
+            this.currentTurnDelay = this.turnDelay;
         } else {
             this.currentTurnDelay--;
+        }
+    }
+
+    reformIfSeparated() {
+        const coord = this.plane === PLANE.HORIZONTAL ? "x" : "y";
+        const antiCoord = this.plane === PLANE.HORIZONTAL ? "y" : "x";
+        let orderedSlime = [];
+        const baseSlime = this.baseSlime ? this.baseSlime : this;
+        orderedSlime.push(baseSlime);
+        orderedSlime = orderedSlime.concat(this.subSlimes);
+        orderedSlime.sort((a, b) => a.ord - b.ord);
+
+        let broken = false;
+        for (let i = 0; i < orderedSlime.length; i++) {
+            if (i !== 0 && (orderedSlime[i].tilePosition[coord] - orderedSlime[i - 1].tilePosition[coord] !== 1
+                || orderedSlime[i].tilePosition[antiCoord] !== orderedSlime[i - 1].tilePosition[antiCoord])) {
+                broken = true;
+                break;
+            }
+            if ((orderedSlime[i].baseSlime === null && orderedSlime[i] !== baseSlime)
+                || (orderedSlime[i].baseSlime !== null && orderedSlime[i].baseSlime !== baseSlime)) {
+                broken = true;
+                break;
+            }
+        }
+
+        if (broken) {
+            const newSlimeArray = [this];
+            if (this.plane === PLANE.HORIZONTAL) {
+                for (let x = this.tilePosition.x + 1; ; x++) {
+                    if (isNotOutOfMap(x, this.tilePosition.y) && orderedSlime.includes(Game.map[this.tilePosition.y][x].entity)) {
+                        newSlimeArray.push(Game.map[this.tilePosition.y][x].entity);
+                    } else break;
+                }
+                for (let x = this.tilePosition.x - 1; ; x--) {
+                    if (isNotOutOfMap(x, this.tilePosition.y) && orderedSlime.includes(Game.map[this.tilePosition.y][x].entity)) {
+                        newSlimeArray.unshift(Game.map[this.tilePosition.y][x].entity);
+                    } else break;
+                }
+            } else {
+                for (let y = this.tilePosition.y + 1; ; y++) {
+                    if (isNotOutOfMap(this.tilePosition.x, y) && orderedSlime.includes(Game.map[y][this.tilePosition.x].entity)) {
+                        newSlimeArray.push(Game.map[y][this.tilePosition.x].entity);
+                    } else break;
+                }
+                for (let y = this.tilePosition.y - 1; ; y--) {
+                    if (isNotOutOfMap(this.tilePosition.x, y) && orderedSlime.includes(Game.map[y][this.tilePosition.x].entity)) {
+                        newSlimeArray.unshift(Game.map[y][this.tilePosition.x].entity);
+                    } else break;
+                }
+            }
+            this.reform(newSlimeArray);
+        }
+    }
+
+    reform(slimeArray) {
+        const size = slimeArray.length;
+        let subSlimes = [];
+        for (let i = 0; i < slimeArray.length; i++) {
+            const slime = slimeArray[i];
+            if (i === Math.floor(size / 2)) {
+                slime.baseSlime = null;
+                subSlimes = slimeArray.filter(s => s !== slime);
+            } else {
+                slime.baseSlime = slimeArray[Math.floor(size / 2)];
+            }
+
+            slime.setTexture(size, this.plane, i);
+            slime.setParameters(size);
+            slime.healthContainer.visible = false;
+        }
+
+        for (const slime of slimeArray) {
+            slime.subSlimes = subSlimes.slice();
         }
     }
 
@@ -186,7 +262,7 @@ export class WallSlime extends Enemy {
     isDirectionRelativelyEmpty(dir) {
         const slimes = this.baseSlime ? this.baseSlime.subSlimes.concat([this.baseSlime]) : this.subSlimes.concat([this]);
         if (dir.y !== 0) {
-            if (this.pane === PLANE.VERTICAL) {
+            if (this.plane === PLANE.VERTICAL) {
                 if (dir.y === 1) {
                     if (!isRelativelyEmpty(this.getLowestSlime().tilePosition.x, this.getLowestSlime().tilePosition.y + 1)) {
                         return false;
@@ -205,7 +281,7 @@ export class WallSlime extends Enemy {
                 }
             }
         } else if (dir.x !== 0) {
-            if (this.pane === PLANE.HORIZONTAL) {
+            if (this.plane === PLANE.HORIZONTAL) {
                 if (dir.x === 1) {
                     if (!isRelativelyEmpty(this.getRightmostSlime().tilePosition.x + 1, this.getRightmostSlime().tilePosition.y)) {
                         return false;
@@ -229,7 +305,6 @@ export class WallSlime extends Enemy {
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
         if (this.baseSlime) {
             if (dmg >= this.baseSlime.health) {
-                this.baseSlime.health = this.baseSlime.maxHealth;
                 super.damage(source, this.health, inputX, inputY, damageType);
                 this.baseSlime.divide(this);
             } else {
@@ -244,10 +319,9 @@ export class WallSlime extends Enemy {
         }
     }
 
-    revive() {
-        if (super.revive()) {
-            this.afterMapGen();
-        }
+    getSortedSlime() {
+        const slime = this.subSlimes.concat([this]);
+        return slime.sort((a, b) => a.tilePosition.x - b.tilePosition.x + a.tilePosition.y - b.tilePosition.y);
     }
 
     //assuming this method is always called on the base slime
@@ -255,95 +329,13 @@ export class WallSlime extends Enemy {
     divide(divider) {
         this.healthContainer.visible = false;
         this.intentIcon.visible = false;
-        this.subSlimes.push(this);
-        if (this.pane === PLANE.HORIZONTAL) {
-            this.subSlimes.sort((a, b) => a.tilePosition.x - b.tilePosition.x);
-        } else if (this.pane === PLANE.VERTICAL) {
-            this.subSlimes.sort((a, b) => a.tilePosition.y - b.tilePosition.y);
-        }
-        const firstHalf = this.subSlimes.slice(0, this.subSlimes.indexOf(divider));
-        const secondHalf = this.subSlimes.slice(this.subSlimes.indexOf(divider) + 1, this.subSlimes.length);
-        for (const newSlimeArray of [firstHalf, secondHalf]) {
-            if (newSlimeArray.length === 1) {
-                const newSlime = newSlimeArray[0];
-                newSlime.texture = RUEnemiesSpriteSheet["wall_slime_single.png"];
-                newSlime.baseSlime = null;
-                newSlime.subSlimes = [];
-            } else if (newSlimeArray.length === 2) {
-                newSlimeArray[0].texture = newSlimeArray[1].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
-                if (this.pane === PLANE.HORIZONTAL) {
-                    newSlimeArray[0].angle = 180;
-                    newSlimeArray[1].angle = 0;
-                } else {
-                    newSlimeArray[0].angle = 270;
-                    newSlimeArray[1].angle = 90;
-                }
-                newSlimeArray[0].baseSlime = newSlimeArray[1];
-                newSlimeArray[0].subSlimes = [];
-                newSlimeArray[1].baseSlime = null;
-                newSlimeArray[1].subSlimes = [newSlimeArray[0]];
-            } else if (newSlimeArray.length === 3) {
-                newSlimeArray[0].texture = newSlimeArray[2].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
-                newSlimeArray[1].texture = RUEnemiesSpriteSheet["wall_slime_middle.png"];
-                if (this.pane === PLANE.HORIZONTAL) {
-                    newSlimeArray[0].angle = 180;
-                    newSlimeArray[1].angle = newSlimeArray[2].angle = 0;
-                } else {
-                    newSlimeArray[0].angle = 270;
-                    newSlimeArray[1].angle = newSlimeArray[2].angle = 90;
-                }
-                newSlimeArray[0].baseSlime = newSlimeArray[2].baseSlime = newSlimeArray[1];
-                newSlimeArray[0].subSlimes = newSlimeArray[2].subSlimes = [];
-                newSlimeArray[1].baseSlime = null;
-                newSlimeArray[1].subSlimes = [newSlimeArray[0], newSlimeArray[2]];
-            } else if (newSlimeArray.length === 4) {
-                newSlimeArray[1].texture = newSlimeArray[2].texture = RUEnemiesSpriteSheet["wall_slime_middle.png"];
-                newSlimeArray[0].texture = newSlimeArray[3].texture = RUEnemiesSpriteSheet["wall_slime_edge.png"];
-                if (this.pane === PLANE.HORIZONTAL) {
-                    newSlimeArray[0].angle = 180;
-                    newSlimeArray[2].angle = newSlimeArray[3].angle = 0;
-                    newSlimeArray[1].angle = 180;
-                } else {
-                    newSlimeArray[0].angle = 270;
-                    newSlimeArray[2].angle = newSlimeArray[3].angle = 90;
-                    newSlimeArray[1].angle = 270;
-                }
-                newSlimeArray[0].baseSlime = newSlimeArray[1].baseSlime = newSlimeArray[3].baseSlime = newSlimeArray[2];
-                newSlimeArray[0].subSlimes = newSlimeArray[1].subSlimes = newSlimeArray[3].subSlimes = [];
-                newSlimeArray[2].baseSlime = null;
-                newSlimeArray[2].subSlimes = [newSlimeArray[0], newSlimeArray[1], newSlimeArray[3]];
-            }
-            for (const slime of newSlimeArray) {
-                slime.turnDelay = Math.ceil(newSlimeArray.length * 0.8);
-                slime.STEP_ANIMATION_TIME = newSlimeArray.length * 2 + 4;
-                slime.currentTurnDelay = slime.turnDelay;
-                if (newSlimeArray.length === 4) slime.maxHealth = 4;
-                else if (newSlimeArray.length === 3) slime.maxHealth = 3;
-                else if (newSlimeArray.length === 2) slime.maxHealth = 3;
-                else if (newSlimeArray.length === 1) slime.maxHealth = 2;
-                slime.health = slime.maxHealth;
-                slime.removeShadow();
-                if (slime.baseSlime === null) {
-                    slime.updateIntentIcon();
-                    slime.setShadow();
-                }
-            }
-            if (newSlimeArray.length !== 0) newSlimeArray[0].correctScale();
-        }
-    }
 
-    correctScale() {
-        if (this.baseSlime) {
-            this.baseSlime.correctScale();
-            return;
-        }
-        if (this.subSlimes.length % 2 === 1) return;
-        if (this.subSlimes.length === 0) {
-            this.angle = 0;
-        } else if (this.pane === PLANE.VERTICAL) {
-            const sign = Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x);
-            if (sign === 1) this.angle = 270;
-            else if (sign === -1) this.angle = 90;
+        const sortedSlime = this.getSortedSlime();
+        const firstHalf = sortedSlime.slice(0, sortedSlime.indexOf(divider));
+        const secondHalf = sortedSlime.slice(sortedSlime.indexOf(divider) + 1);
+
+        for (const newSlimeArray of [firstHalf, secondHalf]) {
+            this.reform(newSlimeArray);
         }
     }
 
@@ -358,31 +350,21 @@ export class WallSlime extends Enemy {
     }
 
     onMoveFrame() {
-        if (!this.subSlimes) return;
-        if (this.baseSlime) return;
-        if (this.pane === PLANE.HORIZONTAL && this.subSlimes.length % 2 === 0 || this.subSlimes.length === 0) super.onMoveFrame();
-        else if (this.pane === PLANE.HORIZONTAL && this.subSlimes.length % 2 === 1) {
-            this.healthContainer.position.x = this.position.x - this.width / 2 - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 0) / 2 + 0 / 2;
-            this.healthContainer.position.y = this.position.y + this.height * 0.5 + 10;
+        if (!this.subSlimes || this.baseSlime) {
+            if (this.healthContainer) this.healthContainer.visible = false;
+            if (this.intentIcon) this.intentIcon.visible = false;
+            return;
+        }
+        super.onMoveFrame();
 
-            this.intentIcon.position.x = this.position.x - this.width / 2;
-            this.intentIcon.position.y = this.position.y - this.height / 2 - this.intentIcon.height / 2;
-            if (this.intentIcon2) {
-                this.intentIcon2.position.x = this.intentIcon.position.x;
-                this.intentIcon2.position.y = this.intentIcon.position.y;
-            }
-        } else {
-            const lowestSlime = this.getLowestSlime();
-            const highestSlime = this.getHighestSlime();
-            this.healthContainer.position.x = lowestSlime.position.x - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 0) / 2 + 0 / 2;
-            this.healthContainer.position.y = lowestSlime.position.y + this.height * 0.5 + 10;
-
-            this.intentIcon.position.x = highestSlime.position.x;
-            this.intentIcon.position.y = highestSlime.position.y - this.height / 2 - this.intentIcon.height / 2;
-            if (this.intentIcon2) {
-                this.intentIcon2.position.x = this.intentIcon.position.x;
-                this.intentIcon2.position.y = this.intentIcon.position.y;
-            }
+        if (this.subSlimes.length % 2 === 1 && this.plane === PLANE.HORIZONTAL) {
+            this.intentIcon.position.x -= this.width / 2;
+            this.healthContainer.position.x -= this.width / 2;
+        } else if (this.subSlimes.length % 2 === 1 && this.plane === PLANE.VERTICAL) {
+            this.intentIcon.position.y -= this.height / 2;
+        }
+        if (this.plane === PLANE.VERTICAL) {
+            this.healthContainer.position.y = this.getLowestSlime().position.y + this.getLowestSlime().height / 2;
         }
     }
 
