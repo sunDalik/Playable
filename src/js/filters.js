@@ -57,6 +57,28 @@ export const MILD_WHITE_GLOW_FILTER = new GlowFilter({
 MILD_WHITE_GLOW_FILTER.padding = 5;
 MILD_WHITE_GLOW_FILTER.resolution = 2;
 
+
+export const BIG_DARK_GLOW_FILTER = new GlowFilter({
+    distance: 9,
+    outerStrength: 8,
+    innerStrength: 0,
+    color: 0x000000,
+    quality: 0.3
+});
+BIG_DARK_GLOW_FILTER.padding = 10;
+BIG_DARK_GLOW_FILTER.resolution = 2;
+
+export const BIG_WHITE_GLOW_FILTER = new GlowFilter({
+    distance: 9,
+    outerStrength: 9,
+    innerStrength: 0,
+    color: 0xffffff,
+    quality: 0.3
+});
+BIG_WHITE_GLOW_FILTER.padding = 10;
+BIG_WHITE_GLOW_FILTER.resolution = 2;
+
+
 export const WARNING_BULLET_OUTLINE_FILTER = new OutlineFilter(1, 0x81D0DA);
 WARNING_BULLET_OUTLINE_FILTER.resolution = 2;
 

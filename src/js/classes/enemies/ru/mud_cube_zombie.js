@@ -11,16 +11,16 @@ export class MudCubeZombie extends Enemy {
         this.type = ENEMY_TYPE.MUD_CUBE_ZOMBIE;
         this.atk = 0;
         this.movable = false;
-        this.currentLifeTime = this.lifeTime = randomInt(12, 16);
+        this.lifeTime = randomInt(12, 16);
         this.fadingDestructionParticles = true;
         this.removeShadow();
     }
 
     move() {
-        if (this.currentLifeTime <= 0) {
+        if (this.lifeTime <= 0) {
             this.die(null);
         } else {
-            this.currentLifeTime--;
+            this.lifeTime--;
         }
     }
 

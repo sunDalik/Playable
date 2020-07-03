@@ -13,8 +13,7 @@ export class SummonCircle extends Enemy {
         this.atk = 0;
         this.movable = false;
         this.isMinion = true;
-        this.delay = 3;
-        this.currentDelay = this.delay;
+        this.currentDelay = 3;
         this.summonedEnemy = enemy;
         this.zIndex = -2;
         this.removeShadow();
@@ -45,8 +44,7 @@ export class SummonCircle extends Enemy {
     }
 
     setDelay(delay) {
-        this.delay = delay;
-        this.currentDelay = this.delay;
+        this.currentDelay = delay;
     }
 
     spin() {

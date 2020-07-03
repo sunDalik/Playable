@@ -28,6 +28,7 @@ import {Mushroom} from "../classes/enemies/fc/mushroom";
 import {SpiderSmall} from "../classes/enemies/fc/spider_small";
 import {FireSnail} from "../classes/enemies/dt/fire_snail";
 import {ExplosivePixie} from "../classes/enemies/dt/explosive_pixie";
+import {HexEye} from "../classes/enemies/ru/hex_eye";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, GraySpider],
@@ -226,6 +227,7 @@ export const DTBossSets = [
 ];
 
 export const RUEnemySets = [
+    [HexEye],
     [LizardWarrior, LizardWarrior],
     [LizardWarrior],
     [MudMage],
