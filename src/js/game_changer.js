@@ -118,6 +118,9 @@ export const BG_COLORS = {
 };
 
 export function setVariablesForStage() {
+    if (Game.stage === STAGE.RUINS) Game.chainLength = 15;
+    else Game.chainLength = 10;
+
     switch (Game.stage) {
         case STAGE.FLOODED_CAVE:
             Game.BGColor = BG_COLORS.FLOODED_CAVE;

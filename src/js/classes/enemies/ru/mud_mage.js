@@ -27,7 +27,7 @@ export class MudMage extends Enemy {
         this.currentCastTime = this.castTime;
         this.setScaleModifier(1.1);
         this.minions = [];
-        this.minionsMax = 15;
+        this.minionsMax = 10;
     }
 
     move() {
