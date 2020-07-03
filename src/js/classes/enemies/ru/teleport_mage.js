@@ -25,7 +25,7 @@ export class TeleportMage extends Enemy {
         this.casting = false;
         this.cooldown = 10;
         this.currentCooldown = Math.floor(this.cooldown / 3);
-        this.castDistance = 6;
+        this.castDistance = 5;
         this.dangerDistance = 3;
         this.castTime = 2;
         this.currentCastTime = this.castTime;

@@ -1,7 +1,8 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums";
 import {RUEnemiesSpriteSheet} from "../../../loader";
+import {randomInt} from "../../../utils/random_utils";
 
 export class MudCubeZombie extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_cube_zombie.png"]) {
@@ -10,11 +11,18 @@ export class MudCubeZombie extends Enemy {
         this.type = ENEMY_TYPE.MUD_CUBE_ZOMBIE;
         this.atk = 0;
         this.movable = false;
+        this.currentLifeTime = this.lifeTime = randomInt(12, 16);
         this.fadingDestructionParticles = true;
         this.removeShadow();
     }
 
-    move() {}
+    move() {
+        if (this.currentLifeTime <= 0) {
+            this.die(null);
+        } else {
+            this.currentLifeTime--;
+        }
+    }
 
     updateIntentIcon() {
         super.updateIntentIcon();

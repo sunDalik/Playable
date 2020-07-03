@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
@@ -166,6 +166,7 @@ export class MudMage extends Enemy {
     }
 
     aliveMinionsCount() {
-        return this.minions.filter(minion => !minion.dead).length;
+        this.minions = this.minions.filter(minion => !minion.dead);
+        return this.minions.length;
     }
 }
