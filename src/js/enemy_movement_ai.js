@@ -1,9 +1,10 @@
 import {closestPlayer, tileDistance} from "./utils/game_utils";
 import {
+    getChasingOptions,
     getDirectionsWithConditions,
     getEmptyCardinalDirections,
     getEmptyRunAwayOptions,
-    getRelativelyEmptyCardinalDirections
+    getRelativelyEmptyCardinalDirections, getRelativelyEmptyLitCardinalDirections
 } from "./utils/map_utils";
 import {randomChoice} from "./utils/random_utils";
 import {getPlayerOnTile, isEmpty} from "./map_checks";
@@ -72,6 +73,30 @@ export function soldierAI(enemy, player = closestPlayer(enemy)) {
         const direction = randomChoice(getDirectionsWithConditions(enemy, directions, isEmpty));
         if (direction !== undefined) {
             enemy.step(direction.x, direction.y);
+        }
+    }
+}
+
+export function randomAggressiveAI(enemy, noticeDistance) {
+    //todo: if there are multiple closest players and you can't go to one of them you MUST go to the other!!!
+    //maybe you should also go to the other player if it is NOT closest but you can't go to closest
+    if (tileDistance(enemy, closestPlayer(enemy)) <= noticeDistance) {
+        const movementOptions = getChasingOptions(enemy, closestPlayer(enemy));
+        if (movementOptions.length !== 0) {
+            const dir = randomChoice(movementOptions);
+            const player = getPlayerOnTile(enemy.tilePosition.x + dir.x, enemy.tilePosition.y + dir.y);
+            if (player) {
+                enemy.bump(dir.x, dir.y);
+                player.damage(enemy.atk, enemy, true);
+            } else {
+                enemy.step(dir.x, dir.y);
+            }
+        } else enemy.bump(Math.sign(closestPlayer(enemy).tilePosition.x - enemy.tilePosition.x), Math.sign(closestPlayer(enemy).tilePosition.y - enemy.tilePosition.y));
+    } else {
+        const movementOptions = getRelativelyEmptyLitCardinalDirections(enemy);
+        if (movementOptions.length !== 0) {
+            const dir = randomChoice(movementOptions);
+            enemy.step(dir.x, dir.y);
         }
     }
 }

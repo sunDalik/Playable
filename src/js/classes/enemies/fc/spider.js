@@ -1,12 +1,11 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
 import {DAMAGE_TYPE, ENEMY_TYPE, STAGE} from "../../../enums";
-import {getPlayerOnTile, isEmpty} from "../../../map_checks";
+import {isEmpty} from "../../../map_checks";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
-import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
-import {randomChoice} from "../../../utils/random_utils";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {easeInOutQuad} from "../../../utils/math_utils";
+import {randomAggressiveAI} from "../../../enemy_movement_ai";
 
 export class Spider extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spider.png"]) {
@@ -28,27 +27,7 @@ export class Spider extends Enemy {
 
     move() {
         if (!this.thrown) {
-            //todo: if there are multiple closest players and you can't go to one of them you MUST go to the other!!!
-            //maybe you should also go to the other player if it is NOT closest but you can't go to closest
-            if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
-                const movementOptions = getChasingOptions(this, closestPlayer(this));
-                if (movementOptions.length !== 0) {
-                    const dir = randomChoice(movementOptions);
-                    const player = getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
-                    if (player) {
-                        this.bump(dir.x, dir.y);
-                        player.damage(this.atk, this, true);
-                    } else {
-                        this.step(dir.x, dir.y);
-                    }
-                } else this.bump(Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x), Math.sign(closestPlayer(this).tilePosition.y - this.tilePosition.y));
-            } else {
-                const movementOptions = getRelativelyEmptyLitCardinalDirections(this);
-                if (movementOptions.length !== 0) {
-                    const dir = randomChoice(movementOptions);
-                    this.step(dir.x, dir.y);
-                }
-            }
+            randomAggressiveAI(this, this.noticeDistance);
         } else this.thrown = false;
     }
 
