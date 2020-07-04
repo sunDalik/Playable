@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {getCardinalDirections} from "../../../utils/map_utils";
@@ -84,7 +84,11 @@ export class TeleportMage extends Enemy {
             if (this.targetedPlayer === Game.player) this.intentIcon.filters = [MILD_WHITE_GLOW_FILTER];
             else this.intentIcon.filters = [MILD_DARK_GLOW_FILTER];
         } else if (this.currentTurnDelay <= 0) {
-            this.intentIcon.texture = IntentsSpriteSheet["question_mark.png"];
+            if (tileDistance(this, closestPlayer(this)) <= this.dangerDistance) {
+                this.intentIcon.texture = IntentsSpriteSheet["fear.png"];
+            } else {
+                this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
+            }
         } else {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         }

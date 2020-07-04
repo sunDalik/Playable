@@ -70,7 +70,11 @@ export class MudMage extends Enemy {
                 this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
             }
         } else if (this.currentTurnDelay <= 0) {
-            this.intentIcon.texture = IntentsSpriteSheet["question_mark.png"];
+            if (tileDistance(this, closestPlayer(this)) <= this.dangerDistance) {
+                this.intentIcon.texture = IntentsSpriteSheet["fear.png"];
+            } else {
+                this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
+            }
         } else {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         }
