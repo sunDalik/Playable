@@ -24,6 +24,11 @@ export class MudCubeZombie extends Enemy {
         }
     }
 
+    setStunIcon() {
+        super.setStunIcon();
+        this.intentIcon.visible = false;
+    }
+
     updateIntentIcon() {
         super.updateIntentIcon();
         this.intentIcon.visible = false;

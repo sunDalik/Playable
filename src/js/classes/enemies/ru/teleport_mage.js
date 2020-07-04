@@ -2,9 +2,7 @@ import {Game} from "../../../game";
 import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
-import {getCardinalDirections} from "../../../utils/map_utils";
-import {blowAwayInDirection} from "../../../special_move_logic";
-import {isEnemy} from "../../../map_checks";
+import {castWind} from "../../../special_move_logic";
 import {createPlayerAttackTile, rotate} from "../../../animations";
 import {randomChoice} from "../../../utils/random_utils";
 import {camera} from "../../game/camera";
@@ -95,13 +93,7 @@ export class TeleportMage extends Enemy {
     }
 
     blowAwayFromPlayerPosition(player) {
-        for (const dir of getCardinalDirections()) {
-            if (isEnemy(player.tilePosition.x + dir.x, player.tilePosition.y + dir.y)
-                && Game.map[player.tilePosition.y + dir.y][player.tilePosition.x + dir.x].entity.type !== ENEMY_TYPE.WALL_SLIME) { //temporary fix
-                Game.map[player.tilePosition.y + dir.y][player.tilePosition.x + dir.x].entity.stun++;
-                blowAwayInDirection(player.tilePosition, dir);
-            }
-        }
+        castWind(player, 1, 1, 1, true);
     }
 
     correctScale() {
