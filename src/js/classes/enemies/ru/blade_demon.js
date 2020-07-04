@@ -14,7 +14,7 @@ export class BladeDemon extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["blade_demon.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 4;
-        this.atk = 1;
+        this.atk = 1.25;
         this.type = ENEMY_TYPE.BLADE_DEMON;
         this.currentTurnDelay = this.turnDelay = 1;
         this.sleepDelay = 2;
