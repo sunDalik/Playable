@@ -16,12 +16,13 @@ export class HexEye extends Enemy {
         this.cooldown = 5;
         this.currentCooldown = 2;
         this.bullets = [];
+        this.shadowInside = true;
     }
 
     move() {
         this.correctScale();
         if (this.controlling) {
-            if (this.bullets.every(bullet => !bullet.homing || bullet.dead)) {
+            if (this.allBulletsDead()) {
                 this.controlling = false;
                 this.texture = RUEnemiesSpriteSheet["hex_eye.png"];
                 this.currentCooldown = this.cooldown;
@@ -65,5 +66,13 @@ export class HexEye extends Enemy {
         if (sign !== 0) {
             this.scale.x = sign * Math.abs(this.scale.x);
         }
+    }
+
+    allBulletsDead() {
+        if (this.bullets.every(bullet => !bullet.homing || bullet.dead)) {
+            this.bullets = [];
+            return true;
+        }
+        return false;
     }
 }
