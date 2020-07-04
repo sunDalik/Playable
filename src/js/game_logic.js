@@ -1,5 +1,5 @@
 import {Game} from "./game";
-import {incrementStage} from "./game_changer";
+import {incrementStage, regenerateWeaponPool} from "./game_changer";
 import {initializeLevel} from "./setup";
 import {
     ACHIEVEMENT_ID,
@@ -414,6 +414,7 @@ export function gotoNextLevel() {
     cleanGameState();
     completeBeatStageAchievements(Game.stage);
     incrementStage();
+    regenerateWeaponPool();
     initializeLevel();
     Game.player.applyNextLevelMethods();
     Game.player2.applyNextLevelMethods();

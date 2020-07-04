@@ -67,15 +67,18 @@ import {QuiverOfTheForestSpirit} from "./classes/equipment/accessories/quiver_of
 import {WeaponMasterEmblem} from "./classes/equipment/accessories/weapon_master_emblem";
 import {HeroKey} from "./classes/equipment/accessories/hero_key";
 
-export function initPools() {
+//we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
+export function regenerateWeaponPool() {
     Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
         PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow];
+}
+
+export function initPools() {
+    regenerateWeaponPool();
     Game.magicPool = [Light, SunBlessing, Wind, CrystalWind, CrystalGuardian, DefenseLink, Thunderstorm, EmpyrealWrath,
         Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape,
         Necromancy];
-    //might want to remove pickaxe from the pool?
     Game.chestItemPool = [FlaskOfFire, QuiverOfTheForestSpirit, WeaponMasterEmblem, HeroKey,
-        Pickaxe,
         Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, BladeCrown,
         LeatherArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,

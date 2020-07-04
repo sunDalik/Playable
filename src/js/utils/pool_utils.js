@@ -4,11 +4,14 @@ import {removeItemFromPool} from "../game_changer";
 import {RARITY, SLOT} from "../enums";
 import {randomChoice, randomShuffle} from "./random_utils";
 import {Necromancy} from "../classes/equipment/magic/necromancy";
+import {Spear} from "../classes/equipment/weapons/spear";
 
 export function getRandomWeapon(canGetS = true) {
-    if (Game.weaponPool.length === 0) return null;
+    if (Game.weaponPool.length === 0) return new Spear();
     const constructor = getItemFromPool(Game.weaponPool, canGetS);
-    return new constructor();
+    const item = new constructor();
+    removeItemFromPool(item, Game.weaponPool);
+    return item;
 }
 
 export function getRandomShopItem() {
