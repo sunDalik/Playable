@@ -173,7 +173,7 @@ export function createWeaponAnimationClub(player, weapon, dirX, dirY, animationT
     Game.app.ticker.add(animation);
 }
 
-export function createEnemyAttackTile(tile, animationTime = 8, alpha = 0.5) {
+export function createEnemyAttackTile(tile, animationTime = 8, alpha = 0.3) {
     const fadingTile = new TileElement(PIXI.Texture.WHITE, tile.x, tile.y, true);
     fadingTile.tint = 0xf4524a;
     fadingTile.alpha = alpha;

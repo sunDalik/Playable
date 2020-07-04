@@ -228,8 +228,7 @@ export const DTBossSets = [
 ];
 
 export const RUEnemySets = [
-    [BladeDemon]
-        /*
+    [BladeDemon],
     [HexEye],
     [LizardWarrior, LizardWarrior],
     [LizardWarrior],
@@ -251,7 +250,6 @@ export const RUEnemySets = [
     [LizardWarrior, WallSlime, LizardWarrior, MudMage],
     [LizardWarrior, TeleportMage, MudMage],
     [WallSlime, WallSlime]
-         */
 ];
 
 export const RUBossSets = [

@@ -4,7 +4,7 @@ import {Game} from "../game";
 export function get8Directions() {
     return [{x: -1, y: -1}, {x: 0, y: -1}, {x: 1, y: -1},
         {x: -1, y: 0}, {x: 1, y: 0},
-        {x: -1, y: 1}, {x: 0, y: 1}, {x: 1, y: 1}]
+        {x: -1, y: 1}, {x: 0, y: 1}, {x: 1, y: 1}];
 }
 
 export function get8DirectionsInRadius(radius, excludeZero = true) {
@@ -19,11 +19,15 @@ export function get8DirectionsInRadius(radius, excludeZero = true) {
 }
 
 export function getCardinalDirections() {
-    return [{x: 0, y: -1}, {x: -1, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}]
+    return [{x: 0, y: -1}, {x: -1, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}];
+}
+
+export function getDiagonalDirections() {
+    return [{x: -1, y: -1}, {x: 1, y: -1}, {x: 1, y: 1}, {x: -1, y: 1}];
 }
 
 export function getHorizontalDirections() {
-    return [{x: -1, y: 0}, {x: 1, y: 0}]
+    return [{x: -1, y: 0}, {x: 1, y: 0}];
 }
 
 export function getDirectionsOnSquare(radius, excludeCorners = false) {
