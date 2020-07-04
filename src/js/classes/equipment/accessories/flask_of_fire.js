@@ -13,13 +13,13 @@ export class FlaskOfFire extends Equipment {
         this.equipmentType = EQUIPMENT_TYPE.ACCESSORY;
         this.id = EQUIPMENT_ID.FLASK_OF_FIRE;
         this.name = "Flask of Fire";
-        this.description = "Deal additional 0.5 damage whenever you attack with a non-magical weapon\nThis damage ignores your attack multiplier";
+        this.description = "Deal additional 0.25 damage whenever you attack with a non-magical weapon";
         this.rarity = RARITY.C;
     }
 
     onEnemyDamage(wielder, enemy, damageType) {
         if (damageType === DAMAGE_TYPE.PHYSICAL && !enemy.dead) {
-            enemy.damage(wielder, 0.5, 0, 0, DAMAGE_TYPE.HAZARDAL);
+            enemy.damage(wielder, 0.25, 0, 0, DAMAGE_TYPE.HAZARDAL);
             this.animateFire(enemy);
         }
     }
