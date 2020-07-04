@@ -37,7 +37,8 @@ export const ENEMY_TYPE = Object.freeze({
     HEX_EYE: 35,
     BLADE_DEMON: 36,
     EXPLOSIVE_PIXIE: 37,
-    FIRE_SNAIL: 38
+    FIRE_SNAIL: 38,
+    LAVA_SLIME: 39
 });
 
 export const RABBIT_TYPE = Object.freeze({

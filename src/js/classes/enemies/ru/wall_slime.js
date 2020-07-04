@@ -67,6 +67,7 @@ export class WallSlime extends Enemy {
             const slime = sortedSlime[i];
             slime.setTexture(size, plane, i);
             slime.setParameters(size);
+            slime.place();
             if (slime !== this) {
                 slime.baseSlime = this;
                 slime.subSlimes = this.subSlimes.slice();
@@ -225,6 +226,7 @@ export class WallSlime extends Enemy {
 
         for (const slime of slimeArray) {
             slime.subSlimes = subSlimes.slice();
+            slime.onMoveFrame();
         }
     }
 
@@ -357,14 +359,16 @@ export class WallSlime extends Enemy {
         }
         super.onMoveFrame();
 
-        if (this.subSlimes.length % 2 === 1 && this.plane === PLANE.HORIZONTAL) {
-            this.intentIcon.position.x -= this.width / 2;
-            this.healthContainer.position.x -= this.width / 2;
-        } else if (this.subSlimes.length % 2 === 1 && this.plane === PLANE.VERTICAL) {
-            this.intentIcon.position.y -= this.height / 2;
-        }
-        if (this.plane === PLANE.VERTICAL) {
-            this.healthContainer.position.y = this.getLowestSlime().position.y + this.getLowestSlime().height / 2;
+        if (this.type === ENEMY_TYPE.WALL_SLIME) {
+            if (this.subSlimes.length % 2 === 1 && this.plane === PLANE.HORIZONTAL) {
+                this.intentIcon.position.x -= this.width / 2;
+                this.healthContainer.position.x -= this.width / 2;
+            } else if (this.subSlimes.length % 2 === 1 && this.plane === PLANE.VERTICAL) {
+                this.intentIcon.position.y -= this.height / 2;
+            }
+            if (this.plane === PLANE.VERTICAL) {
+                this.healthContainer.position.y = this.getLowestSlime().position.y + this.getLowestSlime().height / 2;
+            }
         }
     }
 
