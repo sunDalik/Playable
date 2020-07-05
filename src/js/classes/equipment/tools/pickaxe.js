@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_ID, RARITY, ROLE} from "../../../enums";
-import {isDiggable, isEnemy} from "../../../map_checks";
+import {ENEMY_TYPE, EQUIPMENT_ID, RARITY, ROLE} from "../../../enums";
+import {isDiggable, isEnemy, isEntity} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {ToolsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
@@ -19,10 +19,23 @@ export class Pickaxe extends Weapon {
     attack(wielder, dirX, dirY) {
         const attackTile = {x: wielder.tilePosition.x + dirX, y: wielder.tilePosition.y + dirY};
         if (isEnemy(attackTile.x, attackTile.y)) {
+            const enemy = Game.map[attackTile.y][attackTile.x].entity;
             const atk = wielder.getAtk(this);
             createWeaponAnimationClub(wielder, this, dirX, dirY, 8, 3, 90, 1);
             createPlayerAttackTile(attackTile);
-            Game.map[attackTile.y][attackTile.x].entity.damage(wielder, atk, dirX, dirY);
+            enemy.damage(wielder, atk, dirX, dirY);
+
+            if (enemy.type === ENEMY_TYPE.MUD_CUBE_ZOMBIE) {
+                const dirs = dirX !== 0 ? [{x: 0, y: 1}, {x: 0, y: -1}] : [{x: 1, y: 0}, {x: -1, y: 0}];
+                for (const dir of dirs) {
+                    const newAttackTile = {x: attackTile.x + dir.x, y: attackTile.y + dir.y};
+                    if (isEntity(newAttackTile.x, newAttackTile.y, ROLE.ENEMY, ENEMY_TYPE.MUD_CUBE_ZOMBIE)) {
+                        const mudZombie = Game.map[newAttackTile.y][newAttackTile.x].entity;
+                        createPlayerAttackTile(newAttackTile);
+                        mudZombie.damage(wielder, atk, dirX, dirY);
+                    }
+                }
+            }
             return true;
         } else return false;
     }
