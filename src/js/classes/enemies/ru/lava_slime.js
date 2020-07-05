@@ -63,7 +63,7 @@ export class LavaSlime extends WallSlime {
 
     setParameters(size) {
         this.STEP_ANIMATION_TIME = size === 4 ? 9 : 6;
-        this.currentTurnDelay = this.turnDelay = 1;
+        this.currentTurnDelay = this.turnDelay = size === 4 ? 2 : 1;
         if (size === 4) this.maxHealth = 3;
         else this.maxHealth = 2;
         this.health = this.maxHealth;
