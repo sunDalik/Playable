@@ -16,7 +16,7 @@ export function castWind(origin, radius, blowDistance, atk = 1, crystal = false)
                     if (hazard && crystal) {
                         hazard.removeFromWorld();
                     }
-                    if (crystal && isBullet(x, y)) {
+                    if (crystal && isBullet(tile.x, tile.y)) {
                         for (let i = Game.bullets.length - 1; i >= 0; i--) {
                             if (Game.bullets[i].tilePosition.x === tile.x && Game.bullets[i].tilePosition.y === tile.y) {
                                 Game.bullets[i].die();
