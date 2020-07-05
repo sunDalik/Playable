@@ -16,7 +16,7 @@ import {get8Directions, get8DirectionsInRadius} from "../../../utils/map_utils";
 import {PoisonHazard} from "../../hazards/poison";
 import {Eel} from "../fc/eel";
 import {PoisonEel} from "../fc/eel_poison";
-import {shakeScreen} from "../../../animations";
+import {createEnemyAttackTile, shakeScreen} from "../../../animations";
 import {DarkEel} from "../fc/eel_dark";
 import {ParanoidEelSpriteSheet} from "../../../loader";
 
@@ -414,16 +414,13 @@ export class ParanoidEel extends Boss {
                 Game.world.addHazard(new PoisonHazard(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y));
             }
         }
-        for (const dir of get8Directions()) {
-            const player = getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
+        for (const dir of get8Directions().concat([{x: this.direction.x * 2, y: this.direction.y * 2},
+            {x: -this.direction.x * 2, y: -this.direction.y * 2}])) {
+            const atkTile = {x: this.tilePosition.x + dir.x, y: this.tilePosition.y + dir.y};
+            const player = getPlayerOnTile(atkTile.x, atkTile.y);
             if (player) player.damage(this.atk, this, true, true);
+            //createEnemyAttackTile(atkTile, 12);
         }
-
-        let player = getPlayerOnTile(this.tilePosition.x + this.direction.x * 2, this.tilePosition.y + this.direction.y * 2);
-        if (player) player.damage(this.atk, this, true, true);
-
-        player = getPlayerOnTile(this.tilePosition.x - this.direction.x * 2, this.tilePosition.y - this.direction.y * 2);
-        if (player) player.damage(this.atk, this, true, true);
     }
 
     sneezeAttack() {
