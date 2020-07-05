@@ -93,7 +93,7 @@ export class TeleportMage extends Enemy {
     }
 
     blowAwayFromPlayerPosition(player) {
-        castWind(player, 1, 1, 1, true);
+        castWind(player, 2, 1, 1, true);
     }
 
     correctScale() {

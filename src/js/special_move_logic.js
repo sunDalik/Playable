@@ -3,6 +3,7 @@ import {Game} from "./game";
 import {randomChoice} from "./utils/random_utils";
 import {tileDistanceDiagonal} from "./utils/game_utils";
 import {DAMAGE_TYPE} from "./enums";
+import {updateIntent} from "./game_logic";
 
 export function castWind(origin, radius, blowDistance, atk = 1, crystal = false) {
     const slideTime = 2;
@@ -25,6 +26,7 @@ export function castWind(origin, radius, blowDistance, atk = 1, crystal = false)
                     if (isEnemy(tile.x, tile.y)) {
                         const enemy = Game.map[tile.y][tile.x].entity;
                         enemy.stun += 2;
+                        updateIntent(enemy);
                         const direction = {
                             x: Math.sign(enemy.tilePosition.x - origin.tilePosition.x),
                             y: Math.sign(enemy.tilePosition.y - origin.tilePosition.y)
