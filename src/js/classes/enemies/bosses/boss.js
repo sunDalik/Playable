@@ -21,6 +21,8 @@ export class Boss extends Enemy {
         super(texture, tilePositionX, tilePositionY);
         this.boss = true;
         this.name = "";
+        this.phases = 1;
+        this.currentPhase = 1;
         this.drops = [];
         this.assignRandomDrops();
         Game.boss = this;
@@ -48,20 +50,40 @@ export class Boss extends Enemy {
             heart.position.x = i * (bossHeartSize + bossHeartOffset);
             HUD.bossHealth.addChild(heart);
         }
+        if (this.phases - this.currentPhase > 0) {
+            const phaseCounter = new PIXI.Text(`x ${this.phases - this.currentPhase + 1}`, HUDTextStyleTitle);
+            phaseCounter.position.x = healthArray.length * (bossHeartSize + bossHeartOffset) + bossHeartSize / 2;
+            phaseCounter.position.y = (bossHeartSize - phaseCounter.height) / 2;
+            HUD.bossHealth.addChild(phaseCounter);
+        }
         const text = new PIXI.Text(this.name, HUDTextStyleTitle);
         text.position.y = -text.height - 10;
         HUD.bossHealth.addChild(text);
     }
 
     die(source) {
-        super.die(source);
-        removeAllChildrenFromContainer(HUD.bossHealth, true);
-        deactivateBossMode();
-        if (Game.bossNoDamage) this.spawnRewards(2);
-        else this.spawnRewards(1);
-        for (const drop of this.drops) {
-            dropItem(drop, this.tilePosition.x, this.tilePosition.y);
+        if (this.currentPhase < this.phases) {
+            this.currentPhase++;
+            this.health = this.maxHealth = this.getPhaseHealth(this.currentPhase);
+            this.redrawHealth();
+            this.changePhase(this.currentPhase);
+        } else {
+            super.die(source);
+            removeAllChildrenFromContainer(HUD.bossHealth, true);
+            deactivateBossMode();
+            if (Game.bossNoDamage) this.spawnRewards(2);
+            else this.spawnRewards(1);
+            for (const drop of this.drops) {
+                dropItem(drop, this.tilePosition.x, this.tilePosition.y);
+            }
         }
+    }
+
+    getPhaseHealth(phase) {
+        return this.maxHealth;
+    }
+
+    changePhase(newPhase) {
     }
 
     updateIntentIcon() {
