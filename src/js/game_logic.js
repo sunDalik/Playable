@@ -444,7 +444,8 @@ export function cleanGameState() {
 
 function returnShopItems() {
     for (const inanimate of Game.inanimates) {
-        if (inanimate.type === INANIMATE_TYPE.SHOP_STAND && !inanimate.bought && inanimate.contentsType !== EQUIPMENT_TYPE.WEAPON) {
+        if (inanimate.type === INANIMATE_TYPE.SHOP_STAND && !inanimate.bought
+            && inanimate.contentsType !== EQUIPMENT_TYPE.WEAPON && inanimate.contentsType !== EQUIPMENT_TYPE.BAG_ITEM) {
             Game.chestItemPool.push(inanimate.contents.constructor);
         }
     }
