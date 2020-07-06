@@ -10,6 +10,7 @@ export class ShadowTileElement extends TileElement {
         this.noShadow = false;
         this.shadowInside = false;
         this.shadowHeight = 8;
+        this.shadowWidthMul = 0.5;
         this.regenerateShadow();
         this.place();
     }
@@ -41,7 +42,7 @@ export class ShadowTileElement extends TileElement {
         if (Game.stage === STAGE.DARK_TUNNEL) this.shadow.beginFill(0x444444, 0.2);
         else this.shadow.beginFill(0x666666, 0.12);
         const width = this.texture.trim ? this.texture.trim.width : this.texture.frame.width;
-        this.shadow.drawEllipse(0, 0, width * this.scale.y * 0.5, this.shadowHeight);
+        this.shadow.drawEllipse(0, 0, width * this.scale.y * this.shadowWidthMul, this.shadowHeight);
         Game.world.addChild(this.shadow);
         this.placeShadow();
     }

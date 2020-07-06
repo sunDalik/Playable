@@ -5,7 +5,7 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
     WeaponsSpriteSheet, AchievementsSpriteSheet, HUDSpriteSheet,
     BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
     HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet, OneTimeSpriteSheet,
-    AccessoriesSpriteSheet;
+    AccessoriesSpriteSheet, LunaticLeaderSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
@@ -22,23 +22,28 @@ export function loadAll(afterLoad) {
         .add("src/textures/effects.json")
         .add("src/textures/intents.json")
         .add("src/textures/achievements.json")
+
         .add("src/textures/fc_enemies.json")
         .add("src/textures/dt_enemies.json")
         .add("src/textures/ru_enemies.json")
+
         .add("src/textures/paranoid_eel.json")
         .add("src/textures/gotl.json")
+        .add("src/textures/lunatic_leader.json")
+
         .add("src/textures/bullets.json")
         .add("src/textures/hud.json")
+        .add("src/textures/inanimates.json")
+
         .add("src/textures/weapons.json")
         .add("src/textures/tools.json")
         .add("src/textures/shields.json")
+        .add("src/textures/headwear.json")
         .add("src/textures/armor.json")
         .add("src/textures/footwear.json")
-        .add("src/textures/headwear.json")
         .add("src/textures/bag.json")
         .add("src/textures/one_time.json")
         .add("src/textures/accessories.json")
-        .add("src/textures/inanimates.json")
         .add("src/textures/magic.json")
 
         .load(() => {
@@ -70,4 +75,5 @@ function setSpriteSheets() {
     EffectsSpriteSheet = Game.loader.resources["src/textures/effects.json"].textures;
     OneTimeSpriteSheet = Game.loader.resources["src/textures/one_time.json"].textures;
     AccessoriesSpriteSheet = Game.loader.resources["src/textures/accessories.json"].textures;
+    LunaticLeaderSpriteSheet = Game.loader.resources["src/textures/lunatic_leader.json"].textures;
 }

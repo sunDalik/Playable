@@ -31,6 +31,7 @@ import {ExplosivePixie} from "../classes/enemies/dt/explosive_pixie";
 import {HexEye} from "../classes/enemies/ru/hex_eye";
 import {BladeDemon} from "../classes/enemies/ru/blade_demon";
 import {LavaSlime} from "../classes/enemies/ru/lava_slime";
+import {LunaticLeader} from "../classes/enemies/bosses/lunatic_leader";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, GraySpider],
@@ -280,5 +281,5 @@ export const RUEnemySets = [
 ];
 
 export const RUBossSets = [
-    [LizardWarrior] //temp
+    [LunaticLeader]
 ];
