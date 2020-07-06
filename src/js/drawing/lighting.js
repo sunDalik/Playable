@@ -67,13 +67,11 @@ function lightWorld(tileX, tileY, distance, sourceDirX = 0, sourceDirY = 0) {
                 if (sourceDirY === 0) {
                     if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - 1)) lightWorld(tileX, tileY - 1, distance - 1, sourceDirX, 1);
                     if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY + 1)) lightWorld(tileX, tileY + 1, distance - 1, sourceDirX, -1);
-                }
-                else if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorld(tileX, tileY - sourceDirY, distance - 1, sourceDirX, sourceDirY);
+                } else if (!litAreas.some(tile => tile.x === tileX && tile.y === tileY - sourceDirY)) lightWorld(tileX, tileY - sourceDirY, distance - 1, sourceDirX, sourceDirY);
                 if (sourceDirX === 0) {
                     if (!litAreas.some(tile => tile.x === tileX - 1 && tile.y === tileY)) lightWorld(tileX - 1, tileY, distance - 1, 1, sourceDirY);
                     if (!litAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY)) lightWorld(tileX + 1, tileY, distance - 1, -1, sourceDirY);
-                }
-                else if (!litAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorld(tileX - sourceDirX, tileY, distance - 1, sourceDirX, sourceDirY);
+                } else if (!litAreas.some(tile => tile.x === tileX - sourceDirX && tile.y === tileY)) lightWorld(tileX - sourceDirX, tileY, distance - 1, sourceDirX, sourceDirY);
             }
 
             //light diagonal walls
@@ -151,7 +149,12 @@ export function darkenTile(tileX, tileY) {
     }
 
     mapCell.lit = false;
-    if (mapCell.entity) mapCell.entity.visible = false;
+    if (mapCell.entity) {
+        mapCell.entity.visible = false;
+        if (mapCell.entity.shadow) mapCell.entity.shadow.visible = false;
+        if (mapCell.entity.intentIcon) mapCell.entity.intentIcon.visible = false;
+        if (mapCell.entity.intentIcon2) mapCell.entity.intentIcon2.visible = false;
+    }
     if (mapCell.secondaryEntity) mapCell.secondaryEntity.visible = false;
     if (mapCell.hazard) mapCell.hazard.visible = false;
     if (mapCell.tile) mapCell.tile.visible = false;

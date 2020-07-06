@@ -474,9 +474,7 @@ export function activateBossMode(player) {
     Game.bossFight = true;
     Game.bossNoDamage = true;
 
-    if (Game.boss.onBossModeActivate) {
-        Game.boss.onBossModeActivate();
-    }
+    if (Game.boss.onBossModeActivate) Game.boss.onBossModeActivate();
 }
 
 export function deactivateBossMode() {

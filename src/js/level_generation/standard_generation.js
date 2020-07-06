@@ -61,7 +61,10 @@ export function generateStandard() {
         //shapeRoom(room, randomChoice(shapers)); //for testing
         randomlyRotateRoom(room);
     }
-    if (settings.openSpace) outlineLevelWithWalls();
+    if (settings.openSpace) {
+        outlineLevelWithWalls();
+        outlineRoomWithWalls(bossRoom, true);
+    }
     clearShape(bossRoom);
     const path = planPath(bossRoom);
 
@@ -183,11 +186,12 @@ function isRoomGood(width, height) {
     return minDimension >= settings.minRoomSize && area >= settings.minRoomArea;
 }
 
-function outlineRoomWithWalls(room) {
+function outlineRoomWithWalls(room, superWalls = false) {
+    const symbol = superWalls ? LEVEL_SYMBOLS.SUPER_WALL : LEVEL_SYMBOLS.WALL;
     for (let i = 0; i < room.height; i++) {
         for (let j = 0; j < room.width; j++) {
             if (i === 0 || j === 0 || i === room.height - 1 || j === room.width - 1) {
-                level[i + room.offsetY][j + room.offsetX] = LEVEL_SYMBOLS.WALL;
+                level[i + room.offsetY][j + room.offsetX] = symbol;
             }
         }
     }
@@ -363,7 +367,7 @@ function drawPath(path) {
                 } else break;
             }
         }
-        if (!settings.openSpace && (Game.stage !== STAGE.DARK_TUNNEL || startRoom.type === ROOM_TYPE.BOSS || endRoom.type === ROOM_TYPE.BOSS)) {
+        if ((!settings.openSpace && Game.stage !== STAGE.DARK_TUNNEL) || (startRoom.type === ROOM_TYPE.BOSS || endRoom.type === ROOM_TYPE.BOSS)) {
             if (primary === "y") {
                 level[bestPoint][adjacencyPlane[0][secondary]] = LEVEL_SYMBOLS.ENTRY;
             } else {
