@@ -47,6 +47,7 @@ export class RustySword extends Weapon {
             }
             this.uses--;
             if (this.uses <= 0) this.texture = WeaponsSpriteSheet["rusty_sword_broken.png"];
+            wielder.redrawEquipmentSlot(this);
             return true;
         } else return false;
     }
