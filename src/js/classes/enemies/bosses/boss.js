@@ -37,6 +37,7 @@ export class Boss extends Enemy {
     }
 
     onMoveFrame() {
+        this.placeShadow();
     }
 
     redrawHealth() {

@@ -1,10 +1,11 @@
 import {Game} from "../../../game";
 import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums";
 import {Boss} from "./boss";
-import {randomInt} from "../../../utils/random_utils";
+import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";
 import {isEmpty, tileInsideTheBossRoom} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -60,7 +61,31 @@ export class LunaticLeader extends Boss {
     }
 
     move() {
+        if (Math.random() < 0.5) this.teleport();
+    }
 
+    teleport() {
+        const teleportLocations = this.getFreeLocations();
+        if (teleportLocations.length === 0) return;
+        const location = randomChoice(teleportLocations);
+        this.shadowSlide(location.x - this.tilePosition.x, location.y - this.tilePosition.y);
+    }
+
+    getFreeLocations() {
+        const freeLocations = [];
+        for (let i = Game.endRoomBoundaries[0].y + 1; i <= Game.endRoomBoundaries[1].y - 1; i++) {
+            for (let j = Game.endRoomBoundaries[0].x + 1; j <= Game.endRoomBoundaries[1].x - 1; j++) {
+                const newPos = {tilePosition: {x: j, y: i}};
+                if (tileDistance(this, newPos) > 4 && isEmpty(j, i) && tileDistance(newPos, closestPlayer(newPos)) > 3) {
+                    freeLocations.push({x: j, y: i});
+                }
+            }
+        }
+        return freeLocations;
+    }
+
+    shadowSlide(tileStepX, tileStepY) {
+        this.slide(tileStepX, tileStepY)
     }
 
     getPhaseHealth(phase) {
