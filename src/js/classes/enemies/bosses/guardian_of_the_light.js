@@ -5,8 +5,8 @@ import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
 import {getChasingDirections} from "../../../utils/map_utils";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
-import {isEmpty, isRelativelyEmpty} from "../../../map_checks";
-import {average} from "../../../utils/math_utils";
+import {isEmpty, isNotAWall} from "../../../map_checks";
+import {average, getBresenhamLine} from "../../../utils/math_utils";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {FireHazard} from "../../hazards/fire";
 import {WARNING_BULLET_OUTLINE_FILTER} from "../../../filters";
@@ -392,23 +392,13 @@ export class GuardianOfTheLight extends Boss {
         const animationTime = Math.abs(location.x - this.tilePosition.x) + Math.abs(location.y - this.tilePosition.y);
         this.slide(location.x - this.tilePosition.x, location.y - this.tilePosition.y, null, null, animationTime);
 
-        while (location.x !== oldLocation.x || location.y !== oldLocation.y) {
-            if (isRelativelyEmpty(oldLocation.x, oldLocation.y)) {
-                const newFire = new FireHazard(oldLocation.x, oldLocation.y);
+        for (const tile of getBresenhamLine(oldLocation.x, oldLocation.y, location.x, location.y)) {
+            if (isNotAWall(tile.x, tile.y)) {
+                const newFire = new FireHazard(tile.x, tile.y);
                 newFire.spreadTimes = 1;
                 newFire.tileSpread = 1;
                 newFire.LIFETIME = newFire.turnsLeft = 7;
                 Game.world.addHazard(newFire);
-            }
-            if (location.x !== oldLocation.x && location.y !== oldLocation.y) {
-                if (Math.abs(location.x - oldLocation.x) === Math.abs(location.y - oldLocation.y)) {
-                    if (Math.random() < 0.5) oldLocation.x += Math.sign(location.x - oldLocation.x);
-                    else oldLocation.y += Math.sign(location.y - oldLocation.y);
-                } else if (Math.abs(location.x - oldLocation.x) > Math.abs(location.y - oldLocation.y)) oldLocation.x += Math.sign(location.x - oldLocation.x);
-                else oldLocation.y += Math.sign(location.y - oldLocation.y);
-            } else {
-                if (location.x !== oldLocation.x) oldLocation.x += Math.sign(location.x - oldLocation.x);
-                else oldLocation.y += Math.sign(location.y - oldLocation.y);
             }
         }
     }
