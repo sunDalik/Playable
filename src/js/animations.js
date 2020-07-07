@@ -724,3 +724,35 @@ export function createEmpyrealWrathAnimation(enemy) {
 
     Game.app.ticker.add(animation);
 }
+
+export function createShadowFollowers(entity, amount, animationTime) {
+    for (let i = 0; i < amount; i++) {
+        const shadow = new PIXI.Sprite(entity.texture);
+        shadow.anchor.set(entity.anchor.x, entity.anchor.y);
+        shadow.scale.set(entity.scale.x, entity.scale.y);
+        shadow.position.set(entity.position.x, entity.position.y);
+        Game.world.addChild(shadow);
+        shadow.alpha = 0.6 - (i / amount) * 0.6;
+
+        animationTime += 1 + i;
+        let counter = 0;
+        let delay = i + 1;
+        const entityPositions = [{x: entity.position.x, y: entity.position.y}];
+
+        const animation = delta => {
+            counter += delta;
+            entityPositions.push({x: entity.position.x, y: entity.position.y});
+            if (counter <= delay) return;
+            shadow.position.set(entityPositions[0].x, entityPositions[0].y);
+            entityPositions.shift();
+
+            if (counter >= animationTime) {
+                Game.app.ticker.remove(animation);
+                Game.world.removeChild(shadow);
+                shadow.destroy();
+            }
+        };
+
+        Game.app.ticker.add(animation);
+    }
+}

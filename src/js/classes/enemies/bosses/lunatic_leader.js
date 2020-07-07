@@ -7,6 +7,7 @@ import {isEmpty, tileInsideTheBossRoom} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {hypotenuse} from "../../../utils/math_utils";
+import {createShadowFollowers} from "../../../animations";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -88,7 +89,8 @@ export class LunaticLeader extends Boss {
     shadowSlide(tileStepX, tileStepY) {
         //shadow is turned off during slides because shadow implementation is buggy!!!
         this.removeShadow();
-        const animationTime = hypotenuse(tileStepX, tileStepY)*1.1;
+        const animationTime = hypotenuse(tileStepX, tileStepY) * 1.1;
+        createShadowFollowers(this, 3, animationTime);
         this.slide(tileStepX, tileStepY, null, () => this.setShadow(), animationTime);
     }
 
