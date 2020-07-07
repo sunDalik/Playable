@@ -1,9 +1,9 @@
 import {Game} from "../../../game";
-import {ENEMY_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {randomInt} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";
-import {tileInsideTheBossRoom} from "../../../map_checks";
+import {isEmpty, tileInsideTheBossRoom} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
 
 export class LunaticLeader extends Boss {
@@ -34,6 +34,24 @@ export class LunaticLeader extends Boss {
         }
     }
 
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+        super.damage(source, dmg, inputX, inputY, damageType);
+        if (this.currentPhase === 3) {
+            this.throwAway(inputX, inputY);
+        }
+    }
+
+    throwAway(throwX, throwY) {
+        if (throwX !== 0 || throwY !== 0) {
+            if (isEmpty(this.tilePosition.x + throwX, this.tilePosition.y + throwY)) {
+                this.step(throwX, throwY);
+                this.cancellable = false;
+                return true;
+            }
+        }
+        return false;
+    }
+
     die(source) {
         super.die(source);
         for (const enemy of Game.enemies) {
@@ -47,7 +65,7 @@ export class LunaticLeader extends Boss {
 
     getPhaseHealth(phase) {
         if (phase === 2) return 25;
-        else if (phase === 3) return 8;
+        else if (phase === 3) return 6;
         else if (phase === 4) return 30;
     }
 

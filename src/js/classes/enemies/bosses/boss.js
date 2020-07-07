@@ -51,7 +51,7 @@ export class Boss extends Enemy {
             HUD.bossHealth.addChild(heart);
         }
         if (this.phases - this.currentPhase > 0) {
-            const phaseCounter = new PIXI.Text(`x ${this.phases - this.currentPhase + 1}`, HUDTextStyleTitle);
+            const phaseCounter = new PIXI.Text(`x${this.phases - this.currentPhase + 1}`, HUDTextStyleTitle);
             phaseCounter.position.x = healthArray.length * (bossHeartSize + bossHeartOffset) + bossHeartSize / 2;
             phaseCounter.position.y = (bossHeartSize - phaseCounter.height) / 2;
             HUD.bossHealth.addChild(phaseCounter);
