@@ -152,8 +152,9 @@ export class LunaticLeader extends Boss {
         illusion.anchor.set(0.5, 0.5);
         illusion.scale.set(minion.scale.x, minion.scale.y);
         illusion.position.set(minion.position.x, minion.position.y);
+        illusion.zIndex = minion.zIndex;
         Game.world.addChild(illusion);
-        fadeOutAndDie(illusion);
+        fadeOutAndDie(illusion, false, 15);
     }
 
     shadowSlide(tileStepX, tileStepY) {

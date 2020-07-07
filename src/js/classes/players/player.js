@@ -3,6 +3,7 @@ import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {EQUIPMENT_ID, EQUIPMENT_TYPE, ROLE, SLOT, STAGE, TILE_TYPE} from "../../enums";
 import {createHeartAnimation, rotate, runDestroyAnimation, shakeScreen, showHelpBox} from "../../animations";
 import {
+    drawInteractionKeys,
     drawMovementKeyBindings,
     drawOtherHUD,
     redrawHealthForPlayer,
@@ -386,6 +387,7 @@ export class Player extends AnimatedTileElement {
         this.removeHealthContainers(1);
         otherPlayer(this).removeHealthContainers(1);
         updateInanimates();
+        drawInteractionKeys();
         Game.world.removeChild(this.shadow);
     }
 
