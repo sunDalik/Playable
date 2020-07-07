@@ -12,6 +12,8 @@ import * as PIXI from "pixi.js";
 import {BladeDemon} from "../ru/blade_demon";
 import {LizardWarrior} from "../ru/lizard_warrior";
 import {HexEye} from "../ru/hex_eye";
+import {MudMage} from "../ru/mud_mage";
+import {TeleportMage} from "../ru/teleport_mage";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -32,6 +34,9 @@ export class LunaticLeader extends Boss {
         this.minions = [];
 
         this.regenerateShadow();
+
+        //guys don't look at me like that! I dunno it's just the z index for some reason is lower than needed if I don't call it
+        this.correctZIndex();
     }
 
     cancelAnimation() {
@@ -90,7 +95,10 @@ export class LunaticLeader extends Boss {
                         this.minionCount--;
                         return;
                     }
-                    const minionType = this.currentPhase === 2 ? HexEye : randomChoice([BladeDemon, LizardWarrior]);
+                    const minionArray = this.currentPhase === 2 ? [HexEye] : [BladeDemon, LizardWarrior, MudMage, TeleportMage];
+                    let minionType = randomChoice(minionArray);
+                    //reroll once if already has this minion
+                    if (this.plannedMinions.some(minion => minion.constructor === minionType)) minionType = randomChoice(minionArray);
                     const minion = new minionType(position.x, position.y);
                     minion.removeShadow();
                     this.plannedMinions.push(minion);
