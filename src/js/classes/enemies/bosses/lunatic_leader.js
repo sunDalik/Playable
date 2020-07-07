@@ -11,6 +11,7 @@ import {createShadowFollowers, fadeOutAndDie, runDestroyAnimation} from "../../.
 import * as PIXI from "pixi.js";
 import {BladeDemon} from "../ru/blade_demon";
 import {LizardWarrior} from "../ru/lizard_warrior";
+import {HexEye} from "../ru/hex_eye";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -81,7 +82,7 @@ export class LunaticLeader extends Boss {
     }
 
     move() {
-        if (this.currentPhase === 1) {
+        if (this.currentPhase === 1 || this.currentPhase === 2) {
             if (this.spawningMinions) {
                 if (this.plannedMinions.length < this.minionCount) {
                     const position = this.randomMinionSpawnLocation(this.plannedMinions);
@@ -89,7 +90,7 @@ export class LunaticLeader extends Boss {
                         this.minionCount--;
                         return;
                     }
-                    const minionType = randomChoice([BladeDemon, LizardWarrior]);
+                    const minionType = this.currentPhase === 2 ? HexEye : randomChoice([BladeDemon, LizardWarrior]);
                     const minion = new minionType(position.x, position.y);
                     minion.removeShadow();
                     this.plannedMinions.push(minion);
@@ -200,6 +201,9 @@ export class LunaticLeader extends Boss {
             this.angle = randomInt(0, 360);
             this.initSpirit();
         }
+
+        //this will reset any minion spawning
+        this.minionCount = 0;
     }
 
     initSpirit() {
