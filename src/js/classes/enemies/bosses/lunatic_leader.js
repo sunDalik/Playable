@@ -7,7 +7,8 @@ import {isEmpty, tileInsideTheBossRoom} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {hypotenuse} from "../../../utils/math_utils";
-import {createShadowFollowers} from "../../../animations";
+import {createShadowFollowers, runDestroyAnimation} from "../../../animations";
+import * as PIXI from "pixi.js";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -20,7 +21,14 @@ export class LunaticLeader extends Boss {
         this.tallModifier = 7;
         this.setScaleModifier(1.7);
         this.shadowWidthMul = 0.35;
+        this.spiritFire = new PIXI.Sprite(LunaticLeaderSpriteSheet["lunatic_leader_blue_fire_separate.png"]);
+        this.currentPhase = 3;
         this.regenerateShadow();
+    }
+
+    cancelAnimation() {
+        super.cancelAnimation();
+        if (this.currentPhase === 4 && !this.dead) this.animateSpirit();
     }
 
     static getBossRoomStats() {
@@ -57,13 +65,16 @@ export class LunaticLeader extends Boss {
 
     die(source) {
         super.die(source);
-        for (const enemy of Game.enemies) {
-            if (enemy !== this) enemy.die(null);
+        if (this.dead) {
+            Game.world.removeChild(this.spiritFire);
+            for (const enemy of Game.enemies) {
+                if (enemy !== this) enemy.die(null);
+            }
         }
     }
 
     move() {
-        if (Math.random() < 0.5) this.teleport();
+        //if (Math.random() < 0.5) this.teleport();
     }
 
     teleport() {
@@ -105,6 +116,33 @@ export class LunaticLeader extends Boss {
             this.texture = LunaticLeaderSpriteSheet["lunatic_leader_beakless.png"];
         } else if (newPhase === 3) {
             this.texture = LunaticLeaderSpriteSheet["lunatic_leader_headless.png"];
+        } else if (newPhase === 4) {
+            runDestroyAnimation(this);
+            this.texture = LunaticLeaderSpriteSheet["lunatic_leader_spirit.png"];
+            this.angle = randomInt(0, 360);
+            this.initSpirit();
         }
+    }
+
+    initSpirit() {
+        Game.world.addChild(this.spiritFire);
+        this.spiritFire.anchor.set(0.5, 0.85);
+        this.spiritFire.zIndex = this.zIndex + 1;
+        this.spiritFire.scale.set(this.scale.x * 1.3, this.scale.y * 1.3);
+        this.place();
+        this.spiritFire.position.set(this.position.x, this.position.y);
+        this.animateSpirit();
+    }
+
+    animateSpirit() {
+        const angleChange = 0.5;
+        const animation = delta => {
+            this.angle += angleChange * delta;
+            this.spiritFire.angle += randomInt(-0.5, 0.5);
+            if (Math.abs(this.spiritFire.angle) > 6) this.spiritFire.angle = 6 * Math.sign(this.spiritFire.angle);
+        };
+
+        this.animation = animation;
+        Game.app.ticker.add(animation);
     }
 }
