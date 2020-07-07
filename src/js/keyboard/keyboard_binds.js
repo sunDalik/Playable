@@ -60,8 +60,8 @@ export function bindKeys() {
     weaponKeyP1.press = () => playerTurn(Game.player, () => Game.player.focusWeapon());
     weaponKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.focusWeapon());
 
-    bagKeyP1.press = () => playerTurn(Game.player, () => Game.player.useBag());
-    bagKeyP2.press = () => playerTurn(Game.player2, () => Game.player2.useBag());
+    bagKeyP1.press = (e) => playerTurn(Game.player, () => Game.player.useBag(e));
+    bagKeyP2.press = (e) => playerTurn(Game.player2, () => Game.player2.useBag(e));
 
     switchKey.press = () => playerTurn(null, switchPlayers, true);
     mapKey.press = () => toggleMiniMap();

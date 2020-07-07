@@ -24,6 +24,7 @@ import {HUD} from "../../drawing/hud_object";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
 import {CrystalGuardian} from "../equipment/magic/crystal_guardian";
 import {roundToQuarter} from "../../utils/math_utils";
+import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../utils/map_utils";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -596,9 +597,15 @@ export class Player extends AnimatedTileElement {
         } else return false;
     }
 
-    useBag() {
+    useBag(event) {
         if (this.bag && this.bag.amount > 0) {
-            this.bag.useItem(this);
+            if (event.shiftKey) {
+                const dropDir = randomChoice(getCardinalDirectionsWithNoWallsOrInanimates(this));
+                dropItem(new this.bag.constructor(), this.tilePosition.x + dropDir.x, this.tilePosition.y + dropDir.y);
+                this.bag.amount--;
+            } else {
+                this.bag.useItem(this);
+            }
             if (this.bag.amount <= 0) this.bag = null;
             redrawSlotContents(this, SLOT.BAG);
             return true;
