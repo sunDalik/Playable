@@ -3,9 +3,9 @@ import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums";
 import {Boss} from "./boss";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";
-import {isEmpty, tileInsideTheBossRoom} from "../../../map_checks";
+import {getPlayerOnTile, isEmpty, tileInsideTheBossRoom} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
-import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {hypotenuse} from "../../../utils/math_utils";
 import {createShadowFollowers, fadeOutAndDie, runDestroyAnimation} from "../../../animations";
 import * as PIXI from "pixi.js";
@@ -23,6 +23,7 @@ export class LunaticLeader extends Boss {
         this.spawningMinions = false;
         this.plannedMinions = [];
         this.minionSpawnDelay = 3;
+        this.setMinionCount();
         this.tallModifier = 7;
         this.setScaleModifier(1.7);
         this.shadowWidthMul = 0.35;
@@ -38,7 +39,7 @@ export class LunaticLeader extends Boss {
     }
 
     static getBossRoomStats() {
-        return {width: randomInt(13, 16), height: randomInt(10, 12)};
+        return {width: randomInt(14, 17), height: randomInt(10, 13)};
     }
 
     onBossModeActivate() {
@@ -82,8 +83,12 @@ export class LunaticLeader extends Boss {
     move() {
         if (this.currentPhase === 1) {
             if (this.spawningMinions) {
-                if (this.plannedMinions.length < 3) {
-                    const position = this.randomMinionSpawnLocation();
+                if (this.plannedMinions.length < this.minionCount) {
+                    const position = this.randomMinionSpawnLocation(this.plannedMinions);
+                    if (position === undefined) {
+                        this.minionCount--;
+                        return;
+                    }
                     const minionType = randomChoice([BladeDemon, LizardWarrior]);
                     const minion = new minionType(position.x, position.y);
                     minion.removeShadow();
@@ -91,9 +96,15 @@ export class LunaticLeader extends Boss {
                     this.createMinionIllusion(minion);
                 } else {
                     for (const minion of this.plannedMinions) {
-                        minion.setShadow();
-                        Game.world.addEnemy(minion);
-                        this.minions.push(minion);
+                        if (!isEmpty(minion.tilePosition.x, minion.tilePosition.y)) {
+                            minion.die();
+                            const player = getPlayerOnTile(minion.tilePosition.x, minion.tilePosition.y);
+                            if (player) player.damage(1, minion, false, true);
+                        } else {
+                            minion.setShadow();
+                            Game.world.addEnemy(minion);
+                            this.minions.push(minion);
+                        }
                     }
                     this.plannedMinions = [];
                     this.texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"];
@@ -102,6 +113,8 @@ export class LunaticLeader extends Boss {
                 }
             } else if (this.aliveMinionsCount() <= 1 && this.minionSpawnDelay <= 0) {
                 this.spawningMinions = true;
+                this.plannedMinions = [];
+                this.setMinionCount();
                 this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
             }
         } else if (this.currentPhase === 2) {
@@ -112,6 +125,10 @@ export class LunaticLeader extends Boss {
 
         this.minionSpawnDelay--;
         //if (Math.random() < 0.5) this.teleport();
+    }
+
+    setMinionCount() {
+        this.minionCount = this.health < this.maxHealth / 2 ? 4 : 3;
     }
 
     teleport() {
@@ -134,12 +151,13 @@ export class LunaticLeader extends Boss {
         return freeLocations;
     }
 
-    randomMinionSpawnLocation() {
+    randomMinionSpawnLocation(previousLocations = []) {
         const goodLocations = [];
         for (let i = Game.endRoomBoundaries[0].y + 1; i <= Game.endRoomBoundaries[1].y - 1; i++) {
             for (let j = Game.endRoomBoundaries[0].x + 1; j <= Game.endRoomBoundaries[1].x - 1; j++) {
                 const location = {tilePosition: {x: j, y: i}};
-                if (tileDistance(this, location) > 1 && isEmpty(j, i) && tileDistance(location, closestPlayer(location)) > 2) {
+                if (tileDistance(this, location) > 1 && isEmpty(j, i) && tileDistance(location, closestPlayer(location)) > 2
+                    && previousLocations.every(prevLoc => tileDistance(prevLoc, location) > 4)) {
                     goodLocations.push({x: j, y: i});
                 }
             }
