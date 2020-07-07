@@ -7,8 +7,10 @@ import {isEmpty, tileInsideTheBossRoom} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {hypotenuse} from "../../../utils/math_utils";
-import {createShadowFollowers, runDestroyAnimation} from "../../../animations";
+import {createShadowFollowers, fadeOutAndDie, runDestroyAnimation} from "../../../animations";
 import * as PIXI from "pixi.js";
+import {BladeDemon} from "../ru/blade_demon";
+import {LizardWarrior} from "../ru/lizard_warrior";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -18,11 +20,15 @@ export class LunaticLeader extends Boss {
         this.atk = 1.25;
         this.name = "Lunatic Leader";
         this.phases = 4;
+        this.spawningMinions = false;
+        this.plannedMinions = [];
+        this.minionSpawnDelay = 3;
         this.tallModifier = 7;
         this.setScaleModifier(1.7);
         this.shadowWidthMul = 0.35;
         this.spiritFire = new PIXI.Sprite(LunaticLeaderSpriteSheet["lunatic_leader_blue_fire_separate.png"]);
-        this.currentPhase = 3;
+        this.minions = [];
+
         this.regenerateShadow();
     }
 
@@ -74,6 +80,37 @@ export class LunaticLeader extends Boss {
     }
 
     move() {
+        if (this.currentPhase === 1) {
+            if (this.spawningMinions) {
+                if (this.plannedMinions.length < 3) {
+                    const position = this.randomMinionSpawnLocation();
+                    const minionType = randomChoice([BladeDemon, LizardWarrior]);
+                    const minion = new minionType(position.x, position.y);
+                    minion.removeShadow();
+                    this.plannedMinions.push(minion);
+                    this.createMinionIllusion(minion);
+                } else {
+                    for (const minion of this.plannedMinions) {
+                        minion.setShadow();
+                        Game.world.addEnemy(minion);
+                        this.minions.push(minion);
+                    }
+                    this.plannedMinions = [];
+                    this.texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"];
+                    this.spawningMinions = false;
+                    this.minionSpawnDelay = randomInt(15, 20);
+                }
+            } else if (this.aliveMinionsCount() <= 1 && this.minionSpawnDelay <= 0) {
+                this.spawningMinions = true;
+                this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+            }
+        } else if (this.currentPhase === 2) {
+
+        } else if (this.currentPhase === 4) {
+
+        }
+
+        this.minionSpawnDelay--;
         //if (Math.random() < 0.5) this.teleport();
     }
 
@@ -95,6 +132,28 @@ export class LunaticLeader extends Boss {
             }
         }
         return freeLocations;
+    }
+
+    randomMinionSpawnLocation() {
+        const goodLocations = [];
+        for (let i = Game.endRoomBoundaries[0].y + 1; i <= Game.endRoomBoundaries[1].y - 1; i++) {
+            for (let j = Game.endRoomBoundaries[0].x + 1; j <= Game.endRoomBoundaries[1].x - 1; j++) {
+                const location = {tilePosition: {x: j, y: i}};
+                if (tileDistance(this, location) > 1 && isEmpty(j, i) && tileDistance(location, closestPlayer(location)) > 2) {
+                    goodLocations.push({x: j, y: i});
+                }
+            }
+        }
+        return randomChoice(goodLocations);
+    }
+
+    createMinionIllusion(minion) {
+        const illusion = new PIXI.Sprite(minion.texture);
+        illusion.anchor.set(0.5, 0.5);
+        illusion.scale.set(minion.scale.x, minion.scale.y);
+        illusion.position.set(minion.position.x, minion.position.y);
+        Game.world.addChild(illusion);
+        fadeOutAndDie(illusion);
     }
 
     shadowSlide(tileStepX, tileStepY) {
@@ -144,5 +203,10 @@ export class LunaticLeader extends Boss {
 
         this.animation = animation;
         Game.app.ticker.add(animation);
+    }
+
+    aliveMinionsCount() {
+        this.minions = this.minions.filter(minion => !minion.dead);
+        return this.minions.length;
     }
 }
