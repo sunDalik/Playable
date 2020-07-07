@@ -6,6 +6,7 @@ import {LunaticLeaderSpriteSheet} from "../../../loader";
 import {isEmpty, tileInsideTheBossRoom} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {hypotenuse} from "../../../utils/math_utils";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -22,7 +23,7 @@ export class LunaticLeader extends Boss {
     }
 
     static getBossRoomStats() {
-        return {width: randomInt(12, 15), height: randomInt(10, 12)};
+        return {width: randomInt(13, 16), height: randomInt(10, 12)};
     }
 
     onBossModeActivate() {
@@ -76,7 +77,7 @@ export class LunaticLeader extends Boss {
         for (let i = Game.endRoomBoundaries[0].y + 1; i <= Game.endRoomBoundaries[1].y - 1; i++) {
             for (let j = Game.endRoomBoundaries[0].x + 1; j <= Game.endRoomBoundaries[1].x - 1; j++) {
                 const newPos = {tilePosition: {x: j, y: i}};
-                if (tileDistance(this, newPos) > 4 && isEmpty(j, i) && tileDistance(newPos, closestPlayer(newPos)) > 3) {
+                if (tileDistance(this, newPos) > 5 && isEmpty(j, i) && tileDistance(newPos, closestPlayer(newPos)) > 3) {
                     freeLocations.push({x: j, y: i});
                 }
             }
@@ -85,7 +86,10 @@ export class LunaticLeader extends Boss {
     }
 
     shadowSlide(tileStepX, tileStepY) {
-        this.slide(tileStepX, tileStepY)
+        //shadow is turned off during slides because shadow implementation is buggy!!!
+        this.removeShadow();
+        const animationTime = hypotenuse(tileStepX, tileStepY)*1.1;
+        this.slide(tileStepX, tileStepY, null, () => this.setShadow(), animationTime);
     }
 
     getPhaseHealth(phase) {

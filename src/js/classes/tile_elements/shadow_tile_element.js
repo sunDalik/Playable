@@ -59,6 +59,8 @@ export class ShadowTileElement extends TileElement {
 
     placeShadow() {
         //todo:they do be still looking kinda weird on y steps
+        // AAAAAAAAAAA they are looking super weird on complex slides/ steps!!!! like if we step 1,1
+        //shadow should somehow recognize when we are "jumping" and are high vs when we are sliding
         if (this.noShadow || this.shadow === null) return;
         this.shadow.zIndex = this.zIndex - 1;
         this.shadow.position.x = this.position.x;
