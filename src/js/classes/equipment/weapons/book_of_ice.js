@@ -17,7 +17,7 @@ export class BookOfIce extends MagicBook {
         this.primaryColor = 0x6696d7;
         this.holdTime = 20;
         this.name = "Book of Ice";
-        this.description = "Range 2\nApplies stun";
+        this.description = "Range 2\nAttacked enemy gets 4 stun";
         this.rarity = RARITY.B;
     }
 
