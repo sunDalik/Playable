@@ -70,6 +70,11 @@ export class TeleportMage extends Enemy {
         this.currentCooldown--;
     }
 
+    setStunIcon() {
+        super.setStunIcon();
+        this.intentIcon.filters = [];
+    }
+
     updateIntentIcon() {
         super.updateIntentIcon();
         this.intentIcon.filters = [];
