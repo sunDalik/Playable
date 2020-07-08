@@ -8,7 +8,7 @@ import {
     slotBorderOffsetX
 } from "./draw_constants";
 import * as PIXI from "pixi.js";
-import {INANIMATE_TYPE, ROLE, STORAGE, TILE_TYPE} from "../enums";
+import {INANIMATE_TYPE, ROLE, STAGE, STORAGE, TILE_TYPE} from "../enums";
 import {camera} from "../classes/game/camera";
 import {removeAllChildrenFromContainer} from "./draw_utils";
 import {getKeyBindSymbol} from "./draw_hud";
