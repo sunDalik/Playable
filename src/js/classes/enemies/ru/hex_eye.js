@@ -6,6 +6,7 @@ import {HomingBullet} from "../bullets/homing";
 import {getCardinalDirections} from "../../../utils/map_utils";
 import {isEmpty} from "../../../map_checks";
 import {Game} from "../../../game";
+import {randomInt} from "../../../utils/random_utils";
 
 export class HexEye extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["hex_eye.png"]) {
@@ -13,7 +14,6 @@ export class HexEye extends Enemy {
         this.health = this.maxHealth = 4;
         this.type = ENEMY_TYPE.HEX_EYE;
         this.aboutToCast = false;
-        this.cooldown = 5;
         this.currentCooldown = 2;
         this.bullets = [];
         this.shadowInside = true;
@@ -25,11 +25,11 @@ export class HexEye extends Enemy {
             if (this.allBulletsDead()) {
                 this.controlling = false;
                 this.texture = RUEnemiesSpriteSheet["hex_eye.png"];
-                this.currentCooldown = this.cooldown;
+                this.currentCooldown = this.getCooldown();
             }
         } else if (this.aboutToCast) {
             this.aboutToCast = false;
-            this.currentCooldown = this.cooldown;
+            this.currentCooldown = this.getCooldown();
             this.createBullet();
             this.controlling = true;
         } else if (this.currentCooldown <= 0) {
@@ -48,6 +48,10 @@ export class HexEye extends Enemy {
                 this.bullets.push(bullet);
             }
         }
+    }
+
+    getCooldown() {
+        return randomInt(5, 7);
     }
 
     updateIntentIcon() {
