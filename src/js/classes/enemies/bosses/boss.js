@@ -68,6 +68,7 @@ export class Boss extends Enemy {
             this.health = this.maxHealth = this.getPhaseHealth(this.currentPhase);
             this.redrawHealth();
             this.changePhase(this.currentPhase);
+            this.runHitAnimation();
         } else {
             super.die(source);
             removeAllChildrenFromContainer(HUD.bossHealth, true);
