@@ -2,7 +2,7 @@ import {randomChoice, randomInt, randomShuffle} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
 import {INANIMATE_TYPE, LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums";
 import {Game} from "../game";
-import {expandLevel, outlineWallsWithSuperWalls} from "./generation_utils";
+import {expandLevel} from "./generation_utils";
 import {comboShapers, shapers} from "./room_shapers";
 import {WallTile} from "../classes/draw/wall";
 import {SuperWallTile} from "../classes/draw/super_wall";
@@ -93,7 +93,7 @@ export function generateStandard() {
         reshapeRoom(secretRoom, shapers[1]);
     }
     level = expandLevelAndRooms(1, 1);
-    outlineWallsWithSuperWalls(level);
+    outlineLevelWithWalls(true);
 
     //level shaping is finished
     level = replaceStringsWithObjects();
@@ -789,11 +789,12 @@ function generateBoss(set) {
     }
 }
 
-function outlineLevelWithWalls() {
+function outlineLevelWithWalls(superWalls = false) {
     for (let i = 0; i < level.length; i++) {
         for (let j = 0; j < level[0].length; j++) {
             if (i === 0 || i === level.length - 1 || j === 0 || j === level[0].length - 1) {
-                level[i][j] = LEVEL_SYMBOLS.WALL;
+                if (superWalls) level[i][j] = LEVEL_SYMBOLS.SUPER_WALL;
+                else level[i][j] = LEVEL_SYMBOLS.WALL;
             }
         }
     }

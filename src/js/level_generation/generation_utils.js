@@ -15,17 +15,3 @@ export function expandLevel(level, expandX, expandY) {
     }
     return expandedLevel;
 }
-
-export function outlineWallsWithSuperWalls(level) {
-    for (let i = 1; i < level.length - 1; ++i) {
-        for (let j = 1; j < level[0].length - 1; ++j) {
-            if (level[i][j] === LEVEL_SYMBOLS.WALL) {
-                for (const dir of get8Directions()) {
-                    if (level[i + dir.y][j + dir.x] === LEVEL_SYMBOLS.VOID) {
-                        level[i + dir.y][j + dir.x] = LEVEL_SYMBOLS.SUPER_WALL;
-                    }
-                }
-            }
-        }
-    }
-}
