@@ -4,7 +4,7 @@ import {ENEMY_TYPE} from "../../../enums";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {get8Directions, getDirectionsOnSquare} from "../../../utils/map_utils";
-import {MudCubeZombie} from "./mud_cube_zombie";
+import {MudBlock} from "./mud_block";
 import {isNotAWall} from "../../../map_checks";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import {randomAfraidAI} from "../../../enemy_movement_ai";
@@ -42,7 +42,7 @@ export class MudMage extends Enemy {
                 this.texture = RUEnemiesSpriteSheet["mud_mage.png"];
                 for (const tile of this.getRandomPattern()) {
                     if (isNotAWall(tile.x, tile.y)) {
-                        const enemy = new MudCubeZombie(tile.x, tile.y);
+                        const enemy = new MudBlock(tile.x, tile.y);
                         Game.world.addEnemyViaSummonCircle(enemy, 2);
                         this.minions.push(enemy);
                     }

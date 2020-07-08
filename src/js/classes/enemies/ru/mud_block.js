@@ -4,16 +4,17 @@ import {ENEMY_TYPE} from "../../../enums";
 import {RUEnemiesSpriteSheet} from "../../../loader";
 import {randomInt} from "../../../utils/random_utils";
 
-export class MudCubeZombie extends Enemy {
-    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_cube_zombie.png"]) {
+export class MudBlock extends Enemy {
+    constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_block.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 0.25;
-        this.type = ENEMY_TYPE.MUD_CUBE_ZOMBIE;
+        this.type = ENEMY_TYPE.MUD_BLOCK;
         this.atk = 0;
         this.movable = false;
         this.lifeTime = randomInt(12, 16);
         this.fadingDestructionParticles = true;
         this.removeShadow();
+        this.setScaleModifier(1.02);
     }
 
     move() {

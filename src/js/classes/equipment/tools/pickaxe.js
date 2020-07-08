@@ -25,14 +25,13 @@ export class Pickaxe extends Weapon {
             createPlayerAttackTile(attackTile);
             enemy.damage(wielder, atk, dirX, dirY);
 
-            if (enemy.type === ENEMY_TYPE.MUD_CUBE_ZOMBIE) {
+            if (enemy.type === ENEMY_TYPE.MUD_BLOCK) {
                 const dirs = dirX !== 0 ? [{x: 0, y: 1}, {x: 0, y: -1}] : [{x: 1, y: 0}, {x: -1, y: 0}];
                 for (const dir of dirs) {
                     const newAttackTile = {x: attackTile.x + dir.x, y: attackTile.y + dir.y};
-                    if (isEntity(newAttackTile.x, newAttackTile.y, ROLE.ENEMY, ENEMY_TYPE.MUD_CUBE_ZOMBIE)) {
-                        const mudZombie = Game.map[newAttackTile.y][newAttackTile.x].entity;
+                    if (isEntity(newAttackTile.x, newAttackTile.y, ROLE.ENEMY, ENEMY_TYPE.MUD_BLOCK)) {
                         createPlayerAttackTile(newAttackTile);
-                        mudZombie.damage(wielder, atk, dirX, dirY);
+                        Game.map[newAttackTile.y][newAttackTile.x].entity.damage(wielder, atk, dirX, dirY);
                     }
                 }
             }
