@@ -1,7 +1,7 @@
 import {TileElement} from "../tile_elements/tile_element";
 import {Game} from "../../game";
 import {STAGE} from "../../enums";
-import {FloorTilesSpriteSheet, WallsSpriteSheet} from "../../loader";
+import {FloorTilesSpriteSheet} from "../../loader";
 import {randomChoice} from "../../utils/random_utils";
 
 

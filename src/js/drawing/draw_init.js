@@ -94,16 +94,24 @@ export function drawGrid() {
 }
 
 export function drawOther() {
+    if (Game.stage !== STAGE.RUINS) drawBackground();
+    drawChain();
+}
+
+function drawChain() {
+    //Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
+    //Game.world.addChild(Game.followChain);
+    Game.limitChain = new LimitChain();
+    Game.world.addChild(Game.limitChain);
+    updateChain();
+}
+
+function drawBackground() {
     const gameWorldBG = new PIXI.Graphics();
     gameWorldBG.beginFill(Game.BGColor);
     const cutW = Game.TILESIZE;
     const cutH = Game.TILESIZE * 1.5;
     gameWorldBG.drawRect(cutW / 2, cutH / 2, Game.world.width - cutW, Game.world.height - cutH);
     gameWorldBG.zIndex = -4;
-    if (Game.stage !== STAGE.RUINS) Game.world.addChild(gameWorldBG);
-    //Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
-    //Game.world.addChild(Game.followChain);
-    Game.limitChain = new LimitChain();
-    Game.world.addChild(Game.limitChain);
-    updateChain();
+    Game.world.addChild(gameWorldBG);
 }
