@@ -5,7 +5,7 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
     WeaponsSpriteSheet, AchievementsSpriteSheet, HUDSpriteSheet,
     BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
     HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet, OneTimeSpriteSheet,
-    AccessoriesSpriteSheet, LunaticLeaderSpriteSheet, WallsSpriteSheet;
+    AccessoriesSpriteSheet, LunaticLeaderSpriteSheet, WallsSpriteSheet, FloorTilesSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
@@ -19,6 +19,7 @@ export function loadAll(afterLoad) {
 
         .add("src/textures/common.json")
         .add("src/textures/walls.json")
+        .add("src/textures/floor_tiles.json")
         .add("src/textures/effects.json")
         .add("src/textures/intents.json")
         .add("src/textures/achievements.json")
@@ -77,4 +78,5 @@ function setSpriteSheets() {
     AccessoriesSpriteSheet = Game.loader.resources["src/textures/accessories.json"].textures;
     LunaticLeaderSpriteSheet = Game.loader.resources["src/textures/lunatic_leader.json"].textures;
     WallsSpriteSheet = Game.loader.resources["src/textures/walls.json"].textures;
+    FloorTilesSpriteSheet = Game.loader.resources["src/textures/floor_tiles.json"].textures;
 }

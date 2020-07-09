@@ -1,11 +1,12 @@
-import {Game} from "../game"
-import * as PIXI from "pixi.js"
+import {Game} from "../game";
+import * as PIXI from "pixi.js";
 import {ROLE, STAGE} from "../enums";
 import {decrementEachDigitInHex} from "../utils/basic_utils";
 import {DarkTunnelTile} from "../classes/tile_elements/dark_tunnel_tile";
 import {updateChain} from "./draw_dunno";
 import {LimitChain} from "../classes/draw/limit_chain";
 import {DarknessTile} from "../classes/draw/darkness";
+import {FloorTile} from "../classes/draw/floor_tile";
 
 export function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {
@@ -16,6 +17,12 @@ export function drawTiles() {
 
                 //for doors
                 if (Game.map[i][j].tile.door2) Game.world.addChild(Game.map[i][j].tile.door2);
+
+            }
+            if (Game.stage === STAGE.RUINS) {
+                if (i !== 0 && i !== Game.map.length - 1 && j !== 0 && j !== Game.map[0].length - 1) {
+                    Game.world.addChild(new FloorTile(j, i));
+                }
             }
         }
     }
@@ -65,6 +72,8 @@ export function drawEntities() {
 }
 
 export function drawGrid() {
+    if (Game.stage === STAGE.RUINS) return;
+
     const grid = new PIXI.Container();
     const lineThickness = 2 * Math.round(Game.TILESIZE / 25 / 2);
     for (let i = 1; i < Game.map.length; i++) {
@@ -91,7 +100,7 @@ export function drawOther() {
     const cutH = Game.TILESIZE * 1.5;
     gameWorldBG.drawRect(cutW / 2, cutH / 2, Game.world.width - cutW, Game.world.height - cutH);
     gameWorldBG.zIndex = -4;
-    Game.world.addChild(gameWorldBG);
+    if (Game.stage !== STAGE.RUINS) Game.world.addChild(gameWorldBG);
     //Game.followChain = new PIXI.Sprite(Game.resources["src/images/follow_chain.png"].texture);
     //Game.world.addChild(Game.followChain);
     Game.limitChain = new LimitChain();

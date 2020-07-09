@@ -34,7 +34,7 @@ export class WallTile extends TileElement {
                 this.texture = randomChoice([WallsSpriteSheet["ruins_walls_7.png"],
                     WallsSpriteSheet["ruins_walls_10.png"]]);
             } else {
-                // normal texture
+                // normal
                 this.texture = randomChoice([WallsSpriteSheet["ruins_walls_2.png"],
                     WallsSpriteSheet["ruins_walls_6.png"],
                     WallsSpriteSheet["ruins_walls_8.png"]]);
