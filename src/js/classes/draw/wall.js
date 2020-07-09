@@ -17,7 +17,11 @@ export class WallTile extends TileElement {
     }
 
     setTexture() {
-        if (Game.stage === STAGE.RUINS) {
+        if (Game.stage === STAGE.FLOODED_CAVE) {
+
+        } else if (Game.stage === STAGE.DARK_TUNNEL) {
+            this.texture = Game.resources["src/images/walls/dark_tunnel_walls_0.png"].texture;
+        } else if (Game.stage === STAGE.RUINS) {
             const random = Math.random() * 100;
             if (random > 99) {
                 // cracked
