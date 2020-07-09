@@ -16,14 +16,29 @@ export class FloorTile extends TileElement {
     }
 
     setTexture() {
+        const random = Math.random() * 100;
         if (Game.stage === STAGE.FLOODED_CAVE) {
 
         } else if (Game.stage === STAGE.DARK_TUNNEL) {
-            this.texture = randomChoice([Game.resources["src/images/floor_tiles/dark_tunnel_floor_tile_0.png"].texture,
-                Game.resources["src/images/floor_tiles/dark_tunnel_floor_tile_1.png"].texture,
-                Game.resources["src/images/floor_tiles/dark_tunnel_floor_tile_2.png"].texture]);
+            if (random > 98) {
+                //cracked
+                this.texture = FloorTilesSpriteSheet["dark_tunnel_floor_tile_8.png"];
+            } else if (random > 94) {
+                // lava
+                this.texture = randomChoice([FloorTilesSpriteSheet["dark_tunnel_floor_tile_6.png"],
+                    FloorTilesSpriteSheet["dark_tunnel_floor_tile_7.png"]]);
+            } else if (random > 87) {
+                // less rocks
+                this.texture = randomChoice([FloorTilesSpriteSheet["dark_tunnel_floor_tile_2.png"],
+                    FloorTilesSpriteSheet["dark_tunnel_floor_tile_5.png"]]);
+            } else {
+                // normal
+                this.texture = randomChoice([FloorTilesSpriteSheet["dark_tunnel_floor_tile_0.png"],
+                    FloorTilesSpriteSheet["dark_tunnel_floor_tile_1.png"],
+                    FloorTilesSpriteSheet["dark_tunnel_floor_tile_3.png"],
+                    FloorTilesSpriteSheet["dark_tunnel_floor_tile_4.png"]]);
+            }
         } else if (Game.stage === STAGE.RUINS) {
-            const random = Math.random() * 100;
             if (random > 97) {
                 // cracked
                 this.texture = randomChoice([FloorTilesSpriteSheet["ruins_floor_tile_5.png"],

@@ -21,6 +21,7 @@ export class WallTile extends TileElement {
 
         } else if (Game.stage === STAGE.DARK_TUNNEL) {
             this.texture = Game.resources["src/images/walls/dark_tunnel_walls_0.png"].texture;
+            this.setScaleModifier(1.02); // when you finish all walls you will need to set scale modifier BEFORE you calculate walltallness!
         } else if (Game.stage === STAGE.RUINS) {
             const random = Math.random() * 100;
             if (random > 99) {
@@ -44,7 +45,6 @@ export class WallTile extends TileElement {
                     WallsSpriteSheet["ruins_walls_8.png"]]);
             }
             this.setScaleModifier(1.02);
-
         }
     }
 

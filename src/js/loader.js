@@ -11,9 +11,6 @@ export function loadAll(afterLoad) {
     Game.loader
         .add("src/images/wall.png")
 
-        .add("src/images/floor_tiles/dark_tunnel_floor_tile_0.png")
-        .add("src/images/floor_tiles/dark_tunnel_floor_tile_1.png")
-        .add("src/images/floor_tiles/dark_tunnel_floor_tile_2.png")
         .add("src/images/walls/dark_tunnel_walls_0.png")
 
         .add("src/images/player_hd.png")
