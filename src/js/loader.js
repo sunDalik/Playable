@@ -12,6 +12,8 @@ export function loadAll(afterLoad) {
         .add("src/images/wall.png")
 
         .add("src/images/floor_tiles/dark_tunnel_floor_tile_0.png")
+        .add("src/images/floor_tiles/dark_tunnel_floor_tile_1.png")
+        .add("src/images/floor_tiles/dark_tunnel_floor_tile_2.png")
 
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
