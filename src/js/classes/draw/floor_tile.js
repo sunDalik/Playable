@@ -16,7 +16,11 @@ export class FloorTile extends TileElement {
     }
 
     setTexture() {
-        if (Game.stage === STAGE.RUINS) {
+        if (Game.stage === STAGE.FLOODED_CAVE) {
+
+        } else if (Game.stage === STAGE.DARK_TUNNEL) {
+            this.texture = Game.resources["src/images/floor_tiles/dark_tunnel_floor_tile_0.png"].texture;
+        } else if (Game.stage === STAGE.RUINS) {
             const random = Math.random() * 100;
             if (random > 97) {
                 // cracked
@@ -34,10 +38,7 @@ export class FloorTile extends TileElement {
                     FloorTilesSpriteSheet["ruins_floor_tile_6.png"],
                     FloorTilesSpriteSheet["ruins_floor_tile_9.png"]]);
             }
-
-
-            this.setScaleModifier(1.002);
-
         }
+        this.setScaleModifier(1.002);
     }
 }

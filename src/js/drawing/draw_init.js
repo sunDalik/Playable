@@ -8,6 +8,8 @@ import {LimitChain} from "../classes/draw/limit_chain";
 import {DarknessTile} from "../classes/draw/darkness";
 import {FloorTile} from "../classes/draw/floor_tile";
 
+const floorAreas = [STAGE.RUINS, STAGE.DARK_TUNNEL];
+
 export function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {
         for (let j = 0; j < Game.map[0].length; ++j) {
@@ -19,7 +21,7 @@ export function drawTiles() {
                 if (Game.map[i][j].tile.door2) Game.world.addChild(Game.map[i][j].tile.door2);
 
             }
-            if (Game.stage === STAGE.RUINS) {
+            if (floorAreas.includes(Game.stage)) {
                 if (i !== 0 && i !== Game.map.length - 1 && j !== 0 && j !== Game.map[0].length - 1) {
                     Game.world.addChild(new FloorTile(j, i));
                 }
@@ -72,7 +74,7 @@ export function drawEntities() {
 }
 
 export function drawGrid() {
-    if (Game.stage === STAGE.RUINS) return;
+    if (floorAreas.includes(Game.stage)) return;
 
     const grid = new PIXI.Container();
     const lineThickness = 2 * Math.round(Game.TILESIZE / 25 / 2);
@@ -94,7 +96,7 @@ export function drawGrid() {
 }
 
 export function drawOther() {
-    if (Game.stage !== STAGE.RUINS) drawBackground();
+    if (!floorAreas.includes(Game.stage)) drawBackground();
     drawChain();
 }
 
