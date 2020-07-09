@@ -10,7 +10,7 @@ import {redrawKeysAmount} from "../../drawing/draw_hud";
 import {BLACK_COLOR_OVERLAY} from "../../filters";
 import {ItemInanimate} from "./item_inanimate";
 import {getRandomChestDrop, getRandomWeapon} from "../../utils/pool_utils";
-import {AccessoriesSpriteSheet, InanimatesSpriteSheet} from "../../loader";
+import {AccessoriesSpriteSheet, CommonSpriteSheet, InanimatesSpriteSheet} from "../../loader";
 
 export class Chest extends ItemInanimate {
     constructor(tilePositionX, tilePositionY) {
@@ -69,7 +69,7 @@ export class Chest extends ItemInanimate {
         Game.keysAmount--;
         redrawKeysAmount();
         this.keysRequired--;
-        const keyElement = new AnimatedTileElement(Game.resources["src/images/key.png"].texture, player.tilePosition.x, player.tilePosition.y);
+        const keyElement = new AnimatedTileElement(CommonSpriteSheet["key.png"], player.tilePosition.x, player.tilePosition.y);
         keyElement.removeShadow();
         keyElement.setScaleModifier(0.7);
         const tileStepX = this.tilePosition.x - player.tilePosition.x;
@@ -118,7 +118,7 @@ export class Chest extends ItemInanimate {
         if (this.keysRequiredSprite.texture !== PIXI.Texture.WHITE) this.keysRequiredSprite.texture.destroy();
         const container = new PIXI.Container();
         for (let i = 1; i <= this.totalKeysRequired; i++) {
-            const keySprite = new PIXI.Sprite(Game.resources["src/images/key.png"].texture);
+            const keySprite = new PIXI.Sprite(CommonSpriteSheet["key.png"]);
             keySprite.width = keySprite.height = Game.TILESIZE * 0.6;
             if (i > this.keysRequired) {
                 keySprite.filters = [BLACK_COLOR_OVERLAY];

@@ -289,7 +289,7 @@ export function redrawKeysAmount() {
     const container = HUD.keysAmount;
     removeAllChildrenFromContainer(container);
     if (Game.keysAmount === 0) return;
-    const icon = new PIXI.Sprite(Game.resources["src/images/key.png"].texture);
+    const icon = new PIXI.Sprite(CommonSpriteSheet["key.png"]);
     icon.width = icon.height = 40;
     const text = new PIXI.Text(Game.keysAmount.toString(), HUDTextStyle);
     text.position.set(icon.width, (icon.height - text.height) / 3);

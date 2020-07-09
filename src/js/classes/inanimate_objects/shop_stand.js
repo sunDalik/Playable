@@ -7,6 +7,7 @@ import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 import * as PIXI from "pixi.js";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
+import {CommonSpriteSheet} from "../../loader";
 
 export class ShopStand extends ItemInanimate {
     constructor(tilePositionX, tilePositionY, contents) {
@@ -83,7 +84,7 @@ export class ShopStand extends ItemInanimate {
         if (this.keysRequiredSprite.texture !== PIXI.Texture.WHITE) this.keysRequiredSprite.texture.destroy();
         const container = new PIXI.Container();
         for (let i = 1; i <= this.keysRequired; i++) {
-            const keySprite = new PIXI.Sprite(Game.resources["src/images/key.png"].texture);
+            const keySprite = new PIXI.Sprite(CommonSpriteSheet["key.png"]);
             keySprite.width = keySprite.height = Game.TILESIZE * 0.52;
             keySprite.position.x = (i - 1) * keySprite.width * 0.7;
             container.addChild(keySprite);

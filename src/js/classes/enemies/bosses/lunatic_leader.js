@@ -80,8 +80,8 @@ export class LunaticLeader extends Boss {
         super.die(source);
         if (this.dead) {
             Game.world.removeChild(this.spiritFire);
-            for (const enemy of Game.enemies) {
-                if (enemy !== this) enemy.die(null);
+            for (let i = Game.enemies.length - 1; i >= 0; i--) {
+                if (Game.enemies[i] !== this) Game.enemies[i].die(null);
             }
         }
     }
