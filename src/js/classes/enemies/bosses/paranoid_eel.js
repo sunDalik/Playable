@@ -9,7 +9,7 @@ import {
     isEnemy,
     isNotAWall,
     isNotOutOfMap,
-    isRelativelyEmpty
+    isRelativelyEmpty, tileInsideTheBossRoom
 } from "../../../map_checks";
 import {randomChoice, randomChoiceSeveral} from "../../../utils/random_utils";
 import {get8Directions, get8DirectionsInRadius} from "../../../utils/map_utils";
@@ -186,7 +186,8 @@ export class ParanoidEel extends Boss {
                 }
             }
             if (!canMove) return;
-            if (isRelativelyEmpty(this.tilePosition.x + this.direction.x * 2, this.tilePosition.y + this.direction.y * 2)) {
+            if (isRelativelyEmpty(this.tilePosition.x + this.direction.x * 2, this.tilePosition.y + this.direction.y * 2)
+                && tileInsideTheBossRoom(this.tilePosition.x + this.direction.x * 2, this.tilePosition.y + this.direction.y * 2)) {
                 const player = getPlayerOnTile(this.tilePosition.x + this.direction.x * 2, this.tilePosition.y + this.direction.y * 2);
                 if (player) {
                     player.damage(this.atk, this, true, true);
