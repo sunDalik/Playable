@@ -23,11 +23,11 @@ export class FloorTile extends TileElement {
             if (random > 98) {
                 //cracked
                 this.texture = FloorTilesSpriteSheet["dark_tunnel_floor_tile_8.png"];
-            } else if (random > 94) {
+            } else if (random > 93) {
                 // lava
                 this.texture = randomChoice([FloorTilesSpriteSheet["dark_tunnel_floor_tile_6.png"],
                     FloorTilesSpriteSheet["dark_tunnel_floor_tile_7.png"]]);
-            } else if (random > 87) {
+            } else if (random > 86) {
                 // less rocks
                 this.texture = randomChoice([FloorTilesSpriteSheet["dark_tunnel_floor_tile_2.png"],
                     FloorTilesSpriteSheet["dark_tunnel_floor_tile_5.png"]]);
