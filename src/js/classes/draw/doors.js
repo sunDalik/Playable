@@ -12,7 +12,7 @@ export class DoorsTile extends TileElement {
         this.horizontal = isHorizontal; //describes connection way
         this.opened = false;
         this.door2 = new TileElement(CommonSpriteSheet["door_horizontal.png"], this.tilePosition.x, this.tilePosition.y, true);
-        this.scaleModifier = this.door2.scaleModifier = 0.5;
+        this.scaleModifier = this.door2.scaleModifier = 0.5 * 1.02;
         this.updateTexture();
         this.setOwnZIndex(Z_INDEXES.DOOR);
         if (this.horizontal) {
@@ -43,12 +43,12 @@ export class DoorsTile extends TileElement {
         if (this.horizontal) {
             this.position.y = Game.TILESIZE * this.tilePosition.y - this.height / 2;
             if (this.door2) this.door2.position.set(this.position.x, this.position.y + Game.TILESIZE - this.height * 0.1);
-            if (!this.opened) this.position.y += this.height * 0.35; // MAGICAL NUMBERS AAAAAAAAAAA
+            if (!this.opened) this.position.y += this.height * 0.32; // MAGICAL NUMBERS AAAAAAAAAAA
             else this.position.y += this.height * 0.03;
         } else {
             this.position.y = this.position.y - Game.TILESIZE / 2;
             this.position.x = this.position.x - (Game.TILESIZE - this.width) / 2;
-            if (this.door2) this.door2.position.set(this.position.x + this.width, this.position.y);
+            if (this.door2) this.door2.position.set(this.position.x + this.width * 0.96, this.position.y);
         }
     }
 
