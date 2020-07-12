@@ -35,5 +35,6 @@ export class DarknessTile extends TileElement {
         if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + 1)) {
             Game.darkTiles[this.tilePosition.y + 1][this.tilePosition.x].update();
         }
+        this.update();
     }
 }

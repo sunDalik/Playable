@@ -90,6 +90,7 @@ export class DarkTunnelTile extends DarknessTile {
             }
             if (foundLight) this.alpha = this.nearbyAlpha;
             else this.alpha = this.semiAlpha;
+            this.updateNearbyDarkTiles(); // this might or might not be redundant...
         } else {
             this.visible = false;
         }
