@@ -397,9 +397,11 @@ export class Player extends AnimatedTileElement {
 
     addHealthContainers(num, heal = true) {
         this.maxHealth += num;
-        if (heal) this.heal(num);
-        //might need to expand it to unlimited amount of heart containers later
-        if (num === 2) setTickTimeout(() => createHeartAnimation(this.position.x, this.position.y), 20);
+        if (heal) {
+            this.heal(num);
+            //might need to expand it to unlimited amount of heart containers later
+            if (num === 2) setTickTimeout(() => createHeartAnimation(this.position.x, this.position.y), 20);
+        }
     }
 
     heal(healHP, showHeart = true, linkEnabled = true) {

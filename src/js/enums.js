@@ -171,7 +171,8 @@ export const EQUIPMENT_ID = Object.freeze({
     DEFENSE_LINK: 67,
     ATTACK_LINK: 68,
     THUNDERSTORM: 69,
-    EMPYREAL_WRATH: 70
+    EMPYREAL_WRATH: 70,
+    DEMON_HEART: 71
 });
 
 export const DAMAGE_TYPE = Object.freeze({
