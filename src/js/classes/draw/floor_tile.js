@@ -18,7 +18,7 @@ export class FloorTile extends TileElement {
     setTexture() {
         const random = Math.random() * 100;
         if (Game.stage === STAGE.FLOODED_CAVE) {
-
+            //this.texture = Game.resources["src/images/floor_tiles/flooded_cave_floor_tile_0.png"].texture;
         } else if (Game.stage === STAGE.DARK_TUNNEL) {
             if (random > 98) {
                 //cracked

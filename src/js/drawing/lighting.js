@@ -106,11 +106,7 @@ export function lightTile(tileX, tileY) {
     }
     mapCell.lit = true;
 
-    for (const dir of getCardinalDirections()) {
-        if (isNotOutOfMap(tileX + dir.x, tileY + dir.y)) {
-            Game.darkTiles[tileY + dir.y][tileX + dir.x].update();
-        }
-    }
+    Game.darkTiles[tileY][tileX].updateNearbyDarkTiles();
 
     const entity = mapCell.entity;
     if (entity) {
@@ -160,8 +156,8 @@ export function darkenTile(tileX, tileY) {
     if (mapCell.tile) mapCell.tile.visible = false;
     if (mapCell.item) mapCell.item.visible = false;
 
-    if (mapCell.tileType === TILE_TYPE.VOID) return;
-    Game.minimap[tileY][tileX].visible = false;
+    //if (mapCell.tileType === TILE_TYPE.VOID) return;
+    //Game.minimap[tileY][tileX].visible = false;
 }
 
 //const torchLightSprite = new PIXI.Sprite(PIXI.Texture.WHITE);
@@ -204,9 +200,9 @@ function lightWorldDT(tileX, tileY, distance, sourceDirX = 0, sourceDirY = 0) {
                 if (!litAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY - 1)) lightWorldDT(tileX + 1, tileY - 1, distance - 2);
             }
         } else lightTileDT(tileX, tileY);
-    } else if (distance === -1) {
+    } /*else if (distance === -1) {
         if (!Game.map[tileY][tileX].lit) lightTile(tileX, tileY);
-    }
+    }*/
 }
 
 function lightTileDT(tileX, tileY) {
