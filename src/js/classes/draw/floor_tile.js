@@ -18,7 +18,20 @@ export class FloorTile extends TileElement {
     setTexture() {
         const random = Math.random() * 100;
         if (Game.stage === STAGE.FLOODED_CAVE) {
-            this.texture = Game.resources["src/images/floor_tiles/flooded_cave_floor_tile_0.png"].texture;
+            if (random > 94) {
+                //cracked
+                this.texture = randomChoice([FloorTilesSpriteSheet["flooded_cave_floor_tile_5.png"],
+                    FloorTilesSpriteSheet["flooded_cave_floor_tile_6.png"],
+                    FloorTilesSpriteSheet["flooded_cave_floor_tile_7.png"]]);
+            } else {
+                // normal
+                this.texture = randomChoice([FloorTilesSpriteSheet["flooded_cave_floor_tile_0.png"],
+                    FloorTilesSpriteSheet["flooded_cave_floor_tile_1.png"],
+                    FloorTilesSpriteSheet["flooded_cave_floor_tile_2.png"],
+                    FloorTilesSpriteSheet["flooded_cave_floor_tile_3.png"],
+                    FloorTilesSpriteSheet["flooded_cave_floor_tile_4.png"],
+                    FloorTilesSpriteSheet["flooded_cave_floor_tile_8.png"]]);
+            }
         } else if (Game.stage === STAGE.DARK_TUNNEL) {
             if (random > 98) {
                 //cracked
