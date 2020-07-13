@@ -19,8 +19,8 @@ export class WallTile extends TileElement {
     setTexture() {
         const random = Math.random() * 100;
         if (Game.stage === STAGE.FLOODED_CAVE) {
-            //this.texture = Game.resources["src/images/walls/flooded_cave_walls_0.png"].texture;
-            //this.setScaleModifier(1.02);
+            this.texture = Game.resources["src/images/walls/flooded_cave_walls_0.png"].texture;
+            this.setScaleModifier(1.02);
         } else if (Game.stage === STAGE.DARK_TUNNEL) {
             if (random > 98) {
                 //cracked

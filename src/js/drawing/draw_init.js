@@ -8,7 +8,7 @@ import {LimitChain} from "../classes/draw/limit_chain";
 import {DarknessTile} from "../classes/draw/darkness";
 import {FloorTile} from "../classes/draw/floor_tile";
 
-const floorAreas = [STAGE.RUINS, STAGE.DARK_TUNNEL];
+const floorAreas = [STAGE.RUINS, STAGE.DARK_TUNNEL, STAGE.FLOODED_CAVE];
 
 export function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {
