@@ -26,7 +26,7 @@ export class DarknessTile extends TileElement {
         if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y - 1)
             && Game.map[this.tilePosition.y - 1][this.tilePosition.x].lit
             && Game.map[this.tilePosition.y - 1][this.tilePosition.x].tileType === TILE_TYPE.ENTRY) {
-            this.height = Game.TILESIZE * 1.34;
+            this.height = Game.TILESIZE * 1.26;
             this.place();
         }
     }

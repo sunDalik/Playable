@@ -845,6 +845,7 @@ function generateTreasureWalls() {
             && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.SECRET))
             && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))) {
             if (getCardinalDirections().every(dir => level[point.y + dir.y][point.x + dir.x].tileType !== TILE_TYPE.NONE)) continue;
+            if (anyDoorsAround(point)) continue;
             treasureWallsAmount--;
             level[point.y][point.x].tile = new TreasureWallTile(point.x, point.y);
         }
