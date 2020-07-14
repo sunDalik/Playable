@@ -20,7 +20,6 @@ export class Obelisk extends TileElement {
         this.activated = false;
         this.working = true;
         this.destroyed = false;
-        this.timesDamaged = 0;
         this.timesDonated = 0;
         this.generateGrails(level);
         Game.obelisks.push(this);
@@ -140,8 +139,7 @@ export class Obelisk extends TileElement {
     deactivate(grail) {
         if (this.working && this.activated) {
             this.working = false;
-            if (this.timesDamaged > 0) this.texture = InanimatesSpriteSheet["obelisk_used_damaged.png"];
-            else this.texture = InanimatesSpriteSheet["obelisk_used.png"];
+            this.texture = InanimatesSpriteSheet["obelisk_used.png"];
             this.grails.map(grail => grail.setMagic(null));
             createFadingText("Goodbye...", this.position.x, this.position.y);
         } else if (this.destroyed) {
@@ -172,7 +170,7 @@ export class Obelisk extends TileElement {
             this.destroyed = true;
             this.visible = false;
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
-            this.texture = InanimatesSpriteSheet["obelisk_used_damaged.png"];
+            this.texture = InanimatesSpriteSheet["obelisk_used.png"];
             runDestroyAnimation(this);
         }
         if (this.working) {
@@ -191,17 +189,6 @@ export class Obelisk extends TileElement {
             //createFadingText("Live with it... you will not...", this.position.x, this.position.y);
         }
         this.onUpdate();
-    }
-
-    damage() {
-        if (this.working) {
-            if (this.timesDamaged >= 1) this.destroy();
-            else {
-                this.timesDamaged++;
-                this.texture = InanimatesSpriteSheet["obelisk_damaged.png"];
-                createFadingText("Don't", this.position.x, this.position.y);
-            }
-        }
     }
 
     onUpdate() {

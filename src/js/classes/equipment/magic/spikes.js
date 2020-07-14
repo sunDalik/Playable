@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
-import {getPlayerOnTile, isEnemy, isNotAWall, isObelisk} from "../../../map_checks";
+import {getPlayerOnTile, isEnemy, isNotAWall} from "../../../map_checks";
 import {createCrazySpikeAnimation, createPlayerAttackTile, rotate} from "../../../animations";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
@@ -31,8 +31,6 @@ export class Spikes extends Magic {
                 if (isEnemy(attackTile.x, attackTile.y)) {
                     Game.map[attackTile.y][attackTile.x].entity.damage(wielder, wielder.getAtk(this), attackTile.x - wielder.tilePosition.x, attackTile.y - wielder.tilePosition.y, DAMAGE_TYPE.MAGICAL);
                     enemiesDamaged++;
-                } else if (isObelisk(attackTile.x, attackTile.y)) {
-                    Game.map[attackTile.y][attackTile.x].entity.damage();
                 }
                 const player = getPlayerOnTile(attackTile.x, attackTile.y);
                 if (player) {

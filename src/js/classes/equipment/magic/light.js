@@ -1,7 +1,7 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
 import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT, STAGE} from "../../../enums";
-import {getPlayerOnTile, isEnemy, isNotAWall, isObelisk} from "../../../map_checks";
+import {getPlayerOnTile, isEnemy, isNotAWall} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {MagicSpriteSheet} from "../../../loader";
@@ -34,8 +34,6 @@ export class Light extends Magic {
                     createFadingAttack(attackSprite);
                     if (isEnemy(attackPositionX, attackPositionY)) {
                         Game.map[attackPositionY][attackPositionX].entity.damage(wielder, wielder.getAtk(this), 0, 0, DAMAGE_TYPE.MAGICAL);
-                    } else if (isObelisk(attackPositionX, attackPositionY)) {
-                        Game.map[attackPositionY][attackPositionX].entity.damage();
                     }
                     const player = getPlayerOnTile(attackPositionX, attackPositionY);
                     if (player) player.heal(this.healAmount);

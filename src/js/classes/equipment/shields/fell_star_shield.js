@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY, STAGE} from "../../../enums";
-import {isAnyWall, isEnemy, isObelisk} from "../../../map_checks";
+import {isAnyWall, isEnemy} from "../../../map_checks";
 import {TileElement} from "../../tile_elements/tile_element";
 import * as PIXI from "pixi.js";
 import {createFadingAttack} from "../../../animations";
@@ -44,8 +44,6 @@ export class FellStarShield extends AbstractShield {
             createFadingAttack(attackSprite);
             if (isEnemy(x, y)) {
                 Game.map[y][x].entity.damage(wielder, this.shieldAtk, 0, 0, DAMAGE_TYPE.MAGICAL);
-            } else if (isObelisk(x, y)) {
-                Game.map[y][x].entity.destroy();
             }
         }
     }
