@@ -39,8 +39,9 @@ export class ShadowTileElement extends TileElement {
         if (this.noShadow) return;
         this.shadow = new PIXI.Graphics();
         //should shadow color be affected by floor? I have no idea
-        if (Game.stage === STAGE.DARK_TUNNEL) this.shadow.beginFill(0x444444, 0.2);
-        else this.shadow.beginFill(0x666666, 0.12);
+        if (Game.stage === STAGE.FLOODED_CAVE) this.shadow.beginFill(0x58625f, 0.16);
+        else if (Game.stage === STAGE.DARK_TUNNEL) this.shadow.beginFill(0x484a4d, 0.22);
+        else this.shadow.beginFill(0x666561, 0.11);
         const width = this.texture.trim ? this.texture.trim.width : this.texture.frame.width;
         this.shadow.drawEllipse(0, 0, width * this.scale.y * this.shadowWidthMul, this.shadowHeight);
         Game.world.addChild(this.shadow);
