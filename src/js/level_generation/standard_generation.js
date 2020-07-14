@@ -24,6 +24,7 @@ import {ShopStand} from "../classes/inanimate_objects/shop_stand";
 import {Bomb} from "../classes/equipment/bag/bomb";
 import {HealingPotion} from "../classes/equipment/bag/healing_potion";
 import {getRandomShopItem} from "../utils/pool_utils";
+import {TreasureWallTile} from "../classes/draw/treasure_wall";
 
 let settings;
 let level;
@@ -102,6 +103,7 @@ export function generateStandard() {
     }
     generateInanimates();
     generateEnemies();
+    generateTreasureWalls();
     generateBoss(bossSet);
     generateKeys();
     setStartPosition(startRoom);
@@ -831,4 +833,18 @@ function createSecrets(secretRoom) {
 export function clearWall(x, y) {
     level[y][x].tile = null;
     level[y][x].tileType = TILE_TYPE.NONE;
+}
+
+function generateTreasureWalls() {
+    let treasureWallsAmount = 2;
+    for (const point of getValidRoomPoints(new Room(0, 0, level[0].length, level.length))) {
+        if (treasureWallsAmount <= 0) break;
+        if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.WALL
+            && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
+            && isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))) {
+            if (getCardinalDirections().every(dir => level[point.y + dir.y][point.x + dir.x].tileType !== TILE_TYPE.NONE)) continue;
+            treasureWallsAmount--;
+            level[point.y][point.x].tile = new TreasureWallTile(point.x, point.y);
+        }
+    }
 }
