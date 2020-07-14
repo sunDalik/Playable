@@ -15,7 +15,7 @@ export class PossessedSandals extends Equipment {
         this.equipmentType = EQUIPMENT_TYPE.FOOT;
         this.id = EQUIPMENT_ID.POSSESSED_SANDALS;
         this.name = "Possessed Sandals";
-        this.description = "Moving from a tile damages all enemies that stood near that tile by 1 atk";
+        this.description = "Moving from a tile damages all enemies that stood near that tile by 1 dmg";
         this.rarity = RARITY.A;
     }
 

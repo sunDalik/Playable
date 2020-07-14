@@ -18,7 +18,7 @@ export class BladeCrown extends Equipment {
         this.nonremoveable = true;
         this.bladeAtk = 1;
         this.name = "Blade Crown";
-        this.description = "Whenever you attack with a weapon, a cursed blade appears and damages all enemies around you\nYou can't take this item off";
+        this.description = "Whenever you attack with a weapon, a cursed blade appears and damages all enemies around you by 1 dmg\nYou can't take this item off";
         this.rarity = RARITY.S;
     }
 

@@ -6,7 +6,7 @@ export class Key {
         this.texture = CommonSpriteSheet["key.png"];
         this.equipmentType = EQUIPMENT_TYPE.KEY;
         this.name = "Key";
-        this.description = "Opens chests";
+        this.description = "Keys are used to open chests and buy items from shops";
         this.rarity = RARITY.C;
     }
 }
