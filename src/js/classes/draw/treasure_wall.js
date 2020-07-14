@@ -21,7 +21,8 @@ export class TreasureWallTile extends WallTile {
             this.texture = randomChoice([WallsSpriteSheet["dark_tunnel_walls_treasure_2.png"],
                 WallsSpriteSheet["dark_tunnel_walls_treasure_7.png"]]);
         } else if (Game.stage === STAGE.RUINS) {
-
+            this.texture = randomChoice([WallsSpriteSheet["ruins_walls_treasure_3.png"],
+                WallsSpriteSheet["ruins_walls_treasure_6.png"]]);
         }
     }
 
