@@ -743,6 +743,7 @@ function generateLaserTurrets() {
 }
 
 function isInsideRoom(point, room) {
+    if (!room) return false;
     return point.x >= room.offsetX && point.x <= room.offsetX + room.width - 1
         && point.y >= room.offsetY && point.y <= room.offsetY + room.height - 1;
 }
