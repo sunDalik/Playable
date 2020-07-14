@@ -31,8 +31,7 @@ export class TreasureWallTile extends WallTile {
         if (random > 98) {
             dropItem(new HealingPotion(), this.tilePosition.x, this.tilePosition.y);
         } else if (random > 90) {
-            Game.map[this.tilePosition.y][this.tilePosition.x].entity = new Chest(this.tilePosition.x, this.tilePosition.y);
-            Game.world.addChild(Game.map[this.tilePosition.y][this.tilePosition.x].entity);
+            Game.world.addInanimate(new Chest(this.tilePosition.x, this.tilePosition.y));
         } else {
             dropItem(new Key(), this.tilePosition.x, this.tilePosition.y);
         }
