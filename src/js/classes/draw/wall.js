@@ -8,19 +8,32 @@ import {randomChoice} from "../../utils/random_utils";
 export let wallTallness = 0;
 
 export class WallTile extends TileElement {
-    constructor(tilePositionX, tilePositionY, texture = Game.resources["src/images/wall.png"].texture) {
+    constructor(tilePositionX, tilePositionY, texture = WallsSpriteSheet["flooded_cave_walls_0.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.setOwnZIndex(Z_INDEXES.WALL);
         this.setCenterPreservation();
         this.setTexture();
-        if (wallTallness === 0) wallTallness = 128 * this.scale.y; // in theory it might initialize AFTER someone will need it... keep it in mind
+        this.setScaleModifier(1.02);
+        if (wallTallness === 0) wallTallness = 128 * this.scale.y * 1.01; // in theory it might initialize AFTER someone will need it... keep it in mind
     }
 
     setTexture() {
         const random = Math.random() * 100;
         if (Game.stage === STAGE.FLOODED_CAVE) {
-            this.texture = Game.resources["src/images/walls/flooded_cave_walls_0.png"].texture;
-            this.setScaleModifier(1.02);
+            if (random > 93) {
+                //noisy
+                this.texture = randomChoice([WallsSpriteSheet["flooded_cave_walls_6.png"],
+                    WallsSpriteSheet["flooded_cave_walls_7.png"],
+                    WallsSpriteSheet["flooded_cave_walls_8.png"]]);
+            } else {
+                //normal
+                this.texture = randomChoice([WallsSpriteSheet["flooded_cave_walls_0.png"],
+                    WallsSpriteSheet["flooded_cave_walls_1.png"],
+                    WallsSpriteSheet["flooded_cave_walls_2.png"],
+                    WallsSpriteSheet["flooded_cave_walls_3.png"],
+                    WallsSpriteSheet["flooded_cave_walls_4.png"],
+                    WallsSpriteSheet["flooded_cave_walls_5.png"]]);
+            }
         } else if (Game.stage === STAGE.DARK_TUNNEL) {
             if (random > 98) {
                 //cracked
@@ -40,7 +53,6 @@ export class WallTile extends TileElement {
                     WallsSpriteSheet["dark_tunnel_walls_3.png"],
                     WallsSpriteSheet["dark_tunnel_walls_4.png"]]);
             }
-            this.setScaleModifier(1.02); // when you finish all walls you will need to set scale modifier BEFORE you calculate walltallness!
         } else if (Game.stage === STAGE.RUINS) {
             if (random > 99) {
                 // cracked
@@ -62,7 +74,6 @@ export class WallTile extends TileElement {
                     WallsSpriteSheet["ruins_walls_6.png"],
                     WallsSpriteSheet["ruins_walls_8.png"]]);
             }
-            this.setScaleModifier(1.02);
         }
     }
 
