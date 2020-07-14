@@ -170,6 +170,7 @@ export class World extends PIXI.Container {
         if (animate && Game.map[y][x].tile) {
             runDestroyAnimation(Game.map[y][x].tile);
         }
+        if (Game.map[y][x].tile.onTileDestroy) Game.map[y][x].tile.onTileDestroy();
         Game.map[y][x].tile = null;
     }
 

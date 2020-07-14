@@ -841,7 +841,8 @@ function generateTreasureWalls() {
         if (treasureWallsAmount <= 0) break;
         if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.WALL
             && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
-            && isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))) {
+            && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.SECRET))
+            && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))) {
             if (getCardinalDirections().every(dir => level[point.y + dir.y][point.x + dir.x].tileType !== TILE_TYPE.NONE)) continue;
             treasureWallsAmount--;
             level[point.y][point.x].tile = new TreasureWallTile(point.x, point.y);
