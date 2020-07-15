@@ -89,10 +89,12 @@ export class Boss extends Enemy {
     }
 
     updateIntentIcon() {
+        this.intentIcon.visible = false;
         return false;
     }
 
     setStunIcon() {
+        this.intentIcon.visible = false;
         return false;
     }
 

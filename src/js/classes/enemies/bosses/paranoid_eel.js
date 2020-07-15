@@ -95,6 +95,12 @@ export class ParanoidEel extends Boss {
     }
 
     move() {
+        //this boss has bugs and sometimes can get out of his boss room. if this happens just kill him
+        if (Game.bossFight && !tileInsideTheBossRoom(this.tilePosition.x, this.tilePosition.y)) {
+            this.die(null);
+            return;
+        }
+
         if (this.waitingToMove) {
             this.waitingToMove = false;
             if (this.triggeredSpinAttack || this.triggeredPoisonEelSpit || this.triggeredSneezeAttack) this.shake(this.direction.y, this.direction.x);
@@ -605,6 +611,11 @@ export class ParanoidEel extends Boss {
                 this.tilePosition.y += Math.sign(this.tilePosition.y - player.tilePosition.y);
             }
             this.direction = {x: -inputX, y: -inputY};
+            //in case player attacks diagonally
+            if (this.direction.x !== 0 && this.direction.y !== 0) {
+                if (Math.random() > 0.5) this.direction.x = 0;
+                else this.direction.y = 0;
+            }
             this.correctLook();
             this.place();
             this.placeOnMap();
