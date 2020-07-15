@@ -17,9 +17,8 @@ export class Cocoon extends Enemy {
         this.health = this.maxHealth = 3;
         this.type = ENEMY_TYPE.COCOON;
         this.atk = 0;
-        this.spawnDelay = randomInt(3, 7);
+        this.spawnDelay = randomInt(3, 6);
         this.getMinionType();
-        if (this.minionType === Spider || this.minionType === RedSpider) this.getMinionType(); // lower chance for black spiders and red spiders
         this.minion = null;
         this.aboutToSpawn = false;
     }
@@ -43,7 +42,17 @@ export class Cocoon extends Enemy {
     }
 
     getSpawnDelay() {
-        return randomInt(8, 13);
+        if (this.minionType === Spider) {
+            return randomInt(10, 16);
+        } else if (this.minionType === GraySpider) {
+            return randomInt(10, 16);
+        } else if (this.minionType === SpiderSmall) {
+            return randomInt(4, 8);
+        } else if (this.minionType === GreenSpider) {
+            return randomInt(8, 14);
+        } else if (this.minionType === RedSpider) {
+            return randomInt(12, 18);
+        }
     }
 
     updateIntentIcon() {
@@ -67,10 +76,25 @@ export class Cocoon extends Enemy {
     }
 
     getMinionType() {
+        const random = Math.random();
         if (Game.stage === STAGE.FLOODED_CAVE) {
-            this.minionType = randomChoice([SpiderSmall, Spider, GraySpider]);
+            if (random > 0.9) {
+                this.minionType = Spider;
+            } else if (random > 0.7) {
+                this.minionType = GraySpider;
+            } else {
+                this.minionType = SpiderSmall;
+            }
         } else {
-            this.minionType = randomChoice([SpiderSmall, Spider, GraySpider, GreenSpider, RedSpider]);
+            if (random > 0.96) {
+                this.minionType = RedSpider;
+            } else if (random > 0.75) {
+                this.minionType = GraySpider;
+            } else if (random > 0.6) {
+                this.minionType = Spider;
+            } else {
+                this.minionType = GreenSpider;
+            }
         }
     }
 }
