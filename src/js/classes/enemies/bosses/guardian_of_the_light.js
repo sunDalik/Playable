@@ -17,6 +17,8 @@ import {extinguishTorch, lightPosition} from "../../../drawing/lighting";
 import {updateChain} from "../../../drawing/draw_dunno";
 import {GotLSpriteSheet} from "../../../loader";
 import {FireGoblet} from "../../inanimate_objects/fire_goblet";
+import {Z_INDEXES} from "../../../z_indexing";
+import {camera} from "../../game/camera";
 
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = GotLSpriteSheet["gotl_neutral.png"]) {
@@ -44,13 +46,20 @@ export class GuardianOfTheLight extends Boss {
         this.usedAttacks = [];
         this.canCreateDoom = true;
         this.overallDamage = [];
-        this.initialZIndex = this.zIndex;
         this.scaleModifier = 1.25;
         this.warningBullets = [];
         this.bulletQueue = [];
         this.electricityDelay = 1;
         this.fitToTile();
-        this.setCenterPreservation();
+        this.setOwnZIndex(Z_INDEXES.DARK_TUNNEL_DARKNESS * 2 + 5);
+        this.initialTallModifier = this.tallModifier = 20;
+        this.initialHeight = this.texture.trim.height;
+    }
+
+    place() {
+        //his texture height changes but I want him to stay on a more or less consistent Y
+        this.tallModifier = this.initialTallModifier - (this.texture.trim.height - this.initialHeight) * this.scale.y * 0.6;
+        super.place();
     }
 
     static getBossRoomStats() {
@@ -60,7 +69,6 @@ export class GuardianOfTheLight extends Boss {
     cancelAnimation() {
         super.cancelAnimation();
         this.alpha = 1;
-        this.zIndex = this.initialZIndex;
     }
 
     onBossModeActivate() {
@@ -89,6 +97,7 @@ export class GuardianOfTheLight extends Boss {
                 }
             }
         }
+        camera.moveToCenter(10);
     }
 
     teleportPlayer(player, tilePosX, tilePosY) {
@@ -260,6 +269,7 @@ export class GuardianOfTheLight extends Boss {
             }
         }
 
+        this.place();
         this.patience.turns--;
         this.electricityDelay--;
     }
@@ -340,6 +350,7 @@ export class GuardianOfTheLight extends Boss {
         this.removeFromMap();
         this.tilePosition = location;
         this.placeOnMap();
+        this.correctZIndex();
         const time = 18;
         const alphaStep1 = 1 / (time / 4);
         const alphaStep2 = 1 / (time * 3 / 4);
@@ -348,7 +359,6 @@ export class GuardianOfTheLight extends Boss {
             if (Game.paused) return;
             counter += delta;
             if (counter < time / 4) {
-                this.zIndex = Game.darkTiles[0][0].zIndex + 1;
                 this.alpha -= alphaStep1;
             } else {
                 this.place();
@@ -357,7 +367,6 @@ export class GuardianOfTheLight extends Boss {
             if (counter >= time) {
                 this.place();
                 this.alpha = 1;
-                this.zIndex = this.initialZIndex;
                 Game.app.ticker.remove(animation);
             }
         };

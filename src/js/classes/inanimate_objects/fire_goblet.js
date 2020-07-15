@@ -1,4 +1,4 @@
-import {Game} from "../../game"
+import {Game} from "../../game";
 import {INANIMATE_TYPE, ROLE} from "../../enums";
 import {otherPlayer} from "../../utils/game_utils";
 import {isBullet} from "../../map_checks";
@@ -6,13 +6,13 @@ import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {randomChoice} from "../../utils/random_utils";
 import {FireHazard} from "../hazards/fire";
 import {InanimatesSpriteSheet} from "../../loader";
+import {Z_INDEXES} from "../../z_indexing";
 
 export class FireGoblet extends AnimatedTileElement {
     constructor(tilePositionX, tilePositionY) {
         super(InanimatesSpriteSheet["fire_goblet.png"], tilePositionX, tilePositionY);
         this.role = ROLE.INANIMATE;
         this.type = INANIMATE_TYPE.FIRE_GOBLET;
-        this.zIndex = Game.primaryPlayer.zIndex + 1;
         this.maskLayers = [];
         this.standing = true;
         this.toBeShattered = false;
@@ -22,7 +22,8 @@ export class FireGoblet extends AnimatedTileElement {
         this.anchor.set(0.5, 0.8);
         this.place();
         this.scaleModifier = 1;
-        this.fitToTile()
+        this.fitToTile();
+        this.setOwnZIndex(Z_INDEXES.PLAYER_PRIMARY + 1);
     }
 
     immediateReaction() {
@@ -36,7 +37,7 @@ export class FireGoblet extends AnimatedTileElement {
             this.direction = {x: 0, y: 0};
             this.angle = 0;
             this.standing = true;
-            this.zIndex = Game.primaryPlayer.zIndex + 1;
+            this.setOwnZIndex(Z_INDEXES.PLAYER_PRIMARY + 1);
             this.texture = InanimatesSpriteSheet["fire_goblet.png"];
             for (let i = Game.bullets.length - 1; i >= 0; i--) {
                 if (Game.bullets[i].tilePosition.x === this.tilePosition.x && Game.bullets[i].tilePosition.y === this.tilePosition.y) {
@@ -47,7 +48,7 @@ export class FireGoblet extends AnimatedTileElement {
             this.direction = {x: tileStepX, y: tileStepY};
             this.angle = this.getAngleForDirection(this.direction);
             this.standing = false;
-            this.zIndex = otherPlayer(Game.primaryPlayer).zIndex - 1;
+            this.setOwnZIndex(Z_INDEXES.PLAYER - 1);
             this.texture = InanimatesSpriteSheet["fire_goblet_fallen.png"];
         }
         this.relight();
@@ -138,7 +139,7 @@ export class FireGoblet extends AnimatedTileElement {
 
     shatterShake() {
         if (this.angle === 90 || this.angle === -90) {
-            this.shake(0, 0.5)
+            this.shake(0, 0.5);
         } else {
             this.shake(0.5, 0);
         }
