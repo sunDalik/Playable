@@ -5,7 +5,7 @@ import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animat
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
 
-export class Hammer  extends Weapon {
+export class Hammer extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["hammer.png"];
@@ -25,7 +25,7 @@ export class Hammer  extends Weapon {
             createPlayerAttackTile({x: attackTileX, y: attackTileY});
             const enemy = Game.map[attackTileY][attackTileX].entity;
             enemy.damage(wielder, atk, dirX, dirY);
-            enemy.stun++;
+            enemy.addStun(1);
             return true;
         } else return false;
     }

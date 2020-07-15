@@ -59,6 +59,16 @@ export class Enemy extends AnimatedTileElement {
         }
     }
 
+    setStun(stun) {
+        this.stun = stun;
+        this.setStunIcon();
+    }
+
+    // just an alias
+    addStun(stun) {
+        this.setStun(this.stun + stun);
+    }
+
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
         if (dmg === 0) return;
         if (!this.dead) {

@@ -25,7 +25,7 @@ export function castWind(origin, radius, blowDistance, atk = 1, crystal = false)
                     }
                     if (isEnemy(tile.x, tile.y)) {
                         const enemy = Game.map[tile.y][tile.x].entity;
-                        enemy.stun += 2;
+                        enemy.addStun(2);
                         updateIntent(enemy);
                         const direction = {
                             x: Math.sign(enemy.tilePosition.x - origin.tilePosition.x),

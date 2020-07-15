@@ -29,6 +29,10 @@ export class Boss extends Enemy {
         Game.world.removeChild(this.healthContainer);
     }
 
+    setStun(stun) {
+        return false;
+    }
+
     onBossModeActivate() {
     }
 

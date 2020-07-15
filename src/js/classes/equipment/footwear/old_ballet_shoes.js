@@ -20,7 +20,7 @@ export class OldBalletShoes extends Equipment {
         for (const enemy of Game.enemies) {
             if (enemy.visible) {
                 if (enemy.spiderLike) {
-                    enemy.stun++;
+                    enemy.addStun(1);
                 }
             }
         }

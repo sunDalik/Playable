@@ -28,7 +28,7 @@ export class AssassinDagger extends Weapon {
             if (isRelativelyEmpty(wielder.tilePosition.x + tileDirX * 2, wielder.tilePosition.y + tileDirY * 2)) {
                 createAnimation(this);
                 wielder.slide(tileDirX * 2, tileDirY * 2, null, null, this.SLIDE_ANIMATION_TIME);
-                if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.stun++;
+                if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.addStun(1);
             } else {
                 createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4, 35, 1);
             }

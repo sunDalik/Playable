@@ -183,7 +183,7 @@ export class Obelisk extends TileElement {
             for (const enemy of Game.enemies) {
                 if (enemy.dead && !enemy.boss) {
                     enemy.revive();
-                    enemy.stun = 2;
+                    enemy.setStun(2);
                 } else enemy.atk += 0.25;
             }
             //createFadingText("Live with it... you will not...", this.position.x, this.position.y);

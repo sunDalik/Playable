@@ -31,7 +31,7 @@ export class Cocoon extends Enemy {
                 this.shake(1, 0);
             } else {
                 this.minion = new this.minionType(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
-                this.minion.stun = 2;
+                this.minion.setStun(2);
                 Game.world.addEnemy(this.minion, true);
                 this.aboutToSpawn = false;
             }

@@ -25,7 +25,7 @@ export class BookOfThunders extends MagicBook {
         if (this.uses <= 0) return false;
         const enemy = this.getEnemy(wielder, dirX, dirY);
         if (enemy === null) return false;
-        enemy.stun++;
+        enemy.addStun(1);
         enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL);
         createThunderAnimation(enemy);
         this.uses--;

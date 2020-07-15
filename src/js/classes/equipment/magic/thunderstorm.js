@@ -36,7 +36,7 @@ export class Thunderstorm extends Magic {
             //maybe create a special function for it?
             if (randomTimeout === 0) createThunderAnimation(enemy);
             else setTickTimeout(() => createThunderAnimation(enemy), randomTimeout);
-            enemy.stun++;
+            enemy.addStun(1);
             enemy.damage(wielder, wielder.getAtk(this), 0, 0, DAMAGE_TYPE.MAGICAL);
             thundersAmount--;
         }

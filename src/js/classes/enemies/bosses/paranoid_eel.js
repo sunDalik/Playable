@@ -242,7 +242,7 @@ export class ParanoidEel extends Boss {
         else if (this.direction.y !== 0) this.texture = ParanoidEelSpriteSheet["paranoid_eel_spitting_y.png"];
         this.currentEelSpitCounter++;
         const minionEel = this.spawnMinion(Eel, this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
-        minionEel.stun = 1;
+        minionEel.setStun(1);
         if (this.direction.x !== 0) {
             minionEel.setAngle(90 * (this.direction.x + 2));
         } else if (this.direction.y !== 0) {
@@ -274,7 +274,7 @@ export class ParanoidEel extends Boss {
         if (this.direction.x !== 0) this.texture = ParanoidEelSpriteSheet["paranoid_eel_spitting.png"];
         else if (this.direction.y !== 0) this.texture = ParanoidEelSpriteSheet["paranoid_eel_spitting_y.png"];
         const minionEel = this.spawnMinion(PoisonEel, this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y);
-        minionEel.stun = 1;
+        minionEel.setStun(1);
         if (this.direction.x !== 0) {
             minionEel.setAngle(90 * (this.direction.x + 2));
         } else if (this.direction.y !== 0) {
@@ -337,7 +337,7 @@ export class ParanoidEel extends Boss {
     horizontalRush() {
         if (isEmpty(this.tilePosition.x - this.direction.x * 2, this.tilePosition.y) && this.canSpawnMinions()) {
             const minionEel = this.spawnMinion(DarkEel, this.tilePosition.x - this.direction.x, this.tilePosition.y);
-            minionEel.stun = 1;
+            minionEel.setStun(1);
             minionEel.setAngle(90 * (-this.direction.x + 2));
             const spitAnimationTime = minionEel.SLIDE_ANIMATION_TIME - 4;
             minionEel.slide(-this.direction.x, 0, null, () => {

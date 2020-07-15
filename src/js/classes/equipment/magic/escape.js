@@ -42,7 +42,7 @@ export class Escape extends Magic {
             for (let i = wielder.tilePosition.y - stunRange; i <= wielder.tilePosition.y + stunRange; i++) {
                 for (let j = wielder.tilePosition.x - stunRange; j <= wielder.tilePosition.x + stunRange; j++) {
                     if (isEnemy(j, i)) {
-                        Game.map[i][j].entity.stun += 3;
+                        Game.map[i][j].entity.addStun(3);
                     }
                 }
             }
@@ -62,7 +62,7 @@ export class Escape extends Magic {
             }
             this.createSmokeAnimation(tile.x, tile.y);
             camera.moveToCenter(cameraTime);
-            }
+        }
         this.uses--;
         return true;
     }
