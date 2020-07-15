@@ -16,7 +16,7 @@ export class DarknessTile extends TileElement {
     place() {
         super.place();
         const diff = (this.height - Game.TILESIZE);
-        this.position.y -= Math.abs(diff) / 2;
+        this.position.y -= diff / 2;
     }
 
     update() {
@@ -32,8 +32,10 @@ export class DarknessTile extends TileElement {
     }
 
     updateNearbyDarkTiles() {
-        if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + 1)) {
-            Game.darkTiles[this.tilePosition.y + 1][this.tilePosition.x].update();
+        for (const dir of [{x: 0, y: -1}, {x: 0, y: 1}]) {
+            if (isNotOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
+                Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].update();
+            }
         }
         this.update();
     }

@@ -9,7 +9,6 @@ import {wallTallness} from "../draw/wall";
 import {lightTile} from "../../drawing/lighting";
 import {Z_INDEXES} from "../../z_indexing";
 
-//todo: mobs can now pop out of the darkness
 export class DarkTunnelTile extends DarknessTile {
     constructor(tilePositionX, tilePositionY, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
@@ -32,16 +31,28 @@ export class DarkTunnelTile extends DarknessTile {
 
     update() {
         super.update();
+        // if there is a lit floor above us shrink down because that looks nicer
+        // also shrink if there is a laser turret because we want to see the face
         const upTile = {x: this.tilePosition.x, y: this.tilePosition.y - 1};
         if (isNotOutOfMap(upTile.x, upTile.y)
             && (Game.darkTiles[upTile.y][upTile.x].alpha < this.semiAlpha || Game.darkTiles[upTile.y][upTile.x].visible === false)
             && (Game.map[upTile.y][upTile.x].tileType === TILE_TYPE.NONE || isEntity(upTile.x, upTile.y, ROLE.WALL_TRAP))
             && Game.map[upTile.y + 1][upTile.x].tileType === TILE_TYPE.NONE) {
             this.height = Game.TILESIZE;
-            this.place();
         } else {
             this.height = Game.TILESIZE + wallTallness;
+        }
+
+        this.place();
+
+        // if there is a wall below us shrink up because z index is high in DT
+        const downTile = {x: this.tilePosition.x, y: this.tilePosition.y + 1};
+        if (isNotOutOfMap(downTile.x, downTile.y)
+            && (Game.darkTiles[downTile.y][downTile.x].alpha < this.semiAlpha || Game.darkTiles[downTile.y][downTile.x].visible === false)
+            && (Game.map[downTile.y][downTile.x].tileType === TILE_TYPE.WALL || Game.map[downTile.y][downTile.x].tileType === TILE_TYPE.SUPER_WALL)) {
+            this.height -= wallTallness;
             this.place();
+            this.position.y -= (Game.TILESIZE - wallTallness);
         }
     }
 

@@ -10,7 +10,7 @@ export const Z_INDEXES = Object.freeze({
     BULLET: 5,
     DOOR: 0,
     DARKNESS: 6,
-    DARK_TUNNEL_DARKNESS: 8
+    DARK_TUNNEL_DARKNESS: 16
 });
 
 export function getZIndexForLayer(y, wall = false) {
