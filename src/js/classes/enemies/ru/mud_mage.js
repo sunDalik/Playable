@@ -30,6 +30,12 @@ export class MudMage extends Enemy {
         this.minionsMax = 10;
     }
 
+    setStun(stun) {
+        super.setStun(stun);
+        this.casting = false;
+        this.texture = RUEnemiesSpriteSheet["mud_mage.png"];
+    }
+
     move() {
         this.correctScale();
         if (this.casting) {

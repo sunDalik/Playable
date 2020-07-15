@@ -24,6 +24,11 @@ export class WallSlime extends Enemy {
         this.removeShadow();
     }
 
+    setStun(stun) {
+        super.setStun(stun);
+        if (this.baseSlime && this.baseSlime.baseSlime === null) this.baseSlime.setStun(stun);
+    }
+
     fitToTile() {
         if (this.plane === PLANE.HORIZONTAL) {
             const scaleY = (Game.TILESIZE + wallTallness) / this.getUnscaledHeight() * this.scaleModifier;
@@ -119,7 +124,6 @@ export class WallSlime extends Enemy {
         }
     }
 
-    //stunning sub slimes will not work...
     move() {
         this.reformIfSeparated();
         if (this.baseSlime) return;
@@ -341,8 +345,20 @@ export class WallSlime extends Enemy {
         }
     }
 
+    setStunIcon() {
+        if (this.baseSlime) {
+            this.intentIcon.visible = false;
+            return;
+        }
+
+        super.setStunIcon();
+    }
+
     updateIntentIcon() {
-        if (this.baseSlime) return;
+        if (this.baseSlime) {
+            this.intentIcon.visible = false;
+            return;
+        }
         super.updateIntentIcon();
         if (this.currentTurnDelay <= 0) {
             this.intentIcon.texture = IntentsSpriteSheet["anger.png"];

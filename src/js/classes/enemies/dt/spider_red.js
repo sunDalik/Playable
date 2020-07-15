@@ -20,6 +20,11 @@ export class RedSpider extends Spider {
         super.move();
     }
 
+    setStun(stun) {
+        super.setStun(stun);
+        this.damageable = true;
+    }
+
     damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL) {
         if (this.damageable || damageType === DAMAGE_TYPE.MAGICAL || damageType === DAMAGE_TYPE.HAZARDAL) {
             super.damage(source, dmg, inputX, inputY, damageType);

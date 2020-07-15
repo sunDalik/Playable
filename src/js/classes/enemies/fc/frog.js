@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums";
 import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "../../../map_checks";
 import {PoisonHazard} from "../../hazards/poison";
@@ -25,6 +25,12 @@ export class Frog extends Enemy {
             || isInanimate(this.tilePosition.x + 1, this.tilePosition.y)) {
             this.scale.x *= -1;
         }
+    }
+
+    setStun(stun) {
+        super.setStun(stun);
+        this.cancelAnimation();
+        this.triggered = false;
     }
 
     move() {

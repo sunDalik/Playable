@@ -26,6 +26,12 @@ export class BladeDemon extends Enemy {
         this.setScaleModifier(1.2);
     }
 
+    setStun(stun) {
+        super.setStun(stun);
+        this.cancelAnimation();
+        this.attackPhase = 0;
+    }
+
     move() {
         if (this.currentSleepDelay > 0) {
             this.currentSleepDelay--;

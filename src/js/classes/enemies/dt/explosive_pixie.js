@@ -72,6 +72,8 @@ export class ExplosivePixie extends Enemy {
         }
     }
 
+    // mb die on setStun??
+
     explode() {
         explode(this.tilePosition.x, this.tilePosition.y, 2, 1);
         this.die();

@@ -31,6 +31,12 @@ export class TeleportMage extends Enemy {
         this.setScaleModifier(1.1);
     }
 
+    setStun(stun) {
+        super.setStun(stun);
+        this.casting = false;
+        this.texture = RUEnemiesSpriteSheet["teleport_mage.png"];
+    }
+
     move() {
         this.correctScale();
         if (this.casting) {

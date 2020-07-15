@@ -111,6 +111,17 @@ export class Alligator extends Enemy {
         }
     }
 
+    setStun(stun) {
+        super.setStun(stun);
+        if (this.prey && !this.prey.dead) {
+            this.prey.predator = null;
+            this.prey = null;
+        }
+        this.shooting = false;
+        this.cancelAnimation();
+        this.updateTexture();
+    }
+
     move() {
         if (this.prey && !this.prey.dead) {
             if (isEmpty(this.prey.tilePosition.x + this.direction.x, this.prey.tilePosition.y + this.direction.y)) {
@@ -242,7 +253,7 @@ export class Alligator extends Enemy {
                 this.updateTexture();
             }
             if (Math.random() < 0.3 && (this.alligatorType === RABBIT_TYPE.ELECTRIC || this.alligatorType === RABBIT_TYPE.FIRE || this.alligatorType === RABBIT_TYPE.POISON)) {
-                if (!this.shooting) {
+                if (!this.shooting && this.stun <= 0) {
                     this.shooting = true;
                     this.triggeredDirection = null;
                     this.shootingDelay = true;

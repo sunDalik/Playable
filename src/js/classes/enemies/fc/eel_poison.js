@@ -31,6 +31,13 @@ export class PoisonEel extends Eel {
         } else super.move();
     }
 
+    setStun(stun) {
+        super.setStun(stun);
+        this.triggered = false;
+        this.angle = this.inMemoryAngle;
+        this.cancelAnimation();
+    }
+
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
         const savedAngle = this.angle;
         super.damage(source, dmg, inputX, inputY, damageType);

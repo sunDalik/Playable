@@ -1,5 +1,5 @@
-import {Game} from "../../../game"
-import {Enemy} from "../enemy"
+import {Game} from "../../../game";
+import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums";
 import {closestPlayer, getAngleForDirection, tileDistance} from "../../../utils/game_utils";
 import {getEmptyCardinalDirections, getEmptyHorizontalDirections} from "../../../utils/map_utils";
@@ -17,7 +17,6 @@ export class LizardWarrior extends Enemy {
         this.health = this.maxHealth = 4;
         this.type = ENEMY_TYPE.LIZARD_WARRIOR;
         this.atk = 1.5;
-        this.zIndex = Game.primaryPlayer.zIndex + 1;
         this.SLIDE_ANIMATION_TIME = 5;
 
         this.triggeredWideSlash = false;
@@ -27,6 +26,16 @@ export class LizardWarrior extends Enemy {
         this.lockedPlayer = null;
         this.setScaleModifier(1.1);
         this.intentIcon2 = this.createIntentIcon();
+    }
+
+    setStun(stun) {
+        super.setStun(stun);
+        this.triggeredWideSlash = false;
+        this.triggeredForwardPierce = false;
+        this.attackedLastTurn = true;
+        this.cancelAnimation();
+        this.texture = RUEnemiesSpriteSheet["lizard_warrior.png"];
+
     }
 
     move() {

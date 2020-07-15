@@ -1,7 +1,7 @@
 import {Enemy} from "../enemy";
 import {DIRECTIONS, ENEMY_TYPE} from "../../../enums";
 import {getPlayerOnTile} from "../../../map_checks";
-import {createCrazySpikeAnimation, createEnemyAttackTile, createSpikeAnimation} from "../../../animations";
+import {createCrazySpikeAnimation, createEnemyAttackTile} from "../../../animations";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Star extends Enemy {
@@ -17,6 +17,12 @@ export class Star extends Enemy {
         this.setScaleModifier(0.9);
         this.tallModifier = -5;
         this.place();
+    }
+
+    setStun(stun) {
+        super.setStun(stun);
+        this.cancelAnimation();
+        this.triggered = false;
     }
 
     move() {
