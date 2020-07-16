@@ -108,6 +108,8 @@ export function isEmpty(tilePosX, tilePosY, canOpenDoors = false) {
     return false;
 }
 
+// I'm not very sure about this... I made alpha in dt darkness = 0.99 so you can still attack through darkness.
+// Is this a good thing? Should you be able to attack through darkness in DT? I have no idea
 export function isLit(tilePosX, tilePosY) {
     if (isNotOutOfMap(tilePosX, tilePosY)) {
         if (Game.darkTiles[tilePosY][tilePosX].visible === false || Game.darkTiles[tilePosY][tilePosX].alpha < 1) {

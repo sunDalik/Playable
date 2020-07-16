@@ -59,6 +59,7 @@ export class Enemy extends AnimatedTileElement {
         }
     }
 
+    // if your weapon deals stun damage: first call addStun and THEN damage the enemy
     setStun(stun) {
         this.stun = stun;
         this.setStunIcon();
