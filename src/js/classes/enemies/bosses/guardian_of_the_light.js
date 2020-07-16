@@ -62,6 +62,11 @@ export class GuardianOfTheLight extends Boss {
         super.place();
     }
 
+    placeShadow() {
+        super.placeShadow();
+        this.shadow.zIndex = 1;
+    }
+
     static getBossRoomStats() {
         return {width: randomInt(11, 12), height: randomInt(11, 12)};
     }

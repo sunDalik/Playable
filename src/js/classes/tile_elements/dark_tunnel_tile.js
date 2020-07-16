@@ -17,7 +17,7 @@ export class DarkTunnelTile extends DarknessTile {
         this.lightSources = [];
         this.nearbyAlpha = 0.70;
         //this.semiAlpha = 0.93; // transparent dark tiles don't work together well. you would need a proper blend mode for it but which one?
-        this.semiAlpha = 1;
+        this.semiAlpha = 0.99;
         this.setOwnZIndex(Z_INDEXES.DARK_TUNNEL_DARKNESS);
     }
 
