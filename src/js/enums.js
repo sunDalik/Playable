@@ -143,7 +143,7 @@ export const EQUIPMENT_ID = Object.freeze({
     GOLDEN_SHIELD: 39,
     STUNNING_SHIELD: 40,
     SPIKY_SHIELD: 41,
-    SHIELD: 42,
+    WOODEN_SHIELD: 42,
     FELL_STAR_SHIELD: 43,
     TORCH: 44,
     BOMB: 45,

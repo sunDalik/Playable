@@ -40,7 +40,7 @@ import {BookOfWebs} from "./classes/equipment/weapons/book_of_webs";
 import {BookOfThunders} from "./classes/equipment/weapons/book_of_thunders";
 import {BookOfIce} from "./classes/equipment/weapons/book_of_ice";
 import {GoldenShield} from "./classes/equipment/shields/golden";
-import {Shield} from "./classes/equipment/shields/shield";
+import {WoodenShield} from "./classes/equipment/shields/wooden_shield";
 import {Transcendence} from "./classes/equipment/magic/transcendence";
 import {VampireSpikes} from "./classes/equipment/magic/vampire_spikes";
 import {InfernalSpikes} from "./classes/equipment/magic/infernal_spikes";
@@ -80,7 +80,7 @@ export function initPools() {
         Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape,
         Necromancy];
     Game.chestItemPool = [FlaskOfFire, QuiverOfTheForestSpirit, WeaponMasterEmblem, HeroKey,
-        Shield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
+        WoodenShield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, BladeCrown,
         LeatherArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,
         AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes, PossessedSandals,
