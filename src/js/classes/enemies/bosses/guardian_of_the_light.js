@@ -28,7 +28,7 @@ export class GuardianOfTheLight extends Boss {
         this.type = ENEMY_TYPE.GUARDIAN_OF_THE_LIGHT;
         this.atk = 1.5; //??
         this.name = "Guardian of the Light";
-        this.maskLayer = {};
+        this.maskLayer = {weak: true};
         this.toBecomeNeutral = false;
         this.dontChangeLook = false;
         this.triggeredElectric = false;
@@ -77,6 +77,7 @@ export class GuardianOfTheLight extends Boss {
     }
 
     onBossModeActivate() {
+        Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
         if (Game.player.secondHand && Game.player.secondHand.id === EQUIPMENT_ID.TORCH) {
             removeEquipmentFromPlayer(Game.player, EQUIPMENT_TYPE.TOOL);
         } else if (Game.player2.secondHand && Game.player2.secondHand.id === EQUIPMENT_ID.TORCH) {
@@ -170,7 +171,6 @@ export class GuardianOfTheLight extends Boss {
 
         if (this.toBecomeNeutral) {
             this.texture = GotLSpriteSheet["gotl_neutral.png"];
-            Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
             this.toBecomeNeutral = false;
         }
 
@@ -195,9 +195,6 @@ export class GuardianOfTheLight extends Boss {
             if (this.triggeredElectricDoom || this.triggeredElectric) {
                 this.texture = GotLSpriteSheet["gotl_electric.png"];
                 this.shake(0, 1);
-            }
-            if (!this.triggeredElectric && !this.triggeredElectricDoom && !this.electricWearOff && !this.triggeredFireTeleport) {
-                Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
             }
         } else if (this.triggeredTeleport) {
             this.teleport();
@@ -247,7 +244,6 @@ export class GuardianOfTheLight extends Boss {
             }
 
         } else if (this.electricityDelay <= 0) {
-            Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
             this.texture = GotLSpriteSheet["gotl_before_electric.png"];
             if (this.phase === 3) {
                 if (Math.random() < 0.5 && this.canCreateDoom) {
@@ -265,7 +261,6 @@ export class GuardianOfTheLight extends Boss {
 
         } else if (this.patience.turns <= 0) {
             if (this.phase === 3) {
-                Game.darkTiles[this.tilePosition.y][this.tilePosition.x].addLightSource(this.maskLayer);
                 this.triggeredFireTeleport = true;
                 this.texture = GotLSpriteSheet["gotl_fire.png"];
             } else {
@@ -349,7 +344,6 @@ export class GuardianOfTheLight extends Boss {
     teleport() {
         const freeLocations = this.getFreeTeleportLocations();
         if (freeLocations.length === 0) return;
-        Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
         this.updatePatience();
         const location = randomChoice(freeLocations);
         this.removeFromMap();
@@ -399,7 +393,6 @@ export class GuardianOfTheLight extends Boss {
     fireTeleport() {
         const freeLocations = this.getFreeTeleportLocations();
         if (freeLocations.length === 0) return;
-        Game.darkTiles[this.tilePosition.y][this.tilePosition.x].removeLightSource(this.maskLayer);
         this.updatePatience();
         const location = randomChoice(freeLocations);
         const oldLocation = {x: this.tilePosition.x, y: this.tilePosition.y};

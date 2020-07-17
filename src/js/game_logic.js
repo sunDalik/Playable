@@ -246,11 +246,8 @@ export function damagePlayerWithHazards(player) {
         }
 
         if (Game.stage === STAGE.DARK_TUNNEL) {
-            if (Game.darkTiles[player.tilePosition.y][player.tilePosition.x].dark
-                && Game.darkTiles[player.tilePosition.y + 1][player.tilePosition.x].dark
-                && Game.darkTiles[player.tilePosition.y - 1][player.tilePosition.x].dark
-                && Game.darkTiles[player.tilePosition.y][player.tilePosition.x + 1].dark
-                && Game.darkTiles[player.tilePosition.y][player.tilePosition.x - 1].dark)
+            if (Game.darkTiles[player.tilePosition.y][player.tilePosition.x].visible
+                && Game.darkTiles[player.tilePosition.y][player.tilePosition.x].alpha >= Game.darkTiles[player.tilePosition.y][player.tilePosition.x].semiAlpha)
                 player.damage(0.25, null, false, false, false);
         }
 

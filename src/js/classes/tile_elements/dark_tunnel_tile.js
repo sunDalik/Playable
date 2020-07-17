@@ -13,19 +13,18 @@ export class DarkTunnelTile extends DarknessTile {
     constructor(tilePositionX, tilePositionY, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
         this.tint = 0x000000;
-        this.dark = true;
         this.lightSources = [];
         this.nearbyAlpha = 0.70;
         //this.semiAlpha = 0.93; // transparent dark tiles don't work together well. you would need a proper blend mode for it but which one?
-        this.semiAlpha = 0.99;
+        this.semiAlpha = 1;
         this.setOwnZIndex(Z_INDEXES.DARK_TUNNEL_DARKNESS);
     }
 
+    //important note is that whenever we add light source we do not call lightTile on this tile. It so far didn't lead to any errors but...?
     addLightSource(lightSource) {
         this.lightSources.push(lightSource);
         this.recalculateLight();
-        this.lightNearby();
-        this.dark = false;
+        if (!lightSource.weak) this.lightNearby();
         this.updateNearbyDarkTiles();
     }
 
@@ -59,7 +58,6 @@ export class DarkTunnelTile extends DarknessTile {
     removeLightSource(lightSource) {
         removeObjectFromArray(lightSource, this.lightSources);
         if (this.lightSources.length === 0) {
-            this.dark = true;
             this.checkNearbyLight();
         }
         this.recalculateLight();
@@ -80,7 +78,7 @@ export class DarkTunnelTile extends DarknessTile {
     checkNearbyLight() {
         for (const dir of getCardinalDirections()) {
             if (isNotOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y) &&
-                Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].dark &&
+                Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].isDark() &&
                 Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].alpha <= this.nearbyAlpha) {
                 Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].recalculateLight();
             }
@@ -94,7 +92,7 @@ export class DarkTunnelTile extends DarknessTile {
             let foundLight = false;
             for (const dir of getCardinalDirections()) {
                 if (isNotOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)
-                    && Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].dark === false) {
+                    && Game.darkTiles[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].isDark() === false) {
                     foundLight = true;
                     break;
                 }
@@ -103,7 +101,15 @@ export class DarkTunnelTile extends DarknessTile {
             else this.alpha = this.semiAlpha;
             this.updateNearbyDarkTiles(); // this might or might not be redundant...
         } else {
-            this.visible = false;
+            if (this.lightSources.every(lightSource => lightSource.weak)) {
+                this.alpha = this.nearbyAlpha;
+                this.visible = true;
+            }
+            else this.visible = false;
         }
+    }
+
+    isDark() {
+        return this.lightSources.length === 0 || this.lightSources.every(lightSource => lightSource.weak);
     }
 }
