@@ -18,10 +18,10 @@ export class BowLikeWeapon extends Weapon {
     attack(wielder, dirX, dirY) {
         for (let range = 1; range <= this.range; range++) {
             const atkPos = {x: wielder.tilePosition.x + dirX * range, y: wielder.tilePosition.y + dirY * range};
-            if (isAnyWall(atkPos.x, atkPos.y) || !isLit(atkPos.x, atkPos.y)) {
+            if (isAnyWall(atkPos.x, atkPos.y)) {
                 break;
             }
-            if (isEnemy(atkPos.x, atkPos.y)) {
+            if (isEnemy(atkPos.x, atkPos.y) && isLit(atkPos.x, atkPos.y)) {
                 const atk = this.getAtk(wielder, range);
                 Game.map[atkPos.y][atkPos.x].entity.damage(wielder, atk, dirX, dirY);
                 this.createBowAnimation(wielder, dirX * range, dirY * range);

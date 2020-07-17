@@ -15,10 +15,10 @@ export class PiercingBowLikeWeapon extends BowLikeWeapon {
         let lastRange = 1;
         for (let range = 1; range <= this.range; range++) {
             const atkPos = {x: wielder.tilePosition.x + dirX * range, y: wielder.tilePosition.y + dirY * range};
-            if (range !== 1 && (isAnyWall(atkPos.x, atkPos.y) || !isLit(atkPos.x, atkPos.y))) {
+            if (isAnyWall(atkPos.x, atkPos.y)) {
                 break;
             }
-            if (isEnemy(atkPos.x, atkPos.y)) {
+            if (isEnemy(atkPos.x, atkPos.y) && isLit(atkPos.x, atkPos.y)) {
                 enemiesToAttack[range] = Game.map[atkPos.y][atkPos.x].entity;
                 attacked = true;
             } else enemiesToAttack[range] = null;

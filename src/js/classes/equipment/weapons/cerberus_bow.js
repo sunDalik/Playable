@@ -23,7 +23,7 @@ export class CerberusBow extends BowLikeWeapon {
                 for (let i = 0; i < tileSet.length; i++) {
                     const tile = tileSet[i];
                     const atkPos = {x: wielder.tilePosition.x + tile.x, y: wielder.tilePosition.y + tile.y};
-                    if (isAnyWall(atkPos.x, atkPos.y) || !isLit(atkPos.x, atkPos.y)) {
+                    if (isAnyWall(atkPos.x, atkPos.y)) {
                         if (i === 0) break;
                         else if (i === 1) {
                             [tileSet[2], tileSet[4]].map(t => removeObjectFromArray(t, tileSet));
@@ -33,7 +33,7 @@ export class CerberusBow extends BowLikeWeapon {
                             continue;
                         }
                     }
-                    if (isEnemy(atkPos.x, atkPos.y)) {
+                    if (isEnemy(atkPos.x, atkPos.y) && isLit(atkPos.x, atkPos.y)) {
                         const atk = this.getDiagonalAtk(wielder, atkPos);
                         Game.map[atkPos.y][atkPos.x].entity.damage(wielder, atk, dirX, dirY);
                         this.createArrowAnimation(wielder, tile.x, tile.y);

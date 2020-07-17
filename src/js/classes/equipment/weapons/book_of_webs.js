@@ -1,7 +1,7 @@
 import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
-import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
+import {isAnyWall, isEnemy, isLit, isOutOfMap} from "../../../map_checks";
 import {Game} from "../../../game";
 import {setTickTimeout, tileDistance} from "../../../utils/game_utils";
 import {TileElement} from "../../tile_elements/tile_element";
@@ -28,7 +28,7 @@ export class BookOfWebs extends MagicBook {
         const enemies = [];
         const tiles = this.getTiles(wielder, dirX, dirY);
         for (const tile of tiles) {
-            if (isEnemy(tile.x, tile.y)) {
+            if (isEnemy(tile.x, tile.y) && isLit(tile.x, tile.y)) {
                 enemies.push(Game.map[tile.y][tile.x].entity);
             }
         }
@@ -83,19 +83,19 @@ export class BookOfWebs extends MagicBook {
         const tiles = [];
         for (let r = 1; r <= this.range; r++) {
             const tile = {x: wielder.tilePosition.x + dirX * r, y: wielder.tilePosition.y + dirY * r};
-            if (isAnyWall(tile.x, tile.y) || !isLit(tile.x, tile.y)) break;
+            if (isAnyWall(tile.x, tile.y) || isOutOfMap(tile.x, tile.y)) break;
             tiles.push(tile);
         }
         for (let r = 1; r <= this.diagonalRange; r++) {
             const tile = dirX !== 0 ? {x: wielder.tilePosition.x + dirX * r, y: wielder.tilePosition.y + r}
                 : {x: wielder.tilePosition.x + r, y: wielder.tilePosition.y + dirY * r};
-            if (isAnyWall(tile.x, tile.y) || !isLit(tile.x, tile.y)) break;
+            if (isAnyWall(tile.x, tile.y) || isOutOfMap(tile.x, tile.y)) break;
             tiles.push(tile);
         }
         for (let r = 1; r <= this.diagonalRange; r++) {
             const tile = dirX !== 0 ? {x: wielder.tilePosition.x + dirX * r, y: wielder.tilePosition.y - r}
                 : {x: wielder.tilePosition.x - r, y: wielder.tilePosition.y + dirY * r};
-            if (isAnyWall(tile.x, tile.y) || !isLit(tile.x, tile.y)) break;
+            if (isAnyWall(tile.x, tile.y) || isOutOfMap(tile.x, tile.y)) break;
             tiles.push(tile);
         }
         return tiles;

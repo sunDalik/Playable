@@ -108,8 +108,8 @@ export function isEmpty(tilePosX, tilePosY, canOpenDoors = false) {
     return false;
 }
 
-// I'm not very sure about this... I made alpha in dt darkness = 0.99 so you can still attack through darkness.
-// Is this a good thing? Should you be able to attack through darkness in DT? I have no idea
+// if you can always check if the enemy you try to attack is lit because in dark tunnel you can't hit enemies you can't see
+// however you CAN hit enemies through darkness if the enemy itself is visible!
 export function isLit(tilePosX, tilePosY) {
     if (isNotOutOfMap(tilePosX, tilePosY)) {
         if (Game.darkTiles[tilePosY][tilePosX].visible === false || Game.darkTiles[tilePosY][tilePosX].alpha < 1) {

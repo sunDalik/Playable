@@ -20,8 +20,8 @@ export class DarkTunnelTile extends DarknessTile {
         this.setOwnZIndex(Z_INDEXES.DARK_TUNNEL_DARKNESS);
     }
 
-    //important note is that whenever we add light source we do not call lightTile on this tile. It so far didn't lead to any errors but...?
     addLightSource(lightSource) {
+         if (!Game.map[this.tilePosition.y][this.tilePosition.x].lit) lightTile(this.tilePosition.x, this.tilePosition.y);
         this.lightSources.push(lightSource);
         this.recalculateLight();
         if (!lightSource.weak) this.lightNearby();
@@ -104,8 +104,7 @@ export class DarkTunnelTile extends DarknessTile {
             if (this.lightSources.every(lightSource => lightSource.weak)) {
                 this.alpha = this.nearbyAlpha;
                 this.visible = true;
-            }
-            else this.visible = false;
+            } else this.visible = false;
         }
     }
 

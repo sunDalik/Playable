@@ -1,7 +1,7 @@
 import {EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
 import {EffectsSpriteSheet, MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
-import {isBullet, isEmpty, isEnemy, isLit, isNotAWall, isNotOutOfMap, tileInsideTheBossRoom} from "../../../map_checks";
+import {isBullet, isEmpty, isEnemy, isNotAWall, isNotOutOfMap, tileInsideTheBossRoom} from "../../../map_checks";
 import {Game} from "../../../game";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {otherPlayer, tileDistance} from "../../../utils/game_utils";
@@ -30,7 +30,7 @@ export class Escape extends Magic {
         //todo separate players sometimes??
         for (let i = wielder.tilePosition.y - range; i <= wielder.tilePosition.y + range; i++) {
             for (let j = wielder.tilePosition.x - range; j <= wielder.tilePosition.x + range; j++) {
-                if (isNotOutOfMap(j, i) && isNotAWall(j, i) && isLit(j, i) && isEmpty(j, i)
+                if (isNotOutOfMap(j, i) && isNotAWall(j, i) && Game.map[i][j].lit && isEmpty(j, i)
                     && Game.map[i][j].hazard === null && this.noEnemiesInRange({x: j, y: i}, 2)
                     && (Game.bossFight === false || tileInsideTheBossRoom(j, i))) {
                     safeTiles.push({x: j, y: i});

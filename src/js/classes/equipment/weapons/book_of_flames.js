@@ -1,10 +1,11 @@
 import {Game} from "../../../game";
 import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY, STAGE} from "../../../enums";
-import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
+import {isAnyWall, isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {FireHazard} from "../../hazards/fire";
-import {setTickTimeout} from "../../../utils/game_utils";
+import {setTickTimeout, tileDistance} from "../../../utils/game_utils";
+import {removeObjectFromArray} from "../../../utils/basic_utils";
 
 export class BookOfFlames extends MagicBook {
     constructor() {
@@ -22,62 +23,52 @@ export class BookOfFlames extends MagicBook {
 
     attack(wielder, dirX, dirY) {
         if (this.uses <= 0) return false;
-        let attackTiles = [];
+        const tiles = this.getTiles(wielder, dirX, dirY);
+        const enemies = [];
+        for (const tile of tiles) {
+            if (isEnemy(tile.x, tile.y) && isLit(tile.x, tile.y)) {
+                enemies.push(Game.map[tile.y][tile.x].entity);
+            }
+        }
+        if (enemies.length === 0) return false;
+        for (const enemy of enemies) {
+            enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL);
+        }
+        for (const tile of tiles) {
+            if (isNotAWall(tile.x, tile.y)) {
+                const timeout = (tileDistance(wielder, {tilePosition: {x: tile.x, y: tile.y}}) - 1) * 2;
+                if (timeout > 0) {
+                    setTickTimeout(() => {this.createBlueFire(tile);}, timeout);
+                } else {
+                    this.createBlueFire(tile);
+                }
+            }
+        }
+        this.uses--;
+        this.updateTexture(wielder);
+        this.holdBookAnimation(wielder, dirX, dirY);
+        return true;
+
+    }
+
+    getTiles(wielder, dirX, dirY) {
+        let attackTiles;
         if (dirX !== 0) {
             attackTiles = [{x: wielder.tilePosition.x + dirX, y: wielder.tilePosition.y},
                 {x: wielder.tilePosition.x + dirX, y: wielder.tilePosition.y - 1},
                 {x: wielder.tilePosition.x + dirX, y: wielder.tilePosition.y + 1},
                 {x: wielder.tilePosition.x + dirX * 2, y: wielder.tilePosition.y},
                 {x: wielder.tilePosition.x + dirX * 3, y: wielder.tilePosition.y}];
-        } else if (dirY !== 0) {
+        } else {
             attackTiles = [{x: wielder.tilePosition.x, y: wielder.tilePosition.y + dirY},
                 {x: wielder.tilePosition.x - 1, y: wielder.tilePosition.y + dirY},
                 {x: wielder.tilePosition.x + 1, y: wielder.tilePosition.y + dirY},
                 {x: wielder.tilePosition.x, y: wielder.tilePosition.y + dirY * 2},
                 {x: wielder.tilePosition.x, y: wielder.tilePosition.y + dirY * 3}];
         }
-        if (attackTiles.length !== 5) return false;
-        //maybe ranged attacks should be blocked by inanimates? who knows...
-        if (isNotAWall(attackTiles[0].x, attackTiles[0].y) &&
-            (isEnemy(attackTiles[0].x, attackTiles[0].y)
-                || isEnemy(attackTiles[1].x, attackTiles[1].y)
-                || isEnemy(attackTiles[2].x, attackTiles[2].y)
-                || isEnemy(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[3].x, attackTiles[3].y)
-                || isEnemy(attackTiles[4].x, attackTiles[4].y) && isNotAWall(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[4].x, attackTiles[4].y))) {
-
-            const enemiesToAttack = [];
-            for (let i = 0; i < attackTiles.length; i++) {
-                if (i === 3) {
-                    if (!isLit(attackTiles[3].x, attackTiles[3].y)) continue;
-                } else if (i === 4) {
-                    if (!(isNotAWall(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[3].x, attackTiles[3].y) && isLit(attackTiles[4].x, attackTiles[4].y))) continue;
-                }
-                const attackTile = attackTiles[i];
-                if (isNotAWall(attackTile.x, attackTile.y)) {
-                    let timeout;
-                    if (i === 0) timeout = 0;
-                    else if (i === 4) timeout = 2;
-                    else timeout = 1;
-                    timeout *= 2;
-                    if (timeout > 0) {
-                        setTickTimeout(() => {this.createBlueFire(attackTile);}, timeout);
-                    } else {
-                        this.createBlueFire(attackTile);
-                    }
-                }
-                if (isEnemy(attackTile.x, attackTile.y)) {
-                    enemiesToAttack.push(Game.map[attackTile.y][attackTile.x].entity);
-                }
-            }
-
-            for (const enemy of enemiesToAttack) {
-                enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL);
-            }
-            this.uses--;
-            this.updateTexture(wielder);
-            this.holdBookAnimation(wielder, dirX, dirY);
-            return true;
-        } else return false;
+        if (isAnyWall(attackTiles[0].x, attackTiles[0].y)) return [];
+        if (isAnyWall(attackTiles[3].x, attackTiles[3].y)) removeObjectFromArray(attackTiles[4], attackTiles);
+        return attackTiles;
     }
 
     createBlueFire(tile) {

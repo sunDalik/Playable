@@ -21,10 +21,10 @@ export class Boomeraxe extends Weapon {
     attack(wielder, dirX, dirY) {
         for (let range = 1; range <= 3; range++) {
             const atkPos = {x: wielder.tilePosition.x + dirX * range, y: wielder.tilePosition.y + dirY * range};
-            if (isAnyWall(atkPos.x, atkPos.y) || !isLit(atkPos.x, atkPos.y)) {
+            if (isAnyWall(atkPos.x, atkPos.y)) {
                 break;
             }
-            if (isEnemy(atkPos.x, atkPos.y)) {
+            if (isEnemy(atkPos.x, atkPos.y) && isLit(atkPos.x, atkPos.y)) {
                 const atk = this.getAtk(wielder, range);
                 Game.map[atkPos.y][atkPos.x].entity.damage(wielder, atk, dirX, dirY);
                 this.createAnimation(wielder, dirX * range, dirY * range);
@@ -86,7 +86,10 @@ export class Boomeraxe extends Weapon {
         if (dirX === 1) forceSwing = 1;
         else if (dirX === -1) forceSwing = -1;
         const scaleMod = this.id === EQUIPMENT_ID.PRISMAXE ? 1.2 : 1;
-        createWeaponAnimationSwing(player, this, dirX, dirY, 7, 100, scaleMod, -15, {x: 0, y: 1}, forceSwing, 100, false);
+        createWeaponAnimationSwing(player, this, dirX, dirY, 7, 100, scaleMod, -15, {
+            x: 0,
+            y: 1
+        }, forceSwing, 100, false);
     }
 
     getAtk(wielder, range) {
