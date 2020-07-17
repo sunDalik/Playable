@@ -43,6 +43,7 @@ export class Player extends AnimatedTileElement {
         this.dead = false;
         this.definePlayerSlots();
         this.shielded = false;
+        this.dodged = false;
         this.crystalShielded = false; // is used only with crystal guardian
         this.canDoubleAttack = false;
         this.attackTimeout = null;
@@ -273,7 +274,9 @@ export class Player extends AnimatedTileElement {
             }
             if (!blocked && canBeShielded) {
                 const ally = otherPlayer(this);
-                if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
+                if (this.dodged) {
+                    blocked = true;
+                } else if (this.secondHand && this.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
                     && (this.shielded || this.secondHand.activate(this))) {
                     this.secondHand.onBlock(source, this, directHit);
                     this.shielded = true;
@@ -284,8 +287,9 @@ export class Player extends AnimatedTileElement {
                     ally.secondHand.onBlock(source, ally, directHit);
                     ally.shielded = true;
                     blocked = true;
-                } else if (this[SLOT.ARMOR] && this[SLOT.ARMOR].id === EQUIPMENT_ID.WINGS && Math.random() < this[SLOT.ARMOR].dodgeChance) {
+                } else if (this[SLOT.ARMOR] && this[SLOT.ARMOR].id === EQUIPMENT_ID.WINGS && this[SLOT.ARMOR].dodge()) {
                     rotate(this, randomChoice([true, false]));
+                    this.dodged = true;
                     blocked = true;
                 }
             }
@@ -526,6 +530,7 @@ export class Player extends AnimatedTileElement {
     afterEnemyTurn() {
         if (this.dead) return false;
         this.shielded = false;
+        this.dodged = false;
         this.crystalShielded = false;
         for (const eq of this.getEquipment()) {
             if (eq && eq.onNewTurn) eq.onNewTurn(this);
