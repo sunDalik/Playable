@@ -15,7 +15,7 @@ export class StunningShield extends AbstractShield {
 
     onBlock(source, wielder, directHit) {
         if (directHit) {
-            source.addStun(3);
+            source.addStun(4);
         }
     }
 }
