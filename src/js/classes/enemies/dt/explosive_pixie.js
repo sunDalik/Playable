@@ -1,5 +1,5 @@
 import {Enemy} from "../enemy";
-import {DAMAGE_TYPE, ENEMY_TYPE, STAGE} from "../../../enums/enums";
+import {ENEMY_TYPE, STAGE} from "../../../enums/enums";
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {Game} from "../../../game";
@@ -7,6 +7,7 @@ import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../
 import {randomChoice} from "../../../utils/random_utils";
 import {getPlayerOnTile} from "../../../map_checks";
 import {explode} from "../../../game_logic";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class ExplosivePixie extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["explosive_pixie.png"]) {
@@ -81,7 +82,7 @@ export class ExplosivePixie extends Enemy {
 
     runDestroyAnimation() {}
 
-    damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL) {
+    damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         if (!this.exploding && !this.dead) {
             this.prepareToExplode();
             this.runHitAnimation();

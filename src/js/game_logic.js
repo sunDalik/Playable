@@ -3,7 +3,6 @@ import {incrementStage, regenerateWeaponPool} from "./game_changer";
 import {initializeLevel} from "./setup";
 import {
     ACHIEVEMENT_ID,
-    DAMAGE_TYPE,
     EQUIPMENT_TYPE,
     HAZARD_TYPE,
     INANIMATE_TYPE,
@@ -46,6 +45,7 @@ import {SuperWallTile} from "./classes/draw/super_wall";
 import {CommonSpriteSheet} from "./loader";
 import {LyingItem} from "./classes/equipment/lying_item";
 import * as PIXI from "pixi.js";
+import {DAMAGE_TYPE} from "./enums/damage_type";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {

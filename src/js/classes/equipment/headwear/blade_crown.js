@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums/enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums/enums";
 import {TileElement} from "../../tile_elements/tile_element";
 import {randomChoice} from "../../../utils/random_utils";
 import {get8Directions} from "../../../utils/map_utils";
@@ -8,6 +8,7 @@ import {createPlayerAttackTile} from "../../../animations";
 import {HeadWearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 import {Z_INDEXES} from "../../../z_indexing";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class BladeCrown extends Equipment {
     constructor() {

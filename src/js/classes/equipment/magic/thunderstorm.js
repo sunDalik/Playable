@@ -1,10 +1,11 @@
-import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT, ROLE} from "../../../enums/enums";
+import {EQUIPMENT_ID, MAGIC_ALIGNMENT, ROLE} from "../../../enums/enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 import {Game} from "../../../game";
 import {setTickTimeout, tileDistance} from "../../../utils/game_utils";
 import {createThunderAnimation} from "../../../animations";
 import {randomInt} from "../../../utils/random_utils";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class Thunderstorm extends Magic {
     constructor() {

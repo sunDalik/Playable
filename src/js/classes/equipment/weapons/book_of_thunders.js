@@ -1,10 +1,11 @@
-import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums/enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isEnemy, isLit} from "../../../map_checks";
 import {Game} from "../../../game";
 import {createThunderAnimation} from "../../../animations";
 import {randomShuffle} from "../../../utils/random_utils";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class BookOfThunders extends MagicBook {
     constructor() {
@@ -26,7 +27,7 @@ export class BookOfThunders extends MagicBook {
         const enemy = this.getEnemy(wielder, dirX, dirY);
         if (enemy === null) return false;
         enemy.addStun(1);
-        enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL);
+        enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL_WEAPON);
         createThunderAnimation(enemy);
         this.uses--;
         this.updateTexture(wielder);

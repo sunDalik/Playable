@@ -1,9 +1,10 @@
 import {Game} from "../../../game";
 import {Eel} from "./eel";
-import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {PoisonHazard} from "../../hazards/poison";
 import {getPlayerOnTile} from "../../../map_checks";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class PoisonEel extends Eel {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel_poison.png"]) {
@@ -38,10 +39,10 @@ export class PoisonEel extends Eel {
         this.cancelAnimation();
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         const savedAngle = this.angle;
         super.damage(source, dmg, inputX, inputY, damageType);
-        if (damageType !== DAMAGE_TYPE.HAZARDAL && !this.attackedLastTime && this.stun <= 0) {
+        if (!damageType.hazardal && !this.attackedLastTime && this.stun <= 0) {
             if (this.turnDelay === 0) {
                 this.cancelAnimation();
                 this.angle = savedAngle;

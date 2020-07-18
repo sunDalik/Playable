@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, ROLE, STAGE} from "../../../enums/enums";
+import {ROLE, STAGE} from "../../../enums/enums";
 import {canBeFliedOverByBullet, getPlayerOnTile, isEnemy} from "../../../map_checks";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import * as PIXI from "pixi.js";
@@ -8,6 +8,7 @@ import {Z_INDEXES} from "../../../z_indexing";
 import {getAngleForDirection} from "../../../utils/game_utils";
 import {TileElement} from "../../tile_elements/tile_element";
 import {easeInQuad} from "../../../utils/math_utils";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class Bullet extends TileElement {
     constructor(texture, tilePositionX, tilePositionY, pattern) {

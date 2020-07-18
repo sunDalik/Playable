@@ -1,11 +1,12 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
-import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT, STAGE} from "../../../enums/enums";
+import {EQUIPMENT_ID, MAGIC_ALIGNMENT, STAGE} from "../../../enums/enums";
 import {getPlayerOnTile, isEnemy, isNotAWall} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
 import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class Light extends Magic {
     constructor() {

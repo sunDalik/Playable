@@ -1,9 +1,10 @@
-import {DAMAGE_TYPE, EQUIPMENT_ID, ROLE} from "../../../enums/enums";
+import {EQUIPMENT_ID, ROLE} from "../../../enums/enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Thunderstorm} from "./thunderstorm";
 import {Game} from "../../../game";
 import {setTickTimeout, tileDistance} from "../../../utils/game_utils";
 import {createEmpyrealWrathAnimation} from "../../../animations";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class EmpyrealWrath extends Thunderstorm {
     constructor() {

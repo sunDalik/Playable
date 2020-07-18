@@ -1,11 +1,12 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {DAMAGE_TYPE, ENEMY_TYPE, STAGE} from "../../../enums/enums";
+import {ENEMY_TYPE, STAGE} from "../../../enums/enums";
 import {isEmpty} from "../../../map_checks";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {easeInOutQuad} from "../../../utils/math_utils";
 import {randomAggressiveAI} from "../../../enemy_movement_ai";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class Spider extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spider.png"]) {
@@ -31,9 +32,9 @@ export class Spider extends Enemy {
         } else this.thrown = false;
     }
 
-    damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL) {
+    damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         super.damage(source, dmg, inputX, inputY, damageType);
-        if (!this.dead && this.stun <= 0 && damageType !== DAMAGE_TYPE.MAGICAL && damageType !== DAMAGE_TYPE.HAZARDAL) this.throwAway(inputX, inputY);
+        if (!this.dead && this.stun <= 0 && !damageType.magical && !damageType.hazardal) this.throwAway(inputX, inputY);
         if (Game.afterTurn) {
             this.thrown = false;
         }

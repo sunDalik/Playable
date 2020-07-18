@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {DAMAGE_TYPE, ENEMY_TYPE, PLANE} from "../../../enums/enums";
+import {ENEMY_TYPE, PLANE} from "../../../enums/enums";
 import {randomChoice, randomShuffle} from "../../../utils/random_utils";
 import {getPlayerOnTile, isEmpty, isNotOutOfMap, isRelativelyEmpty} from "../../../map_checks";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
@@ -8,6 +8,7 @@ import {getCardinalDirections, getChasingDirections} from "../../../utils/map_ut
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import {wallTallness} from "../../draw/wall";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class WallSlime extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["wall_slime_single.png"]) {
@@ -308,7 +309,7 @@ export class WallSlime extends Enemy {
         return true;
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         if (this.baseSlime) {
             if (dmg >= this.baseSlime.health) {
                 super.damage(source, this.health, inputX, inputY, damageType);

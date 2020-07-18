@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, ENEMY_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, INANIMATE_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, INANIMATE_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
@@ -19,6 +19,7 @@ import {GotLSpriteSheet} from "../../../loader";
 import {FireGoblet} from "../../inanimate_objects/fire_goblet";
 import {Z_INDEXES} from "../../../z_indexing";
 import {camera} from "../../game/camera";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = GotLSpriteSheet["gotl_neutral.png"]) {
@@ -433,7 +434,7 @@ export class GuardianOfTheLight extends Boss {
         this.patience.damage = randomInt(3, 4);
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         super.damage(source, dmg, inputX, inputY, damageType);
         if (inputX !== 0) {
             this.scale.x = -inputX * Math.abs(this.scale.x);

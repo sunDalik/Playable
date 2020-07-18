@@ -1,4 +1,4 @@
-import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums/enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isAnyWall, isEnemy, isLit, isOutOfMap} from "../../../map_checks";
@@ -6,6 +6,7 @@ import {Game} from "../../../game";
 import {setTickTimeout, tileDistance} from "../../../utils/game_utils";
 import {TileElement} from "../../tile_elements/tile_element";
 import {createPlayerAttackTile} from "../../../animations";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class BookOfWebs extends MagicBook {
     constructor() {
@@ -34,7 +35,7 @@ export class BookOfWebs extends MagicBook {
         }
         if (enemies.length === 0) return false;
         for (const enemy of enemies) {
-            enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL);
+            enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL_WEAPON);
         }
         for (const tile of tiles) {
             const timeout = tileDistance(wielder, {tilePosition: {x: tile.x, y: tile.y}}) - 1;

@@ -1,13 +1,14 @@
 import {Game} from "../../game";
 import * as PIXI from "pixi.js";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
-import {DAMAGE_TYPE, EQUIPMENT_ID, HAZARD_TYPE, ROLE, SLOT, STAGE} from "../../enums/enums";
+import {EQUIPMENT_ID, HAZARD_TYPE, ROLE, SLOT, STAGE} from "../../enums/enums";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {runDestroyAnimation} from "../../animations";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import {IntentsSpriteSheet} from "../../loader";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import {dropItem} from "../../game_logic";
+import {DAMAGE_TYPE} from "../../enums/damage_type";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -70,7 +71,7 @@ export class Enemy extends AnimatedTileElement {
         this.setStun(this.stun + stun);
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         if (dmg === 0) return;
         if (!this.dead) {
             this.health -= dmg;

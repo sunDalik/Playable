@@ -1,4 +1,4 @@
-import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums/enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isEnemy, isLit, isNotAWall} from "../../../map_checks";
@@ -6,6 +6,7 @@ import {Game} from "../../../game";
 import {TileElement} from "../../tile_elements/tile_element";
 import {createPlayerAttackTile, fadeOutAndDie} from "../../../animations";
 import {getAngleForDirection, pointTileDistance} from "../../../utils/game_utils";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class BookOfIce extends MagicBook {
     constructor() {
@@ -28,7 +29,7 @@ export class BookOfIce extends MagicBook {
         const tile = {x: enemy.tilePosition.x, y: enemy.tilePosition.y};
         this.shootIceBolt(wielder, tile, enemy);
         enemy.addStun(4);
-        enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL);
+        enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL_WEAPON);
         this.uses--;
         this.updateTexture(wielder);
         this.holdBookAnimation(wielder, dirX, dirY);

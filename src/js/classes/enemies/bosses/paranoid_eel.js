@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, ENEMY_TYPE, HAZARD_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE, HAZARD_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {
     getPlayerOnTile,
@@ -19,6 +19,7 @@ import {PoisonEel} from "../fc/eel_poison";
 import {createEnemyAttackTile, shakeScreen} from "../../../animations";
 import {DarkEel} from "../fc/eel_dark";
 import {ParanoidEelSpriteSheet} from "../../../loader";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = ParanoidEelSpriteSheet["paranoid_eel_neutral.png"]) {
@@ -465,10 +466,10 @@ export class ParanoidEel extends Boss {
         }
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         super.damage(source, dmg, inputX, inputY, damageType);
         if (!this.dead) {
-            if (damageType === DAMAGE_TYPE.HAZARDAL) return;
+            if (damageType.hazardal) return;
             if (this.triggeredSpinAttack || this.triggeredVerticalRush || this.triggeredSneezeAttack || this.triggeredHorizontalRush) return;
             if ((this.direction.x !== -inputX || this.direction.y !== -inputY)
                 && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit) this.waitingToMove = true;

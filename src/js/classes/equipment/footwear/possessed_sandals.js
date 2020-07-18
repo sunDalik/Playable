@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums/enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums/enums";
 import {FootwearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 import {isEnemy} from "../../../map_checks";
@@ -7,6 +7,7 @@ import {TileElement} from "../../tile_elements/tile_element";
 import {randomChoice} from "../../../utils/random_utils";
 import {easeOutQuad} from "../../../utils/math_utils";
 import {getCardinalDirections} from "../../../utils/map_utils";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class PossessedSandals extends Equipment {
     constructor() {

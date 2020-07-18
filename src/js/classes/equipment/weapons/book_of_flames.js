@@ -1,11 +1,12 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY, STAGE} from "../../../enums/enums";
+import {EQUIPMENT_ID, RARITY, STAGE} from "../../../enums/enums";
 import {isAnyWall, isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {FireHazard} from "../../hazards/fire";
 import {setTickTimeout, tileDistance} from "../../../utils/game_utils";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class BookOfFlames extends MagicBook {
     constructor() {
@@ -32,7 +33,7 @@ export class BookOfFlames extends MagicBook {
         }
         if (enemies.length === 0) return false;
         for (const enemy of enemies) {
-            enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL);
+            enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL_WEAPON);
         }
         for (const tile of tiles) {
             if (isNotAWall(tile.x, tile.y)) {

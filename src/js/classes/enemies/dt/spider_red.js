@@ -1,7 +1,8 @@
 import {Spider} from "../fc/spider";
-import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {isEmpty, isNotAWall} from "../../../map_checks";
 import {DTEnemiesSpriteSheet} from "../../../loader";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class RedSpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["spider_red.png"]) {
@@ -25,8 +26,8 @@ export class RedSpider extends Spider {
         this.damageable = true;
     }
 
-    damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL) {
-        if (this.damageable || damageType === DAMAGE_TYPE.MAGICAL || damageType === DAMAGE_TYPE.HAZARDAL) {
+    damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
+        if (this.damageable || damageType.magical || damageType.hazardal) {
             super.damage(source, dmg, inputX, inputY, damageType);
         } else {
             if (this.devilJump(source, inputX, inputY)) {

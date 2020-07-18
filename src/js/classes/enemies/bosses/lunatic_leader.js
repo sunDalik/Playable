@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";
@@ -14,6 +14,7 @@ import {LizardWarrior} from "../ru/lizard_warrior";
 import {HexEye} from "../ru/hex_eye";
 import {MudMage} from "../ru/mud_mage";
 import {TeleportMage} from "../ru/teleport_mage";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -58,7 +59,7 @@ export class LunaticLeader extends Boss {
         }
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         super.damage(source, dmg, inputX, inputY, damageType);
         if (this.currentPhase === 3) {
             this.throwAway(inputX, inputY);

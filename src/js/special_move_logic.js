@@ -2,8 +2,8 @@ import {isBullet, isEmpty, isEnemy, isNotOutOfMap} from "./map_checks";
 import {Game} from "./game";
 import {randomChoice} from "./utils/random_utils";
 import {tileDistanceDiagonal} from "./utils/game_utils";
-import {DAMAGE_TYPE} from "./enums/enums";
 import {updateIntent} from "./game_logic";
+import {DAMAGE_TYPE} from "./enums/damage_type";
 
 export function castWind(origin, radius, blowDistance, atk = 1, crystal = false) {
     const slideTime = 2;

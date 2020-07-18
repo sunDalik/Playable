@@ -1,10 +1,11 @@
-import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums/enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums/enums";
 import {AccessoriesSpriteSheet, EffectsSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 import {TileElement} from "../../tile_elements/tile_element";
 import {Game} from "../../../game";
 import {easeOutQuad} from "../../../utils/math_utils";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class FlaskOfFire extends Equipment {
     constructor() {
@@ -18,7 +19,7 @@ export class FlaskOfFire extends Equipment {
     }
 
     onEnemyDamage(wielder, enemy, damageType) {
-        if (damageType === DAMAGE_TYPE.PHYSICAL && !enemy.dead) {
+        if (damageType === DAMAGE_TYPE.PHYSICAL_WEAPON && !enemy.dead) {
             enemy.damage(wielder, 0.25, 0, 0, DAMAGE_TYPE.HAZARDAL);
             this.animateFire(enemy);
         }

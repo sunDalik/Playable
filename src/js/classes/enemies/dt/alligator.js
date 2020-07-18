@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {DAMAGE_TYPE, ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../../enums/enums";
+import {ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../../enums/enums";
 import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall} from "../../../map_checks";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
 import {getRandomValue, randomChoice} from "../../../utils/random_utils";
@@ -11,6 +11,7 @@ import {closestPlayer, getAngleForDirection, tileDistance} from "../../../utils/
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {Rabbit} from "./rabbit";
 import {moveEnemyInDirection} from "../../../enemy_movement_ai";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class Alligator extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["alligator_x.png"]) {
@@ -243,10 +244,10 @@ export class Alligator extends Enemy {
             this.currentTurnDelay--;
     }
 
-    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL) {
+    damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         super.damage(source, dmg, inputX, inputY, damageType);
         if (!this.dead) {
-            if (damageType !== DAMAGE_TYPE.HAZARDAL && (inputY !== 0 || inputX !== 0) && (!this.prey || this.prey.dead)) {
+            if (!damageType.hazardal && (inputY !== 0 || inputX !== 0) && (!this.prey || this.prey.dead)) {
                 this.triggeredDirection = {x: -inputX, y: -inputY};
                 if (this.direction.x !== this.triggeredDirection.x || this.direction.y !== this.triggeredDirection.y) this.poisonCounter = 0;
                 this.direction = this.triggeredDirection;
