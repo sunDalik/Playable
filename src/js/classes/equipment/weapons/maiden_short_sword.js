@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums/enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {isAnyWall, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
@@ -79,7 +79,7 @@ export class MaidenShortSword extends Weapon {
             if (isEnemy(attackTileX, attackTileY)) {
                 createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 5, 55, 1.15, 135, {x: 1, y: 0});
                 createPlayerAttackTile({x: attackTileX, y: attackTileY});
-                Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY);
+                this.damageEnemies([Game.map[attackTileY][attackTileX].entity], wielder, atk, tileDirX, tileDirY);
                 return true;
             } else return false;
         }

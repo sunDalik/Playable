@@ -1,11 +1,11 @@
 import {
+    AdjustmentFilter,
+    ColorOverlayFilter,
     ColorReplaceFilter,
     DotFilter,
     GlowFilter,
     KawaseBlurFilter,
-    OutlineFilter,
-    AdjustmentFilter,
-    ColorOverlayFilter
+    OutlineFilter
 } from "pixi-filters";
 import * as PIXI from "pixi.js";
 
@@ -116,7 +116,7 @@ export const DIVINE_FILTER = new GlowFilter({
     distance: 10,
     outerStrength: 4,
     innerStrength: 0,
-    color: 0x55cddf,
+    color: 0x5ff0f0,
     quality: 0.3
 });
 DIVINE_FILTER.padding = 10;

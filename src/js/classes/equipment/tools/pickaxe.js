@@ -23,17 +23,19 @@ export class Pickaxe extends Weapon {
             const atk = wielder.getAtk(this);
             createWeaponAnimationClub(wielder, this, dirX, dirY, 8, 3, 90, 1);
             createPlayerAttackTile(attackTile);
-            enemy.damage(wielder, atk, dirX, dirY);
+            this.damageEnemies([enemy], wielder, atk, dirX, dirY);
 
             if (enemy.type === ENEMY_TYPE.MUD_BLOCK) {
                 const dirs = dirX !== 0 ? [{x: 0, y: 1}, {x: 0, y: -1}] : [{x: 1, y: 0}, {x: -1, y: 0}];
+                const mudBlocks = [];
                 for (const dir of dirs) {
                     const newAttackTile = {x: attackTile.x + dir.x, y: attackTile.y + dir.y};
                     if (isEntity(newAttackTile.x, newAttackTile.y, ROLE.ENEMY, ENEMY_TYPE.MUD_BLOCK)) {
+                        mudBlocks.push(Game.map[newAttackTile.y][newAttackTile.x].entity);
                         createPlayerAttackTile(newAttackTile);
-                        Game.map[newAttackTile.y][newAttackTile.x].entity.damage(wielder, atk, dirX, dirY);
                     }
                 }
+                this.damageEnemies(mudBlocks, wielder, atk, dirX, dirY);
             }
             return true;
         } else return false;

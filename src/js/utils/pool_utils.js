@@ -5,12 +5,15 @@ import {RARITY, SLOT} from "../enums/enums";
 import {randomChoice, randomShuffle} from "./random_utils";
 import {Necromancy} from "../classes/equipment/magic/necromancy";
 import {Spear} from "../classes/equipment/weapons/spear";
+import {applyEnchantment} from "../game_logic";
+import {ENCHANTMENT_TYPE} from "../enums/equipment_modifiers";
 
 export function getRandomWeapon(canGetS = true) {
     if (Game.weaponPool.length === 0) return new Spear();
     const constructor = getItemFromPool(Game.weaponPool, canGetS);
     const item = new constructor();
     removeItemFromPool(item, Game.weaponPool);
+    if (Math.random() < 0.01) applyEnchantment(item, ENCHANTMENT_TYPE.DIVINE);
     return item;
 }
 

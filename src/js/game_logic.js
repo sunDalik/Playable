@@ -1,15 +1,7 @@
 import {Game} from "./game";
 import {incrementStage, regenerateWeaponPool} from "./game_changer";
 import {initializeLevel} from "./setup";
-import {
-    ACHIEVEMENT_ID,
-    EQUIPMENT_TYPE,
-    HAZARD_TYPE,
-    INANIMATE_TYPE,
-    SLOT,
-    STAGE,
-    TILE_TYPE
-} from "./enums/enums";
+import {ACHIEVEMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, INANIMATE_TYPE, SLOT, STAGE, TILE_TYPE} from "./enums/enums";
 import {
     drawInteractionKeys,
     redrawBag,
@@ -603,9 +595,15 @@ export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
 export function applyEnchantment(item, enchantmentType) {
     if (item.enchantment !== ENCHANTMENT_TYPE.NONE) return;
     item.enchantment = enchantmentType;
+    item.name = enchantmentType.prefix + " " + item.name;
     switch (enchantmentType) {
         case ENCHANTMENT_TYPE.DIVINE:
             item.atk += 0.5;
             break;
     }
+}
+
+export function getItemLabelColor(item) {
+    if (item.enchantment === ENCHANTMENT_TYPE.DIVINE) return 0x5ff0f0;
+    else return item.rarity.color;
 }

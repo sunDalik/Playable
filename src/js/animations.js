@@ -11,6 +11,7 @@ import {TileElement} from "./classes/tile_elements/tile_element";
 import {EffectsSpriteSheet, HUDSpriteSheet} from "./loader";
 import {getZIndexForLayer, Z_INDEXES} from "./z_indexing";
 import {getAngleForDirection, setTickTimeout} from "./utils/game_utils";
+import {getItemLabelColor} from "./game_logic";
 
 // the picture is directed to the top left!
 export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {
@@ -426,7 +427,7 @@ export function showHelpBox(item) {
     nameText.anchor.x = descriptionText.anchor.x = 0.5;
     nameText.style.wordWrap = descriptionText.style.wordWrap = true;
     nameText.style.wordWrapWidth = descriptionText.style.wordWrapWidth = textSpace;
-    nameText.style.fill = item.rarity.color;
+    nameText.style.fill = getItemLabelColor(item);
     nameText.fontSize += 3;
     const textBetweenOffset = 6;
     const textOffsetY = (Game.itemHelp.height - (nameText.height + descriptionText.height + textBetweenOffset)) / 2 - topBias;
