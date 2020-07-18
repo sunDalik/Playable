@@ -26,13 +26,13 @@ export class Spear extends Weapon {
             const atk = wielder.getAtk(this);
             createWeaponAnimationStab(wielder, this, dirX * 2, dirY * 2, 8, 4, 1.1, true);
             createPlayerAttackTile({x: attackTileX2, y: attackTileY2});
-            Game.map[attackTileY2][attackTileX2].entity.damage(wielder, atk, dirX, dirY);
+            this.damageEnemies([Game.map[attackTileY2][attackTileX2].entity], wielder, atk, dirX, dirY);
             return true;
         } else if (isEnemy(attackTileX1, attackTileY1)) {
             const atk = roundToQuarter(wielder.getAtk(this) / 2);
             createWeaponAnimationStab(wielder, this, dirX, dirY, 10, 5, 1.1, true);
             createPlayerAttackTile({x: attackTileX1, y: attackTileY1});
-            Game.map[attackTileY1][attackTileX1].entity.damage(wielder, atk, dirX, dirY);
+            this.damageEnemies([Game.map[attackTileY1][attackTileX1].entity], wielder, atk, dirX, dirY);
             return true;
         }
 

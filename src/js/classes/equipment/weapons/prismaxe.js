@@ -29,7 +29,7 @@ export class Prismaxe extends Boomeraxe {
             }
             if (isEnemy(atkPos.x, atkPos.y) && isLit(atkPos.x, atkPos.y)) {
                 const atk = this.getAtk(wielder, range);
-                Game.map[atkPos.y][atkPos.x].entity.damage(wielder, atk, dirX, dirY);
+                this.damageEnemies([Game.map[atkPos.y][atkPos.x].entity], wielder, atk, dirX, dirY);
                 this.createAnimation(wielder, dirX * range, dirY * range);
                 createPlayerAttackTile(atkPos);
 
@@ -52,7 +52,9 @@ export class Prismaxe extends Boomeraxe {
         const endTile = {x: startTile.x + dirX, y: startTile.y + dirY};
         if (isEnemy(endTile.x, endTile.y)) {
             const atk = wielder.getAtk(this, this.prismAtk);
-            Game.map[endTile.y][endTile.x].entity.damage(wielder, atk, dirX, dirY);
+
+            //not so nice
+            this.damageEnemies([Game.map[endTile.y][endTile.x].entity], wielder, atk, dirX, dirY);
         }
 
         const projectile = new TileElement(WeaponsSpriteSheet["prismaxe_projectile.png"], startTile.x, startTile.y);

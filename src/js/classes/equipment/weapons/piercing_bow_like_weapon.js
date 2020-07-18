@@ -32,7 +32,9 @@ export class PiercingBowLikeWeapon extends BowLikeWeapon {
                 if (enemiesToAttack[range] !== null) {
                     const atk = this.getAtk(wielder, range);
                     const atkPos = enemiesToAttack[range].tilePosition;
-                    Game.map[atkPos.y][atkPos.x].entity.damage(wielder, atk, dirX, dirY);
+
+                    // not so nice
+                    this.damageEnemies([Game.map[atkPos.y][atkPos.x].entity], wielder, atk, dirX, dirY);
                 }
                 createPlayerAttackTile({
                     x: wielder.tilePosition.x + dirX * range,

@@ -32,9 +32,7 @@ export class BookOfFlames extends MagicBook {
             }
         }
         if (enemies.length === 0) return false;
-        for (const enemy of enemies) {
-            enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL_WEAPON);
-        }
+        this.damageEnemies(enemies, wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL_WEAPON);
         for (const tile of tiles) {
             if (isNotAWall(tile.x, tile.y)) {
                 const timeout = (tileDistance(wielder, {tilePosition: {x: tile.x, y: tile.y}}) - 1) * 2;

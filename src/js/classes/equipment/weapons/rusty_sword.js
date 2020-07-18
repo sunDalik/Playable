@@ -42,9 +42,7 @@ export class RustySword extends Weapon {
                     enemiesToAttack.push(Game.map[attackTile.y][attackTile.x].entity);
                 }
             }
-            for (const enemy of enemiesToAttack) {
-                enemy.damage(wielder, atk, tileDirX, tileDirY);
-            }
+            this.damageEnemies(enemiesToAttack, wielder, atk, tileDirX, tileDirY);
             this.uses--;
             if (this.uses <= 0) this.texture = WeaponsSpriteSheet["rusty_sword_broken.png"];
             wielder.redrawEquipmentSlot(this);

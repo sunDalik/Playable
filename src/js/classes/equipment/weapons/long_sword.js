@@ -5,7 +5,7 @@ import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animat
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
 
-export class LongSword  extends Weapon {
+export class LongSword extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["long_sword.png"];
@@ -25,12 +25,12 @@ export class LongSword  extends Weapon {
         if (isEnemy(attackTileX1, attackTileY1)) {
             createWeaponAnimationStab(wielder, this, dirX, dirY, 6, 5, 1.2);
             createPlayerAttackTile({x: attackTileX1, y: attackTileY1});
-            Game.map[attackTileY1][attackTileX1].entity.damage(wielder, atk, dirX, dirY);
+            this.damageEnemies([Game.map[attackTileY1][attackTileX1].entity], wielder, atk, dirX, dirY);
             return true;
         } else if (isEnemy(attackTileX2, attackTileY2) && isNotAWall(attackTileX1, attackTileY1) && isLit(attackTileX2, attackTileY2)) {
             createWeaponAnimationStab(wielder, this, dirX * 2, dirY * 2, 6, 5, 1.2);
             createPlayerAttackTile({x: attackTileX2, y: attackTileY2});
-            Game.map[attackTileY2][attackTileX2].entity.damage(wielder, atk, dirX, dirY);
+            this.damageEnemies([Game.map[attackTileY2][attackTileX2].entity], wielder, atk, dirX, dirY);
             return true;
         } else return false;
     }

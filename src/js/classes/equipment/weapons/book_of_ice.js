@@ -29,7 +29,7 @@ export class BookOfIce extends MagicBook {
         const tile = {x: enemy.tilePosition.x, y: enemy.tilePosition.y};
         this.shootIceBolt(wielder, tile, enemy);
         enemy.addStun(4);
-        enemy.damage(wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL_WEAPON);
+        this.damageEnemies([enemy], wielder, wielder.getAtk(this), dirX, dirY, DAMAGE_TYPE.MAGICAL_WEAPON);
         this.uses--;
         this.updateTexture(wielder);
         this.holdBookAnimation(wielder, dirX, dirY);

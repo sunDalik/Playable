@@ -65,7 +65,8 @@ export class MaidenShortSword extends Weapon {
                 135, {x: 1, y: 0}, -1, amplitude / 2 + 30);
             for (let i = 0; i < enemiesToAttack.length; i++) {
                 if (enemiesToAttack[i] === null) continue;
-                enemiesToAttack[i].damage(wielder, wielder.getAtk(this, enemyDmgValues[i]), tileDirX, tileDirY);
+                // not so nice
+                this.damageEnemies([enemiesToAttack[i]], wielder, wielder.getAtk(this, enemyDmgValues[i]), tileDirX, tileDirY);
             }
             for (const attackTile of atkPositions) {
                 createPlayerAttackTile(attackTile);

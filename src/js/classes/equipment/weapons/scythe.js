@@ -25,9 +25,7 @@ export class Scythe extends Weapon {
             }
         }
         if (enemies.length === 0) return false;
-        for (const enemy of enemies) {
-            enemy.damage(wielder, wielder.getAtk(this), tileDirX, tileDirY);
-        }
+        this.damageEnemies(enemies, wielder, wielder.getAtk(this), tileDirX, tileDirY);
         for (const tile of tiles) {
             createPlayerAttackTile(tile);
         }

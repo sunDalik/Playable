@@ -26,7 +26,7 @@ export class Boomeraxe extends Weapon {
             }
             if (isEnemy(atkPos.x, atkPos.y) && isLit(atkPos.x, atkPos.y)) {
                 const atk = this.getAtk(wielder, range);
-                Game.map[atkPos.y][atkPos.x].entity.damage(wielder, atk, dirX, dirY);
+                this.damageEnemies([Game.map[atkPos.y][atkPos.x].entity], wielder, atk, dirX, dirY);
                 this.createAnimation(wielder, dirX * range, dirY * range);
                 createPlayerAttackTile(atkPos);
                 return true;

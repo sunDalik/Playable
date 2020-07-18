@@ -28,7 +28,7 @@ export class GoldenDagger extends Weapon {
             createWeaponAnimationStab(wielder, this, tileDirX, tileDirY, 7, 1, 1);
             createPlayerAttackTile({x: attackTileX, y: attackTileY});
             const enemy = Game.map[attackTileY][attackTileX].entity;
-            enemy.damage(wielder, atk, tileDirX, tileDirY);
+            this.damageEnemies([enemy], wielder, atk, tileDirX, tileDirY);
             if (enemy.dead && !enemy.isMinion) {
                 if (Math.random() < 0.3) {
                     const roll = Math.random();

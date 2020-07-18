@@ -7,7 +7,7 @@ import {TileElement} from "../../tile_elements/tile_element";
 import {easeOutQuad} from "../../../utils/math_utils";
 import {Weapon} from "../weapon";
 
-export class DoubleGlaive  extends Weapon {
+export class DoubleGlaive extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["double_glaive.png"];
@@ -16,7 +16,7 @@ export class DoubleGlaive  extends Weapon {
         this.name = "Double glaive";
         this.description = "Range 2\nAttack 1\nDouble attack in close combat";
         this.rarity = RARITY.A;
-        this.scaleModifier = 1.2
+        this.scaleModifier = 1.2;
     }
 
     attack(wielder, dirX, dirY) {
@@ -28,13 +28,13 @@ export class DoubleGlaive  extends Weapon {
             const atk = wielder.getAtk(this, this.atk * 2);
             this.spin(wielder, dirX, dirY);
             createPlayerAttackTile({x: attackTileX1, y: attackTileY1});
-            Game.map[attackTileY1][attackTileX1].entity.damage(wielder, atk, dirX, dirY, false);
+            this.damageEnemies([Game.map[attackTileY1][attackTileX1].entity], wielder, atk, dirX, dirY);
             return true;
         } else if (isEnemy(attackTileX2, attackTileY2) && isRelativelyEmpty(attackTileX1, attackTileY1) && isLit(attackTileX2, attackTileY2)) {
             const atk = wielder.getAtk(this);
             createWeaponAnimationStab(wielder, this, dirX * 2, dirY * 2, 7, 3, this.scaleModifier);
             createPlayerAttackTile({x: attackTileX2, y: attackTileY2});
-            Game.map[attackTileY2][attackTileX2].entity.damage(wielder, atk, dirX, dirY, false);
+            this.damageEnemies([Game.map[attackTileY2][attackTileX2].entity], wielder, atk, dirX, dirY);
             return true;
         }
         return false;

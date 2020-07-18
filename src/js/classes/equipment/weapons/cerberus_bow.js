@@ -35,7 +35,7 @@ export class CerberusBow extends BowLikeWeapon {
                     }
                     if (isEnemy(atkPos.x, atkPos.y) && isLit(atkPos.x, atkPos.y)) {
                         const atk = this.getDiagonalAtk(wielder, atkPos);
-                        Game.map[atkPos.y][atkPos.x].entity.damage(wielder, atk, dirX, dirY);
+                        this.damageEnemies([Game.map[atkPos.y][atkPos.x].entity], wielder, atk, dirX, dirY);
                         this.createArrowAnimation(wielder, tile.x, tile.y);
                         break;
                     }

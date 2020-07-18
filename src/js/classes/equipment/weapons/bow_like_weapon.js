@@ -23,7 +23,7 @@ export class BowLikeWeapon extends Weapon {
             }
             if (isEnemy(atkPos.x, atkPos.y) && isLit(atkPos.x, atkPos.y)) {
                 const atk = this.getAtk(wielder, range);
-                Game.map[atkPos.y][atkPos.x].entity.damage(wielder, atk, dirX, dirY);
+                this.damageEnemies([Game.map[atkPos.y][atkPos.x].entity], wielder, atk, dirX, dirY);
                 this.createBowAnimation(wielder, dirX * range, dirY * range);
                 return true;
             }
