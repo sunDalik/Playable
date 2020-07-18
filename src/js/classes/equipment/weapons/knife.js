@@ -5,7 +5,7 @@ import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../anima
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
 
-export class Knife  extends Weapon {
+export class Knife extends Weapon {
     constructor() {
         super();
         this.texture = WeaponsSpriteSheet["knife.png"];
@@ -23,7 +23,7 @@ export class Knife  extends Weapon {
             const atk = wielder.getAtk(this);
             createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4, 35, 1);
             createPlayerAttackTile({x: attackTileX, y: attackTileY});
-            Game.map[attackTileY][attackTileX].entity.damage(wielder, atk, tileDirX, tileDirY);
+            this.damageEnemies([Game.map[attackTileY][attackTileX].entity], wielder, atk, tileDirX, tileDirY);
             return true;
         } else return false;
     }

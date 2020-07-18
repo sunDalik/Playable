@@ -756,3 +756,37 @@ export function createShadowFollowers(entity, amount, animationTime) {
         Game.app.ticker.add(animation);
     }
 }
+
+export function createSmallOffsetParticle(texture, tile, side = randomChoice([-1, 1])) {
+    const particle = new TileElement(texture, tile.x, tile.y);
+    Game.world.addChild(particle);
+    particle.position.x += randomInt(Game.TILESIZE / 10, Game.TILESIZE / 3) * side;
+    particle.position.y -= randomInt(-Game.TILESIZE / 4, Game.TILESIZE / 3);
+    particle.width = particle.height = Game.TILESIZE / 3;
+    const initSize = particle.width;
+    const sizeChange = Game.TILESIZE / 4;
+    const startPosY = particle.position.y;
+    const posYEndChange = -Game.TILESIZE / 2;
+    particle.zIndex = getZIndexForLayer(tile.y) + Z_INDEXES.META;
+
+    const animationTime = 10;
+    let counter = 0;
+
+    const animation = delta => {
+        if (Game.paused) return;
+        counter += delta;
+        particle.position.y = startPosY + easeOutQuad(counter / animationTime) * posYEndChange;
+        particle.height = particle.width = initSize + easeOutQuad(counter / animationTime) * sizeChange;
+        if (counter >= animationTime * 3 / 4) {
+            particle.alpha = 1 - easeOutQuad((counter - animationTime * 3 / 4) / (animationTime / 4));
+        }
+
+        if (counter >= animationTime) {
+            Game.app.ticker.remove(animation);
+            Game.world.removeChild(particle);
+            particle.destroy();
+        }
+    };
+
+    Game.app.ticker.add(animation);
+}

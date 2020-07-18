@@ -1,7 +1,7 @@
 import {Game} from "../../game";
 import * as PIXI from "pixi.js";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
-import {EQUIPMENT_ID, HAZARD_TYPE, ROLE, SLOT, STAGE} from "../../enums/enums";
+import {HAZARD_TYPE, ROLE, STAGE} from "../../enums/enums";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {runDestroyAnimation} from "../../animations";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
@@ -81,10 +81,6 @@ export class Enemy extends AnimatedTileElement {
                 this.runHitAnimation();
                 this.healthContainer.visible = true;
                 this.redrawHealth();
-                //flask of fire hack
-                if ((source === Game.player || source === Game.player2) && source[SLOT.ACCESSORY] && source[SLOT.ACCESSORY].id === EQUIPMENT_ID.FLASK_OF_FIRE) {
-                    source[SLOT.ACCESSORY].onEnemyDamage(source, this, damageType);
-                }
             }
         }
     }

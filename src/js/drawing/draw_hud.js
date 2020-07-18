@@ -30,6 +30,7 @@ import {EQUIPMENT_ID, EQUIPMENT_TYPE, SLOT, STORAGE} from "../enums/enums";
 import {DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
 import {CommonSpriteSheet} from "../loader";
+import {ENCHANTMENT_TYPE} from "../enums/equipment_modifiers";
 
 export function drawHUD() {
     drawHealth();
@@ -195,8 +196,8 @@ export function redrawSlotContents(player, slot) {
             sprite.width = sprite.height = size;
         }
         sprite.filters = [ITEM_OUTLINE_FILTER];
-        if(item.equipmentType===EQUIPMENT_TYPE.WEAPON){
-            //sprite.filters.push(DIVINE_FILTER);
+        if (item.enchantment === ENCHANTMENT_TYPE.DIVINE) {
+            sprite.filters.push(DIVINE_FILTER);
         }
         container.sprite.addChild(sprite);
     }

@@ -67,6 +67,7 @@ export class Boss extends Enemy {
     }
 
     die(source) {
+        if (this.dead) return;
         if (this.currentPhase < this.phases) {
             this.currentPhase++;
             this.health = this.maxHealth = this.getPhaseHealth(this.currentPhase);

@@ -46,6 +46,7 @@ import {CommonSpriteSheet} from "./loader";
 import {LyingItem} from "./classes/equipment/lying_item";
 import * as PIXI from "pixi.js";
 import {DAMAGE_TYPE} from "./enums/damage_type";
+import {ENCHANTMENT_TYPE} from "./enums/equipment_modifiers";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -597,4 +598,14 @@ export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
     }
     if (!Game.player.dead) lightPlayerPosition(Game.player);
     if (!Game.player2.dead) lightPlayerPosition(Game.player2);
+}
+
+export function applyEnchantment(item, enchantmentType) {
+    if (item.enchantment !== ENCHANTMENT_TYPE.NONE) return;
+    item.enchantment = enchantmentType;
+    switch (enchantmentType) {
+        case ENCHANTMENT_TYPE.DIVINE:
+            item.atk += 0.5;
+            break;
+    }
 }
