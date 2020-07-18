@@ -13,8 +13,10 @@ export class Bow extends BowLikeWeapon {
     }
 
     getAtk(wielder, range) {
-        if (range === 1) return wielder.getAtk(this, 0.25);
-        else if (range === 2) return wielder.getAtk(this, 0.75);
-        else return wielder.getAtk(this, 1);
+        let baseAtk;
+        if (range === 1) baseAtk = 0.25;
+        else if (range === 2) baseAtk = 0.75;
+        else baseAtk = 1;
+        return wielder.getAtk(this, baseAtk + (this.atk - 1));
     }
 }

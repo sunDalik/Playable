@@ -16,7 +16,7 @@ export class DivineBow extends PiercingBowLikeWeapon {
 
     getAtk(wielder, range) {
         //0.75 1 1.25 1.5
-        return wielder.getAtk(this, 0.5 + range * 0.25);
+        return wielder.getAtk(this, 0.5 + range * 0.25 + (this.atk - 1.5));
 
         // 0.5 1 1.5 2
         //return wielder.getAtk(this, 0.5 + (range - 1) * 0.5);

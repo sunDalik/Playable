@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import {EQUIPMENT_ID, RARITY} from "../../enums/enums";
+import {ENCHANTMENT_TYPE} from "../../enums/equipment_modifiers";
 
 export class Equipment {
     constructor() {
@@ -29,6 +30,8 @@ export class Equipment {
 
         // forbid players from taking this item off
         this.nonremoveable = false;
+
+        this.enchantment = ENCHANTMENT_TYPE.NONE;
     }
 
     //executes when wielder picks up this item

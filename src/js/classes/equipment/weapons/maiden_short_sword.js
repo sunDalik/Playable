@@ -24,7 +24,7 @@ export class MaidenShortSword extends Weapon {
         if (wielder.secondHand && wielder.secondHand.id === this.id) {
             const ATStepX = tileDirX === 0 ? 1 : 0;
             const ATStepY = tileDirY === 0 ? 1 : 0;
-            const enemyDmgValues = [1.25, 2.5, 1.25];
+            const enemyDmgValues = [this.atk, this.atk * 2, this.atk];
             const playerStepPosition = {x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y + tileDirY};
             const atkPositions = [
                 {x: wielder.tilePosition.x + tileDirX - ATStepX, y: wielder.tilePosition.y + tileDirY - ATStepY},
