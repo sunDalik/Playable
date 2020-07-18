@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, RARITY} from "../../../enums/enums";
 import {FootwearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 

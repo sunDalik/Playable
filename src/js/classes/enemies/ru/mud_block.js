@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {RUEnemiesSpriteSheet} from "../../../loader";
 import {randomInt} from "../../../utils/random_utils";
 

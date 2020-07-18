@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums/enums";
 import {getPlayerOnTile, isEnemy, isNotAWall} from "../../../map_checks";
 import {createCrazySpikeAnimation, createPlayerAttackTile, rotate} from "../../../animations";
 import {MagicSpriteSheet} from "../../../loader";

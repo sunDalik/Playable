@@ -1,6 +1,6 @@
 import {randomChoice, randomInt, randomShuffle} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
-import {INANIMATE_TYPE, LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums";
+import {INANIMATE_TYPE, LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums/enums";
 import {Game} from "../game";
 import {expandLevel} from "./generation_utils";
 import {comboShapers, shapers} from "./room_shapers";

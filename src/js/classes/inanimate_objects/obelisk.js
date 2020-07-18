@@ -1,5 +1,5 @@
 import {Game} from "../../game";
-import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "../../enums";
+import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "../../enums/enums";
 import {createFadingText, runDestroyAnimation} from "../../animations";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";

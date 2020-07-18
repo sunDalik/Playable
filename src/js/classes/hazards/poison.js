@@ -1,6 +1,6 @@
 import {Game} from "../../game";
 import {Hazard} from "./hazard";
-import {HAZARD_TYPE} from "../../enums";
+import {HAZARD_TYPE} from "../../enums/enums";
 import {randomFloat, randomInt} from "../../utils/random_utils";
 import * as PIXI from "pixi.js";
 import {removeObjectFromArray} from "../../utils/basic_utils";

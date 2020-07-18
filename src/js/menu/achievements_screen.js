@@ -2,7 +2,7 @@ import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {changeBGColor, menuBgColor} from "./main_menu";
 import {createBackButton} from "./menu_common";
-import {GAME_STATE, STORAGE} from "../enums";
+import {GAME_STATE, STORAGE} from "../enums/enums";
 import {SUPER_HUD} from "../drawing/super_hud";
 import {achievements} from "../achievements";
 import {HUDTextStyleTitle} from "../drawing/draw_constants";

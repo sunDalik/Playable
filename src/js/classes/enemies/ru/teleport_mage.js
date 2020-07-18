@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {castWind} from "../../../special_move_logic";
 import {createPlayerAttackTile, rotate} from "../../../animations";

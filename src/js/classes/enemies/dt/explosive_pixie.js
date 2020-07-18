@@ -1,5 +1,5 @@
 import {Enemy} from "../enemy";
-import {DAMAGE_TYPE, ENEMY_TYPE, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, STAGE} from "../../../enums/enums";
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {Game} from "../../../game";

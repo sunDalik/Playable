@@ -1,5 +1,5 @@
 import {Star} from "./star"
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {getPlayerOnTile} from "../../../map_checks";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 

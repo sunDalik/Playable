@@ -2,7 +2,7 @@ import {isBullet, isEmpty, isEnemy, isNotOutOfMap} from "./map_checks";
 import {Game} from "./game";
 import {randomChoice} from "./utils/random_utils";
 import {tileDistanceDiagonal} from "./utils/game_utils";
-import {DAMAGE_TYPE} from "./enums";
+import {DAMAGE_TYPE} from "./enums/enums";
 import {updateIntent} from "./game_logic";
 
 export function castWind(origin, radius, blowDistance, atk = 1, crystal = false) {

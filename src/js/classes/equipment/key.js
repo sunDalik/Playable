@@ -1,4 +1,4 @@
-import {EQUIPMENT_TYPE, RARITY} from "../../enums";
+import {EQUIPMENT_TYPE, RARITY} from "../../enums/enums";
 import {CommonSpriteSheet} from "../../loader";
 
 export class Key {

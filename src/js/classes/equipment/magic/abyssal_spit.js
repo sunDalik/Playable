@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
+import {EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums/enums";
 import {isAnyWall} from "../../../map_checks";
 import {DarkPoisonHazard} from "../../hazards/poison";
 import {MagicSpriteSheet} from "../../../loader";

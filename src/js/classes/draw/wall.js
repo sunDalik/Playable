@@ -1,7 +1,7 @@
 import {TileElement} from "../tile_elements/tile_element";
 import {Game} from "../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
-import {STAGE} from "../../enums";
+import {STAGE} from "../../enums/enums";
 import {WallsSpriteSheet} from "../../loader";
 import {randomChoice} from "../../utils/random_utils";
 

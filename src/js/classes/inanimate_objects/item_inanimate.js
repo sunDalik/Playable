@@ -1,5 +1,5 @@
 import {TileElement} from "../tile_elements/tile_element";
-import {ROLE} from "../../enums";
+import {ROLE} from "../../enums/enums";
 import {Game} from "../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import * as PIXI from "pixi.js";

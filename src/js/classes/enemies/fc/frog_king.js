@@ -1,4 +1,4 @@
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {Frog} from "./frog";
 import {getPlayerOnTile, isNotAWall} from "../../../map_checks";
 import {FCEnemiesSpriteSheet} from "../../../loader";

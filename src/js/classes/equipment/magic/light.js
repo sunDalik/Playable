@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
-import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, MAGIC_ALIGNMENT, STAGE} from "../../../enums/enums";
 import {getPlayerOnTile, isEnemy, isNotAWall} from "../../../map_checks";
 import {createFadingAttack, rotate} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";

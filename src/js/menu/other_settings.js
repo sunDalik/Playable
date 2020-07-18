@@ -1,7 +1,7 @@
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {createBackButton, createCheckboxSet} from "./menu_common";
-import {STORAGE} from "../enums";
+import {STORAGE} from "../enums/enums";
 import {redrawFps, redrawSpeedRunTime} from "../drawing/draw_hud";
 import {HUD} from "../drawing/hud_object";
 

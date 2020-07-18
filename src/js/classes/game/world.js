@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import {Game} from "../../game";
 import {canBeFliedOverByBullet, getPlayerOnTile, isAnyWall, isEnemy} from "../../map_checks";
-import {EQUIPMENT_ID, HAZARD_TYPE, STAGE, TILE_TYPE} from "../../enums";
+import {EQUIPMENT_ID, HAZARD_TYPE, STAGE, TILE_TYPE} from "../../enums/enums";
 import {lightPlayerPosition} from "../../drawing/lighting";
 import {otherPlayer} from "../../utils/game_utils";
 import {redrawMiniMapPixel} from "../../drawing/minimap";

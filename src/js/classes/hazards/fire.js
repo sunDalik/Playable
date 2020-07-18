@@ -1,6 +1,6 @@
 import {Game} from "../../game";
 import {Hazard} from "./hazard";
-import {HAZARD_TYPE, STAGE} from "../../enums";
+import {HAZARD_TYPE, STAGE} from "../../enums/enums";
 import {get8Directions, getCardinalDirections} from "../../utils/map_utils";
 import {isNotAWall} from "../../map_checks";
 import {randomFloat, randomInt, randomShuffle} from "../../utils/random_utils";

@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE, ROLE, STAGE, TILE_TYPE} from "../../../enums";
+import {ENEMY_TYPE, ROLE, STAGE, TILE_TYPE} from "../../../enums/enums";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {getPlayerOnTile, isAnyWall} from "../../../map_checks";
 import {createFadingAttack} from "../../../animations";

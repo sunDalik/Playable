@@ -1,4 +1,4 @@
-import {LEVEL_SYMBOLS} from "../enums";
+import {LEVEL_SYMBOLS} from "../enums/enums";
 import {get8Directions} from "../utils/map_utils";
 
 export function expandLevel(level, expandX, expandY) {

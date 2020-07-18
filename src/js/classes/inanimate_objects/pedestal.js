@@ -1,4 +1,4 @@
-import {INANIMATE_TYPE} from "../../enums";
+import {INANIMATE_TYPE} from "../../enums/enums";
 import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import {InanimatesSpriteSheet} from "../../loader";
 import {ItemInanimate} from "./item_inanimate";

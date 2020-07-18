@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import {SLOT} from "../enums";
+import {SLOT} from "../enums/enums";
 
 export const HUD = new PIXI.Container();
 HUD.interactiveChildren = false;

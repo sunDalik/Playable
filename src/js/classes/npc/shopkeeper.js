@@ -1,6 +1,6 @@
 import {TileElement} from "../tile_elements/tile_element";
 import {Game} from "../../game";
-import {INANIMATE_TYPE, ROLE} from "../../enums";
+import {INANIMATE_TYPE, ROLE} from "../../enums/enums";
 
 
 export class Shopkeeper extends TileElement {

@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_ID, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {isEnemy} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";

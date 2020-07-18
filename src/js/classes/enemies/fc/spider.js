@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {DAMAGE_TYPE, ENEMY_TYPE, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, STAGE} from "../../../enums/enums";
 import {isEmpty} from "../../../map_checks";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";

@@ -1,5 +1,5 @@
 import {Game} from "../../game";
-import {EQUIPMENT_ID, INANIMATE_TYPE, SLOT} from "../../enums";
+import {EQUIPMENT_ID, INANIMATE_TYPE, SLOT} from "../../enums/enums";
 import {addKeys, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";

@@ -1,5 +1,5 @@
 import {Enemy} from "../enemy";
-import {DIRECTIONS, ENEMY_TYPE} from "../../../enums";
+import {DIRECTIONS, ENEMY_TYPE} from "../../../enums/enums";
 import {getPlayerOnTile} from "../../../map_checks";
 import {createCrazySpikeAnimation, createEnemyAttackTile} from "../../../animations";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";

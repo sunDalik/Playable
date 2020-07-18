@@ -1,4 +1,4 @@
-import {EQUIPMENT_ID} from "../../../enums";
+import {EQUIPMENT_ID} from "../../../enums/enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Light} from "./light";
 

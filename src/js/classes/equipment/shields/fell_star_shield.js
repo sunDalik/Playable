@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY, STAGE} from "../../../enums/enums";
 import {isAnyWall, isEnemy} from "../../../map_checks";
 import {TileElement} from "../../tile_elements/tile_element";
 import * as PIXI from "pixi.js";

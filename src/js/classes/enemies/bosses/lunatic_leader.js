@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";

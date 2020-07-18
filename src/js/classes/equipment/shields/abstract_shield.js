@@ -1,5 +1,5 @@
 import {redrawSlotContents} from "../../../drawing/draw_hud";
-import {EQUIPMENT_TYPE, SLOT} from "../../../enums";
+import {EQUIPMENT_TYPE, SLOT} from "../../../enums/enums";
 import {Equipment} from "../equipment";
 import * as PIXI from "pixi.js";
 import {Game} from "../../../game";

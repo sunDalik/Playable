@@ -1,5 +1,5 @@
 import {Spider} from "../fc/spider";
-import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums/enums";
 import {isEmpty, isNotAWall} from "../../../map_checks";
 import {DTEnemiesSpriteSheet} from "../../../loader";
 

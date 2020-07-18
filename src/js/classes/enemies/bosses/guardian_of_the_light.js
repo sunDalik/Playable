@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, ENEMY_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, INANIMATE_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, INANIMATE_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";

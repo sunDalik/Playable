@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {get8Directions, getDirectionsOnSquare} from "../../../utils/map_utils";

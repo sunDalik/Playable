@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {camera} from "../../game/camera";
-import {EQUIPMENT_ID, MAGIC_ALIGNMENT, SLOT} from "../../../enums";
+import {EQUIPMENT_ID, MAGIC_ALIGNMENT, SLOT} from "../../../enums/enums";
 import {
     drawInteractionKeys,
     drawMovementKeyBindings,

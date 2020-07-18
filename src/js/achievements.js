@@ -1,4 +1,4 @@
-import {ACHIEVEMENT_ID, STAGE, STORAGE} from "./enums";
+import {ACHIEVEMENT_ID, STAGE, STORAGE} from "./enums/enums";
 import {Game} from "./game";
 import {HUD} from "./drawing/hud_object";
 import * as PIXI from "pixi.js";

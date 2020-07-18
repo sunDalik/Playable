@@ -1,7 +1,7 @@
 import {Bullet} from "./bullet";
 import {FireHazard} from "../../hazards/fire";
 import {Game} from "../../../game";
-import {ROLE, STAGE} from "../../../enums";
+import {ROLE, STAGE} from "../../../enums/enums";
 import {BulletsSpriteSheet} from "../../../loader";
 
 export class FireBullet extends Bullet {

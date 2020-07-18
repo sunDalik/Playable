@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE, TILE_TYPE} from "../../../enums";
+import {ENEMY_TYPE, TILE_TYPE} from "../../../enums/enums";
 import {getPlayerOnTile, isAnyWall, isInanimate, isRelativelyEmpty} from "../../../map_checks";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {quadraticBezier} from "../../../utils/math_utils";

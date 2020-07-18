@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {Enemy} from "../enemy";
 import {PoisonHazard} from "../../hazards/poison";
 import {randomChoice, randomInt} from "../../../utils/random_utils";

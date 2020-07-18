@@ -1,5 +1,5 @@
 import {Game} from "../game";
-import {STAGE} from "../enums";
+import {STAGE} from "../enums/enums";
 import {generateStandard, setupGenerator} from "./standard_generation";
 import {DTBossSets, DTEnemySets, FCBossSets, FCEnemySets, RUBossSets, RUEnemySets} from "./enemy_sets";
 import {Settings} from "./settings";

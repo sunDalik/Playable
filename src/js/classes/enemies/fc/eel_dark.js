@@ -1,5 +1,5 @@
 import {Eel} from "./eel"
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {FCEnemiesSpriteSheet} from "../../../loader";
 
 export class DarkEel extends Eel {

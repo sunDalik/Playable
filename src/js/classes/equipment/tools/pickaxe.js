@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {ENEMY_TYPE, EQUIPMENT_ID, RARITY, ROLE} from "../../../enums";
+import {ENEMY_TYPE, EQUIPMENT_ID, RARITY, ROLE} from "../../../enums/enums";
 import {isDiggable, isEnemy, isEntity} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationClub} from "../../../animations";
 import {ToolsSpriteSheet} from "../../../loader";

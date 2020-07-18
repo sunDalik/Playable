@@ -1,6 +1,6 @@
 import {Game} from "../../../game"
 import {Snail} from "./snail"
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {FCEnemiesSpriteSheet} from "../../../loader";
 
 export class SpikySnail extends Snail {

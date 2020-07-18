@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
-import {EQUIPMENT_ID, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";

@@ -2,7 +2,7 @@ import {Game} from "../game";
 import {keyboardS} from "./keyboard_handler";
 import {playerTurn, switchPlayers} from "../game_logic";
 import {toggleMiniMap} from "../drawing/minimap";
-import {STORAGE} from "../enums";
+import {STORAGE} from "../enums/enums";
 
 const upKeyP1 = keyboardS(STORAGE.KEY_MOVE_UP_1P);
 const leftKeyP1 = keyboardS(STORAGE.KEY_MOVE_LEFT_1P);

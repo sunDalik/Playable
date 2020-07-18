@@ -1,5 +1,5 @@
 import {Game} from "../game";
-import {EQUIPMENT_ID, STAGE, TILE_TYPE} from "../enums";
+import {EQUIPMENT_ID, STAGE, TILE_TYPE} from "../enums/enums";
 import {getCardinalDirections} from "../utils/map_utils";
 import {isNotOutOfMap} from "../map_checks";
 

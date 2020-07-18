@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE, RABBIT_TYPE} from "../../../enums";
+import {ENEMY_TYPE, RABBIT_TYPE} from "../../../enums/enums";
 import {getRandomValue} from "../../../utils/random_utils";
 import {isAnyWall, isInanimate} from "../../../map_checks";
 import {FireHazard} from "../../hazards/fire";

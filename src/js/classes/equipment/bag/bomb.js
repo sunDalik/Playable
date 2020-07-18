@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_ID, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {BagSpriteSheet} from "../../../loader";
 import {ShadowTileElement} from "../../tile_elements/shadow_tile_element";

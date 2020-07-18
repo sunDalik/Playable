@@ -1,5 +1,5 @@
 import {Spider} from "./spider";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {FCEnemiesSpriteSheet} from "../../../loader";
 
 export class SpiderSmall extends Spider {

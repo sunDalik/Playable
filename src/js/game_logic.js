@@ -10,7 +10,7 @@ import {
     SLOT,
     STAGE,
     TILE_TYPE
-} from "./enums";
+} from "./enums/enums";
 import {
     drawInteractionKeys,
     redrawBag,

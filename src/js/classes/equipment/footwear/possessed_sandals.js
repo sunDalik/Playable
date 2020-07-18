@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums/enums";
 import {FootwearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 import {isEnemy} from "../../../map_checks";

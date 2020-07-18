@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
+import {EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums/enums";
 import {EffectsSpriteSheet, MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 import {TileElement} from "../../tile_elements/tile_element";

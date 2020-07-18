@@ -1,4 +1,4 @@
-import {DAMAGE_TYPE, EQUIPMENT_ID, ROLE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, ROLE} from "../../../enums/enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Thunderstorm} from "./thunderstorm";
 import {Game} from "../../../game";

@@ -1,4 +1,4 @@
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {DTEnemiesSpriteSheet} from "../../../loader";
 import {Snail} from "../fc/snail";
 import {Game} from "../../../game";

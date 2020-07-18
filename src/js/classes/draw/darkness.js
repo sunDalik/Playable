@@ -1,6 +1,6 @@
 import {TileElement} from "../tile_elements/tile_element";
 import {Game} from "../../game";
-import {TILE_TYPE} from "../../enums";
+import {TILE_TYPE} from "../../enums/enums";
 import {Z_INDEXES} from "../../z_indexing";
 import {isNotOutOfMap} from "../../map_checks";
 import {wallTallness} from "./wall";

@@ -1,5 +1,5 @@
 import {Game} from "./game";
-import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "./enums";
+import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "./enums/enums";
 
 export function isNotOutOfMap(tilePosX, tilePosY) {
     return tilePosX <= Game.map[0].length - 1 && tilePosX >= 0 &&

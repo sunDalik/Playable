@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, ROLE, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, ROLE, STAGE} from "../../../enums/enums";
 import {canBeFliedOverByBullet, getPlayerOnTile, isEnemy} from "../../../map_checks";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import * as PIXI from "pixi.js";

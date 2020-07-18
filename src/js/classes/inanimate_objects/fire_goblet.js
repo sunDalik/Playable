@@ -1,5 +1,5 @@
 import {Game} from "../../game";
-import {INANIMATE_TYPE, ROLE} from "../../enums";
+import {INANIMATE_TYPE, ROLE} from "../../enums/enums";
 import {otherPlayer} from "../../utils/game_utils";
 import {isBullet} from "../../map_checks";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";

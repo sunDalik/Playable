@@ -1,4 +1,4 @@
-import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums/enums";
 import {Equipment} from "../equipment";
 import {addKeys} from "../../../game_logic";
 import {OneTimeSpriteSheet} from "../../../loader";

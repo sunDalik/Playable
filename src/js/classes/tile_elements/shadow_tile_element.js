@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import {Game} from "../../game";
 import {floorLevel, TileElement} from "./tile_element";
-import {STAGE} from "../../enums";
+import {STAGE} from "../../enums/enums";
 
 //shadows should be invisible if the sprite is invisible... but how?
 export class ShadowTileElement extends TileElement {

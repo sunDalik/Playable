@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import {Game} from "./game";
 import {camera} from "./classes/game/camera";
 import {loadAll} from "./loader";
-import {ACHIEVEMENT_ID, GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums";
+import {ACHIEVEMENT_ID, GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums/enums";
 import {generateLevel} from "./level_generation/level_generation";
 import {assignDrops} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";

@@ -1,4 +1,4 @@
-import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY} from "../../../enums/enums";
 import {AccessoriesSpriteSheet, EffectsSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 import {TileElement} from "../../tile_elements/tile_element";

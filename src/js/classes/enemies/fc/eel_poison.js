@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Eel} from "./eel";
-import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE} from "../../../enums/enums";
 import {PoisonHazard} from "../../hazards/poison";
 import {getPlayerOnTile} from "../../../map_checks";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";

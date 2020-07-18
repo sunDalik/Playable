@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import {EQUIPMENT_ID, RARITY} from "../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../enums/enums";
 
 export class Equipment {
     constructor() {

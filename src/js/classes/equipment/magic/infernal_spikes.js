@@ -1,4 +1,4 @@
-import {EQUIPMENT_ID} from "../../../enums";
+import {EQUIPMENT_ID} from "../../../enums/enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {VampireSpikes} from "./vampire_spikes";
 import {createCrazySpikeAnimation, shakeScreen} from "../../../animations";

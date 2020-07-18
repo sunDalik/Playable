@@ -1,4 +1,4 @@
-import {EQUIPMENT_ID, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {BagSpriteSheet} from "../../../loader";
 import {BagEquipment} from "../bag_equipment";
 

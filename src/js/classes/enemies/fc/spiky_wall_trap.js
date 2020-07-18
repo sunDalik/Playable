@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE, ROLE, TILE_TYPE} from "../../../enums";
+import {ENEMY_TYPE, ROLE, TILE_TYPE} from "../../../enums/enums";
 import {getPlayerOnTile} from "../../../map_checks";
 import {randomChoice} from "../../../utils/random_utils";
 import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../../utils/map_utils";

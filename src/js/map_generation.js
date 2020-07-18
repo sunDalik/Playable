@@ -1,5 +1,5 @@
 import {Game} from "./game";
-import {ENEMY_TYPE, ROLE, STAGE} from "./enums";
+import {ENEMY_TYPE, ROLE, STAGE} from "./enums/enums";
 import {randomInt, randomShuffle} from "./utils/random_utils";
 import {Bomb} from "./classes/equipment/bag/bomb";
 import {HealingPotion} from "./classes/equipment/bag/healing_potion";

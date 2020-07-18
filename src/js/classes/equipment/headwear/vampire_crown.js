@@ -1,4 +1,4 @@
-import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY, SLOT} from "../../../enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, RARITY, SLOT} from "../../../enums/enums";
 import {redrawSlotContents} from "../../../drawing/draw_hud";
 import {HeadWearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";

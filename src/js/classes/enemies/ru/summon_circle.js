@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {getPlayerOnTile, isEmpty} from "../../../map_checks";
 import {RUEnemiesSpriteSheet} from "../../../loader";

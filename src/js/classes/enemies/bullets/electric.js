@@ -1,5 +1,5 @@
 import {Bullet} from "./bullet";
-import {ROLE, STAGE} from "../../../enums";
+import {ROLE, STAGE} from "../../../enums/enums";
 import {Game} from "../../../game";
 import {BulletsSpriteSheet} from "../../../loader";
 

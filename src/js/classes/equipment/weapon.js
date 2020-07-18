@@ -1,5 +1,5 @@
 import {Equipment} from "./equipment";
-import {EQUIPMENT_TYPE} from "../../enums";
+import {EQUIPMENT_TYPE} from "../../enums/enums";
 
 export class Weapon extends Equipment {
     constructor() {

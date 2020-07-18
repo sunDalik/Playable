@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {KingFrog} from "../fc/frog_king";
 import {FireHazard} from "../../hazards/fire";
 import {getPlayerOnTile} from "../../../map_checks";

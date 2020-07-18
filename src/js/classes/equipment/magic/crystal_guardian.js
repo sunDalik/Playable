@@ -1,4 +1,4 @@
-import {EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums";
+import {EQUIPMENT_ID, MAGIC_ALIGNMENT} from "../../../enums/enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {CrystalWind} from "./crystal_wind";
 import {AnimatedTileElement} from "../../tile_elements/animated_tile_element";

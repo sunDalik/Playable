@@ -1,5 +1,5 @@
 import {Spider} from "./spider";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {isEmpty, isNotAWall} from "../../../map_checks";
 import {FCEnemiesSpriteSheet} from "../../../loader";
 

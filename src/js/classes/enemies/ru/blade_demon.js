@@ -1,5 +1,5 @@
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {EffectsSpriteSheet, IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import {randomAggressiveAI} from "../../../enemy_movement_ai";
 import {TileElement} from "../../tile_elements/tile_element";

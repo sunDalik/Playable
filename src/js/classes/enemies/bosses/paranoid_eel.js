@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, ENEMY_TYPE, HAZARD_TYPE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, HAZARD_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {
     getPlayerOnTile,

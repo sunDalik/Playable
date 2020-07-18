@@ -7,7 +7,7 @@ import {setTickTimeout} from "../utils/game_utils";
 import {createLoadingText, retry, setupGame} from "../setup";
 import {closeBlackBars} from "../drawing/hud_animations";
 import {keyboard, keyboardS} from "../keyboard/keyboard_handler";
-import {GAME_STATE, STORAGE} from "../enums";
+import {GAME_STATE, STORAGE} from "../enums/enums";
 import {setupSubSettings} from "./subsettings";
 import {createSimpleButtonSet} from "./menu_common";
 import {SUPER_HUD} from "../drawing/super_hud";

@@ -1,5 +1,5 @@
 import {Equipment} from "./equipment";
-import {EQUIPMENT_TYPE, RARITY} from "../../enums";
+import {EQUIPMENT_TYPE, RARITY} from "../../enums/enums";
 
 export class Magic extends Equipment {
     constructor() {

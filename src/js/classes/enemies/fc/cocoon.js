@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {ENEMY_TYPE, STAGE} from "../../../enums";
+import {ENEMY_TYPE, STAGE} from "../../../enums/enums";
 import {Enemy} from "../enemy";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {getEmptyCardinalDirections} from "../../../utils/map_utils";

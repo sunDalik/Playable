@@ -2,7 +2,7 @@ import {Game} from "../../../game";
 import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
-import {EQUIPMENT_ID, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {Boomeraxe} from "./boomeraxe";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {TileElement} from "../../tile_elements/tile_element";

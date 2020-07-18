@@ -24,7 +24,7 @@ import {Pickaxe} from "./classes/equipment/tools/pickaxe";
 import {SpikyShield} from "./classes/equipment/shields/spiky";
 import {StunningShield} from "./classes/equipment/shields/stunning";
 import {Game} from "./game";
-import {RARITY, STAGE} from "./enums";
+import {RARITY, STAGE} from "./enums/enums";
 import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
 import {Immortality} from "./classes/equipment/magic/immortality";

@@ -26,7 +26,7 @@ import {
 import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
-import {EQUIPMENT_ID, EQUIPMENT_TYPE, SLOT, STORAGE} from "../enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, SLOT, STORAGE} from "../enums/enums";
 import {DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
 import {CommonSpriteSheet} from "../loader";

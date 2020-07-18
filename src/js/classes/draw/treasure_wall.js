@@ -1,5 +1,5 @@
 import {Game} from "../../game";
-import {STAGE} from "../../enums";
+import {STAGE} from "../../enums/enums";
 import {WallsSpriteSheet} from "../../loader";
 import {randomChoice} from "../../utils/random_utils";
 import {WallTile} from "./wall";

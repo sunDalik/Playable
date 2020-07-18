@@ -1,4 +1,4 @@
-import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";
 import {isAnyWall, isEnemy, isLit, isOutOfMap} from "../../../map_checks";

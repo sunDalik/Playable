@@ -1,5 +1,5 @@
 import {Game} from "../../game";
-import {EQUIPMENT_ID, INANIMATE_TYPE, MAGIC_ALIGNMENT} from "../../enums";
+import {EQUIPMENT_ID, INANIMATE_TYPE, MAGIC_ALIGNMENT} from "../../enums/enums";
 import {createFadingText} from "../../animations";
 import {removeItemFromPool} from "../../game_changer";
 import {GRAIL_TEXT_DARK_FILTER, GRAIL_TEXT_WHITE_FILTER} from "../../filters";

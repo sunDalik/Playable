@@ -1,6 +1,6 @@
 import {Bullet} from "./bullet";
 import {Game} from "../../../game";
-import {ROLE} from "../../../enums";
+import {ROLE} from "../../../enums/enums";
 import {BulletsSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {closestPlayer, getAngleForDirection, tileDistance} from "../../../utils/game_utils";
 import {canBeFliedOverByBullet, getPlayerOnTile, isEnemy} from "../../../map_checks";

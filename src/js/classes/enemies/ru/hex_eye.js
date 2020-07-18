@@ -1,5 +1,5 @@
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import {closestPlayer} from "../../../utils/game_utils";
 import {HomingBullet} from "../bullets/homing";

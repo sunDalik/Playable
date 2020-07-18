@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "../../../map_checks";
 import {PoisonHazard} from "../../hazards/poison";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";

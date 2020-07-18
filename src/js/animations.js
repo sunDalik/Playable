@@ -5,7 +5,7 @@ import {ITEM_OUTLINE_FILTER} from "./filters";
 import {HUDTextStyle, HUDTextStyleTitle, miniMapBottomOffset} from "./drawing/draw_constants";
 import {HUD} from "./drawing/hud_object";
 import {camera} from "./classes/game/camera";
-import {ROLE, STAGE} from "./enums";
+import {ROLE, STAGE} from "./enums/enums";
 import {easeInOutQuad, easeInQuad, easeOutQuad, quadraticBezier} from "./utils/math_utils";
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {EffectsSpriteSheet, HUDSpriteSheet} from "./loader";

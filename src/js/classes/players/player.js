@@ -1,6 +1,6 @@
 import {Game} from "../../game";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
-import {EQUIPMENT_ID, EQUIPMENT_TYPE, ROLE, SLOT, STAGE, TILE_TYPE} from "../../enums";
+import {EQUIPMENT_ID, EQUIPMENT_TYPE, ROLE, SLOT, STAGE, TILE_TYPE} from "../../enums/enums";
 import {createHeartAnimation, rotate, runDestroyAnimation, shakeScreen, showHelpBox} from "../../animations";
 import {
     drawInteractionKeys,

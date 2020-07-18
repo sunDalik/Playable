@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, EQUIPMENT_ID, RARITY, STAGE} from "../../../enums/enums";
 import {isAnyWall, isEnemy, isLit, isNotAWall} from "../../../map_checks";
 import {EffectsSpriteSheet, WeaponsSpriteSheet} from "../../../loader";
 import {MagicBook} from "./magic_book";

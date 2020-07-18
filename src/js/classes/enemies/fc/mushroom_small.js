@@ -1,4 +1,4 @@
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {randomInt} from "../../../utils/random_utils";
 import {Mushroom} from "./mushroom";
 import {getCardinalDirections} from "../../../utils/map_utils";

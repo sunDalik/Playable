@@ -4,7 +4,7 @@ import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../anima
 import {TileElement} from "../../tile_elements/tile_element";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
-import {EQUIPMENT_ID, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {getAngleForDirection} from "../../../utils/game_utils";
 
 export class Boomeraxe extends Weapon {

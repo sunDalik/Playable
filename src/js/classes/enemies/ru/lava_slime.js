@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {isEmpty, isRelativelyEmpty} from "../../../map_checks";
 import {RUEnemiesSpriteSheet} from "../../../loader";
 import {WallSlime} from "./wall_slime";

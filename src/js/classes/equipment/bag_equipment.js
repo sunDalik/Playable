@@ -1,4 +1,4 @@
-import {EQUIPMENT_TYPE} from "../../enums";
+import {EQUIPMENT_TYPE} from "../../enums/enums";
 import {Equipment} from "./equipment";
 
 export class BagEquipment extends Equipment {

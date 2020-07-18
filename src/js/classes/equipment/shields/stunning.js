@@ -1,4 +1,4 @@
-import {EQUIPMENT_ID, RARITY} from "../../../enums";
+import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {ShieldsSpriteSheet} from "../../../loader";
 import {AbstractShield} from "./abstract_shield";
 

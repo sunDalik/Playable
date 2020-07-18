@@ -4,7 +4,7 @@ import {Game} from "../../game";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {isEntity, isNotAWall, isNotOutOfMap} from "../../map_checks";
 import {DarknessTile} from "../draw/darkness";
-import {ROLE, TILE_TYPE} from "../../enums";
+import {ROLE, TILE_TYPE} from "../../enums/enums";
 import {wallTallness} from "../draw/wall";
 import {lightTile} from "../../drawing/lighting";
 import {Z_INDEXES} from "../../z_indexing";

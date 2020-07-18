@@ -1,7 +1,7 @@
 import {Game} from "../game";
 import {Bomb} from "../classes/equipment/bag/bomb";
 import {removeItemFromPool} from "../game_changer";
-import {RARITY, SLOT} from "../enums";
+import {RARITY, SLOT} from "../enums/enums";
 import {randomChoice, randomShuffle} from "./random_utils";
 import {Necromancy} from "../classes/equipment/magic/necromancy";
 import {Spear} from "../classes/equipment/weapons/spear";

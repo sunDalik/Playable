@@ -1,4 +1,4 @@
-import {STAGE} from "./enums";
+import {STAGE} from "./enums/enums";
 
 export const Game = {
     app: null,

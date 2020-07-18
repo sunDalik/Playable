@@ -1,4 +1,4 @@
-import {EQUIPMENT_TYPE, INANIMATE_TYPE} from "../../enums";
+import {EQUIPMENT_TYPE, INANIMATE_TYPE} from "../../enums/enums";
 import {removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import {ItemInanimate} from "./item_inanimate";
 import {Game} from "../../game";

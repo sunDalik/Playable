@@ -4,7 +4,7 @@ import {changeBGColor, menuBgColor} from "./main_menu";
 import {setupControlSettings} from "./controls";
 import {createBackButton, createSimpleButtonSet} from "./menu_common";
 import {setupOtherSettings} from "./other_settings";
-import {GAME_STATE} from "../enums";
+import {GAME_STATE} from "../enums/enums";
 import {SUPER_HUD} from "../drawing/super_hud";
 
 export function setupSubSettings() {

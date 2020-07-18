@@ -1,5 +1,5 @@
 import {Game} from "../../../game"
-import {ENEMY_TYPE} from "../../../enums";
+import {ENEMY_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 
 export class BalletSpider extends Boss {

@@ -4,7 +4,7 @@ import {HUDTextStyleGameOver} from "./draw_constants";
 import {Game} from "../game";
 import {createSimpleButtonSet, menuButtonHeight, menuButtonOffset} from "../menu/menu_common";
 import {keyboardS} from "../keyboard/keyboard_handler";
-import {GAME_STATE, STORAGE} from "../enums";
+import {GAME_STATE, STORAGE} from "../enums/enums";
 import {retry} from "../setup";
 import {bringMenuBackToLife} from "../menu/main_menu";
 import {updateAchievementsScreen} from "../menu/achievements_screen";

@@ -1,7 +1,7 @@
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {drawHUD, getKeyBindSymbol} from "../drawing/draw_hud";
-import {GAME_STATE, STORAGE} from "../enums";
+import {GAME_STATE, STORAGE} from "../enums/enums";
 import {initLocalStorageKeys} from "../setup";
 import {createBackButton, createSimpleButtonSet} from "./menu_common";
 import {CommonSpriteSheet} from "../loader";

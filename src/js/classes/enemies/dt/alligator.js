@@ -1,6 +1,6 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {DAMAGE_TYPE, ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../../enums";
+import {DAMAGE_TYPE, ENEMY_TYPE, RABBIT_TYPE, STAGE} from "../../../enums/enums";
 import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall} from "../../../map_checks";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
 import {getRandomValue, randomChoice} from "../../../utils/random_utils";

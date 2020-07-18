@@ -1,7 +1,7 @@
 import {TileElement} from "../tile_elements/tile_element";
 import {Game} from "../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
-import {TILE_TYPE} from "../../enums";
+import {TILE_TYPE} from "../../enums/enums";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
 import {CommonSpriteSheet} from "../../loader";
 
