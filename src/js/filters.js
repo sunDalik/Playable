@@ -110,3 +110,14 @@ WALL_TRAP_BASE_FILTER.resolution = 2;
 
 export const BLACK_COLOR_OVERLAY = new ColorOverlayFilter([0, 0, 0]);
 BLACK_COLOR_OVERLAY.resolution = 2;
+
+
+export const DIVINE_FILTER = new GlowFilter({
+    distance: 10,
+    outerStrength: 4,
+    innerStrength: 0,
+    color: 0x55cddf,
+    quality: 0.3
+});
+DIVINE_FILTER.padding = 10;
+DIVINE_FILTER.resolution = 2;

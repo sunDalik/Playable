@@ -27,7 +27,7 @@ import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
 import {EQUIPMENT_ID, EQUIPMENT_TYPE, SLOT, STORAGE} from "../enums";
-import {ITEM_OUTLINE_FILTER} from "../filters";
+import {DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
 import {CommonSpriteSheet} from "../loader";
 
@@ -195,6 +195,9 @@ export function redrawSlotContents(player, slot) {
             sprite.width = sprite.height = size;
         }
         sprite.filters = [ITEM_OUTLINE_FILTER];
+        if(item.equipmentType===EQUIPMENT_TYPE.WEAPON){
+            //sprite.filters.push(DIVINE_FILTER);
+        }
         container.sprite.addChild(sprite);
     }
 
