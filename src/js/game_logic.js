@@ -1,7 +1,16 @@
 import {Game} from "./game";
 import {incrementStage, regenerateWeaponPool} from "./game_changer";
 import {initializeLevel} from "./setup";
-import {ACHIEVEMENT_ID, EQUIPMENT_TYPE, HAZARD_TYPE, INANIMATE_TYPE, SLOT, STAGE, TILE_TYPE} from "./enums/enums";
+import {
+    ACHIEVEMENT_ID,
+    EQUIPMENT_ID,
+    EQUIPMENT_TYPE,
+    HAZARD_TYPE,
+    INANIMATE_TYPE,
+    SLOT,
+    STAGE,
+    TILE_TYPE
+} from "./enums/enums";
 import {
     drawInteractionKeys,
     redrawBag,
@@ -340,11 +349,13 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
     }
     if (!slot) return equipment;
     if (player[slot]) {
-        if (player[slot].nonremoveable) return equipment;
+        // torch is the only item that can override cursed items
+        if (player[slot].nonremoveable && equipment.id !== EQUIPMENT_ID.TORCH) return equipment;
         if (player[slot].onTakeOff) player[slot].onTakeOff(player);
         for (const eq of player.getEquipment()) {
             if (eq && eq.onEquipmentDrop) eq.onEquipmentDrop(player, player[slot]);
         }
+        if (equipment.id === EQUIPMENT_ID.TORCH) player[slot] = null;
     }
     const swappedEquipment = player[slot];
     player[slot] = equipment;
