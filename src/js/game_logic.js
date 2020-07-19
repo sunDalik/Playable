@@ -297,7 +297,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
     let slot;
     switch (equipment.equipmentType) {
         case EQUIPMENT_TYPE.WEAPON:
-            if (player.weapon) slot = SLOT.EXTRA;
+            if (player[SLOT.WEAPON] && !(player[SLOT.EXTRA] && player[SLOT.EXTRA].nonremoveable)) slot = SLOT.EXTRA;
             else slot = SLOT.WEAPON;
             break;
         case EQUIPMENT_TYPE.TOOL:
@@ -366,7 +366,7 @@ export function removeEquipmentFromPlayer(player, equipmentType) {
     let slot;
     switch (equipmentType) {
         case EQUIPMENT_TYPE.WEAPON:
-            if (player.secondHand && player.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) slot = SLOT.EXTRA;
+            if (player[SLOT.EXTRA] && player[SLOT.EXTRA].equipmentType === EQUIPMENT_TYPE.WEAPON && !player[SLOT.EXTRA].nonremoveable) slot = SLOT.EXTRA;
             else slot = SLOT.WEAPON;
             break;
         case EQUIPMENT_TYPE.TOOL:
@@ -614,9 +614,8 @@ export function getItemLabelColor(item) {
 
 export function randomlyEnchantItem(item) {
     if (!item) return;
-    if (Math.random() < 1) {
+    if (Math.random() < 0.01) {
         const possibleEnchantments = [];
-        //todo: there is a problem. if you have a cursed shield/double weapon in your extra slot you cannot pick up items in a weapon slot.
         if ([EQUIPMENT_TYPE.WEAPON, EQUIPMENT_TYPE.ACCESSORY, EQUIPMENT_TYPE.HEAD, EQUIPMENT_TYPE.ARMOR, EQUIPMENT_TYPE.FOOT, EQUIPMENT_TYPE.SHIELD].includes(item.equipmentType)) {
             possibleEnchantments.push(ENCHANTMENT_TYPE.CURSED);
         }
