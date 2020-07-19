@@ -27,7 +27,7 @@ import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
 import {EQUIPMENT_ID, EQUIPMENT_TYPE, SLOT, STORAGE} from "../enums/enums";
-import {DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../filters";
+import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
 import {CommonSpriteSheet} from "../loader";
 import {ENCHANTMENT_TYPE} from "../enums/equipment_modifiers";
@@ -195,10 +195,14 @@ export function redrawSlotContents(player, slot) {
         } else {
             sprite.width = sprite.height = size;
         }
+
         sprite.filters = [ITEM_OUTLINE_FILTER];
         if (item.enchantment === ENCHANTMENT_TYPE.DIVINE) {
             sprite.filters.push(DIVINE_FILTER);
+        } else if (item.enchantment === ENCHANTMENT_TYPE.CURSED) {
+            sprite.filters = [CURSED_FILTER];
         }
+
         container.sprite.addChild(sprite);
     }
 

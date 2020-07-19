@@ -5,15 +5,12 @@ import {RARITY, SLOT} from "../enums/enums";
 import {randomChoice, randomShuffle} from "./random_utils";
 import {Necromancy} from "../classes/equipment/magic/necromancy";
 import {Spear} from "../classes/equipment/weapons/spear";
-import {applyEnchantment} from "../game_logic";
-import {ENCHANTMENT_TYPE} from "../enums/equipment_modifiers";
+import {randomlyEnchantItem} from "../game_logic";
 
 export function getRandomWeapon(canGetS = true) {
     if (Game.weaponPool.length === 0) return new Spear();
-    const constructor = getItemFromPool(Game.weaponPool, canGetS);
-    const item = new constructor();
+    const item = getItemFromPool(Game.weaponPool, canGetS);
     removeItemFromPool(item, Game.weaponPool);
-    if (Math.random() < 0.01) applyEnchantment(item, ENCHANTMENT_TYPE.DIVINE);
     return item;
 }
 
@@ -65,8 +62,7 @@ export function getRandomSpell() {
 
 export function getRandomChestDrop(canGetS = true) {
     if (Game.chestItemPool.length === 0) return new Bomb();
-    const constructor = getItemFromPool(Game.chestItemPool, canGetS);
-    const item = new constructor();
+    const item = getItemFromPool(Game.chestItemPool, canGetS);
     removeItemFromPool(item, Game.chestItemPool);
     return item;
 }
@@ -81,18 +77,20 @@ function getItemFromPool(pool, canGetS = true) {
     if (pool.length === 0) return null;
     randomShuffle(pool);
     let attempt = 0;
-    let item = null;
-    while (attempt++ < 200 && item === null) {
+    let constructor = null;
+    while (attempt++ < 200 && constructor === null) {
         const rand = Math.random() * 100;
         for (const rarity of [RARITY.C, RARITY.B, RARITY.A, RARITY.S]) {
             if (rarity === RARITY.S && canGetS === false) continue;
             if (rand >= rarity.chanceFrom && rand <= rarity.chanceTo) {
                 const filteredPool = pool.filter(item => (new item()).rarity === rarity);
-                if (filteredPool.length !== 0) item = randomChoice(filteredPool);
+                if (filteredPool.length !== 0) constructor = randomChoice(filteredPool);
                 break;
             }
         }
     }
-    if (item === null) return randomChoice(pool);
-    else return item;
+    if (constructor === null) constructor = randomChoice(pool);
+    const item = new constructor();
+    randomlyEnchantItem(item);
+    return item;
 }

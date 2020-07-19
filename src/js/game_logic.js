@@ -600,10 +600,30 @@ export function applyEnchantment(item, enchantmentType) {
         case ENCHANTMENT_TYPE.DIVINE:
             item.atk += 0.5;
             break;
+        case ENCHANTMENT_TYPE.CURSED:
+            item.nonremoveable = true;
+            break;
     }
 }
 
 export function getItemLabelColor(item) {
     if (item.enchantment === ENCHANTMENT_TYPE.DIVINE) return 0x5ff0f0;
+    else if (item.enchantment === ENCHANTMENT_TYPE.CURSED) return 0xea4155;
     else return item.rarity.color;
+}
+
+export function randomlyEnchantItem(item) {
+    if (!item) return;
+    if (Math.random() < 1) {
+        const possibleEnchantments = [];
+        //todo: there is a problem. if you have a cursed shield/double weapon in your extra slot you cannot pick up items in a weapon slot.
+        if ([EQUIPMENT_TYPE.WEAPON, EQUIPMENT_TYPE.ACCESSORY, EQUIPMENT_TYPE.HEAD, EQUIPMENT_TYPE.ARMOR, EQUIPMENT_TYPE.FOOT, EQUIPMENT_TYPE.SHIELD].includes(item.equipmentType)) {
+            possibleEnchantments.push(ENCHANTMENT_TYPE.CURSED);
+        }
+        if (item.equipmentType === EQUIPMENT_TYPE.WEAPON) {
+            possibleEnchantments.push(ENCHANTMENT_TYPE.DIVINE);
+        }
+
+        if (possibleEnchantments.length !== 0) applyEnchantment(item, randomChoice(possibleEnchantments));
+    }
 }

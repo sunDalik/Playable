@@ -16,10 +16,12 @@ export class SeerCirclet extends Equipment {
     }
 
     onWear(wielder) {
+        super.onWear(wielder);
         this.enableVision(wielder);
     }
 
     onTakeOff(wielder) {
+        super.onTakeOff(wielder);
         this.disableVision(wielder);
     }
 

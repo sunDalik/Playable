@@ -8,5 +8,6 @@ class Enchantment {
 // not entirely sure what I'm doing
 export const ENCHANTMENT_TYPE = Object.freeze({
     NONE: new Enchantment(""),
-    DIVINE: new Enchantment("Divine")
+    DIVINE: new Enchantment("Divine"),
+    CURSED: new Enchantment("Cursed")
 });

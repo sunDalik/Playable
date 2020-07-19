@@ -42,6 +42,8 @@ export class Equipment {
         wielder.atkBase += this.passiveAtk;
         wielder.defBase += this.passiveDef;
         wielder.magAtkBase += this.passiveMagAtk;
+
+        if (this.enchantment === ENCHANTMENT_TYPE.CURSED) wielder.addHealthContainers(2);
     }
 
     //executes when wielder drops this item

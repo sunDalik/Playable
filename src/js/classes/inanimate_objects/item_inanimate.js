@@ -9,7 +9,7 @@ import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
 import {ENCHANTMENT_TYPE} from "../../enums/equipment_modifiers";
 import {getItemLabelColor} from "../../game_logic";
-import {DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../../filters";
+import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../../filters";
 
 const itemSize = Game.TILESIZE * 0.9;
 
@@ -51,6 +51,8 @@ export class ItemInanimate extends TileElement {
         this.itemSprite.texture = item.texture;
         if (item.enchantment === ENCHANTMENT_TYPE.DIVINE) {
             this.itemSprite.filters = [ITEM_OUTLINE_FILTER, DIVINE_FILTER];
+        } else if (item.enchantment === ENCHANTMENT_TYPE.CURSED) {
+            this.itemSprite.filters = [CURSED_FILTER];
         } else {
             this.itemSprite.filters = [];
         }

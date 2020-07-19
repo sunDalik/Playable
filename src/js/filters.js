@@ -121,3 +121,7 @@ export const DIVINE_FILTER = new GlowFilter({
 });
 DIVINE_FILTER.padding = 10;
 DIVINE_FILTER.resolution = 2;
+
+export const CURSED_FILTER = new OutlineFilter(2, 0xea4155);
+CURSED_FILTER.padding = 3;
+CURSED_FILTER.resolution = 2;
