@@ -758,7 +758,7 @@ export function createShadowFollowers(entity, amount, animationTime) {
     }
 }
 
-export function createSmallOffsetParticle(texture, tile, side = randomChoice([-1, 1])) {
+export function createSmallOffsetParticle(texture, tile, side = randomChoice([-1, 1]), animationTime = 10) {
     const particle = new TileElement(texture, tile.x, tile.y);
     Game.world.addChild(particle);
     particle.position.x += randomInt(Game.TILESIZE / 10, Game.TILESIZE / 3) * side;
@@ -770,7 +770,6 @@ export function createSmallOffsetParticle(texture, tile, side = randomChoice([-1
     const posYEndChange = -Game.TILESIZE / 2;
     particle.zIndex = getZIndexForLayer(tile.y) + Z_INDEXES.META;
 
-    const animationTime = 10;
     let counter = 0;
 
     const animation = delta => {

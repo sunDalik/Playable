@@ -1,6 +1,6 @@
 import {Game} from "../../game";
 import {EQUIPMENT_ID, INANIMATE_TYPE, SLOT} from "../../enums/enums";
-import {addKeys, getItemLabelColor, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
+import {addKeys, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
@@ -9,13 +9,13 @@ import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {redrawKeysAmount} from "../../drawing/draw_hud";
 import {BLACK_COLOR_OVERLAY} from "../../filters";
 import {ItemInanimate} from "./item_inanimate";
-import {getRandomChestDrop, getRandomWeapon} from "../../utils/pool_utils";
+import {getRandomChestItem} from "../../utils/pool_utils";
 import {AccessoriesSpriteSheet, CommonSpriteSheet, InanimatesSpriteSheet} from "../../loader";
 
 export class Chest extends ItemInanimate {
     constructor(tilePositionX, tilePositionY) {
         super(InanimatesSpriteSheet["chest.png"], tilePositionX, tilePositionY);
-        this.contents = Math.random() < 0.70 ? getRandomChestDrop() : getRandomWeapon();
+        this.contents = getRandomChestItem();
         this.contentsType = this.contents.equipmentType;
         this.type = INANIMATE_TYPE.CHEST;
         this.opened = false;

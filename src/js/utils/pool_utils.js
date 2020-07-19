@@ -16,10 +16,18 @@ export function getRandomWeapon(canGetS = true) {
 
 export function getRandomShopItem() {
     if (Math.random() * (Game.chestItemPool.length + Game.weaponPool.length) < Game.chestItemPool.length) {
-        return getRandomChestDrop(false);
+        return getRandomNonWeaponItem(false);
     } else {
         return getRandomWeapon(false);
     }
+}
+
+export function getRandomBossPedestalItem() {
+    return Math.random() < 0.6 ? getRandomNonWeaponItem() : getRandomWeapon();
+}
+
+export function getRandomChestItem() {
+    return Math.random() < 0.7 ? getRandomNonWeaponItem() : getRandomWeapon();
 }
 
 export function getRandomSpell() {
@@ -60,7 +68,7 @@ export function getRandomSpell() {
     else return new constructor();
 }
 
-export function getRandomChestDrop(canGetS = true) {
+export function getRandomNonWeaponItem(canGetS = true) {
     if (Game.chestItemPool.length === 0) return new Bomb();
     const item = getItemFromPool(Game.chestItemPool, canGetS);
     removeItemFromPool(item, Game.chestItemPool);

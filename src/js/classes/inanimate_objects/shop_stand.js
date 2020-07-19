@@ -26,7 +26,11 @@ export class ShopStand extends ItemInanimate {
         this.keysRequiredSprite.position.set(this.position.x, this.position.y + this.height * 0.10);
         this.keysRequiredSprite.zIndex = getZIndexForLayer(this.tilePosition.y) + Z_INDEXES.META;
         Game.world.addChild(this.keysRequiredSprite);
-        if (this.contentsType === EQUIPMENT_TYPE.BAG_ITEM) {
+        this.calculateKeysAmount();
+    }
+
+    calculateKeysAmount() {
+        if (this.contents && this.contents.equipmentType === EQUIPMENT_TYPE.BAG_ITEM) {
             this.keysRequired = 1;
         } else {
             this.keysRequired = this.contents.rarity.num + 2;

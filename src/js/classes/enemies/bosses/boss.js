@@ -12,7 +12,7 @@ import {
 import {deactivateBossMode, dropItem} from "../../../game_logic";
 import {randomInt, randomShuffle} from "../../../utils/random_utils";
 import {getPlayerOnTile, isEnemy} from "../../../map_checks";
-import {getRandomChestDrop, getRandomWeapon} from "../../../utils/pool_utils";
+import {getRandomBossPedestalItem} from "../../../utils/pool_utils";
 import {Pedestal} from "../../inanimate_objects/pedestal";
 import {HealingPotion} from "../../equipment/bag/healing_potion";
 
@@ -119,8 +119,7 @@ export class Boss extends Enemy {
                     if (isEnemy(x, y)) {
                         Game.map[y][x].entity.die();
                     }
-                    const item = Math.random() < 0.6 ? getRandomChestDrop() : getRandomWeapon();
-                    Game.world.addInanimate(new Pedestal(x, y, item));
+                    Game.world.addInanimate(new Pedestal(x, y, getRandomBossPedestalItem()));
                 }
                 break;
             }

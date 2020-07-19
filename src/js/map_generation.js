@@ -7,12 +7,14 @@ import {tileInsideTheBossRoom} from "./map_checks";
 import {RustySword} from "./classes/equipment/weapons/rusty_sword";
 import {Key} from "./classes/equipment/key";
 import {keysOnEnemies} from "./level_generation/standard_generation";
+import {RerollPotion} from "./classes/equipment/bag/reroll_potion";
 
 //todo change purpose of this file
 export function assignDrops() {
     distributeDrops(Key, keysOnEnemies);
     distributeDrops(Bomb, randomInt(4, 5));
     distributeDrops(HealingPotion, randomInt(1, 2));
+    if (Math.random() < 0.0777) distributeDrops(RerollPotion, 1);
 
     if (Game.stage === STAGE.RUINS) {
         if (Math.random() < 0.5) {

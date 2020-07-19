@@ -13,7 +13,7 @@ export class Grail extends ItemInanimate {
         super(InanimatesSpriteSheet["grail.png"], tilePositionX, tilePositionY);
         this.type = INANIMATE_TYPE.GRAIL;
         this.obelisk = obelisk;
-        this.magic = null;
+        this.contents = null;
         this.tallModifier = -7;
     }
 
@@ -27,16 +27,16 @@ export class Grail extends ItemInanimate {
     }
 
     interact(player) {
-        if (this.magic) {
+        if (this.contents) {
             this.choose(player);
         }
     }
 
     setMagic(magic) {
         if (!this.animation) this.initAnimations();
-        this.magic = magic;
-        if (this.magic) {
-            switch (this.magic.alignment) {
+        this.contents = magic;
+        if (this.contents) {
+            switch (this.contents.alignment) {
                 case MAGIC_ALIGNMENT.WHITE:
                     this.textObj.style.strokeThickness = 3;
                     this.textObj.filters = [GRAIL_TEXT_WHITE_FILTER];
@@ -57,28 +57,28 @@ export class Grail extends ItemInanimate {
     }
 
     choose(player) {
-        if (this.magic &&
-            ((this.magic.alignment === MAGIC_ALIGNMENT.WHITE && player === Game.player)
-                || (this.magic.alignment === MAGIC_ALIGNMENT.DARK && player === Game.player2)
-                || this.magic.alignment === MAGIC_ALIGNMENT.GRAY)
-            && ((this.magic.constructor.requiredMagic === null && (player.magic3 === null || player.magic2 === null || player.magic1 === null))
-                || player.getMagicByConstructor(this.magic.constructor.requiredMagic) !== null)) {
-            player.giveNewMagic(this.magic);
-            removeItemFromPool(this.magic, Game.magicPool);
+        if (this.contents &&
+            ((this.contents.alignment === MAGIC_ALIGNMENT.WHITE && player === Game.player)
+                || (this.contents.alignment === MAGIC_ALIGNMENT.DARK && player === Game.player2)
+                || this.contents.alignment === MAGIC_ALIGNMENT.GRAY)
+            && ((this.contents.constructor.requiredMagic === null && (player.magic3 === null || player.magic2 === null || player.magic1 === null))
+                || player.getMagicByConstructor(this.contents.constructor.requiredMagic) !== null)) {
+            player.giveNewMagic(this.contents);
+            removeItemFromPool(this.contents, Game.magicPool);
             this.obelisk.deactivate(this);
         }
-        if (this.magic) {
-            if (this.magic.id === EQUIPMENT_ID.NECROMANCY && otherPlayer(player).dead) {
-                this.magic.cast(player);
-                removeItemFromPool(this.magic, Game.magicPool);
+        if (this.contents) {
+            if (this.contents.id === EQUIPMENT_ID.NECROMANCY && otherPlayer(player).dead) {
+                this.contents.cast(player);
+                removeItemFromPool(this.contents, Game.magicPool);
                 this.obelisk.deactivate(this);
             } else {
                 let errorMessage = "";
-                if (this.magic.alignment === MAGIC_ALIGNMENT.DARK && player === Game.player) {
+                if (this.contents.alignment === MAGIC_ALIGNMENT.DARK && player === Game.player) {
                     errorMessage = "I cannot use dark magic";
-                } else if (this.magic.alignment === MAGIC_ALIGNMENT.WHITE && player === Game.player2) {
+                } else if (this.contents.alignment === MAGIC_ALIGNMENT.WHITE && player === Game.player2) {
                     errorMessage = "I cannot use light magic";
-                } else if (this.magic.constructor.requiredMagic !== null && player.getMagicByConstructor(this.magic.constructor.requiredMagic) === null) {
+                } else if (this.contents.constructor.requiredMagic !== null && player.getMagicByConstructor(this.contents.constructor.requiredMagic) === null) {
                     errorMessage = "I don't have a required magic";
                 } else if (player.magic1 !== null && player.magic2 !== null && player.magic3 !== null) {
                     errorMessage = "I have exhausted my magic capacity";
@@ -91,7 +91,7 @@ export class Grail extends ItemInanimate {
     }
 
     onUpdate() {
-        if (this.magic) super.onUpdate();
-        if (this.magic === null) this.filters = [];
+        if (this.contents) super.onUpdate();
+        if (this.contents === null) this.filters = [];
     }
 }
