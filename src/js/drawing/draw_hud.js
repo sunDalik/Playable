@@ -74,7 +74,7 @@ export function redrawHealthForPlayer(player) {
     removeAllChildrenFromContainer(container, true);
     const heartXOffset = player === Game.player ?
         heartBorderOffsetX :
-        Game.app.renderer.screen.width - heartBorderOffsetX - getHealthRowWidth(Game.player2);
+        Game.app.renderer.screen.width - heartBorderOffsetX - getHealthRowWidth(player);
     const healthArray = getHealthArray(player);
     const heartColumnOffset = calculateHeartOffset(Math.max(maxHeartsWithoutShrinking, healthArray.length));
     for (let i = 0; i < healthArray.length; i++) {

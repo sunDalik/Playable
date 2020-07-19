@@ -595,7 +595,14 @@ export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
 export function applyEnchantment(item, enchantmentType) {
     if (item.enchantment !== ENCHANTMENT_TYPE.NONE) return;
     item.enchantment = enchantmentType;
-    item.name = enchantmentType.prefix + " " + item.name;
+
+    // add enchantment's prefix to the item's name
+    // If item's name starts with 'The', then put prefix between 'The' and the rest of the name
+    if (item.name.split(" ")[0].toLowerCase() === "the") {
+        item.name = `The ${enchantmentType.prefix} ${item.name.split(" ").slice(1).join(" ")}`;
+    } else {
+        item.name = `${enchantmentType.prefix} ${item.name}`;
+    }
     switch (enchantmentType) {
         case ENCHANTMENT_TYPE.DIVINE:
             item.atk += 0.5;
