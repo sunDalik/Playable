@@ -355,7 +355,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
         for (const eq of player.getEquipment()) {
             if (eq && eq.onEquipmentDrop) eq.onEquipmentDrop(player, player[slot]);
         }
-        if (equipment.id === EQUIPMENT_ID.TORCH) player[slot] = null;
+        if (player[slot].nonremoveable && equipment.id === EQUIPMENT_ID.TORCH) player[slot] = null;
     }
     const swappedEquipment = player[slot];
     player[slot] = equipment;
