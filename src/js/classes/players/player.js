@@ -54,6 +54,7 @@ export class Player extends AnimatedTileElement {
         this.fireImmunity = 0;
         this.poisonImmunity = 0;
         this.electricityImmunity = 0;
+        this.bombImmunity = 0;
         this.linkedHealing = 0;
         this.charging = false;
         this.chargingMagic = null;

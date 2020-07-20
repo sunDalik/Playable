@@ -67,6 +67,7 @@ import {QuiverOfTheForestSpirit} from "./classes/equipment/accessories/quiver_of
 import {WeaponMasterEmblem} from "./classes/equipment/accessories/weapon_master_emblem";
 import {HeroKey} from "./classes/equipment/accessories/hero_key";
 import {DemonHeart} from "./classes/equipment/one_time/demon_heart";
+import {ExplosiveRage} from "./classes/equipment/magic/explosive_rage";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
@@ -77,7 +78,7 @@ export function regenerateWeaponPool() {
 export function initPools() {
     regenerateWeaponPool();
     Game.magicPool = [Light, SunBlessing, Wind, CrystalWind, CrystalGuardian, DefenseLink, Thunderstorm, EmpyrealWrath,
-        Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape,
+        Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape, ExplosiveRage,
         Necromancy];
     Game.chestItemPool = [FlaskOfFire, QuiverOfTheForestSpirit, WeaponMasterEmblem, HeroKey,
         WoodenShield, SpikyShield, StunningShield, FellStarShield, GoldenShield,

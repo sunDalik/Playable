@@ -17,6 +17,7 @@ export class Equipment {
         this.poisonImmunity = false;
         this.fireImmunity = false;
         this.electricityImmunity = false;
+        this.bombImmunity = false;
 
         this.atk = 0;
 
@@ -39,6 +40,7 @@ export class Equipment {
         if (this.poisonImmunity) wielder.poisonImmunity++;
         if (this.fireImmunity) wielder.fireImmunity++;
         if (this.electricityImmunity) wielder.electricityImmunity++;
+        if (this.bombImmunity) wielder.bombImmunity++;
         wielder.atkBase += this.passiveAtk;
         wielder.defBase += this.passiveDef;
         wielder.magAtkBase += this.passiveMagAtk;
@@ -51,6 +53,7 @@ export class Equipment {
         if (this.poisonImmunity) wielder.poisonImmunity--;
         if (this.fireImmunity) wielder.fireImmunity--;
         if (this.electricityImmunity) wielder.electricityImmunity--;
+        if (this.bombImmunity) wielder.bombImmunity--;
         wielder.atkBase -= this.passiveAtk;
         wielder.defBase -= this.passiveDef;
         wielder.magAtkBase -= this.passiveMagAtk;

@@ -593,7 +593,7 @@ export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
             }
         }
         const player = getPlayerOnTile(posX, posY);
-        if (player) {
+        if (player && player.bombImmunity <= 0) {
             player.damage(playerDamage, sprite, false, true);
         }
         createFadingAttack(sprite, 9);
