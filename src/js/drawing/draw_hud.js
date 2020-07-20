@@ -31,6 +31,7 @@ import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
 import {CommonSpriteSheet} from "../loader";
 import {ENCHANTMENT_TYPE} from "../enums/equipment_modifiers";
+import {getEnchantmentFilters} from "../game_logic";
 
 export function drawHUD() {
     drawHealth();
@@ -196,11 +197,10 @@ export function redrawSlotContents(player, slot) {
             sprite.width = sprite.height = size;
         }
 
-        sprite.filters = [ITEM_OUTLINE_FILTER];
-        if (item.enchantment === ENCHANTMENT_TYPE.DIVINE) {
-            sprite.filters.push(DIVINE_FILTER);
-        } else if (item.enchantment === ENCHANTMENT_TYPE.CURSED) {
-            sprite.filters = [CURSED_FILTER];
+        if (item.enchantment !== ENCHANTMENT_TYPE.NONE) {
+            sprite.filters = getEnchantmentFilters(item.enchantment);
+        } else {
+            sprite.filters = [ITEM_OUTLINE_FILTER];
         }
 
         container.sprite.addChild(sprite);

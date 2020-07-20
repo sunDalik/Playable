@@ -36,7 +36,7 @@ import {
     isObelisk,
     isWallTrap
 } from "./map_checks";
-import {ITEM_OUTLINE_FILTER} from "./filters";
+import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "./filters";
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {randomChoice, randomShuffle} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
@@ -642,5 +642,16 @@ export function randomlyEnchantItem(item) {
         }
 
         if (possibleEnchantments.length !== 0) applyEnchantment(item, randomChoice(possibleEnchantments));
+    }
+}
+
+export function getEnchantmentFilters(enchantmentType) {
+    switch (enchantmentType) {
+        case ENCHANTMENT_TYPE.DIVINE:
+            return [ITEM_OUTLINE_FILTER, DIVINE_FILTER];
+        case ENCHANTMENT_TYPE.CURSED:
+            return [CURSED_FILTER];
+        default:
+            return [];
     }
 }

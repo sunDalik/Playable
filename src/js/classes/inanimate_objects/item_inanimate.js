@@ -7,9 +7,7 @@ import {HUDTextStyle} from "../../drawing/draw_constants";
 import {createFloatingItemAnimation} from "../../animations";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
-import {ENCHANTMENT_TYPE} from "../../enums/equipment_modifiers";
-import {getItemLabelColor} from "../../game_logic";
-import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../../filters";
+import {getEnchantmentFilters, getItemLabelColor} from "../../game_logic";
 
 const itemSize = Game.TILESIZE * 0.9;
 
@@ -49,13 +47,7 @@ export class ItemInanimate extends TileElement {
         this.itemSprite.visible = this.textObj.visible = true;
         this.recalculateSize();
         this.itemSprite.texture = item.texture;
-        if (item.enchantment === ENCHANTMENT_TYPE.DIVINE) {
-            this.itemSprite.filters = [ITEM_OUTLINE_FILTER, DIVINE_FILTER];
-        } else if (item.enchantment === ENCHANTMENT_TYPE.CURSED) {
-            this.itemSprite.filters = [CURSED_FILTER];
-        } else {
-            this.itemSprite.filters = [];
-        }
+        this.itemSprite.filters = getEnchantmentFilters(item.enchantment);
 
         this.textObj.text = item.name;
         this.textObj.style.fill = getItemLabelColor(item);

@@ -11,7 +11,8 @@ import {TileElement} from "./classes/tile_elements/tile_element";
 import {EffectsSpriteSheet, HUDSpriteSheet} from "./loader";
 import {getZIndexForLayer, Z_INDEXES} from "./z_indexing";
 import {getAngleForDirection, setTickTimeout} from "./utils/game_utils";
-import {getItemLabelColor} from "./game_logic";
+import {getEnchantmentFilters, getItemLabelColor} from "./game_logic";
+import {ENCHANTMENT_TYPE} from "./enums/equipment_modifiers";
 
 // the picture is directed to the top left!
 export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {
@@ -412,7 +413,11 @@ export function showHelpBox(item) {
     Game.itemHelp.lineStyle(3, 0xFFFFFF, 0.8, 0);
     Game.itemHelp.drawRoundedRect(0, 0, 550, 120, 6);
     const itemSprite = new PIXI.Sprite(item.texture);
-    itemSprite.filters = [ITEM_OUTLINE_FILTER];
+    if (item.enchantment !== ENCHANTMENT_TYPE.NONE) {
+        itemSprite.filters = getEnchantmentFilters(item.enchantment);
+    } else {
+        itemSprite.filters = [ITEM_OUTLINE_FILTER];
+    }
     itemSprite.width = itemSprite.height = 65;
     const itemOffsetX = 30;
     const topBias = 4;
