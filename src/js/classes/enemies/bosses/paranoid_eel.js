@@ -41,7 +41,7 @@ export class ParanoidEel extends Boss {
         this.sneezeCounter = 3;
         this.currentSneezeCounter = 0;
 
-        this.maxTurnsWithoutDamageReactions = 3;
+        this.maxTurnsWithoutDamageReactions = 4;
         this.turnsWithoutDamageReactions = 0;
 
         this.triggeredEelSpit = false;
@@ -106,7 +106,7 @@ export class ParanoidEel extends Boss {
         if (this.waitingToMove) {
             this.waitingToMove = false;
             if (this.triggeredSpinAttack || this.triggeredPoisonEelSpit || this.triggeredSneezeAttack) this.shake(this.direction.y, this.direction.x);
-            if (this.triggeredHorizontalRush || this.triggeredVerticalRush) this.shake(this.direction.x, this.direction.y);
+            if (this.triggeredHorizontalRush || this.triggeredVerticalRush || this.triggeredStraightPoisonAttack) this.shake(this.direction.x, this.direction.y);
         } else if (this.triggeredStraightPoisonAttack) {
             this.straightPoisonAttack();
             this.triggeredStraightPoisonAttack = false;
@@ -146,7 +146,7 @@ export class ParanoidEel extends Boss {
                 }
             } else if (roll < 7) {
                 if (this.emptyInFront()) {
-                    if (this.canSpawnMinions()) {
+                    if (this.canSpawnMinions(2)) {
                         this.triggeredEelSpit = true;
                         this.currentEelSpitCounter = 0;
                         this.correctLook();
@@ -163,6 +163,7 @@ export class ParanoidEel extends Boss {
             } else if (roll < 14) {
                 if (this.canDoPoisonStraightAttack()) {
                     this.triggeredStraightPoisonAttack = true;
+                    this.waitingToMove = true;
                     this.correctLook();
                     this.shake(this.direction.x, this.direction.y);
                     canMove = false;
@@ -499,9 +500,9 @@ export class ParanoidEel extends Boss {
             if (this.triggeredStraightPoisonAttack || this.triggeredEelSpit || this.triggeredPoisonEelSpit) return;
             let roll = Math.random() * 100;
             if (this.turnsWithoutDamageReactions >= this.maxTurnsWithoutDamageReactions) roll = randomChoice([8, 20]);
-            if (roll < 16) {
+            if (roll < 14) {
                 triggerSpinAttack();
-            } else if (roll < 25) {
+            } else if (roll < 22) {
                 this.triggeredSneezeAttack = true;
                 this.correctLook();
                 if (!Game.afterTurn) this.waitingToMove = true;
@@ -768,8 +769,8 @@ export class ParanoidEel extends Boss {
         return minion;
     }
 
-    canSpawnMinions() {
+    canSpawnMinions(amount = 1) {
         this.minions = this.minions.filter(minion => !minion.dead);
-        return this.minions.length < this.minionsLimit;
+        return this.minions.length + amount <= this.minionsLimit;
     }
 }
