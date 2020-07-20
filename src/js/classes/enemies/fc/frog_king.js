@@ -8,7 +8,7 @@ export class KingFrog extends Frog {
         super(tilePositionX, tilePositionY, texture);
         this.health = this.maxHealth = 3;
         this.type = ENEMY_TYPE.FROG_KING;
-        this.atk = 1.25;
+        this.atk = 1;
         this.setScaleModifier(1.15);
     }
 

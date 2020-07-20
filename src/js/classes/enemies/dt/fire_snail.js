@@ -10,7 +10,7 @@ export class FireSnail extends Snail {
         super(tilePositionX, tilePositionY, texture);
         this.health = this.maxHealth = 4;
         this.type = ENEMY_TYPE.FIRE_SNAIL;
-        this.atk = 1.5;
+        this.atk = 1.25;
     }
 
     createHazard() {

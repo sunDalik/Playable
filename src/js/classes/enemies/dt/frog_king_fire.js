@@ -10,7 +10,7 @@ export class KingFireFrog extends KingFrog {
         super(tilePositionX, tilePositionY, texture);
         this.health = this.maxHealth = 3;
         this.type = ENEMY_TYPE.FROG_KING_FIRE;
-        this.atk = 1.25;
+        this.atk = 1;
     }
 
     attackPlayer(tileX, tileY) {

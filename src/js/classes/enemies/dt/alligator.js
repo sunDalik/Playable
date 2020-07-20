@@ -22,7 +22,7 @@ export class Alligator extends Enemy {
         this.initAlligator();
         this.shooting = false;
         this.shootingDelay = false;
-        this.atk = 1;
+        this.atk = 1.25;
         this.turnDelay = 1;
         this.currentTurnDelay = 0;
         this.triggeredDirection = null;

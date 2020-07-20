@@ -9,14 +9,15 @@ import {
     isEnemy,
     isNotAWall,
     isNotOutOfMap,
-    isRelativelyEmpty, tileInsideTheBossRoom
+    isRelativelyEmpty,
+    tileInsideTheBossRoom
 } from "../../../map_checks";
 import {randomChoice, randomChoiceSeveral} from "../../../utils/random_utils";
 import {get8Directions, get8DirectionsInRadius} from "../../../utils/map_utils";
 import {PoisonHazard} from "../../hazards/poison";
 import {Eel} from "../fc/eel";
 import {PoisonEel} from "../fc/eel_poison";
-import {createEnemyAttackTile, shakeScreen} from "../../../animations";
+import {shakeScreen} from "../../../animations";
 import {DarkEel} from "../fc/eel_dark";
 import {ParanoidEelSpriteSheet} from "../../../loader";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
