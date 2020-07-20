@@ -33,7 +33,7 @@ export class RedStar extends Star {
         this.triggered = false;
         this.attackCardinal();
         this.attackDiagonal();
-        this.turnDelay = 1;
+        this.turnDelay = 2;
     }
 
     updateIntentIcon() {
