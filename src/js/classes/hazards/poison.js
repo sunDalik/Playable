@@ -9,7 +9,7 @@ import {EffectsSpriteSheet} from "../../loader";
 export class PoisonHazard extends Hazard {
     constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
-        this.LIFETIME = 12;
+        this.LIFETIME = 10;
         this.turnsLeft = this.LIFETIME;
         this.type = HAZARD_TYPE.POISON;
         this.actualAtk = 0.5;
@@ -195,6 +195,7 @@ export class PoisonHazard extends Hazard {
 export class DarkPoisonHazard extends PoisonHazard {
     constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = PIXI.Texture.WHITE) {
         super(tilePositionX, tilePositionY, startAt0Atk, texture);
+        this.turnsLeft = this.LIFETIME = 11;
         this.type = HAZARD_TYPE.DARK_POISON;
         this.dark = true;
         this.particleTexture = EffectsSpriteSheet["dark_poison_bubble.png"];

@@ -417,7 +417,7 @@ export class ParanoidEel extends Boss {
     spinAttack() {
         this.currentSpinCounter++;
         this.rotateByAngle(360, 12);
-        const tileSpread = Math.min(this.currentSpinCounter, 3);
+        const tileSpread = Math.round(this.currentSpinCounter / this.spinCounter * 3);
         const poisonDirs = randomChoiceSeveral(get8DirectionsInRadius(tileSpread, true), 3 + Math.min(this.currentSpinCounter, 3));
         for (const dir of poisonDirs) {
             if (isNotOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
