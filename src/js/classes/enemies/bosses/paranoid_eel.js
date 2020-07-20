@@ -25,7 +25,7 @@ import {DAMAGE_TYPE} from "../../../enums/damage_type";
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = ParanoidEelSpriteSheet["paranoid_eel_neutral.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 25;
+        this.health = this.maxHealth = 21;
         this.type = ENEMY_TYPE.PARANOID_EEL;
         this.name = "Paranoid Eel";
         this.atk = 1;
@@ -93,7 +93,7 @@ export class ParanoidEel extends Boss {
             }
         }
         this.minionsLimit = (Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x - 1) *
-            (Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y - 1) * 0.12;
+            (Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y - 1) * 0.1;
     }
 
     move() {

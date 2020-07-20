@@ -11,7 +11,7 @@ import {moveEnemyInDirection} from "../../../enemy_movement_ai";
 export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["mushroom.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 3;
+        this.health = this.maxHealth = 2;
         this.type = ENEMY_TYPE.MUSHROOM;
         this.atk = 1;
         this.poisonDelay = 6; //half of poison hazard lifetime

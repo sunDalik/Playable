@@ -24,8 +24,7 @@ import {DAMAGE_TYPE} from "../../../enums/damage_type";
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = GotLSpriteSheet["gotl_neutral.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.maxHealth = 32;
-        this.health = this.maxHealth;
+        this.health = this.maxHealth = 28;
         this.type = ENEMY_TYPE.GUARDIAN_OF_THE_LIGHT;
         this.atk = 1.5; //??
         this.name = "Guardian of the Light";
@@ -47,11 +46,10 @@ export class GuardianOfTheLight extends Boss {
         this.usedAttacks = [];
         this.canCreateDoom = true;
         this.overallDamage = [];
-        this.scaleModifier = 1.25;
         this.warningBullets = [];
         this.bulletQueue = [];
         this.electricityDelay = 1;
-        this.fitToTile();
+        this.setScaleModifier(1.25);
         this.setOwnZIndex(Z_INDEXES.DARK_TUNNEL_DARKNESS * 2 + 5);
         this.initialTallModifier = this.tallModifier = 20;
         this.initialHeight = this.texture.trim.height;
