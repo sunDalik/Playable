@@ -10,7 +10,7 @@ export class ExplosiveRage extends Magic {
         this.id = EQUIPMENT_ID.EXPLOSIVE_RAGE;
         this.alignment = MAGIC_ALIGNMENT.DARK;
         this.atk = 3;
-        this.uses = this.maxUses = 5;
+        this.uses = this.maxUses = 4;
         this.bombImmunity = true;
         this.name = "Explosive Rage";
         this.description = "Create instant explosion on your tile that deals 3 dmg to enemies and 1 dmg to players\nGain permanent bomb immunity";
