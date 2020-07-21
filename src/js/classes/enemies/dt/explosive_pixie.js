@@ -73,6 +73,14 @@ export class ExplosivePixie extends Enemy {
         }
     }
 
+    revive() {
+        if (super.revive()) {
+            this.texture = DTEnemiesSpriteSheet["explosive_pixie.png"];
+            this.exploding = false;
+            this.explodeDelay = 1;
+        }
+    }
+
     // mb die on setStun??
 
     explode() {
