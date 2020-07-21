@@ -13,6 +13,8 @@ export class Pedestal extends ItemInanimate {
         this.createTextLabel(contents, this.height * 1.6);
         this.initAnimations();
         this.showItem(contents);
+        this.tallModifier = -7;
+        this.place()
     }
 
     interact(player) {
