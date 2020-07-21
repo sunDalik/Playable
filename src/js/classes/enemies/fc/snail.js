@@ -3,7 +3,7 @@ import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {PoisonHazard} from "../../hazards/poison";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../../map_checks";
-import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
 import {randomChoice} from "../../../utils/random_utils";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
@@ -28,8 +28,14 @@ export class Snail extends Enemy {
 
     move() {
         if (this.currentTurnDelay <= 0) {
+
+            //todo use random aggressive AI
             if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
-                const movementOptions = getChasingOptions(this, closestPlayer(this));
+                const initPlayer = closestPlayer(this);
+                let movementOptions = getChasingOptions(this, initPlayer);
+                if (movementOptions.length === 0 && !otherPlayer(initPlayer).dead && tileDistance(this, otherPlayer(initPlayer)) <= this.noticeDistance) {
+                    movementOptions = getChasingOptions(this, otherPlayer(initPlayer));
+                }
                 if (movementOptions.length !== 0) {
                     const dir = randomChoice(movementOptions);
                     const player = getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
@@ -40,7 +46,7 @@ export class Snail extends Enemy {
                         this.createHazard();
                         this.slide(dir.x, dir.y);
                     }
-                } else this.slideBump(Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x), Math.sign(closestPlayer(this).tilePosition.y - this.tilePosition.y));
+                } else this.slideBump(Math.sign(initPlayer.tilePosition.x - this.tilePosition.x), Math.sign(initPlayer.tilePosition.y - this.tilePosition.y));
             } else {
                 const movementOptions = getRelativelyEmptyLitCardinalDirections(this);
                 if (movementOptions.length !== 0) {

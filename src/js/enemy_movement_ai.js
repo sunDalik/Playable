@@ -1,10 +1,11 @@
-import {closestPlayer, tileDistance} from "./utils/game_utils";
+import {closestPlayer, otherPlayer, tileDistance} from "./utils/game_utils";
 import {
     getChasingOptions,
     getDirectionsWithConditions,
     getEmptyCardinalDirections,
     getEmptyRunAwayOptions,
-    getRelativelyEmptyCardinalDirections, getRelativelyEmptyLitCardinalDirections
+    getRelativelyEmptyCardinalDirections,
+    getRelativelyEmptyLitCardinalDirections
 } from "./utils/map_utils";
 import {randomChoice} from "./utils/random_utils";
 import {getPlayerOnTile, isEmpty} from "./map_checks";
@@ -78,10 +79,13 @@ export function soldierAI(enemy, player = closestPlayer(enemy)) {
 }
 
 export function randomAggressiveAI(enemy, noticeDistance) {
-    //todo: if there are multiple closest players and you can't go to one of them you MUST go to the other!!!
-    //maybe you should also go to the other player if it is NOT closest but you can't go to closest
     if (tileDistance(enemy, closestPlayer(enemy)) <= noticeDistance) {
-        const movementOptions = getChasingOptions(enemy, closestPlayer(enemy));
+        const initPlayer = closestPlayer(enemy);
+        let movementOptions = getChasingOptions(enemy, initPlayer);
+        // go after closest player but if you can't, then go after other player if he isn't dead and within the notice distance
+        if (movementOptions.length === 0 && !otherPlayer(initPlayer).dead && tileDistance(enemy, otherPlayer(initPlayer)) <= noticeDistance) {
+            movementOptions = getChasingOptions(enemy, otherPlayer(initPlayer));
+        }
         if (movementOptions.length !== 0) {
             const dir = randomChoice(movementOptions);
             const player = getPlayerOnTile(enemy.tilePosition.x + dir.x, enemy.tilePosition.y + dir.y);
@@ -91,7 +95,7 @@ export function randomAggressiveAI(enemy, noticeDistance) {
             } else {
                 enemy.step(dir.x, dir.y);
             }
-        } else enemy.bump(Math.sign(closestPlayer(enemy).tilePosition.x - enemy.tilePosition.x), Math.sign(closestPlayer(enemy).tilePosition.y - enemy.tilePosition.y));
+        } else enemy.bump(Math.sign(initPlayer.tilePosition.x - enemy.tilePosition.x), Math.sign(initPlayer.tilePosition.y - enemy.tilePosition.y));
     } else {
         const movementOptions = getRelativelyEmptyLitCardinalDirections(enemy);
         if (movementOptions.length !== 0) {
