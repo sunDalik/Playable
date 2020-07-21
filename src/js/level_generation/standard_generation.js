@@ -1,6 +1,6 @@
 import {randomChoice, randomInt, randomShuffle} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
-import {INANIMATE_TYPE, LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums/enums";
+import {EQUIPMENT_TYPE, INANIMATE_TYPE, LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums/enums";
 import {Game} from "../game";
 import {expandLevel} from "./generation_utils";
 import {comboShapers, shapers} from "./room_shapers";
@@ -586,9 +586,18 @@ function placeShop(point, room) {
     level[point.y][point.x].entity = new Shopkeeper(point.x, point.y);
     level[point.y][point.x - 2].entity = new ShopStand(point.x - 2, point.y, new Bomb());
     level[point.y][point.x + 2].entity = new ShopStand(point.x + 2, point.y, new HealingPotion());
-    level[point.y + 1][point.x].entity = new ShopStand(point.x, point.y + 1, getRandomShopItem());
-    level[point.y + 1][point.x + 1].entity = new ShopStand(point.x + 1, point.y + 1, getRandomShopItem());
-    level[point.y + 1][point.x - 1].entity = new ShopStand(point.x - 1, point.y + 1, getRandomShopItem());
+    const shopItems = [getRandomShopItem(), getRandomShopItem()];
+    if (shopItems.every(item => item.equipmentType === EQUIPMENT_TYPE.WEAPON)) {
+        shopItems[2] = getRandomShopItem(false, true);
+    } else if (shopItems.every(item => item.equipmentType !== EQUIPMENT_TYPE.WEAPON)) {
+        shopItems[2] = getRandomShopItem(true, false);
+    } else {
+        shopItems[2] = getRandomShopItem();
+    }
+    randomShuffle(shopItems);
+    level[point.y + 1][point.x].entity = new ShopStand(point.x, point.y + 1, shopItems[0]);
+    level[point.y + 1][point.x + 1].entity = new ShopStand(point.x + 1, point.y + 1, shopItems[1]);
+    level[point.y + 1][point.x - 1].entity = new ShopStand(point.x - 1, point.y + 1, shopItems[2]);
     return true;
 }
 

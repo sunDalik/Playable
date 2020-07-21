@@ -14,7 +14,10 @@ export function getRandomWeapon(canGetS = true) {
     return item;
 }
 
-export function getRandomShopItem() {
+export function getRandomShopItem(forceWeapon = false, forceNonWeapon = false) {
+    if (forceWeapon) return getRandomWeapon(false);
+    if (forceNonWeapon) return getRandomNonWeaponItem(false);
+
     if (Math.random() * (Game.chestItemPool.length + Game.weaponPool.length) < Game.chestItemPool.length) {
         return getRandomNonWeaponItem(false);
     } else {
