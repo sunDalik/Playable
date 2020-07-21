@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import {Game} from "../../game";
 import {canBeFliedOverByBullet, getPlayerOnTile, isAnyWall, isEnemy} from "../../map_checks";
-import {EQUIPMENT_ID, HAZARD_TYPE, STAGE, TILE_TYPE} from "../../enums/enums";
+import {EQUIPMENT_ID, HAZARD_TYPE, INANIMATE_TYPE, SLOT, STAGE, TILE_TYPE} from "../../enums/enums";
 import {lightPlayerPosition} from "../../drawing/lighting";
 import {otherPlayer} from "../../utils/game_utils";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
@@ -126,6 +126,15 @@ export class World extends PIXI.Container {
         Game.map[inanimate.tilePosition.y][inanimate.tilePosition.x].entity = inanimate;
         this.addChild(inanimate);
         Game.inanimates.push(inanimate);
+
+        if (inanimate.type === INANIMATE_TYPE.CHEST) {
+            for (const player of [Game.player, Game.player2]) {
+                if (player && player[SLOT.HEADWEAR] && player[SLOT.HEADWEAR].id === EQUIPMENT_ID.SEER_CIRCLET) {
+                    player[SLOT.HEADWEAR].enableVision(player);
+                    break;
+                }
+            }
+        }
     }
 
     addEnemyViaSummonCircle(enemy, delay) {
