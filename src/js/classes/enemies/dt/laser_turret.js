@@ -48,7 +48,7 @@ export class LaserTurret extends Enemy {
             this.justAttacked = true;
             this.updateTexture();
         } else if (this.currentTurnDelay <= 0) {
-            for (let x = this.directionX; ; x += this.directionX) {
+            for (let x = this.directionX; Math.abs(x) <= 6; x += this.directionX) {
                 if (isAnyWall(this.tilePosition.x + x, this.tilePosition.y)) break;
                 const player = getPlayerOnTile(this.tilePosition.x + x, this.tilePosition.y);
                 if (player) {
