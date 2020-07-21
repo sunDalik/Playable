@@ -131,7 +131,7 @@ export class Obelisk extends TileElement {
             this.grails[0].setMagic(this.magic[0]);
             this.grails[1].setMagic(this.magic[1]);
             this.activated = true;
-            createFadingText("Choose one...", this.position.x, this.position.y);
+            createFadingText("Choose one", this.position.x, this.position.y);
             this.onUpdate();
         }
     }
@@ -141,7 +141,7 @@ export class Obelisk extends TileElement {
             this.working = false;
             this.texture = InanimatesSpriteSheet["obelisk_used.png"];
             this.grails.map(grail => grail.setMagic(null));
-            createFadingText("Goodbye...", this.position.x, this.position.y);
+            createFadingText("Goodbye", this.position.x, this.position.y);
         } else if (this.destroyed) {
             grail.setMagic(null);
         }
@@ -149,18 +149,18 @@ export class Obelisk extends TileElement {
 
     donate(player) {
         if (this.working && this.activated) {
-            if (this.timesDonated < 2) {
+            if (this.timesDonated <= 0) {
                 if (player.health > 1) {
                     player.voluntaryDamage(1);
                     this.timesDonated++;
-                    if (this.timesDonated === 1) this.grails[2].setMagic(this.magic[2]);
-                    else this.grails[3].setMagic(this.magic[3]);
-                    createFadingText("Be blessed...", this.position.x, this.position.y);
+                    this.grails[2].setMagic(this.magic[2]);
+                    this.grails[3].setMagic(this.magic[3]);
+                    createFadingText("Be blessed", this.position.x, this.position.y);
                 } else {
-                    createFadingText("Your offer is fictitious...", this.position.x, this.position.y);
+                    createFadingText("Your offer is fictitious", this.position.x, this.position.y);
                 }
             } else {
-                createFadingText("Choose one...", this.position.x, this.position.y);
+                createFadingText("Choose one", this.position.x, this.position.y);
             }
         }
     }
@@ -203,6 +203,6 @@ export class Obelisk extends TileElement {
                 break;
             }
         }
-        this.icon.visible = this.working && this.activated && this.timesDonated < 2 && playerFound;
+        this.icon.visible = this.working && this.activated && this.timesDonated <= 0 && playerFound;
     }
 }
