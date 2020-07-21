@@ -118,7 +118,6 @@ export const EQUIPMENT_ID = Object.freeze({
     BOOK_OF_THUNDERS: 14,
     BOOK_OF_WEBS: 15,
     BOOK_OF_ICE: 16,
-    DOUBLE_GLAIVE: 17,
     GOLDEN_DAGGER: 18,
     BOOMERAXE: 19,
     PRISMAXE: 20,

@@ -35,7 +35,6 @@ import {OldBalletShoes} from "./classes/equipment/footwear/old_ballet_shoes";
 import {BladeCrown} from "./classes/equipment/headwear/blade_crown";
 import {Crossbow} from "./classes/equipment/weapons/crossbow";
 import {DivineBow} from "./classes/equipment/weapons/divine_bow";
-import {DoubleGlaive} from "./classes/equipment/weapons/double_glaive";
 import {BookOfWebs} from "./classes/equipment/weapons/book_of_webs";
 import {BookOfThunders} from "./classes/equipment/weapons/book_of_thunders";
 import {BookOfIce} from "./classes/equipment/weapons/book_of_ice";
@@ -72,7 +71,7 @@ import {ExplosiveRage} from "./classes/equipment/magic/explosive_rage";
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
     Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
-        PawnSwords, Crossbow, DivineBow, DoubleGlaive, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow];
+        PawnSwords, Crossbow, DivineBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow];
 }
 
 export function initPools() {
