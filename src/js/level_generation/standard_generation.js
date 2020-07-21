@@ -687,7 +687,7 @@ function generateSpecificEnemies() {
 }
 
 function generateSpikyWallTraps() {
-    let spikyWallTrapsAmount = Math.ceil(rooms.length * 1.1);
+    let spikyWallTrapsAmount = Math.round((level[0].length * level.length) * 0.01);
     for (const point of getValidRoomPoints(new Room(0, 0, level[0].length, level.length))) {
         if (spikyWallTrapsAmount <= 0) break;
         if (level[point.y][point.x].tileType === TILE_TYPE.WALL && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
@@ -708,7 +708,7 @@ function generateSpikyWallTraps() {
 }
 
 function generateLaserTurrets() {
-    let laserTurretsAmount = Math.ceil(rooms.length);
+    let laserTurretsAmount = Math.round((level[0].length * level.length) * 0.01);
     for (const point of getValidRoomPoints(new Room(0, 0, level[0].length, level.length))) {
         if (laserTurretsAmount <= 0) break;
         if (level[point.y][point.x].tileType === TILE_TYPE.WALL && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
