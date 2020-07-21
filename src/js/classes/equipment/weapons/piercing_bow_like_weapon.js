@@ -2,6 +2,7 @@ import {Game} from "../../../game";
 import {isAnyWall, isEnemy, isLit} from "../../../map_checks";
 import {createPlayerAttackTile} from "../../../animations";
 import {BowLikeWeapon} from "./bow_like_weapon";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class PiercingBowLikeWeapon extends BowLikeWeapon {
     constructor(texture) {
@@ -11,7 +12,7 @@ export class PiercingBowLikeWeapon extends BowLikeWeapon {
 
     attack(wielder, dirX, dirY) {
         let attacked = false;
-        const enemiesToAttack = [];
+        const enemiesToAttack = [null];
         let lastRange = 1;
         for (let range = 1; range <= this.range; range++) {
             const atkPos = {x: wielder.tilePosition.x + dirX * range, y: wielder.tilePosition.y + dirY * range};
@@ -28,14 +29,11 @@ export class PiercingBowLikeWeapon extends BowLikeWeapon {
         if (!attacked) return false;
         else {
             this.createBowAnimation(wielder, dirX * lastRange, dirY * lastRange);
+            const atkDict = enemiesToAttack.map((e, i) => {
+                return {enemy: e, atk: this.getAtk(wielder, i)};
+            });
+            this.damageEnemies(enemiesToAttack.filter(e => e !== null && e !== undefined), wielder, 0, dirX, dirY, DAMAGE_TYPE.PHYSICAL_WEAPON, atkDict);
             for (let range = 1; range <= lastRange; range++) {
-                if (enemiesToAttack[range] !== null) {
-                    const atk = this.getAtk(wielder, range);
-                    const atkPos = enemiesToAttack[range].tilePosition;
-
-                    // not so nice
-                    this.damageEnemies([Game.map[atkPos.y][atkPos.x].entity], wielder, atk, dirX, dirY);
-                }
                 createPlayerAttackTile({
                     x: wielder.tilePosition.x + dirX * range,
                     y: wielder.tilePosition.y + dirY * range

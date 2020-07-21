@@ -173,7 +173,8 @@ export const EQUIPMENT_ID = Object.freeze({
     EMPYREAL_WRATH: 70,
     DEMON_HEART: 71,
     REROLL_POTION: 72,
-    EXPLOSIVE_RAGE: 73
+    EXPLOSIVE_RAGE: 73,
+    GIANT_SWORD: 74
 });
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});

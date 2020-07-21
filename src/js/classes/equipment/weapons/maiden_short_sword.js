@@ -1,9 +1,11 @@
 import {Game} from "../../../game";
-import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
+import {EQUIPMENT_ID, RARITY, SLOT} from "../../../enums/enums";
 import {isAnyWall, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
+import {ENCHANTMENT_TYPE} from "../../../enums/equipment_modifiers";
 
 export class MaidenShortSword extends Weapon {
     constructor() {
@@ -20,18 +22,20 @@ export class MaidenShortSword extends Weapon {
         //player.voluntaryDamage(0.25);
     }
 
+    // todo if extra maiden dagger is enchanted with divine you should display its attack instead of the weapon attack on the hud
     attack(wielder, tileDirX, tileDirY) {
-        if (wielder.secondHand && wielder.secondHand.id === this.id) {
+        if (wielder[SLOT.EXTRA] && wielder[SLOT.EXTRA].id === this.id) {
             const ATStepX = tileDirX === 0 ? 1 : 0;
             const ATStepY = tileDirY === 0 ? 1 : 0;
-            const enemyDmgValues = [this.atk, this.atk * 2, this.atk];
+            const atkDict = [{enemy: null, atk: this.atk},
+                {enemy: null, atk: this.atk * 2},
+                {enemy: null, atk: this.atk}];
             const playerStepPosition = {x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y + tileDirY};
             const atkPositions = [
                 {x: wielder.tilePosition.x + tileDirX - ATStepX, y: wielder.tilePosition.y + tileDirY - ATStepY},
                 {x: wielder.tilePosition.x + tileDirX, y: wielder.tilePosition.y + tileDirY},
                 {x: wielder.tilePosition.x + tileDirX + ATStepX, y: wielder.tilePosition.y + tileDirY + ATStepY}];
             let foundEnemy = false;
-            const enemiesToAttack = [];
             for (let i = 0; i < atkPositions.length; i++) {
                 const atkPos = atkPositions[i];
                 if (isEnemy(atkPos.x, atkPos.y)) {
@@ -44,12 +48,12 @@ export class MaidenShortSword extends Weapon {
                         } else {
                             entity.bump(tileDirX, tileDirY);
                             if (isAnyWall(atkPos.x + tileDirX, atkPos.y + tileDirY)) {
-                                enemyDmgValues[i]++;
+                                atkDict[i].atk++;
                             }
                         }
                     }
-                    enemiesToAttack.push(entity);
-                } else enemiesToAttack.push(null);
+                    atkDict[i].enemy = entity;
+                }
             }
 
             if (!foundEnemy) return false;
@@ -63,11 +67,14 @@ export class MaidenShortSword extends Weapon {
                 135, {x: 1, y: 0}, 1, amplitude / 2 + 30);
             createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 10, amplitude, 1.15,
                 135, {x: 1, y: 0}, -1, amplitude / 2 + 30);
-            for (let i = 0; i < enemiesToAttack.length; i++) {
-                if (enemiesToAttack[i] === null) continue;
-                // not so nice
-                this.damageEnemies([enemiesToAttack[i]], wielder, wielder.getAtk(this, enemyDmgValues[i]), tileDirX, tileDirY);
-            }
+
+
+            // if second maiden's dagger is enchanted with divine call atk method on them instead
+            let weapon = this;
+            if (wielder[SLOT.EXTRA].enchantment === ENCHANTMENT_TYPE.DIVINE) weapon = wielder[SLOT.EXTRA];
+
+            weapon.damageEnemies(atkDict.filter(entry => entry.enemy !== null).map(entry => entry.enemy),
+                wielder, 0, tileDirX, tileDirY, DAMAGE_TYPE.PHYSICAL_WEAPON, atkDict);
             for (const attackTile of atkPositions) {
                 createPlayerAttackTile(attackTile);
             }

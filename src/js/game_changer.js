@@ -67,11 +67,12 @@ import {WeaponMasterEmblem} from "./classes/equipment/accessories/weapon_master_
 import {HeroKey} from "./classes/equipment/accessories/hero_key";
 import {DemonHeart} from "./classes/equipment/one_time/demon_heart";
 import {ExplosiveRage} from "./classes/equipment/magic/explosive_rage";
+import {GiantSword} from "./classes/equipment/weapons/giant_sword";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
     Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
-        PawnSwords, Crossbow, DivineBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow];
+        PawnSwords, Crossbow, DivineBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow, GiantSword];
 }
 
 export function initPools() {

@@ -16,12 +16,18 @@ export class Weapon extends Equipment {
 
     attack(wielder, tileDirX, tileDirY) {}
 
-    damageEnemies(enemies, wielder, atk, dirX, dirY, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
+    // atkDict = [{enemy: enemy, atk: atk}]
+    damageEnemies(enemies, wielder, atk, dirX, dirY, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON, atkDict = undefined) {
         const enemyTiles = enemies.map(enemy => {
             return {x: enemy.tilePosition.x, y: enemy.tilePosition.y};
         });
         for (const enemy of enemies) {
-            enemy.damage(wielder, atk, dirX, dirY, damageType);
+            let actualAtk = atk;
+            if (atkDict) {
+                const entry = atkDict.find(entry => entry && entry.enemy === enemy);
+                if (entry) actualAtk = entry.atk;
+            }
+            enemy.damage(wielder, actualAtk, dirX, dirY, damageType);
 
             // flask of fire damage
             if (wielder[SLOT.ACCESSORY] && wielder[SLOT.ACCESSORY].id === EQUIPMENT_ID.FLASK_OF_FIRE) {
