@@ -68,6 +68,7 @@ import {HeroKey} from "./classes/equipment/accessories/hero_key";
 import {DemonHeart} from "./classes/equipment/one_time/demon_heart";
 import {ExplosiveRage} from "./classes/equipment/magic/explosive_rage";
 import {GiantSword} from "./classes/equipment/weapons/giant_sword";
+import {KnightBoots} from "./classes/equipment/footwear/knight_boots";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
@@ -84,7 +85,7 @@ export function initPools() {
         WoodenShield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, BladeCrown,
         LeatherArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,
-        AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes, PossessedSandals,
+        AdventurerBoots, DamagingBoots, DarkBoots, OldBalletShoes, PossessedSandals, KnightBoots,
         DemonHeart, LifeFruit, HeartShapedKey, VialOfIchor];
 }
 
