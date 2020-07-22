@@ -629,7 +629,7 @@ export function createSpikeAnimation(origin, offsetX, offsetY, color = 0xffffff,
         if (Game.paused) return;
         counter += delta;
         if (counter < animationTime / 2) {
-            attack.width += widthStep;
+            attack.width = widthStep * counter;
         } else if (counter < animationTime / 2 + delay) {
             attack.width = widthStep * animationTime / 2;
         } else if (counter >= animationTime / 2 + delay) {
