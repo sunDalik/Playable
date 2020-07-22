@@ -59,6 +59,9 @@ export class Equipment {
         wielder.magAtkBase -= this.passiveMagAtk;
     }
 
+    //executes BEFORE enemy turn
+    onPlayerTurnEnd(wielder) {}
+
     //executes AFTER enemy turn
     onNewTurn(wielder) {}
 

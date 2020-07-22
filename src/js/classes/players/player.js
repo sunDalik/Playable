@@ -528,6 +528,13 @@ export class Player extends AnimatedTileElement {
         return false;
     }
 
+    beforeEnemyTurn() {
+        if (this.dead) return;
+        for (const eq of this.getEquipment()) {
+            if (eq && eq.onPlayerTurnEnd) eq.onPlayerTurnEnd(this);
+        }
+    }
+
     afterEnemyTurn() {
         if (this.dead) return false;
         this.shielded = false;

@@ -62,6 +62,8 @@ export function setEnemyTurnTimeout() {
 }
 
 function enemyTurn() {
+    Game.player.beforeEnemyTurn();
+    Game.player2.beforeEnemyTurn();
     Game.enemiesTimeout = null;
     drawInteractionKeys();
     callDelayedMethods(); //delay isn't perfect yeah
