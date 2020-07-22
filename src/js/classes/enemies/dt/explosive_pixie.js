@@ -81,8 +81,6 @@ export class ExplosivePixie extends Enemy {
         }
     }
 
-    // mb die on setStun??
-
     explode() {
         explode(this.tilePosition.x, this.tilePosition.y, 2, 1);
         this.die();
@@ -101,6 +99,19 @@ export class ExplosivePixie extends Enemy {
         this.texture = DTEnemiesSpriteSheet["explosive_pixie_exploding.png"];
         this.exploding = true;
         this.shake(1, 0);
+        if (this.stun > 0) {
+            this.stun = 0;
+            this.updateIntentIcon();
+        }
+    }
+
+    setStun(stun) {
+        if (!this.exploding) {
+            super.setStun(stun);
+        } else {
+            this.stun = 0;
+            this.updateIntentIcon();
+        }
     }
 
     setRandomColor() {
