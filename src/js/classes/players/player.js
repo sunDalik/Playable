@@ -26,6 +26,7 @@ import {redrawMiniMapPixel} from "../../drawing/minimap";
 import {CrystalGuardian} from "../equipment/magic/crystal_guardian";
 import {roundToQuarter} from "../../utils/math_utils";
 import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../utils/map_utils";
+import {DAMAGE_TYPE} from "../../enums/damage_type";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -298,6 +299,9 @@ export class Player extends AnimatedTileElement {
                 let dmg = atk - this.getDef();
                 if (dmg < 0.25) dmg = 0.25;
                 this.health -= dmg;
+                if (directHit && this[SLOT.ARMOR] && this[SLOT.ARMOR].id === EQUIPMENT_ID.THORNS_ARMOR && source && source.damage) {
+                    source.damage(this, atk * 3, 0, 0, DAMAGE_TYPE.HAZARDAL);
+                }
                 Game.bossNoDamage = false;
                 if (this.health <= 0) {
                     this.health = 0;
