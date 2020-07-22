@@ -177,7 +177,8 @@ export const EQUIPMENT_ID = Object.freeze({
     GIANT_SWORD: 73,
     KNIGHT_BOOTS: 74,
     HEART_COOKIE: 75,
-    MUSHROOM_GREAVES: 76
+    MUSHROOM_GREAVES: 76,
+    RING_OF_PROTECTION: 77
 });
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});

@@ -71,6 +71,7 @@ import {GiantSword} from "./classes/equipment/weapons/giant_sword";
 import {KnightBoots} from "./classes/equipment/footwear/knight_boots";
 import {HeartCookie} from "./classes/equipment/one_time/heart_cookie";
 import {MushroomGreaves} from "./classes/equipment/footwear/mushroom_greaves";
+import {RingOfProtection} from "./classes/equipment/accessories/ring_of_protection";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
@@ -83,7 +84,7 @@ export function initPools() {
     Game.magicPool = [Light, SunBlessing, Wind, CrystalWind, CrystalGuardian, DefenseLink, Thunderstorm, EmpyrealWrath,
         Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape, ExplosiveRage,
         Necromancy];
-    Game.chestItemPool = [FlaskOfFire, QuiverOfTheForestSpirit, WeaponMasterEmblem, HeroKey,
+    Game.chestItemPool = [FlaskOfFire, QuiverOfTheForestSpirit, WeaponMasterEmblem, RingOfProtection, HeroKey,
         WoodenShield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, BladeCrown,
         LeatherArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,
