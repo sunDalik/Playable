@@ -61,6 +61,8 @@ export class LizardWarrior extends Enemy {
                 this.slide(this.attackDirection.x, this.attackDirection.y, null, () => this.shake(0.7, 0));
             }
             this.animateSwordBottom(this.attackDirection);
+            this.triggeredForwardPierce = true;
+            this.texture = RUEnemiesSpriteSheet["lizard_warrior_triggered_forward_pierce.png"];
             for (const attackTile of [{x: this.attackDirection.x, y: 0},
                 {x: this.attackDirection.x, y: -1},
                 {x: this.attackDirection.x, y: 1}]) {
@@ -70,8 +72,6 @@ export class LizardWarrior extends Enemy {
                     else player.damage(this.atk, this, false, true);
                 }
             }
-            this.triggeredForwardPierce = true;
-            this.texture = RUEnemiesSpriteSheet["lizard_warrior_triggered_forward_pierce.png"];
         } else if (this.triggeredForwardPierce) {
             this.triggeredForwardPierce = false;
             this.texture = RUEnemiesSpriteSheet["lizard_warrior_after_attack.png"];
