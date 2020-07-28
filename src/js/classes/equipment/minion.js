@@ -14,6 +14,7 @@ export class Minion extends AnimatedTileElement {
         this.stepping = true;
         this.setOwnZIndex(Z_INDEXES.ENEMY + 1);
         this.attackedEnemies = [];
+        Game.world.removeChild(this.shadow);
     }
 
     attack(summonItem) {
@@ -45,7 +46,7 @@ export class Minion extends AnimatedTileElement {
 
     correctScale(stepDirection) {
         if (stepDirection.x !== 0) {
-            this.scale.x = Math.abs(this.scale.x) * stepDirection.x;
+            this.scale.x = Math.abs(this.scale.x) * Math.sign(stepDirection.x);
         }
     }
 
@@ -56,12 +57,17 @@ export class Minion extends AnimatedTileElement {
         };
     }
 
+    correctTilePosition() {
+        this.regenerateShadow();
+        this.setTilePosition(this.wielder.tilePosition.x + this.offset.x, this.wielder.tilePosition.y + this.offset.y);
+    }
+
     activate(wielder, startingPoint = wielder.tilePosition) {
         this.wielder = wielder;
         this.offset = this.getOffset(startingPoint);
         if (this.offset) {
             Game.world.addChild(this);
-            this.setTilePosition(this.wielder.tilePosition.x + this.offset.x, this.wielder.tilePosition.y + this.offset.y);
+            this.correctTilePosition();
         } else {
             this.deactivate();
         }
@@ -70,7 +76,6 @@ export class Minion extends AnimatedTileElement {
     removeFromMap() {}
 
     placeOnMap() {}
-
 
     getOffset(startingPoint) {
         const freeSpot = this.findFreeSpot(startingPoint.x, startingPoint.y);
@@ -146,5 +151,6 @@ export class Minion extends AnimatedTileElement {
     deactivate() {
         Game.world.removeChild(this);
         this.wielder = null;
+        Game.world.removeChild(this.shadow);
     }
 }

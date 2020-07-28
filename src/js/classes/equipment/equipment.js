@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import {EQUIPMENT_ID, RARITY} from "../../enums/enums";
 import {ENCHANTMENT_TYPE} from "../../enums/equipment_modifiers";
+import {Game} from "../../game";
 
 export class Equipment {
     constructor() {
@@ -114,7 +115,12 @@ export class Equipment {
     }
 
     //executes at the start of every new level
-    onNextLevel(wielder) {}
+    onNextLevel(wielder) {
+        for (const minion of this.minions) {
+            Game.world.addChild(minion);
+            minion.correctTilePosition();
+        }
+    }
 
     //executes whenever wielder receives new equipment (this one included)
     onEquipmentReceive(wielder, equipment) {}

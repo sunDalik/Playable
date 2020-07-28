@@ -25,7 +25,7 @@ class DogStaffMinion extends Minion {
 
     correctScale(stepDirection) {
         if (stepDirection.x !== 0) {
-            this.scale.x = Math.abs(this.scale.x) * stepDirection.x * -1;
+            this.scale.x = Math.abs(this.scale.x) * Math.sign(stepDirection.x) * -1;
         }
     }
 }
