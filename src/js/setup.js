@@ -174,6 +174,8 @@ export function initializeLevel() {
     setTimerRunning(false);
 
     swapEquipmentWithPlayer(Game.player, new DogStaff());
+    Game.player.useSecondHand();
+    swapEquipmentWithPlayer(Game.player, new DogStaff());
 }
 
 function initPlayers() {

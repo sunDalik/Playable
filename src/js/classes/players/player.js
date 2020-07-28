@@ -38,6 +38,7 @@ export class Player extends AnimatedTileElement {
         this.defBase = 0;
         this.defMul = 1;
         this.magAtkBase = 0;
+        this.minionAtkBase = 0;
         this.SLIDE_ANIMATION_TIME = 8;
         this.SLIDE_BUMP_ANIMATION_TIME = 10;
         this.role = ROLE.PLAYER;
@@ -161,6 +162,7 @@ export class Player extends AnimatedTileElement {
     }
 
     getAtk(weapon, presetAtk = 0) {
+        if (weapon && weapon.isMinionStaff) return this.getMinionAtk(weapon);
         if (weapon === null && presetAtk === 0) return 0;
         let atkBase = presetAtk !== 0 ? presetAtk : weapon.atk;
         atkBase = roundToQuarter(atkBase);
@@ -176,6 +178,13 @@ export class Player extends AnimatedTileElement {
             }
         }
         return roundToQuarter(atkBase * multiplier);
+    }
+
+    getMinionAtk(minionStaff) {
+        let atk = minionStaff.atk + this.minionAtkBase;
+        if (minionStaff === this[SLOT.WEAPON]
+            || (this[SLOT.WEAPON] && this[SLOT.WEAPON].id === minionStaff.id)) atk *= 2;
+        return atk;
     }
 
     getDef() {

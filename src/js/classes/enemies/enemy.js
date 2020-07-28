@@ -141,6 +141,7 @@ export class Enemy extends AnimatedTileElement {
         }
         this.dead = true;
         this.removeFromMap();
+        this.runDestroyAnimation();
         this.cancelAnimation();
         if (this.animation) Game.app.ticker.remove(this.animation);
         this.visible = false;
@@ -155,7 +156,6 @@ export class Enemy extends AnimatedTileElement {
             dropItem(this.drop, this.tilePosition.x, this.tilePosition.y);
             this.drop = null;
         }
-        this.runDestroyAnimation();
         Game.world.removeChild(this.shadow);
         this.shadow = null;
         if (this.isMinion) removeObjectFromArray(this, Game.enemies);

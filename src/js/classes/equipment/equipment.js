@@ -33,6 +33,9 @@ export class Equipment {
         this.nonremoveable = false;
 
         this.enchantment = ENCHANTMENT_TYPE.NONE;
+
+        //every equipment can have its own minions
+        this.minions = [];
     }
 
     //executes when wielder picks up this item
@@ -46,6 +49,10 @@ export class Equipment {
         wielder.magAtkBase += this.passiveMagAtk;
 
         if (this.enchantment === ENCHANTMENT_TYPE.CURSED) wielder.addHealthContainers(2);
+
+        for (const minion of this.minions) {
+            minion.activate(wielder);
+        }
     }
 
     //executes when wielder drops this item
@@ -57,16 +64,34 @@ export class Equipment {
         wielder.atkBase -= this.passiveAtk;
         wielder.defBase -= this.passiveDef;
         wielder.magAtkBase -= this.passiveMagAtk;
+
+        for (const minion of this.minions) {
+            minion.deactivate();
+        }
     }
 
     //executes BEFORE enemy turn
-    onPlayerTurnEnd(wielder) {}
+    onPlayerTurnEnd(wielder) {
+        for (const minion of this.minions) {
+            minion.attack(this);
+        }
+    }
 
     //executes AFTER enemy turn
-    onNewTurn(wielder) {}
+    onNewTurn(wielder) {
+        for (const minion of this.minions) {
+            minion.attack(this);
+            minion.resetAttackedEnemies();
+        }
+    }
 
     //executes AFTER wielder changes its tilePosition (does step or slide)
-    onMove(wielder, tileStepX, tileStepY) {}
+    onMove(wielder, tileStepX, tileStepY) {
+        for (const minion of this.minions) {
+            //minion.attack();
+            minion.move();
+        }
+    }
 
     //executes after wielder attacks (double attacks don't count... or should they?)
     afterAttack(wielder, dirX, dirY) {}
@@ -75,10 +100,18 @@ export class Equipment {
     onKill(wielder, enemy) {}
 
     //executes when the wielder dies
-    onDeath(wielder) {}
+    onDeath(wielder) {
+        for (const minion of this.minions) {
+            minion.deactivate();
+        }
+    }
 
     //executes whenever the wielder is revived with necromancy
-    onRevive(wielder) {}
+    onRevive(wielder) {
+        for (const minion of this.minions) {
+            minion.activate(wielder);
+        }
+    }
 
     //executes at the start of every new level
     onNextLevel(wielder) {}
