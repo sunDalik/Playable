@@ -24,7 +24,6 @@ export class Boss extends Enemy {
         this.phases = 1;
         this.currentPhase = 1;
         this.drops = [];
-        this.assignRandomDrops();
         Game.boss = this;
         Game.world.removeChild(this.healthContainer);
     }
@@ -80,6 +79,11 @@ export class Boss extends Enemy {
             deactivateBossMode();
             if (Game.bossNoDamage) this.spawnRewards(2);
             else this.spawnRewards(1);
+
+            const healingPotionsAmount = Game.player.dead || Game.player2.dead ? randomInt(1, 2) : randomInt(2, 3);
+            for (let i = 0; i < healingPotionsAmount; i++) {
+                this.drops.push(new HealingPotion());
+            }
             for (const drop of this.drops) {
                 dropItem(drop, this.tilePosition.x, this.tilePosition.y);
             }
@@ -123,13 +127,6 @@ export class Boss extends Enemy {
                 }
                 break;
             }
-        }
-    }
-
-    assignRandomDrops() {
-        const healingPotionsAmount = randomInt(2, 3);
-        for (let i = 0; i < healingPotionsAmount; i++) {
-            this.drops.push(new HealingPotion());
         }
     }
 }
