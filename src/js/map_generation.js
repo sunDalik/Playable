@@ -14,7 +14,7 @@ export function assignDrops() {
     distributeDrops(Key, keysOnEnemies);
     distributeDrops(Bomb, randomInt(4, 5));
     distributeDrops(HealingPotion, randomInt(2, 3));
-    if (Math.random() < 0.1) distributeDrops(RerollPotion, 1);
+    if (Math.random() < 0.15) distributeDrops(RerollPotion, 1);
 
     if (Game.stage === STAGE.RUINS) {
         if (Math.random() < 0.5) {

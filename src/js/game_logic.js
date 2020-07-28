@@ -634,12 +634,12 @@ export function getItemLabelColor(item) {
 
 export function randomlyEnchantItem(item) {
     if (!item) return;
-    if (Math.random() < 0.01) {
+    if (Math.random() < 0.018) {
         const possibleEnchantments = [];
         if ([EQUIPMENT_TYPE.WEAPON, EQUIPMENT_TYPE.ACCESSORY, EQUIPMENT_TYPE.HEAD, EQUIPMENT_TYPE.ARMOR, EQUIPMENT_TYPE.FOOT, EQUIPMENT_TYPE.SHIELD].includes(item.equipmentType)) {
             possibleEnchantments.push(ENCHANTMENT_TYPE.CURSED);
         }
-        if (item.equipmentType === EQUIPMENT_TYPE.WEAPON) {
+        if (item.equipmentType === EQUIPMENT_TYPE.WEAPON && !item.isMinionStaff) {
             possibleEnchantments.push(ENCHANTMENT_TYPE.DIVINE);
         }
 

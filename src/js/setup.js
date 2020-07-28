@@ -26,7 +26,6 @@ import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
 import {WhitePlayer} from "./classes/players/player_white";
 import {BlackPlayer} from "./classes/players/player_black";
-import {DogStaff} from "./classes/equipment/weapons/dog_staff";
 
 PIXI.utils.skipHello();
 initLocalStorage();
@@ -172,10 +171,6 @@ export function initializeLevel() {
         camera.setup(Game.world.width / 2, Game.world.height / 2);
     }
     setTimerRunning(false);
-
-    swapEquipmentWithPlayer(Game.player, new DogStaff());
-    Game.player.useSecondHand();
-    swapEquipmentWithPlayer(Game.player, new DogStaff());
 }
 
 function initPlayers() {
