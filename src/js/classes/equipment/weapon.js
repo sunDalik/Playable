@@ -7,6 +7,7 @@ import {isEnemy} from "../../map_checks";
 import {Game} from "../../game";
 import {createPlayerAttackTile, createSmallOffsetParticle} from "../../animations";
 import {EffectsSpriteSheet} from "../../loader";
+import {NightmareMinion} from "./nightmare_minion";
 
 export class Weapon extends Equipment {
     constructor() {
@@ -54,7 +55,16 @@ export class Weapon extends Equipment {
         }
 
         if (this.enchantment === ENCHANTMENT_TYPE.NIGHTMARE) {
-
+            for (const enemy of enemies) {
+                if (!enemy.isMinion && enemy.dead) {
+                    const minionAmount = enemy.boss ? 15 : Math.max(1, Math.floor(enemy.maxHealth));
+                    for (let i = 0; i < minionAmount; i++) {
+                        const minion = new NightmareMinion();
+                        this.minions.push(minion);
+                        minion.activate(wielder, enemy.tilePosition);
+                    }
+                }
+            }
         }
     }
 }

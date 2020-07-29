@@ -182,8 +182,10 @@ export class Player extends AnimatedTileElement {
 
     getMinionAtk(minionStaff) {
         let atk = minionStaff.atk + this.minionAtkBase;
-        if (minionStaff === this[SLOT.WEAPON]
-            || (this[SLOT.WEAPON] && this[SLOT.WEAPON].id === minionStaff.id)) atk *= 2;
+        if (minionStaff.isMinionStaff
+            && (minionStaff === this[SLOT.WEAPON] || (this[SLOT.WEAPON] && this[SLOT.WEAPON].id === minionStaff.id))) {
+            atk *= 2;
+        }
         return atk;
     }
 

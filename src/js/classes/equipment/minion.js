@@ -25,8 +25,10 @@ export class Minion extends AnimatedTileElement {
             if (!this.attackedEnemies.includes(enemy)) {
                 enemy.damage(this.wielder, atk, 0, 0, DAMAGE_TYPE.HAZARDAL);
                 this.attackedEnemies.push(enemy);
+                return true;
             }
         }
+        return false;
     }
 
     resetAttackedEnemies() {

@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import {Game} from "./game";
 import {camera} from "./classes/game/camera";
 import {loadAll} from "./loader";
-import {ACHIEVEMENT_ID, GAME_STATE, SLOT, STAGE, STORAGE, TILE_TYPE} from "./enums/enums";
+import {ACHIEVEMENT_ID, GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums/enums";
 import {generateLevel} from "./level_generation/level_generation";
 import {assignDrops} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
@@ -13,7 +13,7 @@ import {bindKeys} from "./keyboard/keyboard_binds";
 import {HUD} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8Directions, get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
-import {applyEnchantment, cleanGameState, kiss, swapEquipmentWithPlayer} from "./game_logic";
+import {cleanGameState, kiss, swapEquipmentWithPlayer} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";
@@ -26,7 +26,6 @@ import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
 import {WhitePlayer} from "./classes/players/player_white";
 import {BlackPlayer} from "./classes/players/player_black";
-import {ENCHANTMENT_TYPE} from "./enums/enchantments";
 
 PIXI.utils.skipHello();
 initLocalStorage();
@@ -179,7 +178,6 @@ function initPlayers() {
     Game.player2 = new BlackPlayer(1, 1);
     Game.primaryPlayer = Game.player;
     Game.lastPlayerMoved = Game.player;
-    applyEnchantment(Game.player[SLOT.WEAPON], ENCHANTMENT_TYPE.NIGHTMARE)
 }
 
 export function retry() {
