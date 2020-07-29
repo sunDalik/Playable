@@ -12,6 +12,7 @@ export class Minion extends AnimatedTileElement {
         this.wielder = null;
         this.offset = {x: 1, y: 1};
         this.stepping = true;
+        this.temporary = false;
         this.setOwnZIndex(Z_INDEXES.ENEMY + 1);
         this.attackedEnemies = [];
         Game.world.removeChild(this.shadow);
@@ -139,11 +140,19 @@ export class Minion extends AnimatedTileElement {
         return null;
     }
 
+    // destroys temporary minions O_O
     areAnyMinions(tileX, tileY) {
         for (const item of this.wielder.getEquipment()) {
             if (item && item.minions) {
                 for (const minion of item.minions) {
-                    if (minion.tilePosition.x === tileX && minion.tilePosition.y === tileY) return true;
+                    if (minion.tilePosition.x === tileX && minion.tilePosition.y === tileY) {
+                        if (minion.temporary && !this.temporary) {
+                            minion.die(item);
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
                 }
             }
         }
@@ -154,5 +163,9 @@ export class Minion extends AnimatedTileElement {
         Game.world.removeChild(this);
         this.wielder = null;
         Game.world.removeChild(this.shadow);
+    }
+
+    // permanent minions don't die
+    die() {
     }
 }

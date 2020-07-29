@@ -9,6 +9,7 @@ export class NightmareMinion extends Minion {
         this.stepping = false;
         this.removeShadow();
         this.alpha = 0.7;
+        this.temporary = true;
         this.fadingDestructionParticles = true;
     }
 
