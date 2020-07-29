@@ -52,5 +52,9 @@ export class Weapon extends Equipment {
                 }
             }
         }
+
+        if (this.enchantment === ENCHANTMENT_TYPE.NIGHTMARE) {
+
+        }
     }
 }

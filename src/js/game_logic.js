@@ -36,7 +36,7 @@ import {
     isObelisk,
     isWallTrap
 } from "./map_checks";
-import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "./filters";
+import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER, NIGHTMARE_FILTER_1, NIGHTMARE_FILTER_2} from "./filters";
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {randomChoice, randomShuffle} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
@@ -626,14 +626,20 @@ export function applyEnchantment(item, enchantmentType) {
     }
 }
 
+//todo put color info into enchantment enum?
 export function getItemLabelColor(item) {
     if (item.enchantment === ENCHANTMENT_TYPE.DIVINE) return 0x5ff0f0;
     else if (item.enchantment === ENCHANTMENT_TYPE.CURSED) return 0xea4155;
+    else if (item.enchantment === ENCHANTMENT_TYPE.NIGHTMARE) return 0x7b77a8;
     else return item.rarity.color;
 }
 
 export function randomlyEnchantItem(item) {
     if (!item) return;
+    if (item.equipmentType === EQUIPMENT_TYPE.WEAPON && !item.isMinionStaff) {
+        applyEnchantment(item, ENCHANTMENT_TYPE.NIGHTMARE);
+        return;
+    }
     if (Math.random() < 0.018) {
         const possibleEnchantments = [];
         if ([EQUIPMENT_TYPE.WEAPON, EQUIPMENT_TYPE.ACCESSORY, EQUIPMENT_TYPE.HEAD, EQUIPMENT_TYPE.ARMOR, EQUIPMENT_TYPE.FOOT, EQUIPMENT_TYPE.SHIELD].includes(item.equipmentType)) {
@@ -641,6 +647,7 @@ export function randomlyEnchantItem(item) {
         }
         if (item.equipmentType === EQUIPMENT_TYPE.WEAPON && !item.isMinionStaff) {
             possibleEnchantments.push(ENCHANTMENT_TYPE.DIVINE);
+            possibleEnchantments.push(ENCHANTMENT_TYPE.NIGHTMARE);
         }
 
         if (possibleEnchantments.length !== 0) applyEnchantment(item, randomChoice(possibleEnchantments));
@@ -653,6 +660,8 @@ export function getEnchantmentFilters(enchantmentType) {
             return [ITEM_OUTLINE_FILTER, DIVINE_FILTER];
         case ENCHANTMENT_TYPE.CURSED:
             return [CURSED_FILTER];
+        case ENCHANTMENT_TYPE.NIGHTMARE:
+            return [NIGHTMARE_FILTER_1, NIGHTMARE_FILTER_2];
         default:
             return [];
     }

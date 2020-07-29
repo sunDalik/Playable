@@ -125,3 +125,17 @@ DIVINE_FILTER.resolution = 2;
 export const CURSED_FILTER = new OutlineFilter(2, 0xea4155);
 CURSED_FILTER.padding = 3;
 CURSED_FILTER.resolution = 2;
+
+export const NIGHTMARE_FILTER_1 = new OutlineFilter(2, 0x7b77a8);
+NIGHTMARE_FILTER_1.padding = 2;
+NIGHTMARE_FILTER_1.resolution = 2;
+
+export const NIGHTMARE_FILTER_2 = new GlowFilter({
+    distance: 7,
+    outerStrength: 2,
+    innerStrength: 0,
+    color: 0x7b77a8,
+    quality: 0.3
+});
+NIGHTMARE_FILTER_2.padding = 7;
+NIGHTMARE_FILTER_2.resolution = 2;
