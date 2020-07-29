@@ -183,7 +183,8 @@ export const EQUIPMENT_ID = Object.freeze({
     CROSSBOW_GLOVE: 79,
     DOG_STAFF: 80,
     KITSUNE_MASK: 81,
-    CACTI_STAFF: 82
+    CACTI_STAFF: 82,
+    WHISTLE: 83
 });
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});

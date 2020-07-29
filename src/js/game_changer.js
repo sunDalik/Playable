@@ -77,6 +77,7 @@ import {CrossbowGlove} from "./classes/equipment/accessories/crossbow_glove";
 import {DogStaff} from "./classes/equipment/weapons/dog_staff";
 import {KitsuneMask} from "./classes/equipment/headwear/kitsune_mask";
 import {CactiStaff} from "./classes/equipment/weapons/cacti_staff";
+import {Whistle} from "./classes/equipment/accessories/whistle";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
@@ -89,7 +90,7 @@ export function initPools() {
     Game.magicPool = [Light, SunBlessing, Wind, CrystalWind, CrystalGuardian, DefenseLink, Thunderstorm, EmpyrealWrath,
         Spikes, VampireSpikes, InfernalSpikes, AbyssalSpit, Immortality, Transcendence, AttackLink, Escape, ExplosiveRage,
         Necromancy];
-    Game.chestItemPool = [FlaskOfFire, RingOfProtection, QuiverOfTheForestSpirit, WeaponMasterEmblem, HeroKey, CrossbowGlove,
+    Game.chestItemPool = [Whistle, FlaskOfFire, RingOfProtection, QuiverOfTheForestSpirit, WeaponMasterEmblem, HeroKey, CrossbowGlove,
         WoodenShield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, KitsuneMask, BladeCrown,
         LeatherArmor, ThornsArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,
