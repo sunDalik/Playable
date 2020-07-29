@@ -181,7 +181,8 @@ export class Player extends AnimatedTileElement {
     }
 
     getMinionAtk(minionStaff) {
-        let atk = minionStaff.atk + this.minionAtkBase;
+        //all minions have the same base atk of 1
+        let atk = 1 + this.minionAtkBase;
         if (minionStaff.isMinionStaff
             && (minionStaff === this[SLOT.WEAPON] || (this[SLOT.WEAPON] && this[SLOT.WEAPON].id === minionStaff.id))) {
             atk *= 2;

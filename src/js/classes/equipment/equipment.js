@@ -26,6 +26,7 @@ export class Equipment {
         this.passiveAtk = 0;
         this.passiveDef = 0;
         this.passiveMagAtk = 0;
+        this.passiveMinionAtk = 0;
 
         // magical items get magic bonuses
         this.magical = false;
@@ -48,6 +49,7 @@ export class Equipment {
         wielder.atkBase += this.passiveAtk;
         wielder.defBase += this.passiveDef;
         wielder.magAtkBase += this.passiveMagAtk;
+        wielder.minionAtkBase += this.passiveMinionAtk;
 
         // maybe should give just 1?
         if (this.enchantment === ENCHANTMENT_TYPE.CURSED) wielder.addHealthContainers(2);
@@ -66,6 +68,7 @@ export class Equipment {
         wielder.atkBase -= this.passiveAtk;
         wielder.defBase -= this.passiveDef;
         wielder.magAtkBase -= this.passiveMagAtk;
+        wielder.minionAtkBase -= this.passiveMinionAtk;
 
         for (const minion of this.minions) {
             minion.deactivate();

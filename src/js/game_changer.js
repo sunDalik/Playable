@@ -75,6 +75,7 @@ import {RingOfProtection} from "./classes/equipment/accessories/ring_of_protecti
 import {ThornsArmor} from "./classes/equipment/armor/thorns_armor";
 import {CrossbowGlove} from "./classes/equipment/accessories/crossbow_glove";
 import {DogStaff} from "./classes/equipment/weapons/dog_staff";
+import {KitsuneMask} from "./classes/equipment/headwear/kitsune_mask";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
@@ -89,7 +90,7 @@ export function initPools() {
         Necromancy];
     Game.chestItemPool = [FlaskOfFire, RingOfProtection, QuiverOfTheForestSpirit, WeaponMasterEmblem, HeroKey, CrossbowGlove,
         WoodenShield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
-        WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, BladeCrown,
+        WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, KitsuneMask, BladeCrown,
         LeatherArmor, ThornsArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,
         AdventurerBoots, MushroomGreaves, DamagingBoots, DarkBoots, OldBalletShoes, PossessedSandals, KnightBoots,
         DemonHeart, HeartCookie, LifeFruit, HeartShapedKey, VialOfIchor];

@@ -181,7 +181,8 @@ export const EQUIPMENT_ID = Object.freeze({
     RING_OF_PROTECTION: 77,
     THORNS_ARMOR: 78,
     CROSSBOW_GLOVE: 79,
-    DOG_STAFF: 80
+    DOG_STAFF: 80,
+    KITSUNE_MASK: 81
 });
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
