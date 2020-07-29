@@ -11,9 +11,9 @@ export class Spear extends Weapon {
         super();
         this.texture = WeaponsSpriteSheet["spear.png"];
         this.id = EQUIPMENT_ID.SPEAR;
-        this.atk = 0.75;
+        this.atk = 1;
         this.name = "Spear";
-        this.description = "Range 2\nAttack 0.75 at full range\nAttack 0.25 in close combat";
+        this.description = "Range 2\nAttack 1 at full range\nAttack is halved in close combat";
         this.rarity = RARITY.UNIQUE;
     }
 
