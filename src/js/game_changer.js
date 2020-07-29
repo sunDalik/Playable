@@ -76,11 +76,12 @@ import {ThornsArmor} from "./classes/equipment/armor/thorns_armor";
 import {CrossbowGlove} from "./classes/equipment/accessories/crossbow_glove";
 import {DogStaff} from "./classes/equipment/weapons/dog_staff";
 import {KitsuneMask} from "./classes/equipment/headwear/kitsune_mask";
+import {CactiStaff} from "./classes/equipment/weapons/cacti_staff";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
     Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
-        PawnSwords, Crossbow, DivineBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow, GiantSword, DogStaff];
+        PawnSwords, Crossbow, DivineBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow, GiantSword, DogStaff, CactiStaff];
 }
 
 export function initPools() {
