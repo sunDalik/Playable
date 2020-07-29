@@ -51,8 +51,7 @@ export class Equipment {
         wielder.magAtkBase += this.passiveMagAtk;
         wielder.minionAtkBase += this.passiveMinionAtk;
 
-        // maybe should give just 1?
-        if (this.enchantment === ENCHANTMENT_TYPE.CURSED) wielder.addHealthContainers(2);
+        if (this.enchantment === ENCHANTMENT_TYPE.CURSED) wielder.addHealthContainers(1);
 
         for (const minion of this.minions) {
             minion.activate(wielder);
