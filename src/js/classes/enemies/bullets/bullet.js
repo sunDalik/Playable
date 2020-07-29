@@ -19,6 +19,7 @@ export class Bullet extends TileElement {
         this.role = ROLE.BULLET;
         this.ANIMATION_TIME = 8;
         this.delay = 1;
+        if (Game.afterTurn) this.delay = 0;
         this.atk = 1;
         this.setOwnZIndex(Z_INDEXES.BULLET);
 

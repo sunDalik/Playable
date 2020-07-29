@@ -21,9 +21,12 @@ export class FireSnail extends Snail {
 
     die(source) {
         super.die(source);
-        Game.world.addBullet(new FireBullet(this.tilePosition.x, this.tilePosition.y, [{x: 1, y: 0}]));
-        Game.world.addBullet(new FireBullet(this.tilePosition.x, this.tilePosition.y, [{x: -1, y: 0}]));
-        Game.world.addBullet(new FireBullet(this.tilePosition.x, this.tilePosition.y, [{x: 0, y: 1}]));
-        Game.world.addBullet(new FireBullet(this.tilePosition.x, this.tilePosition.y, [{x: 0, y: -1}]));
+        const bullets = [new FireBullet(this.tilePosition.x, this.tilePosition.y, [{x: 1, y: 0}]),
+            new FireBullet(this.tilePosition.x, this.tilePosition.y, [{x: -1, y: 0}]),
+            new FireBullet(this.tilePosition.x, this.tilePosition.y, [{x: 0, y: 1}]),
+            new FireBullet(this.tilePosition.x, this.tilePosition.y, [{x: 0, y: -1}])];
+        for (const bullet of bullets) {
+            Game.world.addBullet(bullet);
+        }
     }
 }
