@@ -411,9 +411,10 @@ export function showHelpBox(item) {
     Game.itemHelp = new PIXI.Graphics();
     Game.itemHelp.beginFill(0x000000);
     Game.itemHelp.lineStyle(3, 0xFFFFFF, 0.8, 0);
-    Game.itemHelp.drawRoundedRect(0, 0, 550, 120, 6);
+    let itemHelpHeight = 120;
+    Game.itemHelp.drawRoundedRect(0, 0, 550, itemHelpHeight, 6);
     const itemSprite = new PIXI.Sprite(item.texture);
-    if (item.enchantment !== ENCHANTMENT_TYPE.NONE) {
+    if (item.enchantment && item.enchantment !== ENCHANTMENT_TYPE.NONE) {
         itemSprite.filters = getEnchantmentFilters(item.enchantment);
     } else {
         itemSprite.filters = [ITEM_OUTLINE_FILTER];
@@ -429,29 +430,33 @@ export function showHelpBox(item) {
     const textSpace = Game.itemHelp.width - textOffsetX - itemOffsetX * 0.5;
     const nameText = new PIXI.Text(item.name, HUDTextStyleTitle);
     const descriptionText = new PIXI.Text(item.description, HUDTextStyle);
+    if (item.enchantment && item.enchantment !== ENCHANTMENT_TYPE.NONE) {
+        descriptionText.text += "\n" + item.enchantment.description;
+    }
     nameText.anchor.x = descriptionText.anchor.x = 0.5;
     nameText.style.wordWrap = descriptionText.style.wordWrap = true;
     nameText.style.wordWrapWidth = descriptionText.style.wordWrapWidth = textSpace;
     nameText.style.fill = getItemLabelColor(item);
     nameText.fontSize += 3;
     const textBetweenOffset = 6;
-    const textOffsetY = (Game.itemHelp.height - (nameText.height + descriptionText.height + textBetweenOffset)) / 2 - topBias;
+    let textOffsetY = (Game.itemHelp.height - (nameText.height + descriptionText.height + textBetweenOffset)) / 2 - topBias;
     nameText.position.set(textOffsetX + textSpace / 2, textOffsetY);
     descriptionText.position.set(textOffsetX + textSpace / 2, nameText.position.y + nameText.height + textBetweenOffset);
     Game.itemHelp.addChild(nameText);
     Game.itemHelp.addChild(descriptionText);
 
-    if (textOffsetY < 0) {
-        // expand help box by one line if too many lines...
-        // kinda hacky for now
+    let attempt = 0;
+    while (textOffsetY < 0 || attempt++ > 10) {
         Game.itemHelp.clear();
         Game.itemHelp.beginFill(0x000000);
         Game.itemHelp.lineStyle(3, 0xFFFFFF, 0.8, 0);
         const expand = 20;
-        Game.itemHelp.drawRoundedRect(0, 0, 550, 120 + expand, 6);
+        itemHelpHeight += expand;
+        Game.itemHelp.drawRoundedRect(0, 0, 550, itemHelpHeight, 6);
         nameText.position.y += expand / 2;
         descriptionText.position.y += expand / 2;
         itemSprite.position.y += expand / 2;
+        textOffsetY = (Game.itemHelp.height - (nameText.height + descriptionText.height + textBetweenOffset)) / 2 - topBias;
     }
 
     HUD.addChild(Game.itemHelp);
