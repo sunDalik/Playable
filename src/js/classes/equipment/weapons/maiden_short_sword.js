@@ -5,7 +5,7 @@ import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../anima
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
-import {ENCHANTMENT_TYPE} from "../../../enums/equipment_modifiers";
+import {ENCHANTMENT_TYPE} from "../../../enums/enchantments";
 
 export class MaidenShortSword extends Weapon {
     constructor() {

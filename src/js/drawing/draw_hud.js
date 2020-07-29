@@ -30,7 +30,7 @@ import {EQUIPMENT_ID, EQUIPMENT_TYPE, SLOT, STORAGE} from "../enums/enums";
 import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
 import {CommonSpriteSheet} from "../loader";
-import {ENCHANTMENT_TYPE} from "../enums/equipment_modifiers";
+import {ENCHANTMENT_TYPE} from "../enums/enchantments";
 import {getEnchantmentFilters} from "../game_logic";
 
 export function drawHUD() {

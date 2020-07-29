@@ -47,7 +47,7 @@ import {CommonSpriteSheet} from "./loader";
 import {LyingItem} from "./classes/equipment/lying_item";
 import * as PIXI from "pixi.js";
 import {DAMAGE_TYPE} from "./enums/damage_type";
-import {ENCHANTMENT_TYPE} from "./enums/equipment_modifiers";
+import {ENCHANTMENT_TYPE} from "./enums/enchantments";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {

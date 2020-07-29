@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import {EQUIPMENT_ID, RARITY} from "../../enums/enums";
-import {ENCHANTMENT_TYPE} from "../../enums/equipment_modifiers";
+import {ENCHANTMENT_TYPE} from "../../enums/enchantments";
 import {Game} from "../../game";
 
 export class Equipment {

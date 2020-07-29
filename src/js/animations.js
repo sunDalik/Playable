@@ -12,7 +12,7 @@ import {EffectsSpriteSheet, HUDSpriteSheet} from "./loader";
 import {getZIndexForLayer, Z_INDEXES} from "./z_indexing";
 import {getAngleForDirection, setTickTimeout} from "./utils/game_utils";
 import {getEnchantmentFilters, getItemLabelColor} from "./game_logic";
-import {ENCHANTMENT_TYPE} from "./enums/equipment_modifiers";
+import {ENCHANTMENT_TYPE} from "./enums/enchantments";
 
 // the picture is directed to the top left!
 export function createWeaponAnimationStab(player, weapon, offsetX, offsetY, animationTime = 8, delay = 4, scaleMod = 1.1, lookingRight = false) {

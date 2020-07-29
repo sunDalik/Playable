@@ -1,7 +1,7 @@
 import {Equipment} from "./equipment";
 import {EQUIPMENT_ID, EQUIPMENT_TYPE, SLOT} from "../../enums/enums";
 import {DAMAGE_TYPE} from "../../enums/damage_type";
-import {ENCHANTMENT_TYPE} from "../../enums/equipment_modifiers";
+import {ENCHANTMENT_TYPE} from "../../enums/enchantments";
 import {get8Directions} from "../../utils/map_utils";
 import {isEnemy} from "../../map_checks";
 import {Game} from "../../game";
