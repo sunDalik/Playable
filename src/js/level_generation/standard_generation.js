@@ -813,7 +813,7 @@ function outlineLevelWithWalls(superWalls = false) {
 }
 
 function generateKeys() {
-    const keysAmount = Math.ceil(chestsAmount * 2.5);
+    const keysAmount = Math.ceil(chestsAmount * 2.5) - 1;
     keysOnEnemies = Math.ceil(keysAmount / 3);
     let keysOnMap = keysAmount - keysOnEnemies;
 
