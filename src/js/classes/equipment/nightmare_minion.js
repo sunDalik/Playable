@@ -11,6 +11,7 @@ export class NightmareMinion extends Minion {
         this.alpha = 0.7;
         this.temporary = true;
         this.fadingDestructionParticles = true;
+        this.tallModifier = 5;
     }
 
     attack(summonItem) {
