@@ -16,6 +16,8 @@ import {MudMage} from "../ru/mud_mage";
 import {TeleportMage} from "../ru/teleport_mage";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
 import {DarkFireHazard} from "../../hazards/fire";
+import {LunaticLeaderBullet} from "../bullets/lunatic_leader_bullet";
+import {removeObjectFromArray} from "../../../utils/basic_utils";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -32,7 +34,7 @@ export class LunaticLeader extends Boss {
         this.wallSmashClockwise = false;
         this.darkFireCounter = 0;
         this.wallSmashCounter = 0;
-        this.wallSmashMaxTimes = 5;
+        this.wallSmashMaxTimes = 7;
         this.darkFireStage = 0; //0 if teleporting, 1 if releasing dark fire
         this.plannedMinions = [];
         this.minionSpawnDelay = 0;
@@ -45,6 +47,7 @@ export class LunaticLeader extends Boss {
         this.shadowWidthMul = 0.35;
         this.spiritFire = new PIXI.Sprite(LunaticLeaderSpriteSheet["lunatic_leader_blue_fire_separate.png"]);
         this.minions = [];
+        this.bulletQueue = [];
 
         this.regenerateShadow();
 
@@ -107,6 +110,16 @@ export class LunaticLeader extends Boss {
     }
 
     move() {
+        for (let i = this.bulletQueue.length - 1; i >= 0; i--) {
+            const bullet = this.bulletQueue[i];
+            bullet.delay--;
+            if (bullet.delay <= 0) {
+                bullet.delay = 1;
+                Game.world.addBullet(bullet);
+                removeObjectFromArray(bullet, this.bulletQueue);
+            }
+        }
+
         if (!this.started) {
             this.patience.turns--;
             if (this.patience.turns <= 0) {
@@ -139,6 +152,7 @@ export class LunaticLeader extends Boss {
                 this.triggeredWallSmashAttack = false;
                 this.setNeutralTexture();
                 this.setSpecialAttackDelay();
+                this.prepareToTeleport();
             }
         } else if (this.spawningMinions && (this.currentPhase === 1 || this.currentPhase === 2)) {
             if (this.plannedMinions.length < this.minionCount) {
@@ -290,6 +304,7 @@ export class LunaticLeader extends Boss {
                 endPos.y -= plane.y;
             }
             Game.world.removeTile(wall.x, wall.y);
+            this.createBulletStream(wall.x, wall.y, [{x: -plane.x, y: -plane.y}]);
         }
         this.wallSmashSlide(endPos.x - this.tilePosition.x, endPos.y - this.tilePosition.y);
     }
@@ -339,6 +354,15 @@ export class LunaticLeader extends Boss {
             return randomChoice(antiWalls);
         } else {
             return randomChoice(walls);
+        }
+    }
+
+    createBulletStream(tileX, tileY, pattern) {
+        Game.world.addBullet(new LunaticLeaderBullet(tileX, tileY, pattern));
+        for (let n = 0; n < 9; n++) {
+            const bullet = new LunaticLeaderBullet(tileX, tileY, pattern);
+            bullet.delay = n;
+            this.bulletQueue.push(bullet);
         }
     }
 

@@ -146,6 +146,7 @@ export class Bullet extends TileElement {
             this.moveIntentIcon();
             if (!wiggled && this.wiggling && counter >= animationTime / 2) {
                 this.scale.y *= -1;
+                wiggled = true;
             }
             if (counter >= animationTime) {
                 this.angle = newAngle;

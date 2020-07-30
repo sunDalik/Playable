@@ -80,7 +80,7 @@ export class TileElement extends Sprite {
         if (this.preserveCenteredPosition)
             return basePosY;
         else
-            return basePosY + (this.texture.height - this.texture.trim.bottom) * this.scale.y + (Game.TILESIZE - this.height) / 2
+            return basePosY + (this.texture.height - this.texture.trim.bottom) * Math.abs(this.scale.y) + (Game.TILESIZE - this.height) / 2
                 - floorLevel - this.tallModifier;
     }
 
