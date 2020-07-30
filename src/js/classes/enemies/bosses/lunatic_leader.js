@@ -3,7 +3,7 @@ import {ENEMY_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";
-import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall, tileInsideTheBossRoom} from "../../../map_checks";
+import {getPlayerOnTile, isAnyWall, isEmpty, isEnemy, isNotAWall, tileInsideTheBossRoom} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {getBresenhamLine, hypotenuse} from "../../../utils/math_utils";
@@ -296,17 +296,27 @@ export class LunaticLeader extends Boss {
     wallSmash() {
         const plane = this.getWallSmashPlane();
         const wall = this.getRandomWallInPlane(plane);
+        if (wall === undefined) return;
         const endPos = {x: wall.x, y: wall.y};
+        let createBulletStream = false;
         if (isAnyWall(wall.x, wall.y, true, false)) {
-            if (plane.x !== 0) {
-                endPos.x -= plane.x;
-            } else if (plane.y !== 0) {
-                endPos.y -= plane.y;
-            }
+            endPos.x -= plane.x;
+            endPos.y -= plane.y;
             Game.world.removeTile(wall.x, wall.y);
-            this.createBulletStream(wall.x, wall.y, [{x: -plane.x, y: -plane.y}]);
+            createBulletStream = true;
+        }
+
+        if (isEnemy(endPos.x, endPos.y)) {
+            const enemy = Game.map[endPos.y][endPos.x].entity;
+            if (enemy !== this) enemy.die();
+        }
+        const player = getPlayerOnTile(endPos.x, endPos.y);
+        if (player) {
+            endPos.x += plane.x;
+            endPos.y += plane.y;
         }
         this.wallSmashSlide(endPos.x - this.tilePosition.x, endPos.y - this.tilePosition.y);
+        if (createBulletStream) this.createBulletStream(wall.x, wall.y, [{x: -plane.x, y: -plane.y}]);
     }
 
     getWallSmashPlane() {
@@ -333,10 +343,9 @@ export class LunaticLeader extends Boss {
                 const object = {x: x, y: Game.endRoomBoundaries[yInd].y};
                 if (isAnyWall(x, Game.endRoomBoundaries[yInd].y, true, false)) {
                     walls.push(object);
-                } else {
+                } else if (isEmpty(x, Game.endRoomBoundaries[yInd].y)) {
                     antiWalls.push(object);
                 }
-
             }
         } else if (plane.x !== 0) {
             let xInd = plane.x === -1 ? 0 : 1;
@@ -344,7 +353,7 @@ export class LunaticLeader extends Boss {
                 const object = {x: Game.endRoomBoundaries[xInd].x, y: y};
                 if (isAnyWall(Game.endRoomBoundaries[xInd].x, y, true, false)) {
                     walls.push(object);
-                } else {
+                } else if (isEmpty(Game.endRoomBoundaries[xInd].x, y)) {
                     antiWalls.push(object);
                 }
             }
