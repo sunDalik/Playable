@@ -41,6 +41,7 @@ export class LunaticLeader extends Boss {
         this.triggeredDarkFireAttack = false;
         this.triggeredWallSmashAttack = false;
         this.triggeredLunaticHorrorSpawn = false;
+        this.horrors = [];
         this.shakeWaiting = false;
         this.lunaticHorrorCounter = 0;
         this.wallSmashClockwise = false;
@@ -65,8 +66,6 @@ export class LunaticLeader extends Boss {
 
         //guys don't look at me like that! I dunno it's just the z index for some reason is lower than needed if I don't call it
         this.correctZIndex();
-
-        this.currentPhase = 2;
     }
 
     cancelAnimation() {
@@ -223,11 +222,11 @@ export class LunaticLeader extends Boss {
             if (this.currentPhase === 1) {
                 this.triggerDarkFire();
             } else {
-                if (random < 0.30) {
+                if (random < 20) {
                     this.triggerDarkFire();
-                } else if (random < 0 && this.canPerformWallSmash) {
+                } else if (random < 60 && this.canPerformWallSmash) {
                     this.triggerWallSmashAttack();
-                } else {
+                } else if (this.canSpawnHorrors) {
                     this.triggerLunaticHorrorSpawn();
                 }
             }
@@ -288,6 +287,8 @@ export class LunaticLeader extends Boss {
     triggerWallSmashAttack() {
         this.triggeredWallSmashAttack = true;
         this.wallSmashCounter = 0;
+        this.shake(1, 0);
+        this.shakeWaiting = true;
         this.wallSmashClockwise = randomChoice([false, true]);
         this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
     }
@@ -465,11 +466,17 @@ export class LunaticLeader extends Boss {
         this.slide(tileStepX, tileStepY, null, () => this.setShadow(), animationTime);
     }
 
+    canSpawnHorrors() {
+        this.horrors = this.horrors.filter(h => !h.dead);
+        return this.horrors.length < 4;
+    }
+
     spawnHorror() {
         const tile = this.getRandomHorrorSpawnTile();
         if (tile === undefined) return;
         const horror = new LunaticHorror(this.tilePosition.x, this.tilePosition.y);
         Game.world.addEnemy(horror);
+        this.horrors.push(horror);
         horror.setStun(1);
         horror.slide(tile.x - this.tilePosition.x, tile.y - this.tilePosition.y, null, null,
             tileDistanceDiagonal(this, {tilePosition: {x: tile.x, y: tile.y}}) + 2);
