@@ -3,11 +3,11 @@ import {ENEMY_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";
-import {getPlayerOnTile, isEmpty, isNotAWall, tileInsideTheBossRoom} from "../../../map_checks";
+import {getPlayerOnTile, isAnyWall, isEmpty, isNotAWall, tileInsideTheBossRoom} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {getBresenhamLine, hypotenuse} from "../../../utils/math_utils";
-import {createShadowFollowers, fadeOutAndDie, runDestroyAnimation} from "../../../animations";
+import {createShadowFollowers, fadeOutAndDie, runDestroyAnimation, shakeScreen} from "../../../animations";
 import * as PIXI from "pixi.js";
 import {BladeDemon} from "../ru/blade_demon";
 import {LizardWarrior} from "../ru/lizard_warrior";
@@ -28,7 +28,11 @@ export class LunaticLeader extends Boss {
         this.spawningMinions = false;
         this.teleporting = false;
         this.triggeredDarkFireAttack = false;
+        this.triggeredWallSmashAttack = false;
+        this.wallSmashClockwise = false;
         this.darkFireCounter = 0;
+        this.wallSmashCounter = 0;
+        this.wallSmashMaxTimes = 5;
         this.darkFireStage = 0; //0 if teleporting, 1 if releasing dark fire
         this.plannedMinions = [];
         this.minionSpawnDelay = 0;
@@ -46,6 +50,8 @@ export class LunaticLeader extends Boss {
 
         //guys don't look at me like that! I dunno it's just the z index for some reason is lower than needed if I don't call it
         this.correctZIndex();
+
+        this.currentPhase = 2;
     }
 
     cancelAnimation() {
@@ -125,6 +131,15 @@ export class LunaticLeader extends Boss {
                 this.setNeutralTexture();
                 this.setSpecialAttackDelay();
             }
+        } else if (this.triggeredWallSmashAttack && this.currentPhase === 2) {
+            this.wallSmash();
+            this.wallSmashCounter++;
+
+            if (this.wallSmashCounter >= this.wallSmashMaxTimes) {
+                this.triggeredWallSmashAttack = false;
+                this.setNeutralTexture();
+                this.setSpecialAttackDelay();
+            }
         } else if (this.spawningMinions && (this.currentPhase === 1 || this.currentPhase === 2)) {
             if (this.plannedMinions.length < this.minionCount) {
                 const position = this.randomMinionSpawnLocation(this.plannedMinions);
@@ -167,11 +182,14 @@ export class LunaticLeader extends Boss {
             this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
         } else if (this.specialAttackDelay <= 0) {
             const random = Math.random() * 100;
-            if (random < 100) {
-                this.triggeredDarkFireAttack = true;
-                this.darkFireCounter = 0;
-                this.darkFireStage = 0;
-                this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+            if (this.currentPhase === 1) {
+                this.triggerDarkFire();
+            } else {
+                if (random < 0.30) {
+                    this.triggerDarkFire();
+                } else if (this.canPerformWallSmash) {
+                    this.triggerWallSmashAttack();
+                }
             }
         }
 
@@ -188,6 +206,42 @@ export class LunaticLeader extends Boss {
 
     setSpecialAttackDelay() {
         this.specialAttackDelay = randomInt(9, 14);
+    }
+
+    triggerDarkFire() {
+        this.triggeredDarkFireAttack = true;
+        this.darkFireCounter = 0;
+        this.darkFireStage = 0;
+        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+    }
+
+    canPerformWallSmash() {
+        const walls = [];
+        for (let x = Game.endRoomBoundaries[0].x + 1; x < Game.endRoomBoundaries[1].x; x++) {
+            if (isAnyWall(x, Game.endRoomBoundaries[0].y, true, false)) {
+                walls.push({x: x, y: Game.endRoomBoundaries[0].y});
+            }
+            if (isAnyWall(x, Game.endRoomBoundaries[1].y, true, false)) {
+                walls.push({x: x, y: Game.endRoomBoundaries[1].y});
+            }
+        }
+        for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
+            if (isAnyWall(Game.endRoomBoundaries[0].x, y, true, false)) {
+                walls.push({x: Game.endRoomBoundaries[0].x, y: y});
+            }
+
+            if (isAnyWall(Game.endRoomBoundaries[1].x, y, true, false)) {
+                walls.push({x: Game.endRoomBoundaries[1].x, y: y});
+            }
+        }
+        return walls.length >= this.wallSmashMaxTimes;
+    }
+
+    triggerWallSmashAttack() {
+        this.triggeredWallSmashAttack = true;
+        this.wallSmashCounter = 0;
+        this.wallSmashClockwise = randomChoice([false, true]);
+        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
     }
 
     setMinionCount() {
@@ -218,10 +272,73 @@ export class LunaticLeader extends Boss {
             if (isNotAWall(tile.x, tile.y) && tile.x !== this.tilePosition.x || tile.y !== this.tilePosition.y) {
                 const newFire = new DarkFireHazard(tile.x, tile.y);
                 newFire.spreadTimes = 1;
-                newFire.tileSpread = 2;
+                newFire.tileSpread = 1;
                 newFire.LIFETIME = newFire.turnsLeft = 8;
                 Game.world.addHazard(newFire);
             }
+        }
+    }
+
+    wallSmash() {
+        const plane = this.getWallSmashPlane();
+        const wall = this.getRandomWallInPlane(plane);
+        const endPos = {x: wall.x, y: wall.y};
+        if (isAnyWall(wall.x, wall.y, true, false)) {
+            if (plane.x !== 0) {
+                endPos.x -= plane.x;
+            } else if (plane.y !== 0) {
+                endPos.y -= plane.y;
+            }
+            Game.world.removeTile(wall.x, wall.y);
+        }
+        this.wallSmashSlide(endPos.x - this.tilePosition.x, endPos.y - this.tilePosition.y);
+    }
+
+    getWallSmashPlane() {
+        if (this.tilePosition.y >= Game.endRoomBoundaries[1].y - 1) {
+            return this.wallSmashClockwise ? {y: 0, x: -1} : {y: 0, x: 1};
+        } else if (this.tilePosition.y <= Game.endRoomBoundaries[0].y + 1) {
+            return this.wallSmashClockwise ? {y: 0, x: 1} : {y: 0, x: -1};
+        } else if (this.tilePosition.x >= Game.endRoomBoundaries[1].x - 1) {
+            return this.wallSmashClockwise ? {y: 1, x: 0} : {y: -1, x: 0};
+        } else if (this.tilePosition.x <= Game.endRoomBoundaries[0].x + 1) {
+            return this.wallSmashClockwise ? {y: -1, x: 0} : {y: 1, x: 0};
+        } else {
+            if (this.wallSmashClockwise) return randomChoice([{y: 1, x: 0}, {y: 0, x: -1}]);
+            else return randomChoice([{y: -1, x: 0}, {y: 0, x: 1}]);
+        }
+    }
+
+    getRandomWallInPlane(plane) {
+        const walls = [];
+        const antiWalls = [];
+        if (plane.y !== 0) {
+            let yInd = plane.y === -1 ? 0 : 1;
+            for (let x = Game.endRoomBoundaries[0].x + 1; x < Game.endRoomBoundaries[1].x; x++) {
+                const object = {x: x, y: Game.endRoomBoundaries[yInd].y};
+                if (isAnyWall(x, Game.endRoomBoundaries[yInd].y, true, false)) {
+                    walls.push(object);
+                } else {
+                    antiWalls.push(object);
+                }
+
+            }
+        } else if (plane.x !== 0) {
+            let xInd = plane.x === -1 ? 0 : 1;
+            for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
+                const object = {x: Game.endRoomBoundaries[xInd].x, y: y};
+                if (isAnyWall(Game.endRoomBoundaries[xInd].x, y, true, false)) {
+                    walls.push(object);
+                } else {
+                    antiWalls.push(object);
+                }
+            }
+        }
+
+        if (walls.length === 0) {
+            return randomChoice(antiWalls);
+        } else {
+            return randomChoice(walls);
         }
     }
 
@@ -262,6 +379,15 @@ export class LunaticLeader extends Boss {
         illusion.zIndex = minion.zIndex;
         Game.world.addChild(illusion);
         fadeOutAndDie(illusion, false, 15);
+    }
+
+    wallSmashSlide(tileStepX, tileStepY) {
+        this.removeShadow();
+        const animationTime = hypotenuse(tileStepX, tileStepY) * 0.8;
+        this.slide(tileStepX, tileStepY, null, () => {
+            this.setShadow();
+            shakeScreen();
+        }, animationTime);
     }
 
     shadowSlide(tileStepX, tileStepY) {
