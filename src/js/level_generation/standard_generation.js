@@ -440,7 +440,7 @@ function setStartPosition(startRoom) {
     }
 
     //for tests
-    if (false) {
+    if (true) {
         const bossRoom = rooms.find(r => r.type === ROOM_TYPE.BOSS);
         Game.startPos = {x: bossRoom.offsetX + 1, y: bossRoom.offsetY + 1};
     }

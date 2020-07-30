@@ -5,7 +5,7 @@ import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";
 import {getPlayerOnTile, isEmpty, tileInsideTheBossRoom} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
-import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {hypotenuse} from "../../../utils/math_utils";
 import {createShadowFollowers, fadeOutAndDie, runDestroyAnimation} from "../../../animations";
 import * as PIXI from "pixi.js";
@@ -25,8 +25,11 @@ export class LunaticLeader extends Boss {
         this.name = "Lunatic Leader";
         this.phases = 4;
         this.spawningMinions = false;
+        this.teleporting = false;
         this.plannedMinions = [];
-        this.minionSpawnDelay = 3;
+        this.minionSpawnDelay = 2;
+        this.patience = {damage: 0, turns: 5};
+        this.started = false;
         this.setMinionCount();
         this.tallModifier = 7;
         this.setScaleModifier(1.7);
@@ -61,7 +64,12 @@ export class LunaticLeader extends Boss {
 
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         super.damage(source, dmg, inputX, inputY, damageType);
-        if (this.currentPhase === 3) {
+        if (this.currentPhase === 1 || this.currentPhase === 2) {
+            this.patience.damage -= dmg;
+            if (this.patience.damage <= 0) {
+                this.patience.turns = 0;
+            }
+        } else if (this.currentPhase === 3) {
             this.throwAway(inputX, inputY);
         }
     }
@@ -88,57 +96,75 @@ export class LunaticLeader extends Boss {
     }
 
     move() {
-        if (this.currentPhase === 1 || this.currentPhase === 2) {
-            if (this.spawningMinions) {
-                if (this.plannedMinions.length < this.minionCount) {
-                    const position = this.randomMinionSpawnLocation(this.plannedMinions);
-                    if (position === undefined) {
-                        this.minionCount--;
-                        return;
-                    }
-                    const minionArray = this.currentPhase === 2 ? [HexEye] : [BladeDemon, LizardWarrior, MudMage, TeleportMage];
-                    let minionType = randomChoice(minionArray);
-                    //reroll once if already has this minion
-                    if (this.plannedMinions.some(minion => minion.constructor === minionType)) minionType = randomChoice(minionArray);
-                    const minion = new minionType(position.x, position.y);
-                    minion.removeShadow();
-                    this.plannedMinions.push(minion);
-                    this.createMinionIllusion(minion);
-                } else {
-                    for (const minion of this.plannedMinions) {
-                        if (!isEmpty(minion.tilePosition.x, minion.tilePosition.y)) {
-                            minion.die();
-                            const player = getPlayerOnTile(minion.tilePosition.x, minion.tilePosition.y);
-                            if (player) player.damage(1, minion, false, true);
-                        } else {
-                            minion.setShadow();
-                            Game.world.addEnemy(minion);
-                            this.minions.push(minion);
-                        }
-                    }
-                    this.plannedMinions = [];
-                    this.texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"];
-                    this.spawningMinions = false;
-                    this.minionSpawnDelay = randomInt(15, 20);
-                }
-            } else if (this.aliveMinionsCount() <= 1 && this.minionSpawnDelay <= 0) {
-                this.spawningMinions = true;
-                this.plannedMinions = [];
-                this.setMinionCount();
-                this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+        if (!this.started) {
+            this.patience.turns--;
+            if (this.patience.turns <= 0) {
+                this.prepareToTeleport();
             }
-        } else if (this.currentPhase === 2) {
-
-        } else if (this.currentPhase === 4) {
-
+            return;
+        } else if (this.teleporting && (this.currentPhase === 1 || this.currentPhase === 3)) {
+            this.teleport();
+            this.texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"];
+            this.teleporting = false;
+            this.updatePatience();
+        } else if (this.spawningMinions && (this.currentPhase === 1 || this.currentPhase === 2)) {
+            if (this.plannedMinions.length < this.minionCount) {
+                const position = this.randomMinionSpawnLocation(this.plannedMinions);
+                if (position === undefined) {
+                    this.minionCount--;
+                    return;
+                }
+                const minionArray = this.currentPhase === 2 ? [HexEye] : [BladeDemon, LizardWarrior, MudMage, TeleportMage];
+                let minionType = randomChoice(minionArray);
+                //reroll once if already has this minion
+                if (this.plannedMinions.some(minion => minion.constructor === minionType)) minionType = randomChoice(minionArray);
+                const minion = new minionType(position.x, position.y);
+                minion.removeShadow();
+                this.plannedMinions.push(minion);
+                this.createMinionIllusion(minion);
+            } else {
+                for (const minion of this.plannedMinions) {
+                    if (!isEmpty(minion.tilePosition.x, minion.tilePosition.y)) {
+                        minion.die();
+                        const player = getPlayerOnTile(minion.tilePosition.x, minion.tilePosition.y);
+                        if (player) player.damage(1, minion, false, true);
+                    } else {
+                        minion.setShadow();
+                        Game.world.addEnemy(minion);
+                        this.minions.push(minion);
+                    }
+                }
+                this.plannedMinions = [];
+                this.texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"];
+                this.spawningMinions = false;
+                this.minionSpawnDelay = randomInt(15, 20);
+            }
+        } else if (this.aliveMinionsCount() <= 1 && this.minionSpawnDelay <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
+            this.spawningMinions = true;
+            this.plannedMinions = [];
+            this.setMinionCount();
+            this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+        } else if (this.patience.turns <= 0) {
+            this.prepareToTeleport();
         }
 
         this.minionSpawnDelay--;
-        //if (Math.random() < 0.5) this.teleport();
+        this.patience.turns--;
+    }
+
+    prepareToTeleport() {
+        this.started = true;
+        this.teleporting = true;
+        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
     }
 
     setMinionCount() {
         this.minionCount = this.health < this.maxHealth / 2 ? 4 : 3;
+    }
+
+    updatePatience() {
+        this.patience.damage = randomInt(5, 8);
+        this.patience.turns = randomInt(10, 20);
     }
 
     teleport() {
