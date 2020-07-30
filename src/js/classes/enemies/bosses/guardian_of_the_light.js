@@ -6,12 +6,11 @@ import {ElectricBullet} from "../bullets/electric";
 import {getChasingDirections} from "../../../utils/map_utils";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {isEmpty, isNotAWall} from "../../../map_checks";
-import {average, getBresenhamLine} from "../../../utils/math_utils";
+import {getBresenhamLine} from "../../../utils/math_utils";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {FireHazard} from "../../hazards/fire";
 import {WARNING_BULLET_OUTLINE_FILTER} from "../../../filters";
-import {removeEquipmentFromPlayer} from "../../../game_logic";
-import {LyingItem} from "../../equipment/lying_item";
+import {dropItem, removeEquipmentFromPlayer} from "../../../game_logic";
 import {Torch} from "../../equipment/tools/torch";
 import {extinguishTorch, lightPosition} from "../../../drawing/lighting";
 import {updateChain} from "../../../drawing/draw_dunno";
@@ -38,9 +37,9 @@ export class GuardianOfTheLight extends Boss {
         this.electricWearOff = false;
         this.electricDoomWearOff = false;
         this.phase = 1;
-        this.finalPhase = false;
         this.patience = {turns: 0, damage: 0};
         this.startDelay = 4;
+        this.started = false;
         this.plannedElectricAttacks = 0;
         this.possibleAttacks = [this.verticalStream, this.horizontalStream, this.tunnelBullets, this.diamondBullets];
         this.usedAttacks = [];
@@ -84,22 +83,31 @@ export class GuardianOfTheLight extends Boss {
         }
         extinguishTorch();
 
-        let teleportedPlayer = null;
         Game.unplayable = true;
+        const goblets = [];
         for (const inanimate of Game.inanimates) {
             if (inanimate.type === INANIMATE_TYPE.FIRE_GOBLET) {
-                if (Game.player.dead) {
-                    this.teleportPlayer(Game.player2, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
-                    break;
-                } else if (Game.player2.dead) {
-                    this.teleportPlayer(Game.player, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
-                    break;
-                } else if (teleportedPlayer === null) {
-                    teleportedPlayer = randomChoice([Game.player, Game.player2]);
-                    this.teleportPlayer(teleportedPlayer, inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
-                } else {
-                    this.teleportPlayer(otherPlayer(teleportedPlayer), inanimate.tilePosition.x + randomChoice([-1, 1]), inanimate.tilePosition.y);
-                }
+                goblets.push(inanimate);
+            }
+        }
+        // pick two middle goblets that have the same Y-position
+        goblets.sort((a, b) => a.tilePosition.y - b.tilePosition.y);
+        goblets.pop();
+        goblets.shift();
+        let teleportedPlayer = null;
+        for (const goblet of goblets) {
+            const offset = goblet.tilePosition.x === Math.min(...goblets.map(g => g.tilePosition.x)) ? 1 : -1;
+            if (Game.player.dead) {
+                this.teleportPlayer(Game.player2, goblet.tilePosition.x + offset, goblet.tilePosition.y);
+                break;
+            } else if (Game.player2.dead) {
+                this.teleportPlayer(Game.player, goblet.tilePosition.x + offset, goblet.tilePosition.y);
+                break;
+            } else if (teleportedPlayer === null) {
+                teleportedPlayer = randomChoice([Game.player, Game.player2]);
+                this.teleportPlayer(teleportedPlayer, goblet.tilePosition.x + offset, goblet.tilePosition.y);
+            } else {
+                this.teleportPlayer(otherPlayer(teleportedPlayer), goblet.tilePosition.x + offset, goblet.tilePosition.y);
             }
         }
         camera.moveToCenter(10);
@@ -138,14 +146,6 @@ export class GuardianOfTheLight extends Boss {
     }
 
     move() {
-        /*
-        if you add final phase then constants will be like this:
-        phase 2 if this.health <= this.maxHealth / 1.25
-        phase 3 if this.health <= this.maxHealth / 1.75
-
-        final phase if !this.finalPhase && this.health <= Math.max(this.maxHealth / 5, average(this.overallDamage) * 3) && this.health <= this.maxHealth / 3
-         */
-
         for (let i = this.warningBullets.length - 1; i >= 0; i--) {
             this.warningBullets[i].die();
         }
@@ -180,11 +180,11 @@ export class GuardianOfTheLight extends Boss {
                 this.scale.x = lookDirection * Math.abs(this.scale.x);
             }
         }
-        if (!this.finalPhase && this.health <= Math.max(this.maxHealth / 5, average(this.overallDamage) * 3) && this.health <= this.maxHealth / 3) {
-            this.activateFinalPhase();
-        } else if (this.startDelay > 0) {
+
+        if (!this.started) {
             this.startDelay--;
             if (this.startDelay <= 0) {
+                this.started = true;
                 this.triggeredTeleport = true;
                 this.texture = GotLSpriteSheet["gotl_about_to_teleport.png"];
             }
@@ -212,11 +212,11 @@ export class GuardianOfTheLight extends Boss {
             this.texture = GotLSpriteSheet["gotl_after_electric.png"];
             if (this.electricDoomWearOff) {
                 this.electricDoomWearOff = false;
-                this.electricityDelay = randomInt(11, 13);
+                this.electricityDelay = randomInt(12, 14);
             } else {
-                if (this.phase === 1) this.electricityDelay = randomInt(8, 12);
-                else if (this.phase === 2) this.electricityDelay = randomInt(8, 11);
-                else if (this.phase === 3) this.electricityDelay = randomInt(10, 13);
+                if (this.phase === 1) this.electricityDelay = randomInt(9, 13);
+                else if (this.phase === 2) this.electricityDelay = randomInt(9, 12);
+                else if (this.phase === 3) this.electricityDelay = randomInt(11, 14);
             }
 
         } else if (this.triggeredElectricDoom) {
@@ -292,7 +292,7 @@ export class GuardianOfTheLight extends Boss {
         let startX = randomChoice([Game.endRoomBoundaries[0].x + 1, Game.endRoomBoundaries[1].x - 1]);
         let dirX = startX === Game.endRoomBoundaries[0].x + 1 ? 1 : -1;
         for (let y = startY; y < Game.endRoomBoundaries[1].y; y += gap + 1) {
-            this.prepareBullets(startX, y, [{x: dirX, y: 0}], 8);
+            this.prepareBullets(startX, y, [{x: dirX, y: 0}], 6);
 
             if (this.phase >= 2) {
                 startX = startX === Game.endRoomBoundaries[0].x + 1 ? Game.endRoomBoundaries[1].x - 1 : Game.endRoomBoundaries[0].x + 1;
@@ -381,11 +381,10 @@ export class GuardianOfTheLight extends Boss {
     }
 
     horizontalDoomBullets() {
-        const amountOfBullets = 8;
         let startX = randomChoice([Game.endRoomBoundaries[0].x + 1, Game.endRoomBoundaries[1].x - 1]);
         let dirX = startX === Game.endRoomBoundaries[0].x + 1 ? 1 : -1;
         for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
-            this.prepareBullets(startX, y, [{x: dirX, y: 0}], 8);
+            this.prepareBullets(startX, y, [{x: dirX, y: 0}], 6);
         }
     }
 
@@ -422,11 +421,6 @@ export class GuardianOfTheLight extends Boss {
         return freeLocations;
     }
 
-    activateFinalPhase() {
-        this.finalPhase = true;
-        //todo: todo?
-    }
-
     updatePatience() {
         this.patience.turns = randomInt(24, 31) - this.phase * 2;
         this.patience.damage = randomInt(3, 4);
@@ -444,8 +438,6 @@ export class GuardianOfTheLight extends Boss {
             this.patience.turns = 0;
             if (this.startDelay > 0) {
                 this.startDelay = 0;
-                this.triggeredTeleport = true;
-                this.texture = GotLSpriteSheet["gotl_about_to_teleport.png"];
             }
         }
     }
@@ -482,10 +474,9 @@ export class GuardianOfTheLight extends Boss {
 
         const torchX = Game.endRoomBoundaries[0].x + Math.floor((Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x + 1) / 2);
         const torchY = Game.endRoomBoundaries[0].y + Math.floor((Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y + 1) / 2);
-        const torch = new LyingItem(torchX, torchY, new Torch());
-        Game.map[torchY][torchX].item = torch;
-        Game.world.addChild(torch);
-        lightPosition({x: torchX, y: torchY}, torch.item.lightSpread, true);
+        const torch = new Torch();
+        dropItem(torch, torchX, torchY);
+        lightPosition({x: torchX, y: torchY}, torch.lightSpread, true);
 
         for (const inanimate of Game.inanimates) {
             if (inanimate.type === INANIMATE_TYPE.FIRE_GOBLET) {
@@ -495,26 +486,10 @@ export class GuardianOfTheLight extends Boss {
     }
 
     applyRoomLayout(level, room) {
-        const positions = [];
-        if (room.height >= 11) {
-            positions.push({x: this.tilePosition.x, y: this.tilePosition.y - 3},
-                {x: this.tilePosition.x, y: this.tilePosition.y + 3});
-        } else if (room.height >= 9) {
-            positions.push({x: this.tilePosition.x, y: this.tilePosition.y - 2},
-                {x: this.tilePosition.x, y: this.tilePosition.y + 2});
-        } else {
-            positions.push({x: this.tilePosition.x, y: this.tilePosition.y + randomChoice([-1, 1])});
-        }
-
-        if (room.width >= 11) {
-            positions.push({x: this.tilePosition.x - 3, y: this.tilePosition.y},
-                {x: this.tilePosition.x + 3, y: this.tilePosition.y});
-        } else if (room.width >= 9) {
-            positions.push({x: this.tilePosition.x - 2, y: this.tilePosition.y},
-                {x: this.tilePosition.x + 2, y: this.tilePosition.y});
-        } else {
-            positions.push({x: this.tilePosition.x + randomChoice([-1, 1]), y: this.tilePosition.y});
-        }
+        const positions = [{x: this.tilePosition.x, y: this.tilePosition.y - 3},
+            {x: this.tilePosition.x, y: this.tilePosition.y + 3},
+            {x: this.tilePosition.x - 3, y: this.tilePosition.y},
+            {x: this.tilePosition.x + 3, y: this.tilePosition.y}];
 
         for (const pos of positions) {
             level[pos.y][pos.x].entity = new FireGoblet(pos.x, pos.y);

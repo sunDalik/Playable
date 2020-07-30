@@ -17,7 +17,9 @@ export function lightPosition(pos, distance = 3, bright = false) {
 
 export function extinguishTorch() {
     for (const lightSource of torchedAreas) {
-        Game.darkTiles[lightSource.y][lightSource.x].removeLightSource(torchLightSprite);
+        if (isNotOutOfMap(lightSource.x, lightSource.y)) {
+            Game.darkTiles[lightSource.y][lightSource.x].removeLightSource(torchLightSprite);
+        }
     }
     torchedAreas = [];
 }
