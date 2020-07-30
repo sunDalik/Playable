@@ -3,9 +3,17 @@ import {ENEMY_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";
-import {getPlayerOnTile, isAnyWall, isEmpty, isEnemy, isNotAWall, tileInsideTheBossRoom} from "../../../map_checks";
+import {
+    getPlayerOnTile,
+    isAnyWall,
+    isEmpty,
+    isEnemy,
+    isNotAWall,
+    isRelativelyEmpty,
+    tileInsideTheBossRoom
+} from "../../../map_checks";
 import {darkenTile} from "../../../drawing/lighting";
-import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, tileDistance, tileDistanceDiagonal} from "../../../utils/game_utils";
 import {getBresenhamLine, hypotenuse} from "../../../utils/math_utils";
 import {createShadowFollowers, fadeOutAndDie, runDestroyAnimation, shakeScreen} from "../../../animations";
 import * as PIXI from "pixi.js";
@@ -18,6 +26,7 @@ import {DAMAGE_TYPE} from "../../../enums/damage_type";
 import {DarkFireHazard} from "../../hazards/fire";
 import {LunaticLeaderBullet} from "../bullets/lunatic_leader_bullet";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
+import {LunaticHorror} from "../ru/lunatic_horror";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -31,6 +40,9 @@ export class LunaticLeader extends Boss {
         this.teleporting = false;
         this.triggeredDarkFireAttack = false;
         this.triggeredWallSmashAttack = false;
+        this.triggeredLunaticHorrorSpawn = false;
+        this.shakeWaiting = false;
+        this.lunaticHorrorCounter = 0;
         this.wallSmashClockwise = false;
         this.darkFireCounter = 0;
         this.wallSmashCounter = 0;
@@ -126,6 +138,9 @@ export class LunaticLeader extends Boss {
                 this.prepareToTeleport();
             }
             return;
+        } else if (this.shakeWaiting) {
+            this.shake(1, 0);
+            this.shakeWaiting = false;
         } else if (this.teleporting && (this.currentPhase === 1 || this.currentPhase === 2)) {
             this.teleport();
             this.setNeutralTexture();
@@ -153,6 +168,15 @@ export class LunaticLeader extends Boss {
                 this.setNeutralTexture();
                 this.setSpecialAttackDelay();
                 this.prepareToTeleport();
+            }
+        } else if (this.triggeredLunaticHorrorSpawn && this.currentPhase === 2) {
+            this.spawnHorror();
+            this.lunaticHorrorCounter--;
+            if (this.lunaticHorrorCounter <= 0) {
+                this.triggeredLunaticHorrorSpawn = false;
+                this.setSpecialAttackDelay();
+            } else {
+                this.shake(1, 0);
             }
         } else if (this.spawningMinions && (this.currentPhase === 1 || this.currentPhase === 2)) {
             if (this.plannedMinions.length < this.minionCount) {
@@ -201,8 +225,10 @@ export class LunaticLeader extends Boss {
             } else {
                 if (random < 0.30) {
                     this.triggerDarkFire();
-                } else if (this.canPerformWallSmash) {
+                } else if (random < 0 && this.canPerformWallSmash) {
                     this.triggerWallSmashAttack();
+                } else {
+                    this.triggerLunaticHorrorSpawn();
                 }
             }
         }
@@ -226,6 +252,14 @@ export class LunaticLeader extends Boss {
         this.triggeredDarkFireAttack = true;
         this.darkFireCounter = 0;
         this.darkFireStage = 0;
+        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+    }
+
+    triggerLunaticHorrorSpawn() {
+        this.triggeredLunaticHorrorSpawn = true;
+        this.shake(1, 0);
+        this.shakeWaiting = true;
+        this.lunaticHorrorCounter = randomInt(3, 5);
         this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
     }
 
@@ -431,6 +465,30 @@ export class LunaticLeader extends Boss {
         this.slide(tileStepX, tileStepY, null, () => this.setShadow(), animationTime);
     }
 
+    spawnHorror() {
+        const tile = this.getRandomHorrorSpawnTile();
+        if (tile === undefined) return;
+        const horror = new LunaticHorror(this.tilePosition.x, this.tilePosition.y);
+        Game.world.addEnemy(horror);
+        horror.setStun(1);
+        horror.slide(tile.x - this.tilePosition.x, tile.y - this.tilePosition.y, null, null,
+            tileDistanceDiagonal(this, {tilePosition: {x: tile.x, y: tile.y}}) + 2);
+    }
+
+    getRandomHorrorSpawnTile() {
+        const tiles = [];
+        for (let x = Game.endRoomBoundaries[0].x; x <= Game.endRoomBoundaries[1].x; x++) {
+            for (let y = Game.endRoomBoundaries[0].y; y <= Game.endRoomBoundaries[1].y; y++) {
+                if (tileDistance(this, {tilePosition: {x: x, y: y}}) < 6
+                    && tileDistance(this, {tilePosition: {x: x, y: y}}) > 1
+                    && isRelativelyEmpty(x, y) && getPlayerOnTile(x, y) === null) {
+                    tiles.push({x: x, y: y});
+                }
+            }
+        }
+        return randomChoice(tiles);
+    }
+
     getPhaseHealth(phase) {
         if (phase === 2) return 25;
         else if (phase === 3) return 6;
@@ -451,6 +509,7 @@ export class LunaticLeader extends Boss {
 
         //this will reset any minion spawning
         this.minionCount = 0;
+        this.shakeWaiting = false;
     }
 
     initSpirit() {

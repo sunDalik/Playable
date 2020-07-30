@@ -78,7 +78,7 @@ export function soldierAI(enemy, player = closestPlayer(enemy)) {
     }
 }
 
-export function randomAggressiveAI(enemy, noticeDistance) {
+export function randomAggressiveAI(enemy, noticeDistance, step = true) {
     if (tileDistance(enemy, closestPlayer(enemy)) <= noticeDistance) {
         const initPlayer = closestPlayer(enemy);
         let movementOptions = getChasingOptions(enemy, initPlayer);
@@ -90,17 +90,23 @@ export function randomAggressiveAI(enemy, noticeDistance) {
             const dir = randomChoice(movementOptions);
             const player = getPlayerOnTile(enemy.tilePosition.x + dir.x, enemy.tilePosition.y + dir.y);
             if (player) {
-                enemy.bump(dir.x, dir.y);
+                if (step) enemy.bump(dir.x, dir.y);
+                else enemy.slideBump(dir.x, dir.y);
                 player.damage(enemy.atk, enemy, true);
             } else {
-                enemy.step(dir.x, dir.y);
+                if (step) enemy.step(dir.x, dir.y);
+                else enemy.slide(dir.x, dir.y);
             }
-        } else enemy.bump(Math.sign(initPlayer.tilePosition.x - enemy.tilePosition.x), Math.sign(initPlayer.tilePosition.y - enemy.tilePosition.y));
+        } else {
+            if (step) enemy.bump(Math.sign(initPlayer.tilePosition.x - enemy.tilePosition.x), Math.sign(initPlayer.tilePosition.y - enemy.tilePosition.y));
+            else enemy.slideBump(Math.sign(initPlayer.tilePosition.x - enemy.tilePosition.x), Math.sign(initPlayer.tilePosition.y - enemy.tilePosition.y));
+        }
     } else {
         const movementOptions = getRelativelyEmptyLitCardinalDirections(enemy);
         if (movementOptions.length !== 0) {
             const dir = randomChoice(movementOptions);
-            enemy.step(dir.x, dir.y);
+            if (step) enemy.step(dir.x, dir.y);
+            else enemy.slide(dir.x, dir.y);
         }
     }
 }
