@@ -24,7 +24,7 @@ import {Pickaxe} from "./classes/equipment/tools/pickaxe";
 import {SpikyShield} from "./classes/equipment/shields/spiky";
 import {StunningShield} from "./classes/equipment/shields/stunning";
 import {Game} from "./game";
-import {RARITY, STAGE} from "./enums/enums";
+import {RARITY, SLOT, STAGE} from "./enums/enums";
 import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
 import {Immortality} from "./classes/equipment/magic/immortality";
@@ -78,11 +78,32 @@ import {DogStaff} from "./classes/equipment/weapons/dog_staff";
 import {KitsuneMask} from "./classes/equipment/headwear/kitsune_mask";
 import {CactiStaff} from "./classes/equipment/weapons/cacti_staff";
 import {Whistle} from "./classes/equipment/accessories/whistle";
+import {removeObjectFromArray} from "./utils/basic_utils";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
     Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
         PawnSwords, Crossbow, DivineBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow, GiantSword, DogStaff, CactiStaff];
+
+    // remove weapon from pool if players already have two of them
+    if (Game.player && Game.player2) {
+        const itemDict = [];
+        for (const item of [Game.player[SLOT.WEAPON], Game.player[SLOT.EXTRA], Game.player2[SLOT.WEAPON], Game.player2[SLOT.EXTRA]]) {
+            if (item) {
+                const entry = itemDict.find(e => e.itemConst === item.constructor);
+                if (entry) {
+                    entry.quantity += 1;
+                } else {
+                    itemDict.push({itemConst: item.constructor, quantity: 1});
+                }
+            }
+        }
+        for (const entry of itemDict) {
+            if (entry.quantity >= 2) {
+                removeObjectFromArray(entry.itemConst, Game.weaponPool);
+            }
+        }
+    }
 }
 
 export function initPools() {
