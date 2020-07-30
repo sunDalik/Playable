@@ -19,6 +19,7 @@ export class Enemy extends AnimatedTileElement {
         this.cancellable = true;
         this.canMoveInvisible = false;
         this.stun = 0;
+        this.atk = 0;
         this.fireImmunity = 1;
         this.poisonImmunity = 1;
         this.electricityImmunity = 1;

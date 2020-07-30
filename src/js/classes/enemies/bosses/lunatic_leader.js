@@ -1,7 +1,7 @@
 import {Game} from "../../../game";
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
-import {randomChoice, randomInt} from "../../../utils/random_utils";
+import {randomChoice, randomInt, randomShuffle} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";
 import {
     getPlayerOnTile,
@@ -27,6 +27,7 @@ import {DarkFireHazard} from "../../hazards/fire";
 import {LunaticLeaderBullet} from "../bullets/lunatic_leader_bullet";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {LunaticHorror} from "../ru/lunatic_horror";
+import {Enemy} from "../enemy";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -41,13 +42,18 @@ export class LunaticLeader extends Boss {
         this.triggeredDarkFireAttack = false;
         this.triggeredWallSmashAttack = false;
         this.triggeredLunaticHorrorSpawn = false;
+        this.triggeredCenterTeleport = false;
+        this.triggeredSpiritSplit = false;
+        this.spiritCentered = false;
         this.horrors = [];
+        this.spiritClones = [];
         this.shakeWaiting = false;
         this.lunaticHorrorCounter = 0;
         this.wallSmashClockwise = false;
         this.darkFireCounter = 0;
         this.wallSmashCounter = 0;
         this.wallSmashMaxTimes = 7;
+        this.spiritSplitTimes = 0;
         this.darkFireStage = 0; //0 if teleporting, 1 if releasing dark fire
         this.plannedMinions = [];
         this.minionSpawnDelay = 0;
@@ -66,6 +72,9 @@ export class LunaticLeader extends Boss {
 
         //guys don't look at me like that! I dunno it's just the z index for some reason is lower than needed if I don't call it
         this.correctZIndex();
+
+        this.currentPhase = 3;
+        this.health = 1;
     }
 
     cancelAnimation() {
@@ -88,6 +97,7 @@ export class LunaticLeader extends Boss {
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
+        const lastPhase = this.currentPhase;
         super.damage(source, dmg, inputX, inputY, damageType);
         if (this.currentPhase === 1 || this.currentPhase === 2) {
             this.patience.damage -= dmg;
@@ -96,6 +106,16 @@ export class LunaticLeader extends Boss {
             }
         } else if (this.currentPhase === 3) {
             this.throwAway(inputX, inputY);
+        } else if (this.currentPhase === 4 && this.currentPhase === lastPhase) {
+            if (this.spiritCentered) {
+                this.triggeredSpiritSplit = true;
+            } else if (this.spiritSplitTimes === 0
+                || (this.spiritSplitTimes === 1 && this.health <= this.maxHealth * 2 / 3)
+                || (this.spiritSplitTimes === 2 && this.health <= this.maxHealth / 3)) {
+                if (!this.triggeredCenterTeleport) {
+                    this.triggeredCenterTeleport = true;
+                }
+            }
         }
     }
 
@@ -210,6 +230,15 @@ export class LunaticLeader extends Boss {
                 this.minionSpawnDelay = randomInt(15, 20);
                 this.setSpecialAttackDelay();
             }
+        } else if (this.triggeredCenterTeleport) {
+            this.centerSpirit();
+            this.spiritCentered = true;
+            this.triggeredCenterTeleport = false;
+        } else if (this.triggeredSpiritSplit) {
+            this.spiritSplit();
+            this.spiritCentered = false;
+            this.triggeredSpiritSplit = false;
+            this.spiritSplitTimes++;
         } else if (this.patience.turns <= 0) {
             this.prepareToTeleport();
         } else if (this.aliveMinionsCount() <= 1 && this.minionSpawnDelay <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
@@ -527,6 +556,37 @@ export class LunaticLeader extends Boss {
         this.place();
         this.spiritFire.position.set(this.position.x, this.position.y);
         this.animateSpirit();
+        this.spiritCentered = true;
+    }
+
+    centerSpirit() {
+        this.teleport();
+        for (const spirit of this.spiritClones) {
+            if (!spirit.dead) {
+                spirit.die();
+            }
+        }
+        this.spiritClones = [];
+    }
+
+    spiritSplit() {
+        this.spiritClones = [];
+        for (let i = 0; i < 3; i++) {
+            const spiritClone = new SpiritClone(this.tilePosition.x, this.tilePosition.y, this);
+            Game.world.addEnemy(spiritClone);
+            this.spiritClones.push(spiritClone);
+        }
+        const tiles = [{x: Game.endRoomBoundaries[0].x + 2, y: Game.endRoomBoundaries[0].y + 2},
+            {x: Game.endRoomBoundaries[1].x - 2, y: Game.endRoomBoundaries[0].y + 2},
+            {x: Game.endRoomBoundaries[0].x + 2, y: Game.endRoomBoundaries[1].y - 2},
+            {x: Game.endRoomBoundaries[1].x - 2, y: Game.endRoomBoundaries[1].y - 2}];
+        const spirits = randomShuffle(this.spiritClones.concat([this]));
+        for (let i = 0; i < tiles.length; i++) {
+            tiles[i].x += randomInt(-1, 1);
+            tiles[i].y += randomInt(-1, 1);
+            spirits[i].slide(tiles[i].x - spirits[i].tilePosition.x, tiles[i].y - spirits[i].tilePosition.y, null, null,
+                tileDistance({tilePosition: tiles[i]}, spirits[i]) * 1.2);
+        }
     }
 
     animateSpirit() {
@@ -544,5 +604,35 @@ export class LunaticLeader extends Boss {
     aliveMinionsCount() {
         this.minions = this.minions.filter(minion => !minion.dead);
         return this.minions.length;
+    }
+}
+
+class SpiritClone extends Enemy {
+    constructor(tilePositionX, tilePositionY, master, texture = LunaticLeaderSpriteSheet["lunatic_leader_spirit.png"]) {
+        super(texture, tilePositionX, tilePositionY);
+        this.health = this.maxHealth = 0.25;
+        this.type = ENEMY_TYPE.LUNATIC_LEADER_SPIRIT_CLONE;
+        this.fadingDestructionParticles = true;
+        this.master = master;
+        this.tallModifier = master.tallModifier;
+        this.place();
+        this.setScaleModifier(master.scaleModifier);
+    }
+
+    setStun(stun) {
+        return false;
+    }
+
+    updateIntentIcon() {
+        this.intentIcon.visible = false;
+        return false;
+    }
+
+    setStunIcon() {
+        this.intentIcon.visible = false;
+        return false;
+    }
+
+    move() {
     }
 }
