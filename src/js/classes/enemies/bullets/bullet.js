@@ -18,6 +18,7 @@ export class Bullet extends TileElement {
         this.dead = false;
         this.role = ROLE.BULLET;
         this.ANIMATION_TIME = 8;
+        this.wiggling = false;
         this.delay = 1;
         if (Game.afterTurn) this.delay = 0;
         this.atk = 1;
@@ -133,6 +134,7 @@ export class Bullet extends TileElement {
         let counter = 0;
         const oldAngle = this.getBulletAngle();
         const newAngle = this.getBulletAngle(true);
+        let wiggled = false;
 
         Game.app.ticker.remove(this.animation);
         const animation = (delta) => {
@@ -142,6 +144,9 @@ export class Bullet extends TileElement {
             this.position.y += stepY * delta;
             this.angle = oldAngle + easeInQuad(counter / animationTime) * (newAngle - oldAngle);
             this.moveIntentIcon();
+            if (!wiggled && this.wiggling && counter >= animationTime / 2) {
+                this.scale.y *= -1;
+            }
             if (counter >= animationTime) {
                 this.angle = newAngle;
                 Game.app.ticker.remove(animation);

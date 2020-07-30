@@ -218,8 +218,8 @@ export class LunaticLeader extends Boss {
             if (isNotAWall(tile.x, tile.y) && tile.x !== this.tilePosition.x || tile.y !== this.tilePosition.y) {
                 const newFire = new DarkFireHazard(tile.x, tile.y);
                 newFire.spreadTimes = 1;
-                newFire.tileSpread = 1;
-                newFire.LIFETIME = newFire.turnsLeft = 7;
+                newFire.tileSpread = 2;
+                newFire.LIFETIME = newFire.turnsLeft = 8;
                 Game.world.addHazard(newFire);
             }
         }
