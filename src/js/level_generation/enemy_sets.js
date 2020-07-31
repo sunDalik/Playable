@@ -154,7 +154,8 @@ export const FCEnemySets = [
 //boss comes first!
 export const FCBossSets = [
     [ParanoidEel, Eel, Eel, Eel, Eel],
-    [ParanoidEel, DarkEel, DarkEel]
+    [ParanoidEel, DarkEel, DarkEel],
+    [ParanoidEel, PoisonEel]
 ];
 
 export const DTEnemySets = [

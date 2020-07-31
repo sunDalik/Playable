@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {ENEMY_TYPE, HAZARD_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE, HAZARD_TYPE, TILE_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {
     getPlayerOnTile,
@@ -12,7 +12,7 @@ import {
     isRelativelyEmpty,
     tileInsideTheBossRoom
 } from "../../../map_checks";
-import {randomChoice, randomChoiceSeveral} from "../../../utils/random_utils";
+import {randomChoice, randomChoiceSeveral, randomInt} from "../../../utils/random_utils";
 import {get8Directions, get8DirectionsInRadius} from "../../../utils/map_utils";
 import {PoisonHazard} from "../../hazards/poison";
 import {Eel} from "../fc/eel";
@@ -58,7 +58,7 @@ export class ParanoidEel extends Boss {
 
         this.triggeredHorizontalRush = false;
 
-        this.direction = {x: 1, y: 0};
+        this.direction = {x: randomChoice([-1, 1]), y: 0};
         this.setScaleModifier(3.7);
         this.zIndex = Game.primaryPlayer.zIndex + 1;
         this.normalScaleX = this.scale.x;
@@ -94,6 +94,15 @@ export class ParanoidEel extends Boss {
         }
         this.minionsLimit = (Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x - 1) *
             (Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y - 1) * 0.1;
+
+        // turn vertical if doorway is horizontal
+        for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
+            if (Game.map[y][Game.endRoomBoundaries[0].x].tileType === TILE_TYPE.ENTRY
+                || Game.map[y][Game.endRoomBoundaries[1].x].tileType === TILE_TYPE.ENTRY) {
+                this.direction = {x: 0, y: randomChoice([-1, 1])};
+            }
+        }
+        this.correctLook();
     }
 
     move() {
