@@ -138,3 +138,24 @@ export function getDirectionsWithConditions(entity, directions, ...conditions) {
     }
     return validDirections;
 }
+
+export function getDiagonalChasingOptions(chaser, runner) {
+    const chaseDirX = Math.sign(runner.tilePosition.x - chaser.tilePosition.x);
+    const chaseDirY = Math.sign(runner.tilePosition.y - chaser.tilePosition.y);
+    const bestOption = {x: chaseDirX, y: chaseDirY};
+    if (isRelativelyEmpty(chaser.tilePosition.x + bestOption.x, chaser.tilePosition.y + bestOption.y)) {
+        return [bestOption];
+    }
+
+    const altDirections = [];
+    const finalOptions = [];
+    if (runner.tilePosition.x !== chaser.tilePosition.x) altDirections.push({x: chaseDirX, y: 0});
+    if (runner.tilePosition.y !== chaser.tilePosition.y) altDirections.push({x: 0, y: chaseDirY});
+    for (const dir of altDirections) {
+        if (isRelativelyEmpty(chaser.tilePosition.x + dir.x, chaser.tilePosition.y + dir.y)) {
+            finalOptions.push(dir);
+        }
+    }
+
+    return finalOptions;
+}

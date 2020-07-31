@@ -77,8 +77,7 @@ export class LunaticLeader extends Boss {
         //guys don't look at me like that! I dunno it's just the z index for some reason is lower than needed if I don't call it
         this.correctZIndex();
 
-        this.currentPhase = 3;
-        this.health = 1;
+        this.currentPhase = 2;
     }
 
     place() {
@@ -298,7 +297,7 @@ export class LunaticLeader extends Boss {
         this.triggeredLunaticHorrorSpawn = true;
         this.shake(1, 0);
         this.shakeWaiting = true;
-        this.lunaticHorrorCounter = randomInt(3, 5);
+        this.lunaticHorrorCounter = randomInt(3, 6);
         this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
     }
 

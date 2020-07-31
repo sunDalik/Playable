@@ -1,14 +1,16 @@
 import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums/enums";
-import {closestPlayer} from "../../../utils/game_utils";
+import {closestPlayer, otherPlayer} from "../../../utils/game_utils";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
-import {randomAggressiveAI} from "../../../enemy_movement_ai";
 import {Game} from "../../../game";
+import {getDiagonalChasingOptions} from "../../../utils/map_utils";
+import {randomChoice} from "../../../utils/random_utils";
+import {getPlayerOnTile} from "../../../map_checks";
 
 export class LunaticHorror extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["lunatic_horror.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 2;
+        this.health = this.maxHealth = 1;
         this.type = ENEMY_TYPE.LUNATIC_HORROR;
         this.atk = 1;
         this.currentTurnDelay = this.turnDelay = 1;
@@ -18,7 +20,23 @@ export class LunaticHorror extends Enemy {
 
     move() {
         if (this.currentTurnDelay <= 0) {
-            randomAggressiveAI(this, 99, false);
+            const initPlayer = closestPlayer(this);
+            let movementOptions = getDiagonalChasingOptions(this, initPlayer);
+            if (movementOptions.length === 0 && !otherPlayer(initPlayer).dead) {
+                movementOptions = getDiagonalChasingOptions(this, otherPlayer(initPlayer));
+            }
+            if (movementOptions.length !== 0) {
+                const dir = randomChoice(movementOptions);
+                const player = getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
+                if (player) {
+                    this.slideBump(dir.x, dir.y);
+                    player.damage(this.atk, this, true);
+                } else {
+                    this.slide(dir.x, dir.y);
+                }
+            } else {
+                this.slideBump(Math.sign(initPlayer.tilePosition.x - this.tilePosition.x), Math.sign(initPlayer.tilePosition.y - this.tilePosition.y));
+            }
             this.currentTurnDelay = this.turnDelay;
         } else this.currentTurnDelay--;
     }
