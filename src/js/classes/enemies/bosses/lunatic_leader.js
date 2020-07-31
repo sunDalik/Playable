@@ -58,7 +58,7 @@ export class LunaticLeader extends Boss {
         this.triggeredSpiritShooting = false;
         this.spiritShootDelay = 0;
         this.wallSmashCounter = 0;
-        this.wallSmashMaxTimes = 7;
+        this.wallSmashMaxTimes = 6;
         this.spiritSplitTimes = 0;
         this.darkFireStage = 0; //0 if teleporting, 1 if releasing dark fire
         this.plannedMinions = [];
@@ -243,7 +243,7 @@ export class LunaticLeader extends Boss {
                 this.plannedMinions = [];
                 this.setNeutralTexture();
                 this.spawningMinions = false;
-                this.minionSpawnDelay = randomInt(20, 25);
+                this.minionSpawnDelay = randomInt(25, 30);
                 this.setSpecialAttackDelay();
             }
         } else if (this.triggeredCenterTeleport) {
@@ -291,7 +291,7 @@ export class LunaticLeader extends Boss {
     }
 
     setSpecialAttackDelay() {
-        this.specialAttackDelay = randomInt(13, 19);
+        this.specialAttackDelay = randomInt(14, 20);
     }
 
     triggerDarkFire() {
@@ -335,8 +335,17 @@ export class LunaticLeader extends Boss {
     }
 
     canSpawnMinions() {
-        return (this.currentPhase === 1 && this.aliveMinionsCount() <= 1)
-            || (this.currentPhase === 2 && this.aliveMinionsCount() <= 2);
+        if (this.currentPhase === 1) {
+            if (this.health >= this.maxHealth / 2) {
+                return this.aliveMinionsCount() <= 1;
+            } else {
+                return this.aliveMinionsCount() <= 2;
+            }
+        } else if (this.currentPhase === 2) {
+            return this.aliveMinionsCount() <= 2;
+        } else {
+            return false;
+        }
     }
 
     triggerWallSmashAttack() {
@@ -349,8 +358,8 @@ export class LunaticLeader extends Boss {
     }
 
     setMinionCount() {
-        this.minionCount = this.health < this.maxHealth / 2 ? 4 : 3;
-        if (this.currentPhase === 2) this.minionCount--;
+        if (this.currentPhase === 1) this.minionCount = 3;
+        else if (this.currentPhase === 2) this.minionCount = 2;
     }
 
     setNeutralTexture() {
