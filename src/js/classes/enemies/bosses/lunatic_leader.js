@@ -9,6 +9,7 @@ import {
     isEmpty,
     isEnemy,
     isNotAWall,
+    isOutOfMap,
     isRelativelyEmpty,
     tileInsideTheBossRoom
 } from "../../../map_checks";
@@ -519,7 +520,8 @@ export class LunaticLeader extends Boss {
     spawnHorror() {
         const tile = this.getRandomHorrorSpawnTile();
         if (tile === undefined) return;
-        const horror = new LunaticHorror(this.tilePosition.x, this.tilePosition.y);
+        const yTile = isOutOfMap(this.tilePosition.x, this.tilePosition.y - 2) ? this.tilePosition.y - 1 : this.tilePosition.y - 2;
+        const horror = new LunaticHorror(this.tilePosition.x, yTile);
         Game.world.addEnemy(horror);
         this.horrors.push(horror);
         horror.setStun(1);
@@ -605,6 +607,10 @@ export class LunaticLeader extends Boss {
         for (let i = 0; i < tiles.length; i++) {
             tiles[i].x += randomInt(-1, 1);
             tiles[i].y += randomInt(-1, 1);
+            if (isEnemy(tiles[i].x, tiles[i].y)) {
+                const enemy = Game.map[tiles[i].y][tiles[i].x].entity;
+                if (enemy !== this) enemy.die();
+            }
             spirits[i].slide(tiles[i].x - spirits[i].tilePosition.x, tiles[i].y - spirits[i].tilePosition.y, null, null,
                 tileDistance({tilePosition: tiles[i]}, spirits[i]) * 1.2);
             spirits[i].spiritShootDelay = this.getInitSpiritShootDelay(i);

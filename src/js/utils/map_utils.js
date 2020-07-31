@@ -144,7 +144,12 @@ export function getDiagonalChasingOptions(chaser, runner) {
     const chaseDirY = Math.sign(runner.tilePosition.y - chaser.tilePosition.y);
     const bestOption = {x: chaseDirX, y: chaseDirY};
     if (isRelativelyEmpty(chaser.tilePosition.x + bestOption.x, chaser.tilePosition.y + bestOption.y)) {
-        return [bestOption];
+        // check for surrounding tiles if going diagonally
+        if (chaseDirY === 0 || chaseDirX === 0
+            || isRelativelyEmpty(chaser.tilePosition.x + bestOption.x, chaser.tilePosition.y)
+            || isRelativelyEmpty(chaser.tilePosition.x, chaser.tilePosition.y + bestOption.y)) {
+            return [bestOption];
+        }
     }
 
     const altDirections = [];
