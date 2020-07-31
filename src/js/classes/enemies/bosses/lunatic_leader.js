@@ -65,6 +65,7 @@ export class LunaticLeader extends Boss {
         this.minionSpawnDelay = 0;
         this.specialAttackDelay = 2;
         this.damagePatience = 0;
+        this.thrown = false;
         this.started = false;
         this.startDelay = 5;
         this.setMinionCount();
@@ -136,6 +137,7 @@ export class LunaticLeader extends Boss {
             } else {
                 this.bump(throwX, throwY);
             }
+            this.thrown = true;
         }
         return false;
     }
@@ -253,14 +255,14 @@ export class LunaticLeader extends Boss {
             this.spiritCentered = false;
             this.triggeredSpiritSplit = false;
             this.spiritSplitTimes++;
-        } else if (this.damagePatience <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
+        } else if (this.damagePatience <= 0 && (this.currentPhase === 1 || this.currentPhase === 2) && !this.thrown) {
             this.prepareToTeleport();
-        } else if (this.canSpawnMinions() && this.minionSpawnDelay <= 0) {
+        } else if (this.canSpawnMinions() && this.minionSpawnDelay <= 0 && !this.thrown) {
             this.spawningMinions = true;
             this.plannedMinions = [];
             this.setMinionCount();
             this.setEyeFireTexture();
-        } else if (this.specialAttackDelay <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
+        } else if (this.specialAttackDelay <= 0 && (this.currentPhase === 1 || this.currentPhase === 2) && !this.thrown) {
             const random = Math.random() * 100;
             if (this.currentPhase === 1) {
                 this.triggerDarkFire();
@@ -279,6 +281,7 @@ export class LunaticLeader extends Boss {
 
         this.specialAttackDelay--;
         this.minionSpawnDelay--;
+        this.thrown = false;
     }
 
     prepareToTeleport() {
@@ -576,9 +579,11 @@ export class LunaticLeader extends Boss {
             this.initSpirit();
         }
 
-        //this will reset any minion spawning
+        //this will reset any special attacks
+        this.darkFireCounter = 99;
         this.minionCount = 0;
         this.shakeWaiting = false;
+        this.teleporting = false;
     }
 
     destroyBeak() {
