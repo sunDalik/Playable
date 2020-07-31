@@ -31,6 +31,7 @@ import {LunaticHorror} from "../ru/lunatic_horror";
 import {Enemy} from "../enemy";
 import {getCardinalDirections} from "../../../utils/map_utils";
 import {HomingBullet} from "../bullets/homing";
+import {TileElement} from "../../tile_elements/tile_element";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -110,7 +111,8 @@ export class LunaticLeader extends Boss {
         this.startDelay = -1;
         if (this.currentPhase === 1 || this.currentPhase === 2) {
             this.damagePatience -= dmg;
-        } else if (this.currentPhase === 3) {
+        }
+        if (this.currentPhase === 3 || (this.currentPhase === 2 && lastPhase === 1)) {
             this.throwAway(inputX, inputY);
         } else if (this.currentPhase === 4 && this.currentPhase === lastPhase) {
             if (this.spiritCentered) {
@@ -131,6 +133,8 @@ export class LunaticLeader extends Boss {
                 this.step(throwX, throwY);
                 this.cancellable = false;
                 return true;
+            } else {
+                this.bump(throwX, throwY);
             }
         }
         return false;
@@ -561,8 +565,10 @@ export class LunaticLeader extends Boss {
     changePhase(newPhase) {
         if (newPhase === 2) {
             this.texture = LunaticLeaderSpriteSheet["lunatic_leader_beakless.png"];
+            this.destroyBeak();
         } else if (newPhase === 3) {
             this.texture = LunaticLeaderSpriteSheet["lunatic_leader_headless.png"];
+            this.destroyHead();
         } else if (newPhase === 4) {
             runDestroyAnimation(this);
             this.texture = LunaticLeaderSpriteSheet["lunatic_leader_spirit.png"];
@@ -573,6 +579,24 @@ export class LunaticLeader extends Boss {
         //this will reset any minion spawning
         this.minionCount = 0;
         this.shakeWaiting = false;
+    }
+
+    destroyBeak() {
+        const beak = new TileElement(LunaticLeaderSpriteSheet["lunatic_leader_beak.png"], this.tilePosition.x, this.tilePosition.y);
+        beak.setScaleModifier(this.scaleModifier);
+        beak.zIndex = this.zIndex + 1;
+        beak.tallModifier = Game.TILESIZE * 0.9;
+        beak.place();
+        runDestroyAnimation(beak, false, 0, 1);
+    }
+
+    destroyHead() {
+        const head = new TileElement(LunaticLeaderSpriteSheet["lunatic_leader_beakless_head.png"], this.tilePosition.x, this.tilePosition.y);
+        head.setScaleModifier(this.scaleModifier);
+        head.zIndex = this.zIndex + 1;
+        head.tallModifier = Game.TILESIZE * 0.75;
+        head.place();
+        runDestroyAnimation(head, false, 0, 1);
     }
 
     initSpirit() {
