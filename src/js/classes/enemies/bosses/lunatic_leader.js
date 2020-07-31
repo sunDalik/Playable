@@ -81,6 +81,11 @@ export class LunaticLeader extends Boss {
         this.health = 1;
     }
 
+    place() {
+        super.place();
+        if (this.currentPhase === 4) this.spiritFire.position.set(this.position.x, this.position.y);
+    }
+
     cancelAnimation() {
         super.cancelAnimation();
         if (this.currentPhase === 4 && !this.dead) this.animateSpirit();
@@ -558,6 +563,7 @@ export class LunaticLeader extends Boss {
 
     initSpirit() {
         Game.world.addChild(this.spiritFire);
+        this.angle = randomInt(0, 360);
         this.spiritFire.anchor.set(0.5, 0.85);
         this.spiritFire.zIndex = this.zIndex + 1;
         this.spiritFire.scale.set(this.scale.x * 1.3, this.scale.y * 1.3);
@@ -565,6 +571,7 @@ export class LunaticLeader extends Boss {
         this.spiritFire.position.set(this.position.x, this.position.y);
         this.animateSpirit();
         this.spiritCentered = true;
+        this.spiritShootDelay = this.getInitSpiritShootDelay(0);
     }
 
     centerSpirit() {
@@ -578,6 +585,8 @@ export class LunaticLeader extends Boss {
     }
 
     spiritSplit() {
+        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_spirit.png"];
+        this.spiritFire.texture = LunaticLeaderSpriteSheet["lunatic_leader_blue_fire_separate.png"];
         this.spiritClones = [];
         for (let i = 0; i < 3; i++) {
             const spiritClone = new SpiritClone(this.tilePosition.x, this.tilePosition.y, this);
@@ -589,11 +598,13 @@ export class LunaticLeader extends Boss {
             {x: Game.endRoomBoundaries[0].x + 2, y: Game.endRoomBoundaries[1].y - 2},
             {x: Game.endRoomBoundaries[1].x - 2, y: Game.endRoomBoundaries[1].y - 2}];
         const spirits = randomShuffle(this.spiritClones.concat([this]));
+        randomShuffle(tiles);
         for (let i = 0; i < tiles.length; i++) {
             tiles[i].x += randomInt(-1, 1);
             tiles[i].y += randomInt(-1, 1);
             spirits[i].slide(tiles[i].x - spirits[i].tilePosition.x, tiles[i].y - spirits[i].tilePosition.y, null, null,
                 tileDistance({tilePosition: tiles[i]}, spirits[i]) * 1.2);
+            spirits[i].spiritShootDelay = this.getInitSpiritShootDelay(i);
         }
     }
 
@@ -603,6 +614,9 @@ export class LunaticLeader extends Boss {
             this.angle += angleChange * delta;
             this.spiritFire.angle += randomInt(-0.5, 0.5);
             if (Math.abs(this.spiritFire.angle) > 6) this.spiritFire.angle = 6 * Math.sign(this.spiritFire.angle);
+            if (this.animation !== animation) {
+                Game.app.ticker.remove(animation);
+            }
         };
 
         this.animation = animation;
@@ -618,6 +632,10 @@ export class LunaticLeader extends Boss {
         return randomInt(10, 14);
     }
 
+    getInitSpiritShootDelay(order) {
+        return 2 + order * 2;
+    }
+
     spiritMoveLogic(spirit) {
         if (spirit.triggeredSpiritShooting) {
             for (const dir of getCardinalDirections()) {
@@ -626,12 +644,29 @@ export class LunaticLeader extends Boss {
                     Game.world.addBullet(bullet);
                 }
             }
+            spirit.texture = LunaticLeaderSpriteSheet["lunatic_leader_spirit.png"];
+            spirit.spiritFire.texture = LunaticLeaderSpriteSheet["lunatic_leader_blue_fire_separate.png"];
             spirit.triggeredSpiritShooting = false;
             spirit.spiritShootDelay = this.getRandomSpiritShootDelay();
         } else if (spirit.spiritShootDelay <= 0) {
             spirit.triggeredSpiritShooting = true;
+            spirit.texture = LunaticLeaderSpriteSheet["lunatic_leader_spirit_homing.png"];
+            spirit.spiritFire.texture = LunaticLeaderSpriteSheet["lunatic_leader_homing_fire_separate.png"];
         } else {
             spirit.spiritShootDelay--;
+        }
+    }
+
+    slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        if (this.currentPhase === 4) {
+            super.slide(tileStepX, tileStepY, () => {
+                this.spiritFire.position.set(this.position.x, this.position.y);
+                this.spiritFire.zIndex = this.zIndex + 1;
+            }, () => {
+                this.animateSpirit();
+            }, animationTime);
+        } else {
+            super.slide(tileStepX, tileStepY, onFrame, onEnd, animationTime);
         }
     }
 }
@@ -643,11 +678,24 @@ class SpiritClone extends Enemy {
         this.type = ENEMY_TYPE.LUNATIC_LEADER_SPIRIT_CLONE;
         this.fadingDestructionParticles = true;
         this.master = master;
+        this.currentPhase = 4;
         this.tallModifier = master.tallModifier;
         this.place();
         this.scale.set(master.scale.x, master.scale.y);
-        this.spiritShootDelay = master.getRandomSpiritShootDelay();
         this.triggeredSpiritShooting = false;
+        this.spiritFire = new PIXI.Sprite(LunaticLeaderSpriteSheet["lunatic_leader_blue_fire_separate.png"]);
+        this.master.initSpirit.call(this);
+        this.anchor.set(master.anchor.x, master.anchor.y);
+    }
+
+    cancelAnimation() {
+        super.cancelAnimation();
+        if (this.spiritFire) this.animateSpirit();
+    }
+
+    place() {
+        super.place();
+        if (this.spiritFire) this.spiritFire.position.set(this.position.x, this.position.y);
     }
 
     setStun(stun) {
@@ -666,5 +714,22 @@ class SpiritClone extends Enemy {
 
     move() {
         this.master.spiritMoveLogic(this);
+    }
+
+    animateSpirit() {
+        this.master.animateSpirit.call(this);
+    }
+
+    getInitSpiritShootDelay() {
+        this.master.getInitSpiritShootDelay();
+    }
+
+    slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        this.master.slide.call(this, tileStepX, tileStepY, onFrame, onEnd, animationTime);
+    }
+
+    die(source) {
+        super.die(source);
+        Game.world.removeChild(this.spiritFire);
     }
 }
