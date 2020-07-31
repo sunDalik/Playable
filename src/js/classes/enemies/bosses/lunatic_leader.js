@@ -107,6 +107,7 @@ export class LunaticLeader extends Boss {
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         const lastPhase = this.currentPhase;
         super.damage(source, dmg, inputX, inputY, damageType);
+        this.startDelay = -1;
         if (this.currentPhase === 1 || this.currentPhase === 2) {
             this.damagePatience -= dmg;
         } else if (this.currentPhase === 3) {
@@ -201,6 +202,7 @@ export class LunaticLeader extends Boss {
             this.lunaticHorrorCounter--;
             if (this.lunaticHorrorCounter <= 0) {
                 this.triggeredLunaticHorrorSpawn = false;
+                this.setNeutralTexture();
                 this.setSpecialAttackDelay();
             } else {
                 this.shake(1, 0);
@@ -253,7 +255,7 @@ export class LunaticLeader extends Boss {
             this.spawningMinions = true;
             this.plannedMinions = [];
             this.setMinionCount();
-            this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+            this.setEyeFireTexture();
         } else if (this.specialAttackDelay <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
             const random = Math.random() * 100;
             if (this.currentPhase === 1) {
@@ -278,7 +280,7 @@ export class LunaticLeader extends Boss {
     prepareToTeleport() {
         this.started = true;
         this.teleporting = true;
-        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+        this.setEyeFireTexture();
     }
 
     setSpecialAttackDelay() {
@@ -291,7 +293,8 @@ export class LunaticLeader extends Boss {
         this.darkFireStage = 0;
         this.shake(1, 0);
         this.shakeWaiting = true;
-        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+        if (this.currentPhase === 1) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_dark_fire.png"];
+        else if (this.currentPhase === 2) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_beakless_dark_fire.png"];
     }
 
     triggerLunaticHorrorSpawn() {
@@ -299,7 +302,7 @@ export class LunaticLeader extends Boss {
         this.shake(1, 0);
         this.shakeWaiting = true;
         this.lunaticHorrorCounter = randomInt(3, 6);
-        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_about_to_spawn_horrors.png"];
     }
 
     canPerformWallSmash() {
@@ -335,7 +338,7 @@ export class LunaticLeader extends Boss {
         this.shake(1, 0);
         this.shakeWaiting = true;
         this.wallSmashClockwise = randomChoice([false, true]);
-        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_wall_smash.png"];
     }
 
     setMinionCount() {
@@ -348,6 +351,11 @@ export class LunaticLeader extends Boss {
         else if (this.currentPhase === 2) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_beakless.png"];
         else if (this.currentPhase === 3) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_headless.png"];
         else if (this.currentPhase === 4) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_spirit.png"];
+    }
+
+    setEyeFireTexture() {
+        if (this.currentPhase === 1) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
+        else if (this.currentPhase === 2) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_beakless_eye_fire.png"];
     }
 
     updatePatience() {
@@ -518,6 +526,7 @@ export class LunaticLeader extends Boss {
     }
 
     spawnHorror() {
+        this.texture = LunaticLeaderSpriteSheet["lunatic_leader_spawning_horrors.png"];
         const tile = this.getRandomHorrorSpawnTile();
         if (tile === undefined) return;
         const yTile = isOutOfMap(this.tilePosition.x, this.tilePosition.y - 2) ? this.tilePosition.y - 1 : this.tilePosition.y - 2;
@@ -525,7 +534,7 @@ export class LunaticLeader extends Boss {
         Game.world.addEnemy(horror);
         this.horrors.push(horror);
         horror.setStun(1);
-        horror.slide(tile.x - this.tilePosition.x, tile.y - this.tilePosition.y, null, null,
+        horror.slide(tile.x - this.tilePosition.x, tile.y - yTile, null, null,
             tileDistanceDiagonal(this, {tilePosition: {x: tile.x, y: tile.y}}) + 2);
     }
 

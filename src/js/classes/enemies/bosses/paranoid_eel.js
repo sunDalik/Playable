@@ -31,7 +31,7 @@ export class ParanoidEel extends Boss {
         this.atk = 1;
 
         this.waitingToMove = true;
-        this.startNoActionCounter = 4;
+        this.startNoActionCounter = 5;
 
         this.triggeredSpinAttack = false;
         this.spinCounter = 5;
@@ -470,6 +470,7 @@ export class ParanoidEel extends Boss {
 
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         super.damage(source, dmg, inputX, inputY, damageType);
+        this.startNoActionCounter = -1;
         if (!this.dead) {
             if (damageType.hazardal) return;
             if (this.triggeredSpinAttack || this.triggeredVerticalRush || this.triggeredSneezeAttack || this.triggeredHorizontalRush) return;

@@ -1,6 +1,6 @@
 import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums/enums";
-import {closestPlayer, otherPlayer} from "../../../utils/game_utils";
+import {closestPlayer, getAngleForDirection, otherPlayer} from "../../../utils/game_utils";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import {Game} from "../../../game";
 import {getDiagonalChasingOptions} from "../../../utils/map_utils";
@@ -52,9 +52,12 @@ export class LunaticHorror extends Enemy {
     }
 
     correctScale(tileStepX, tileStepY) {
-        if (tileStepX !== 0 && Math.sign(tileStepX) !== Math.sign(this.scale.x)
-            || tileStepY !== 0 && Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x) !== Math.sign(this.scale.x)) {
-            this.scale.x *= -1;
+        this.angle = getAngleForDirection({x: Math.sign(tileStepX), y: Math.sign(tileStepY)});
+        if (this.angle > 90) {
+            this.scale.x = -1 * Math.abs(this.scale.x);
+            this.angle += 180;
+        } else {
+            this.scale.x = Math.abs(this.scale.x);
         }
     }
 
