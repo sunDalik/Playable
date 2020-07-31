@@ -28,6 +28,8 @@ import {LunaticLeaderBullet} from "../bullets/lunatic_leader_bullet";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {LunaticHorror} from "../ru/lunatic_horror";
 import {Enemy} from "../enemy";
+import {getCardinalDirections} from "../../../utils/map_utils";
+import {HomingBullet} from "../bullets/homing";
 
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
@@ -51,6 +53,8 @@ export class LunaticLeader extends Boss {
         this.lunaticHorrorCounter = 0;
         this.wallSmashClockwise = false;
         this.darkFireCounter = 0;
+        this.triggeredSpiritShooting = false;
+        this.spiritShootDelay = 0;
         this.wallSmashCounter = 0;
         this.wallSmashMaxTimes = 7;
         this.spiritSplitTimes = 0;
@@ -239,14 +243,14 @@ export class LunaticLeader extends Boss {
             this.spiritCentered = false;
             this.triggeredSpiritSplit = false;
             this.spiritSplitTimes++;
-        } else if (this.patience.turns <= 0) {
+        } else if (this.patience.turns <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
             this.prepareToTeleport();
         } else if (this.aliveMinionsCount() <= 1 && this.minionSpawnDelay <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
             this.spawningMinions = true;
             this.plannedMinions = [];
             this.setMinionCount();
             this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
-        } else if (this.specialAttackDelay <= 0) {
+        } else if (this.specialAttackDelay <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
             const random = Math.random() * 100;
             if (this.currentPhase === 1) {
                 this.triggerDarkFire();
@@ -259,6 +263,8 @@ export class LunaticLeader extends Boss {
                     this.triggerLunaticHorrorSpawn();
                 }
             }
+        } else if (this.currentPhase === 4) {
+            this.spiritMoveLogic(this);
         }
 
         this.specialAttackDelay--;
@@ -330,11 +336,13 @@ export class LunaticLeader extends Boss {
     setNeutralTexture() {
         if (this.currentPhase === 1) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"];
         else if (this.currentPhase === 2) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_beakless.png"];
+        else if (this.currentPhase === 3) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_headless.png"];
+        else if (this.currentPhase === 4) this.texture = LunaticLeaderSpriteSheet["lunatic_leader_spirit.png"];
     }
 
     updatePatience() {
         this.patience.damage = randomInt(5, 8);
-        this.patience.turns = randomInt(10, 20);
+        this.patience.turns = randomInt(20, 30);
     }
 
     teleport(nearPlayers = false) {
@@ -605,6 +613,27 @@ export class LunaticLeader extends Boss {
         this.minions = this.minions.filter(minion => !minion.dead);
         return this.minions.length;
     }
+
+    getRandomSpiritShootDelay() {
+        return randomInt(10, 14);
+    }
+
+    spiritMoveLogic(spirit) {
+        if (spirit.triggeredSpiritShooting) {
+            for (const dir of getCardinalDirections()) {
+                if (isEmpty(spirit.tilePosition.x + dir.x, spirit.tilePosition.y + dir.y)) {
+                    const bullet = new HomingBullet(spirit.tilePosition.x + dir.x, spirit.tilePosition.y + dir.y);
+                    Game.world.addBullet(bullet);
+                }
+            }
+            spirit.triggeredSpiritShooting = false;
+            spirit.spiritShootDelay = this.getRandomSpiritShootDelay();
+        } else if (spirit.spiritShootDelay <= 0) {
+            spirit.triggeredSpiritShooting = true;
+        } else {
+            spirit.spiritShootDelay--;
+        }
+    }
 }
 
 class SpiritClone extends Enemy {
@@ -616,7 +645,9 @@ class SpiritClone extends Enemy {
         this.master = master;
         this.tallModifier = master.tallModifier;
         this.place();
-        this.setScaleModifier(master.scaleModifier);
+        this.scale.set(master.scale.x, master.scale.y);
+        this.spiritShootDelay = master.getRandomSpiritShootDelay();
+        this.triggeredSpiritShooting = false;
     }
 
     setStun(stun) {
@@ -634,5 +665,6 @@ class SpiritClone extends Enemy {
     }
 
     move() {
+        this.master.spiritMoveLogic(this);
     }
 }
