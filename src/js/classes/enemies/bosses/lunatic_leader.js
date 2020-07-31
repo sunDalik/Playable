@@ -62,8 +62,9 @@ export class LunaticLeader extends Boss {
         this.plannedMinions = [];
         this.minionSpawnDelay = 0;
         this.specialAttackDelay = 2;
-        this.patience = {damage: 0, turns: 5};
+        this.damagePatience = 0;
         this.started = false;
+        this.startDelay = 5;
         this.setMinionCount();
         this.tallModifier = 7;
         this.setScaleModifier(1.7);
@@ -76,8 +77,6 @@ export class LunaticLeader extends Boss {
 
         //guys don't look at me like that! I dunno it's just the z index for some reason is lower than needed if I don't call it
         this.correctZIndex();
-
-        this.currentPhase = 2;
     }
 
     place() {
@@ -108,10 +107,7 @@ export class LunaticLeader extends Boss {
         const lastPhase = this.currentPhase;
         super.damage(source, dmg, inputX, inputY, damageType);
         if (this.currentPhase === 1 || this.currentPhase === 2) {
-            this.patience.damage -= dmg;
-            if (this.patience.damage <= 0) {
-                this.patience.turns = 0;
-            }
+            this.damagePatience -= dmg;
         } else if (this.currentPhase === 3) {
             this.throwAway(inputX, inputY);
         } else if (this.currentPhase === 4 && this.currentPhase === lastPhase) {
@@ -145,6 +141,9 @@ export class LunaticLeader extends Boss {
             for (let i = Game.enemies.length - 1; i >= 0; i--) {
                 if (Game.enemies[i] !== this) Game.enemies[i].die(null);
             }
+            for (let i = Game.bullets.length - 1; i >= 0; i--) {
+                if (!Game.bullets[i].dead) Game.bullets[i].die();
+            }
         }
     }
 
@@ -160,8 +159,8 @@ export class LunaticLeader extends Boss {
         }
 
         if (!this.started) {
-            this.patience.turns--;
-            if (this.patience.turns <= 0) {
+            this.startDelay--;
+            if (this.startDelay <= 0) {
                 this.prepareToTeleport();
             }
             return;
@@ -212,7 +211,7 @@ export class LunaticLeader extends Boss {
                     this.minionCount--;
                     return;
                 }
-                const minionArray = this.currentPhase === 2 ? [HexEye] : [BladeDemon, LizardWarrior, MudMage, TeleportMage];
+                const minionArray = this.currentPhase === 2 ? [HexEye, HexEye, BladeDemon, LizardWarrior, MudMage, TeleportMage] : [BladeDemon, LizardWarrior, MudMage, TeleportMage];
                 let minionType = randomChoice(minionArray);
                 //reroll once if already has this minion
                 if (this.plannedMinions.some(minion => minion.constructor === minionType)) minionType = randomChoice(minionArray);
@@ -235,7 +234,7 @@ export class LunaticLeader extends Boss {
                 this.plannedMinions = [];
                 this.setNeutralTexture();
                 this.spawningMinions = false;
-                this.minionSpawnDelay = randomInt(15, 20);
+                this.minionSpawnDelay = randomInt(20, 25);
                 this.setSpecialAttackDelay();
             }
         } else if (this.triggeredCenterTeleport) {
@@ -247,9 +246,9 @@ export class LunaticLeader extends Boss {
             this.spiritCentered = false;
             this.triggeredSpiritSplit = false;
             this.spiritSplitTimes++;
-        } else if (this.patience.turns <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
+        } else if (this.damagePatience <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
             this.prepareToTeleport();
-        } else if (this.aliveMinionsCount() <= 1 && this.minionSpawnDelay <= 0 && (this.currentPhase === 1 || this.currentPhase === 2)) {
+        } else if (this.canSpawnMinions() && this.minionSpawnDelay <= 0) {
             this.spawningMinions = true;
             this.plannedMinions = [];
             this.setMinionCount();
@@ -273,7 +272,6 @@ export class LunaticLeader extends Boss {
 
         this.specialAttackDelay--;
         this.minionSpawnDelay--;
-        this.patience.turns--;
     }
 
     prepareToTeleport() {
@@ -283,13 +281,15 @@ export class LunaticLeader extends Boss {
     }
 
     setSpecialAttackDelay() {
-        this.specialAttackDelay = randomInt(9, 14);
+        this.specialAttackDelay = randomInt(13, 19);
     }
 
     triggerDarkFire() {
         this.triggeredDarkFireAttack = true;
         this.darkFireCounter = 0;
         this.darkFireStage = 0;
+        this.shake(1, 0);
+        this.shakeWaiting = true;
         this.texture = LunaticLeaderSpriteSheet["lunatic_leader_eye_fire.png"];
     }
 
@@ -323,6 +323,11 @@ export class LunaticLeader extends Boss {
         return walls.length >= this.wallSmashMaxTimes;
     }
 
+    canSpawnMinions() {
+        return (this.currentPhase === 1 && this.aliveMinionsCount() <= 1)
+            || (this.currentPhase === 2 && this.aliveMinionsCount() <= 2);
+    }
+
     triggerWallSmashAttack() {
         this.triggeredWallSmashAttack = true;
         this.wallSmashCounter = 0;
@@ -345,8 +350,7 @@ export class LunaticLeader extends Boss {
     }
 
     updatePatience() {
-        this.patience.damage = randomInt(5, 8);
-        this.patience.turns = randomInt(20, 30);
+        this.damagePatience = randomInt(4, 7);
     }
 
     teleport(nearPlayers = false) {
@@ -362,7 +366,7 @@ export class LunaticLeader extends Boss {
             if (isNotAWall(tile.x, tile.y) && tile.x !== this.tilePosition.x || tile.y !== this.tilePosition.y) {
                 const newFire = new DarkFireHazard(tile.x, tile.y);
                 newFire.spreadTimes = 1;
-                newFire.tileSpread = 1;
+                newFire.tileSpread = randomInt(0, 1);
                 newFire.LIFETIME = newFire.turnsLeft = 8;
                 Game.world.addHazard(newFire);
             }
@@ -538,7 +542,7 @@ export class LunaticLeader extends Boss {
     }
 
     getPhaseHealth(phase) {
-        if (phase === 2) return 25;
+        if (phase === 2) return 24;
         else if (phase === 3) return 6;
         else if (phase === 4) return 30;
     }
