@@ -9,6 +9,7 @@ import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import {wallTallness} from "../../draw/wall";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
+import {updateIntent} from "../../../game_logic";
 
 export class WallSlime extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["wall_slime_single.png"]) {
@@ -226,6 +227,7 @@ export class WallSlime extends Enemy {
 
             slime.setTexture(size, this.plane, i);
             slime.setParameters(size);
+            slime.place();
             slime.healthContainer.visible = false;
         }
 
@@ -343,6 +345,9 @@ export class WallSlime extends Enemy {
 
         for (const newSlimeArray of [firstHalf, secondHalf]) {
             this.reform(newSlimeArray);
+            for (const slime of newSlimeArray) {
+                updateIntent(slime);
+            }
         }
     }
 

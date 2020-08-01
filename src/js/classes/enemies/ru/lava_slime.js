@@ -4,6 +4,7 @@ import {isEmpty, isRelativelyEmpty} from "../../../map_checks";
 import {RUEnemiesSpriteSheet} from "../../../loader";
 import {WallSlime} from "./wall_slime";
 import {FireHazard} from "../../hazards/fire";
+import {updateIntent} from "../../../game_logic";
 
 // ords are
 // 0 1
@@ -126,6 +127,7 @@ export class LavaSlime extends WallSlime {
 
         for (const slime of this.getSortedSlime()) {
             if (slime !== divider) this.reform([slime]);
+            updateIntent(slime);
         }
     }
 
