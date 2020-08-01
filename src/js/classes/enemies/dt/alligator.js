@@ -249,6 +249,11 @@ export class Alligator extends Enemy {
         if (!this.dead) {
             if (!damageType.hazardal && (inputY !== 0 || inputX !== 0) && (!this.prey || this.prey.dead)) {
                 this.triggeredDirection = {x: -inputX, y: -inputY};
+                //in case player attacks diagonally
+                if (this.triggeredDirection.x !== 0 && this.triggeredDirection.y !== 0) {
+                    if (Math.random() > 0.5) this.triggeredDirection.x = 0;
+                    else this.triggeredDirection.y = 0;
+                }
                 if (this.direction.x !== this.triggeredDirection.x || this.direction.y !== this.triggeredDirection.y) this.poisonCounter = 0;
                 this.direction = this.triggeredDirection;
                 this.updateTexture();
