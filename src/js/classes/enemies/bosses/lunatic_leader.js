@@ -520,20 +520,16 @@ export class LunaticLeader extends Boss {
     }
 
     wallSmashSlide(tileStepX, tileStepY) {
-        this.removeShadow();
         const animationTime = hypotenuse(tileStepX, tileStepY) * 0.8;
         this.slide(tileStepX, tileStepY, null, () => {
-            this.setShadow();
             shakeScreen();
         }, animationTime);
     }
 
     shadowSlide(tileStepX, tileStepY) {
-        //shadow is turned off during slides because shadow implementation is buggy!!!
-        this.removeShadow();
         const animationTime = hypotenuse(tileStepX, tileStepY) * 1.1;
         createShadowFollowers(this, 3, animationTime);
-        this.slide(tileStepX, tileStepY, null, () => this.setShadow(), animationTime);
+        this.slide(tileStepX, tileStepY, null, null, animationTime);
     }
 
     canSpawnHorrors() {
@@ -714,15 +710,23 @@ export class LunaticLeader extends Boss {
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        //shadow is turned off during slides because shadow implementation is buggy!!!
+        this.removeShadow();
         if (this.currentPhase === 4) {
             super.slide(tileStepX, tileStepY, () => {
+                if (onFrame) onFrame();
                 this.spiritFire.position.set(this.position.x, this.position.y);
                 this.spiritFire.zIndex = this.zIndex + 1;
             }, () => {
+                if (onEnd) onEnd();
+                this.setShadow();
                 this.animateSpirit();
             }, animationTime);
         } else {
-            super.slide(tileStepX, tileStepY, onFrame, onEnd, animationTime);
+            super.slide(tileStepX, tileStepY, onFrame, () => {
+                if (onEnd) onEnd();
+                this.setShadow();
+            }, animationTime);
         }
     }
 }
