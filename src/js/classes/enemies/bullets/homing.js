@@ -27,6 +27,19 @@ export class HomingBullet extends Bullet {
             this.dir = {x: dirX, y: dirY};
             const newX = this.tilePosition.x + dirX;
             const newY = this.tilePosition.y + dirY;
+
+            //don't allow moving diagonally through impassable tiles
+            // todo thats cool and all but what about regular bullets?
+            if (dirX !== 0 && dirY !== 0) {
+                if (!canBeFliedOverByBullet(this.tilePosition.x + dirX, this.tilePosition.y)
+                    && !canBeFliedOverByBullet(this.tilePosition.x, this.tilePosition.y + dirY)) {
+                    this.die(false);
+                    this.dieFly(dirX, dirY, this.ANIMATION_TIME, 0.5);
+                    this.updateIntentIcon();
+                    return;
+                }
+            }
+
             if (isEnemy(newX, newY) || getPlayerOnTile(newX, newY) !== null) {
                 this.attack(Game.map[newY][newX].entity);
             } else if (canBeFliedOverByBullet(newX, newY)) {

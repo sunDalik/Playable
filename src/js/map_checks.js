@@ -91,7 +91,7 @@ export function canBeFliedOverByBullet(tilePosX, tilePosY) {
         const entity = Game.map[tilePosY][tilePosX].entity;
         if (isNotAWall(tilePosX, tilePosY)
             && (entity === null || entity.role === ROLE.BULLET
-                || entity.role === ROLE.INANIMATE && entity.type === INANIMATE_TYPE.FIRE_GOBLET && entity.standing === false)) {
+                || (entity.role === ROLE.INANIMATE && entity.type === INANIMATE_TYPE.FIRE_GOBLET && entity.standing === false))) {
             return true;
         }
     }
