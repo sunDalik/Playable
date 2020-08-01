@@ -488,6 +488,7 @@ export class Player extends AnimatedTileElement {
     }
 
     applyNextLevelMethods() {
+        if (this.dead) return;
         for (const mg of this.getMagic()) {
             if (mg && mg.id !== EQUIPMENT_ID.NECROMANCY) {
                 mg.uses += Math.ceil(mg.maxUses / 2);

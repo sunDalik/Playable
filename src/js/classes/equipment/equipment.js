@@ -117,7 +117,7 @@ export class Equipment {
         }
     }
 
-    //executes at the start of every new level
+    //executes at the start of every new level if the wielder is NOT DEAD
     onNextLevel(wielder) {
         for (const minion of this.minions) {
             Game.world.addChild(minion);

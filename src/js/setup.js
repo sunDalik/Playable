@@ -208,7 +208,7 @@ export function retry() {
 }
 
 function initGameState() {
-    Game.stage = STAGE.RUINS;
+    Game.stage = STAGE.FLOODED_CAVE;
     Game.time = 0;
     Game.keysAmount = 0;
     Game.turns = 0;
