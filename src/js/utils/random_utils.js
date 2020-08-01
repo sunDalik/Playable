@@ -43,3 +43,18 @@ export function randomFloat(min, max) {
 export function getRandomValue(obj) {
     return obj[randomChoice(Object.keys(obj))];
 }
+
+// list = [{weight: n, item: x}...]
+// weights are positive integers
+export function weightedRandomChoice(list) {
+    let weightSum = 0;
+    for (let i = 0; i < list.length; i++) {
+        weightSum += list[i].weight;
+    }
+    let random = randomInt(0, weightSum - 1);
+    for (let i = 0; i < list.length; i++) {
+        if (random < list[i].weight)
+            return list[i].item;
+        random -= list[i].weight;
+    }
+}

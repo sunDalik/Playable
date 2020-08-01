@@ -1,7 +1,7 @@
 import {Game} from "../../../game";
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
-import {randomChoice, randomInt, randomShuffle} from "../../../utils/random_utils";
+import {randomChoice, randomInt, randomShuffle, weightedRandomChoice} from "../../../utils/random_utils";
 import {LunaticLeaderSpriteSheet} from "../../../loader";
 import {
     getPlayerOnTile,
@@ -65,6 +65,9 @@ export class LunaticLeader extends Boss {
         this.minionSpawnDelay = 0;
         this.specialAttackDelay = 2;
         this.damagePatience = 0;
+        this.forbidDarkFire = false;
+        this.forbidHorrorSpawning = false;
+        this.forbidWallSmashing = false;
         this.thrown = false;
         this.started = false;
         this.startDelay = 5;
@@ -192,6 +195,7 @@ export class LunaticLeader extends Boss {
                 this.triggeredDarkFireAttack = false;
                 this.setNeutralTexture();
                 this.setSpecialAttackDelay();
+                this.forbidDarkFire = true;
             }
         } else if (this.triggeredWallSmashAttack && this.currentPhase === 2) {
             this.wallSmash();
@@ -202,6 +206,7 @@ export class LunaticLeader extends Boss {
                 this.setNeutralTexture();
                 this.setSpecialAttackDelay();
                 this.prepareToTeleport();
+                this.forbidWallSmashing = true;
             }
         } else if (this.triggeredLunaticHorrorSpawn && this.currentPhase === 2) {
             this.spawnHorror();
@@ -210,6 +215,7 @@ export class LunaticLeader extends Boss {
                 this.triggeredLunaticHorrorSpawn = false;
                 this.setNeutralTexture();
                 this.setSpecialAttackDelay();
+                this.forbidHorrorSpawning = true;
             } else {
                 this.shake(1, 0);
             }
@@ -263,16 +269,27 @@ export class LunaticLeader extends Boss {
             this.setMinionCount();
             this.setEyeFireTexture();
         } else if (this.specialAttackDelay <= 0 && (this.currentPhase === 1 || this.currentPhase === 2) && !this.thrown) {
-            const random = Math.random() * 100;
             if (this.currentPhase === 1) {
                 this.triggerDarkFire();
             } else {
-                if (random < 20) {
+                const attackList = [{item: 1, weight: 1}, {item: 2, weight: 2}, {item: 3, weight: 2}];
+                if (this.forbidDarkFire) attackList[0].weight = 0;
+                else if (this.forbidWallSmashing) attackList[1].weight = 0;
+                else if (this.forbidHorrorSpawning) attackList[2].weight = 0;
+                const attack = weightedRandomChoice(attackList);
+                if (attack === 1) {
                     this.triggerDarkFire();
-                } else if (random < 60 && this.canPerformWallSmash) {
-                    this.triggerWallSmashAttack();
-                } else if (this.canSpawnHorrors) {
-                    this.triggerLunaticHorrorSpawn();
+                    this.liftAttackForbiddances();
+                } else if (attack === 2) {
+                    if (this.canPerformWallSmash()) {
+                        this.triggerWallSmashAttack();
+                        this.liftAttackForbiddances();
+                    } else this.forbidDarkFire = false;
+                } else if (attack === 3) {
+                    if (this.canSpawnHorrors()) {
+                        this.triggerLunaticHorrorSpawn();
+                        this.liftAttackForbiddances();
+                    } else this.forbidDarkFire = false;
                 }
             }
         } else if (this.currentPhase === 4) {
@@ -292,6 +309,12 @@ export class LunaticLeader extends Boss {
 
     setSpecialAttackDelay() {
         this.specialAttackDelay = randomInt(14, 20);
+    }
+
+    liftAttackForbiddances() {
+        this.forbidDarkFire = false;
+        this.forbidHorrorSpawning = false;
+        this.forbidWallSmashing = false;
     }
 
     triggerDarkFire() {
