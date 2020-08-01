@@ -29,7 +29,7 @@ import {LunaticLeaderBullet} from "../bullets/lunatic_leader_bullet";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {LunaticHorror} from "../ru/lunatic_horror";
 import {Enemy} from "../enemy";
-import {getCardinalDirections} from "../../../utils/map_utils";
+import {get8Directions, getCardinalDirections} from "../../../utils/map_utils";
 import {HomingBullet} from "../bullets/homing";
 import {TileElement} from "../../tile_elements/tile_element";
 
@@ -645,14 +645,24 @@ export class LunaticLeader extends Boss {
             {x: Game.endRoomBoundaries[1].x - 2, y: Game.endRoomBoundaries[0].y + 2},
             {x: Game.endRoomBoundaries[0].x + 2, y: Game.endRoomBoundaries[1].y - 2},
             {x: Game.endRoomBoundaries[1].x - 2, y: Game.endRoomBoundaries[1].y - 2}];
+
+        // pick random corner tiles without players on it
+        for (const tile of tiles) {
+            for (const dir of randomShuffle(get8Directions().concat([{x: 0, y: 0}]))) {
+                if (getPlayerOnTile(tile.x + dir.x, tile.y + dir.y) === null) {
+                    tile.x += dir.x;
+                    tile.y += dir.y;
+                    break;
+                }
+            }
+        }
+
         const spirits = randomShuffle(this.spiritClones.concat([this]));
         randomShuffle(tiles);
         for (let i = 0; i < tiles.length; i++) {
-            tiles[i].x += randomInt(-1, 1);
-            tiles[i].y += randomInt(-1, 1);
             if (isEnemy(tiles[i].x, tiles[i].y)) {
                 const enemy = Game.map[tiles[i].y][tiles[i].x].entity;
-                if (enemy !== this) enemy.die();
+                if (enemy !== this && enemy.type !== ENEMY_TYPE.LUNATIC_LEADER_SPIRIT_CLONE) enemy.die();
             }
             spirits[i].slide(tiles[i].x - spirits[i].tilePosition.x, tiles[i].y - spirits[i].tilePosition.y, null, null,
                 tileDistance({tilePosition: tiles[i]}, spirits[i]) * 1.2);
