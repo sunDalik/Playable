@@ -136,6 +136,7 @@ export class GuardianOfTheLight extends Boss {
             }
             if (counter >= time) {
                 player.place();
+                player.placeMinions();
                 player.alpha = 1;
                 player.zIndex = initialZIndex;
                 Game.unplayable = false;

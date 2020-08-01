@@ -18,6 +18,11 @@ export class AnimatedTileElement extends ShadowTileElement {
         this.animation = null;
     }
 
+    cancelAnimation() {
+        super.cancelAnimation();
+        this.correctZIndex();
+    }
+
     removeFromMap() {
     }
 

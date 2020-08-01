@@ -249,6 +249,22 @@ export class Player extends AnimatedTileElement {
         }
     }
 
+    setTilePosition(tilePosX, tilePosY) {
+        super.setTilePosition(tilePosX, tilePosY);
+        this.placeMinions();
+    }
+
+    placeMinions() {
+        for (const eq of this.getEquipment()) {
+            if (eq && eq.minions) {
+                for (const minion of eq.minions) {
+                    minion.move();
+                    minion.cancelAnimation();
+                }
+            }
+        }
+    }
+
     shake(dirX, dirY, animationTime = this.SHAKE_ANIMATION_TIME) {
         super.shake(dirX, dirY, animationTime);
     }
