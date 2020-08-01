@@ -96,7 +96,7 @@ export class LunaticLeader extends Boss {
     }
 
     static getBossRoomStats() {
-        return {width: randomInt(14, 17), height: randomInt(10, 13)};
+        return {width: randomInt(14, 16), height: randomInt(11, 12)};
     }
 
     onBossModeActivate() {
