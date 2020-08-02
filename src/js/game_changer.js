@@ -80,11 +80,12 @@ import {CactiStaff} from "./classes/equipment/weapons/cacti_staff";
 import {Whistle} from "./classes/equipment/accessories/whistle";
 import {removeObjectFromArray} from "./utils/basic_utils";
 import {EggAmulet} from "./classes/equipment/accessories/egg_amulet";
+import {HiveStaff} from "./classes/equipment/weapons/hive_staff";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
     Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
-        PawnSwords, Crossbow, DivineBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow, GiantSword, DogStaff, CactiStaff];
+        PawnSwords, Crossbow, DivineBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow, GiantSword, DogStaff, CactiStaff, HiveStaff];
 
     // remove weapon from pool if players already have two of them
     if (Game.player && Game.player2) {

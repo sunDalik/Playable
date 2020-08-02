@@ -145,6 +145,7 @@ export class Minion extends AnimatedTileElement {
         for (const item of this.wielder.getEquipment()) {
             if (item && item.minions) {
                 for (const minion of item.minions) {
+                    if (minion === this) continue;
                     if (minion.tilePosition.x === tileX && minion.tilePosition.y === tileY) {
                         if (minion.temporary && !this.temporary) {
                             minion.die(item);

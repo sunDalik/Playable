@@ -187,7 +187,8 @@ export const EQUIPMENT_ID = Object.freeze({
     KITSUNE_MASK: 81,
     CACTI_STAFF: 82,
     WHISTLE: 83,
-    EGG_AMULET: 84
+    EGG_AMULET: 84,
+    HIVE_STAFF: 85
 });
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
