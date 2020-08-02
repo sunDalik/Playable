@@ -23,8 +23,7 @@ export class Alligator extends Enemy {
         this.shooting = false;
         this.shootingDelay = false;
         this.atk = 1.25;
-        this.turnDelay = 1;
-        this.currentTurnDelay = 0;
+        this.currentTurnDelay = this.turnDelay = 1;
         this.triggeredDirection = null;
         this.direction = {x: 1, y: 0};
         this.stepXjumpHeight = Game.TILESIZE * 24 / 75;
