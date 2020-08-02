@@ -25,6 +25,9 @@ export class MudBlock extends Enemy {
         }
     }
 
+    setStun(stun) {
+    }
+
     setStunIcon() {
         super.setStunIcon();
         this.intentIcon.visible = false;

@@ -4,7 +4,7 @@ import {Boss} from "./boss";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {ElectricBullet} from "../bullets/electric";
 import {getChasingDirections} from "../../../utils/map_utils";
-import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {isEmpty, isNotAWall} from "../../../map_checks";
 import {getBresenhamLine} from "../../../utils/math_utils";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
@@ -94,20 +94,12 @@ export class GuardianOfTheLight extends Boss {
         goblets.sort((a, b) => a.tilePosition.y - b.tilePosition.y);
         goblets.pop();
         goblets.shift();
-        let teleportedPlayer = null;
         for (const goblet of goblets) {
             const offset = goblet.tilePosition.x === Math.min(...goblets.map(g => g.tilePosition.x)) ? 1 : -1;
-            if (Game.player.dead) {
-                this.teleportPlayer(Game.player2, goblet.tilePosition.x + offset, goblet.tilePosition.y);
-                break;
-            } else if (Game.player2.dead) {
+            if (offset === 1 && !Game.player.dead) {
                 this.teleportPlayer(Game.player, goblet.tilePosition.x + offset, goblet.tilePosition.y);
-                break;
-            } else if (teleportedPlayer === null) {
-                teleportedPlayer = randomChoice([Game.player, Game.player2]);
-                this.teleportPlayer(teleportedPlayer, goblet.tilePosition.x + offset, goblet.tilePosition.y);
-            } else {
-                this.teleportPlayer(otherPlayer(teleportedPlayer), goblet.tilePosition.x + offset, goblet.tilePosition.y);
+            } else if (offset === -1 && !Game.player2.dead) {
+                this.teleportPlayer(Game.player2, goblet.tilePosition.x + offset, goblet.tilePosition.y);
             }
         }
         camera.moveToCenter(10);
