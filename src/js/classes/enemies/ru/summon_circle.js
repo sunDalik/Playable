@@ -4,6 +4,7 @@ import {ENEMY_TYPE} from "../../../enums/enums";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {getPlayerOnTile, isEmpty} from "../../../map_checks";
 import {RUEnemiesSpriteSheet} from "../../../loader";
+import {Z_INDEXES} from "../../../z_indexing";
 
 export class SummonCircle extends Enemy {
     constructor(tilePositionX, tilePositionY, enemy, texture = RUEnemiesSpriteSheet["summon_circle.png"]) {
@@ -15,9 +16,13 @@ export class SummonCircle extends Enemy {
         this.isMinion = true;
         this.currentDelay = 3;
         this.summonedEnemy = enemy;
-        this.zIndex = -2;
         this.removeShadow();
         this.setCenterPreservation();
+        this.correctZIndex();
+    }
+
+    correctZIndex() {
+        this.zIndex = Z_INDEXES.HAZARD + 1;
     }
 
     damageWithHazards() {
@@ -56,6 +61,9 @@ export class SummonCircle extends Enemy {
         };
         this.animation = animation;
         Game.app.ticker.add(animation);
+    }
+
+    setStun(stun) {
     }
 
     updateIntentIcon() {
