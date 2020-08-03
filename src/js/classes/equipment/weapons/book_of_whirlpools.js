@@ -58,6 +58,7 @@ class Whirlpool extends AnimatedTileElement {
         this.weapon = weapon;
         this.wielder = wielder;
         this.SLIDE_ANIMATION_TIME = 7;
+        this.previouslyDamagedEnemies = [];
     }
 
     update() {
@@ -68,8 +69,10 @@ class Whirlpool extends AnimatedTileElement {
         const damagedEnemies = [];
         if (isEnemy(this.tilePosition.x, this.tilePosition.y)) {
             const enemy = Game.map[this.tilePosition.y][this.tilePosition.x].entity;
-            this.weapon.damageEnemies([enemy], this.wielder, this.wielder.getAtk(this.weapon), this.direction.x, this.direction.y, DAMAGE_TYPE.MAGICAL_WEAPON);
-            damagedEnemies.push(enemy);
+            if (!this.previouslyDamagedEnemies.includes(enemy)) {
+                this.weapon.damageEnemies([enemy], this.wielder, this.wielder.getAtk(this.weapon), this.direction.x, this.direction.y, DAMAGE_TYPE.MAGICAL_WEAPON);
+                damagedEnemies.push(enemy);
+            }
         }
 
         //change direction if needed
@@ -93,8 +96,9 @@ class Whirlpool extends AnimatedTileElement {
         //attack enemy at direction and slide
         if (isEnemy(this.tilePosition.x + this.direction.x, this.tilePosition.y + this.direction.y)) {
             const enemy = Game.map[this.tilePosition.y + this.direction.y][this.tilePosition.x + this.direction.x].entity;
-            if (!damagedEnemies.includes(enemy)) {
+            if (!damagedEnemies.includes(enemy) && !this.previouslyDamagedEnemies.includes(enemy)) {
                 this.weapon.damageEnemies([enemy], this.wielder, this.wielder.getAtk(this.weapon), this.direction.x, this.direction.y, DAMAGE_TYPE.MAGICAL_WEAPON);
+                damagedEnemies.push(enemy);
             }
         }
         this.slide(this.direction.x, this.direction.y);
@@ -104,6 +108,7 @@ class Whirlpool extends AnimatedTileElement {
             removeObjectFromArray(this, Game.updateList);
             Game.world.removeChild(this);
         }
+        this.previouslyDamagedEnemies = damagedEnemies;
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
