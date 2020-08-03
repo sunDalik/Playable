@@ -186,7 +186,7 @@ export class Player extends AnimatedTileElement {
         let atk = 1 + this.minionAtkBase;
         if (minionStaff.isMinionStaff
             && (minionStaff === this[SLOT.WEAPON] || (this[SLOT.WEAPON] && this[SLOT.WEAPON].id === minionStaff.id))) {
-            atk *= 2;
+            atk++;
         }
         return atk;
     }

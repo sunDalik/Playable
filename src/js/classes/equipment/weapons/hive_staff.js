@@ -10,7 +10,7 @@ export class HiveStaff extends MinionStaff {
         this.texture = WeaponsSpriteSheet["hive_staff.png"];
         this.id = EQUIPMENT_ID.HIVE_STAFF;
         this.name = "Hive Staff";
-        this.description = "Bee minions will damage enemies that stand on its tile\nMinion's atk is 1 (x2 if in WEAPON slot) and does not depend on normal atk stats";
+        this.description = "Bee minions will damage enemies that stand on its tile\nMinion's atk is 1 (2 if in WEAPON slot) and does not depend on normal atk stats";
         this.rarity = RARITY.A;
         this.minions = [new BeeMinion(), new BeeMinion(), new BeeMinion(), new BeeMinion()];
         for (let i = 0; i < this.minions.length; i++) {
