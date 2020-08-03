@@ -208,9 +208,9 @@ function lightWorldDT(tileX, tileY, distance, sourceDirX = 0, sourceDirY = 0) {
                 if (!litAreas.some(tile => tile.x === tileX + 1 && tile.y === tileY - 1)) lightWorldDT(tileX + 1, tileY - 1, distance - 2);
             }
         } else lightTileDT(tileX, tileY);
-    } /*else if (distance === -1) {
-        if (!Game.map[tileY][tileX].lit) lightTile(tileX, tileY);
-    }*/
+    } else if (distance === -1 && [TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[tileY][tileX].tileType)) {
+        lightTileDT(tileX, tileY);
+    }
 }
 
 function lightTileDT(tileX, tileY) {
