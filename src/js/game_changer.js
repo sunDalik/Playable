@@ -81,6 +81,7 @@ import {Whistle} from "./classes/equipment/accessories/whistle";
 import {removeObjectFromArray} from "./utils/basic_utils";
 import {EggAmulet} from "./classes/equipment/accessories/egg_amulet";
 import {HiveStaff} from "./classes/equipment/weapons/hive_staff";
+import {SummonerBelt} from "./classes/equipment/armor/summoner_belt";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
@@ -116,7 +117,7 @@ export function initPools() {
     Game.chestItemPool = [Whistle, FlaskOfFire, RingOfProtection, QuiverOfTheForestSpirit, WeaponMasterEmblem, EggAmulet, HeroKey, CrossbowGlove,
         WoodenShield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
         WizardHat, WitchHat, VampireCrown, BattleHelmet, SeerCirclet, KitsuneMask, BladeCrown,
-        LeatherArmor, ThornsArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, Wings,
+        LeatherArmor, ThornsArmor, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, SummonerBelt, Wings,
         AdventurerBoots, MushroomGreaves, DamagingBoots, DarkBoots, OldBalletShoes, PossessedSandals, KnightBoots,
         DemonHeart, HeartCookie, LifeFruit, HeartShapedKey, VialOfIchor];
 }
