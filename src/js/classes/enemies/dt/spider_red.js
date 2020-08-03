@@ -3,6 +3,7 @@ import {ENEMY_TYPE} from "../../../enums/enums";
 import {isEmpty, isNotAWall} from "../../../map_checks";
 import {DTEnemiesSpriteSheet} from "../../../loader";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
+import {tileDistance} from "../../../utils/game_utils";
 
 export class RedSpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["spider_red.png"]) {
@@ -27,7 +28,7 @@ export class RedSpider extends Spider {
     }
 
     damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
-        if (this.damageable || damageType.magical || damageType.hazardal) {
+        if (this.damageable || !damageType.weaponal || !source || tileDistance(source, this) > 2) {
             super.damage(source, dmg, inputX, inputY, damageType);
         } else {
             if (this.devilJump(source, inputX, inputY)) {
