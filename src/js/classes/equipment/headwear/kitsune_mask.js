@@ -9,9 +9,9 @@ export class KitsuneMask extends Equipment {
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.id = EQUIPMENT_ID.KITSUNE_MASK;
         this.passiveAtk = 0.5;
-        this.passiveMinionAtk = 0.5;
+        this.passiveMinionAtk = 1;
         this.name = "Kitsune Mask";
-        this.description = "+0.5 attack\n+0.5 minion attack";
+        this.description = "+0.5 attack\n+1 minion attack";
         this.rarity = RARITY.A;
     }
 }
