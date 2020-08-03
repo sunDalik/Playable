@@ -189,7 +189,8 @@ export const EQUIPMENT_ID = Object.freeze({
     WHISTLE: 83,
     EGG_AMULET: 84,
     HIVE_STAFF: 85,
-    SUMMONER_BELT: 86
+    SUMMONER_BELT: 86,
+    ESSENCE_OF_LIGHT: 87
 });
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});

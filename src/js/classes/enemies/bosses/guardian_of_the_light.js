@@ -11,7 +11,6 @@ import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {FireHazard} from "../../hazards/fire";
 import {WARNING_BULLET_OUTLINE_FILTER} from "../../../filters";
 import {dropItem, removeEquipmentFromPlayer} from "../../../game_logic";
-import {Torch} from "../../equipment/tools/torch";
 import {extinguishTorch, lightPosition} from "../../../drawing/lighting";
 import {updateChain} from "../../../drawing/draw_dunno";
 import {GotLSpriteSheet} from "../../../loader";
@@ -19,6 +18,7 @@ import {FireGoblet} from "../../inanimate_objects/fire_goblet";
 import {Z_INDEXES} from "../../../z_indexing";
 import {camera} from "../../game/camera";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
+import {EssenceOfLight} from "../../equipment/one_time/essence_of_light";
 
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = GotLSpriteSheet["gotl_neutral.png"]) {
@@ -457,6 +457,12 @@ export class GuardianOfTheLight extends Boss {
     }
 
     die(source) {
+        const essenceX = Game.endRoomBoundaries[0].x + Math.floor((Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x + 1) / 2);
+        const essenceY = Game.endRoomBoundaries[0].y + Math.floor((Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y + 1) / 2);
+        const essence = new EssenceOfLight();
+        const item = dropItem(essence, essenceX, essenceY);
+        if (item) lightPosition({x: item.tilePosition.x, y: item.tilePosition.y}, essence.lightSpread, true);
+
         super.die(source);
         for (let i = this.warningBullets.length - 1; i >= 0; i--) {
             this.warningBullets[i].die();
@@ -464,12 +470,6 @@ export class GuardianOfTheLight extends Boss {
         for (let i = Game.bullets.length - 1; i >= 0; i--) {
             Game.bullets[i].die();
         }
-
-        const torchX = Game.endRoomBoundaries[0].x + Math.floor((Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x + 1) / 2);
-        const torchY = Game.endRoomBoundaries[0].y + Math.floor((Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y + 1) / 2);
-        const torch = new Torch();
-        dropItem(torch, torchX, torchY);
-        lightPosition({x: torchX, y: torchY}, torch.lightSpread, true);
 
         for (const inanimate of Game.inanimates) {
             if (inanimate.type === INANIMATE_TYPE.FIRE_GOBLET) {

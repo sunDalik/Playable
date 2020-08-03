@@ -1,6 +1,5 @@
 import {Game} from "../game";
-import {EQUIPMENT_ID, STAGE, TILE_TYPE} from "../enums/enums";
-import {getCardinalDirections} from "../utils/map_utils";
+import {EQUIPMENT_ID, SLOT, STAGE, TILE_TYPE} from "../enums/enums";
 import {isNotOutOfMap} from "../map_checks";
 
 let litAreas = [];
@@ -31,15 +30,22 @@ export function lightPlayerPosition(player) {
     const py = player.tilePosition.y;
 
     if (Game.stage === STAGE.DARK_TUNNEL) {
-        if (player.secondHand && player.secondHand.id === EQUIPMENT_ID.TORCH) {
+        let item = null;
+        if (player[SLOT.EXTRA] && player[SLOT.EXTRA].id === EQUIPMENT_ID.TORCH) {
+            item = player[SLOT.EXTRA];
+        } else if (player.consumedItems.some(item => item.id === EQUIPMENT_ID.ESSENCE_OF_LIGHT)) {
+            item = player.consumedItems.find(item => item.id === EQUIPMENT_ID.ESSENCE_OF_LIGHT);
+        }
+        if (item !== null) {
+            //todo
+            // current implementation won't work if there are 2 light sources
+            // each item should have its own torchedAreas
             for (const lightSource of torchedAreas) {
                 if (isNotOutOfMap(lightSource.x, lightSource.y))//this is bad...
                     Game.darkTiles[lightSource.y][lightSource.x].removeLightSource(torchLightSprite);
             }
             torchedAreas = [];
-            lightWorldDT(px, py, player.secondHand.lightSpread);
-        } else {
-            lightWorld(px, py, 1);
+            lightWorldDT(px, py, item.lightSpread);
         }
     } else if (Game.stage === STAGE.RUINS) {
         //return;

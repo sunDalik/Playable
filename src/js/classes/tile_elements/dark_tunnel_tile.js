@@ -32,6 +32,7 @@ export class DarkTunnelTile extends DarknessTile {
         super.update();
         // if there is a lit floor above us shrink down because that looks nicer
         // also shrink if there is a laser turret because we want to see the face
+        //todo should also shrink if exit tile...
         const upTile = {x: this.tilePosition.x, y: this.tilePosition.y - 1};
         if (isNotOutOfMap(upTile.x, upTile.y)
             && (Game.darkTiles[upTile.y][upTile.x].alpha < this.semiAlpha || Game.darkTiles[upTile.y][upTile.x].visible === false)

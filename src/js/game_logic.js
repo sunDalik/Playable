@@ -343,6 +343,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
         case EQUIPMENT_TYPE.ONE_TIME:
             if (equipment.useItem) equipment.useItem(player);
             if (showHelp) showHelpBox(equipment);
+            player.consumedItems.push(equipment);
             return null;
         case EQUIPMENT_TYPE.KEY:
             addKeys(1);
@@ -565,6 +566,7 @@ export function dropItem(item, tilePosX, tilePosY) {
         const lyingItem = new LyingItem(freeSpace.x, freeSpace.y, item);
         Game.map[freeSpace.y][freeSpace.x].item = lyingItem;
         Game.world.addChild(lyingItem);
+        return lyingItem;
     }
 }
 

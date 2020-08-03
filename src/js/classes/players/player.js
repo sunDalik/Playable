@@ -60,6 +60,7 @@ export class Player extends AnimatedTileElement {
         this.linkedHealing = 0;
         this.charging = false;
         this.chargingMagic = null;
+        this.consumedItems = [];
         this.doubleAttackCallback = () => {
         };
         this.setScaleModifier(0.87);
@@ -410,10 +411,13 @@ export class Player extends AnimatedTileElement {
         updateChain();
         this.removeFromMap();
         if (Game.stage === STAGE.DARK_TUNNEL) {
-            if (this.secondHand && this.secondHand.id === EQUIPMENT_ID.TORCH) {
-                dropItem(this.secondHand, this.tilePosition.x, this.tilePosition.y);
-                this.secondHand = null;
-
+            if (this[SLOT.EXTRA] && this[SLOT.EXTRA].id === EQUIPMENT_ID.TORCH) {
+                dropItem(this[SLOT.EXTRA], this.tilePosition.x, this.tilePosition.y);
+                this[SLOT.EXTRA] = null;
+            } else if (this.consumedItems.some(item => item.id === EQUIPMENT_ID.ESSENCE_OF_LIGHT)) {
+                const item = this.consumedItems.find(item => item.id === EQUIPMENT_ID.ESSENCE_OF_LIGHT);
+                dropItem(item, this.tilePosition.x, this.tilePosition.y);
+                removeObjectFromArray(item, this.consumedItems);
             }
         }
         camera.moveToCenter(this.STEP_ANIMATION_TIME);
