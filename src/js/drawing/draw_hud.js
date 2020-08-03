@@ -154,7 +154,12 @@ export function redrawSlotsForPlayer(player) {
 export function drawStatsForPlayer(player) {
     const container = player === Game.player ? HUD.stats1 : HUD.stats2;
     removeAllChildrenFromContainer(container, true);
-    const text = new PIXI.Text(`ATK ${player.getAtk(player.weapon)}\nDEF ${player.getDef()}`, HUDTextStyle);
+    let atk = player.getAtk(player[SLOT.WEAPON]);
+    //hack to display flask of fire's atk
+    if (player[SLOT.ACCESSORY] && player[SLOT.ACCESSORY].id === EQUIPMENT_ID.FLASK_OF_FIRE
+        && player[SLOT.WEAPON] && !player[SLOT.WEAPON].magical && !player[SLOT.WEAPON].isMinionStaff) atk += 0.25;
+
+    const text = new PIXI.Text(`ATK ${atk}\nDEF ${player.getDef()}`, HUDTextStyle);
 
     if (player === Game.player) text.position.x = slotBorderOffsetX + slotSize * 2 + slotsColOffset + statsOffsetX;
     else text.position.x = Game.app.renderer.screen.width - slotBorderOffsetX - slotSize * 2 - slotsColOffset - text.width - statsOffsetX;
