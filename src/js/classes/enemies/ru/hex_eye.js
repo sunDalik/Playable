@@ -56,10 +56,8 @@ export class HexEye extends Enemy {
 
     updateIntentIcon() {
         super.updateIntentIcon();
-        if (this.casting) {
-            this.intentIcon.texture = IntentsSpriteSheet["question_mark.png"];
-        } else if (this.currentTurnDelay <= 0) {
-            this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
+        if (this.aboutToCast) {
+            this.intentIcon.texture = IntentsSpriteSheet["magic.png"];
         } else {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         }
