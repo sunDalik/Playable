@@ -49,12 +49,16 @@ export function castWind(origin, radius, blowDistance, atk = 1, crystal = false)
                                 break;
                             }
                         }
-                        const animationTime = slideTime * tileDistanceDiagonal({
+                        let animationTime = slideTime * tileDistanceDiagonal({
                             tilePosition: {
                                 x: newTilePosition.x,
                                 y: newTilePosition.y
                             }
                         }, enemy);
+                        //I dunno why it just doesnt look nice I dont know I honestly dont know
+                        if (blowDistance === 1) animationTime++;
+                        if (enemy.animation) enemy.cancelAnimation();
+                        enemy.cancellable = false;
                         if (succeeded) {
                             enemy.slide(newTilePosition.x - enemy.tilePosition.x, newTilePosition.y - enemy.tilePosition.y, null, null, animationTime);
                         } else {

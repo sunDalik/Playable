@@ -12,6 +12,7 @@ import {MagicSpriteSheet} from "../../../loader";
 import {Magic} from "../magic";
 import {TileElement} from "../../tile_elements/tile_element";
 import {easeOutQuad} from "../../../utils/math_utils";
+import {reviveItemAnimation} from "../../../animations";
 
 export class Necromancy extends Magic {
     constructor() {
@@ -69,33 +70,6 @@ export class Necromancy extends Magic {
     }
 
     animate(wielder) {
-        const skull = new TileElement(MagicSpriteSheet["magic_necromancy.png"], wielder.tilePosition.x, wielder.tilePosition.y - 0.5);
-        Game.world.addChild(skull);
-        const initSize = skull.width;
-        const sizeChange = Game.TILESIZE / 4;
-        const startPosY = skull.position.y;
-        const posYEndChange = -Game.TILESIZE / 2;
-        skull.zIndex = otherPlayer(Game.primaryPlayer).zIndex - 1;
-
-        const animationTime = 50;
-        let counter = 0;
-
-        const animation = delta => {
-            if (Game.paused) return;
-            counter += delta;
-            skull.position.y = startPosY + easeOutQuad(counter / animationTime) * posYEndChange;
-            skull.height = skull.width = initSize + easeOutQuad(counter / animationTime) * sizeChange;
-            if (counter >= animationTime * 3 / 4) {
-                skull.alpha = 1 - easeOutQuad((counter - animationTime * 3 / 4) / (animationTime / 4));
-            }
-
-            if (counter >= animationTime) {
-                Game.app.ticker.remove(animation);
-                Game.world.removeChild(skull);
-                skull.destroy();
-            }
-        };
-
-        Game.app.ticker.add(animation);
+        reviveItemAnimation(MagicSpriteSheet["magic_necromancy.png"], wielder);
     }
 }

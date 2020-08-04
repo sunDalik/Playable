@@ -213,8 +213,11 @@ export function redrawSlotContents(player, slot) {
 
     function drawUses() {
         let text;
+        // hack, better change it
         if (item.id === EQUIPMENT_ID.VAMPIRE_CROWN) {
             text = new PIXI.Text(item.killsMade + "/" + item.killsNeeded, HUDTextStyle);
+        } else if (item.id === EQUIPMENT_ID.FALLEN_ANGEL_WINGS) {
+            text = new PIXI.Text(item.revivesLeft + "/" + item.maxRevives, HUDTextStyle);
         } else if (item.equipmentType === EQUIPMENT_TYPE.BAG_ITEM) {
             text = new PIXI.Text("x" + item.amount, HUDTextStyle);
             text.position.set(slotSize - text.width, 0);

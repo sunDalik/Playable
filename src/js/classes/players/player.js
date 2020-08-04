@@ -333,8 +333,12 @@ export class Player extends AnimatedTileElement {
                 }
                 Game.bossNoDamage = false;
                 if (this.health <= 0) {
-                    this.health = 0;
-                    this.dieAnimationWait(source);
+                    if (this[SLOT.ARMOR] && this[SLOT.ARMOR].id === EQUIPMENT_ID.FALLEN_ANGEL_WINGS) {
+                        this[SLOT.ARMOR].revivePlayer(this);
+                    } else {
+                        this.health = 0;
+                        this.dieAnimationWait(source);
+                    }
                 } else {
                     this.runHitAnimation();
                     shakeScreen();

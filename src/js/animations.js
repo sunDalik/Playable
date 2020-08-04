@@ -800,3 +800,34 @@ export function createSmallOffsetParticle(texture, tile, side = randomChoice([-1
 
     Game.app.ticker.add(animation);
 }
+
+export function reviveItemAnimation(texture, player) {
+    const item = new TileElement(texture, player.tilePosition.x, player.tilePosition.y - 0.5);
+    Game.world.addChild(item);
+    const initSize = item.width;
+    const sizeChange = Game.TILESIZE / 4;
+    const startPosY = item.position.y;
+    const posYEndChange = -Game.TILESIZE / 2;
+    item.zIndex = player.zIndex - Z_INDEXES.PLAYER_PRIMARY;
+
+    const animationTime = 50;
+    let counter = 0;
+
+    const animation = delta => {
+        if (Game.paused) return;
+        counter += delta;
+        item.position.y = startPosY + easeOutQuad(counter / animationTime) * posYEndChange;
+        item.height = item.width = initSize + easeOutQuad(counter / animationTime) * sizeChange;
+        if (counter >= animationTime * 3 / 4) {
+            item.alpha = 1 - easeOutQuad((counter - animationTime * 3 / 4) / (animationTime / 4));
+        }
+
+        if (counter >= animationTime) {
+            Game.app.ticker.remove(animation);
+            Game.world.removeChild(item);
+            item.destroy();
+        }
+    };
+
+    Game.app.ticker.add(animation);
+}
