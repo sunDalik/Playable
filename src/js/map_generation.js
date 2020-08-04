@@ -1,6 +1,6 @@
 import {Game} from "./game";
-import {ENEMY_TYPE, ROLE, STAGE} from "./enums/enums";
-import {randomInt, randomShuffle} from "./utils/random_utils";
+import {ENEMY_QUIRK, ENEMY_TYPE, ROLE, STAGE} from "./enums/enums";
+import {randomChoice, randomInt, randomShuffle} from "./utils/random_utils";
 import {Bomb} from "./classes/equipment/bag/bomb";
 import {HealingPotion} from "./classes/equipment/bag/healing_potion";
 import {tileInsideTheBossRoom} from "./map_checks";
@@ -19,6 +19,12 @@ export function assignDrops() {
     if (Game.stage === STAGE.RUINS) {
         if (Math.random() < 0.5) {
             distributeDrops(RustySword, 1, ENEMY_TYPE.LIZARD_WARRIOR);
+        }
+    }
+
+    for (const enemy of Game.enemies) {
+        if (Math.random() < 1 && !enemy.boss && enemy.role === ROLE.ENEMY) {
+            enemy.setQuirk(randomChoice([ENEMY_QUIRK.TINY,ENEMY_QUIRK.GIANT]))
         }
     }
 }

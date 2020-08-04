@@ -201,6 +201,8 @@ export const PLANE = Object.freeze({HORIZONTAL: 0, VERTICAL: 1});
 
 export const HAZARD_TYPE = Object.freeze({POISON: 0, FIRE: 1, DARK_POISON: 2, DARK_FIRE: 3});
 
+export const ENEMY_QUIRK = Object.freeze({NONE: 0, TINY: 1, GIANT: 2});
+
 export const RARITY = Object.freeze({
     C: {label: "C", color: 0xffffff, chanceFrom: 0, chanceTo: 0, num: 0},
     B: {label: "B", color: 0x94c9f2, chanceFrom: 0, chanceTo: 0, num: 1},

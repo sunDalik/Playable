@@ -1,7 +1,7 @@
 import {Game} from "../../game";
 import * as PIXI from "pixi.js";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
-import {HAZARD_TYPE, ROLE, STAGE} from "../../enums/enums";
+import {ENEMY_QUIRK, HAZARD_TYPE, ROLE, STAGE} from "../../enums/enums";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {runDestroyAnimation} from "../../animations";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
@@ -9,6 +9,7 @@ import {IntentsSpriteSheet} from "../../loader";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import {dropItem} from "../../game_logic";
 import {DAMAGE_TYPE} from "../../enums/damage_type";
+import {roundToQuarter} from "../../utils/math_utils";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -33,6 +34,7 @@ export class Enemy extends AnimatedTileElement {
         this.healthContainer.visible = false;
         this.healthContainer.zIndex = 5000;
         this.intentIcon = this.createIntentIcon();
+        this.quirk = ENEMY_QUIRK.NONE;
         this.place();
         this.setOwnZIndex(Z_INDEXES.ENEMY);
     }
@@ -280,5 +282,28 @@ export class Enemy extends AnimatedTileElement {
         intentIcon.width = intentIcon.height = 25;
         intentIcon.anchor.set(0.5, 0.5);
         return intentIcon;
+    }
+
+    setQuirk(quirk) {
+        if (quirk === ENEMY_QUIRK.TINY) {
+            this.becomeTiny();
+        } else if (quirk === ENEMY_QUIRK.GIANT) {
+            this.becomeGiant();
+        }
+        this.quirk = quirk;
+    }
+
+    becomeTiny() {
+        this.setScaleModifier(this.scaleModifier * 0.6);
+        if (this.maxHealth > 0.25) this.maxHealth = roundToQuarter(this.maxHealth / 2);
+        this.health = this.maxHealth;
+        if (this.atk > 0.25) this.atk = roundToQuarter(this.atk / 2);
+    }
+
+    becomeGiant() {
+        this.setScaleModifier(this.scaleModifier * 1.4);
+        this.maxHealth *= 2;
+        this.health = this.maxHealth;
+        this.atk *= 2;
     }
 }
