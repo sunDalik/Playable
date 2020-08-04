@@ -292,9 +292,11 @@ export class Enemy extends AnimatedTileElement {
 
     becomeTiny() {
         this.setScaleModifier(this.scaleModifier * 0.6);
-        if (this.maxHealth > 0.25) this.maxHealth = roundToQuarter(this.maxHealth / 2);
+        if (this.maxHealth > 0.25) this.maxHealth = roundToQuarter(this.maxHealth / 4);
+        if (this.maxHealth <= 0) this.maxHealth = 0.25;
         this.health = this.maxHealth;
-        if (this.atk > 0.25) this.atk = roundToQuarter(this.atk / 2);
+        if (this.atk > 0.25) this.atk = roundToQuarter(this.atk / 4);
+        if (this.atk <= 0) this.atk = 0.25;
     }
 
     becomeGiant() {

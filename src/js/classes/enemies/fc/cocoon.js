@@ -26,7 +26,7 @@ export class Cocoon extends Enemy {
     move() {
         if (this.aboutToSpawn) {
             this.spawnDelay = this.getSpawnDelay();
-            if (this.quirk === ENEMY_QUIRK.GIANT) this.spawnDelay += 3;
+            if (this.quirk === ENEMY_QUIRK.GIANT && this.minionType !== SpiderSmall) this.spawnDelay += 5;
             const dir = randomChoice(getEmptyCardinalDirections(this));
             if (dir === undefined) {
                 this.shake(1, 0);
