@@ -282,6 +282,7 @@ export class Enemy extends AnimatedTileElement {
     }
 
     setQuirk(quirk) {
+        if (this.quirk !== ENEMY_QUIRK.NONE) return;
         if (quirk === ENEMY_QUIRK.TINY) {
             this.becomeTiny();
         } else if (quirk === ENEMY_QUIRK.GIANT) {
@@ -291,18 +292,24 @@ export class Enemy extends AnimatedTileElement {
     }
 
     becomeTiny() {
-        this.setScaleModifier(this.scaleModifier * 0.6);
+        const multiplier = 0.6;
+        this.setScaleModifier(this.scaleModifier * multiplier);
         if (this.maxHealth > 0.25) this.maxHealth = roundToQuarter(this.maxHealth / 4);
         if (this.maxHealth <= 0) this.maxHealth = 0.25;
         this.health = this.maxHealth;
         if (this.atk > 0.25) this.atk = roundToQuarter(this.atk / 4);
         if (this.atk <= 0) this.atk = 0.25;
+        this.shadowHeight *= multiplier;
+        this.regenerateShadow();
     }
 
     becomeGiant() {
-        this.setScaleModifier(this.scaleModifier * 1.4);
+        const multiplier = 1.4;
+        this.setScaleModifier(this.scaleModifier * multiplier);
         this.maxHealth *= 2;
         this.health = this.maxHealth;
         this.atk *= 2;
+        this.shadowHeight *= multiplier;
+        this.regenerateShadow();
     }
 }
