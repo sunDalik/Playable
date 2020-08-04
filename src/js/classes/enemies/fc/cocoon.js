@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {ENEMY_TYPE, STAGE} from "../../../enums/enums";
+import {ENEMY_QUIRK, ENEMY_TYPE, STAGE} from "../../../enums/enums";
 import {Enemy} from "../enemy";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {getEmptyCardinalDirections} from "../../../utils/map_utils";
@@ -26,11 +26,13 @@ export class Cocoon extends Enemy {
     move() {
         if (this.aboutToSpawn) {
             this.spawnDelay = this.getSpawnDelay();
+            if (this.quirk === ENEMY_QUIRK.GIANT) this.spawnDelay += 3;
             const dir = randomChoice(getEmptyCardinalDirections(this));
             if (dir === undefined) {
                 this.shake(1, 0);
             } else {
                 this.minion = new this.minionType(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
+                this.minion.setQuirk(this.quirk);
                 this.minion.setStun(2);
                 Game.world.addEnemy(this.minion, true);
                 this.aboutToSpawn = false;
