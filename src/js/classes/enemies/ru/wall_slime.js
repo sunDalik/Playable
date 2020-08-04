@@ -413,4 +413,7 @@ export class WallSlime extends Enemy {
         if (this.subSlimes.length === 0) return this;
         return this.subSlimes.concat([this]).reduce((prev, val) => val.tilePosition.x > prev.tilePosition.x ? val : prev, this.subSlimes[0]);
     }
+
+    setQuirk(quirk) {
+    }
 }
