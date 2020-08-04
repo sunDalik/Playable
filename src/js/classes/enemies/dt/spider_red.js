@@ -1,9 +1,9 @@
 import {Spider} from "../fc/spider";
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {isEmpty, isNotAWall} from "../../../map_checks";
-import {DTEnemiesSpriteSheet} from "../../../loader";
+import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
-import {tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 
 export class RedSpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["spider_red.png"]) {
@@ -11,28 +11,14 @@ export class RedSpider extends Spider {
         this.health = this.maxHealth = 1;
         this.type = ENEMY_TYPE.SPIDER_RED;
         this.damageable = false;
-        this.devilJumped = false;
-    }
-
-    move() {
-        if (!this.devilJumped) {
-            this.damageable = false;
-        }
-        this.devilJumped = false;
-        super.move();
-    }
-
-    setStun(stun) {
-        super.setStun(stun);
-        this.damageable = true;
+        this.intentIcon2 = this.createIntentIcon();
     }
 
     damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
-        if (this.damageable || !damageType.weaponal || !source || tileDistance(source, this) > 2) {
+        if (this.damageable || this.stun > 0 || !damageType.weaponal || !source || tileDistance(source, this) > 3) {
             super.damage(source, dmg, inputX, inputY, damageType);
         } else {
             if (this.devilJump(source, inputX, inputY)) {
-                this.devilJumped = true;
                 this.damageable = true;
             } else if (!(super.throwAway(inputX, inputY) || this.graySpiderThrow(inputX, inputY) || this.greenSpiderThrow(inputX, inputY))) {
                 this.microJump();
@@ -75,5 +61,17 @@ export class RedSpider extends Spider {
             }
         }
         return false;
+    }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (!this.damageable && tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
+            this.intentIcon2.visible = true;
+            this.intentIcon2.zIndex = this.intentIcon.zIndex + 1;
+            this.intentIcon2.texture = IntentsSpriteSheet["magic.png"];
+            this.intentIcon2.alpha = 0.6;
+        } else {
+            this.intentIcon2.visible = false;
+        }
     }
 }
