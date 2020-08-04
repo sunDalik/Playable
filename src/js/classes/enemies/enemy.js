@@ -117,15 +117,12 @@ export class Enemy extends AnimatedTileElement {
     redrawHealth() {
         removeAllChildrenFromContainer(this.healthContainer);
         const heartSize = Game.TILESIZE / 65 * 20;
-        const heartRowOffset = 0;
-        const heartColOffset = 0;
         const healthArray = getHealthArray(this);
+        const heartColOffset = healthArray.length <= 5 ? 0 : (heartSize * (5 - healthArray.length)) / (healthArray.length - 1);
         for (let i = 0; i < healthArray.length; ++i) {
             const heart = new PIXI.Sprite(getHeartTexture(healthArray[i]));
-            heart.width = heartSize;
-            heart.height = heartSize;
-            heart.position.y = (heartRowOffset + heartSize) * Math.floor(i / 5);
-            heart.position.x = (i % 5) * (heartColOffset + heartSize);
+            heart.width = heart.height = heartSize;
+            heart.position.x = i * (heartColOffset + heartSize);
             this.healthContainer.addChild(heart);
         }
     }
