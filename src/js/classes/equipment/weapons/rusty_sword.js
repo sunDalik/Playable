@@ -11,9 +11,9 @@ export class RustySword extends Weapon {
         this.texture = WeaponsSpriteSheet["rusty_sword.png"];
         this.id = EQUIPMENT_ID.RUSTY_SWORD;
         this.atk = 2;
-        this.uses = this.maxUses = 15;
+        this.uses = this.maxUses = 20;
         this.name = "Rusty Sword";
-        this.description = `Attack 2\nBreaks after ${this.maxUses} uses`;
+        this.description = `Attack 2\nAttacks 3 enemies in front of you\nBreaks after ${this.maxUses} uses`;
         this.rarity = RARITY.UNIQUE;
     }
 
