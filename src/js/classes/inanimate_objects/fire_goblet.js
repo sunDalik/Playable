@@ -24,6 +24,7 @@ export class FireGoblet extends AnimatedTileElement {
         this.scaleModifier = 1;
         this.fitToTile();
         this.setOwnZIndex(Z_INDEXES.PLAYER_PRIMARY + 1);
+        this.removeShadow();
     }
 
     immediateReaction() {
