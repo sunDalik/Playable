@@ -1,5 +1,5 @@
 import {Game} from "../../game";
-import {STAGE} from "../../enums/enums";
+import {ACHIEVEMENT_ID, STAGE} from "../../enums/enums";
 import {WallsSpriteSheet} from "../../loader";
 import {randomChoice} from "../../utils/random_utils";
 import {WallTile} from "./wall";
@@ -8,6 +8,7 @@ import {Key} from "../equipment/key";
 import {Chest} from "../inanimate_objects/chest";
 import {HealingPotion} from "../equipment/bag/healing_potion";
 import {RerollPotion} from "../equipment/bag/reroll_potion";
+import {completeAchievement} from "../../achievements";
 
 export class TreasureWallTile extends WallTile {
     constructor(tilePositionX, tilePositionY, texture = WallsSpriteSheet["flooded_cave_walls_treasure_0.png"]) {
@@ -28,6 +29,7 @@ export class TreasureWallTile extends WallTile {
     }
 
     onTileDestroy() {
+        completeAchievement(ACHIEVEMENT_ID.EXPLODE_TREASURE_WALL);
         const random = Math.random() * 100;
         if (random > 99.5) {
             dropItem(new RerollPotion(), this.tilePosition.x, this.tilePosition.y);

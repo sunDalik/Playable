@@ -30,14 +30,35 @@ export const achievements = [
         image: "beat_any_boss_no_damage.png"
     },
     {
+        id: ACHIEVEMENT_ID.EXPLODE_TREASURE_WALL,
+        description: "Explode a treasure wall",
+        image: "explode_treasure_wall.png"
+    },
+    {
         id: ACHIEVEMENT_ID.DESTROY_OBELISK,
         description: "Destroy an Obelisk",
         image: "explode_the_obelisk.png"
     },
     {
+        id: ACHIEVEMENT_ID.EQUIP_ALL_ITEMS,
+        description: "Equip items in all non-magic slots",
+        image: "equip_all_items.png"
+    },
+    {
         id: ACHIEVEMENT_ID.FIND_ENCHANTED_ITEM,
         description: "Find an enchanted item",
         image: "find_enchanted_item.png"
+    },
+    {
+        id: ACHIEVEMENT_ID.BEAT_FC_FAST,
+        description: "Beat Flooded Caves in under 2 minutes",
+        image: "beat_fc_fast.png"
+    },
+    {
+        id: ACHIEVEMENT_ID.BEAT_ITEMLESS,
+        description: "Beat Ruins without ever picking up any item",
+        image: "beat_itemless.png",
+        description_locked: "Beat Ruins without ever picking up any item (bombs and potions are allowed)"
     }];
 
 
