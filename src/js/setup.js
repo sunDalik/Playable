@@ -310,6 +310,13 @@ export function initLocalStorageAchievements(reset = false) {
             achievementsArray[id] = 0;
         }
         window.localStorage[STORAGE.ACHIEVEMENTS] = JSON.stringify(achievementsArray);
+    } else {
+        // fill in missing achievements
+        const achievements = JSON.parse(window.localStorage[STORAGE.ACHIEVEMENTS]);
+        for (const id of Object.values(ACHIEVEMENT_ID)) {
+            if (achievements[id] !== 0 && achievements[id] !== 1) achievements[id] = 0;
+        }
+        window.localStorage[STORAGE.ACHIEVEMENTS] = JSON.stringify(achievements);
     }
 }
 
