@@ -66,6 +66,7 @@ export function completeBeatStageAchievements(stage) {
     switch (stage) {
         case STAGE.FLOODED_CAVE:
             completeAchievement(ACHIEVEMENT_ID.BEAT_FC);
+            if (Game.time <= 120000) completeAchievement(ACHIEVEMENT_ID.BEAT_FC_FAST);
             break;
         case STAGE.DARK_TUNNEL:
             completeAchievement(ACHIEVEMENT_ID.BEAT_DT);
