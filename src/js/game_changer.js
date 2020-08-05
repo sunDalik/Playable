@@ -143,7 +143,7 @@ export function incrementStage() {
             Game.stage = STAGE.RUINS;
             break;
         case STAGE.RUINS:
-            Game.stage = STAGE.LABYRINTH;
+            Game.stage = STAGE.FLOODED_CAVE;
             break;
         case STAGE.LABYRINTH:
             Game.stage = STAGE.FINALE;
