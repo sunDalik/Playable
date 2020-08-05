@@ -30,8 +30,8 @@ export const achievements = [
         image: "beat_any_boss_no_damage.png"
     },
     {
-        id: ACHIEVEMENT_ID.EXPLODE_OBELISK,
-        description: "Explode an Obelisk",
+        id: ACHIEVEMENT_ID.DESTROY_OBELISK,
+        description: "Destroy an Obelisk",
         image: "explode_the_obelisk.png"
     },
     {

@@ -257,4 +257,11 @@ export const STORAGE = Object.freeze({
 
 export const GAME_STATE = Object.freeze({MENU: 0, PLAYING: 1});
 
-export const ACHIEVEMENT_ID = Object.freeze({BEAT_FC: 0, BEAT_DT: 1, BEAT_ANY_BOSS_NO_DAMAGE: 2, BEAT_RU: 3, EXPLODE_OBELISK: 4, FIND_ENCHANTED_ITEM: 5});
+export const ACHIEVEMENT_ID = Object.freeze({
+    BEAT_FC: 0,
+    BEAT_DT: 1,
+    BEAT_ANY_BOSS_NO_DAMAGE: 2,
+    BEAT_RU: 3,
+    DESTROY_OBELISK: 4,
+    FIND_ENCHANTED_ITEM: 5
+});

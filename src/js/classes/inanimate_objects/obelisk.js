@@ -1,5 +1,5 @@
 import {Game} from "../../game";
-import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "../../enums/enums";
+import {ACHIEVEMENT_ID, INANIMATE_TYPE, ROLE, TILE_TYPE} from "../../enums/enums";
 import {createFadingText, runDestroyAnimation} from "../../animations";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
@@ -11,6 +11,7 @@ import {Necromancy} from "../equipment/magic/necromancy";
 import {getRandomSpell} from "../../utils/pool_utils";
 import {Grail} from "./grail";
 import {clearWall} from "../../level_generation/standard_generation";
+import {completeAchievement} from "../../achievements";
 
 export class Obelisk extends TileElement {
     constructor(tilePositionX, tilePositionY, level) {
@@ -186,6 +187,7 @@ export class Obelisk extends TileElement {
                     enemy.setStun(2);
                 } else enemy.atk += 0.25;
             }
+            completeAchievement(ACHIEVEMENT_ID.DESTROY_OBELISK);
             //createFadingText("Live with it... you will not...", this.position.x, this.position.y);
         }
         this.onUpdate();
