@@ -368,6 +368,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
     }
     redrawSlotContents(player, slot);
     if (showHelp) showHelpBox(player[slot]);
+    if (equipment.enchantment && equipment.enchantment !== ENCHANTMENT_TYPE.NONE) completeAchievement(ACHIEVEMENT_ID.FIND_ENCHANTED_ITEM)
     return swappedEquipment;
 }
 
