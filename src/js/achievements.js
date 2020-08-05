@@ -17,12 +17,27 @@ export const achievements = [
         id: ACHIEVEMENT_ID.BEAT_DT,
         description: "Beat Dark Tunnel",
         image: "beat_dt.png",
-        description_locked: "Beat level 2"
+        description_locked: "Beat Dark Tunnel"
+    },
+    {
+        id: ACHIEVEMENT_ID.BEAT_RU,
+        description: "Beat Ruins",
+        image: "beat_ru.png"
     },
     {
         id: ACHIEVEMENT_ID.BEAT_ANY_BOSS_NO_DAMAGE,
         description: "Beat any boss without taking damage",
         image: "beat_any_boss_no_damage.png"
+    },
+    {
+        id: ACHIEVEMENT_ID.EXPLODE_OBELISK,
+        description: "Explode an Obelisk",
+        image: "explode_the_obelisk.png"
+    },
+    {
+        id: ACHIEVEMENT_ID.FIND_ENCHANTED_ITEM,
+        description: "Find an enchanted item",
+        image: "find_enchanted_item.png"
     }];
 
 
@@ -33,6 +48,9 @@ export function completeBeatStageAchievements(stage) {
             break;
         case STAGE.DARK_TUNNEL:
             completeAchievement(ACHIEVEMENT_ID.BEAT_DT);
+            break;
+        case STAGE.RUINS:
+            completeAchievement(ACHIEVEMENT_ID.BEAT_RU);
             break;
     }
 }
