@@ -26,7 +26,7 @@ export const achievements = [
     },
     {
         id: ACHIEVEMENT_ID.BEAT_ANY_BOSS_NO_DAMAGE,
-        description: "Beat any boss without taking damage",
+        description: "Beat a boss without taking damage",
         image: "beat_any_boss_no_damage.png"
     },
     {
@@ -72,34 +72,33 @@ export function showAchievementAnimation(achievement, fromQueue = false) {
 
     const popUp = new PIXI.Graphics();
     popUp.beginFill(0x000000);
-    popUp.lineStyle(3, 0xffffff);
-    popUp.drawRoundedRect(0, 0, 350, 100, 5);
-    const imageSize = 65;
+    popUp.lineStyle(3, 0xFFFFFF, 0.8, 0);
+    popUp.drawRoundedRect(0, 0, 320, 100, 6);
+    const imageSize = 80;
     const achievementSprite = new PIXI.Sprite(AchievementsSpriteSheet[achievement.image]);
     achievementSprite.width = achievementSprite.height = imageSize;
-    const imageOffsetX = 40;
-    const imageOffsetY = 15;
-    achievementSprite.position.set(40, imageOffsetY);
+    const imageOffsetX = 10;
+    const imageOffsetY = 10;
+    achievementSprite.position.set(imageOffsetX, imageOffsetY);
     popUp.addChild(achievementSprite);
-    const textOffsetX = imageOffsetX + achievementSprite.width;
+    const imageTextOffsetX = 20;
+    const textOffsetX = imageOffsetX + imageSize + imageTextOffsetX;
     const textBox = new PIXI.Text(achievement.description, HUDTextStyleTitle);
-    if (textBox.width > popUp.width - imageSize - textOffsetX * 2) {
-        const textArray = textBox.text.split(" ");
-        textArray.splice(Math.floor(textArray.length / 2), 0, "\n");
-        textBox.text = textArray.join(" ");
-    }
-    textBox.position.set(textOffsetX + (popUp.width - textOffsetX) / 2 - textBox.width / 2, imageOffsetY + 6);
+    const textSpace = popUp.width - textOffsetX - imageTextOffsetX;
+    textBox.style.wordWrap = true;
+    textBox.style.wordWrapWidth = textSpace;
+    textBox.position.set(textOffsetX + textSpace / 2 - textBox.width / 2,
+        (popUp.height - textBox.height) / 2 - 4);
     popUp.addChild(textBox);
 
     HUD.addChild(popUp);
     popUp.position.set(slotBorderOffsetX, Game.app.renderer.screen.height);
     popUp.zIndex = 1;
 
-    const slideTime = 35;
+    const slideTime = 20;
     const startVal = popUp.position.y;
     const endChange = -popUp.height - miniMapBottomOffset;
-    const stayTime = 300;
-    let placed = false;
+    const stayTime = 250;
     let counter = 0;
 
     const animation = (delta) => {
@@ -109,9 +108,7 @@ export function showAchievementAnimation(achievement, fromQueue = false) {
             popUp.position.y = startVal + easeOutQuad(counter / slideTime) * endChange;
         } else if (counter >= slideTime + stayTime && counter < slideTime + stayTime + slideTime) {
             popUp.position.y = startVal + endChange - easeInQuad((counter - slideTime - stayTime) / slideTime) * endChange;
-        }
-        if (counter >= slideTime && !placed) {
-            placed = true;
+        } else {
             popUp.position.y = startVal + endChange;
         }
         if (counter >= slideTime + stayTime + slideTime) {

@@ -54,7 +54,7 @@ function displayAchievements() {
 
         const textBox = new PIXI.Text(achievements[i].description, HUDTextStyleTitle);
         if (storage[achievements[i].id] === 0 && achievements[i].description_locked) textBox.text = achievements[i].description_locked;
-        textBox.style.wordWrap= true;
+        textBox.style.wordWrap = true;
         textBox.style.wordWrapWidth = imageSize + colOffset / 3;
         textBox.position.set(achievementSprite.position.x + imageSize / 2 - textBox.width / 2, achievementSprite.position.y + imageSize + textOffset);
 
