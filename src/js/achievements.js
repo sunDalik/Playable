@@ -1,4 +1,4 @@
-import {ACHIEVEMENT_ID, STAGE, STORAGE} from "./enums/enums";
+import {ACHIEVEMENT_ID, SLOT, STAGE, STORAGE} from "./enums/enums";
 import {Game} from "./game";
 import {HUD} from "./drawing/hud_object";
 import * as PIXI from "pixi.js";
@@ -75,6 +75,16 @@ export function completeBeatStageAchievements(stage) {
             completeAchievement(ACHIEVEMENT_ID.BEAT_RU);
             break;
     }
+}
+
+export function completeAchievementForEquippingAllItems() {
+    if (!Game.player || !Game.player2) return false;
+    for (const player of [Game.player, Game.player2]) {
+        for (const slot of [SLOT.HEADWEAR, SLOT.ARMOR, SLOT.FOOTWEAR, SLOT.ACCESSORY, SLOT.WEAPON, SLOT.EXTRA]) {
+            if (!player[slot]) return false;
+        }
+    }
+    completeAchievement(ACHIEVEMENT_ID.EQUIP_ALL_ITEMS);
 }
 
 export function completeAchievement(achievement_id) {

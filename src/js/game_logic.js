@@ -40,7 +40,11 @@ import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER, NIGHTMARE_FILTER_1, N
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {randomChoice, randomShuffle} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
-import {completeAchievement, completeBeatStageAchievements} from "./achievements";
+import {
+    completeAchievement,
+    completeAchievementForEquippingAllItems,
+    completeBeatStageAchievements
+} from "./achievements";
 import {Z_INDEXES} from "./z_indexing";
 import {SuperWallTile} from "./classes/draw/super_wall";
 import {CommonSpriteSheet} from "./loader";
@@ -368,7 +372,8 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
     }
     redrawSlotContents(player, slot);
     if (showHelp) showHelpBox(player[slot]);
-    if (equipment.enchantment && equipment.enchantment !== ENCHANTMENT_TYPE.NONE) completeAchievement(ACHIEVEMENT_ID.FIND_ENCHANTED_ITEM)
+    if (equipment.enchantment && equipment.enchantment !== ENCHANTMENT_TYPE.NONE) completeAchievement(ACHIEVEMENT_ID.FIND_ENCHANTED_ITEM);
+    completeAchievementForEquippingAllItems();
     return swappedEquipment;
 }
 

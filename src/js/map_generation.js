@@ -24,7 +24,7 @@ export function assignDrops() {
 
     // assign quirks
     for (const enemy of Game.enemies) {
-        if (Math.random() < 0.009 && !enemy.boss && enemy.role === ROLE.ENEMY) {
+        if (Math.random() < 0.008 && !enemy.boss && enemy.role === ROLE.ENEMY) {
             enemy.setQuirk(randomChoice([ENEMY_QUIRK.TINY, ENEMY_QUIRK.GIANT]));
         }
     }
