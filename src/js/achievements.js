@@ -53,14 +53,16 @@ export const achievements = [
         id: ACHIEVEMENT_ID.BEAT_FC_FAST,
         description: "Beat Flooded Caves in under 2 minutes",
         image: "beat_fc_fast.png"
-    },
+    }];
+
+/*
     {
         id: ACHIEVEMENT_ID.BEAT_ITEMLESS,
         description: "Beat Ruins without ever picking up any item",
         image: "beat_itemless.png",
         description_locked: "Beat Ruins without ever picking up any item (bombs and potions are allowed)"
-    }];
-
+    }
+ */
 
 export function completeBeatStageAchievements(stage) {
     switch (stage) {
