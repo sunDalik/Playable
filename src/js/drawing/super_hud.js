@@ -1,6 +1,5 @@
 import * as PIXI from "pixi.js";
 import {HUD} from "./hud_object";
-import {HUDTextStyleGameOver} from "./draw_constants";
 import {Game} from "../game";
 import {createSimpleButtonSet, menuButtonHeight, menuButtonOffset} from "../menu/menu_common";
 import {keyboardS} from "../keyboard/keyboard_handler";
@@ -76,17 +75,32 @@ function setupPauseScreen() {
     SUPER_HUD.addChild(SUPER_HUD.pauseScreen);
 }
 
-function redrawPauseBG() {
+export function redrawPauseBG() {
     if (SUPER_HUD.blackBg) SUPER_HUD.removeChild(SUPER_HUD.blackBg);
 
     if (SUPER_HUD.pauseScreen.visible
-        || Game.state === GAME_STATE.PLAYING && (Game.subSettingsInterface.visible || Game.otherSettingsInterface.visible || Game.controlsInterface.visible)) {
+        || Game.state === GAME_STATE.PLAYING && (Game.subSettingsInterface.visible || Game.otherSettingsInterface.visible || Game.controlsInterface.visible
+            || Game.gameOver)) {
         const bg = new PIXI.Graphics();
-        bg.beginFill(0x000000, 0.6);
+        bg.beginFill(0x000000);
         bg.drawRect(0, 0, Game.app.renderer.screen.width, Game.app.renderer.screen.height);
         bg.zIndex = -10;
         SUPER_HUD.blackBg = bg;
         SUPER_HUD.addChild(bg);
+
+        const endAlpha = 0.8;
+        const animationTime = 5;
+        let counter = 0;
+        bg.alpha = 0;
+        const animation = delta => {
+            counter += delta;
+            bg.alpha = counter / animationTime * endAlpha;
+            if (counter >= animationTime || SUPER_HUD.blackBg !== bg) {
+                Game.app.ticker.remove(animation);
+                bg.alpha = endAlpha;
+            }
+        };
+        Game.app.ticker.add(animation);
     }
 }
 

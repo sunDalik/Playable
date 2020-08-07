@@ -78,5 +78,6 @@ export const Game = {
     disableMouse: false,
     showFPS: false,
     keysAmount: 0,
-    enemiesKilled: 0
+    enemiesKilled: 0,
+    gameOver: false
 };

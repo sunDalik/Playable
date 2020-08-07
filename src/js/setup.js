@@ -18,7 +18,7 @@ import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
 import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";
 import {Torch} from "./classes/equipment/tools/torch";
-import {setupSuperHud, SUPER_HUD} from "./drawing/super_hud";
+import {redrawPauseBG, setupSuperHud, SUPER_HUD} from "./drawing/super_hud";
 import {removeAllObjectsFromArray} from "./utils/basic_utils";
 import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "./filters";
 import {drawMiniMap} from "./drawing/minimap";
@@ -204,6 +204,7 @@ export function retry() {
         cleanGameState();
         initPlayers();
         initGameState();
+        redrawPauseBG();
         drawHUD();
         bindKeys();
         initPools();
@@ -218,6 +219,7 @@ function initGameState() {
     Game.keysAmount = 0;
     Game.enemiesKilled = 0;
     Game.turns = 0;
+    Game.gameOver = false;
 
     //otherwise players will have no shadow if you start on dt...
     Game.player.regenerateShadow();

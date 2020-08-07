@@ -2,8 +2,8 @@ import {HUD} from "./hud_object";
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {getTimeFromMs, setTickTimeout} from "../utils/game_utils";
-import {GAME_OVER_BLUR_FILTER} from "../filters";
-import {SUPER_HUD} from "./super_hud";
+import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "../filters";
+import {redrawPauseBG, SUPER_HUD} from "./super_hud";
 import {keyboard} from "../keyboard/keyboard_handler";
 import {retry} from "../setup";
 import {BigHUDKeyBindSize, HUDTextStyleGameOver, HUDTextStyleTitle} from "./draw_constants";
@@ -13,6 +13,7 @@ import {getKeyBindSymbol, padTime} from "./draw_hud";
 import {ENCHANTMENT_TYPE} from "../enums/enchantments";
 import {getEnchantmentFilters} from "../game_logic";
 import {getRandomTip} from "../menu/tips";
+import {removeAllObjectsFromArray} from "../utils/basic_utils";
 
 const blackBarLeft = initBlackBar();
 const blackBarRight = initBlackBar();
@@ -81,13 +82,17 @@ export function retreatBlackBars() {
 const retryButton = keyboard("KeyR");
 
 export function pullUpGameOverScreen(victory = false) {
+    Game.gameOver = true;
+    removeAllObjectsFromArray(DEATH_FILTER, Game.world.filters);
+    removeAllObjectsFromArray(DEATH_FILTER, HUD.filters);
+    redrawPauseBG();
     SUPER_HUD.removeChild(SUPER_HUD.gameOverScreen);
     const gameOverScreen = createGameOverScreen(victory);
     SUPER_HUD.gameOverScreen = gameOverScreen;
     SUPER_HUD.addChild(SUPER_HUD.gameOverScreen);
 
-    Game.world.filters.push(GAME_OVER_BLUR_FILTER);
-    HUD.filters.push(GAME_OVER_BLUR_FILTER);
+    //Game.world.filters.push(GAME_OVER_BLUR_FILTER);
+    //HUD.filters.push(GAME_OVER_BLUR_FILTER);
     GAME_OVER_BLUR_FILTER.blur = 0;
     SUPER_HUD.gameOverScreen.position.x = Game.app.renderer.screen.width / 2 - SUPER_HUD.gameOverScreen.width / 2;
     SUPER_HUD.gameOverScreen.position.y = Game.app.renderer.screen.height;
