@@ -90,16 +90,16 @@ export const EQUIPMENT_TYPE = Object.freeze({
 });
 
 export const SLOT = Object.freeze({
-    WEAPON: "weapon",
-    EXTRA: "secondHand",
-    HEADWEAR: "headwear",
-    ARMOR: "armor",
-    FOOTWEAR: "footwear",
     MAGIC1: "magic1",
     MAGIC2: "magic2",
     MAGIC3: "magic3",
-    BAG: "bag",
-    ACCESSORY: "accessory"
+    WEAPON: "weapon",
+    EXTRA: "secondHand",
+    ACCESSORY: "accessory",
+    HEADWEAR: "headwear",
+    ARMOR: "armor",
+    FOOTWEAR: "footwear",
+    BAG: "bag"
 });
 
 export const EQUIPMENT_ID = Object.freeze({
