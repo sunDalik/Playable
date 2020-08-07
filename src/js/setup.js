@@ -20,7 +20,7 @@ import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";
 import {Torch} from "./classes/equipment/tools/torch";
 import {redrawPauseBG, setupSuperHud, SUPER_HUD} from "./drawing/super_hud";
 import {removeAllObjectsFromArray} from "./utils/basic_utils";
-import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "./filters";
+import {DEATH_FILTER} from "./filters";
 import {drawMiniMap} from "./drawing/minimap";
 import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
@@ -194,8 +194,6 @@ export function retry() {
     closeBlackBars(() => {
         removeAllObjectsFromArray(DEATH_FILTER, Game.world.filters);
         removeAllObjectsFromArray(DEATH_FILTER, HUD.filters);
-        removeAllObjectsFromArray(GAME_OVER_BLUR_FILTER, Game.world.filters);
-        removeAllObjectsFromArray(GAME_OVER_BLUR_FILTER, HUD.filters);
 
         SUPER_HUD.gameOverScreen.visible = false;
         Game.world.visible = true;

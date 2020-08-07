@@ -2,7 +2,7 @@ import {HUD} from "./hud_object";
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {getTimeFromMs, setTickTimeout} from "../utils/game_utils";
-import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "../filters";
+import {DEATH_FILTER} from "../filters";
 import {redrawPauseBG, SUPER_HUD} from "./super_hud";
 import {keyboard} from "../keyboard/keyboard_handler";
 import {retry} from "../setup";
@@ -90,15 +90,10 @@ export function pullUpGameOverScreen(victory = false) {
     const gameOverScreen = createGameOverScreen(victory);
     SUPER_HUD.gameOverScreen = gameOverScreen;
     SUPER_HUD.addChild(SUPER_HUD.gameOverScreen);
-
-    //Game.world.filters.push(GAME_OVER_BLUR_FILTER);
-    //HUD.filters.push(GAME_OVER_BLUR_FILTER);
-    GAME_OVER_BLUR_FILTER.blur = 0;
     SUPER_HUD.gameOverScreen.position.x = Game.app.renderer.screen.width / 2 - SUPER_HUD.gameOverScreen.width / 2;
     SUPER_HUD.gameOverScreen.position.y = Game.app.renderer.screen.height;
     const time = 10;
     const step = (Game.app.renderer.screen.height / 2 + SUPER_HUD.gameOverScreen.height / 2) / time;
-    const blurStep = GAME_OVER_BLUR_FILTER.maxBlur / time;
     let counter = 0;
 
     retryButton.press = () => {
@@ -109,14 +104,12 @@ export function pullUpGameOverScreen(victory = false) {
     const animation = delta => {
         counter += delta;
         gameOverScreen.position.y -= step * delta;
-        GAME_OVER_BLUR_FILTER.blur += blurStep;
 
         if (gameOverScreen !== SUPER_HUD.gameOverScreen) {
             Game.app.ticker.remove(animation);
         }
         if (counter >= time) {
             Game.app.ticker.remove(animation);
-            GAME_OVER_BLUR_FILTER.blur = GAME_OVER_BLUR_FILTER.maxBlur;
             gameOverScreen.position.y = Game.app.renderer.screen.height / 2 - gameOverScreen.height / 2;
         }
     };

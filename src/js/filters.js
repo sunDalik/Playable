@@ -4,7 +4,6 @@ import {
     ColorReplaceFilter,
     DotFilter,
     GlowFilter,
-    KawaseBlurFilter,
     OutlineFilter
 } from "pixi-filters";
 import * as PIXI from "pixi.js";
@@ -100,10 +99,6 @@ DESATURATE_FILTER.resolution = 2;
 
 export const DEATH_FILTER = new DotFilter(2);
 DEATH_FILTER.resolution = 2;
-
-export const GAME_OVER_BLUR_FILTER = new KawaseBlurFilter(0.5);
-GAME_OVER_BLUR_FILTER.maxBlur = 0.5;
-GAME_OVER_BLUR_FILTER.resolution = 2;
 
 export const WALL_TRAP_BASE_FILTER = new AdjustmentFilter({brightness: 1.5});
 WALL_TRAP_BASE_FILTER.resolution = 2;
