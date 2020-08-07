@@ -12,6 +12,7 @@ import {EQUIPMENT_TYPE} from "../enums/enums";
 import {getKeyBindSymbol, padTime} from "./draw_hud";
 import {ENCHANTMENT_TYPE} from "../enums/enchantments";
 import {getEnchantmentFilters} from "../game_logic";
+import {getRandomTip} from "../menu/tips";
 
 const blackBarLeft = initBlackBar();
 const blackBarRight = initBlackBar();
@@ -220,9 +221,17 @@ function createGameOverScreen(victory = false) {
         bottomPos = leftText.position.y + leftText.height;
     }
 
+    // random tip
+    const tip = new PIXI.Text(getRandomTip(), HUDTextStyleTitle);
+    tip.style.fontStyle = "italic";
+    tip.style.wordWrap = true;
+    tip.style.wordWrapWidth = centralWidth;
+    tip.position.set(screen.width / 2 - tip.width / 2, bottomPos + 50);
+    container.addChild(tip);
+
     // key binds
     const keyBind = getBigKey(getKeyBindSymbol(retryButton.code), "Retry");
-    keyBind.position.set(screen.width / 2 + centralWidth / 2 - keyBind.width, bottomPos + 100);
+    keyBind.position.set(screen.width / 2 + centralWidth / 2 - keyBind.width, tip.position.y + tip.height + 80);
     container.addChild(keyBind);
 
     return container;
