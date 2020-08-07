@@ -10,6 +10,8 @@ import {BigHUDKeyBindSize, HUDTextStyleGameOver, HUDTextStyleTitle} from "./draw
 import {CommonSpriteSheet} from "../loader";
 import {EQUIPMENT_TYPE} from "../enums/enums";
 import {getKeyBindSymbol, padTime} from "./draw_hud";
+import {ENCHANTMENT_TYPE} from "../enums/enchantments";
+import {getEnchantmentFilters} from "../game_logic";
 
 const blackBarLeft = initBlackBar();
 const blackBarRight = initBlackBar();
@@ -158,6 +160,9 @@ function createGameOverScreen(victory = false) {
         let col = 0;
         for (const eq of equipmentList) {
             const equipmentSprite = new PIXI.Sprite(eq.texture);
+            if (eq.enchantment && eq.enchantment !== ENCHANTMENT_TYPE.NONE) {
+                equipmentSprite.filters = getEnchantmentFilters(eq.enchantment);
+            }
             equipmentSprite.width = equipmentSprite.height = itemSize;
             equipmentSprite.position.y = triangleSprite.position.y + triangleSprite.height + 15 + itemSize * row;
             equipmentSprite.position.x = triangleSprite.position.x + triangleSprite.width / 2 - itemsPerRow / 2 * itemSize + itemSize * col;
