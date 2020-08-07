@@ -45,6 +45,7 @@ export const HUDKeyBindFontsize = 13;
 export const HUDKeyBindTextStyle = Object.assign({}, HUDTextStyle, {fontSize: HUDKeyBindFontsize});
 
 export const HUDKeyBindSize = 20;
+export const BigHUDKeyBindSize = 30;
 export const HUDGuideOffsetX = 15;
 export const HUDGuideOffsetY = 0;
 export const HUDGuideKeyOffsetX = 4;

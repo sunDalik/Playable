@@ -6,10 +6,10 @@ import {GAME_OVER_BLUR_FILTER} from "../filters";
 import {SUPER_HUD} from "./super_hud";
 import {keyboard} from "../keyboard/keyboard_handler";
 import {retry} from "../setup";
-import {HUDTextStyleGameOver} from "./draw_constants";
+import {BigHUDKeyBindSize, HUDTextStyleGameOver, HUDTextStyleTitle} from "./draw_constants";
 import {CommonSpriteSheet} from "../loader";
 import {EQUIPMENT_TYPE} from "../enums/enums";
-import {padTime} from "./draw_hud";
+import {getKeyBindSymbol, padTime} from "./draw_hud";
 
 const blackBarLeft = initBlackBar();
 const blackBarRight = initBlackBar();
@@ -173,6 +173,7 @@ function createGameOverScreen(victory = false) {
         ["Time", timeString],
         ["Creatures Slain", Game.enemiesKilled]];
     const initPosY = topTextObject.position.y + topTextObject.height + 100;
+    let bottomPos = 0;
     for (let i = 0; i < entries.length; i++) {
         const leftText = new PIXI.Text(entries[i][0], HUDTextStyleGameOver);
         const rightText = new PIXI.Text(entries[i][1], HUDTextStyleGameOver);
@@ -181,7 +182,34 @@ function createGameOverScreen(victory = false) {
         leftText.position.y = rightText.position.y = initPosY + 40 * (i + 1);
         container.addChild(leftText);
         container.addChild(rightText);
+
+        bottomPos = leftText.position.y + leftText.height;
     }
 
+    const keyBind = getBigKey(getKeyBindSymbol(retryButton.code), "Retry");
+    keyBind.position.set(screen.width / 2 + centralWidth / 2 - keyBind.width, bottomPos + 100);
+    container.addChild(keyBind);
+
     return container;
+}
+
+function getBigKey(keyBind, label) {
+    const key = new PIXI.Container();
+    const text = new PIXI.Text(keyBind, HUDTextStyleTitle);
+    const rect = new PIXI.Graphics();
+    rect.beginFill(0xffffff);
+    rect.lineStyle(3, 0xaaaaaa, 1, 1);
+    const rectHeight = BigHUDKeyBindSize;
+    let rectWidth = rectHeight;
+    if (keyBind.length > 1) rectWidth = text.width + 10;
+    rect.drawRect(0, 0, rectWidth, rectHeight);
+    rect.endFill();
+    text.position.set((rectWidth - text.width) / 2, (rectHeight - text.height) / 2);
+    key.addChild(rect);
+    key.addChild(text);
+    const labelObject = new PIXI.Text(label, HUDTextStyleTitle);
+    labelObject.position.x = rect.position.x + rect.width + 10;
+    labelObject.position.y = rectHeight / 2 - labelObject.height / 2;
+    key.addChild(labelObject);
+    return key;
 }
