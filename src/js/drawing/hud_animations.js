@@ -190,6 +190,15 @@ function createGameOverScreen(victory = false) {
         textObj.position.x = playerSprite.position.x + playerSprite.width / 2 - textObj.width / 2;
         textObj.position.y = bottomPos + 20;
         container.addChild(textObj);
+
+        if (player.killedBy && player.killedBy.texture && player.killedBy.texture !== PIXI.Texture.WHITE) {
+            const killedBySprite = new PIXI.Sprite(player.killedBy.texture);
+            const spriteHeight = 65;
+            killedBySprite.scale.y = spriteHeight / killedBySprite.height;
+            killedBySprite.scale.x = killedBySprite.scale.y;
+            killedBySprite.position.set(playerSprite.position.x + playerSprite.width / 2 - killedBySprite.width / 2, textObj.position.y + textObj.height + 10);
+            container.addChild(killedBySprite);
+        }
     }
 
 

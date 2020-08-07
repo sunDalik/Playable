@@ -5,7 +5,7 @@ export function getRandomTip() {
         "Every time your characters die, they both lose 1 health container",
         "Destroying active obelisk causes dead enemies to revive and alive enemies to get +0.25 atk",
         "Destroying active obelisk gives you 2 random magic, but you can pick up both",
-        "Wielding two identical weapons causes you to attack twice in one turn: before and after enemy turn",
+        "Wielding two identical weapons causes you to attack twice in one turn: before and after enemies",
         "You can make a sacrifice to an obelisk. You will lose a heart, but get 2 more magic to choose from",
         "The maximum amount of health containers you can get is 10",
         "White triangle has x0.5 atk multiplier and x1 def multiplier. Minions go very well with her because atk multiplier does not affect minion attack",
