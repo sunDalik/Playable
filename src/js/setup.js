@@ -19,7 +19,7 @@ import {setTickTimeout} from "./utils/game_utils";
 import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";
 import {Torch} from "./classes/equipment/tools/torch";
 import {setupSuperHud, SUPER_HUD} from "./drawing/super_hud";
-import {removeObjectFromArray} from "./utils/basic_utils";
+import {removeAllObjectsFromArray} from "./utils/basic_utils";
 import {DEATH_FILTER, GAME_OVER_BLUR_FILTER} from "./filters";
 import {drawMiniMap} from "./drawing/minimap";
 import {HUDTextStyleTitle} from "./drawing/draw_constants";
@@ -184,13 +184,10 @@ export function retry() {
     if (Game.loadingText) Game.app.stage.removeChild(Game.loadingText);
     if (Game.loadingTextAnimation) Game.app.ticker.remove(Game.loadingTextAnimation);
     closeBlackBars(() => {
-        for (let i = 0; i < 2; i++) {
-            //two times. In case two players die simultaneously
-            removeObjectFromArray(DEATH_FILTER, Game.world.filters);
-            removeObjectFromArray(DEATH_FILTER, HUD.filters);
-            removeObjectFromArray(GAME_OVER_BLUR_FILTER, Game.world.filters);
-            removeObjectFromArray(GAME_OVER_BLUR_FILTER, HUD.filters);
-        }
+        removeAllObjectsFromArray(DEATH_FILTER, Game.world.filters);
+        removeAllObjectsFromArray(DEATH_FILTER, HUD.filters);
+        removeAllObjectsFromArray(GAME_OVER_BLUR_FILTER, Game.world.filters);
+        removeAllObjectsFromArray(GAME_OVER_BLUR_FILTER, HUD.filters);
 
         SUPER_HUD.gameOverScreen.visible = false;
         Game.world.visible = true;

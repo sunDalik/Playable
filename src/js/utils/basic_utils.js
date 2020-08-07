@@ -1,5 +1,5 @@
 export function arraySum(array) {
-    return array.reduce((a, b) => a + b, 0)
+    return array.reduce((a, b) => a + b, 0);
 }
 
 export function copy2dArray(array) {
@@ -28,6 +28,13 @@ export function removeObjectFromArray(object, array) {
     }
 }
 
+// if there are multiple copies of said object it removes all of them
+export function removeAllObjectsFromArray(object, array) {
+    while (array.indexOf(object) !== -1) {
+        array.splice(array.indexOf(object), 1);
+    }
+}
+
 export function decrementEachDigitInHex(hex) {
     const hexString = hex.toString(16);
     let newHex = "";
@@ -39,5 +46,5 @@ export function decrementEachDigitInHex(hex) {
 }
 
 export function regexCount(string, pattern) {
-    return (string.match(pattern + "/g") || []).length
+    return (string.match(pattern + "/g") || []).length;
 }
