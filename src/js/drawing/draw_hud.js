@@ -483,7 +483,7 @@ export function redrawSpeedRunTime() {
     Game.app.ticker.add(HUD.speedrunTime.animation);
 }
 
-function padTime(time, digits) {
+export function padTime(time, digits) {
     let paddedTime = time.toString();
     for (let i = 0; i < digits - time.toString().length; i++) {
         paddedTime = "0" + paddedTime;

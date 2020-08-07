@@ -53,13 +53,13 @@ export const RABBIT_TYPE = Object.freeze({
 export const MAGIC_ALIGNMENT = Object.freeze({GRAY: 0, WHITE: 1, DARK: 2});
 
 export const STAGE = Object.freeze({
-    FLOODED_CAVE: 0,
-    DARK_TUNNEL: 1,
-    RUINS: 2,
-    LABYRINTH: 3,
-    FINALE: 4,
-    CANYON: 5,
-    ARENA: 6
+    FLOODED_CAVE: "Flooded Caves",
+    DARK_TUNNEL: "Dark Tunnel",
+    RUINS: "Ruins",
+    JUNGLE: "???",
+    FINALE: "???",
+    CANYON: "???",
+    ARENA: "???"
 });
 export const TILE_TYPE = Object.freeze({VOID: 0, NONE: 1, WALL: 2, ENTRY: 4, SUPER_WALL: 5, EXIT: 6});
 export const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1, INANIMATE: 2, BULLET: 3, WALL_TRAP: 4});

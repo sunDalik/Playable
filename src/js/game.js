@@ -74,8 +74,9 @@ export const Game = {
     turns: 0,
     destroyParticles: [],
     achievementPopUpQueue: [],
-    
+
     disableMouse: false,
     showFPS: false,
-    keysAmount: 0
+    keysAmount: 0,
+    enemiesKilled: 0
 };

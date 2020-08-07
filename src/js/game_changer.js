@@ -145,7 +145,7 @@ export function incrementStage() {
         case STAGE.RUINS:
             Game.stage = STAGE.FLOODED_CAVE;
             break;
-        case STAGE.LABYRINTH:
+        case STAGE.JUNGLE:
             Game.stage = STAGE.FINALE;
             break;
     }
@@ -176,7 +176,7 @@ export function setVariablesForStage() {
             Game.BGColor = BG_COLORS.RUINS;
             assignRarityChances(10, 55, 91); // 10% 45% 36% 9%
             break;
-        case STAGE.LABYRINTH:
+        case STAGE.JUNGLE:
             Game.BGColor = BG_COLORS.DUNNO;
             assignRarityChances(2, 36, 87); // 2% 34% 51% 13%
             break;

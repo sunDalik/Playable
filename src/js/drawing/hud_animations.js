@@ -1,7 +1,7 @@
 import {HUD} from "./hud_object";
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
-import {setTickTimeout} from "../utils/game_utils";
+import {getTimeFromMs, setTickTimeout} from "../utils/game_utils";
 import {GAME_OVER_BLUR_FILTER} from "../filters";
 import {SUPER_HUD} from "./super_hud";
 import {keyboard} from "../keyboard/keyboard_handler";
@@ -9,6 +9,7 @@ import {retry} from "../setup";
 import {HUDTextStyleGameOver} from "./draw_constants";
 import {CommonSpriteSheet} from "../loader";
 import {EQUIPMENT_TYPE} from "../enums/enums";
+import {padTime} from "./draw_hud";
 
 const blackBarLeft = initBlackBar();
 const blackBarRight = initBlackBar();
@@ -134,8 +135,8 @@ function createGameOverScreen(victory = false) {
         container.addChild(triangle);
     }
     triangleBlack.position.x = screen.width - triangleBlack.width - triangleOffsetX;
-    const itemsPerRow = 3;
-    const itemSize = 50;
+    const itemsPerRow = 2;
+    const itemSize = 60;
     for (const player of [Game.player, Game.player2]) {
         const triangleSprite = player === Game.player ? triangleWhite : triangleBlack;
         let row = 0;
@@ -155,10 +156,32 @@ function createGameOverScreen(victory = false) {
         }
     }
 
-    const topText = victory ? "You won!" : "Game over";
+    const topText = victory ? "You won!" : "Game Over";
+
+    // killed by
+    // tip
+
     const topTextObject = new PIXI.Text(topText, HUDTextStyleGameOver);
     topTextObject.position.x = container.width / 2 - topTextObject.width / 2;
     topTextObject.position.y = 30;
     container.addChild(topTextObject);
+
+    const centralWidth = screen.width / 3;
+    const time = getTimeFromMs(Game.time);
+    const timeString = `${padTime(time.minutes, 1)}:${padTime(time.seconds, 2)}`;
+    const entries = [["Level", Game.stage],
+        ["Time", timeString],
+        ["Creatures Slain", Game.enemiesKilled]];
+    const initPosY = topTextObject.position.y + topTextObject.height + 100;
+    for (let i = 0; i < entries.length; i++) {
+        const leftText = new PIXI.Text(entries[i][0], HUDTextStyleGameOver);
+        const rightText = new PIXI.Text(entries[i][1], HUDTextStyleGameOver);
+        leftText.position.x = screen.width / 2 - centralWidth / 2;
+        rightText.position.x = screen.width / 2 + centralWidth / 2 - rightText.width;
+        leftText.position.y = rightText.position.y = initPosY + 40 * (i + 1);
+        container.addChild(leftText);
+        container.addChild(rightText);
+    }
+
     return container;
 }
