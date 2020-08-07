@@ -63,6 +63,7 @@ export class Player extends AnimatedTileElement {
         this.consumedItems = [];
         this.doubleAttackCallback = () => {
         };
+        this.killedBy = null;
         this.setScaleModifier(0.87);
     }
 

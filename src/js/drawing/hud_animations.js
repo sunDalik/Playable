@@ -116,7 +116,11 @@ export function pullUpGameOverScreen(victory = false) {
 }
 
 function createGameOverScreen(victory = false) {
+    // todo tip
+
     const container = new PIXI.Container();
+
+    // fix container size
     const screen = {width: Game.app.renderer.screen.width, height: Game.app.renderer.screen.height};
     const bg = new PIXI.Sprite(PIXI.Texture.WHITE);
     bg.alpha = 0.0001;
@@ -124,6 +128,8 @@ function createGameOverScreen(victory = false) {
     bg.width = screen.width;
     bg.height = screen.height;
     container.addChild(bg);
+
+    // triangles
     const triangleOffsetY = 50;
     const triangleOffsetX = 100;
     const triangleWhite = new PIXI.Sprite(CommonSpriteSheet["player.png"]);
@@ -135,8 +141,12 @@ function createGameOverScreen(victory = false) {
         container.addChild(triangle);
     }
     triangleBlack.position.x = screen.width - triangleBlack.width - triangleOffsetX;
+
+    // item lists
     const itemsPerRow = 2;
     const itemSize = 60;
+    let triangleWhiteBottomPos = triangleWhite.position.y + triangleWhite.height;
+    let triangleBlackBottomPos = triangleBlack.position.y + triangleBlack.height;
     for (const player of [Game.player, Game.player2]) {
         const triangleSprite = player === Game.player ? triangleWhite : triangleBlack;
         let row = 0;
@@ -145,7 +155,7 @@ function createGameOverScreen(victory = false) {
             if (!eq || eq.equipmentType === EQUIPMENT_TYPE.BAG_ITEM) continue;
             const equipmentSprite = new PIXI.Sprite(eq.texture);
             equipmentSprite.width = equipmentSprite.height = itemSize;
-            equipmentSprite.position.y = triangleSprite.position.y + triangleSprite.height + 10 + itemSize * row;
+            equipmentSprite.position.y = triangleSprite.position.y + triangleSprite.height + 15 + itemSize * row;
             equipmentSprite.position.x = triangleSprite.position.x + triangleSprite.width / 2 - itemsPerRow / 2 * itemSize + itemSize * col;
             col++;
             if (col + 1 > itemsPerRow) {
@@ -153,19 +163,34 @@ function createGameOverScreen(victory = false) {
                 row++;
             }
             container.addChild(equipmentSprite);
+            if (triangleSprite === triangleWhite) triangleWhiteBottomPos = equipmentSprite.position.y + equipmentSprite.height;
+            else if (triangleSprite === triangleBlack) triangleBlackBottomPos = equipmentSprite.position.y + equipmentSprite.height;
         }
     }
 
-    const topText = victory ? "You won!" : "Game Over";
-
     // killed by
-    // tip
+    for (const player of [Game.player, Game.player2]) {
+        if (!player.dead) continue;
+        const bottomPos = player === Game.player ? triangleWhiteBottomPos : triangleBlackBottomPos;
+        const playerSprite = player === Game.player ? triangleWhite : triangleBlack;
+        let killedByText = "Killed by\n";
+        if (player.killedBy && player.killedBy.name) killedByText += player.killedBy.name;
+        else killedByText += "Unknown";
+        const textObj = new PIXI.Text(killedByText, HUDTextStyleTitle);
+        textObj.position.x = playerSprite.position.x + playerSprite.width / 2 - textObj.width / 2;
+        textObj.position.y = bottomPos + 20;
+        container.addChild(textObj);
+    }
 
+
+    // general game over text
+    const topText = victory ? "You won!" : "Game Over";
     const topTextObject = new PIXI.Text(topText, HUDTextStyleGameOver);
     topTextObject.position.x = container.width / 2 - topTextObject.width / 2;
-    topTextObject.position.y = 30;
+    topTextObject.position.y = 60;
     container.addChild(topTextObject);
 
+    // stats
     const centralWidth = screen.width / 3;
     const time = getTimeFromMs(Game.time);
     const timeString = `${padTime(time.minutes, 1)}:${padTime(time.seconds, 2)}`;
@@ -186,6 +211,7 @@ function createGameOverScreen(victory = false) {
         bottomPos = leftText.position.y + leftText.height;
     }
 
+    // key binds
     const keyBind = getBigKey(getKeyBindSymbol(retryButton.code), "Retry");
     keyBind.position.set(screen.width / 2 + centralWidth / 2 - keyBind.width, bottomPos + 100);
     container.addChild(keyBind);
