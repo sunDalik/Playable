@@ -142,17 +142,21 @@ function createGameOverScreen(victory = false) {
     }
     triangleBlack.position.x = screen.width - triangleBlack.width - triangleOffsetX;
 
-    // item lists
-    const itemsPerRow = 2;
-    const itemSize = 60;
+    // equipment lists
     let triangleWhiteBottomPos = triangleWhite.position.y + triangleWhite.height;
     let triangleBlackBottomPos = triangleBlack.position.y + triangleBlack.height;
     for (const player of [Game.player, Game.player2]) {
         const triangleSprite = player === Game.player ? triangleWhite : triangleBlack;
+        let itemsPerRow = 2;
+        let itemSize = 60;
+        const equipmentList = player.getEquipment().concat(player.consumedItems).filter(eq => eq !== null && eq.equipmentType !== EQUIPMENT_TYPE.BAG_ITEM);
+        if (Math.ceil(equipmentList.length / itemsPerRow) * itemSize > screen.height * 2 / 3) {
+            itemsPerRow = 3;
+            itemSize = 50;
+        }
         let row = 0;
         let col = 0;
-        for (const eq of player.getEquipment().concat(player.consumedItems)) {
-            if (!eq || eq.equipmentType === EQUIPMENT_TYPE.BAG_ITEM) continue;
+        for (const eq of equipmentList) {
             const equipmentSprite = new PIXI.Sprite(eq.texture);
             equipmentSprite.width = equipmentSprite.height = itemSize;
             equipmentSprite.position.y = triangleSprite.position.y + triangleSprite.height + 15 + itemSize * row;
