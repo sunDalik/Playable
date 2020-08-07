@@ -129,6 +129,7 @@ export class Enemy extends AnimatedTileElement {
 
     die(source) {
         if (this.dead) return;
+        Game.enemiesKilled++;
         if (source === Game.player || source === Game.BOTH_PLAYERS) {
             for (const eq of Game.player.getEquipment()) {
                 if (eq && eq.onKill) eq.onKill(Game.player, this);
