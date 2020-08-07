@@ -8,6 +8,7 @@ export class GreenSpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["spider_green.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.health = this.maxHealth = 2;
+        this.name = "Green Spider";
         this.type = ENEMY_TYPE.SPIDER_GREEN;
     }
 

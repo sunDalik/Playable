@@ -10,6 +10,7 @@ export class PoisonEel extends Eel {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["eel_poison.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.type = ENEMY_TYPE.POISON_EEL;
+        this.name = "Poison Eel";
         this.health = this.maxHealth = 4;
         this.atk = 1.25;
         this.triggered = false;

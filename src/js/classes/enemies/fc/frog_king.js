@@ -7,6 +7,7 @@ export class KingFrog extends Frog {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["frog_king.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.health = this.maxHealth = 3;
+        this.name = "King Frog";
         this.type = ENEMY_TYPE.FROG_KING;
         this.atk = 1;
         this.setScaleModifier(1.15);

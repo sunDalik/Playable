@@ -360,6 +360,7 @@ export class Player extends AnimatedTileElement {
     dieAnimationWait(source) {
         Game.unplayable = true;
         this.dead = true;
+        this.killedBy = source;
         setTickTimeout(() => {
             Game.unplayable = false;
             this.dieAnimation(source, 75);
@@ -368,6 +369,7 @@ export class Player extends AnimatedTileElement {
 
     dieAnimation(source, time = 40) {
         this.dead = true;
+        this.killedBy = source;
         this.visible = false;
         Game.world.filters.push(DEATH_FILTER);
         HUD.filters.push(DEATH_FILTER);

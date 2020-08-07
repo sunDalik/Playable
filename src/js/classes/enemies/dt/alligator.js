@@ -18,6 +18,7 @@ export class Alligator extends Enemy {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 4;
         this.type = ENEMY_TYPE.ALLIGATOR;
+        this.name = "Alligator";
         this.prey = null;
         this.initAlligator();
         this.shooting = false;

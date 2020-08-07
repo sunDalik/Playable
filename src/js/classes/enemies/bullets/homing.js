@@ -10,6 +10,7 @@ export class HomingBullet extends Bullet {
     constructor(tilePositionX, tilePositionY, texture = BulletsSpriteSheet["homing_bullet.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.homing = true;
+        this.name = "Homing Bullet";
         this.unhomeDistance = 3;
         this.targetedPlayer = null;
 

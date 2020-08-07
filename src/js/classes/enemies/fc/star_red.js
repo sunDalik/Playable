@@ -7,6 +7,7 @@ export class RedStar extends Star {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star_b.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.type = ENEMY_TYPE.STAR_RED;
+        this.name = "Red Star";
         this.intentIcon2 = this.createIntentIcon();
     }
 

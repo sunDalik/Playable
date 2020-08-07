@@ -7,6 +7,7 @@ import {BulletsSpriteSheet} from "../../../loader";
 export class FireBullet extends Bullet {
     constructor(tilePositionX, tilePositionY, pattern, texture = BulletsSpriteSheet["fire_bullet.png"]) {
         super(texture, tilePositionX, tilePositionY, pattern);
+        this.name = "Fire Bullet";
         if (Game.stage === STAGE.DARK_TUNNEL) {
             this.maskLayer = {};
         }

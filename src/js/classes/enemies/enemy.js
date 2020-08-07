@@ -16,6 +16,7 @@ export class Enemy extends AnimatedTileElement {
         super(texture, tilePositionX, tilePositionY);
         this.dead = false;
         this.role = ROLE.ENEMY;
+        this.name = "Enemy";
         this.boss = false;
         this.cancellable = true;
         this.canMoveInvisible = false;

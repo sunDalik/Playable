@@ -12,6 +12,7 @@ export class FireHazard extends Hazard {
     constructor(tilePositionX, tilePositionY, small = false, spreadTimes = undefined, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
         this.LIFETIME = 10;
+        this.name = "Fire Hazard";
         this.actualAtk = 0.5;
         this.small = small;
         this.subFire = small;

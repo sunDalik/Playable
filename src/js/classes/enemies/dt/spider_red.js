@@ -9,6 +9,7 @@ export class RedSpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["spider_red.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.health = this.maxHealth = 1;
+        this.name = "Red Spider";
         this.type = ENEMY_TYPE.SPIDER_RED;
         this.damageable = false;
         this.intentIcon2 = this.createIntentIcon();

@@ -9,6 +9,7 @@ export class KingFireFrog extends KingFrog {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["frog_king_fire.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.health = this.maxHealth = 3;
+        this.name = "King Fire Frog";
         this.type = ENEMY_TYPE.FROG_KING_FIRE;
         this.atk = 1;
     }

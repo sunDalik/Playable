@@ -11,6 +11,7 @@ export class Frog extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["frog.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 2;
+        this.name = "Frog";
         this.type = ENEMY_TYPE.FROG;
         this.atk = 1;
         this.turnDelay = 1;

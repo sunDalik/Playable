@@ -12,6 +12,7 @@ export class Spider extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spider.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 2;
+        this.name = "Spider";
         this.type = ENEMY_TYPE.SPIDER;
         this.atk = 1;
         if (Game.stage !== STAGE.DARK_TUNNEL) {

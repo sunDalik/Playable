@@ -10,6 +10,7 @@ export class Roller extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["roller.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 1;
+        this.name = "Roller";
         this.atk = 1;
         this.direction = 1;
         this.SLIDE_ANIMATION_TIME = 6;

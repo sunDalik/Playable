@@ -13,6 +13,7 @@ export class ExplosivePixie extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["explosive_pixie.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 0.25;
+        this.name = "Explosive Pixie";
         this.type = ENEMY_TYPE.EXPLOSIVE_PIXIE;
         this.lightDistance = 7;
         this.noticeDistance = 4;

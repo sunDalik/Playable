@@ -14,6 +14,7 @@ export class Rabbit extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["rabbit_x_fire.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 0.5;
+        this.name = "Rabbit";
         this.type = ENEMY_TYPE.RABBIT;
         this.rabbitType = getRandomValue(RABBIT_TYPE);
         this.atk = 0.5;

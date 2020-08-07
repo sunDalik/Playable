@@ -11,6 +11,7 @@ export class LunaticHorror extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["lunatic_horror.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 1;
+        this.name = "Lunatic Horror";
         this.type = ENEMY_TYPE.LUNATIC_HORROR;
         this.atk = 1;
         this.currentTurnDelay = this.turnDelay = 1;

@@ -15,6 +15,7 @@ export class LizardWarrior extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["lizard_warrior.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 3;
+        this.name = "Lizard Warrior";
         this.type = ENEMY_TYPE.LIZARD_WARRIOR;
         this.atk = 1.5;
         this.SLIDE_ANIMATION_TIME = 5;

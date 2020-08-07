@@ -16,6 +16,7 @@ export class Bullet extends TileElement {
         this.pattern = pattern;
         this.patternIndex = 0;
         this.dead = false;
+        this.name = "Bullet";
         this.role = ROLE.BULLET;
         this.ANIMATION_TIME = 8;
         this.wiggling = false;

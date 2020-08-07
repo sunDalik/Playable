@@ -13,6 +13,7 @@ export class MudMage extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_mage.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 3;
+        this.name = "Mud Mage";
         this.type = ENEMY_TYPE.MUD_MAGE;
         this.atk = 0;
         this.SLIDE_ANIMATION_TIME = 5;

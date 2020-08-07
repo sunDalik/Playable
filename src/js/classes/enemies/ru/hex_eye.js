@@ -12,6 +12,7 @@ export class HexEye extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["hex_eye.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 4;
+        this.name = "Hex Eye";
         this.type = ENEMY_TYPE.HEX_EYE;
         this.aboutToCast = false;
         this.currentCooldown = 2;

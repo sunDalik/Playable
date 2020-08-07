@@ -10,6 +10,7 @@ export class PoisonHazard extends Hazard {
     constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
         this.LIFETIME = 10;
+        this.name = "Poison Hazard";
         this.turnsLeft = this.LIFETIME;
         this.type = HAZARD_TYPE.POISON;
         this.actualAtk = 0.5;

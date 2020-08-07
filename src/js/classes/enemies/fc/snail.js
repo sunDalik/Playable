@@ -12,6 +12,7 @@ export class Snail extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["snail.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 2;
+        this.name = "Snail";
         this.type = ENEMY_TYPE.SNAIL;
         this.atk = 1;
         this.currentTurnDelay = this.turnDelay = 1;

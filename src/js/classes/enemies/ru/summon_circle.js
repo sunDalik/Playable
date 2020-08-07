@@ -10,6 +10,7 @@ export class SummonCircle extends Enemy {
     constructor(tilePositionX, tilePositionY, enemy, texture = RUEnemiesSpriteSheet["summon_circle.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 42;
+        this.name = "Summon Circle";
         this.type = ENEMY_TYPE.SUMMON_CIRCLE;
         this.atk = 0;
         this.movable = false;

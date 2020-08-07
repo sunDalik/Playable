@@ -13,6 +13,7 @@ export class LaserTurret extends Enemy {
     constructor(tilePositionX, tilePositionY, directionX, texture = DTEnemiesSpriteSheet["laser_turret_unready.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 1;
+        this.name = "Laser Turret";
         this.atk = 1;
         this.triggered = false;
         this.type = ENEMY_TYPE.LASER_TURRET;

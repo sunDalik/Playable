@@ -15,6 +15,7 @@ export class Cocoon extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["cocoon.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 3;
+        this.name = "Cocoon";
         this.type = ENEMY_TYPE.COCOON;
         this.atk = 0;
         this.spawnDelay = randomInt(3, 6);

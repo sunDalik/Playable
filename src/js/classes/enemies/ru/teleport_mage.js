@@ -15,6 +15,7 @@ export class TeleportMage extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["teleport_mage.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 3;
+        this.name = "Teleport Mage";
         this.type = ENEMY_TYPE.TELEPORT_MAGE;
         this.atk = 0;
         this.SLIDE_ANIMATION_TIME = 5;

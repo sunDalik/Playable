@@ -12,6 +12,7 @@ export class Mushroom extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["mushroom.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 2;
+        this.name = "Mushroom";
         this.type = ENEMY_TYPE.MUSHROOM;
         this.atk = 1;
         this.poisonDelay = 6; //half of poison hazard lifetime

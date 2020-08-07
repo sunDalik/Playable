@@ -7,6 +7,7 @@ export class Hazard extends TileElement {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.LIFETIME = 0;
+        this.name = "Hazard";
         this.turnsLeft = this.LIFETIME;
         this.atk = 0;
         this.setCenterPreservation()

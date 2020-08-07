@@ -8,6 +8,7 @@ export class MudBlock extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_block.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 0.25;
+        this.name = "Mud Block";
         this.type = ENEMY_TYPE.MUD_BLOCK;
         this.atk = 0;
         this.movable = false;

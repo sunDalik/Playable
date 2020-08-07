@@ -8,6 +8,7 @@ export class Star extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 2;
+        this.name = "Star";
         this.atk = 1;
         this.triggered = false;
         this.triggeredDirections = null;

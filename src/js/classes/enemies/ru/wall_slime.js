@@ -15,6 +15,7 @@ export class WallSlime extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["wall_slime_single.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 4;
+        this.name = "Wall Slime";
         this.type = ENEMY_TYPE.WALL_SLIME;
         this.atk = 1;
         this.baseSlime = null;

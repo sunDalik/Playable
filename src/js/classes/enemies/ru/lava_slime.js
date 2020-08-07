@@ -13,6 +13,7 @@ export class LavaSlime extends WallSlime {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["lava_slime_single.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.health = this.maxHealth = 4;
+        this.name = "Lava Slime";
         this.type = ENEMY_TYPE.LAVA_SLIME;
         this.atk = 1.25;
     }

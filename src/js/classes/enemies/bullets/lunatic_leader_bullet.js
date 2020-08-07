@@ -5,6 +5,7 @@ import {BulletsSpriteSheet} from "../../../loader";
 export class LunaticLeaderBullet extends Bullet {
     constructor(tilePositionX, tilePositionY, pattern, texture = BulletsSpriteSheet["lunatic_leader_bullet.png"]) {
         super(texture, tilePositionX, tilePositionY, pattern);
+        this.name = "Lunatic Bullet";
         this.wiggling = true;
     }
 
