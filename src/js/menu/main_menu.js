@@ -18,8 +18,8 @@ const ppAnimationTime1 = 35;
 const ppAnimationTime2 = 35;
 const ppUpAnimationTime = 25;
 
-const playerSize = 300;
-const playerOffset = 75;
+const playerSize = 270;
+const playerOffset = 70;
 export let topColor = 0x000000;
 export let bottomColor = 0xffffff;
 let player1, player2;
