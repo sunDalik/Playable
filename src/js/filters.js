@@ -103,8 +103,8 @@ DEATH_FILTER.resolution = 2;
 export const WALL_TRAP_BASE_FILTER = new AdjustmentFilter({brightness: 1.5});
 WALL_TRAP_BASE_FILTER.resolution = 2;
 
-export const BLACK_COLOR_OVERLAY = new ColorOverlayFilter([0, 0, 0]);
-BLACK_COLOR_OVERLAY.resolution = 2;
+//export const BLACK_COLOR_OVERLAY = new ColorOverlayFilter([0, 0, 0]);
+//BLACK_COLOR_OVERLAY.resolution = 2;
 
 
 export const DIVINE_FILTER = new GlowFilter({

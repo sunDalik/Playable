@@ -7,7 +7,6 @@ import {getPlayerOnTile} from "../../map_checks";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
 import {redrawKeysAmount} from "../../drawing/draw_hud";
-import {BLACK_COLOR_OVERLAY} from "../../filters";
 import {ItemInanimate} from "./item_inanimate";
 import {getRandomChestItem} from "../../utils/pool_utils";
 import {AccessoriesSpriteSheet, CommonSpriteSheet, InanimatesSpriteSheet} from "../../loader";
@@ -121,7 +120,7 @@ export class Chest extends ItemInanimate {
             const keySprite = new PIXI.Sprite(CommonSpriteSheet["key.png"]);
             keySprite.width = keySprite.height = Game.TILESIZE * 0.6;
             if (i > this.keysRequired) {
-                keySprite.filters = [BLACK_COLOR_OVERLAY];
+                keySprite.tint = 0x000000;
             }
             keySprite.position.x = (i - 1) * keySprite.width;
             container.addChild(keySprite);
