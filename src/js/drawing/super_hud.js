@@ -14,6 +14,7 @@ SUPER_HUD.filters = [];
 SUPER_HUD.zIndex = HUD.zIndex + 1;
 
 SUPER_HUD.gameOverScreen = new PIXI.Container();
+SUPER_HUD.killedBys = [];
 
 export function setupSuperHud() {
     setupPauseScreen();

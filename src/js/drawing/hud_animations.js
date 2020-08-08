@@ -89,11 +89,18 @@ export function pullUpGameOverScreen(victory = false) {
     SUPER_HUD.removeChild(SUPER_HUD.gameOverScreen);
     const gameOverScreen = createGameOverScreen(victory);
     movePlayerHudToContainer(SUPER_HUD);
+    getKilledByText(Game.player);
+    const killedBys = [getKilledByText(Game.player), getKilledByText(Game.player2)];
+    for (const killedBy of killedBys) {
+        SUPER_HUD.addChild(killedBy);
+    }
+    SUPER_HUD.killedBys.map(k => SUPER_HUD.removeChild(k));
+    SUPER_HUD.killedBys = killedBys;
     SUPER_HUD.gameOverScreen = gameOverScreen;
     SUPER_HUD.addChild(SUPER_HUD.gameOverScreen);
     SUPER_HUD.gameOverScreen.position.x = Game.app.renderer.screen.width / 2 - SUPER_HUD.gameOverScreen.width / 2;
     SUPER_HUD.gameOverScreen.position.y = Game.app.renderer.screen.height;
-    const time = 14;
+    const time = 12;
     const step = (Game.app.renderer.screen.height / 2 + SUPER_HUD.gameOverScreen.height / 2) / time;
     let counter = 0;
 
@@ -120,39 +127,6 @@ export function pullUpGameOverScreen(victory = false) {
 function createGameOverScreen(victory = false) {
     const container = new PIXI.Container();
     const containerWidth = Game.app.renderer.screen.width / 3;
-
-    // killed by
-    for (const player of [Game.player, Game.player2]) {
-        if (!player.dead) continue;
-        let killedByText = "Killed by\n";
-        if (player.killedBy && player.killedBy.name) killedByText += player.killedBy.name;
-        else killedByText += "Unknown";
-        const textObj = new PIXI.Text(killedByText, HUDTextStyleTitle);
-        if (player === Game.player) {
-            textObj.position.x = slotBorderOffsetX;
-            textObj.style.align = "left";
-        } else {
-            textObj.position.x = screen.width - slotBorderOffsetX - textObj.width;
-            textObj.style.align = "right";
-        }
-        textObj.position.y = HUD.slots1.position.y + HUD.slots1.height + 35 + 70;
-        container.addChild(textObj);
-
-        if (player.killedBy && player.killedBy.texture && player.killedBy.texture !== PIXI.Texture.WHITE) {
-            const killedBySprite = new PIXI.Sprite(player.killedBy.texture);
-            const spriteHeight = 65;
-            killedBySprite.scale.y = spriteHeight / killedBySprite.height;
-            killedBySprite.scale.x = killedBySprite.scale.y;
-            killedBySprite.position.y = textObj.position.y + textObj.height + 10;
-            if (player === Game.player) {
-                killedBySprite.position.x = textObj.position.x;
-            } else {
-                killedBySprite.position.x = textObj.position.x + textObj.width - killedBySprite.width;
-            }
-            container.addChild(killedBySprite);
-        }
-    }
-
 
     // general game over text
     const topText = victory ? "You won!" : "Game Over";
@@ -194,6 +168,39 @@ function createGameOverScreen(victory = false) {
     keyBind.position.set(containerWidth - keyBind.width, tip.position.y + tip.height + 70);
     container.addChild(keyBind);
 
+    return container;
+}
+
+function getKilledByText(player) {
+    const container = new PIXI.Container();
+    if (!player.dead) return container;
+    let killedByText = "Killed by\n";
+    if (player.killedBy && player.killedBy.name) killedByText += player.killedBy.name;
+    else killedByText += "Unknown";
+    const textObj = new PIXI.Text(killedByText, HUDTextStyleTitle);
+    if (player === Game.player) {
+        textObj.position.x = slotBorderOffsetX;
+        textObj.style.align = "left";
+    } else {
+        textObj.position.x = Game.app.renderer.screen.width - slotBorderOffsetX - textObj.width;
+        textObj.style.align = "right";
+    }
+    textObj.position.y = HUD.slots1.position.y + HUD.slots1.height + 35 + 70;
+    container.addChild(textObj);
+
+    if (player.killedBy && player.killedBy.texture && player.killedBy.texture !== PIXI.Texture.WHITE) {
+        const killedBySprite = new PIXI.Sprite(player.killedBy.texture);
+        const spriteHeight = 65;
+        killedBySprite.scale.y = spriteHeight / killedBySprite.height;
+        killedBySprite.scale.x = killedBySprite.scale.y;
+        killedBySprite.position.y = textObj.position.y + textObj.height + 10;
+        if (player === Game.player) {
+            killedBySprite.position.x = textObj.position.x;
+        } else {
+            killedBySprite.position.x = textObj.position.x + textObj.width - killedBySprite.width;
+        }
+        container.addChild(killedBySprite);
+    }
     return container;
 }
 

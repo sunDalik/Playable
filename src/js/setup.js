@@ -196,6 +196,7 @@ export function retry() {
         removeAllObjectsFromArray(DEATH_FILTER, HUD.filters);
 
         SUPER_HUD.gameOverScreen.visible = false;
+        SUPER_HUD.killedBys.map(k => SUPER_HUD.removeChild(k));
         Game.world.visible = true;
         HUD.visible = true;
         Game.world.clean();
