@@ -52,7 +52,7 @@ export class HexEye extends Enemy {
     }
 
     getCooldown() {
-        return randomInt(5, 7);
+        return randomInt(6, 8);
     }
 
     updateIntentIcon() {
