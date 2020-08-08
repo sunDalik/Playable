@@ -1,9 +1,8 @@
 import {Game} from "../game";
-import {keyboard, keyboardS} from "./keyboard_handler";
+import {keyboardS} from "./keyboard_handler";
 import {playerTurn, switchPlayers} from "../game_logic";
 import {toggleMiniMap} from "../drawing/minimap";
 import {STORAGE} from "../enums/enums";
-import {pullUpGameOverScreen} from "../drawing/hud_animations";
 
 const upKeyP1 = keyboardS(STORAGE.KEY_MOVE_UP_1P);
 const leftKeyP1 = keyboardS(STORAGE.KEY_MOVE_LEFT_1P);
@@ -67,10 +66,7 @@ export function bindKeys() {
     switchKey.press = () => playerTurn(null, switchPlayers, true);
     mapKey.press = () => toggleMiniMap();
 
-    keyboard("KeyN").press = () =>{
-        if (!Game.player.dead) Game.player.dieAnimationWait();
-        if (!Game.player2.dead) Game.player2.dieAnimationWait();
-    }
+    //keyboard("KeyN").press = gotoNextLevel
 
     /*
     keyboard("BracketRight").press = () => {

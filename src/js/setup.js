@@ -26,7 +26,6 @@ import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
 import {WhitePlayer} from "./classes/players/player_white";
 import {BlackPlayer} from "./classes/players/player_black";
-import {getRandomChestItem, getRandomSpell} from "./utils/pool_utils";
 
 PIXI.utils.skipHello();
 initLocalStorage();
@@ -172,13 +171,6 @@ export function initializeLevel() {
         camera.setup(Game.world.width / 2, Game.world.height / 2);
     }
     setTimerRunning(false);
-
-    for (let i = 0; i < 10; i++) {
-        swapEquipmentWithPlayer(Game.player, getRandomChestItem(), false);
-        swapEquipmentWithPlayer(Game.player2, getRandomChestItem(), false);
-        Game.player.giveNewMagic(getRandomSpell());
-        Game.player2.giveNewMagic(getRandomSpell());
-    }
 }
 
 function initPlayers() {

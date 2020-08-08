@@ -101,7 +101,7 @@ export function pullUpGameOverScreen(victory = false) {
     SUPER_HUD.gameOverScreen.position.x = Game.app.renderer.screen.width / 2 - SUPER_HUD.gameOverScreen.width / 2;
     SUPER_HUD.gameOverScreen.position.y = Game.app.renderer.screen.height;
     const time = 12;
-    const step = (Game.app.renderer.screen.height / 2 + SUPER_HUD.gameOverScreen.height / 2) / time;
+    const step = (Game.app.renderer.screen.height / 2 + SUPER_HUD.gameOverScreen.height / 2 + 20) / time;
     let counter = 0;
 
     retryButton.press = () => {
@@ -160,12 +160,13 @@ function createGameOverScreen(victory = false) {
     tip.style.fontStyle = "italic";
     tip.style.wordWrap = true;
     tip.style.wordWrapWidth = containerWidth;
+    tip.style.padding = 4;
     tip.position.set(containerWidth / 2 - tip.width / 2, bottomPos + 60);
     container.addChild(tip);
 
     // key binds
     const keyBind = getBigKey(getKeyBindSymbol(retryButton.code), victory ? "Play again" : "Retry");
-    keyBind.position.set(containerWidth - keyBind.width, tip.position.y + tip.height + 70);
+    keyBind.position.set(containerWidth - keyBind.width, tip.position.y + tip.height + 65);
     container.addChild(keyBind);
 
     return container;
