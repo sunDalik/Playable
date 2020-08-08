@@ -10,7 +10,7 @@ import {initPools, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
 import {drawHUD, drawInteractionKeys, drawMovementKeyBindings, setTimerRunning} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
-import {HUD} from "./drawing/hud_object";
+import {HUD, movePlayerHudToContainer} from "./drawing/hud_object";
 import {randomChoice} from "./utils/random_utils";
 import {get8Directions, get8DirectionsWithoutItems, getCardinalDirectionsWithoutItems} from "./utils/map_utils";
 import {cleanGameState, kiss, swapEquipmentWithPlayer} from "./game_logic";
@@ -222,6 +222,7 @@ function initGameState() {
     //otherwise players will have no shadow if you start on dt...
     Game.player.regenerateShadow();
     Game.player2.regenerateShadow();
+    movePlayerHudToContainer(HUD);
 }
 
 function test() {

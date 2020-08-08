@@ -1,4 +1,4 @@
-import {HUD} from "./hud_object";
+import {HUD, movePlayerHudToContainer} from "./hud_object";
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {getTimeFromMs, setTickTimeout} from "../utils/game_utils";
@@ -6,7 +6,7 @@ import {DEATH_FILTER} from "../filters";
 import {redrawPauseBG, SUPER_HUD} from "./super_hud";
 import {keyboard} from "../keyboard/keyboard_handler";
 import {retry} from "../setup";
-import {BigHUDKeyBindSize, HUDTextStyleGameOver, HUDTextStyleTitle} from "./draw_constants";
+import {BigHUDKeyBindSize, HUDTextStyleGameOver, HUDTextStyleTitle, slotBorderOffsetX} from "./draw_constants";
 import {CommonSpriteSheet} from "../loader";
 import {EQUIPMENT_TYPE} from "../enums/enums";
 import {getKeyBindSymbol, padTime} from "./draw_hud";
@@ -88,11 +88,12 @@ export function pullUpGameOverScreen(victory = false) {
     redrawPauseBG();
     SUPER_HUD.removeChild(SUPER_HUD.gameOverScreen);
     const gameOverScreen = createGameOverScreen(victory);
+    movePlayerHudToContainer(SUPER_HUD);
     SUPER_HUD.gameOverScreen = gameOverScreen;
     SUPER_HUD.addChild(SUPER_HUD.gameOverScreen);
     SUPER_HUD.gameOverScreen.position.x = Game.app.renderer.screen.width / 2 - SUPER_HUD.gameOverScreen.width / 2;
     SUPER_HUD.gameOverScreen.position.y = Game.app.renderer.screen.height;
-    const time = 10;
+    const time = 14;
     const step = (Game.app.renderer.screen.height / 2 + SUPER_HUD.gameOverScreen.height / 2) / time;
     let counter = 0;
 
@@ -110,83 +111,31 @@ export function pullUpGameOverScreen(victory = false) {
         }
         if (counter >= time) {
             Game.app.ticker.remove(animation);
-            gameOverScreen.position.y = Game.app.renderer.screen.height / 2 - gameOverScreen.height / 2;
+            gameOverScreen.position.y = Game.app.renderer.screen.height - step * time;
         }
     };
     Game.app.ticker.add(animation);
 }
 
 function createGameOverScreen(victory = false) {
-    // todo tip
-
     const container = new PIXI.Container();
-
-    // fix container size
-    const screen = {width: Game.app.renderer.screen.width, height: Game.app.renderer.screen.height};
-    const bg = new PIXI.Sprite(PIXI.Texture.WHITE);
-    bg.alpha = 0.0001;
-    bg.tint = 0x00000;
-    bg.width = screen.width;
-    bg.height = screen.height;
-    container.addChild(bg);
-
-    // triangles
-    const triangleOffsetY = 50;
-    const triangleOffsetX = 100;
-    const triangleWhite = new PIXI.Sprite(CommonSpriteSheet["player.png"]);
-    const triangleBlack = new PIXI.Sprite(CommonSpriteSheet["player2.png"]);
-    for (const triangle of [triangleWhite, triangleBlack]) {
-        triangle.scale.set(0.3, 0.3);
-        triangle.position.x = triangleOffsetX;
-        triangle.position.y = triangleOffsetY;
-        container.addChild(triangle);
-    }
-    triangleBlack.position.x = screen.width - triangleBlack.width - triangleOffsetX;
-
-    // equipment lists
-    let triangleWhiteBottomPos = triangleWhite.position.y + triangleWhite.height;
-    let triangleBlackBottomPos = triangleBlack.position.y + triangleBlack.height;
-    for (const player of [Game.player, Game.player2]) {
-        const triangleSprite = player === Game.player ? triangleWhite : triangleBlack;
-        let itemsPerRow = 2;
-        let itemSize = 60;
-        const equipmentList = player.getEquipment().concat(player.consumedItems).filter(eq => eq !== null && eq.equipmentType !== EQUIPMENT_TYPE.BAG_ITEM);
-        if (Math.ceil(equipmentList.length / itemsPerRow) * itemSize > screen.height * 2 / 3) {
-            itemsPerRow = 3;
-            itemSize = 50;
-        }
-        let row = 0;
-        let col = 0;
-        for (const eq of equipmentList) {
-            const equipmentSprite = new PIXI.Sprite(eq.texture);
-            if (eq.enchantment && eq.enchantment !== ENCHANTMENT_TYPE.NONE) {
-                equipmentSprite.filters = getEnchantmentFilters(eq.enchantment);
-            }
-            equipmentSprite.width = equipmentSprite.height = itemSize;
-            equipmentSprite.position.y = triangleSprite.position.y + triangleSprite.height + 15 + itemSize * row;
-            equipmentSprite.position.x = triangleSprite.position.x + triangleSprite.width / 2 - itemsPerRow / 2 * itemSize + itemSize * col;
-            col++;
-            if (col + 1 > itemsPerRow) {
-                col = 0;
-                row++;
-            }
-            container.addChild(equipmentSprite);
-            if (triangleSprite === triangleWhite) triangleWhiteBottomPos = equipmentSprite.position.y + equipmentSprite.height;
-            else if (triangleSprite === triangleBlack) triangleBlackBottomPos = equipmentSprite.position.y + equipmentSprite.height;
-        }
-    }
+    const containerWidth = Game.app.renderer.screen.width / 3;
 
     // killed by
     for (const player of [Game.player, Game.player2]) {
         if (!player.dead) continue;
-        const bottomPos = player === Game.player ? triangleWhiteBottomPos : triangleBlackBottomPos;
-        const playerSprite = player === Game.player ? triangleWhite : triangleBlack;
         let killedByText = "Killed by\n";
         if (player.killedBy && player.killedBy.name) killedByText += player.killedBy.name;
         else killedByText += "Unknown";
         const textObj = new PIXI.Text(killedByText, HUDTextStyleTitle);
-        textObj.position.x = playerSprite.position.x + playerSprite.width / 2 - textObj.width / 2;
-        textObj.position.y = bottomPos + 20;
+        if (player === Game.player) {
+            textObj.position.x = slotBorderOffsetX;
+            textObj.style.align = "left";
+        } else {
+            textObj.position.x = screen.width - slotBorderOffsetX - textObj.width;
+            textObj.style.align = "right";
+        }
+        textObj.position.y = HUD.slots1.position.y + HUD.slots1.height + 35 + 70;
         container.addChild(textObj);
 
         if (player.killedBy && player.killedBy.texture && player.killedBy.texture !== PIXI.Texture.WHITE) {
@@ -194,7 +143,12 @@ function createGameOverScreen(victory = false) {
             const spriteHeight = 65;
             killedBySprite.scale.y = spriteHeight / killedBySprite.height;
             killedBySprite.scale.x = killedBySprite.scale.y;
-            killedBySprite.position.set(playerSprite.position.x + playerSprite.width / 2 - killedBySprite.width / 2, textObj.position.y + textObj.height + 10);
+            killedBySprite.position.y = textObj.position.y + textObj.height + 10;
+            if (player === Game.player) {
+                killedBySprite.position.x = textObj.position.x;
+            } else {
+                killedBySprite.position.x = textObj.position.x + textObj.width - killedBySprite.width;
+            }
             container.addChild(killedBySprite);
         }
     }
@@ -203,24 +157,23 @@ function createGameOverScreen(victory = false) {
     // general game over text
     const topText = victory ? "You won!" : "Game Over";
     const topTextObject = new PIXI.Text(topText, HUDTextStyleGameOver);
-    topTextObject.position.x = container.width / 2 - topTextObject.width / 2;
-    topTextObject.position.y = 60;
+    topTextObject.position.x = containerWidth / 2 - topTextObject.width / 2;
+    topTextObject.position.y = 0;
     container.addChild(topTextObject);
 
     // stats
-    const centralWidth = screen.width / 3;
     const time = getTimeFromMs(Game.time);
     const timeString = `${padTime(time.minutes, 1)}:${padTime(time.seconds, 2)}`;
     const entries = [["Level", Game.stage],
         ["Time", timeString],
         ["Creatures Slain", Game.enemiesKilled]];
-    const initPosY = topTextObject.position.y + topTextObject.height + 100;
+    const initPosY = topTextObject.position.y + topTextObject.height + 40;
     let bottomPos = 0;
     for (let i = 0; i < entries.length; i++) {
         const leftText = new PIXI.Text(entries[i][0], HUDTextStyleGameOver);
         const rightText = new PIXI.Text(entries[i][1], HUDTextStyleGameOver);
-        leftText.position.x = screen.width / 2 - centralWidth / 2;
-        rightText.position.x = screen.width / 2 + centralWidth / 2 - rightText.width;
+        leftText.position.x = 0;
+        rightText.position.x = containerWidth - rightText.width;
         leftText.position.y = rightText.position.y = initPosY + 40 * (i + 1);
         container.addChild(leftText);
         container.addChild(rightText);
@@ -232,13 +185,13 @@ function createGameOverScreen(victory = false) {
     const tip = new PIXI.Text(getRandomTip(), HUDTextStyleTitle);
     tip.style.fontStyle = "italic";
     tip.style.wordWrap = true;
-    tip.style.wordWrapWidth = centralWidth;
-    tip.position.set(screen.width / 2 - tip.width / 2, bottomPos + 50);
+    tip.style.wordWrapWidth = containerWidth;
+    tip.position.set(containerWidth / 2 - tip.width / 2, bottomPos + 60);
     container.addChild(tip);
 
     // key binds
-    const keyBind = getBigKey(getKeyBindSymbol(retryButton.code), "Retry");
-    keyBind.position.set(screen.width / 2 + centralWidth / 2 - keyBind.width, tip.position.y + tip.height + 80);
+    const keyBind = getBigKey(getKeyBindSymbol(retryButton.code), victory ? "Play again" : "Retry");
+    keyBind.position.set(containerWidth - keyBind.width, tip.position.y + tip.height + 70);
     container.addChild(keyBind);
 
     return container;

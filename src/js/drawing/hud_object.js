@@ -59,3 +59,15 @@ function generateSlotsContainer() {
     }
     return container;
 }
+
+export function movePlayerHudToContainer(container) {
+    container.addChild(HUD.other);
+    container.addChild(HUD.hearts1);
+    container.addChild(HUD.slots1);
+    container.addChild(HUD.hearts2);
+    container.addChild(HUD.slots2);
+    container.addChild(HUD.stats1);
+    container.addChild(HUD.stats2);
+    //container.addChild(HUD.speedrunTime);
+    //container.addChild(HUD.keysAmount);
+}
