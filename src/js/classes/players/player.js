@@ -27,6 +27,7 @@ import {CrystalGuardian} from "../equipment/magic/crystal_guardian";
 import {roundToQuarter} from "../../utils/math_utils";
 import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../utils/map_utils";
 import {DAMAGE_TYPE} from "../../enums/damage_type";
+import {completeBeatStageAchievements} from "../../achievements";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -106,13 +107,19 @@ export class Player extends AnimatedTileElement {
             } else if (isRelativelyEmpty(this.tilePosition.x + tileStepX, this.tilePosition.y + tileStepY, true)) {
                 if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
                     Game.unplayable = true;
-                    this.toCloseBlackBars = true;
-                    this.step(tileStepX, tileStepY, () => {
-                        if (this.toCloseBlackBars && this.animationCounter >= this.STEP_ANIMATION_TIME / 2) {
-                            closeBlackBars(gotoNextLevel);
-                            this.toCloseBlackBars = false;
-                        }
-                    });
+                    if (Game.stage === STAGE.RUINS) {
+                        this.step(tileStepX, tileStepY);
+                        completeBeatStageAchievements();
+                        pullUpGameOverScreen(true);
+                    } else {
+                        let toCloseBlackBars = true;
+                        this.step(tileStepX, tileStepY, () => {
+                            if (toCloseBlackBars && this.animationCounter >= this.STEP_ANIMATION_TIME / 2) {
+                                closeBlackBars(gotoNextLevel);
+                                toCloseBlackBars = false;
+                            }
+                        });
+                    }
                     return false;
                 } else {
                     this.step(tileStepX, tileStepY);

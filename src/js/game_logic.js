@@ -502,8 +502,9 @@ export function deactivateBossMode() {
     Game.world.addTile(exitTile, TILE_TYPE.EXIT);
 
     for (const dir of get8Directions()) {
-        if (Game.map[Game.bossExit.y + dir.y][Game.bossExit.x + dir.x].tileType !== TILE_TYPE.SUPER_WALL) {
-            Game.world.removeTile(Game.bossExit.x + dir.x, Game.bossExit.y + dir.y);
+        const tile = {x: Game.bossExit.x + dir.x, y: Game.bossExit.y + dir.y};
+        if (tile.x > 0 && tile.x < Game.map[0].length - 1 && tile.y > 0 && tile.y < Game.map.length - 1) {
+            Game.world.removeTile(tile.x, tile.y);
         }
     }
 
