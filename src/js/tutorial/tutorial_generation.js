@@ -8,6 +8,7 @@ import {camera} from "../classes/game/camera";
 import {lightTile} from "../drawing/lighting";
 import {Roller} from "../classes/enemies/fc/roller";
 import {TrainingDummy} from "../classes/enemies/training_dummy";
+import {TutorialCocoon} from "./tutorial_cocoon";
 
 let level = [];
 
@@ -42,6 +43,9 @@ function placeEnemies() {
     level[roller2.tilePosition.y][roller2.tilePosition.x].entity = roller2;
     roller2.direction = -1;
     roller2.scale.x *= -1;
+
+    const cocoon = new TutorialCocoon(38, 5);
+    level[cocoon.tilePosition.y][cocoon.tilePosition.x].entity = cocoon;
 }
 
 function setStartPosition() {

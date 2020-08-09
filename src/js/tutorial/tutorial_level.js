@@ -8,12 +8,12 @@ const e = LEVEL_SYMBOLS.ENTRY;
 
 
 export const tutorialLevel = [
-    [w, w, w, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w],
-    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w],
-    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w],
-    [n, n, n, n, n, e, n, n, n, n, n, e, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w],
-    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, e, n, n, n, n, n, n, n, w],
-    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, e],
-    [w, w, w, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w],
-    [n, n, n, n, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, n]
+    [w, w, w, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w, w, w],
+    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w, w, w],
+    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, n, n, n],
+    [n, n, n, n, n, e, n, n, n, n, n, e, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, e, n, n, n, n, n, n, n, n, n, n],
+    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, e, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, n, n, n],
+    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, n, n, n, n, w, w, e, w],
+    [w, w, w, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, w, n, w],
+    [n, n, n, n, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, n, n, n, n, n, n, n, n, w, n, w]
 ];

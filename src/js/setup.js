@@ -147,7 +147,7 @@ export function initializeLevel() {
     }
     camera.center();
 
-    assignDrops();
+    if (Game.playMode !== PLAY_MODE.TUTORIAL) assignDrops();
     retreatBlackBars();
     setTickTimeout(() => {
         if (Math.random() < 0 && !Game.player.dead && !Game.player2.dead && Game.stage !== STAGE.FLOODED_CAVE) {

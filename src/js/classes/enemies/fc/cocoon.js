@@ -19,7 +19,7 @@ export class Cocoon extends Enemy {
         this.type = ENEMY_TYPE.COCOON;
         this.atk = 0;
         this.spawnDelay = randomInt(3, 6);
-        this.getMinionType();
+        this.setMinionType();
         this.minion = null;
         this.aboutToSpawn = false;
     }
@@ -78,7 +78,7 @@ export class Cocoon extends Enemy {
         }
     }
 
-    getMinionType() {
+    setMinionType() {
         const random = Math.random();
         if (Game.stage === STAGE.FLOODED_CAVE) {
             if (random > 0.9) {
