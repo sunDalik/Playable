@@ -2,6 +2,9 @@ import {Enemy} from "./enemy";
 import {FCEnemiesSpriteSheet} from "../../loader";
 import {ENEMY_TYPE} from "../../enums/enums";
 import {DAMAGE_TYPE} from "../../enums/damage_type";
+import {createFadingText} from "../../animations";
+import {Game} from "../../game";
+import {randomInt} from "../../utils/random_utils";
 
 export class TrainingDummy extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["training_dummy.png"]) {
@@ -39,5 +42,9 @@ export class TrainingDummy extends Enemy {
         super.damage(source, dmg, inputX, inputY, damageType);
         this.healthContainer.visible = false;
         this.health = 99;
+        createFadingText(dmg.toString(),
+            this.position.x + randomInt(-Game.TILESIZE / 3, Game.TILESIZE / 3),
+            this.position.y + randomInt(-Game.TILESIZE / 5, Game.TILESIZE / 5),
+            Game.TILESIZE / 65 * 20, 30);
     }
 }

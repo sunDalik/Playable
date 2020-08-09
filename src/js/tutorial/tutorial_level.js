@@ -15,9 +15,9 @@ export const tutorialLevel = [
     [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, e, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, n, n, n],
     [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, n, n, n, n, w, w, e, w],
     [w, w, w, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, w, n, w],
-    [n, n, n, n, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, w, w, n, w],
+    [n, n, n, n, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, w, n, w],
     [n, n, n, n, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, n, n, n, w, w, w, w, w, w, w, w, w, w, n, n, n],
     [n, n, n, n, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, e, n, n, n, n, n, e, n, n, n, n, n, n, n, n, w, n, n, n],
     [n, n, n, n, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, n, e, n, n, n],
-    [n, n, n, n, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, w, w, w, w, w, w, w, w, w, w, w, w, w, n, n, n]
+    [n, n, n, n, n, n, n, n, n, n, n, w, n, n, n, n, n, n, n, w, n, n, n, w, w, w, w, w, w, w, w, w, w, w, w, n, n, n]
 ];
