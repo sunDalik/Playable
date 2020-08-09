@@ -3,7 +3,7 @@ import {tutorialLevel} from "./tutorial_level";
 import {expandLevel} from "../level_generation/generation_utils";
 import {outlineLevelWithWalls, replaceStringsWithObjects} from "../level_generation/standard_generation";
 import {Game} from "../game";
-import {TriggerTile} from "./triggerTile";
+import {TriggerTile} from "./trigger_tile";
 import {camera} from "../classes/game/camera";
 import {lightTile} from "../drawing/lighting";
 import {Roller} from "../classes/enemies/fc/roller";
@@ -85,6 +85,13 @@ function setTriggerTiles() {
         }
     };
 
+    const spiderTriggerTile = new TriggerTile();
+    spiderTriggerTile.onTrigger = () => {
+        Game.player.respawnPoint = {x: 29, y: 5};
+        Game.player2.respawnPoint = {x: 30, y: 5};
+    };
+
     level[5][7].triggerTile = blackPlayerRespawnTriggerTile;
     level[6][21].triggerTile = rollersInsideWallsLightTriggerTiles;
+    level[5][29].triggerTile = spiderTriggerTile;
 }

@@ -1,16 +1,20 @@
-import {WhitePlayer} from "../classes/players/player_white";
-import {Game} from "../game";
+import {TutorialPlayer} from "./tutorial_player";
+import {Spear} from "../classes/equipment/weapons/spear";
+import {swapEquipmentWithPlayer} from "../game_logic";
+import {LeatherArmor} from "../classes/equipment/armor/leather";
+import {Z_INDEXES} from "../z_indexing";
+import {CommonSpriteSheet} from "../loader";
 
-export class TutorialPlayerWhite extends WhitePlayer {
-    constructor(tilePositionX, tilePositionY) {
-        super(tilePositionX, tilePositionY);
-        this._health = this._maxHealth = 1;
-    }
+export class TutorialPlayerWhite extends TutorialPlayer {
+    constructor(tilePositionX, tilePositionY, texture = CommonSpriteSheet["player.png"]) {
+        super(tilePositionX, tilePositionY, texture);
 
-    onMove(animationTime, tileStepX, tileStepY) {
-        super.onMove(animationTime, tileStepX, tileStepY);
-        if (Game.map[this.tilePosition.y][this.tilePosition.x].triggerTile){
-            Game.map[this.tilePosition.y][this.tilePosition.x].triggerTile.onTrigger();
-        }
+        // copy paste from whitePlayer
+        this.atkMul = 0.5;
+        this.defMul = 1;
+        this.weapon = new Spear();
+        swapEquipmentWithPlayer(this, new LeatherArmor(), false);
+        this.setOwnZIndex(Z_INDEXES.PLAYER_PRIMARY);
+        this.tallModifier = 5;
     }
 }
