@@ -5,6 +5,8 @@ import {outlineLevelWithWalls, replaceStringsWithObjects} from "../level_generat
 import {Game} from "../game";
 import {TriggerTile} from "./triggerTile";
 import {camera} from "../classes/game/camera";
+import {lightTile} from "../drawing/lighting";
+import {Roller} from "../classes/enemies/fc/roller";
 
 let level = [];
 
@@ -29,7 +31,12 @@ function placeObjects() {
 }
 
 function placeEnemies() {
-
+    const roller1 = new Roller(22, 2);
+    const roller2 = new Roller(28, 3);
+    level[roller1.tilePosition.y][roller1.tilePosition.x].entity = roller1;
+    level[roller2.tilePosition.y][roller2.tilePosition.x].entity = roller2;
+    roller2.direction = -1;
+    roller2.scale.x *= -1;
 }
 
 function setStartPosition() {
@@ -60,5 +67,15 @@ function setTriggerTiles() {
         camera.moveToCenter(10);
     };
 
+    const rollersInsideWallsLightTriggerTiles = new TriggerTile();
+    rollersInsideWallsLightTriggerTiles.onTrigger = () => {
+        for (let x = 22; x <= 29; x++) {
+            for (let y = 1; y <= 4; y++) {
+                if (!Game.map[y][x].lit) lightTile(x, y);
+            }
+        }
+    };
+
     level[5][7].triggerTile = blackPlayerRespawnTriggerTile;
+    level[6][21].triggerTile = rollersInsideWallsLightTriggerTiles;
 }
