@@ -81,12 +81,17 @@ function setTriggerTiles() {
 
     const blackPlayerRespawnTriggerTile = new TriggerTile();
     blackPlayerRespawnTriggerTile.onTrigger = () => {
-        Game.player2.dead = false;
-        Game.player2.visible = true;
-        Game.world.addChild(Game.player2);
-        Game.player2.health = 1;
-        Game.player2.setTilePosition(10, 5);
-        camera.moveToCenter(10);
+        if (Game.player2.dead) {
+            Game.player2.dead = false;
+            Game.player2.visible = true;
+            Game.world.addChild(Game.player2);
+            Game.player2.health = 1;
+            Game.player2.setTilePosition(10, 5);
+            camera.moveToCenter(10);
+
+            Game.player.respawnPoint = {x: 9, y: 5};
+            Game.player2.respawnPoint = {x: 11, y: 5};
+        }
     };
 
     const rollersInsideWallsLightTriggerTiles = new TriggerTile();
