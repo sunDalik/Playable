@@ -1,4 +1,4 @@
-import {STAGE} from "./enums/enums";
+import {PLAY_MODE, STAGE} from "./enums/enums";
 
 export const Game = {
     app: null,
@@ -67,6 +67,7 @@ export const Game = {
     loadingText: null,
     loadingTextAnimation: null,
     state: null,
+    playMode: PLAY_MODE.NORMAL,
     keys: [],
 
     showTime: false,

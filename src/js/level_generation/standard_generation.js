@@ -63,7 +63,7 @@ export function generateStandard() {
         randomlyRotateRoom(room);
     }
     if (settings.openSpace) {
-        outlineLevelWithWalls();
+        outlineLevelWithWalls(level);
         outlineRoomWithWalls(bossRoom, true);
     }
     clearShape(bossRoom);
@@ -94,10 +94,10 @@ export function generateStandard() {
         reshapeRoom(secretRoom, shapers[1]);
     }
     level = expandLevelAndRooms(1, 1);
-    outlineLevelWithWalls(true);
+    outlineLevelWithWalls(level, true);
 
     //level shaping is finished
-    level = replaceStringsWithObjects();
+    level = replaceStringsWithObjects(level, rooms);
     for (const secretRoom of unconnectedRooms) {
         createSecrets(secretRoom);
     }
@@ -379,7 +379,7 @@ function drawPath(path) {
     }
 }
 
-function replaceStringsWithObjects() {
+export function replaceStringsWithObjects(level, rooms) {
     const map = [];
     for (let i = 0; i < level.length; ++i) {
         map[i] = [];
@@ -801,7 +801,7 @@ function generateBoss(set) {
     }
 }
 
-function outlineLevelWithWalls(superWalls = false) {
+export function outlineLevelWithWalls(level, superWalls = false) {
     for (let i = 0; i < level.length; i++) {
         for (let j = 0; j < level[0].length; j++) {
             if (i === 0 || i === level.length - 1 || j === 0 || j === level[0].length - 1) {

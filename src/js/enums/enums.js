@@ -256,6 +256,7 @@ export const STORAGE = Object.freeze({
 });
 
 export const GAME_STATE = Object.freeze({MENU: 0, PLAYING: 1});
+export const PLAY_MODE = Object.freeze({NORMAL: 0, TUTORIAL: 1});
 
 export const ACHIEVEMENT_ID = Object.freeze({
     BEAT_FC: 0,

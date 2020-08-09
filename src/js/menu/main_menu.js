@@ -7,7 +7,7 @@ import {setTickTimeout} from "../utils/game_utils";
 import {createLoadingText, retry, setupGame} from "../setup";
 import {closeBlackBars} from "../drawing/hud_animations";
 import {keyboard, keyboardS} from "../keyboard/keyboard_handler";
-import {GAME_STATE, STORAGE} from "../enums/enums";
+import {GAME_STATE, PLAY_MODE, STORAGE} from "../enums/enums";
 import {setupSubSettings} from "./subsettings";
 import {createSimpleButtonSet} from "./menu_common";
 import {SUPER_HUD} from "../drawing/super_hud";
@@ -59,7 +59,7 @@ export function setupMenu() {
     setTickTimeout(() => {
         movePlayersUp([player1, player2]);
         setTickTimeout(() => {
-            Game.mainMenu.buttons = createSimpleButtonSet(["PLAY", "SETTINGS", "ACHIEVEMENTS"], Game.mainMenu, playerOffset + playerSize + playerOffset);
+            Game.mainMenu.buttons = createSimpleButtonSet(["PLAY", "TUTORIAL", "SETTINGS", "ACHIEVEMENTS"], Game.mainMenu, playerOffset + playerSize + playerOffset);
             setButtonClickHandlers();
             initMenuKeyBinding();
         }, ppUpAnimationTime * 2 / 3);
@@ -233,18 +233,32 @@ function setButtonClickHandlers() {
             Game.mainMenu.visible = false;
             Game.menuCommon.visible = false;
             createLoadingText();
+            Game.playMode = PLAY_MODE.NORMAL;
             if (Game.world) retry();
             else setupGame();
         });
     };
     Game.mainMenu.buttons[1].clickButton = () => {
         if (!Game.mainMenu.choosable) return;
+        Game.mainMenu.choosable = false;
+        closeBlackBars(() => {
+            stopTilingAnimation = true;
+            Game.mainMenu.visible = false;
+            Game.menuCommon.visible = false;
+            createLoadingText();
+            Game.playMode = PLAY_MODE.TUTORIAL;
+            if (Game.world) retry();
+            else setupGame();
+        });
+    };
+    Game.mainMenu.buttons[2].clickButton = () => {
+        if (!Game.mainMenu.choosable) return;
         Game.mainMenu.visible = false;
         Game.subSettingsInterface.visible = true;
         Game.subSettingsInterface.buttons[1].chooseButton();
         changeBGColor(settingsMenuColor);
     };
-    Game.mainMenu.buttons[2].clickButton = () => {
+    Game.mainMenu.buttons[3].clickButton = () => {
         if (!Game.mainMenu.choosable) return;
         Game.mainMenu.visible = false;
         Game.achievementsInterface.visible = true;

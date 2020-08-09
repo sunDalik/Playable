@@ -1,10 +1,13 @@
 import {Game} from "../game";
-import {STAGE} from "../enums/enums";
+import {PLAY_MODE, STAGE} from "../enums/enums";
 import {generateStandard, setupGenerator} from "./standard_generation";
 import {DTBossSets, DTEnemySets, FCBossSets, FCEnemySets, RUBossSets, RUEnemySets} from "./enemy_sets";
 import {Settings} from "./settings";
+import {generateTutorialLevel} from "../tutorial/tutorial_generation";
 
 export function generateLevel() {
+    if (Game.playMode === PLAY_MODE.TUTORIAL) return generateTutorialLevel();
+
     switch (Game.stage) {
         case STAGE.FLOODED_CAVE:
             setupGenerator(new Settings(30, 40, 30, 40, FCEnemySets, FCBossSets));
