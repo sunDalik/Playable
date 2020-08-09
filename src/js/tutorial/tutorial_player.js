@@ -8,6 +8,7 @@ export class TutorialPlayer extends Player {
         super(texture, tilePositionX, tilePositionY);
         this.respawnPoint = null;
         this._health = this._maxHealth = 1;
+        this.fadingDestructionParticles = true;
     }
 
     onMove(animationTime, tileStepX, tileStepY) {
@@ -27,5 +28,11 @@ export class TutorialPlayer extends Player {
             otherPlayer(this).setTilePosition(otherPlayer(this).respawnPoint.x, otherPlayer(this).respawnPoint.y);
         }
         camera.moveToCenter(10);
+
+        for (const enemy of Game.enemies) {
+            if (enemy.onTutorialPlayerRevive) {
+                enemy.onTutorialPlayerRevive();
+            }
+        }
     }
 }

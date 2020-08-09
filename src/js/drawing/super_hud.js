@@ -89,8 +89,8 @@ export function redrawPauseBG() {
         SUPER_HUD.blackBg = bg;
         SUPER_HUD.addChild(bg);
 
-        const endAlpha = 0.7;
-        const animationTime = 5;
+        const endAlpha = 0.75;
+        const animationTime = 4;
         let counter = 0;
         bg.alpha = 0;
         const animation = delta => {

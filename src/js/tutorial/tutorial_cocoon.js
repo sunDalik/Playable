@@ -1,7 +1,7 @@
 import {Cocoon} from "../classes/enemies/fc/cocoon";
-import {Spider} from "../classes/enemies/fc/spider";
 import {Game} from "../game";
 import {updateIntent} from "../game_logic";
+import {TutorialSpider} from "./tutorial_spider";
 
 export class TutorialCocoon extends Cocoon {
     constructor(tilePositionX, tilePositionY) {
@@ -9,7 +9,7 @@ export class TutorialCocoon extends Cocoon {
     }
 
     move() {
-        if (this.minion === null || this.minion.dead) {
+        if (this.minion === null) {
             this.minion = new this.minionType(this.tilePosition.x - 1, this.tilePosition.y);
             Game.world.addEnemy(this.minion, true);
             this.minion.setStun(0);
@@ -19,6 +19,6 @@ export class TutorialCocoon extends Cocoon {
     }
 
     setMinionType() {
-        this.minionType = Spider;
+        this.minionType = TutorialSpider;
     }
 }

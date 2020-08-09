@@ -87,8 +87,8 @@ function setTriggerTiles() {
 
     const spiderTriggerTile = new TriggerTile();
     spiderTriggerTile.onTrigger = () => {
-        Game.player.respawnPoint = {x: 29, y: 5};
-        Game.player2.respawnPoint = {x: 30, y: 5};
+        Game.player.respawnPoint = {x: 30, y: 5};
+        Game.player2.respawnPoint = {x: 31, y: 5};
     };
 
     level[5][7].triggerTile = blackPlayerRespawnTriggerTile;
