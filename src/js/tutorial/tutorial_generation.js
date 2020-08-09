@@ -10,6 +10,7 @@ import {Roller} from "../classes/enemies/fc/roller";
 import {TrainingDummy} from "../classes/enemies/training_dummy";
 import {TutorialCocoon} from "./tutorial_cocoon";
 import {TutorialMushroom} from "./tutorial_mushroom";
+import {SpikyWallTrap} from "../classes/enemies/fc/spiky_wall_trap";
 
 let level = [];
 
@@ -50,6 +51,14 @@ function placeEnemies() {
 
     const mushroom = new TutorialMushroom(38, 12);
     level[mushroom.tilePosition.y][mushroom.tilePosition.x].entity = mushroom;
+
+    const spikyWallTraps = [new SpikyWallTrap(33, 13),
+        new SpikyWallTrap(30, 13),
+        new SpikyWallTrap(30, 10)];
+    for (const spikyWallTrap of spikyWallTraps) {
+        level[spikyWallTrap.tilePosition.y][spikyWallTrap.tilePosition.x].entity = spikyWallTrap;
+        level[spikyWallTrap.tilePosition.y][spikyWallTrap.tilePosition.x].tile = null;
+    }
 }
 
 function setStartPosition() {
@@ -101,8 +110,15 @@ function setTriggerTiles() {
         Game.player2.respawnPoint = {x: 38, y: 8};
     };
 
+    const spikyWallTrapTriggerTile = new TriggerTile();
+    spikyWallTrapTriggerTile.onTrigger = () => {
+        Game.player.respawnPoint = {x: 35, y: 12};
+        Game.player2.respawnPoint = {x: 35, y: 12};
+    };
+
     level[5][7].triggerTile = blackPlayerRespawnTriggerTile;
     level[6][21].triggerTile = rollersInsideWallsLightTriggerTiles;
     level[5][29].triggerTile = spiderTriggerTile;
     level[7][38].triggerTile = mushroomTriggerTile;
+    level[12][36].triggerTile = spikyWallTrapTriggerTile;
 }

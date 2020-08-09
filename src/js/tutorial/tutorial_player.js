@@ -21,6 +21,7 @@ export class TutorialPlayer extends Player {
     die() {
         this.dead = false;
         this.health = this.maxHealth;
+        otherPlayer(this).health = otherPlayer(this).maxHealth;
         Game.world.addChild(this);
         this.visible = true;
         if (this.respawnPoint) {
