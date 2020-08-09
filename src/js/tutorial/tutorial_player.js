@@ -2,6 +2,8 @@ import {Game} from "../game";
 import {Player} from "../classes/players/player";
 import {otherPlayer} from "../utils/game_utils";
 import {camera} from "../classes/game/camera";
+import {PLAY_MODE} from "../enums/enums";
+import {retry} from "../setup";
 
 export class TutorialPlayer extends Player {
     constructor(tilePositionX, tilePositionY, texture) {
@@ -16,6 +18,17 @@ export class TutorialPlayer extends Player {
         if (Game.map[this.tilePosition.y][this.tilePosition.x].triggerTile) {
             Game.map[this.tilePosition.y][this.tilePosition.x].triggerTile.onTrigger();
         }
+    }
+
+    goExit(tileStepX, tileStepY) {
+        let toCloseBlackBars = true;
+        this.step(tileStepX, tileStepY, () => {
+            if (toCloseBlackBars && this.animationCounter >= this.STEP_ANIMATION_TIME / 2) {
+                Game.playMode = PLAY_MODE.NORMAL;
+                retry();
+                toCloseBlackBars = false;
+            }
+        });
     }
 
     die() {

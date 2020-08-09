@@ -112,13 +112,7 @@ export class Player extends AnimatedTileElement {
                         completeBeatStageAchievements();
                         pullUpGameOverScreen(true);
                     } else {
-                        let toCloseBlackBars = true;
-                        this.step(tileStepX, tileStepY, () => {
-                            if (toCloseBlackBars && this.animationCounter >= this.STEP_ANIMATION_TIME / 2) {
-                                closeBlackBars(gotoNextLevel);
-                                toCloseBlackBars = false;
-                            }
-                        });
+                        this.goExit(tileStepX, tileStepY);
                     }
                     return false;
                 } else {
@@ -156,6 +150,16 @@ export class Player extends AnimatedTileElement {
         }
 
         return attackResult;
+    }
+
+    goExit(tileStepX, tileStepY) {
+        let toCloseBlackBars = true;
+        this.step(tileStepX, tileStepY, () => {
+            if (toCloseBlackBars && this.animationCounter >= this.STEP_ANIMATION_TIME / 2) {
+                closeBlackBars(gotoNextLevel);
+                toCloseBlackBars = false;
+            }
+        });
     }
 
     castMagic(magic) {

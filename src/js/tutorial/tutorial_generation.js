@@ -15,8 +15,10 @@ import {Chest} from "../classes/inanimate_objects/chest";
 import {Scythe} from "../classes/equipment/weapons/scythe";
 import {LyingItem} from "../classes/equipment/lying_item";
 import {Key} from "../classes/equipment/key";
-import {SpiderSmall} from "../classes/enemies/fc/spider_small";
 import {TutorialSmallSpider} from "./tutorial_small_spider";
+import {TileElement} from "../classes/tile_elements/tile_element";
+import {CommonSpriteSheet} from "../loader";
+import {TILE_TYPE} from "../enums/enums";
 
 let level = [];
 
@@ -44,6 +46,10 @@ function placeObjects() {
     for (const key of keys) {
         level[key.tilePosition.y][key.tilePosition.x].item = key;
     }
+
+    const exitTile = new TileElement(CommonSpriteSheet["exit_text.png"], 3, 11, true);
+    level[exitTile.tilePosition.y][exitTile.tilePosition.x].tile = exitTile;
+    level[exitTile.tilePosition.y][exitTile.tilePosition.x].tileType = TILE_TYPE.EXIT;
 }
 
 function placeEnemies() {
