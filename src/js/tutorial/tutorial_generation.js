@@ -7,6 +7,7 @@ import {TriggerTile} from "./triggerTile";
 import {camera} from "../classes/game/camera";
 import {lightTile} from "../drawing/lighting";
 import {Roller} from "../classes/enemies/fc/roller";
+import {TrainingDummy} from "../classes/enemies/training_dummy";
 
 let level = [];
 
@@ -31,6 +32,10 @@ function placeObjects() {
 }
 
 function placeEnemies() {
+    const trainingDummy = new TrainingDummy(17, 5);
+    level[trainingDummy.tilePosition.y][trainingDummy.tilePosition.x].entity = trainingDummy;
+    trainingDummy.scale.x *= -1;
+
     const roller1 = new Roller(22, 2);
     const roller2 = new Roller(28, 3);
     level[roller1.tilePosition.y][roller1.tilePosition.x].entity = roller1;

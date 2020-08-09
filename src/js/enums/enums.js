@@ -41,7 +41,8 @@ export const ENEMY_TYPE = Object.freeze({
     LAVA_SLIME: 39,
     LUNATIC_LEADER: 40,
     LUNATIC_HORROR: 41,
-    LUNATIC_LEADER_SPIRIT_CLONE: 42
+    LUNATIC_LEADER_SPIRIT_CLONE: 42,
+    TRAINING_DUMMY: 43
 });
 
 export const RABBIT_TYPE = Object.freeze({

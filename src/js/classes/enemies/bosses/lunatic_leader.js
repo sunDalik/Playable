@@ -768,6 +768,7 @@ class SpiritClone extends Enemy {
     constructor(tilePositionX, tilePositionY, master, texture = LunaticLeaderSpriteSheet["lunatic_leader_spirit.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 0.25;
+        this.name = "Lunatic Leader";
         this.type = ENEMY_TYPE.LUNATIC_LEADER_SPIRIT_CLONE;
         this.fadingDestructionParticles = true;
         this.master = master;
