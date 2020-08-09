@@ -8,10 +8,12 @@ const e = LEVEL_SYMBOLS.ENTRY;
 
 
 export const tutorialLevel = [
-    [n, n, n, n, n, w],
-    [n, n, n, n, n, w],
-    [n, n, n, n, n, e],
-    [n, n, n, n, n, w],
-    [n, n, n, n, n, w],
-    [w, w, w, w, w, w]
+    [w, w, w, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, w],
+    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w],
+    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w],
+    [n, n, n, n, n, e, n, n, n, n, n, e, n, n, n, n, n, n, n, e],
+    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w],
+    [n, n, n, n, n, w, n, n, n, n, n, w, n, n, n, n, n, n, n, w],
+    [w, w, w, w, w, w, w, w, w, w, w, w, n, n, n, n, n, n, n, w],
+    [n, n, n, n, n, n, n, n, n, n, n, w, w, w, w, w, w, w, w, w]
 ];

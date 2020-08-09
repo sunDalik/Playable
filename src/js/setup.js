@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import {Game} from "./game";
 import {camera} from "./classes/game/camera";
 import {loadAll} from "./loader";
-import {ACHIEVEMENT_ID, GAME_STATE, STAGE, STORAGE, TILE_TYPE} from "./enums/enums";
+import {ACHIEVEMENT_ID, GAME_STATE, PLAY_MODE, STAGE, STORAGE, TILE_TYPE} from "./enums/enums";
 import {generateLevel} from "./level_generation/level_generation";
 import {assignDrops} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
@@ -26,6 +26,8 @@ import {HUDTextStyleTitle} from "./drawing/draw_constants";
 import {setupMenu} from "./menu/main_menu";
 import {WhitePlayer} from "./classes/players/player_white";
 import {BlackPlayer} from "./classes/players/player_black";
+import {TutorialPlayerWhite} from "./tutorial/tutorial_player_white";
+import {TutorialPlayerBlack} from "./tutorial/tutorial_player_black";
 
 PIXI.utils.skipHello();
 initLocalStorage();
@@ -174,8 +176,13 @@ export function initializeLevel() {
 }
 
 function initPlayers() {
-    Game.player = new WhitePlayer(1, 1);
-    Game.player2 = new BlackPlayer(1, 1);
+    if (Game.playMode === PLAY_MODE.TUTORIAL) {
+        Game.player = new TutorialPlayerWhite(1, 1);
+        Game.player2 = new TutorialPlayerBlack(1, 1);
+    } else {
+        Game.player = new WhitePlayer(1, 1);
+        Game.player2 = new BlackPlayer(1, 1);
+    }
     Game.primaryPlayer = Game.player;
     Game.lastPlayerMoved = Game.player;
 }

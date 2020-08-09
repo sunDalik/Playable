@@ -1,12 +1,13 @@
 import {Game} from "../game";
 import * as PIXI from "pixi.js";
-import {ROLE, STAGE} from "../enums/enums";
+import {PLAY_MODE, ROLE, STAGE} from "../enums/enums";
 import {decrementEachDigitInHex} from "../utils/basic_utils";
 import {DarkTunnelTile} from "../classes/tile_elements/dark_tunnel_tile";
 import {updateChain} from "./draw_dunno";
 import {LimitChain} from "../classes/draw/limit_chain";
 import {DarknessTile} from "../classes/draw/darkness";
 import {FloorTile} from "../classes/draw/floor_tile";
+import {TileElement} from "../classes/tile_elements/tile_element";
 
 const floorAreas = [STAGE.RUINS, STAGE.DARK_TUNNEL, STAGE.FLOODED_CAVE];
 
@@ -24,6 +25,13 @@ export function drawTiles() {
             if (floorAreas.includes(Game.stage)) {
                 if (i !== 0 && i !== Game.map.length - 1 && j !== 0 && j !== Game.map[0].length - 1) {
                     Game.world.addChild(new FloorTile(j, i));
+                }
+            }
+
+            // for testing
+            if (true) {
+                if (Game.playMode === PLAY_MODE.TUTORIAL && Game.map[i][j].triggerTile !== null) {
+                    Game.world.addChild(new TileElement(PIXI.Texture.WHITE, j, i));
                 }
             }
         }
