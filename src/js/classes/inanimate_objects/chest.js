@@ -12,9 +12,10 @@ import {getRandomChestItem} from "../../utils/pool_utils";
 import {AccessoriesSpriteSheet, CommonSpriteSheet, InanimatesSpriteSheet} from "../../loader";
 
 export class Chest extends ItemInanimate {
-    constructor(tilePositionX, tilePositionY) {
+    constructor(tilePositionX, tilePositionY, content = undefined) {
         super(InanimatesSpriteSheet["chest.png"], tilePositionX, tilePositionY);
-        this.contents = getRandomChestItem();
+        if (content === undefined) this.contents = getRandomChestItem();
+        else this.contents = content;
         this.contentsType = this.contents.equipmentType;
         this.type = INANIMATE_TYPE.CHEST;
         this.opened = false;
@@ -30,6 +31,7 @@ export class Chest extends ItemInanimate {
 
         this.tint = this.contents.rarity.color;
         this.tallModifier = -15;
+        this.place();
         this.setScaleModifier(0.9 + this.contents.rarity.num / 16);
         this.keysRequired = this.totalKeysRequired = this.contents.rarity.num + 1;
 

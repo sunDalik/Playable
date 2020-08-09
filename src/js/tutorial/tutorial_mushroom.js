@@ -16,7 +16,9 @@ export class TutorialMushroom extends Mushroom {
     }
 
     onTutorialPlayerRevive() {
-        this.health = this.maxHealth;
-        this.healthContainer.visible = false;
+        if (!this.dead) {
+            this.health = this.maxHealth;
+            this.healthContainer.visible = false;
+        }
     }
 }

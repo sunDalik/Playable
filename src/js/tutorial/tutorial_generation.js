@@ -11,6 +11,12 @@ import {TrainingDummy} from "../classes/enemies/training_dummy";
 import {TutorialCocoon} from "./tutorial_cocoon";
 import {TutorialMushroom} from "./tutorial_mushroom";
 import {TutorialSpikyWallTrap} from "./tutorial_spiky_wall_trap";
+import {Chest} from "../classes/inanimate_objects/chest";
+import {Scythe} from "../classes/equipment/weapons/scythe";
+import {LyingItem} from "../classes/equipment/lying_item";
+import {Key} from "../classes/equipment/key";
+import {SpiderSmall} from "../classes/enemies/fc/spider_small";
+import {TutorialSmallSpider} from "./tutorial_small_spider";
 
 let level = [];
 
@@ -31,7 +37,13 @@ export function generateTutorialLevel() {
 }
 
 function placeObjects() {
-
+    level[10][24].entity = new Chest(24, 10, new Scythe());
+    const keys = [new LyingItem(23, 11, new Key()),
+        new LyingItem(22, 13, new Key()),
+        new LyingItem(26, 12, new Key())];
+    for (const key of keys) {
+        level[key.tilePosition.y][key.tilePosition.x].item = key;
+    }
 }
 
 function placeEnemies() {
@@ -58,6 +70,19 @@ function placeEnemies() {
     for (const spikyWallTrap of spikyWallTraps) {
         level[spikyWallTrap.tilePosition.y][spikyWallTrap.tilePosition.x].entity = spikyWallTrap;
         level[spikyWallTrap.tilePosition.y][spikyWallTrap.tilePosition.x].tile = null;
+    }
+
+    const smallSpiders = [new TutorialSmallSpider(16, 10),
+        new TutorialSmallSpider(16, 11),
+        new TutorialSmallSpider(16, 12),
+        new TutorialSmallSpider(16, 13),
+        new TutorialSmallSpider(15, 10),
+        new TutorialSmallSpider(15, 11),
+        new TutorialSmallSpider(15, 12),
+        new TutorialSmallSpider(15, 13)];
+    for (const smallSpider of smallSpiders) {
+        level[smallSpider.tilePosition.y][smallSpider.tilePosition.x].entity = smallSpider;
+        smallSpider.companionSpiders = smallSpiders;
     }
 }
 
@@ -125,10 +150,17 @@ function setTriggerTiles() {
         Game.player2.respawnPoint = {x: 35, y: 12};
     };
 
+    const smallSpidersTriggerTile = new TriggerTile();
+    smallSpidersTriggerTile.onTrigger = () => {
+        Game.player.respawnPoint = {x: 22, y: 11};
+        Game.player2.respawnPoint = {x: 21, y: 11};
+    };
+
     level[5][7].triggerTile = blackPlayerRespawnTriggerTile;
     level[5][13].triggerTile = trainingDummyTriggerTile;
     level[6][21].triggerTile = rollersInsideWallsLightTriggerTiles;
     level[5][29].triggerTile = spiderTriggerTile;
     level[7][38].triggerTile = mushroomTriggerTile;
     level[12][36].triggerTile = spikyWallTrapTriggerTile;
+    level[11][21].triggerTile = smallSpidersTriggerTile;
 }
