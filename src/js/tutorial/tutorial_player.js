@@ -30,7 +30,7 @@ export class TutorialPlayer extends Player {
         camera.moveToCenter(10);
 
         for (const enemy of Game.enemies) {
-            if (enemy.onTutorialPlayerRevive) {
+            if (enemy.onTutorialPlayerRevive && !enemy.dead) {
                 enemy.onTutorialPlayerRevive();
             }
         }

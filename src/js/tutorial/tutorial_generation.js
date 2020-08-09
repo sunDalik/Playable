@@ -9,6 +9,7 @@ import {lightTile} from "../drawing/lighting";
 import {Roller} from "../classes/enemies/fc/roller";
 import {TrainingDummy} from "../classes/enemies/training_dummy";
 import {TutorialCocoon} from "./tutorial_cocoon";
+import {TutorialMushroom} from "./tutorial_mushroom";
 
 let level = [];
 
@@ -46,6 +47,9 @@ function placeEnemies() {
 
     const cocoon = new TutorialCocoon(38, 5);
     level[cocoon.tilePosition.y][cocoon.tilePosition.x].entity = cocoon;
+
+    const mushroom = new TutorialMushroom(38, 12);
+    level[mushroom.tilePosition.y][mushroom.tilePosition.x].entity = mushroom;
 }
 
 function setStartPosition() {
@@ -91,7 +95,14 @@ function setTriggerTiles() {
         Game.player2.respawnPoint = {x: 31, y: 5};
     };
 
+    const mushroomTriggerTile = new TriggerTile();
+    mushroomTriggerTile.onTrigger = () => {
+        Game.player.respawnPoint = {x: 38, y: 9};
+        Game.player2.respawnPoint = {x: 38, y: 8};
+    };
+
     level[5][7].triggerTile = blackPlayerRespawnTriggerTile;
     level[6][21].triggerTile = rollersInsideWallsLightTriggerTiles;
     level[5][29].triggerTile = spiderTriggerTile;
+    level[7][38].triggerTile = mushroomTriggerTile;
 }
