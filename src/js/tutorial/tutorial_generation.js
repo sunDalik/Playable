@@ -96,7 +96,7 @@ function setTriggerTiles() {
 
     const rollersInsideWallsLightTriggerTiles = new TriggerTile();
     rollersInsideWallsLightTriggerTiles.onTrigger = () => {
-        for (let x = 22; x <= 29; x++) {
+        for (let x = 21; x <= 29; x++) {
             for (let y = 1; y <= 4; y++) {
                 if (!Game.map[y][x].lit) lightTile(x, y);
             }
