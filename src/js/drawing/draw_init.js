@@ -29,7 +29,7 @@ export function drawTiles() {
             }
 
             // for testing
-            if (true) {
+            if (false) {
                 if (Game.playMode === PLAY_MODE.TUTORIAL && Game.map[i][j].triggerTile !== null) {
                     Game.world.addChild(new TileElement(PIXI.Texture.WHITE, j, i, true));
                 }

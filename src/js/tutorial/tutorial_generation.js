@@ -23,8 +23,10 @@ import {drawMovementKeyBindings, getKeyBindSymbol} from "../drawing/draw_hud";
 import * as PIXI from "pixi.js";
 import {HUDTextStyleTitle} from "../drawing/draw_constants";
 import {Z_INDEXES} from "../z_indexing";
+import {fadeOutAndDie} from "../animations";
 
 let level = [];
+let texts = [];
 
 export function generateTutorialLevel() {
     level = copy2dArray(tutorialLevel);
@@ -40,6 +42,7 @@ export function generateTutorialLevel() {
     setStartPosition();
     setEndRoomBoundaries();
 
+    texts = [];
     displayText(4, 10, `Use ${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_UP_1P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_1P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_1P])} to control white triangle`);
     return level;
 }
@@ -122,10 +125,8 @@ function setTriggerTiles() {
 
     const blackPlayerRespawnTriggerTile = new TriggerTile();
     blackPlayerRespawnTriggerTile.onTrigger = () => {
-        if (!blackPlayerRespawnTriggerTile.triggered) {
-            displayText(4, 4, `Use ${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_UP_2P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_2P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P])} to control black triangle`);
-        }
-        blackPlayerRespawnTriggerTile.triggered = true;
+        clearTexts();
+        displayText(4, 4, `Use ${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_UP_2P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_2P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P])} to control black triangle`);
         if (Game.player2.dead) {
             Game.player2.dead = false;
             Game.player2.visible = true;
@@ -142,75 +143,69 @@ function setTriggerTiles() {
 
     const trainingDummyTriggerTile = new TriggerTile();
     trainingDummyTriggerTile.onTrigger = () => {
-        if (!trainingDummyTriggerTile.triggered) {
-            displayText(11, 4, "Attack enemies by moving onto them");
-        }
-        trainingDummyTriggerTile.triggered = true;
+        clearTexts();
+        displayText(11, 3, "Attack enemies by moving onto them");
+        displayText(11, 7, "White has x0.5 atk multiplier\nBlack has x0.5 def multiplier");
+        displayText(11, 9.5, "They are weak alone, but together they are unstoppable", true, Game.TILESIZE * 5);
     };
 
     const trainingDummyTriggerTile2 = new TriggerTile();
     trainingDummyTriggerTile2.onTrigger = () => {
-        if (!trainingDummyTriggerTile2.triggered) {
-            displayText(11, 4, "Attack enemies by moving onto them");
-        }
-        trainingDummyTriggerTile2.triggered = true;
+        clearTexts();
+        displayText(18, 3, `When triangles stand together, only the top one takes damage from enemies and is able to attack`, true, Game.TILESIZE * 5);
+        displayText(18, 8.5, `Press ${getKeyBindSymbol(window.localStorage[STORAGE.KEY_Z_SWITCH])} to switch position`, true);
     };
 
     const rollersInsideWallsLightTriggerTiles = new TriggerTile();
     rollersInsideWallsLightTriggerTiles.onTrigger = () => {
-        if (!rollersInsideWallsLightTriggerTiles.triggered) {
-
-            for (let x = 21; x <= 29; x++) {
-                for (let y = 1; y <= 4; y++) {
-                    if (!Game.map[y][x].lit) lightTile(x, y);
-                }
+        for (let x = 21; x <= 29; x++) {
+            for (let y = 1; y <= 4; y++) {
+                if (!Game.map[y][x].lit) lightTile(x, y);
             }
         }
-        rollersInsideWallsLightTriggerTiles.triggered = true;
+        clearTexts();
+        displayText(24, 6, "This is a turn-based game and enemies move only after you", false, Game.TILESIZE * 5);
+        displayText(24, 9.5, "If you move triangles simultaneously, they will both move in one turn", true, Game.TILESIZE * 6);
     };
 
     const spiderTriggerTile = new TriggerTile();
     spiderTriggerTile.onTrigger = () => {
         Game.player.respawnPoint = {x: 30, y: 5};
         Game.player2.respawnPoint = {x: 31, y: 5};
-
-        if (!spiderTriggerTile.triggered) {
-            displayText(11, 4, "Attack enemies by moving onto them");
-        }
-        spiderTriggerTile.triggered = true;
+        clearTexts();
+        displayText(32.5, 3.5, "Don't rush! Let spider come close to you by skipping turns", true, Game.TILESIZE * 6);
+        displayText(32.5, 7.5, "One way to skip turns is to bump into walls", true, Game.TILESIZE * 6);
     };
 
     const mushroomTriggerTile = new TriggerTile();
     mushroomTriggerTile.onTrigger = () => {
         Game.player.respawnPoint = {x: 38, y: 9};
         Game.player2.respawnPoint = {x: 38, y: 8};
-
-        if (!mushroomTriggerTile.triggered) {
-            displayText(11, 4, "Attack enemies by moving onto them");
-        }
-        mushroomTriggerTile.triggered = true;
+        clearTexts();
+        displayText(43, 11, "Poison hazards damage you!\nUse spear to kill mushroom without getting close", true);
     };
 
     const spikyWallTrapTriggerTile = new TriggerTile();
     spikyWallTrapTriggerTile.onTrigger = () => {
         Game.player.respawnPoint = {x: 35, y: 12};
         Game.player2.respawnPoint = {x: 35, y: 12};
-
-        if (!spikyWallTrapTriggerTile.triggered) {
-            displayText(11, 4, "Attack enemies by moving onto them");
-        }
-        spikyWallTrapTriggerTile.triggered = true;
+        clearTexts();
+        displayText(33, 9.5, "Spiky wall traps try to predict your movement", true);
+        displayText(32, 14.5, "Skipping a turn is a powerful move", true);
     };
 
     const smallSpidersTriggerTile = new TriggerTile();
     smallSpidersTriggerTile.onTrigger = () => {
         Game.player.respawnPoint = {x: 22, y: 11};
         Game.player2.respawnPoint = {x: 21, y: 11};
+        clearTexts();
+        displayText(19, 11, "Don't forget to equip your weapon into 'Weapon' slot", false, Game.TILESIZE * 3);
+    };
 
-        if (!smallSpidersTriggerTile.triggered) {
-            displayText(11, 4, "Attack enemies by moving onto them");
-        }
-        smallSpidersTriggerTile.triggered = true;
+    const exitTriggerTile = new TriggerTile();
+    exitTriggerTile.onTrigger = () => {
+        clearTexts();
+        displayText(9, 12, "Good luck <3");
     };
 
     level[8][4].triggerTile = blackPlayerRespawnTriggerTile;
@@ -221,15 +216,25 @@ function setTriggerTiles() {
     level[7][38].triggerTile = mushroomTriggerTile;
     level[12][36].triggerTile = spikyWallTrapTriggerTile;
     level[11][21].triggerTile = smallSpidersTriggerTile;
+    level[12][13].triggerTile = exitTriggerTile;
 }
 
-function displayText(x, y, text) {
+// x is the central tile position, y is the lowest tile position
+function displayText(x, y, text, highZIndex = false, width = Game.TILESIZE * 4) {
     const textObject = new PIXI.Text(text, HUDTextStyleTitle);
     textObject.style.wordWrap = true;
-    textObject.style.wordWrapWidth = Game.TILESIZE * 4;
+    textObject.style.wordWrapWidth = width;
     textObject.position.x = (x * Game.TILESIZE + Game.TILESIZE / 2) - textObject.width / 2;
     textObject.position.y = y * Game.TILESIZE - Game.TILESIZE / 2 - textObject.height / 2;
-    textObject.zIndex = Z_INDEXES.HAZARD + 1;
+    if (highZIndex) textObject.zIndex = 16 * 10 + Z_INDEXES.DARKNESS;
+    else textObject.zIndex = Z_INDEXES.HAZARD + 1;
     Game.world.addChild(textObject);
-    console.log("dww");
+    texts.push(textObject);
+}
+
+function clearTexts() {
+    for (const text of texts) {
+        fadeOutAndDie(text);
+    }
+    texts = [];
 }
