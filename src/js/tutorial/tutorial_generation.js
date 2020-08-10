@@ -153,7 +153,7 @@ function setTriggerTiles() {
     trainingDummyTriggerTile2.onTrigger = () => {
         clearTexts();
         displayText(18, 3, `When triangles stand together, only the top one takes damage from enemies and is able to attack`, true, Game.TILESIZE * 5);
-        displayText(18, 8.5, `Press ${getKeyBindSymbol(window.localStorage[STORAGE.KEY_Z_SWITCH])} to switch position`, true);
+        displayText(18, 8.5, `Press ${getKeyBindSymbol(window.localStorage[STORAGE.KEY_Z_SWITCH])} to switch positions`, true);
     };
 
     const rollersInsideWallsLightTriggerTiles = new TriggerTile();
