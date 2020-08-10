@@ -69,6 +69,7 @@ function setupPauseScreen() {
         bringMenuBackToLife();
         redrawPauseBG();
         Game.state = GAME_STATE.MENU;
+        Game.mainMenu.buttons[0].chooseButton();
     };
     for (let i = 0; i < SUPER_HUD.pauseScreen.buttons.length; i++) {
         SUPER_HUD.pauseScreen.buttons[i].on("click", SUPER_HUD.pauseScreen.buttons[i].clickButton);
