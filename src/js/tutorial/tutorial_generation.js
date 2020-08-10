@@ -47,15 +47,19 @@ function placeObjects() {
         level[key.tilePosition.y][key.tilePosition.x].item = key;
     }
 
-    const exitTile = new TileElement(CommonSpriteSheet["exit_text.png"], 3, 11, true);
+    const exitTile = new TileElement(CommonSpriteSheet["exit_text.png"], 9, 12, true);
     level[exitTile.tilePosition.y][exitTile.tilePosition.x].tile = exitTile;
     level[exitTile.tilePosition.y][exitTile.tilePosition.x].tileType = TILE_TYPE.EXIT;
 }
 
 function placeEnemies() {
-    const trainingDummy = new TrainingDummy(17, 5);
+    const trainingDummy = new TrainingDummy(11, 5);
     level[trainingDummy.tilePosition.y][trainingDummy.tilePosition.x].entity = trainingDummy;
     trainingDummy.scale.x *= -1;
+
+    const trainingDummy2 = new TrainingDummy(18, 5);
+    level[trainingDummy2.tilePosition.y][trainingDummy2.tilePosition.x].entity = trainingDummy2;
+    trainingDummy2.scale.x *= -1;
 
     const roller1 = new Roller(22, 2);
     const roller2 = new Roller(28, 3);
@@ -95,7 +99,7 @@ function placeEnemies() {
 function setStartPosition() {
     Game.startPos = {
         x: 4,
-        y: 5
+        y: 11
     };
 }
 
@@ -117,11 +121,11 @@ function setTriggerTiles() {
             Game.player2.visible = true;
             Game.world.addChild(Game.player2);
             Game.player2.health = 1;
-            Game.player2.setTilePosition(10, 5);
+            Game.player2.setTilePosition(4, 5);
             camera.moveToCenter(10);
 
-            Game.player.respawnPoint = {x: 9, y: 5};
-            Game.player2.respawnPoint = {x: 11, y: 5};
+            Game.player.respawnPoint = {x: 3, y: 5};
+            Game.player2.respawnPoint = {x: 5, y: 5};
         }
     };
 
@@ -136,6 +140,10 @@ function setTriggerTiles() {
 
     const trainingDummyTriggerTile = new TriggerTile();
     trainingDummyTriggerTile.onTrigger = () => {
+    };
+
+    const trainingDummyTriggerTile2 = new TriggerTile();
+    trainingDummyTriggerTile2.onTrigger = () => {
     };
 
     const spiderTriggerTile = new TriggerTile();
@@ -162,8 +170,9 @@ function setTriggerTiles() {
         Game.player2.respawnPoint = {x: 21, y: 11};
     };
 
-    level[5][7].triggerTile = blackPlayerRespawnTriggerTile;
-    level[5][13].triggerTile = trainingDummyTriggerTile;
+    level[8][4].triggerTile = blackPlayerRespawnTriggerTile;
+    level[5][7].triggerTile = trainingDummyTriggerTile;
+    level[6][15].triggerTile = trainingDummyTriggerTile2;
     level[6][21].triggerTile = rollersInsideWallsLightTriggerTiles;
     level[5][29].triggerTile = spiderTriggerTile;
     level[7][38].triggerTile = mushroomTriggerTile;
