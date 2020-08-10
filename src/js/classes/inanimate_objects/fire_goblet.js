@@ -123,8 +123,6 @@ export class FireGoblet extends AnimatedTileElement {
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
             const newFire = new FireHazard(this.tilePosition.x, this.tilePosition.y);
             newFire.currentSpreadDelay = 0;
-            newFire.tileSpread = 2;
-            newFire.spreadTimes = 3;
             Game.world.addHazard(newFire);
         }
         if (this.shattered) {

@@ -16,7 +16,7 @@ export class FireHazard extends Hazard {
         this.actualAtk = 0.5;
         this.small = small;
         this.subFire = small;
-        this.maxSpreadTimes = 3;
+        this.maxSpreadTimes = 1;
         if (spreadTimes !== undefined) this.spreadTimes = spreadTimes;
         else this.spreadTimes = this.maxSpreadTimes;
         this.spreadDelay = 1;
@@ -25,7 +25,7 @@ export class FireHazard extends Hazard {
             this.tileSpread = 1;
             this.atk = 0;
         } else {
-            this.tileSpread = 4;
+            this.tileSpread = 5;
             this.atk = this.actualAtk;
         }
         this.turnsLeft = this.LIFETIME;
