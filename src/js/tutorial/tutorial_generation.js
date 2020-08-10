@@ -197,7 +197,7 @@ function setTriggerTiles() {
     const smallSpidersTriggerTile = new TriggerTile();
     smallSpidersTriggerTile.onTrigger = () => {
         Game.player.respawnPoint = {x: 22, y: 11};
-        Game.player2.respawnPoint = {x: 21, y: 11};
+        Game.player2.respawnPoint = {x: 22, y: 11};
         clearTexts();
         displayText(19, 11, "Don't forget to equip your weapon into the 'Weapon' slot", false, Game.TILESIZE * 3);
     };

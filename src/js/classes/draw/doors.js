@@ -43,6 +43,13 @@ export class DoorsTile extends TileElement {
         redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
     }
 
+    close() {
+        this.opened = false;
+        this.updateTexture();
+        Game.map[this.tilePosition.y][this.tilePosition.x].tileType = TILE_TYPE.ENTRY;
+        redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
+    }
+
     place() {
         super.place();
         if (this.horizontal) {

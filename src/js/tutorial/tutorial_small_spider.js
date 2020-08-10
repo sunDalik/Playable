@@ -1,5 +1,6 @@
 import {SpiderSmall} from "../classes/enemies/fc/spider_small";
 import {Game} from "../game";
+import {darkenTile} from "../drawing/lighting";
 
 export class TutorialSmallSpider extends SpiderSmall {
     constructor(tilePositionX, tilePositionY) {
@@ -26,6 +27,14 @@ export class TutorialSmallSpider extends SpiderSmall {
             this.setTilePosition(this.originalPosition.x, this.originalPosition.y);
             this.health = this.maxHealth;
             this.healthContainer.visible = false;
+            this.setStun(1);
+
+            if (Game.map[11][21].tile && Game.map[11][21].tile.close) Game.map[11][21].tile.close();
+            for (let x = 13; x <= 20; x++) {
+                for (let y = 10; y <= 14; y++) {
+                    darkenTile(x, y);
+                }
+            }
         }
     }
 }

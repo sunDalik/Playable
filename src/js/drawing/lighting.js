@@ -161,7 +161,10 @@ export function darkenTile(tileX, tileY) {
     }
     if (mapCell.secondaryEntity) mapCell.secondaryEntity.visible = false;
     if (mapCell.hazard) mapCell.hazard.visible = false;
-    if (mapCell.tile) mapCell.tile.visible = false;
+    if (mapCell.tile) {
+        mapCell.tile.visible = false;
+        if (mapCell.tile.door2) mapCell.tile.door2.visible = false;
+    }
     if (mapCell.item) mapCell.item.visible = false;
 
     //if (mapCell.tileType === TILE_TYPE.VOID) return;
