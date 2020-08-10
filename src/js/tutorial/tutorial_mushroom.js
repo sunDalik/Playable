@@ -3,7 +3,6 @@ import {Mushroom} from "../classes/enemies/fc/mushroom";
 export class TutorialMushroom extends Mushroom {
     constructor(tilePositionX, tilePositionY) {
         super(tilePositionX, tilePositionY);
-        this.poisonDelay = 8;
     }
 
     move() {
