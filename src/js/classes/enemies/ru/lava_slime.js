@@ -25,7 +25,7 @@ export class LavaSlime extends WallSlime {
     }
 
     afterMapGen() {
-        if (this.canPlace()) {
+        if (this.canPlace() && Math.random() < 0.6) {
             this.createSubSlimes(4);
         } else {
             this.createSubSlimes(1);

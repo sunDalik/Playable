@@ -50,7 +50,8 @@ export class WallSlime extends Enemy {
 
     afterMapGen() {
         for (const plane of randomShuffle([PLANE.VERTICAL, PLANE.HORIZONTAL])) {
-            for (const size of [5, 4, 3, 2, 1]) {
+            const sizeArray = randomShuffle([5, 4, 3, 2, 1]);
+            for (const size of sizeArray) {
                 if (this.canPlace(size, plane)) {
                     this.plane = plane;
                     this.createSubSlimes(size, plane);
