@@ -145,8 +145,8 @@ function setTriggerTiles() {
     trainingDummyTriggerTile.onTrigger = () => {
         clearTexts();
         displayText(11, 3, "Attack enemies by moving onto them");
-        displayText(11, 7, "White has x0.5 atk multiplier\nBlack has x0.5 def multiplier");
-        displayText(11, 9.5, "They are weak alone, but together they are unstoppable", true, Game.TILESIZE * 5);
+        displayText(11, 8, "White has x0.5 ATK multiplier\nBlack has x0.5 DEF multiplier", false, Game.TILESIZE * 5);
+        displayText(11, 10.5, "Alone they are weak, but together they are unstoppable", true, Game.TILESIZE * 5);
     };
 
     const trainingDummyTriggerTile2 = new TriggerTile();
@@ -164,7 +164,7 @@ function setTriggerTiles() {
             }
         }
         clearTexts();
-        displayText(24, 6, "This is a turn-based game and enemies move only after you", false, Game.TILESIZE * 5);
+        displayText(24, 6, "This is a turn-based game and enemies move only after you do", false, Game.TILESIZE * 5);
         displayText(24, 9.5, "If you move triangles simultaneously, they will both move in one turn", true, Game.TILESIZE * 6);
     };
 
@@ -182,7 +182,7 @@ function setTriggerTiles() {
         Game.player.respawnPoint = {x: 38, y: 9};
         Game.player2.respawnPoint = {x: 38, y: 8};
         clearTexts();
-        displayText(43, 11, "Poison hazards damage you!\nUse spear to kill mushroom without getting close", true);
+        displayText(43, 11, "Poison hazards damage you!\nUse spear to kill mushroom without having to get close", true);
     };
 
     const spikyWallTrapTriggerTile = new TriggerTile();
@@ -199,7 +199,7 @@ function setTriggerTiles() {
         Game.player.respawnPoint = {x: 22, y: 11};
         Game.player2.respawnPoint = {x: 21, y: 11};
         clearTexts();
-        displayText(19, 11, "Don't forget to equip your weapon into 'Weapon' slot", false, Game.TILESIZE * 3);
+        displayText(19, 11, "Don't forget to equip your weapon into the 'Weapon' slot", false, Game.TILESIZE * 3);
     };
 
     const exitTriggerTile = new TriggerTile();
