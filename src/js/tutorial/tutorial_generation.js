@@ -18,7 +18,11 @@ import {Key} from "../classes/equipment/key";
 import {TutorialSmallSpider} from "./tutorial_small_spider";
 import {TileElement} from "../classes/tile_elements/tile_element";
 import {CommonSpriteSheet} from "../loader";
-import {TILE_TYPE} from "../enums/enums";
+import {STORAGE, TILE_TYPE} from "../enums/enums";
+import {drawMovementKeyBindings, getKeyBindSymbol} from "../drawing/draw_hud";
+import * as PIXI from "pixi.js";
+import {HUDTextStyleTitle} from "../drawing/draw_constants";
+import {Z_INDEXES} from "../z_indexing";
 
 let level = [];
 
@@ -35,6 +39,8 @@ export function generateTutorialLevel() {
     placeEnemies();
     setStartPosition();
     setEndRoomBoundaries();
+
+    displayText(4, 10, `Use ${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_UP_1P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_1P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_1P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_1P])} to control white triangle`);
     return level;
 }
 
@@ -116,6 +122,10 @@ function setTriggerTiles() {
 
     const blackPlayerRespawnTriggerTile = new TriggerTile();
     blackPlayerRespawnTriggerTile.onTrigger = () => {
+        if (!blackPlayerRespawnTriggerTile.triggered) {
+            displayText(4, 4, `Use ${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_UP_2P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_LEFT_2P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_DOWN_2P])}${getKeyBindSymbol(window.localStorage[STORAGE.KEY_MOVE_RIGHT_2P])} to control black triangle`);
+        }
+        blackPlayerRespawnTriggerTile.triggered = true;
         if (Game.player2.dead) {
             Game.player2.dead = false;
             Game.player2.visible = true;
@@ -123,51 +133,84 @@ function setTriggerTiles() {
             Game.player2.health = 1;
             Game.player2.setTilePosition(4, 5);
             camera.moveToCenter(10);
+            drawMovementKeyBindings();
 
             Game.player.respawnPoint = {x: 3, y: 5};
             Game.player2.respawnPoint = {x: 5, y: 5};
         }
     };
 
-    const rollersInsideWallsLightTriggerTiles = new TriggerTile();
-    rollersInsideWallsLightTriggerTiles.onTrigger = () => {
-        for (let x = 21; x <= 29; x++) {
-            for (let y = 1; y <= 4; y++) {
-                if (!Game.map[y][x].lit) lightTile(x, y);
-            }
-        }
-    };
-
     const trainingDummyTriggerTile = new TriggerTile();
     trainingDummyTriggerTile.onTrigger = () => {
+        if (!trainingDummyTriggerTile.triggered) {
+            displayText(11, 4, "Attack enemies by moving onto them");
+        }
+        trainingDummyTriggerTile.triggered = true;
     };
 
     const trainingDummyTriggerTile2 = new TriggerTile();
     trainingDummyTriggerTile2.onTrigger = () => {
+        if (!trainingDummyTriggerTile2.triggered) {
+            displayText(11, 4, "Attack enemies by moving onto them");
+        }
+        trainingDummyTriggerTile2.triggered = true;
+    };
+
+    const rollersInsideWallsLightTriggerTiles = new TriggerTile();
+    rollersInsideWallsLightTriggerTiles.onTrigger = () => {
+        if (!rollersInsideWallsLightTriggerTiles.triggered) {
+
+            for (let x = 21; x <= 29; x++) {
+                for (let y = 1; y <= 4; y++) {
+                    if (!Game.map[y][x].lit) lightTile(x, y);
+                }
+            }
+        }
+        rollersInsideWallsLightTriggerTiles.triggered = true;
     };
 
     const spiderTriggerTile = new TriggerTile();
     spiderTriggerTile.onTrigger = () => {
         Game.player.respawnPoint = {x: 30, y: 5};
         Game.player2.respawnPoint = {x: 31, y: 5};
+
+        if (!spiderTriggerTile.triggered) {
+            displayText(11, 4, "Attack enemies by moving onto them");
+        }
+        spiderTriggerTile.triggered = true;
     };
 
     const mushroomTriggerTile = new TriggerTile();
     mushroomTriggerTile.onTrigger = () => {
         Game.player.respawnPoint = {x: 38, y: 9};
         Game.player2.respawnPoint = {x: 38, y: 8};
+
+        if (!mushroomTriggerTile.triggered) {
+            displayText(11, 4, "Attack enemies by moving onto them");
+        }
+        mushroomTriggerTile.triggered = true;
     };
 
     const spikyWallTrapTriggerTile = new TriggerTile();
     spikyWallTrapTriggerTile.onTrigger = () => {
         Game.player.respawnPoint = {x: 35, y: 12};
         Game.player2.respawnPoint = {x: 35, y: 12};
+
+        if (!spikyWallTrapTriggerTile.triggered) {
+            displayText(11, 4, "Attack enemies by moving onto them");
+        }
+        spikyWallTrapTriggerTile.triggered = true;
     };
 
     const smallSpidersTriggerTile = new TriggerTile();
     smallSpidersTriggerTile.onTrigger = () => {
         Game.player.respawnPoint = {x: 22, y: 11};
         Game.player2.respawnPoint = {x: 21, y: 11};
+
+        if (!smallSpidersTriggerTile.triggered) {
+            displayText(11, 4, "Attack enemies by moving onto them");
+        }
+        smallSpidersTriggerTile.triggered = true;
     };
 
     level[8][4].triggerTile = blackPlayerRespawnTriggerTile;
@@ -178,4 +221,15 @@ function setTriggerTiles() {
     level[7][38].triggerTile = mushroomTriggerTile;
     level[12][36].triggerTile = spikyWallTrapTriggerTile;
     level[11][21].triggerTile = smallSpidersTriggerTile;
+}
+
+function displayText(x, y, text) {
+    const textObject = new PIXI.Text(text, HUDTextStyleTitle);
+    textObject.style.wordWrap = true;
+    textObject.style.wordWrapWidth = Game.TILESIZE * 4;
+    textObject.position.x = (x * Game.TILESIZE + Game.TILESIZE / 2) - textObject.width / 2;
+    textObject.position.y = y * Game.TILESIZE - Game.TILESIZE / 2 - textObject.height / 2;
+    textObject.zIndex = Z_INDEXES.HAZARD + 1;
+    Game.world.addChild(textObject);
+    console.log("dww");
 }
