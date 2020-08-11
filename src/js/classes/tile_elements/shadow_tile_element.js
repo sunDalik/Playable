@@ -11,6 +11,10 @@ export class ShadowTileElement extends TileElement {
         this.shadowInside = false;
         this.shadowHeight = 8;
         this.shadowWidthMul = 0.5;
+
+        // if set to true, the shadow will stay on the same Y if there is any X movement involved
+        this.shadowStepping = false;
+
         this.regenerateShadow();
         this.place();
     }
@@ -59,13 +63,10 @@ export class ShadowTileElement extends TileElement {
     }
 
     placeShadow() {
-        //todo:they do be still looking kinda weird on y steps
-        // AAAAAAAAAAA they are looking super weird on complex slides/ steps!!!! like if we step 1,1
-        //shadow should somehow recognize when we are "jumping" and are high vs when we are sliding
         if (this.noShadow || this.shadow === null) return;
         this.shadow.zIndex = this.zIndex - 1;
         this.shadow.position.x = this.position.x;
-        if (Math.abs(this.position.x - this.getTilePositionX()) < 2) {
+        if (this.shadowStepping === false || Math.abs(this.position.x - this.getTilePositionX()) < 2) {
             this.shadow.position.y = (this.tilePosition.y + 1) * Game.TILESIZE - floorLevel - (this.getTilePositionY() - this.position.y);
         } else {
             this.shadow.position.y = (this.tilePosition.y + 1) * Game.TILESIZE - floorLevel;

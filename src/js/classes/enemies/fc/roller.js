@@ -58,6 +58,7 @@ export class Roller extends Enemy {
         let counter = 0;
 
         const animation = delta => {
+            this.shadowStepping = true;
             if (Game.paused) return;
             counter += delta;
             if (counter < slideAnimationTime) {

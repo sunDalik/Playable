@@ -743,8 +743,6 @@ export class LunaticLeader extends Boss {
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
-        //shadow is turned off during slides because shadow implementation is buggy!!!
-        this.removeShadow();
         if (this.currentPhase === 4) {
             super.slide(tileStepX, tileStepY, () => {
                 if (onFrame) onFrame();
@@ -752,14 +750,10 @@ export class LunaticLeader extends Boss {
                 this.spiritFire.zIndex = this.zIndex + 1;
             }, () => {
                 if (onEnd) onEnd();
-                this.setShadow();
                 this.animateSpirit();
             }, animationTime);
         } else {
-            super.slide(tileStepX, tileStepY, onFrame, () => {
-                if (onEnd) onEnd();
-                this.setShadow();
-            }, animationTime);
+            super.slide(tileStepX, tileStepY, onFrame, onEnd, animationTime);
         }
     }
 }

@@ -183,7 +183,7 @@ function setTriggerTiles() {
         Game.player2.respawnPoint = {x: 38, y: 8};
         clearTexts();
         displayText(43, 11, "Poison hazards damage you!\nUse spear to kill mushroom without having to get close", true);
-        displayText(43, 14, "Poison evaporates after several turns once you kill the mushroom", true);
+        displayText(43, 14, "Poison will evaporate after several turns once you kill the mushroom", true);
     };
 
     const spikyWallTrapTriggerTile = new TriggerTile();

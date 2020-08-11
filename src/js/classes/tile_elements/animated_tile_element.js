@@ -30,6 +30,9 @@ export class AnimatedTileElement extends ShadowTileElement {
     }
 
     step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {
+        if (Math.abs(tileStepX) > 0 && Math.abs(tileStepY) > 0) this.shadowStepping = false;
+        else this.shadowStepping = true;
+
         this.onAnimationEnd = onEnd;
         this.removeFromMap();
         this.tilePosition.x += tileStepX;
@@ -70,6 +73,7 @@ export class AnimatedTileElement extends ShadowTileElement {
     }
 
     bumpX(tileStepX, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
+        this.shadowStepping = true;
         this.onAnimationEnd = onEnd;
         let jumpHeight = Game.TILESIZE * 25 / 75;
         if (this.stepXjumpHeight) jumpHeight = this.stepXjumpHeight / 2;
@@ -103,6 +107,7 @@ export class AnimatedTileElement extends ShadowTileElement {
     }
 
     bumpY(tileStepY, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
+        this.shadowStepping = true;
         this.onAnimationEnd = onEnd;
         const oldPosition = this.position.y;
         let newPosition = null;
@@ -149,6 +154,7 @@ export class AnimatedTileElement extends ShadowTileElement {
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        this.shadowStepping = false;
         this.onAnimationEnd = onEnd;
         this.animationCounter = 0;
         const stepX = Game.TILESIZE * tileStepX / animationTime;
@@ -180,6 +186,7 @@ export class AnimatedTileElement extends ShadowTileElement {
     }
 
     slideBump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
+        this.shadowStepping = false;
         this.onAnimationEnd = onEnd;
         this.animationCounter = 0;
         const time = animationTime - 2 + Math.abs(tileStepX) * 2 + Math.abs(tileStepY) * 2;
@@ -256,6 +263,7 @@ export class AnimatedTileElement extends ShadowTileElement {
     }
 
     microJump() {
+        this.shadowStepping = true;
         const stepY = Game.TILESIZE * 0.4 / (this.MICRO_JUMP_ANIMATION_TIME / 2);
         let counter = 0;
 
@@ -277,6 +285,7 @@ export class AnimatedTileElement extends ShadowTileElement {
         Game.app.ticker.add(animation);
     }
 
+    //deprecated
     microSlide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.MICRO_SLIDE_ANIMATION_TIME, maxDelta = 99) {
         this.animationCounter = 0;
         let stepX;
