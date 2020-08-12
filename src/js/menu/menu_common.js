@@ -13,7 +13,7 @@ export const menuButtonOffset = 25;
 const buttonFontSize = 26;
 const playerSelectorOffsetX = 20;
 const buttonLineWidth = 4;
-const buttonAnimationTime = 20;
+const buttonAnimationTime = 15;
 
 export function createSimpleButtonSet(buttonTexts, container, startOffsetY, chooseFirst = true, fontSize = buttonFontSize, buttonWidth = menuButtonWidth, buttonHeight = menuButtonHeight) {
     if (!container.buttons) container.buttons = [];
@@ -27,10 +27,9 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
     }
 
     const redrawSelection = () => {
-        let buttonFound = false;
+        playerSelectors[0].visible = playerSelectors[1].visible = false;
         for (const button of buttons) {
             if (button.chosen) {
-                buttonFound = true;
                 playerSelectors[0].visible = playerSelectors[1].visible = true;
                 playerSelectors[0].position.y = playerSelectors[1].position.y = button.position.y;
                 playerSelectors[0].position.x = button.position.x - button.width / 2 - playerSelectorOffsetX - playerSelectors[0].width / 2;
@@ -38,7 +37,6 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
                 break;
             }
         }
-        if (!buttonFound) playerSelectors[0].visible = playerSelectors[1].visible = false;
     };
 
     for (let i = 0; i < buttonTexts.length; i++) {
@@ -51,17 +49,14 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
             button.anchor.set(0.5, 0.5);
 
             button.redraw = selected => {
+                button.style.stroke = 0x000000;
+                button.style.strokeThickness = 2.5;
                 if (selected) {
                     button.style.fontSize = 40;
                     button.style.fill = 0xffffff;
-                    button.style.stroke = 0x000000;
-                    button.style.strokeThickness = 2.5;
                 } else {
                     button.style.fontSize = 35;
-                    //button.style.fill = 0x000000;
-                    //button.style.fill = 0x343442;
                     button.style.fill = 0xababb3;
-                    button.style.strokeThickness = 2.5;
                 }
                 button.position.x = Game.app.renderer.screen.width / 2;
                 button.position.y = startOffsetY + buttonOffsetY * i;
@@ -96,12 +91,10 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
             button.scale.x = button.scale.y = 0;
             const startScale = playerSelectors[0].scale.x;
             if (i === 0) {
-                playerSelectors[0].scale.x = playerSelectors[0].scale.y = playerSelectors[1].scale.x = playerSelectors[1].scale.y = 0;
-                playerSelectors[0].position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
-                playerSelectors[1].position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
-                playerSelectors[0].position.y = playerSelectors[1].position.y = startOffsetY + (buttonHeight + menuButtonOffset) * i;
-                container.addChild(playerSelectors[0]);
-                container.addChild(playerSelectors[1]);
+                for (const playerSelector of playerSelectors) {
+                    playerSelector.scale.x = playerSelector.scale.y = 0;
+                    container.addChild(playerSelector);
+                }
                 if (chooseFirst) button.chooseButton();
             }
 
@@ -117,12 +110,13 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
                     button.scale.x = button.scale.y = 1;
                     if (i === 0) {
                         playerSelectors[0].scale.x = playerSelectors[0].scale.y = playerSelectors[1].scale.x = playerSelectors[1].scale.y = startScale;
+                        redrawSelection();
                     }
                     Game.app.ticker.remove(animation);
                 }
             };
             Game.app.ticker.add(animation);
-        }, i * 5);
+        }, i * 4);
     }
     for (let i = 0; i < buttons.length; i++) {
         if (i + 1 >= buttons.length) buttons[i].downButton = buttons[0];
