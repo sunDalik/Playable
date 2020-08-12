@@ -2,8 +2,7 @@ import * as PIXI from "pixi.js";
 import {HUD} from "./hud_object";
 import {Game} from "../game";
 import {createSimpleButtonSet, menuButtonOffsetY} from "../menu/menu_common";
-import {keyboardS} from "../keyboard/keyboard_handler";
-import {GAME_STATE, STORAGE} from "../enums/enums";
+import {GAME_STATE} from "../enums/enums";
 import {retry} from "../setup";
 import {bringMenuBackToLife} from "../menu/main_menu";
 import {updateAchievementsScreen} from "../menu/achievements_screen";
@@ -18,7 +17,6 @@ SUPER_HUD.killedBys = [];
 
 export function setupSuperHud() {
     setupPauseScreen();
-    keyboardS(STORAGE.KEY_PAUSE).press = escapeHandler;
 }
 
 function setupPauseScreen() {
@@ -42,7 +40,6 @@ function setupPauseScreen() {
     SUPER_HUD.pauseScreen.buttons[1].clickButton = () => {
         SUPER_HUD.pauseScreen.visible = false;
         Game.paused = false;
-        redrawPauseBG();
         retry();
     };
     SUPER_HUD.pauseScreen.buttons[2].clickButton = () => {
@@ -108,31 +105,4 @@ export function redrawPauseBG() {
         Game.app.ticker.add(animation);
          */
     }
-}
-
-function escapeHandler() {
-    if (Game.state !== GAME_STATE.PLAYING) return;
-    if (SUPER_HUD.pauseScreen.visible) {
-        Game.paused = false;
-        SUPER_HUD.pauseScreen.visible = false;
-    } else {
-        if (Game.subSettingsInterface.visible) {
-            SUPER_HUD.pauseScreen.visible = true;
-            Game.subSettingsInterface.visible = false;
-        } else if (Game.otherSettingsInterface.visible) {
-            Game.otherSettingsInterface.visible = false;
-            Game.subSettingsInterface.visible = true;
-        } else if (Game.controlsInterface.visible) {
-            Game.controlsInterface.visible = false;
-            Game.subSettingsInterface.visible = true;
-        } else if (Game.achievementsInterface.visible) {
-            Game.achievementsInterface.visible = false;
-            SUPER_HUD.pauseScreen.visible = true;
-        } else {
-            Game.paused = true;
-            SUPER_HUD.pauseScreen.buttons[0].chooseButton();
-            SUPER_HUD.pauseScreen.visible = true;
-        }
-    }
-    redrawPauseBG();
 }

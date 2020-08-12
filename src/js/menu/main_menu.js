@@ -9,7 +9,7 @@ import {keyboard, keyboardS} from "../keyboard/keyboard_handler";
 import {GAME_STATE, PLAY_MODE, STORAGE} from "../enums/enums";
 import {setupSubSettings} from "./subsettings";
 import {createSimpleButtonSet} from "./menu_common";
-import {SUPER_HUD} from "../drawing/super_hud";
+import {redrawPauseBG, SUPER_HUD} from "../drawing/super_hud";
 import {setupAchievementsScreen, updateAchievementsScreen} from "./achievements_screen";
 import {CommonSpriteSheet} from "../loader";
 
@@ -338,4 +338,40 @@ function initMenuKeyBinding() {
 
     keyboard("Space").press = keyboardClickButton;
     keyboard("Enter").press = keyboardClickButton;
+    keyboardS(STORAGE.KEY_PAUSE).press = escapeHandler;
+}
+
+
+function escapeHandler() {
+    if (Game.state === GAME_STATE.PLAYING) {
+        if (SUPER_HUD.pauseScreen.visible) {
+            Game.paused = false;
+            SUPER_HUD.pauseScreen.visible = false;
+        } else {
+            if (Game.subSettingsInterface.visible) {
+                Game.subSettingsInterface.buttons[0].clickButton();
+            } else if (Game.otherSettingsInterface.visible) {
+                Game.otherSettingsInterface.buttons[0].clickButton();
+            } else if (Game.controlsInterface.visible) {
+                Game.controlsInterface.buttons[0].clickButton();
+            } else if (Game.achievementsInterface.visible) {
+                Game.achievementsInterface.buttons[0].clickButton();
+            } else {
+                Game.paused = true;
+                SUPER_HUD.pauseScreen.buttons[0].chooseButton();
+                SUPER_HUD.pauseScreen.visible = true;
+            }
+        }
+        redrawPauseBG();
+    } else if (Game.state === GAME_STATE.MENU) {
+        if (Game.subSettingsInterface.visible) {
+            Game.subSettingsInterface.buttons[0].clickButton();
+        } else if (Game.otherSettingsInterface.visible) {
+            Game.otherSettingsInterface.buttons[0].clickButton();
+        } else if (Game.controlsInterface.visible) {
+            Game.controlsInterface.buttons[0].clickButton();
+        } else if (Game.achievementsInterface.visible) {
+            Game.achievementsInterface.buttons[0].clickButton();
+        }
+    }
 }
