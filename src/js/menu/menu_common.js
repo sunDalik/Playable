@@ -31,7 +31,7 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
         for (const button of buttons) {
             if (button.chosen) {
                 playerSelectors[0].visible = playerSelectors[1].visible = true;
-                playerSelectors[0].position.y = playerSelectors[1].position.y = button.position.y;
+                playerSelectors[0].position.y = playerSelectors[1].position.y = button.position.y + 1; //+1 because of the stroke?? i'm not sure
                 playerSelectors[0].position.x = button.position.x - button.width / 2 - playerSelectorOffsetX - playerSelectors[0].width / 2;
                 playerSelectors[1].position.x = button.position.x + button.width / 2 + playerSelectorOffsetX + playerSelectors[1].width / 2;
                 break;
@@ -129,35 +129,44 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
 }
 
 //double cooooooooooooooode
+//differences: fontSize, selectorOffsetX, selectorSize, no animation, fixed position
 export function createBackButton(container) {
-    const buttonHeight = 55;
-    const buttonWidth = 120;
-    const arrowOffset = buttonWidth / 4;
-    const button = new PIXI.Container();
+    const backButtonPlayerSelectorOffsetX = 10;
+    const playerSelector = new PIXI.Sprite(CommonSpriteSheet["player.png"]);
+    playerSelector.anchor.set(0.5, 0.5);
+    playerSelector.angle = -90;
+    playerSelector.scale.x = playerSelector.scale.y = 0.16;
+    container.addChild(playerSelector);
 
+    const redrawSelection = () => {
+        playerSelector.visible = false;
+        if (button.chosen) {
+            playerSelector.visible = true;
+            playerSelector.position.y = button.position.y + 1;
+            playerSelector.position.x = button.position.x - button.width / 2 - backButtonPlayerSelectorOffsetX - playerSelector.width / 2;
+        }
+    };
+
+    const button = new PIXI.Text("Back", HUDTextStyle);
     button.interactive = true;
     button.buttonMode = true;
+    button.anchor.set(0.5, 0.5);
 
-    button.redrawRect = (color1, color2) => {
-        if (button.rect) button.removeChild(button.rect);
-        const rect = new PIXI.Graphics();
-        rect.lineStyle(buttonLineWidth, color2);
-        rect.beginFill(color1);
-        rect.drawPolygon([0, buttonHeight / 2, arrowOffset, buttonHeight, buttonWidth, buttonHeight, buttonWidth, 0, arrowOffset, 0]);
-        button.addChild(rect);
-        return rect;
+    button.redraw = selected => {
+        button.style.stroke = 0x000000;
+        button.style.strokeThickness = 2.5;
+        if (selected) {
+            button.style.fontSize = 35;
+            button.style.fill = 0xffffff;
+        } else {
+            button.style.fontSize = 30;
+            button.style.fill = 0xababb3;
+        }
+        button.position.x = 90;
+        button.position.y = 50;
     };
 
-    button.redrawText = color => {
-        if (button.text) button.removeChild(button.text);
-        const text = new PIXI.Text("BACK", {fontSize: 22, fill: color, fontWeight: "bold"});
-        text.position.set((button.rect.width - arrowOffset) / 2 + arrowOffset - text.width / 2 - buttonLineWidth / 2, button.rect.height / 2 - text.height / 2 - buttonLineWidth / 2);
-        button.addChild(text);
-        return text;
-    };
-
-    button.rect = button.redrawRect(topColor, bottomColor);
-    button.text = button.redrawText(bottomColor);
+    button.redraw(false);
 
     container.addChild(button);
 
@@ -168,23 +177,20 @@ export function createBackButton(container) {
     };
 
     button.unchooseButton = () => {
-        button.rect = button.redrawRect(topColor, bottomColor);
-        button.text = button.redrawText(bottomColor);
+        button.redraw(false);
         button.chosen = false;
+        redrawSelection();
     };
 
     button.chooseButton = () => {
         if (!container.choosable) return;
         unchooseAll();
-        button.rect = button.redrawRect(bottomColor, topColor);
-        button.text = button.redrawText(topColor);
+        button.redraw(true);
         button.chosen = true;
+        redrawSelection();
     };
 
     button.on("mouseover", button.chooseButton);
-
-    button.position.x = 50;
-    button.position.y = 40;
     return button;
 }
 
