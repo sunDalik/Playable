@@ -5,7 +5,6 @@ import {STORAGE} from "../enums/enums";
 import {redrawFps, redrawSpeedRunTime} from "../drawing/draw_hud";
 import {HUD} from "../drawing/hud_object";
 
-//todo ADD DISABLE MOUSE OPTION BUT HOW?????
 export function setupOtherSettings() {
     Game.otherSettingsInterface = new PIXI.Container();
     Game.otherSettingsInterface.sortableChildren = true;
@@ -14,14 +13,14 @@ export function setupOtherSettings() {
     Game.otherSettingsInterface.choosable = true;
     Game.app.stage.addChild(Game.otherSettingsInterface);
     Game.otherSettingsInterface.buttons = createCheckboxSet([{
-        text: "Show time",
+        text: "Show Time",
         checked: JSON.parse(window.localStorage[STORAGE.SHOW_TIME])
-    },/* {
-        text: "Disable Mouse",
-        checked: JSON.parse(window.localStorage[STORAGE.DISABLE_MOUSE])
-    },*/ {
+    }, {
         text: "Show FPS",
         checked: JSON.parse(window.localStorage[STORAGE.SHOW_FPS])
+    }, {
+        text: "Disable Mouse",
+        checked: JSON.parse(window.localStorage[STORAGE.DISABLE_MOUSE])
     }], Game.otherSettingsInterface, 200).slice();
     const backButton = createBackButton(Game.otherSettingsInterface);
     Game.otherSettingsInterface.buttons.unshift(backButton);
@@ -43,17 +42,18 @@ function setButtonClickHandlers() {
         Game.showTime = JSON.parse(window.localStorage[STORAGE.SHOW_TIME]);
         if (HUD.speedrunTime) redrawSpeedRunTime();
     };
-    /*Game.otherSettingsInterface.buttons[2].clickButton = () => {
-        Game.otherSettingsInterface.buttons[2].check();
-        window.localStorage[STORAGE.DISABLE_MOUSE] = Game.otherSettingsInterface.buttons[2].checked;
-        Game.disableMouse = JSON.parse(window.localStorage[STORAGE.DISABLE_MOUSE]);
-    };*/
     Game.otherSettingsInterface.buttons[2].clickButton = () => {
         Game.otherSettingsInterface.buttons[2].check();
         window.localStorage[STORAGE.SHOW_FPS] = Game.otherSettingsInterface.buttons[2].checked;
         Game.showFPS = JSON.parse(window.localStorage[STORAGE.SHOW_FPS]);
         if (HUD.fps) redrawFps();
     };
+    Game.otherSettingsInterface.buttons[3].clickButton = () => {
+        Game.otherSettingsInterface.buttons[3].check();
+        window.localStorage[STORAGE.DISABLE_MOUSE] = Game.otherSettingsInterface.buttons[3].checked;
+        Game.disableMouse = JSON.parse(window.localStorage[STORAGE.DISABLE_MOUSE]);
+    };
+
 
     for (let i = 1; i < Game.otherSettingsInterface.buttons.length; i++) {
         //todo add check if mouse is disabled

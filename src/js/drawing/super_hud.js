@@ -93,6 +93,9 @@ export function redrawPauseBG() {
         const endAlpha = 0.8;
         const animationTime = 4;
         let counter = 0;
+
+        bg.alpha = endAlpha;
+        /*
         bg.alpha = 0;
         const animation = delta => {
             counter += delta;
@@ -103,6 +106,7 @@ export function redrawPauseBG() {
             }
         };
         Game.app.ticker.add(animation);
+         */
     }
 }
 

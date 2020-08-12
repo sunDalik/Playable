@@ -16,7 +16,7 @@ export function setupSubSettings() {
     Game.subSettingsInterface.zIndex = 4;
     Game.subSettingsInterface.choosable = true;
     Game.app.stage.addChild(Game.subSettingsInterface);
-    Game.subSettingsInterface.buttons = createSimpleButtonSet(["CONTROLS", "OTHER"], Game.subSettingsInterface, 200).slice();
+    Game.subSettingsInterface.buttons = createSimpleButtonSet(["CONTROLS", "HUD"], Game.subSettingsInterface, 200).slice();
     setButtonClickHandlers();
     const backButton = createBackButton(Game.subSettingsInterface);
     Game.subSettingsInterface.buttons.unshift(backButton);
