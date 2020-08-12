@@ -4,9 +4,11 @@ import {setTickTimeout} from "../utils/game_utils";
 import {easeOutQuad} from "../utils/math_utils";
 import {bottomColor, topColor} from "./main_menu";
 import {CommonSpriteSheet} from "../loader";
+import {HUDTextStyle} from "../drawing/draw_constants";
 
 const menuButtonWidth = 250;
-export const menuButtonHeight = 70;
+export const menuButtonHeight = 40;
+const buttonOffsetY = 65;
 export const menuButtonOffset = 25;
 const buttonFontSize = 26;
 const playerSelectorOffsetX = 20;
@@ -18,12 +20,11 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
     const buttons = [];
     const playerSelectors = [new PIXI.Sprite(CommonSpriteSheet["player.png"]),
         new PIXI.Sprite(CommonSpriteSheet["player2.png"])];
-    playerSelectors[0].angle = 90;
-    playerSelectors[1].angle = 90;
-    playerSelectors[0].anchor.set(0.5, 0.5);
-    playerSelectors[1].anchor.set(0.5, 0.5);
-    playerSelectors[0].scale.set(1, 1);
-    playerSelectors[0].width = playerSelectors[0].height = playerSelectors[1].width = playerSelectors[1].height = buttonHeight;
+    for (const playerSelector of playerSelectors) {
+        playerSelector.anchor.set(0.5, 0.5);
+        playerSelector.angle = -90;
+        playerSelector.scale.x = playerSelector.scale.y = 0.18;
+    }
 
     const redrawSelection = () => {
         let buttonFound = false;
@@ -31,9 +32,9 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
             if (button.chosen) {
                 buttonFound = true;
                 playerSelectors[0].visible = playerSelectors[1].visible = true;
-                playerSelectors[0].position.y = playerSelectors[1].position.y = button.position.y + (buttonHeight + buttonLineWidth / 2) / 2;
-                playerSelectors[0].position.x = button.position.x - playerSelectorOffsetX - playerSelectors[0].width / 2;
-                playerSelectors[1].position.x = button.position.x + buttonWidth + playerSelectorOffsetX + playerSelectors[1].width / 2;
+                playerSelectors[0].position.y = playerSelectors[1].position.y = button.position.y;
+                playerSelectors[0].position.x = button.position.x - button.width / 2 - playerSelectorOffsetX - playerSelectors[0].width / 2;
+                playerSelectors[1].position.x = button.position.x + button.width / 2 + playerSelectorOffsetX + playerSelectors[1].width / 2;
                 break;
             }
         }
@@ -41,33 +42,32 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
     };
 
     for (let i = 0; i < buttonTexts.length; i++) {
-        const button = new PIXI.Container();
+        const button = new PIXI.Text(buttonTexts[i], HUDTextStyle);
         buttons.push(button);
 
         setTickTimeout(() => {
             button.interactive = true;
             button.buttonMode = true;
+            button.anchor.set(0.5, 0.5);
 
-            button.redrawRect = (color1, color2) => {
-                if (button.rect) button.removeChild(button.rect);
-                const rect = new PIXI.Graphics();
-                rect.lineStyle(buttonLineWidth, color2);
-                rect.beginFill(color1);
-                rect.drawRoundedRect(0, 0, buttonWidth, buttonHeight, 5);
-                button.addChild(rect);
-                return rect;
+            button.redraw = selected => {
+                if (selected) {
+                    button.style.fontSize = 40;
+                    button.style.fill = 0xffffff;
+                    button.style.stroke = 0x000000;
+                    button.style.strokeThickness = 2.5;
+                } else {
+                    button.style.fontSize = 35;
+                    //button.style.fill = 0x000000;
+                    //button.style.fill = 0x343442;
+                    button.style.fill = 0xababb3;
+                    button.style.strokeThickness = 2.5;
+                }
+                button.position.x = Game.app.renderer.screen.width / 2;
+                button.position.y = startOffsetY + buttonOffsetY * i;
             };
 
-            button.redrawText = color => {
-                if (button.text) button.removeChild(button.text);
-                const text = new PIXI.Text(buttonTexts[i], {fontSize: fontSize, fill: color, fontWeight: "bold"});
-                text.position.set(button.rect.width / 2 - text.width / 2 - buttonLineWidth / 2, button.rect.height / 2 - text.height / 2 - buttonLineWidth / 2);
-                button.addChild(text);
-                return text;
-            };
-
-            button.rect = button.redrawRect(topColor, bottomColor);
-            button.text = button.redrawText(bottomColor);
+            button.redraw(false);
 
             container.addChild(button);
 
@@ -78,8 +78,7 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
             };
 
             button.unchooseButton = () => {
-                button.rect = button.redrawRect(topColor, bottomColor);
-                button.text = button.redrawText(bottomColor);
+                button.redraw(false);
                 button.chosen = false;
                 redrawSelection();
             };
@@ -87,8 +86,7 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
             button.chooseButton = () => {
                 if (!container.choosable) return;
                 unchooseAll();
-                button.rect = button.redrawRect(bottomColor, topColor);
-                button.text = button.redrawText(topColor);
+                button.redraw(true);
                 button.chosen = true;
                 redrawSelection();
             };
@@ -96,9 +94,6 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
             button.on("mouseover", button.chooseButton);
 
             button.scale.x = button.scale.y = 0;
-            button.position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
-            button.position.y = startOffsetY + (buttonHeight + menuButtonOffset) * i;
-
             const startScale = playerSelectors[0].scale.x;
             if (i === 0) {
                 playerSelectors[0].scale.x = playerSelectors[0].scale.y = playerSelectors[1].scale.x = playerSelectors[1].scale.y = 0;
@@ -114,8 +109,6 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
             const animation = delta => {
                 counter += delta;
                 button.scale.x = button.scale.y = easeOutQuad(counter / buttonAnimationTime);
-                button.position.x = Game.app.renderer.screen.width / 2 - button.width / 2;
-                button.position.y = startOffsetY + (buttonHeight + menuButtonOffset) * i;
                 if (i === 0) {
                     playerSelectors[0].scale.x = playerSelectors[0].scale.y = playerSelectors[1].scale.x = playerSelectors[1].scale.y = startScale * easeOutQuad(counter / buttonAnimationTime);
                     redrawSelection();

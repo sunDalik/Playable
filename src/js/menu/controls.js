@@ -84,7 +84,7 @@ function createControlsButtonSet() {
     Game.controlsInterface.addChild(bg);
     for (let i = 0; i < buttonTexts.length; i++) {
         const buttonSet = buttonTexts[i];
-        const textStyle = {fill: 0xffffff, fontWeight: "bold", fontSize: 22, stroke: 0x000000, strokeThickness: 4};
+        const textStyle = {fill: 0xffffff, fontWeight: "bold", fontSize: 22, stroke: 0x000000, strokeThickness: 4, miterLimit: 7};
         const keyBindP1 = new PIXI.Text(getKeyBindSymbol(window.localStorage[buttonSet[0]]), textStyle);
         const keyBindName = new PIXI.Text(buttonSet[1], textStyle);
         const keyBindP2 = new PIXI.Text(getKeyBindSymbol(window.localStorage[buttonSet[2]]), textStyle);

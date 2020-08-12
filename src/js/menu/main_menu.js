@@ -24,7 +24,7 @@ export let topColor = 0x000000;
 export let bottomColor = 0xffffff;
 let player1, player2;
 
-export const menuBgColor = randomChoice([BG_COLORS.FLOODED_CAVE, BG_COLORS.DARK_TUNNEL]);
+export const menuBgColor = 0x7eb5a6;
 export const settingsMenuColor = 0x2c293d;
 export const achievementsMenuColor = 0xcfc1a5;
 export let currentMenuBgColor = menuBgColor;
@@ -59,7 +59,7 @@ export function setupMenu() {
     setTickTimeout(() => {
         movePlayersUp([player1, player2]);
         setTickTimeout(() => {
-            Game.mainMenu.buttons = createSimpleButtonSet(["PLAY", "TUTORIAL", "SETTINGS", "ACHIEVEMENTS"], Game.mainMenu, playerOffset + playerSize + playerOffset);
+            Game.mainMenu.buttons = createSimpleButtonSet(["PLAY", "TUTORIAL", "SETTINGS", "ACHIEVEMENTS"], Game.mainMenu, playerOffset + playerSize + playerOffset + 20);
             setButtonClickHandlers();
             initMenuKeyBinding();
         }, ppUpAnimationTime * 2 / 3);
