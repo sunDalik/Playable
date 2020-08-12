@@ -15,7 +15,7 @@ const playerSelectorOffsetX = 20;
 const buttonLineWidth = 4;
 const buttonAnimationTime = 15;
 
-export function createSimpleButtonSet(buttonTexts, container, startOffsetY, chooseFirst = true, fontSize = buttonFontSize, buttonWidth = menuButtonWidth, buttonHeight = menuButtonHeight) {
+export function createSimpleButtonSet(buttonTexts, container, startOffsetY, chooseFirst = true) {
     if (!container.buttons) container.buttons = [];
     const buttons = [];
     const playerSelectors = [new PIXI.Sprite(CommonSpriteSheet["player.png"]),

@@ -5,6 +5,7 @@ import {GAME_STATE, STORAGE} from "../enums/enums";
 import {initLocalStorageKeys} from "../setup";
 import {createBackButton, createSimpleButtonSet} from "./menu_common";
 import {CommonSpriteSheet} from "../loader";
+import {HUDTextStyle} from "../drawing/draw_constants";
 
 export function setupControlSettings() {
     Game.controlsInterface = new PIXI.Container();
@@ -15,7 +16,7 @@ export function setupControlSettings() {
     Game.app.stage.addChild(Game.controlsInterface);
     Game.controlsInterface.buttons = createControlsButtonSet();
     setButtonClickHandlers();
-    const resetButton = createSimpleButtonSet(["Reset to default"], Game.controlsInterface, 670, false, 22, 225, 65)[0];
+    const resetButton = createSimpleButtonSet(["Reset to default"], Game.controlsInterface, 670, false)[0];
     resetButton.clickButton = () => {
         if (!Game.controlsInterface.choosable) return;
         initLocalStorageKeys(true);
@@ -84,7 +85,7 @@ function createControlsButtonSet() {
     Game.controlsInterface.addChild(bg);
     for (let i = 0; i < buttonTexts.length; i++) {
         const buttonSet = buttonTexts[i];
-        const textStyle = {fill: 0xffffff, fontWeight: "bold", fontSize: 22, stroke: 0x000000, strokeThickness: 4, miterLimit: 7};
+        const textStyle = Object.assign({}, HUDTextStyle, {fontSize: 22, strokeThickness: 3});
         const keyBindP1 = new PIXI.Text(getKeyBindSymbol(window.localStorage[buttonSet[0]]), textStyle);
         const keyBindName = new PIXI.Text(buttonSet[1], textStyle);
         const keyBindP2 = new PIXI.Text(getKeyBindSymbol(window.localStorage[buttonSet[2]]), textStyle);

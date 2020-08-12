@@ -31,7 +31,7 @@ export const HUDTextStyle = {
     stroke: 0x000000,
     strokeThickness: 2,
     align: "center",
-    miterLimit: 7
+    miterLimit: 5
 };
 
 export const HUDTextStyleTitle = Object.assign({}, HUDTextStyle, {fontSize: HUDTitleFontSize});
