@@ -329,6 +329,23 @@ export function initLocalStorageAchievements(reset = false) {
 
 function setupSettingsFromLocalStorage() {
     Game.showTime = JSON.parse(window.localStorage[STORAGE.SHOW_TIME]);
-    Game.disableMouse = JSON.parse(window.localStorage[STORAGE.DISABLE_MOUSE]);
     Game.showFPS = JSON.parse(window.localStorage[STORAGE.SHOW_FPS]);
+    Game.disableMouse = JSON.parse(window.localStorage[STORAGE.DISABLE_MOUSE]);
+    setMousePrivileges();
+}
+
+export function setMousePrivileges() {
+    if (Game.disableMouse) {
+        document.body.style.cursor = 'none';
+        for (const button of Game.buttons) {
+            button.buttonMode = false;
+            button.interactive = false;
+        }
+    } else {
+        document.body.style.cursor = 'auto';
+        for (const button of Game.buttons) {
+            button.buttonMode = true;
+            button.interactive = true;
+        }
+    }
 }

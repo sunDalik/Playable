@@ -80,5 +80,6 @@ export const Game = {
     showFPS: false,
     keysAmount: 0,
     enemiesKilled: 0,
-    gameOver: false
+    gameOver: false,
+    buttons: []
 };

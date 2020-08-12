@@ -4,6 +4,7 @@ import {setTickTimeout} from "../utils/game_utils";
 import {easeOutQuad} from "../utils/math_utils";
 import {CommonSpriteSheet} from "../loader";
 import {HUDTextStyle} from "../drawing/draw_constants";
+import {setMousePrivileges} from "../setup";
 
 export const menuButtonOffsetY = 65;
 const playerSelectorOffsetX = 20;
@@ -110,6 +111,8 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
                 }
             };
             Game.app.ticker.add(animation);
+            Game.buttons.push(button);
+            setMousePrivileges();
         }, i * 4);
     }
     for (let i = 0; i < buttons.length; i++) {
@@ -185,6 +188,8 @@ export function createBackButton(container) {
     };
 
     button.on("mouseover", button.chooseButton);
+    Game.buttons.push(button);
+    setMousePrivileges();
     return button;
 }
 
@@ -277,8 +282,10 @@ export function createCheckboxSet(givenButtons, container, startOffsetY, chooseF
         };
 
         button.on("mouseover", button.chooseButton);
+        Game.buttons.push(button);
         if (chooseFirst) button.chooseButton();
     }
+    setMousePrivileges();
     container.addChild(playerSelectors[0]);
     container.addChild(playerSelectors[1]);
     for (let i = 0; i < buttons.length; i++) {

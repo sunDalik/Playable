@@ -4,6 +4,7 @@ import {createBackButton, createCheckboxSet} from "./menu_common";
 import {STORAGE} from "../enums/enums";
 import {redrawFps, redrawSpeedRunTime} from "../drawing/draw_hud";
 import {HUD} from "../drawing/hud_object";
+import {setMousePrivileges} from "../setup";
 
 export function setupOtherSettings() {
     Game.otherSettingsInterface = new PIXI.Container();
@@ -52,11 +53,11 @@ function setButtonClickHandlers() {
         Game.otherSettingsInterface.buttons[3].check();
         window.localStorage[STORAGE.DISABLE_MOUSE] = Game.otherSettingsInterface.buttons[3].checked;
         Game.disableMouse = JSON.parse(window.localStorage[STORAGE.DISABLE_MOUSE]);
+        setMousePrivileges();
     };
 
 
     for (let i = 1; i < Game.otherSettingsInterface.buttons.length; i++) {
-        //todo add check if mouse is disabled
         Game.otherSettingsInterface.buttons[i].on("click", Game.otherSettingsInterface.buttons[i].clickButton);
     }
 }

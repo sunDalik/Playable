@@ -2,7 +2,7 @@ import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {drawHUD, getKeyBindSymbol} from "../drawing/draw_hud";
 import {GAME_STATE, STORAGE} from "../enums/enums";
-import {initLocalStorageKeys} from "../setup";
+import {initLocalStorageKeys, setMousePrivileges} from "../setup";
 import {createBackButton, createSimpleButtonSet} from "./menu_common";
 import {CommonSpriteSheet} from "../loader";
 import {HUDTextStyle} from "../drawing/draw_constants";
@@ -176,11 +176,13 @@ function createControlsButtonSet() {
             bt.buttonMode = true;
             bt.interactive = true;
             buttons.push(bt);
+            Game.buttons.push(bt);
             Game.controlsInterface.addChild(bt);
         }
 
         if (i === 0) buttonL.chooseButton();
     }
+    setMousePrivileges();
     for (let i = 0; i < buttons.length; i++) {
         if (i % 2 === 0) buttons[i].rightButton = buttons[i + 1];
         else buttons[i].leftButton = buttons[i - 1];
