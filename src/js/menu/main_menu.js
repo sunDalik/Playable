@@ -2,7 +2,6 @@ import {Game} from "../game";
 import * as PIXI from "pixi.js";
 import {easeInQuad, easeOutQuad} from "../utils/math_utils";
 import {randomChoice} from "../utils/random_utils";
-import {BG_COLORS} from "../game_changer";
 import {setTickTimeout} from "../utils/game_utils";
 import {createLoadingText, retry, setupGame} from "../setup";
 import {closeBlackBars} from "../drawing/hud_animations";
@@ -20,8 +19,6 @@ const ppUpAnimationTime = 25;
 
 const playerSize = 270;
 const playerOffset = 70;
-export let topColor = 0x000000;
-export let bottomColor = 0xffffff;
 let player1, player2;
 
 export const menuBgColor = 0x7eb5a6;
@@ -127,13 +124,9 @@ function createMenuTrianglesAnimation() {
     if (Math.random() < 0.5) {
         p1.zIndex = -1;
         p2.zIndex = -2;
-        topColor = 0xffffff;
-        bottomColor = 0x000000;
     } else {
         p1.zIndex = -2;
         p2.zIndex = -1;
-        topColor = 0x000000;
-        bottomColor = 0xffffff;
     }
     p1.width = p1.height = p2.width = p2.height = playerSize;
     p1.position.x = p2.position.x = Game.app.renderer.screen.width / 2;

@@ -2,17 +2,11 @@ import * as PIXI from "pixi.js";
 import {Game} from "../game";
 import {setTickTimeout} from "../utils/game_utils";
 import {easeOutQuad} from "../utils/math_utils";
-import {bottomColor, topColor} from "./main_menu";
 import {CommonSpriteSheet} from "../loader";
 import {HUDTextStyle} from "../drawing/draw_constants";
 
-const menuButtonWidth = 250;
-export const menuButtonHeight = 40;
-const buttonOffsetY = 65;
-export const menuButtonOffset = 25;
-const buttonFontSize = 26;
+export const menuButtonOffsetY = 65;
 const playerSelectorOffsetX = 20;
-const buttonLineWidth = 4;
 const buttonAnimationTime = 15;
 
 export function createSimpleButtonSet(buttonTexts, container, startOffsetY, chooseFirst = true) {
@@ -59,7 +53,7 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
                     button.style.fill = 0xababb3;
                 }
                 button.position.x = Game.app.renderer.screen.width / 2;
-                button.position.y = startOffsetY + buttonOffsetY * i;
+                button.position.y = startOffsetY + menuButtonOffsetY * i;
             };
 
             button.redraw(false);
@@ -196,7 +190,7 @@ export function createBackButton(container) {
 
 // double cooooode
 //differences: no animation and text checkboxes
-export function createCheckboxSet(givenButtons, container, startOffsetY, chooseFirst = true, fontSize = buttonFontSize, buttonWidth = menuButtonWidth + 150, buttonHeight = menuButtonHeight) {
+export function createCheckboxSet(givenButtons, container, startOffsetY, chooseFirst = true) {
     if (!container.buttons) container.buttons = [];
     const buttons = [];
     const playerSelectors = [new PIXI.Sprite(CommonSpriteSheet["player.png"]),
@@ -240,7 +234,7 @@ export function createCheckboxSet(givenButtons, container, startOffsetY, chooseF
                 button.style.fill = 0xababb3;
             }
             button.position.x = Game.app.renderer.screen.width / 2;
-            button.position.y = startOffsetY + buttonOffsetY * i;
+            button.position.y = startOffsetY + menuButtonOffsetY * i;
         };
 
         button.check = () => {

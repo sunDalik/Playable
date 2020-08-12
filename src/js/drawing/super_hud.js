@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import {HUD} from "./hud_object";
 import {Game} from "../game";
-import {createSimpleButtonSet, menuButtonHeight, menuButtonOffset} from "../menu/menu_common";
+import {createSimpleButtonSet, menuButtonOffsetY} from "../menu/menu_common";
 import {keyboardS} from "../keyboard/keyboard_handler";
 import {GAME_STATE, STORAGE} from "../enums/enums";
 import {retry} from "../setup";
@@ -29,7 +29,7 @@ function setupPauseScreen() {
     SUPER_HUD.pauseScreen.zIndex = 11;
     const buttons = ["RESUME", "RETRY", "SETTINGS", "ACHIEVEMENTS", "EXIT"];
     SUPER_HUD.pauseScreen.buttons = createSimpleButtonSet(buttons, SUPER_HUD.pauseScreen,
-        (Game.app.renderer.screen.height - (menuButtonHeight + menuButtonOffset) * buttons.length) / 2).slice();
+        (Game.app.renderer.screen.height - menuButtonOffsetY * (buttons.length - 1)) / 2 - 30).slice();
     window.addEventListener("resize", () => {
         redrawPauseBG();
     });
