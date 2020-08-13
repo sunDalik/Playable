@@ -94,7 +94,7 @@ export class Cocoon extends Enemy {
                 this.minionType = SpiderSmall;
             }
         } else {
-            if (random > 0.96) {
+            if (random > 0.90) {
                 this.minionType = RedSpider;
             } else if (random > 0.75) {
                 this.minionType = GraySpider;
