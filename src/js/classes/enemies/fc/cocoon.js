@@ -53,7 +53,7 @@ export class Cocoon extends Enemy {
         if (this.minionType === Spider) {
             return randomInt(10, 16);
         } else if (this.minionType === GraySpider) {
-            return randomInt(10, 16);
+            return randomInt(12, 16);
         } else if (this.minionType === SpiderSmall) {
             return randomInt(4, 8);
         } else if (this.minionType === GreenSpider) {
