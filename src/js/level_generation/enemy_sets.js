@@ -32,6 +32,7 @@ import {HexEye} from "../classes/enemies/ru/hex_eye";
 import {BladeDemon} from "../classes/enemies/ru/blade_demon";
 import {LavaSlime} from "../classes/enemies/ru/lava_slime";
 import {LunaticLeader} from "../classes/enemies/bosses/lunatic_leader";
+import {LostMage} from "../classes/enemies/dt/lost_mage";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
@@ -225,7 +226,26 @@ export const DTEnemySets = [
     [ExplosivePixie, Alligator, Alligator, Alligator, Alligator],
     [FireSnail, Alligator, Alligator, Alligator, Alligator],
     [FireSnail, Alligator, Alligator],
-    [ExplosivePixie, Alligator]
+    [ExplosivePixie, Alligator],
+    [LostMage],
+    [LostMage, LostMage],
+    [LostMage, LostMage, LostMage],
+    [LostMage, LostMage, LostMage, LostMage],
+    [LostMage, ExplosivePixie],
+    [LostMage, Rabbit],
+    [LostMage, Rabbit, Rabbit],
+    [LostMage, Rabbit, Rabbit, Rabbit],
+    [LostMage, Alligator],
+    [LostMage, FireSnail],
+    [LostMage, FireSnail, Rabbit],
+    [LostMage, Alligator, Rabbit],
+    [LostMage, FireFrog],
+    [LostMage, LostMage, FireFrog],
+    [LostMage, KingFireFrog],
+    [LostMage, Cocoon],
+    [LostMage, LostMage, Rabbit, Rabbit, Rabbit],
+    [LostMage, LostMage, LostMage, Rabbit, Rabbit],
+    [LostMage, LostMage, ExplosivePixie, ExplosivePixie]
 ];
 
 export const DTBossSets = [

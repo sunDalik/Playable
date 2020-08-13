@@ -9,6 +9,7 @@ import {TileElement} from "../../tile_elements/tile_element";
 import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {redrawMiniMapPixel} from "../../../drawing/minimap";
 
+// this is a long sprite and it behaves weird if you rotate it in the texture pack. Why?
 export class LaserTurret extends Enemy {
     constructor(tilePositionX, tilePositionY, directionX, texture = DTEnemiesSpriteSheet["laser_turret_unready.png"]) {
         super(texture, tilePositionX, tilePositionY);

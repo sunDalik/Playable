@@ -7,7 +7,7 @@ import {ElectricBullet} from "../bullets/electric";
 import {FireBullet} from "../bullets/fire";
 import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {closestPlayer, getAngleForDirection, otherPlayer} from "../../../utils/game_utils";
-import {isLit, isNotAWall} from "../../../map_checks";
+import {isLit, isRelativelyEmpty} from "../../../map_checks";
 
 export class LostMage extends MageEnemy {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["lost_mage.png"]) {
@@ -128,13 +128,13 @@ export class LostMage extends MageEnemy {
             }
         }
 
-        const noWallDirections = [];
+        const freeDirections = [];
         for (const dir of directions) {
-            if (isNotAWall(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
-                noWallDirections.push(dir);
+            if (isRelativelyEmpty(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
+                freeDirections.push(dir);
             }
         }
-        if (noWallDirections.length === 0) return null;
-        else return noWallDirections[0];
+        if (freeDirections.length === 0) return null;
+        else return freeDirections[0];
     }
 }
