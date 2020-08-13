@@ -583,6 +583,7 @@ export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
         const posY = tilePosY + dir.y;
         const sprite = new TileElement(PIXI.Texture.WHITE, posX, posY, true);
         sprite.tint = 0xfa794d;
+        sprite.name = "Explosion";
         if (isEnemy(posX, posY)) {
             Game.map[posY][posX].entity.damage(this, enemyDamage, 0, 0, DAMAGE_TYPE.HAZARDAL);
         }

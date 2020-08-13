@@ -1,12 +1,13 @@
 import {Game} from "../../game";
 import * as PIXI from "pixi.js";
-import {distance, otherPlayer, tileDistanceDiagonal} from "../../utils/game_utils";
+import {distance, tileDistanceDiagonal} from "../../utils/game_utils";
 import {CommonSpriteSheet} from "../../loader";
 import {getZIndexForLayer} from "../../z_indexing";
 
 export class LimitChain extends PIXI.Container {
     constructor() {
         super();
+        this.name = "The Chain";
         this.chainVisRadius = 3.5;
         //this.zIndex = otherPlayer(Game.primaryPlayer).zIndex + 1;
         this.visible = false;
