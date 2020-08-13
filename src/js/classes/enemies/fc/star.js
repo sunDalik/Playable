@@ -3,7 +3,7 @@ import {DIRECTIONS, ENEMY_TYPE} from "../../../enums/enums";
 import {getPlayerOnTile, isNotAWall} from "../../../map_checks";
 import {createCrazySpikeAnimation, createEnemyAttackTile} from "../../../animations";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
-import {getDiagonalDirections} from "../../../utils/map_utils";
+import {getCardinalDirections, getDiagonalDirections} from "../../../utils/map_utils";
 
 export class Star extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star.png"]) {
@@ -107,12 +107,8 @@ export class Star extends Enemy {
     }
 
     canAttackCardinally() {
-        for (let x = -1; x <= 1; x++) {
-            for (let y = -1; y <= 1; y++) {
-                if (Math.abs(x) !== Math.abs(y)) {
-                    if (getPlayerOnTile(this.tilePosition.x + x, this.tilePosition.y + y)) return true;
-                }
-            }
+        for (const dir of getCardinalDirections()) {
+            if (getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) return true;
         }
 
         return false;

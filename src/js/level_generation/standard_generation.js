@@ -25,7 +25,6 @@ import {Bomb} from "../classes/equipment/bag/bomb";
 import {HealingPotion} from "../classes/equipment/bag/healing_potion";
 import {getRandomShopItem} from "../utils/pool_utils";
 import {TreasureWallTile} from "../classes/draw/treasure_wall";
-import {Star} from "../classes/enemies/fc/star";
 
 let settings;
 let level;
@@ -639,7 +638,6 @@ function generateEnemies() {
                 if (pack !== undefined) break;
             }
             if (pack === undefined) continue;
-            pack = [Star, Star];
             const points = getValidRoomPoints(room);
             for (const enemy of pack) {
                 for (let i = points.length - 1; i >= 0; i--) {

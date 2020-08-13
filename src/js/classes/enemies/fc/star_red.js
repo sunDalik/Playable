@@ -1,7 +1,8 @@
-import {Star} from "./star"
+import {Star} from "./star";
 import {ENEMY_TYPE} from "../../../enums/enums";
-import {getPlayerOnTile} from "../../../map_checks";
+import {getPlayerOnTile, isNotAWall} from "../../../map_checks";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {getCardinalDirections, getDiagonalDirections} from "../../../utils/map_utils";
 
 export class RedStar extends Star {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star_b.png"]) {
@@ -15,17 +16,10 @@ export class RedStar extends Star {
         if (this.turnDelay === 0) {
             if (this.triggered) this.attack();
             else {
-                loop: for (let x = -3; x <= 3; x++) {
-                    for (let y = -3; y <= 3; y++) {
-                        if (!(Math.abs(x) === 3 || Math.abs(y) === 3) || (Math.abs(y) === 2 && Math.abs(x) === 3) || (Math.abs(x) === 2 && Math.abs(y) === 3)) {
-                            if (getPlayerOnTile(this.tilePosition.x + x, this.tilePosition.y + y)) {
-                                this.triggered = true;
-                                break loop;
-                            }
-                        }
-                    }
+                if (this.canAttackCardinally() || this.canAttackDiagonally()) {
+                    this.triggered = true;
+                    this.shake(1, 0);
                 }
-                if (this.triggered) this.shake(1, 0);
             }
         } else this.turnDelay--;
     }
@@ -48,5 +42,42 @@ export class RedStar extends Star {
         } else {
             this.intentIcon2.visible = false;
         }
+    }
+
+    canAttackCardinally() {
+        for (const dir of getCardinalDirections()) {
+            if (getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) return true;
+            if (isNotAWall(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
+                for (const dir2 of getCardinalDirections()) {
+                    if (getPlayerOnTile(this.tilePosition.x + dir.x + dir2.x, this.tilePosition.y + dir.y + dir2.y)) return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    canAttackDiagonally() {
+        for (const dir of getDiagonalDirections()) {
+            // check diagonal tiles at distance 2
+            if (getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) return true;
+            if (isNotAWall(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
+                // check tiles near to previous ones
+                for (const dir2 of getCardinalDirections()) {
+                    if (getPlayerOnTile(this.tilePosition.x + dir.x + dir2.x, this.tilePosition.y + dir.y + dir2.y)) return true;
+                }
+                // check diagonal tiles at distance 4
+                if (getPlayerOnTile(this.tilePosition.x + dir.x * 2, this.tilePosition.y + dir.y * 2)) return true;
+
+                // check tiles near to previous ones
+                if (isNotAWall(this.tilePosition.x + dir.x * 2, this.tilePosition.y + dir.y * 2)) {
+                    for (const dir2 of getCardinalDirections()) {
+                        if (getPlayerOnTile(this.tilePosition.x + dir.x * 2 + dir2.x, this.tilePosition.y + dir.y * 2 + dir2.y)) return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }
