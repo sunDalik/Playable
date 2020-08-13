@@ -8,7 +8,7 @@ import {FireBullet} from "../bullets/fire";
 export class FireSnail extends Snail {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["fire_snail.png"]) {
         super(tilePositionX, tilePositionY, texture);
-        this.health = this.maxHealth = 4;
+        this.health = this.maxHealth = 3;
         this.name = "Fire Snail";
         this.type = ENEMY_TYPE.FIRE_SNAIL;
         this.atk = 1.25;

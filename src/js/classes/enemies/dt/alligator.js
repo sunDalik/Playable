@@ -30,8 +30,7 @@ export class Alligator extends Enemy {
         this.stepXjumpHeight = Game.TILESIZE * 24 / 75;
         this.maxShootingTimes = 5;
         this.currentShootingTimes = 0;
-        this.scaleModifier = 1.1;
-        this.fitToTile();
+        this.setScaleModifier(1.1);
         this.updateTexture();
         this.poisonCounter = 0;
     }
@@ -45,8 +44,13 @@ export class Alligator extends Enemy {
             rabbit.predator = this;
             this.prey = rabbit;
         } else {
-            if (Math.random() < 0.9) this.alligatorType = getRandomValue(RABBIT_TYPE);
+            if (Math.random() < 0.9) this.setAlligatorType(getRandomValue(RABBIT_TYPE));
         }
+    }
+
+    setAlligatorType(type) {
+        this.alligatorType = type;
+        //this.atk = 1.25;
     }
 
     onMoveFrame() {
@@ -87,7 +91,7 @@ export class Alligator extends Enemy {
             const eat = () => {
                 this.prey.die(this, true);
                 if (this.prey.rabbitType !== undefined) {
-                    this.alligatorType = this.prey.rabbitType;
+                    this.setAlligatorType(this.prey.rabbitType);
                     this.turnDelay = 1;
                     this.updateTexture();
                     this.lightItself();
@@ -132,7 +136,7 @@ export class Alligator extends Enemy {
             } else {
                 this.prey.die(this, true);
                 if (this.prey.rabbitType !== undefined) {
-                    this.alligatorType = this.prey.rabbitType;
+                    this.setAlligatorType(this.prey.rabbitType);
                     this.turnDelay = 1;
                     this.shooting = true;
                     this.step(this.direction.x, this.direction.y, null, () => {
