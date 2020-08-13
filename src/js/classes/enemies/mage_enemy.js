@@ -39,7 +39,10 @@ export class MageEnemy extends Enemy {
         if (this.casting) {
             this.currentCooldown = this.cooldown;
             this.currentCastTime--;
-            if (this.currentCastTime === 1) this.texture = this.castingTexture;
+            if (this.currentCastTime === 1) {
+                this.texture = this.castingTexture;
+                this.almostCast();
+            }
             else if (this.currentCastTime <= 0) {
                 this.casting = false;
                 this.currentTurnDelay = this.turnDelay;
@@ -67,6 +70,9 @@ export class MageEnemy extends Enemy {
     }
 
     prepare() {
+    }
+
+    almostCast(){
     }
 
     updateIntentIcon() {
