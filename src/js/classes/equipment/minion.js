@@ -16,6 +16,7 @@ export class Minion extends AnimatedTileElement {
         this.setOwnZIndex(Z_INDEXES.ENEMY + 1);
         this.attackedEnemies = [];
         Game.world.removeChild(this.shadow);
+        //this.removeShadow();
     }
 
     attack(summonItem) {

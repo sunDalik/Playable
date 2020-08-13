@@ -1,90 +1,38 @@
 import {Game} from "../../../game";
-import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums/enums";
-import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer} from "../../../utils/game_utils";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {get8Directions, getDirectionsOnSquare} from "../../../utils/map_utils";
 import {MudBlock} from "./mud_block";
 import {isNotAWall} from "../../../map_checks";
-import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
-import {randomAfraidAI} from "../../../enemy_movement_ai";
+import {RUEnemiesSpriteSheet} from "../../../loader";
+import {MageEnemy} from "../mage_enemy";
 
-export class MudMage extends Enemy {
+export class MudMage extends MageEnemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["mud_mage.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 3;
         this.name = "Mud Mage";
         this.type = ENEMY_TYPE.MUD_MAGE;
-        this.atk = 0;
-        this.SLIDE_ANIMATION_TIME = 5;
-        this.turnDelay = 2;
-        this.currentTurnDelay = this.turnDelay;
-        this.casting = false;
-        this.cooldown = 14;
-        this.currentCooldown = Math.floor(this.cooldown / 3);
-        this.castDistance = 7;
-        this.dangerDistance = 3;
-        this.castTime = 2;
-        this.currentCastTime = this.castTime;
-        this.setScaleModifier(1.1);
         this.minions = [];
         this.minionsMax = 10;
+
+        this.neutralTexture = texture;
+        this.preparingTexture = RUEnemiesSpriteSheet["mud_mage_prepare.png"];
+        this.castingTexture = RUEnemiesSpriteSheet["mud_mage_cast.png"];
     }
 
-    setStun(stun) {
-        super.setStun(stun);
-        this.casting = false;
-        this.texture = RUEnemiesSpriteSheet["mud_mage.png"];
-    }
-
-    move() {
-        this.correctScale();
-        if (this.casting) {
-            this.currentCooldown = this.cooldown;
-            this.currentCastTime--;
-            if (this.currentCastTime === 1) this.texture = RUEnemiesSpriteSheet["mud_mage_cast.png"];
-            else if (this.currentCastTime <= 0) {
-                this.casting = false;
-                this.currentTurnDelay = this.turnDelay;
-                this.texture = RUEnemiesSpriteSheet["mud_mage.png"];
-                for (const tile of this.getRandomPattern()) {
-                    if (isNotAWall(tile.x, tile.y)) {
-                        const enemy = new MudBlock(tile.x, tile.y);
-                        Game.world.addEnemyViaSummonCircle(enemy, 2);
-                        this.minions.push(enemy);
-                    }
-                }
+    cast() {
+        for (const tile of this.getRandomPattern()) {
+            if (isNotAWall(tile.x, tile.y)) {
+                const enemy = new MudBlock(tile.x, tile.y);
+                Game.world.addEnemyViaSummonCircle(enemy, 2);
+                this.minions.push(enemy);
             }
-        } else if (this.currentCooldown <= 0 && tileDistance(this, closestPlayer(this)) <= this.castDistance && this.aliveMinionsCount() < this.minionsMax) {
-            this.casting = true;
-            this.currentCastTime = this.castTime;
-            this.texture = RUEnemiesSpriteSheet["mud_mage_prepare.png"];
-        } else if (this.currentTurnDelay <= 0) {
-            randomAfraidAI(this, this.dangerDistance, false, true);
-        } else {
-            this.currentTurnDelay--;
         }
-        this.currentCooldown--;
     }
 
-    updateIntentIcon() {
-        super.updateIntentIcon();
-        this.intentIcon.filters = [];
-        if (this.casting) {
-            if (this.currentCastTime === 1) {
-                this.intentIcon.texture = IntentsSpriteSheet["magic.png"];
-            } else {
-                this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
-            }
-        } else if (this.currentTurnDelay <= 0) {
-            if (tileDistance(this, closestPlayer(this)) <= this.dangerDistance) {
-                this.intentIcon.texture = IntentsSpriteSheet["fear.png"];
-            } else {
-                this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
-            }
-        } else {
-            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
-        }
+    canCast() {
+        return this.aliveMinionsCount() < this.minionsMax;
     }
 
     getRandomPattern() {
@@ -167,13 +115,6 @@ export class MudMage extends Enemy {
             tile.y += targetPlayer.tilePosition.y;
             return tile;
         });
-    }
-
-    correctScale() {
-        const sign = Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x);
-        if (sign !== 0) {
-            this.scale.x = sign * Math.abs(this.scale.x);
-        }
     }
 
     aliveMinionsCount() {

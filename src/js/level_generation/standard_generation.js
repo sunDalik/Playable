@@ -429,6 +429,8 @@ function setStartPosition(startRoom) {
         x: startRoom.offsetX + Math.floor(startRoom.width / 2),
         y: startRoom.offsetY + Math.floor(startRoom.height / 2)
     };
+
+    Game.startPos = {x:2, y: 2};
     for (const dir of get8Directions().concat({x: 0, y: 0})) {
         clearWall(Game.startPos.x + dir.x, Game.startPos.y + dir.y);
     }
