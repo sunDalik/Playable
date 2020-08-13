@@ -21,7 +21,6 @@ export class Rabbit extends Enemy {
         this.predator = null;
         this.currentTurnDelay = this.turnDelay = 1;
         this.stepXjumpHeight = Game.TILESIZE * 70 / 75;
-        this.setScaleModifier(0.8);
         this.updateTexture();
     }
 
