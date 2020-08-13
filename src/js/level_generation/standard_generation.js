@@ -557,9 +557,11 @@ function ensureInanimateSurroundings(x, y) {
 function placeShop(point, room) {
     if (point.x < room.offsetX + 3 || point.x > room.offsetX + room.width - 4 || point.y > room.offsetY + room.height - 5) return false;
 
-    //check that all 5 tiles behind us are walls
-    for (let j = point.x - 2; j <= point.x + 2; j++) {
-        if (level[point.y - 1][j].tileType !== TILE_TYPE.WALL) return false;
+    if (!settings.openSpace) {
+        //check that all 5 tiles behind us are walls
+        for (let j = point.x - 2; j <= point.x + 2; j++) {
+            if (level[point.y - 1][j].tileType !== TILE_TYPE.WALL) return false;
+        }
     }
 
     //minimal check for emptiness
@@ -611,10 +613,13 @@ function placeShop(point, room) {
 function placeObelisk(point, room) {
     if (point.x < room.offsetX + 3 || point.x > room.offsetX + room.width - 4 || point.y > room.offsetY + room.height - 5) return false;
     if (isNearEntrance(point, room)) return false;
-    if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL
-        && level[point.y - 1][point.x - 1].tileType === TILE_TYPE.WALL && level[point.y - 1][point.x + 1].tileType === TILE_TYPE.WALL) {
-        level[point.y][point.x].entity = new Obelisk(point.x, point.y, level);
-        return true;
+    if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
+        if (settings.openSpace ||
+            (level[point.y - 1][point.x].tileType === TILE_TYPE.WALL
+                && level[point.y - 1][point.x - 1].tileType === TILE_TYPE.WALL && level[point.y - 1][point.x + 1].tileType === TILE_TYPE.WALL)) {
+            level[point.y][point.x].entity = new Obelisk(point.x, point.y, level);
+            return true;
+        }
     }
     return false;
 }
