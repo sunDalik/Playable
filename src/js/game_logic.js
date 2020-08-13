@@ -255,8 +255,12 @@ export function damagePlayerWithHazards(player) {
 
         if (Game.stage === STAGE.DARK_TUNNEL) {
             if (Game.darkTiles[player.tilePosition.y][player.tilePosition.x].visible
-                && Game.darkTiles[player.tilePosition.y][player.tilePosition.x].alpha >= Game.darkTiles[player.tilePosition.y][player.tilePosition.x].semiAlpha)
-                player.damage(0.25, null, false, false, false);
+                && Game.darkTiles[player.tilePosition.y][player.tilePosition.x].alpha >= Game.darkTiles[player.tilePosition.y][player.tilePosition.x].semiAlpha) {
+                const darkness = new TileElement(PIXI.Texture.WHITE, player.tilePosition.x, player.tilePosition.y, true);
+                darkness.tint = 0x000000;
+                darkness.name = "Darkness";
+                player.damage(0.25, darkness, false, false, false);
+            }
         }
 
         if (!otherPlayer(player).dead) {

@@ -379,6 +379,7 @@ export class Player extends AnimatedTileElement {
     }
 
     dieAnimation(source, time = 40) {
+        //todo mb source should always have lower zIndex than player on death animation?
         this.dead = true;
         this.killedBy = source;
         this.visible = false;
