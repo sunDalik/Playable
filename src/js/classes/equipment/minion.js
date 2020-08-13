@@ -15,8 +15,8 @@ export class Minion extends AnimatedTileElement {
         this.temporary = false;
         this.setOwnZIndex(Z_INDEXES.ENEMY + 1);
         this.attackedEnemies = [];
-        Game.world.removeChild(this.shadow);
-        //this.removeShadow();
+        this.hasShadow = true;
+        this.removeShadow();
     }
 
     attack(summonItem) {
@@ -62,7 +62,7 @@ export class Minion extends AnimatedTileElement {
     }
 
     correctTilePosition() {
-        this.regenerateShadow();
+        if (this.hasShadow) this.setShadow();
         this.setTilePosition(this.wielder.tilePosition.x + this.offset.x, this.wielder.tilePosition.y + this.offset.y);
     }
 
@@ -164,7 +164,7 @@ export class Minion extends AnimatedTileElement {
     deactivate() {
         Game.world.removeChild(this);
         this.wielder = null;
-        Game.world.removeChild(this.shadow);
+        this.removeShadow();
     }
 
     // permanent minions don't die

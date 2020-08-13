@@ -25,8 +25,6 @@ class BeeMinion extends Minion {
         this.stepping = false;
         this.tallModifier = 20;
         this.shadowWidthMul = 0.35;
-        this.regenerateShadow();
-        Game.world.removeChild(this.shadow);
         this.order = 0;
     }
 

@@ -40,6 +40,7 @@ export class PoisonEel extends Eel {
         this.cancelAnimation();
     }
 
+    // todo fix animation being cancelled if you attack him with double weapon
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         const savedAngle = this.angle;
         super.damage(source, dmg, inputX, inputY, damageType);
