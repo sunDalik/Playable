@@ -25,6 +25,11 @@ export class Cocoon extends Enemy {
     }
 
     move() {
+        // guarantee at least 1 turns of delay after player killed minion
+        if (this.minion && this.minion.dead) {
+            this.minion = null;
+            if (this.spawnDelay < 1) this.spawnDelay = 1;
+        }
         if (this.aboutToSpawn) {
             this.spawnDelay = this.getSpawnDelay();
             if (this.quirk === ENEMY_QUIRK.GIANT && this.minionType !== SpiderSmall) this.spawnDelay += 5;
