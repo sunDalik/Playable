@@ -1,8 +1,9 @@
 import {Enemy} from "../enemy";
 import {DIRECTIONS, ENEMY_TYPE} from "../../../enums/enums";
-import {getPlayerOnTile} from "../../../map_checks";
+import {getPlayerOnTile, isNotAWall} from "../../../map_checks";
 import {createCrazySpikeAnimation, createEnemyAttackTile} from "../../../animations";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {getDiagonalDirections} from "../../../utils/map_utils";
 
 export class Star extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star.png"]) {
@@ -31,30 +32,12 @@ export class Star extends Enemy {
         if (this.turnDelay === 0) {
             if (this.triggered) this.attack();
             else {
-                //if you want to make sure stars cant hit through walls you can just check for walls while you loop
-                loop: for (let offset = -2; offset <= 2; offset++) {
-                    for (let sign = -1; sign <= 1; sign += 2) {
-                        if (offset !== 0) {
-                            const player = getPlayerOnTile(this.tilePosition.x + offset, this.tilePosition.y + offset * sign);
-                            if (player) {
-                                this.triggered = true;
-                                this.triggeredDirections = DIRECTIONS.DIAGONAL;
-                                break loop;
-                            }
-                        }
-                    }
-                }
-                loop2: for (let x = -1; x <= 1; x++) {
-                    for (let y = -1; y <= 1; y++) {
-                        if (Math.abs(x) !== Math.abs(y)) {
-                            const player = getPlayerOnTile(this.tilePosition.x + x, this.tilePosition.y + y);
-                            if (player) {
-                                this.triggered = true;
-                                this.triggeredDirections = DIRECTIONS.CARDINAL;
-                                break loop2;
-                            }
-                        }
-                    }
+                if (this.canAttackCardinally()) {
+                    this.triggered = true;
+                    this.triggeredDirections = DIRECTIONS.CARDINAL;
+                } else if (this.canAttackDiagonally()) {
+                    this.triggered = true;
+                    this.triggeredDirections = DIRECTIONS.DIAGONAL;
                 }
                 if (this.triggered) this.shake(1, 0);
             }
@@ -121,5 +104,28 @@ export class Star extends Enemy {
         } else {
             this.intentIcon.texture = IntentsSpriteSheet["eye.png"];
         }
+    }
+
+    canAttackCardinally() {
+        for (let x = -1; x <= 1; x++) {
+            for (let y = -1; y <= 1; y++) {
+                if (Math.abs(x) !== Math.abs(y)) {
+                    if (getPlayerOnTile(this.tilePosition.x + x, this.tilePosition.y + y)) return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    canAttackDiagonally() {
+        for (const dir of getDiagonalDirections()) {
+            if (getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) return true;
+            if (isNotAWall(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {
+                if (getPlayerOnTile(this.tilePosition.x + dir.x * 2, this.tilePosition.y + dir.y * 2)) return true;
+            }
+        }
+
+        return false;
     }
 }
