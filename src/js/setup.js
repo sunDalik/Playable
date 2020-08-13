@@ -241,17 +241,15 @@ function lightAll() {
 }
 
 function lightAllRealistic() {
-    for (let i = 0; i < Game.map.length; i++) {
-        for (let j = 0; j < Game.map[0].length; j++) {
-            if (![TILE_TYPE.VOID, TILE_TYPE.SUPER_WALL].includes(Game.map[i][j].tileType)) {
-                if ([TILE_TYPE.WALL].includes(Game.map[i][j].tileType)) {
-                    for (const dir of get8Directions()) {
-                        if (![TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[i + dir.y][j + dir.x].tileType)) {
-                            lightTile(j, i);
-                        }
+    for (let i = 1; i < Game.map.length-1; i++) {
+        for (let j = 1; j < Game.map[0].length-1; j++) {
+            if ([TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[i][j].tileType)) {
+                for (const dir of get8Directions()) {
+                    if (![TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[i + dir.y][j + dir.x].tileType)) {
+                        lightTile(j, i);
                     }
-                } else lightTile(j, i);
-            }
+                }
+            } else lightTile(j, i);
         }
     }
 }

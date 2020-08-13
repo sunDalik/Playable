@@ -127,7 +127,12 @@ function createBossRoom(bossRoomStats) {
         ys.push(i);
     }
     const x = randomChoice(xs);
-    const y = randomChoice(ys);
+    let y;
+    if (!settings.openSpace || x === 0 || x === level[0].length - bossRoomStats.width) {
+        y = randomChoice(ys);
+    } else {
+        y = randomChoice([0, level.length - bossRoomStats.height]);
+    }
     let sectors = [new Room(x, y, bossRoomStats.width, bossRoomStats.height, ROOM_TYPE.BOSS)];
     if (x !== 0 && y !== 0) sectors.push(new Room(0, 0, x, y));
     if (y !== 0) sectors.push(new Room(x, 0, bossRoomStats.width, y));
@@ -266,12 +271,13 @@ function copyPartOf2dArray(array, offsetX, offsetY, width, height) {
 
 function planPath(startRoom) {
     const maxPath = rooms.length * 0.6;
+    const minPath = 5;
     let path = [startRoom];
     let attempt = 0;
     while (path.length < maxPath) {
         const nextRoom = randomChoice(getAdjacentRooms(path[path.length - 1]).filter(r => !path.includes(r)));
         if (nextRoom === undefined) {
-            if (attempt++ > 200 || path.length > 4) break;
+            if (attempt++ > 200 || path.length >= minPath) break;
             else path = [startRoom];
             continue;
         }
