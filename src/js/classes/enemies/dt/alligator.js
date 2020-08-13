@@ -215,6 +215,8 @@ export class Alligator extends Enemy {
                     this.shake(this.direction.y, this.direction.x);
                 } else {
                     this.shooting = false;
+                    this.currentTurnDelay = this.turnDelay;
+                    this.triggeredDirection = null;
                     this.updateTexture();
                 }
             } else this.shooting = false;
