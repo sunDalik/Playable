@@ -103,6 +103,7 @@ export class Enemy extends AnimatedTileElement {
     }
 
     onMoveFrame() {
+        //todo change health Y position to account for trim?
         this.healthContainer.position.x = this.position.x - getHealthArray(this).slice(0, 5).length * (Game.TILESIZE / 65 * 20 + 0) / 2 + 0 / 2;
         this.healthContainer.position.y = this.position.y + this.texture.frame.height * this.scale.y / 2 + 10;
 

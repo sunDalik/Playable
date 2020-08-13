@@ -9,6 +9,7 @@ import {wallTallness} from "../draw/wall";
 import {lightTile} from "../../drawing/lighting";
 import {Z_INDEXES} from "../../z_indexing";
 
+//todo fix entities appearing half lit half darkened
 export class DarkTunnelTile extends DarknessTile {
     constructor(tilePositionX, tilePositionY, texture = PIXI.Texture.WHITE) {
         super(texture, tilePositionX, tilePositionY);
