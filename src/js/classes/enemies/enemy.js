@@ -1,7 +1,7 @@
 import {Game} from "../../game";
 import * as PIXI from "pixi.js";
 import {AnimatedTileElement} from "../tile_elements/animated_tile_element";
-import {ENEMY_QUIRK, HAZARD_TYPE, ROLE, STAGE} from "../../enums/enums";
+import {ENEMY_QUIRK, ENEMY_TYPE, HAZARD_TYPE, ROLE, STAGE} from "../../enums/enums";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "../../drawing/draw_utils";
 import {runDestroyAnimation} from "../../animations";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
@@ -131,7 +131,7 @@ export class Enemy extends AnimatedTileElement {
 
     die(source) {
         if (this.dead) return;
-        Game.enemiesKilled++;
+        if (this.type !== ENEMY_TYPE.MUD_BLOCK) Game.enemiesKilled++;
         if (source === Game.player || source === Game.BOTH_PLAYERS) {
             for (const eq of Game.player.getEquipment()) {
                 if (eq && eq.onKill) eq.onKill(Game.player, this);
