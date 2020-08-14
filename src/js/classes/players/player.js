@@ -289,7 +289,7 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    damage(atk, source, direcpltHit = true, canBeShielded = true, canBeCrystalWinded = true) {
+    damage(atk, source, directHit = true, canBeShielded = true, canBeCrystalWinded = true) {
         if (atk === 0) return;
         if (!this.dead) {
             let blocked = false;
