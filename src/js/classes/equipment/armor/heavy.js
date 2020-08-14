@@ -16,6 +16,6 @@ export class HeavyArmor extends Equipment {
     }
 
     onMagicCast(player) {
-        player.damage(this.magicPunishment, null, false, false);
+        player.damage(this.magicPunishment, null, false, false, false);
     }
 }

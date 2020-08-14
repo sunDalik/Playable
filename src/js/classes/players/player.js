@@ -289,7 +289,7 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    damage(atk, source, directHit = true, canBeShielded = true, canBeCrystalWinded = true) {
+    damage(atk, source, direcpltHit = true, canBeShielded = true, canBeCrystalWinded = true) {
         if (atk === 0) return;
         if (!this.dead) {
             let blocked = false;
@@ -324,7 +324,7 @@ export class Player extends AnimatedTileElement {
                     this.secondHand.onBlock(source, this, directHit);
                     this.shielded = true;
                     blocked = true;
-                } else if (ally.tilePosition.x === this.tilePosition.x && ally.tilePosition.y === this.tilePosition.y
+                } else if (!ally.dead && ally.tilePosition.x === this.tilePosition.x && ally.tilePosition.y === this.tilePosition.y
                     && ally.secondHand && ally.secondHand.equipmentType === EQUIPMENT_TYPE.SHIELD
                     && (ally.shielded || ally.secondHand.activate(ally))) {
                     ally.secondHand.onBlock(source, ally, directHit);

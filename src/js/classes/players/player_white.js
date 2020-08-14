@@ -12,6 +12,7 @@ export class WhitePlayer extends Player {
         this.atkMul = 0.5;
         this.defMul = 1;
         this.weapon = new Spear();
+        this.name = "White Triangle";
         swapEquipmentWithPlayer(this, new LeatherArmor(), false);
         this.setOwnZIndex(Z_INDEXES.PLAYER_PRIMARY);
         this.tallModifier = 5;

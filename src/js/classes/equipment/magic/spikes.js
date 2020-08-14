@@ -35,7 +35,7 @@ export class Spikes extends Magic {
                 }
                 const player = getPlayerOnTile(attackTile.x, attackTile.y);
                 if (player) {
-                    player.damage(this.friendlyFire, wielder);
+                    player.damage(this.friendlyFire, wielder, false, true, false);
                     playerDamaged = true;
                 }
                 createPlayerAttackTile(attackTile, 12);

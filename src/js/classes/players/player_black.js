@@ -10,6 +10,7 @@ export class BlackPlayer extends Player {
         this.atkMul = 1;
         this.defMul = 0.5;
         this.weapon = new Knife();
+        this.name = "Black Triangle";
         this.setOwnZIndex(Z_INDEXES.PLAYER);
         this.tallModifier = -5;
     }
