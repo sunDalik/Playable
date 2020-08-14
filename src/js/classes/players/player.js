@@ -108,8 +108,8 @@ export class Player extends AnimatedTileElement {
                 if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
                     Game.unplayable = true;
                     if (Game.stage === STAGE.RUINS) {
+                        completeBeatStageAchievements(Game.stage);
                         this.step(tileStepX, tileStepY);
-                        completeBeatStageAchievements();
                         pullUpGameOverScreen(true);
                     } else {
                         this.goExit(tileStepX, tileStepY);
