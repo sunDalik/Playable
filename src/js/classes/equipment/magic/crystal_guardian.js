@@ -60,8 +60,10 @@ export class CrystalGuardian extends CrystalWind {
 
     onDeath(wielder) {
         super.onDeath(wielder);
-        runDestroyAnimation(this.follower);
-        Game.world.removeChild(this.follower);
+        if (this.follower) {
+            runDestroyAnimation(this.follower);
+            Game.world.removeChild(this.follower);
+        }
     }
 
     onRevive(wielder) {
