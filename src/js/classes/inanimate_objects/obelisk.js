@@ -61,7 +61,7 @@ export class Obelisk extends TileElement {
                     }
                 }
                 if (attempt >= 200) magicPool[i] = new Necromancy();
-            }
+            }   
         }
         this.magic = magicPool;
     }

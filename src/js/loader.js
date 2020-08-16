@@ -5,7 +5,8 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
     WeaponsSpriteSheet, AchievementsSpriteSheet, HUDSpriteSheet,
     BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
     HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet, OneTimeSpriteSheet,
-    AccessoriesSpriteSheet, LunaticLeaderSpriteSheet, WallsSpriteSheet, FloorTilesSpriteSheet;
+    AccessoriesSpriteSheet, LunaticLeaderSpriteSheet,
+    FCTilesetSpriteSheet, DTTilesetSpriteSheet, RUTilesetSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
@@ -16,8 +17,9 @@ export function loadAll(afterLoad) {
         .add("src/images/icons/obelisk_sacrifice.png")
 
         .add("src/textures/common.json")
-        .add("src/textures/walls.json")
-        .add("src/textures/floor_tiles.json")
+        .add("src/textures/fc_tileset.json")
+        .add("src/textures/dt_tileset.json")
+        .add("src/textures/ru_tileset.json")
         .add("src/textures/effects.json")
         .add("src/textures/intents.json")
         .add("src/textures/achievements.json")
@@ -75,6 +77,7 @@ function setSpriteSheets() {
     OneTimeSpriteSheet = Game.loader.resources["src/textures/one_time.json"].textures;
     AccessoriesSpriteSheet = Game.loader.resources["src/textures/accessories.json"].textures;
     LunaticLeaderSpriteSheet = Game.loader.resources["src/textures/lunatic_leader.json"].textures;
-    WallsSpriteSheet = Game.loader.resources["src/textures/walls.json"].textures;
-    FloorTilesSpriteSheet = Game.loader.resources["src/textures/floor_tiles.json"].textures;
+    FCTilesetSpriteSheet = Game.loader.resources["src/textures/fc_tileset.json"].textures;
+    DTTilesetSpriteSheet = Game.loader.resources["src/textures/dt_tileset.json"].textures;
+    RUTilesetSpriteSheet = Game.loader.resources["src/textures/ru_tileset.json"].textures;
 }

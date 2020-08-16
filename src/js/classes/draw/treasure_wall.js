@@ -1,6 +1,5 @@
 import {Game} from "../../game";
 import {ACHIEVEMENT_ID, STAGE} from "../../enums/enums";
-import {WallsSpriteSheet} from "../../loader";
 import {randomChoice} from "../../utils/random_utils";
 import {WallTile} from "./wall";
 import {dropItem} from "../../game_logic";
@@ -9,22 +8,23 @@ import {Chest} from "../inanimate_objects/chest";
 import {HealingPotion} from "../equipment/bag/healing_potion";
 import {RerollPotion} from "../equipment/bag/reroll_potion";
 import {completeAchievement} from "../../achievements";
+import {DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
 
 export class TreasureWallTile extends WallTile {
-    constructor(tilePositionX, tilePositionY, texture = WallsSpriteSheet["flooded_cave_walls_treasure_0.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = FCTilesetSpriteSheet["flooded_cave_walls_treasure_0.png"]) {
         super(tilePositionX, tilePositionY, texture);
     }
 
     setTexture() {
         if (Game.stage === STAGE.FLOODED_CAVE) {
-            this.texture = randomChoice([WallsSpriteSheet["flooded_cave_walls_treasure_0.png"],
-                WallsSpriteSheet["flooded_cave_walls_treasure_4.png"]]);
+            this.texture = randomChoice([FCTilesetSpriteSheet["flooded_cave_walls_treasure_0.png"],
+                FCTilesetSpriteSheet["flooded_cave_walls_treasure_4.png"]]);
         } else if (Game.stage === STAGE.DARK_TUNNEL) {
-            this.texture = randomChoice([WallsSpriteSheet["dark_tunnel_walls_treasure_2.png"],
-                WallsSpriteSheet["dark_tunnel_walls_treasure_7.png"]]);
+            this.texture = randomChoice([DTTilesetSpriteSheet["dark_tunnel_walls_treasure_2.png"],
+                DTTilesetSpriteSheet["dark_tunnel_walls_treasure_7.png"]]);
         } else if (Game.stage === STAGE.RUINS) {
-            this.texture = randomChoice([WallsSpriteSheet["ruins_walls_treasure_3.png"],
-                WallsSpriteSheet["ruins_walls_treasure_6.png"]]);
+            this.texture = randomChoice([RUTilesetSpriteSheet["ruins_walls_treasure_3.png"],
+                RUTilesetSpriteSheet["ruins_walls_treasure_6.png"]]);
         }
     }
 
