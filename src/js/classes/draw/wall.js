@@ -75,7 +75,7 @@ export class WallTile extends TileElement {
                     RUTilesetSpriteSheet["ruins_walls_8.png"]]);
             }
         } else if (Game.stage === STAGE.DRY_CAVE) {
-            this.texture = DTTilesetSpriteSheet["dark_tunnel_walls_1.png"];
+            this.texture = Game.resources["src/images/tilesets/dc_tileset/dry_cave_walls_0.png"].texture;
         }
     }
 

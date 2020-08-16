@@ -136,7 +136,8 @@ export function removeItemFromPool(item, pool) {
 
 export function incrementStage() {
     switch (Game.stage) {
-        case STAGE.FLOODED_CAVE || STAGE.DRY_CAVE:
+        case STAGE.FLOODED_CAVE:
+        case STAGE.DRY_CAVE:
             Game.stage = STAGE.DARK_TUNNEL;
             break;
         case STAGE.DARK_TUNNEL:
@@ -167,6 +168,9 @@ export function setVariablesForStage() {
         case STAGE.FLOODED_CAVE:
             Game.BGColor = BG_COLORS.FLOODED_CAVE;
             assignRarityChances(55, 88, 97); // 55% 33% 9% 3%
+            break;
+        case STAGE.DRY_CAVE:
+            assignRarityChances(50, 86, 97); // 50% 36% 11% 3%
             break;
         case STAGE.DARK_TUNNEL:
             Game.BGColor = BG_COLORS.DARK_TUNNEL;
