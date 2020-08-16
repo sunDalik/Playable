@@ -136,7 +136,7 @@ export function removeItemFromPool(item, pool) {
 
 export function incrementStage() {
     switch (Game.stage) {
-        case STAGE.FLOODED_CAVE:
+        case STAGE.FLOODED_CAVE || STAGE.DRY_CAVE:
             Game.stage = STAGE.DARK_TUNNEL;
             break;
         case STAGE.DARK_TUNNEL:

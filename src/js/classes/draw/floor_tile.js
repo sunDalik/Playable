@@ -9,6 +9,7 @@ export class FloorTile extends TileElement {
     constructor(tilePositionX, tilePositionY, texture = RUTilesetSpriteSheet["ruins_floor_tile_3.png"]) {
         super(texture, tilePositionX, tilePositionY, true);
         this.setTexture();
+        this.setScaleModifier(1.002);
     }
 
     correctZIndex() {
@@ -68,7 +69,8 @@ export class FloorTile extends TileElement {
                     RUTilesetSpriteSheet["ruins_floor_tile_6.png"],
                     RUTilesetSpriteSheet["ruins_floor_tile_9.png"]]);
             }
+        } else if (Game.stage === STAGE.DRY_CAVE) {
+
         }
-        this.setScaleModifier(1.002);
     }
 }

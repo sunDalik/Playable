@@ -74,6 +74,8 @@ export class WallTile extends TileElement {
                     RUTilesetSpriteSheet["ruins_walls_6.png"],
                     RUTilesetSpriteSheet["ruins_walls_8.png"]]);
             }
+        } else if (Game.stage === STAGE.DRY_CAVE) {
+
         }
     }
 

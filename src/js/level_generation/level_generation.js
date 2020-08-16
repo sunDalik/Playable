@@ -12,6 +12,9 @@ export function generateLevel() {
         case STAGE.FLOODED_CAVE:
             setupGenerator(new Settings(30, 40, 30, 40, FCEnemySets, FCBossSets));
             return generateStandard();
+        case STAGE.DRY_CAVE:
+            setupGenerator(new Settings(30, 40, 30, 40, FCEnemySets, FCBossSets));
+            return generateStandard();
         case STAGE.DARK_TUNNEL:
             setupGenerator(new Settings(40, 55, 20, 25, DTEnemySets, DTBossSets));
             return generateStandard();

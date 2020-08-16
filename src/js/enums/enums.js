@@ -60,8 +60,7 @@ export const STAGE = Object.freeze({
     RUINS: "Ruins",
     JUNGLE: "???",
     FINALE: "???",
-    CANYON: "???",
-    ARENA: "???"
+    DRY_CAVE: "Dry Cave"
 });
 export const TILE_TYPE = Object.freeze({VOID: 0, NONE: 1, WALL: 2, ENTRY: 4, SUPER_WALL: 5, EXIT: 6});
 export const ROLE = Object.freeze({ENEMY: 0, PLAYER: 1, INANIMATE: 2, BULLET: 3, WALL_TRAP: 4});
