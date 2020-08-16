@@ -10,6 +10,10 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
 
 export function loadAll(afterLoad) {
     Game.loader
+
+        .add("src/images/tilesets/dc_tileset/dry_cave_floor_tile_0.png")
+
+
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
         .add("src/images/npc/shopkeeper.png")

@@ -70,7 +70,7 @@ export class FloorTile extends TileElement {
                     RUTilesetSpriteSheet["ruins_floor_tile_9.png"]]);
             }
         } else if (Game.stage === STAGE.DRY_CAVE) {
-
+            this.texture = Game.resources["src/images/tilesets/dc_tileset/dry_cave_floor_tile_0.png"].texture;
         }
     }
 }
