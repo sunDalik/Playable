@@ -65,6 +65,8 @@ export function generateStandard() {
     }
     if (settings.openSpace) {
         outlineLevelWithWalls(level);
+    }
+    if (Game.stage === STAGE.DRY_CAVE || settings.openSpace) {
         outlineRoomWithWalls(bossRoom, true);
     }
     clearShape(bossRoom);
@@ -88,6 +90,10 @@ export function generateStandard() {
             drawPath([room, nextRoom]);
             removeObjectFromArray(room, unconnectedRooms);
         }
+    }
+
+    for (const room of rooms) {
+        if (Game.stage === STAGE.DRY_CAVE) shatterRoom(room);
     }
 
     for (const secretRoom of unconnectedRooms) {
@@ -876,6 +882,36 @@ function generateTreasureWalls() {
             if (anyDoorsAround(point)) continue;
             treasureWallsAmount--;
             level[point.y][point.x].tile = new TreasureWallTile(point.x, point.y);
+        }
+    }
+}
+
+// applied before super wall outlining
+function shatterRoom(room) {
+    for (let i = 0; i < room.height; i++) {
+        for (let j = 0; j < room.width; j++) {
+            if (i === 0 || j === 0 || i === room.height - 1 || j === room.width - 1) {
+                const tile = {x: j + room.offsetX, y: i + room.offsetY};
+                if (level[tile.y][tile.x] === LEVEL_SYMBOLS.WALL
+                    && Math.random() < 0.15
+                    && tile.x >= 1 && tile.y >= 1 && tile.x <= level[0].length - 2 && tile.y <= level.length - 2) {
+                    let allowed = false;
+                    for (const dir of getCardinalDirections()) {
+                        const dirTile = {x: tile.x + dir.x, y: tile.y + dir.y};
+                        if (dirTile.x >= 0 && dirTile.y >= 0 && dirTile.x <= level[0].length - 1 && dirTile.y <= level.length - 1) {
+                            if (level[dirTile.y][dirTile.x] === LEVEL_SYMBOLS.NONE) {
+                                allowed = true;
+                            } else if (level[dirTile.y][dirTile.x] === LEVEL_SYMBOLS.ENTRY || level[dirTile.y][dirTile.x] === LEVEL_SYMBOLS.SUPER_WALL) {
+                                allowed = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (allowed) {
+                        level[tile.y][tile.x] = LEVEL_SYMBOLS.NONE;
+                    }
+                }
+            }
         }
     }
 }
