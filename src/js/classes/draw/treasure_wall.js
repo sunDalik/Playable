@@ -8,7 +8,7 @@ import {Chest} from "../inanimate_objects/chest";
 import {HealingPotion} from "../equipment/bag/healing_potion";
 import {RerollPotion} from "../equipment/bag/reroll_potion";
 import {completeAchievement} from "../../achievements";
-import {DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
+import {DCTilesetSpriteSheet, DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
 
 export class TreasureWallTile extends WallTile {
     constructor(tilePositionX, tilePositionY, texture = FCTilesetSpriteSheet["flooded_cave_walls_treasure_0.png"]) {
@@ -25,6 +25,9 @@ export class TreasureWallTile extends WallTile {
         } else if (Game.stage === STAGE.RUINS) {
             this.texture = randomChoice([RUTilesetSpriteSheet["ruins_walls_treasure_3.png"],
                 RUTilesetSpriteSheet["ruins_walls_treasure_6.png"]]);
+        } else if (Game.stage === STAGE.DRY_CAVE) {
+            this.texture = randomChoice([DCTilesetSpriteSheet["dry_cave_treasure_wall_0.png"],
+                DCTilesetSpriteSheet["dry_cave_treasure_wall_1.png"]]);
         }
     }
 
