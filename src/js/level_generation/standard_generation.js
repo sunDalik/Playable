@@ -25,6 +25,7 @@ import {Bomb} from "../classes/equipment/bag/bomb";
 import {HealingPotion} from "../classes/equipment/bag/healing_potion";
 import {getRandomShopItem} from "../utils/pool_utils";
 import {TreasureWallTile} from "../classes/draw/treasure_wall";
+import {CactusWallTrap} from "../classes/enemies/dc/cactus_wall_trap";
 
 let settings;
 let level;
@@ -701,24 +702,30 @@ function getRoomEntries(room) {
 
 function generateSpecificEnemies() {
     if (Game.stage === STAGE.FLOODED_CAVE) {
-        generateSpikyWallTraps();
+        generateSpikyWallTraps(0.008);
     } else if (Game.stage === STAGE.DARK_TUNNEL) {
         generateLaserTurrets();
+    } else if (Game.stage === STAGE.DRY_CAVE) {
+        generateSpikyWallTraps(0.009, true);
     }
 }
 
-function generateSpikyWallTraps() {
-    let spikyWallTrapsAmount = Math.round((level[0].length * level.length) * 0.008);
+function generateSpikyWallTraps(amountModifier = 0.008, cactus = false) {
+    let spikyWallTrapsAmount = Math.round((level[0].length * level.length) * amountModifier);
     for (const point of getValidRoomPoints(new Room(0, 0, level[0].length, level.length))) {
         if (spikyWallTrapsAmount <= 0) break;
         if (level[point.y][point.x].tileType === TILE_TYPE.WALL && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.BOSS))
             && !isInsideRoom(point, rooms.find(r => r.type === ROOM_TYPE.START))) {
             if (anyDoorsAround(point)) continue;
-            for (const dir of randomShuffle(getCardinalDirections())) {
+            for (const dir of getCardinalDirections()) {
                 if (level[point.y + dir.y][point.x + dir.x].tileType === TILE_TYPE.NONE
                     && (level[point.y + dir.y][point.x + dir.x].entity === null
                         || level[point.y + dir.y][point.x + dir.x].entity.role !== ROLE.INANIMATE)) {
-                    level[point.y][point.x].entity = new SpikyWallTrap(point.x, point.y);
+                    if (cactus) {
+                        level[point.y][point.x].entity = new CactusWallTrap(point.x, point.y);
+                    } else {
+                        level[point.y][point.x].entity = new SpikyWallTrap(point.x, point.y);
+                    }
                     spikyWallTrapsAmount--;
                     level[point.y][point.x].tile = null;
                     break;

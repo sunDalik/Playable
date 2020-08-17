@@ -16,6 +16,8 @@ export function loadAll(afterLoad) {
         .add("src/images/inanimates/shop_stand.png")
         .add("src/images/icons/obelisk_sacrifice.png")
 
+        .add("src/images/enemies/dc_enemies/cactus_wall_trap.png")
+
         .add("src/textures/common.json")
         .add("src/textures/fc_tileset.json")
         .add("src/textures/dt_tileset.json")
