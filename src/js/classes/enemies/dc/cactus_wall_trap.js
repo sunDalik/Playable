@@ -5,10 +5,9 @@ import {getPlayerOnTile, isNotAWall} from "../../../map_checks";
 import {randomChoice} from "../../../utils/random_utils";
 import {getCardinalDirections} from "../../../utils/map_utils";
 import {TileElement} from "../../tile_elements/tile_element";
-import {DCEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {DCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {wallTallness} from "../../draw/wall";
 import {Z_INDEXES} from "../../../z_indexing";
-import {getAngleForDirection} from "../../../utils/game_utils";
 import {redrawMiniMapPixel} from "../../../drawing/minimap";
 
 export class CactusWallTrap extends Enemy {
@@ -33,11 +32,17 @@ export class CactusWallTrap extends Enemy {
     generateSpikes() {
         this.spikes = [];
         for (const dir of getCardinalDirections()) {
-            const spike = new TileElement(FCEnemiesSpriteSheet["spikes_right.png"], this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true);
+            const spike = new TileElement(DCEnemiesSpriteSheet["cactus_spikes_right.png"], this.tilePosition.x + dir.x, this.tilePosition.y + dir.y, true);
             Game.world.addChild(spike);
             spike.visible = false;
             spike.position.y -= wallTallness / 2;
-            spike.angle = getAngleForDirection(dir);
+            if (dir.x === -1) {
+                spike.scale.x = -Math.abs(spike.scale.x);
+            } else if (dir.y !== 0) {
+                spike.texture = DCEnemiesSpriteSheet["cactus_spikes_up.png"];
+                spike.setScaleModifier(1.15);
+                if (dir.y === 1) spike.scale.y = -Math.abs(spike.scale.y);
+            }
             spike.setOwnZIndex(Z_INDEXES.PLAYER_PRIMARY + 1);
             this.spikes.push(spike);
         }
