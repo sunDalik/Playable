@@ -3,7 +3,7 @@ import {Game} from "../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
 import {STAGE} from "../../enums/enums";
 import {randomChoice} from "../../utils/random_utils";
-import {DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
+import {DCTilesetSpriteSheet, DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
 
 export let wallTallness = 0;
 
@@ -75,7 +75,20 @@ export class WallTile extends TileElement {
                     RUTilesetSpriteSheet["ruins_walls_8.png"]]);
             }
         } else if (Game.stage === STAGE.DRY_CAVE) {
-            this.texture = Game.resources["src/images/tilesets/dc_tileset/dry_cave_walls_0.png"].texture;
+            if (random > 85) {
+                // holes
+                this.texture = randomChoice([DCTilesetSpriteSheet["dry_cave_walls_4.png"],
+                    DCTilesetSpriteSheet["dry_cave_walls_6.png"],
+                    DCTilesetSpriteSheet["dry_cave_walls_7.png"],
+                    DCTilesetSpriteSheet["dry_cave_walls_8.png"]]);
+            } else {
+                // normal
+                this.texture = randomChoice([DCTilesetSpriteSheet["dry_cave_walls_0.png"],
+                    DCTilesetSpriteSheet["dry_cave_walls_1.png"],
+                    DCTilesetSpriteSheet["dry_cave_walls_2.png"],
+                    DCTilesetSpriteSheet["dry_cave_walls_3.png"],
+                    DCTilesetSpriteSheet["dry_cave_walls_5.png"]]);
+            }
         }
     }
 

@@ -6,15 +6,10 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
     BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
     HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet, OneTimeSpriteSheet,
     AccessoriesSpriteSheet, LunaticLeaderSpriteSheet,
-    FCTilesetSpriteSheet, DTTilesetSpriteSheet, RUTilesetSpriteSheet;
+    FCTilesetSpriteSheet, DTTilesetSpriteSheet, RUTilesetSpriteSheet, DCTilesetSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
-
-        .add("src/images/tilesets/dc_tileset/dry_cave_floor_tile_0.png")
-        .add("src/images/tilesets/dc_tileset/dry_cave_walls_0.png")
-
-
         .add("src/images/player_hd.png")
         .add("src/images/player2_hd.png")
         .add("src/images/npc/shopkeeper.png")
@@ -25,6 +20,7 @@ export function loadAll(afterLoad) {
         .add("src/textures/fc_tileset.json")
         .add("src/textures/dt_tileset.json")
         .add("src/textures/ru_tileset.json")
+        .add("src/textures/dc_tileset.json")
         .add("src/textures/effects.json")
         .add("src/textures/intents.json")
         .add("src/textures/achievements.json")
@@ -85,4 +81,5 @@ function setSpriteSheets() {
     FCTilesetSpriteSheet = Game.loader.resources["src/textures/fc_tileset.json"].textures;
     DTTilesetSpriteSheet = Game.loader.resources["src/textures/dt_tileset.json"].textures;
     RUTilesetSpriteSheet = Game.loader.resources["src/textures/ru_tileset.json"].textures;
+    DCTilesetSpriteSheet = Game.loader.resources["src/textures/dc_tileset.json"].textures;
 }

@@ -2,7 +2,7 @@ import {TileElement} from "../tile_elements/tile_element";
 import {Game} from "../../game";
 import {STAGE} from "../../enums/enums";
 import {randomChoice} from "../../utils/random_utils";
-import {DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
+import {DCTilesetSpriteSheet, DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
 
 
 export class FloorTile extends TileElement {
@@ -70,7 +70,7 @@ export class FloorTile extends TileElement {
                     RUTilesetSpriteSheet["ruins_floor_tile_9.png"]]);
             }
         } else if (Game.stage === STAGE.DRY_CAVE) {
-            this.texture = Game.resources["src/images/tilesets/dc_tileset/dry_cave_floor_tile_0.png"].texture;
+            this.texture = randomChoice([DCTilesetSpriteSheet["dry_cave_floor_tile_0.png"]]);
         }
     }
 }
