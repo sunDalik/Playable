@@ -240,6 +240,7 @@ export class AnimatedTileElement extends ShadowTileElement {
 
         const animation = (delta) => {
             if (Game.paused) return;
+            this.animationCounter += delta;
             if (this.animationCounter < animationTime / 4) {
                 this.position.x += step * dirX * delta;
                 this.position.y += step * dirY * delta;
@@ -250,7 +251,6 @@ export class AnimatedTileElement extends ShadowTileElement {
                 this.position.x += step * dirX * delta;
                 this.position.y += step * dirY * delta;
             }
-            this.animationCounter += delta;
             if (this.animationCounter >= animationTime) {
                 this.animationCounter = 0;
                 this.place();
