@@ -70,7 +70,10 @@ export class FloorTile extends TileElement {
                     RUTilesetSpriteSheet["ruins_floor_tile_9.png"]]);
             }
         } else if (Game.stage === STAGE.DRY_CAVE) {
-            this.texture = randomChoice([DCTilesetSpriteSheet["dry_cave_floor_tile_0.png"]]);
+            this.texture = randomChoice([DCTilesetSpriteSheet["dry_cave_floor_tile_0.png"],
+                DCTilesetSpriteSheet["dry_cave_floor_tile_1.png"],
+                DCTilesetSpriteSheet["dry_cave_floor_tile_2.png"],
+                DCTilesetSpriteSheet["dry_cave_floor_tile_3.png"]]);
         }
     }
 }
