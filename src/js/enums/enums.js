@@ -2,7 +2,7 @@ export const ENEMY_TYPE = Object.freeze({
     ROLLER: 0,
     ROLLER_RED: 1,
     STAR: 2,
-    STAR_RED: 3,
+    DEAD_STAR: 3,
     SPIDER: 4,
     SPIDER_GRAY: 5,
     SNAIL: 6,

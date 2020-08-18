@@ -1,14 +1,14 @@
-import {Star} from "./star";
+import {Star} from "../fc/star";
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {getPlayerOnTile, isNotAWall} from "../../../map_checks";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {DCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {getCardinalDirections, getDiagonalDirections} from "../../../utils/map_utils";
 
-export class RedStar extends Star {
-    constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star_b.png"]) {
+export class DeadStar extends Star {
+    constructor(tilePositionX, tilePositionY, texture = DCEnemiesSpriteSheet["dead_star.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.type = ENEMY_TYPE.DEAD_STAR;
-        this.name = "Red Star";
+        this.name = "Dead Star";
         this.intentIcon2 = this.createIntentIcon();
     }
 
