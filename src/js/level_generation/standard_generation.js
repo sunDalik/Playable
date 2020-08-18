@@ -893,7 +893,7 @@ function shatterRoom(room) {
             if (i === 0 || j === 0 || i === room.height - 1 || j === room.width - 1) {
                 const tile = {x: j + room.offsetX, y: i + room.offsetY};
                 if (level[tile.y][tile.x] === LEVEL_SYMBOLS.WALL
-                    && Math.random() < 0.15
+                    && Math.random() < 0.18
                     && tile.x >= 1 && tile.y >= 1 && tile.x <= level[0].length - 2 && tile.y <= level.length - 2) {
                     let allowed = false;
                     for (const dir of getCardinalDirections()) {
