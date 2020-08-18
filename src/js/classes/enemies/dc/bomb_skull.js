@@ -1,6 +1,7 @@
 import {DCEnemiesSpriteSheet} from "../../../loader";
 import {Roller} from "../fc/roller";
 import {Bomb} from "../../equipment/bag/bomb";
+import {ENEMY_TYPE} from "../../../enums/enums";
 
 export class BombSkull extends Roller {
     constructor(tilePositionX, tilePositionY, texture = DCEnemiesSpriteSheet["bomb_skull.png"]) {
@@ -8,6 +9,8 @@ export class BombSkull extends Roller {
         this.setScaleModifier(1);
         this.slider = false;
         this.bomber = false;
+        this.name = "Bomb Skull";
+        this.type = ENEMY_TYPE.BOMB_SKULL;
         if (Math.random() < 0.3) {
             this.bomber = true;
             this.texture = DCEnemiesSpriteSheet["bomb_skull_bomber.png"];
@@ -28,7 +31,6 @@ export class BombSkull extends Roller {
 
     die(source) {
         super.die(source);
-
         if (this.bomber) {
             new Bomb().useItem(this);
         }

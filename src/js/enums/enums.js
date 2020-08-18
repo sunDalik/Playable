@@ -44,7 +44,8 @@ export const ENEMY_TYPE = Object.freeze({
     LUNATIC_LEADER_SPIRIT_CLONE: 42,
     TRAINING_DUMMY: 43,
     LOST_MAGE: 44,
-    CACTUS_WALL_TRAP: 45
+    CACTUS_WALL_TRAP: 45,
+    BOMB_SKULL: 46
 });
 
 export const RABBIT_TYPE = Object.freeze({
