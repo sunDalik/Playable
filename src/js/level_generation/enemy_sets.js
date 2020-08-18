@@ -37,6 +37,7 @@ import {DrySnail} from "../classes/enemies/dc/dry_snail";
 import {DryCocoon} from "../classes/enemies/dc/dry_cocoon";
 import {DryStar} from "../classes/enemies/dc/dry_star";
 import {BombSkull} from "../classes/enemies/dc/bomb_skull";
+import {DryFrog} from "../classes/enemies/dc/dry_frog";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
@@ -305,9 +306,14 @@ export const RUBossSets = [
 ];
 
 // most of them are copied from FC
-// Snail is replaced with DrySnail, Star is replaced with DrySnail, Cocoon is replaced with DryCocoon, SpikySnail is replaced with FireSnail
-// Rollers are replaced with BombSkulls
-// No Eels
+// Resprites:
+// Snail is replaced with DrySnail, Star is replaced with DryStar, Cocoon is replaced with DryCocoon, Frogs are replaced with Dry Frogs
+// Replacements:
+// Rollers are replaced with BombSkulls, SpikySnail is replaced with FireSnail,
+// Added enemies:
+// FireFrog, DeadStar
+// Removed enemies:
+// Eels, Dark Eels, Poison Eels, KingFrogs and MiniStars
 export const DCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
     [BombSkull],
@@ -322,20 +328,20 @@ export const DCEnemySets = [
     [DrySnail, DrySnail, DrySnail],
     [SmallMushroom],
     [SmallMushroom, SmallMushroom],
-    [SmallMushroom, KingFrog],
-    [KingFrog, KingFrog],
-    [SmallMushroom, SmallMushroom, SmallMushroom, SmallMushroom, KingFrog],
-    [Frog, Frog, Frog, Frog],
-    [Frog, Frog],
-    [Frog, BombSkull, BombSkull],
+    [SmallMushroom, FireFrog],
+    [FireFrog, FireFrog],
+    [SmallMushroom, SmallMushroom, SmallMushroom, SmallMushroom, Frog],
+    [DryFrog, DryFrog, DryFrog, DryFrog],
+    [DryFrog, DryFrog],
+    [DryFrog, BombSkull, BombSkull],
     [Spider, DeadStar],
     [DeadStar],
     [Spider, GraySpider, SmallMushroom],
-    [Frog, SmallMushroom],
+    [DryFrog, SmallMushroom],
     [FireSnail, DrySnail, FireSnail, DrySnail],
     [FireSnail, Spider, GraySpider],
-    [KingFrog],
-    [KingFrog, Frog, Frog],
+    [FireFrog],
+    [FireFrog, DryFrog, DryFrog],
     [GraySpider, DrySnail],
     [Spider, GraySpider],
     [Spider, BombSkull, BombSkull],
@@ -343,7 +349,7 @@ export const DCEnemySets = [
     [GraySpider, FireSnail],
     [Spider, FireSnail],
     [GraySpider, SpiderSmall, DrySnail, DrySnail, DrySnail],
-    [Frog, Frog, DryStar, DryStar],
+    [DryFrog, DryFrog, DryStar, DryStar],
     [GraySpider, SpiderSmall, DrySnail, DrySnail],
     [DryCocoon, DryCocoon, DryCocoon],
     [DryCocoon],
@@ -356,11 +362,11 @@ export const DCEnemySets = [
     [DryCocoon, DryStar, DryStar],
     [DryCocoon],
     [DryCocoon, DryCocoon, DryStar],
-    [DryCocoon, Frog],
+    [DryCocoon, DryFrog],
     [BombSkull, BombSkull, BombSkull, BombSkull, Spider],
     [BombSkull, BombSkull, BombSkull, BombSkull, BombSkull, Spider],
     [BombSkull, BombSkull, BombSkull, BombSkull, BombSkull, DryStar],
-    [BombSkull, BombSkull, BombSkull, BombSkull, BombSkull, Frog],
+    [BombSkull, BombSkull, BombSkull, BombSkull, BombSkull, DryFrog],
     [BombSkull, BombSkull, BombSkull, BombSkull, BombSkull, DryCocoon],
     [DeadStar, DryStar],
     [DeadStar, BombSkull, BombSkull, BombSkull, BombSkull],
@@ -372,15 +378,15 @@ export const DCEnemySets = [
     [BombSkull, Mushroom, BombSkull],
     [DryStar, Mushroom, DryStar, Mushroom],
     [Mushroom, Mushroom],
-    [Frog, Mushroom, KingFrog],
+    [DryFrog, Mushroom, FireFrog],
     [BombSkull, BombSkull, BombSkull, Mushroom, Mushroom],
     [DryCocoon, Mushroom, Mushroom],
     [Mushroom, Spider, Mushroom],
     [Mushroom, GraySpider, GraySpider],
     [Mushroom, DrySnail],
     [Mushroom, DeadStar],
-    [Frog, Mushroom],
-    [KingFrog, Mushroom],
+    [DryFrog, Mushroom],
+    [FireFrog, Mushroom],
     [Mushroom, FireSnail, DrySnail],
     [SpiderSmall],
     [SpiderSmall, SpiderSmall],
@@ -397,7 +403,10 @@ export const DCEnemySets = [
     [GraySpider, SpiderSmall, SpiderSmall],
     [SpiderSmall, SpiderSmall, FireSnail],
     [FireSnail, DrySnail],
-    [FireSnail, SpiderSmall]
+    [FireSnail, SpiderSmall],
+    [FireFrog, DryFrog],
+    [FireFrog, DryFrog, DryFrog, FireFrog],
+    [FireFrog, FireFrog, DryFrog]
 ];
 
 export const DCBossSets = [
