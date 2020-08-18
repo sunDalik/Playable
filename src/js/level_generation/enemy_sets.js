@@ -305,6 +305,7 @@ export const RUBossSets = [
 
 // most of them are copied from FC
 // Snail is replaced with DrySnail, Star is replaced with DrySnail, Cocoon is replaced with DryCocoon, SpikySnail is replaced with FireSnail
+// No Eels
 export const DCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
     [Roller],

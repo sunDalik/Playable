@@ -1,6 +1,6 @@
 import {Game} from "../../game";
 import {Hazard} from "./hazard";
-import {HAZARD_TYPE} from "../../enums/enums";
+import {HAZARD_TYPE, STAGE} from "../../enums/enums";
 import {randomFloat, randomInt} from "../../utils/random_utils";
 import * as PIXI from "pixi.js";
 import {removeObjectFromArray} from "../../utils/basic_utils";
@@ -21,6 +21,12 @@ export class PoisonHazard extends Hazard {
         this.particleTexture = EffectsSpriteSheet["poison_bubble.png"];
         this.staticColor = 0x0052a7;
         this.colorConstraints = {min: 0x6a0000, max: 0x840000};
+        // paler color in dry cave
+        if (Game.stage === STAGE.DRY_CAVE) {
+            this.staticColor = 0x00629c;
+            this.colorConstraints = {min: 0x6e0000, max: 0x880000};
+            this.particleTexture = EffectsSpriteSheet["poison_bubble_dry.png"];
+        }
         this.tint = 0x7752a7;
     }
 
