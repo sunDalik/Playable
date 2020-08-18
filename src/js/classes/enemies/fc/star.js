@@ -20,6 +20,7 @@ export class Star extends Enemy {
         this.shadowHeight = 7;
         this.regenerateShadow();
         this.place();
+        this.spikeColor = 0xa4d352;
     }
 
     setStun(stun) {
@@ -90,7 +91,7 @@ export class Star extends Enemy {
     }
 
     createSpikeAnimation(offsetX, offsetY) {
-        createCrazySpikeAnimation(this, offsetX, offsetY, this.type === ENEMY_TYPE.STAR ? 0xa4d352 : 0xdf403c);
+        createCrazySpikeAnimation(this, offsetX, offsetY, this.spikeColor);
     }
 
     updateIntentIcon() {

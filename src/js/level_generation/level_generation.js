@@ -1,7 +1,16 @@
 import {Game} from "../game";
 import {PLAY_MODE, STAGE} from "../enums/enums";
 import {generateStandard, setupGenerator} from "./standard_generation";
-import {DTBossSets, DTEnemySets, FCBossSets, FCEnemySets, RUBossSets, RUEnemySets} from "./enemy_sets";
+import {
+    DCBossSets,
+    DCEnemySets,
+    DTBossSets,
+    DTEnemySets,
+    FCBossSets,
+    FCEnemySets,
+    RUBossSets,
+    RUEnemySets
+} from "./enemy_sets";
 import {Settings} from "./settings";
 import {generateTutorialLevel} from "../tutorial/tutorial_generation";
 
@@ -13,7 +22,7 @@ export function generateLevel() {
             setupGenerator(new Settings(30, 40, 30, 40, FCEnemySets, FCBossSets));
             return generateStandard();
         case STAGE.DRY_CAVE:
-            setupGenerator(new Settings(30, 40, 30, 40, FCEnemySets, FCBossSets));
+            setupGenerator(new Settings(30, 40, 30, 40, DCEnemySets, DCBossSets));
             return generateStandard();
         case STAGE.DARK_TUNNEL:
             setupGenerator(new Settings(40, 55, 20, 25, DTEnemySets, DTBossSets));

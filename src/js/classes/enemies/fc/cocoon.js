@@ -85,10 +85,10 @@ export class Cocoon extends Enemy {
 
     setMinionType() {
         const random = Math.random();
-        if (Game.stage === STAGE.FLOODED_CAVE) {
+        if (Game.stage === STAGE.FLOODED_CAVE || Game.stage === STAGE.DRY_CAVE) {
             if (random > 0.9) {
                 this.minionType = Spider;
-            } else if (random > 0.7) {
+            } else if (random > 0.8) {
                 this.minionType = GraySpider;
             } else {
                 this.minionType = SpiderSmall;

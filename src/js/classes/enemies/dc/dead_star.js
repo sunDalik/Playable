@@ -10,6 +10,7 @@ export class DeadStar extends Star {
         this.type = ENEMY_TYPE.DEAD_STAR;
         this.name = "Dead Star";
         this.intentIcon2 = this.createIntentIcon();
+        this.spikeColor = 0x616a7e;
     }
 
     move() {

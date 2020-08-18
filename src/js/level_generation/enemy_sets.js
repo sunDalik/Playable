@@ -10,7 +10,6 @@ import {PoisonEel} from "../classes/enemies/fc/eel_poison";
 import {SmallMushroom} from "../classes/enemies/fc/mushroom_small";
 import {KingFrog} from "../classes/enemies/fc/frog_king";
 import {Frog} from "../classes/enemies/fc/frog";
-import {RedStar} from "../classes/enemies/fc/star_red";
 import {Cocoon} from "../classes/enemies/fc/cocoon";
 import {ParanoidEel} from "../classes/enemies/bosses/paranoid_eel";
 import {GuardianOfTheLight} from "../classes/enemies/bosses/guardian_of_the_light";
@@ -33,6 +32,10 @@ import {BladeDemon} from "../classes/enemies/ru/blade_demon";
 import {LavaSlime} from "../classes/enemies/ru/lava_slime";
 import {LunaticLeader} from "../classes/enemies/bosses/lunatic_leader";
 import {LostMage} from "../classes/enemies/dt/lost_mage";
+import {DeadStar} from "../classes/enemies/dc/dead_star";
+import {DrySnail} from "../classes/enemies/dc/dry_snail";
+import {DryCocoon} from "../classes/enemies/dc/dry_cocoon";
+import {DryStar} from "../classes/enemies/dc/dry_star";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
@@ -60,8 +63,6 @@ export const FCEnemySets = [
     [Frog, Roller, Roller],
     [DarkEel, Snail],
     [DarkEel, Snail, Snail],
-    [Spider, RedStar],
-    [RedStar],
     [Spider, GraySpider, SmallMushroom],
     [Frog, SmallMushroom],
     [Frog, Eel, DarkEel],
@@ -113,10 +114,6 @@ export const FCEnemySets = [
     [Roller, Roller, Roller, Roller, Roller, Star],
     [Roller, Roller, Roller, Roller, Roller, Frog],
     [Roller, Roller, Roller, Roller, Roller, Cocoon],
-    [RedStar, Star],
-    [RedStar, Roller, Roller, Roller, Roller],
-    [RedStar, Roller, Roller],
-    [RedStar, Eel, Eel],
     [Mushroom],
     [SmallMushroom, Mushroom],
     [SmallMushroom, SmallMushroom, Mushroom],
@@ -132,7 +129,6 @@ export const FCEnemySets = [
     [Mushroom, GraySpider, GraySpider],
     [Mushroom, Snail],
     [Mushroom, DarkEel, DarkEel],
-    [Mushroom, RedStar],
     [Frog, Mushroom],
     [KingFrog, Mushroom],
     [Mushroom, SpikySnail, Snail],
@@ -305,4 +301,100 @@ export const RUEnemySets = [
 
 export const RUBossSets = [
     [LunaticLeader]
+];
+
+export const DCEnemySets = [
+    [GraySpider, GraySpider, SpiderSmall],
+    [Roller],
+    [Spider],
+    [GraySpider],
+    [DrySnail],
+    [FireSnail],
+    [Roller, Roller, Roller, Roller, Roller, Roller],
+    [DryStar, DryStar, DryStar, DryStar],
+    [DryStar, GraySpider],
+    [DrySnail, DrySnail],
+    [DrySnail, DrySnail, DrySnail],
+    [SmallMushroom],
+    [SmallMushroom, SmallMushroom],
+    [SmallMushroom, KingFrog],
+    [KingFrog, KingFrog],
+    [SmallMushroom, SmallMushroom, SmallMushroom, SmallMushroom, KingFrog],
+    [Frog, Frog, Frog, Frog],
+    [Frog, Frog],
+    [Frog, Roller, Roller],
+    [Spider, DeadStar],
+    [DeadStar],
+    [Spider, GraySpider, SmallMushroom],
+    [Frog, SmallMushroom],
+    [FireSnail, DrySnail, FireSnail, DrySnail],
+    [FireSnail, Spider, GraySpider],
+    [KingFrog],
+    [KingFrog, Frog, Frog],
+    [GraySpider, DrySnail],
+    [Spider, GraySpider],
+    [Spider, Roller, Roller],
+    [Spider, DrySnail],
+    [GraySpider, FireSnail],
+    [Spider, FireSnail],
+    [GraySpider, SpiderSmall, DrySnail, DrySnail, DrySnail],
+    [Frog, Frog, DryStar, DryStar],
+    [GraySpider, SpiderSmall, DrySnail, DrySnail],
+    [DryCocoon, DryCocoon, DryCocoon],
+    [DryCocoon],
+    [DryCocoon, Spider],
+    [DryCocoon, GraySpider],
+    [DryCocoon, GraySpider, Spider],
+    [DryCocoon, DryCocoon, GraySpider, Spider],
+    [DryCocoon, DryCocoon, Roller, GraySpider, Spider],
+    [DryCocoon, DrySnail, DrySnail, DryCocoon],
+    [DryCocoon, DryStar, DryStar],
+    [DryCocoon],
+    [DryCocoon, DryCocoon, DryStar],
+    [DryCocoon, Frog],
+    [Roller, Roller, Roller, Roller, Spider],
+    [Roller, Roller, Roller, Roller, Roller, Spider],
+    [Roller, Roller, Roller, Roller, Roller, DryStar],
+    [Roller, Roller, Roller, Roller, Roller, Frog],
+    [Roller, Roller, Roller, Roller, Roller, DryCocoon],
+    [DeadStar, DryStar],
+    [DeadStar, Roller, Roller, Roller, Roller],
+    [DeadStar, Roller, Roller],
+    [Mushroom],
+    [SmallMushroom, Mushroom],
+    [SmallMushroom, SmallMushroom, Mushroom],
+    [SmallMushroom, SmallMushroom, Mushroom, Mushroom],
+    [Roller, Mushroom, Roller],
+    [DryStar, Mushroom, DryStar, Mushroom],
+    [Mushroom, Mushroom],
+    [Frog, Mushroom, KingFrog],
+    [Roller, Roller, Roller, Mushroom, Mushroom],
+    [DryCocoon, Mushroom, Mushroom],
+    [Mushroom, Spider, Mushroom],
+    [Mushroom, GraySpider, GraySpider],
+    [Mushroom, DrySnail],
+    [Mushroom, DeadStar],
+    [Frog, Mushroom],
+    [KingFrog, Mushroom],
+    [Mushroom, FireSnail, DrySnail],
+    [SpiderSmall],
+    [SpiderSmall, SpiderSmall],
+    [SpiderSmall, SpiderSmall, SpiderSmall],
+    [SpiderSmall, SpiderSmall, SpiderSmall, SpiderSmall],
+    [DryCocoon, SpiderSmall],
+    [DryCocoon, SpiderSmall, SpiderSmall, SpiderSmall],
+    [DryCocoon, DryCocoon, SpiderSmall, SpiderSmall],
+    [SpiderSmall, SpiderSmall, DrySnail, DrySnail],
+    [SpiderSmall, DrySnail],
+    [SpiderSmall, Spider],
+    [SpiderSmall, DryStar, DryStar],
+    [Roller, Roller, Roller, Roller, SpiderSmall, SpiderSmall],
+    [GraySpider, SpiderSmall, SpiderSmall],
+    [SpiderSmall, SpiderSmall, FireSnail],
+    [FireSnail, DrySnail],
+    [FireSnail, SpiderSmall]
+];
+
+export const DCBossSets = [
+    [ParanoidEel]
 ];
