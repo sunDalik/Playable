@@ -16,6 +16,7 @@ export class Roller extends Enemy {
         this.SLIDE_ANIMATION_TIME = 6;
         this.type = ENEMY_TYPE.ROLLER;
         this.setScaleModifier(0.85);
+        this.slider = true;
     }
 
     cancelAnimation() {
@@ -38,7 +39,8 @@ export class Roller extends Enemy {
                 player.damage(this.atk, this);
                 this.rollBump();
             } else {
-                this.slide(this.direction, 0);
+                if (this.slider) this.slide(this.direction, 0);
+                else this.step(this.direction, 0);
             }
         } else this.rollBump();
     }

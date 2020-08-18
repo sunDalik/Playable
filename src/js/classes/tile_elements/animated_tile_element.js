@@ -81,20 +81,20 @@ export class AnimatedTileElement extends ShadowTileElement {
         const b = -(this.position.x + (tileStepX * Game.TILESIZE / 2) / 2) * 2 * a;
         const c = (4 * a * (this.position.y - jumpHeight) - (b ** 2) + 2 * (b ** 2)) / (4 * a);
         const stepX = tileStepX * Game.TILESIZE / animationTime;
-        let counter = 0;
+        this.animationCounter = 0;
 
         const animation = (delta) => {
             if (Game.paused) return;
-            if (counter < animationTime / 2) {
+            if (this.animationCounter < animationTime / 2) {
                 this.position.x += stepX * delta;
             } else {
                 this.position.x -= stepX * delta;
             }
             this.position.y = a * (this.position.x ** 2) + b * this.position.x + c;
-            counter += delta;
+            this.animationCounter += delta;
 
             if (onFrame) onFrame();
-            if (counter >= animationTime) {
+            if (this.animationCounter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
@@ -123,20 +123,20 @@ export class AnimatedTileElement extends ShadowTileElement {
             P2 = 0.97;
             P3 = 0.75;
         }
-        let counter = 0;
+        this.animationCounter = 0;
 
         const animation = (delta) => {
             if (Game.paused) return;
-            counter += delta;
-            const x = counter / animationTime;
-            if (counter <= animationTime / 2) {
+            this.animationCounter += delta;
+            const x = this.animationCounter / animationTime;
+            if (this.animationCounter <= animationTime / 2) {
                 this.position.y = oldPosition + cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE / 2 * tileStepY;
                 newPosition = this.position.y;
             } else {
                 this.position.y = newPosition - cubicBezier(x, P0, P1, P2, P3) * Game.TILESIZE / 2 * tileStepY;
             }
             if (onFrame) onFrame();
-            if (counter >= animationTime) {
+            if (this.animationCounter >= animationTime) {
                 Game.app.ticker.remove(animation);
                 this.animation = null;
                 this.place();
