@@ -23,7 +23,7 @@ export class PoisonHazard extends Hazard {
         this.colorConstraints = {min: 0x6a0000, max: 0x840000};
         // paler color in dry cave
         if (Game.stage === STAGE.DRY_CAVE) {
-            this.staticColor = 0x00629c;
+            this.staticColor = 0x006696;
             this.colorConstraints = {min: 0x6e0000, max: 0x880000};
             this.particleTexture = EffectsSpriteSheet["poison_bubble_dry.png"];
         }
