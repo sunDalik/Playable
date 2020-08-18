@@ -8,7 +8,7 @@ export class BombSkull extends Roller {
         this.setScaleModifier(1);
         this.slider = false;
         this.bomber = false;
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.2) {
             this.bomber = true;
             this.texture = DCEnemiesSpriteSheet["bomb_skull_bomber.png"];
         }

@@ -36,6 +36,7 @@ import {DeadStar} from "../classes/enemies/dc/dead_star";
 import {DrySnail} from "../classes/enemies/dc/dry_snail";
 import {DryCocoon} from "../classes/enemies/dc/dry_cocoon";
 import {DryStar} from "../classes/enemies/dc/dry_star";
+import {BombSkull} from "../classes/enemies/dc/bomb_skull";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
@@ -305,15 +306,16 @@ export const RUBossSets = [
 
 // most of them are copied from FC
 // Snail is replaced with DrySnail, Star is replaced with DrySnail, Cocoon is replaced with DryCocoon, SpikySnail is replaced with FireSnail
+// Rollers are replaced with BombSkulls
 // No Eels
 export const DCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
-    [Roller],
+    [BombSkull],
     [Spider],
     [GraySpider],
     [DrySnail],
     [FireSnail],
-    [Roller, Roller, Roller, Roller, Roller, Roller],
+    [BombSkull, BombSkull, BombSkull, BombSkull, BombSkull, BombSkull],
     [DryStar, DryStar, DryStar, DryStar],
     [DryStar, GraySpider],
     [DrySnail, DrySnail],
@@ -325,7 +327,7 @@ export const DCEnemySets = [
     [SmallMushroom, SmallMushroom, SmallMushroom, SmallMushroom, KingFrog],
     [Frog, Frog, Frog, Frog],
     [Frog, Frog],
-    [Frog, Roller, Roller],
+    [Frog, BombSkull, BombSkull],
     [Spider, DeadStar],
     [DeadStar],
     [Spider, GraySpider, SmallMushroom],
@@ -336,7 +338,7 @@ export const DCEnemySets = [
     [KingFrog, Frog, Frog],
     [GraySpider, DrySnail],
     [Spider, GraySpider],
-    [Spider, Roller, Roller],
+    [Spider, BombSkull, BombSkull],
     [Spider, DrySnail],
     [GraySpider, FireSnail],
     [Spider, FireSnail],
@@ -349,29 +351,29 @@ export const DCEnemySets = [
     [DryCocoon, GraySpider],
     [DryCocoon, GraySpider, Spider],
     [DryCocoon, DryCocoon, GraySpider, Spider],
-    [DryCocoon, DryCocoon, Roller, GraySpider, Spider],
+    [DryCocoon, DryCocoon, BombSkull, GraySpider, Spider],
     [DryCocoon, DrySnail, DrySnail, DryCocoon],
     [DryCocoon, DryStar, DryStar],
     [DryCocoon],
     [DryCocoon, DryCocoon, DryStar],
     [DryCocoon, Frog],
-    [Roller, Roller, Roller, Roller, Spider],
-    [Roller, Roller, Roller, Roller, Roller, Spider],
-    [Roller, Roller, Roller, Roller, Roller, DryStar],
-    [Roller, Roller, Roller, Roller, Roller, Frog],
-    [Roller, Roller, Roller, Roller, Roller, DryCocoon],
+    [BombSkull, BombSkull, BombSkull, BombSkull, Spider],
+    [BombSkull, BombSkull, BombSkull, BombSkull, BombSkull, Spider],
+    [BombSkull, BombSkull, BombSkull, BombSkull, BombSkull, DryStar],
+    [BombSkull, BombSkull, BombSkull, BombSkull, BombSkull, Frog],
+    [BombSkull, BombSkull, BombSkull, BombSkull, BombSkull, DryCocoon],
     [DeadStar, DryStar],
-    [DeadStar, Roller, Roller, Roller, Roller],
-    [DeadStar, Roller, Roller],
+    [DeadStar, BombSkull, BombSkull, BombSkull, BombSkull],
+    [DeadStar, BombSkull, BombSkull],
     [Mushroom],
     [SmallMushroom, Mushroom],
     [SmallMushroom, SmallMushroom, Mushroom],
     [SmallMushroom, SmallMushroom, Mushroom, Mushroom],
-    [Roller, Mushroom, Roller],
+    [BombSkull, Mushroom, BombSkull],
     [DryStar, Mushroom, DryStar, Mushroom],
     [Mushroom, Mushroom],
     [Frog, Mushroom, KingFrog],
-    [Roller, Roller, Roller, Mushroom, Mushroom],
+    [BombSkull, BombSkull, BombSkull, Mushroom, Mushroom],
     [DryCocoon, Mushroom, Mushroom],
     [Mushroom, Spider, Mushroom],
     [Mushroom, GraySpider, GraySpider],
@@ -391,7 +393,7 @@ export const DCEnemySets = [
     [SpiderSmall, DrySnail],
     [SpiderSmall, Spider],
     [SpiderSmall, DryStar, DryStar],
-    [Roller, Roller, Roller, Roller, SpiderSmall, SpiderSmall],
+    [BombSkull, BombSkull, BombSkull, BombSkull, SpiderSmall, SpiderSmall],
     [GraySpider, SpiderSmall, SpiderSmall],
     [SpiderSmall, SpiderSmall, FireSnail],
     [FireSnail, DrySnail],
