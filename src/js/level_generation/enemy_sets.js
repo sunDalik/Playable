@@ -38,6 +38,7 @@ import {DryCocoon} from "../classes/enemies/dc/dry_cocoon";
 import {DryStar} from "../classes/enemies/dc/dry_star";
 import {BombSkull} from "../classes/enemies/dc/bomb_skull";
 import {DryFrog} from "../classes/enemies/dc/dry_frog";
+import {DesertWorm} from "../classes/enemies/dc/desert_worm";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
@@ -311,7 +312,7 @@ export const RUBossSets = [
 // Replacements:
 // Rollers are replaced with BombSkulls, SpikySnail is replaced with FireSnail,
 // Added enemies:
-// FireFrog, DeadStar
+// FireFrog, DeadStar, DesertWorm
 // Removed enemies:
 // Eels, Dark Eels, Poison Eels, KingFrogs and MiniStars
 export const DCEnemySets = [
@@ -406,7 +407,30 @@ export const DCEnemySets = [
     [FireSnail, SpiderSmall],
     [FireFrog, DryFrog],
     [FireFrog, DryFrog, DryFrog, FireFrog],
-    [FireFrog, FireFrog, DryFrog]
+    [FireFrog, FireFrog, DryFrog],
+    [DesertWorm],
+    [DesertWorm, DesertWorm],
+    [DesertWorm, DesertWorm, DesertWorm],
+    [DesertWorm, DesertWorm, DesertWorm, DesertWorm],
+    [DesertWorm, BombSkull],
+    [DesertWorm, DesertWorm, BombSkull, BombSkull],
+    [DesertWorm, BombSkull, BombSkull],
+    [DesertWorm, DesertWorm, BombSkull],
+    [DesertWorm, DesertWorm, DrySnail],
+    [DesertWorm, DrySnail, DrySnail],
+    [DesertWorm, DryFrog, FireFrog],
+    [DesertWorm, DesertWorm, FireFrog, DryFrog, SpiderSmall],
+    [DesertWorm, DryStar],
+    [DesertWorm, DryStar, DryStar],
+    [DesertWorm, DesertWorm, DryStar, DryStar],
+    [DesertWorm, DesertWorm, DesertWorm, BombSkull, SpiderSmall, SpiderSmall],
+    [DesertWorm, DesertWorm, DesertWorm, BombSkull, SpiderSmall, BombSkull],
+    [DesertWorm, DesertWorm, DryCocoon],
+    [DesertWorm, DeadStar],
+    [DeadStar, DeadStar],
+    [DeadStar, DryFrog],
+    [DeadStar, FireFrog],
+    [DeadStar, DryFrog, FireFrog]
 ];
 
 export const DCBossSets = [
