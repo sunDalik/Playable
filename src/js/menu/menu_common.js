@@ -335,21 +335,17 @@ export function createDiscordButton(delay = 0) {
 
         const redrawBg = () => {
             bg.clear();
-            bg.beginFill(0x7289DA);
-            //bg.beginFill(0x2C2F33);
-            bg.drawRoundedRect(0, 0, button.width + 20, button.height + 20, 7);
+            bg.beginFill(0xFFFFFF);
+            bg.drawRoundedRect(0, 0, button.width + 16, button.height + 16, 7);
             bg.position.set(button.position.x - bg.width / 2, button.position.y - bg.height / 2);
         };
 
         button.redraw = selected => {
-            // commented is alt variant black+purple
             if (selected) {
-                button.texture = DiscordSpriteSheet["Discord-Logo+Wordmark-White.png"];
-                //button.texture = DiscordSpriteSheet["Discord-Logo+Wordmark-Color.png"];
+                button.texture = DiscordSpriteSheet["Discord-Logo+Wordmark-Color.png"];
                 button.scale.set(chosenScale);
             } else {
-                button.texture = DiscordSpriteSheet["Discord-Logo-White.png"];
-                //button.texture = DiscordSpriteSheet["Discord-Logo-Color.png"];
+                button.texture = DiscordSpriteSheet["Discord-Logo-Color.png"];
                 button.scale.set(endScale);
             }
             const offsetX = 80;
@@ -414,8 +410,8 @@ export function createVersionNumber(version, delay = 0) {
     setTickTimeout(() => {
         container.addChild(text);
 
-        const offsetX = 80 - 10 - 20; //-20 for some reason
-        const offsetY = 50 - 10;
+        const offsetX = 80 - 8 - 20; //-20 for some reason
+        const offsetY = 50 - 8;
         text.position.x = offsetX + text.width / 2;
         text.position.y = Game.app.renderer.screen.height - offsetY - text.height / 2;
         text.scale.x = text.scale.y = 0;
