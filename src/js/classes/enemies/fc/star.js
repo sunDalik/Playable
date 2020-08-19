@@ -14,7 +14,7 @@ export class Star extends Enemy {
         this.triggered = false;
         this.triggeredDirections = null;
         this.type = ENEMY_TYPE.STAR;
-        this.turnDelay = 1;
+        this.currentTurnDelay = this.turnDelay = 1;
         this.movable = false;
         this.shadowInside = true;
         this.shadowHeight = 7;
@@ -30,7 +30,7 @@ export class Star extends Enemy {
     }
 
     move() {
-        if (this.turnDelay === 0) {
+        if (this.currentTurnDelay <= 0) {
             if (this.triggered) this.attack();
             else {
                 if (this.canAttackCardinally()) {
@@ -42,7 +42,7 @@ export class Star extends Enemy {
                 }
                 if (this.triggered) this.shake(1, 0);
             }
-        } else this.turnDelay--;
+        } else this.currentTurnDelay--;
     }
 
     attack() {
@@ -52,7 +52,7 @@ export class Star extends Enemy {
         } else if (this.triggeredDirections === DIRECTIONS.DIAGONAL) {
             this.attackDiagonal();
         }
-        this.turnDelay = 1;
+        this.currentTurnDelay = this.turnDelay;
     }
 
     attackCardinal() {
@@ -100,7 +100,7 @@ export class Star extends Enemy {
         if (this.triggered) {
             this.intentIcon.texture = IntentsSpriteSheet["spikes.png"];
             if (this.triggeredDirections === DIRECTIONS.CARDINAL) this.intentIcon.angle = 45;
-        } else if (this.turnDelay > 0) {
+        } else if (this.currentTurnDelay > 0) {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
         } else {
             this.intentIcon.texture = IntentsSpriteSheet["eye.png"];

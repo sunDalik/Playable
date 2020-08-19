@@ -47,7 +47,8 @@ export const ENEMY_TYPE = Object.freeze({
     CACTUS_WALL_TRAP: 45,
     BOMB_SKULL: 46,
     DESERT_WORM: 47,
-    MINI_STAR: 48
+    MINI_STAR: 48,
+    POISONOUS_STAR: 49
 });
 
 export const RABBIT_TYPE = Object.freeze({

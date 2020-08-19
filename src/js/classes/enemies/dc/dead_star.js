@@ -11,10 +11,12 @@ export class DeadStar extends Star {
         this.name = "Dead Star";
         this.intentIcon2 = this.createIntentIcon();
         this.spikeColor = 0x616a7e;
+        this.turnDelay = 2;
+        this.currentTurnDelay = 1;
     }
 
     move() {
-        if (this.turnDelay === 0) {
+        if (this.currentTurnDelay <= 0) {
             if (this.triggered) this.attack();
             else {
                 if (this.canAttackCardinally() || this.canAttackDiagonally()) {
@@ -22,14 +24,14 @@ export class DeadStar extends Star {
                     this.shake(1, 0);
                 }
             }
-        } else this.turnDelay--;
+        } else this.currentTurnDelay--;
     }
 
     attack() {
         this.triggered = false;
         this.attackCardinal();
         this.attackDiagonal();
-        this.turnDelay = 2;
+        this.currentTurnDelay = this.turnDelay;
     }
 
     updateIntentIcon() {

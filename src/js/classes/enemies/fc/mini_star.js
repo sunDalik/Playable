@@ -7,7 +7,6 @@ import {Star} from "./star";
 export class MiniStar extends Star {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["mini_star.png"]) {
         super(tilePositionX, tilePositionY, texture);
-        this.health = this.maxHealth = 2;
         this.name = "Mini Star";
         this.atk = 0.75;
         this.type = ENEMY_TYPE.MINI_STAR;
