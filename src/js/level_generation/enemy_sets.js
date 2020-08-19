@@ -40,6 +40,7 @@ import {BombSkull} from "../classes/enemies/dc/bomb_skull";
 import {DryFrog} from "../classes/enemies/dc/dry_frog";
 import {DesertWorm} from "../classes/enemies/dc/desert_worm";
 import {MiniStar} from "../classes/enemies/fc/mini_star";
+import {PoisonousStar} from "../classes/enemies/fc/poisonous_star";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
@@ -171,7 +172,26 @@ export const FCEnemySets = [
     [MiniStar, MiniStar, Roller, Roller],
     [MiniStar, Eel, Eel, Eel],
     [MiniStar, Eel, Eel],
-    [MiniStar, Snail]
+    [MiniStar, Snail],
+    [PoisonousStar],
+    [PoisonousStar, PoisonousStar],
+    [PoisonousStar, MiniStar, MiniStar],
+    [MiniStar, Star, PoisonousStar],
+    [PoisonousStar, Roller, Roller],
+    [PoisonousStar, Roller, Roller, Roller, Roller],
+    [PoisonousStar, PoisonEel],
+    [PoisonousStar, Mushroom, SmallMushroom],
+    [PoisonousStar, Spider],
+    [PoisonousStar, SpiderSmall, SpiderSmall],
+    [PoisonousStar, Cocoon],
+    [PoisonousStar, Eel, Eel, Eel],
+    [PoisonousStar, Snail, Snail],
+    [MiniStar, MiniStar, Snail, Snail],
+    [PoisonousStar, KingFrog],
+    [PoisonousStar, Frog],
+    [PoisonousStar, Frog, Frog],
+    [PoisonousStar, Frog, Frog, Frog],
+    [PoisonousStar, Spider, Mushroom, DarkEel, PoisonEel, KingFrog]
 ];
 
 //boss comes first!
@@ -337,7 +357,7 @@ export const RUBossSets = [
 // Added enemies:
 // FireFrog, DeadStar, DesertWorm
 // Removed enemies:
-// Eels, Dark Eels, Poison Eels, KingFrogs and MiniStars
+// Eel, DarkEel, PoisonEel, KingFrog, MiniStar, PoisonousStar
 export const DCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
     [BombSkull],
