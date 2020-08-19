@@ -45,7 +45,8 @@ export const ENEMY_TYPE = Object.freeze({
     TRAINING_DUMMY: 43,
     LOST_MAGE: 44,
     CACTUS_WALL_TRAP: 45,
-    BOMB_SKULL: 46
+    BOMB_SKULL: 46,
+    DESERT_WORM: 47
 });
 
 export const RABBIT_TYPE = Object.freeze({
