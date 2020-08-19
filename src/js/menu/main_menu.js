@@ -8,7 +8,7 @@ import {closeBlackBars} from "../drawing/hud_animations";
 import {keyboard, keyboardS} from "../keyboard/keyboard_handler";
 import {GAME_STATE, PLAY_MODE, STORAGE} from "../enums/enums";
 import {setupSubSettings} from "./subsettings";
-import {createDiscordButton, createSimpleButtonSet} from "./menu_common";
+import {createDiscordButton, createSimpleButtonSet, createVersionNumber} from "./menu_common";
 import {redrawPauseBG, SUPER_HUD} from "../drawing/super_hud";
 import {setupAchievementsScreen, updateAchievementsScreen} from "./achievements_screen";
 import {CommonSpriteSheet} from "../loader";
@@ -72,6 +72,7 @@ export function setupMenu() {
                 window.open("https://discord.com/invite/KBjcrR6");
             };
             discordButton.on("click", discordButton.clickButton);
+            createVersionNumber("v0.34+", 16);
         }, ppUpAnimationTime * 2 / 3);
     }, ppAnimationTime1 + ppAnimationTime2 * 2 / 3);
 }

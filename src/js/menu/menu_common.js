@@ -3,7 +3,7 @@ import {Game} from "../game";
 import {setTickTimeout} from "../utils/game_utils";
 import {easeOutQuad} from "../utils/math_utils";
 import {CommonSpriteSheet, DiscordSpriteSheet} from "../loader";
-import {HUDTextStyle} from "../drawing/draw_constants";
+import {HUDTextStyle, HUDTextStyleTitle} from "../drawing/draw_constants";
 import {setMousePrivileges} from "../setup";
 
 export const menuButtonOffsetY = 65;
@@ -113,7 +113,7 @@ export function createSimpleButtonSet(buttonTexts, container, startOffsetY, choo
             Game.app.ticker.add(animation);
             Game.buttons.push(button);
             setMousePrivileges();
-        }, i * 4);
+        }, i * 4, 99, false);
     }
     for (let i = 0; i < buttons.length; i++) {
         if (i + 1 >= buttons.length) buttons[i].downButton = buttons[0];
@@ -402,6 +402,34 @@ export function createDiscordButton(delay = 0) {
         Game.app.ticker.add(animation);
         Game.buttons.push(button);
         setMousePrivileges();
-    }, delay);
+    }, delay, 99, false);
     return button;
+}
+
+export function createVersionNumber(version, delay = 0) {
+    const container = Game.mainMenu;
+    const text = new PIXI.Text(version, HUDTextStyleTitle);
+    text.anchor.set(0.5, 0.5);
+
+    setTickTimeout(() => {
+        container.addChild(text);
+
+        const offsetX = 80 - 10 - 20; //-20 for some reason
+        const offsetY = 50 - 10;
+        text.position.x = offsetX + text.width / 2;
+        text.position.y = Game.app.renderer.screen.height - offsetY - text.height / 2;
+        text.scale.x = text.scale.y = 0;
+
+        let counter = 0;
+        const animation = delta => {
+            counter += delta;
+            text.scale.x = text.scale.y = easeOutQuad(counter / buttonAnimationTime);
+            if (counter >= buttonAnimationTime) {
+                text.scale.x = text.scale.y = 1;
+                Game.app.ticker.remove(animation);
+            }
+        };
+        Game.app.ticker.add(animation);
+    }, delay, 99, false);
+    return text;
 }
