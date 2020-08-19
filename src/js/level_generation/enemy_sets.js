@@ -39,6 +39,7 @@ import {DryStar} from "../classes/enemies/dc/dry_star";
 import {BombSkull} from "../classes/enemies/dc/bomb_skull";
 import {DryFrog} from "../classes/enemies/dc/dry_frog";
 import {DesertWorm} from "../classes/enemies/dc/desert_worm";
+import {MiniStar} from "../classes/enemies/fc/mini_star";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
@@ -148,7 +149,29 @@ export const FCEnemySets = [
     [SpiderSmall, Star, Star],
     [Roller, Roller, Roller, Roller, SpiderSmall, SpiderSmall],
     [GraySpider, SpiderSmall, SpiderSmall],
-    [SpiderSmall, SpiderSmall, SpikySnail]
+    [SpiderSmall, SpiderSmall, SpikySnail],
+    [MiniStar],
+    [MiniStar, MiniStar],
+    [MiniStar, MiniStar, MiniStar],
+    [MiniStar, MiniStar, MiniStar, MiniStar],
+    [MiniStar, MiniStar, SpiderSmall, SpiderSmall],
+    [MiniStar, SpiderSmall],
+    [MiniStar, Cocoon],
+    [MiniStar, MiniStar, Cocoon],
+    [MiniStar, MiniStar, Spider],
+    [MiniStar, MiniStar, GraySpider],
+    [MiniStar, MiniStar, SmallMushroom],
+    [MiniStar, MiniStar, Frog, Frog],
+    [MiniStar, Frog],
+    [MiniStar, MiniStar, MiniStar, Frog, Frog, Frog],
+    [MiniStar, SpiderSmall, SmallMushroom, Eel, Roller, Frog],
+    [MiniStar, MiniStar, Star, Star],
+    [MiniStar, Star],
+    [MiniStar, MiniStar, Mushroom],
+    [MiniStar, MiniStar, Roller, Roller],
+    [MiniStar, Eel, Eel, Eel],
+    [MiniStar, Eel, Eel],
+    [MiniStar, Snail]
 ];
 
 //boss comes first!
