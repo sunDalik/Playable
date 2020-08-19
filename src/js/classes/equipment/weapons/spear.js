@@ -14,7 +14,7 @@ export class Spear extends Weapon {
         this.atk = 1;
         this.name = "Spear";
         this.description = "Range 2\nAttack 1 at full range\nAttack is halved in close combat";
-        this.rarity = RARITY.UNIQUE;
+        this.rarity = RARITY.C;
     }
 
     attack(wielder, dirX, dirY) {

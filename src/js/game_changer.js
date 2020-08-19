@@ -84,10 +84,11 @@ import {HiveStaff} from "./classes/equipment/weapons/hive_staff";
 import {SummonerBelt} from "./classes/equipment/armor/summoner_belt";
 import {BookOfWhirlPools} from "./classes/equipment/weapons/book_of_whirlpools";
 import {FallenAngelWings} from "./classes/equipment/armor/fallen_angel_wings";
+import {Spear} from "./classes/equipment/weapons/spear";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
-    Game.weaponPool = [Knife, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
+    Game.weaponPool = [Knife, Spear, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
         PawnSwords, Crossbow, DivineBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow, GiantSword, DogStaff, CactiStaff, HiveStaff,
         BookOfWhirlPools];
 
