@@ -6,7 +6,8 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
     BulletsSpriteSheet, ToolsSpriteSheet, ShieldsSpriteSheet, ArmorSpriteSheet, FootwearSpriteSheet,
     HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet, OneTimeSpriteSheet,
     AccessoriesSpriteSheet, LunaticLeaderSpriteSheet,
-    FCTilesetSpriteSheet, DTTilesetSpriteSheet, RUTilesetSpriteSheet, DCTilesetSpriteSheet;
+    FCTilesetSpriteSheet, DTTilesetSpriteSheet, RUTilesetSpriteSheet, DCTilesetSpriteSheet,
+    DiscordSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
@@ -48,6 +49,7 @@ export function loadAll(afterLoad) {
         .add("src/textures/one_time.json")
         .add("src/textures/accessories.json")
         .add("src/textures/magic.json")
+        .add("src/textures/discord_logos.json")
 
         .load(() => {
             setSpriteSheets();
@@ -84,4 +86,5 @@ function setSpriteSheets() {
     DTTilesetSpriteSheet = Game.loader.resources["src/textures/dt_tileset.json"].textures;
     RUTilesetSpriteSheet = Game.loader.resources["src/textures/ru_tileset.json"].textures;
     DCTilesetSpriteSheet = Game.loader.resources["src/textures/dc_tileset.json"].textures;
+    DiscordSpriteSheet = Game.loader.resources["src/textures/discord_logos.json"].textures;
 }

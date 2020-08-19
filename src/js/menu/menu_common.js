@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import {Game} from "../game";
 import {setTickTimeout} from "../utils/game_utils";
 import {easeOutQuad} from "../utils/math_utils";
-import {CommonSpriteSheet} from "../loader";
+import {CommonSpriteSheet, DiscordSpriteSheet} from "../loader";
 import {HUDTextStyle} from "../drawing/draw_constants";
 import {setMousePrivileges} from "../setup";
 
@@ -296,4 +296,112 @@ export function createCheckboxSet(givenButtons, container, startOffsetY, chooseF
         else buttons[i].upButton = buttons[i - 1];
     }
     return buttons;
+}
+
+
+// double code double code
+export function createDiscordButton(delay = 0) {
+    const container = Game.mainMenu;
+    if (!container.buttons) container.buttons = [];
+    const playerSelectors = [new PIXI.Sprite(CommonSpriteSheet["player.png"]),
+        new PIXI.Sprite(CommonSpriteSheet["player2.png"])];
+    for (const playerSelector of playerSelectors) {
+        playerSelector.anchor.set(0.5, 0.5);
+        playerSelector.angle = -90;
+        playerSelector.scale.x = playerSelector.scale.y = 0.18;
+        container.addChild(playerSelector);
+        playerSelector.visible = false;
+    }
+    const button = new PIXI.Sprite(PIXI.Texture.WHITE);
+
+    const redrawSelection = () => {
+        playerSelectors[0].visible = playerSelectors[1].visible = false;
+        if (button.chosen) {
+            playerSelectors[0].visible = playerSelectors[1].visible = true;
+            playerSelectors[0].position.y = playerSelectors[1].position.y = button.position.y + 1; //+1 because of the stroke?? i'm not sure
+            playerSelectors[0].position.x = button.position.x - button.width / 2 - playerSelectorOffsetX - playerSelectors[0].width / 2;
+            playerSelectors[1].position.x = button.position.x + button.width / 2 + playerSelectorOffsetX + playerSelectors[1].width / 2;
+        }
+    };
+
+
+    setTickTimeout(() => {
+        button.interactive = true;
+        button.buttonMode = true;
+        button.anchor.set(0.5, 0.5);
+        const bg = new PIXI.Graphics();
+        const endScale = 0.20;
+        const chosenScale = 0.25;
+
+        const redrawBg = () => {
+            bg.clear();
+            bg.beginFill(0x7289DA);
+            //bg.beginFill(0x2C2F33);
+            bg.drawRoundedRect(0, 0, button.width + 20, button.height + 20, 7);
+            bg.position.set(button.position.x - bg.width / 2, button.position.y - bg.height / 2);
+        };
+
+        button.redraw = selected => {
+            // commented is alt variant black+purple
+            if (selected) {
+                button.texture = DiscordSpriteSheet["Discord-Logo+Wordmark-White.png"];
+                //button.texture = DiscordSpriteSheet["Discord-Logo+Wordmark-Color.png"];
+                button.scale.set(chosenScale);
+            } else {
+                button.texture = DiscordSpriteSheet["Discord-Logo-White.png"];
+                //button.texture = DiscordSpriteSheet["Discord-Logo-Color.png"];
+                button.scale.set(endScale);
+            }
+            const offsetX = 80;
+            const offsetY = 50;
+            button.position.x = Game.app.renderer.screen.width - offsetX - button.width / 2;
+            button.position.y = Game.app.renderer.screen.height - offsetY - button.height / 2;
+            redrawBg();
+        };
+
+        container.addChild(button);
+        container.addChild(bg);
+        bg.zIndex = button.zIndex - 1;
+
+        const unchooseAll = () => {
+            for (const bt of container.buttons) {
+                if (bt.unchooseButton) bt.unchooseButton();
+            }
+        };
+
+        button.unchooseButton = () => {
+            button.redraw(false);
+            button.chosen = false;
+            redrawSelection();
+        };
+
+        button.chooseButton = () => {
+            if (!container.choosable || button.chosen) return;
+            unchooseAll();
+            button.redraw(true);
+            button.chosen = true;
+            redrawSelection();
+        };
+
+        button.on("mouseover", button.chooseButton);
+
+        button.redraw(false);
+        button.scale.x = button.scale.y = 0;
+
+        let counter = 0;
+        const animation = delta => {
+            counter += delta;
+            button.scale.x = button.scale.y = easeOutQuad(counter / buttonAnimationTime) * endScale;
+            redrawBg();
+            if (counter >= buttonAnimationTime) {
+                button.scale.x = button.scale.y = endScale;
+                redrawBg();
+                Game.app.ticker.remove(animation);
+            }
+        };
+        Game.app.ticker.add(animation);
+        Game.buttons.push(button);
+        setMousePrivileges();
+    }, delay);
+    return button;
 }

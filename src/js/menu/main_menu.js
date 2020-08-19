@@ -8,7 +8,7 @@ import {closeBlackBars} from "../drawing/hud_animations";
 import {keyboard, keyboardS} from "../keyboard/keyboard_handler";
 import {GAME_STATE, PLAY_MODE, STORAGE} from "../enums/enums";
 import {setupSubSettings} from "./subsettings";
-import {createSimpleButtonSet} from "./menu_common";
+import {createDiscordButton, createSimpleButtonSet} from "./menu_common";
 import {redrawPauseBG, SUPER_HUD} from "../drawing/super_hud";
 import {setupAchievementsScreen, updateAchievementsScreen} from "./achievements_screen";
 import {CommonSpriteSheet} from "../loader";
@@ -59,6 +59,19 @@ export function setupMenu() {
             Game.mainMenu.buttons = createSimpleButtonSet(["PLAY", "TUTORIAL", "SETTINGS", "ACHIEVEMENTS"], Game.mainMenu, playerOffset + playerSize + playerOffset + 20);
             setButtonClickHandlers();
             initMenuKeyBinding();
+            const discordButton = createDiscordButton(16);
+            Game.mainMenu.buttons.push(discordButton);
+            discordButton.leftButton = Game.mainMenu.buttons[0];
+            for (const button of Game.mainMenu.buttons) {
+                if (button !== discordButton) {
+                    button.rightButton = discordButton;
+                }
+            }
+            discordButton.clickButton = () => {
+                if (!Game.mainMenu.choosable) return;
+                window.open("https://discord.com/invite/KBjcrR6");
+            };
+            discordButton.on("click", discordButton.clickButton);
         }, ppUpAnimationTime * 2 / 3);
     }, ppAnimationTime1 + ppAnimationTime2 * 2 / 3);
 }
