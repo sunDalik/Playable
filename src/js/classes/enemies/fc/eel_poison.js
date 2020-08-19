@@ -11,7 +11,7 @@ export class PoisonEel extends Eel {
         super(tilePositionX, tilePositionY, texture);
         this.type = ENEMY_TYPE.POISON_EEL;
         this.name = "Poison Eel";
-        this.health = this.maxHealth = 4;
+        this.health = this.maxHealth = 3;
         this.atk = 1.25;
         this.triggered = false;
         this.FULL_ROTATE_TIME = 15;
