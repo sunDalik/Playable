@@ -81,5 +81,6 @@ export const Game = {
     keysAmount: 0,
     enemiesKilled: 0,
     gameOver: false,
-    buttons: []
+    buttons: [],
+    burrowedEnemies: []
 };

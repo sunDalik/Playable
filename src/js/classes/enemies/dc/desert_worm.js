@@ -1,12 +1,16 @@
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {Enemy} from "../enemy";
 import {DCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
-import {Z_INDEXES} from "../../../z_indexing";
-import {randomAggressiveAI} from "../../../enemy_movement_ai";
 import {getPlayerOnTile, isEmpty, isLit} from "../../../map_checks";
-import {closestPlayer, tileDistance} from "../../../utils/game_utils";
+import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {shakeScreen} from "../../../animations";
-import {randomShuffle} from "../../../utils/random_utils";
+import {randomChoice, randomShuffle} from "../../../utils/random_utils";
+import {
+    getChasingBurrowedOptions,
+    getRelativelyEmptyLitCardinalDirections,
+    noBurrowedEnemies
+} from "../../../utils/map_utils";
+import {Game} from "../../../game";
 
 export class DesertWorm extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DCEnemiesSpriteSheet["desert_worm.png"]) {
@@ -23,7 +27,11 @@ export class DesertWorm extends Enemy {
         this.movable = false;
         this.SLIDE_ANIMATION_TIME = 8;
         this.setScaleModifier(1.21); // 312 / 256 = 1.21
-        this.setOwnZIndex(Z_INDEXES.PLAYER - 1);
+        this.setOwnZIndex(-2);
+    }
+
+    afterMapGen() {
+        Game.burrowedEnemies.push(this);
     }
 
     immediateReaction() {
@@ -58,9 +66,33 @@ export class DesertWorm extends Enemy {
             this.shake(1, 0);
         } else if (tileDistance(this, closestPlayer(this)) === 1) {
             const player = closestPlayer(this);
-            this.slide(player.tilePosition.x - this.tilePosition.x, player.tilePosition.y - this.tilePosition.y);
+            if (noBurrowedEnemies(player.tilePosition.x, player.tilePosition.y)) {
+                this.slide(player.tilePosition.x - this.tilePosition.x, player.tilePosition.y - this.tilePosition.y);
+            } else {
+                const player2 = otherPlayer(player);
+                if (!player2.dead && tileDistance(this, player2) === 1 && noBurrowedEnemies(player2.tilePosition.x, player2.tilePosition.y)) {
+                    this.slide(player2.tilePosition.x - this.tilePosition.x, player2.tilePosition.y - this.tilePosition.y);
+                }
+            }
         } else {
-            randomAggressiveAI(this, this.noticeDistance, false);
+            if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
+                const initPlayer = closestPlayer(this);
+                let movementOptions = getChasingBurrowedOptions(this, initPlayer);
+                // go after closest player but if you can't, then go after other player if he isn't dead and within the notice distance
+                if (movementOptions.length === 0 && !otherPlayer(initPlayer).dead && tileDistance(this, otherPlayer(initPlayer)) <= this.noticeDistance) {
+                    movementOptions = getChasingBurrowedOptions(this, otherPlayer(initPlayer));
+                }
+                if (movementOptions.length !== 0) {
+                    const dir = randomChoice(movementOptions);
+                    this.slide(dir.x, dir.y);
+                }
+            } else {
+                const movementOptions = getRelativelyEmptyLitCardinalDirections(this);
+                if (movementOptions.length !== 0) {
+                    const dir = randomChoice(movementOptions);
+                    this.slide(dir.x, dir.y);
+                }
+            }
         }
     }
 
@@ -69,7 +101,7 @@ export class DesertWorm extends Enemy {
         if (player) {
             player.damage(this.atk, this, true, true, true);
             if (!player.dead) {
-                loop: for (const r of [0]) {
+                loop: for (const r of [4, 3, 2, 1]) {
                     let xArray = [];
                     let yArray = [];
                     for (let i = -r; i <= r; i++) {
@@ -96,6 +128,14 @@ export class DesertWorm extends Enemy {
 
     updateIntentIcon() {
         super.updateIntentIcon();
-        this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
+        if (this.triggered) {
+            this.intentIcon.texture = IntentsSpriteSheet["magic.png"];
+        } else if (!this.burrowed) {
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
+        } else if (tileDistance(this, closestPlayer(this)) <= this.noticeDistance) {
+            this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
+        } else {
+            this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
+        }
     }
 }

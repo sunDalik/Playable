@@ -114,6 +114,19 @@ export function getChasingOptions(chaser, runner) {
     return getDirectionsWithConditions(chaser, getChasingDirections(chaser, runner), isRelativelyEmpty);
 }
 
+export function getChasingBurrowedOptions(chaser, runner) {
+    return getDirectionsWithConditions(chaser, getChasingDirections(chaser, runner), noBurrowedEnemies);
+}
+
+export function noBurrowedEnemies(tilePosX, tilePosY) {
+    for (const enemy of Game.burrowedEnemies) {
+        if (!enemy.dead && enemy.tilePosition.x === tilePosX && enemy.tilePosition.y === tilePosY) {
+            return false;
+        }
+    }
+    return true;
+}
+
 export function getRunAwayOptions(runner, chaser) {
     return getDirectionsWithConditions(runner, getRunAwayDirections(runner, chaser), isRelativelyEmpty);
 }
