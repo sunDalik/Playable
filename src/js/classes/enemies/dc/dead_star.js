@@ -11,8 +11,7 @@ export class DeadStar extends Star {
         this.name = "Dead Star";
         this.intentIcon2 = this.createIntentIcon();
         this.spikeColor = 0x616a7e;
-        this.turnDelay = 2;
-        this.currentTurnDelay = 1;
+        this.currentTurnDelay = this.turnDelay = 2;
     }
 
     move() {

@@ -84,8 +84,6 @@ export class Mushroom extends Enemy {
         if (this.standing || this.walking) {
             if (this.type === ENEMY_TYPE.SMALL_MUSHROOM) {
                 this.intentIcon.position.y = this.position.y - this.height / 5 - this.intentIcon.height / 2;
-            } else {
-                this.intentIcon.position.y = this.position.y - this.height / 3 - this.intentIcon.height / 2;
             }
         }
     }
