@@ -48,7 +48,8 @@ export const ENEMY_TYPE = Object.freeze({
     BOMB_SKULL: 46,
     DESERT_WORM: 47,
     MINI_STAR: 48,
-    POISONOUS_STAR: 49
+    POISONOUS_STAR: 49,
+    CRAB: 50
 });
 
 export const RABBIT_TYPE = Object.freeze({

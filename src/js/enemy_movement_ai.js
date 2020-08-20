@@ -27,10 +27,12 @@ export function randomAfraidAI(enemy, fearDistance = 2, panicDamage = true, slid
     }
 }
 
+// returns true if moved, false if bumped
 export function moveEnemyInDirection(enemy, direction, slide = false) {
     if (isEmpty(enemy.tilePosition.x + direction.x, enemy.tilePosition.y + direction.y)) {
         if (slide) enemy.slide(direction.x, direction.y);
         else enemy.step(direction.x, direction.y);
+        return true;
     } else {
         if (slide) enemy.slideBump(direction.x, direction.y);
         else enemy.bump(direction.x, direction.y);
@@ -40,6 +42,7 @@ export function moveEnemyInDirection(enemy, direction, slide = false) {
             player.damage(enemy.atk, enemy);
             if (enemy.healOnHit) enemy.heal(enemy.healOnHit);
         }
+        return false;
     }
 }
 
