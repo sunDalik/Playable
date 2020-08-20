@@ -42,6 +42,7 @@ import {DesertWorm} from "../classes/enemies/dc/desert_worm";
 import {MiniStar} from "../classes/enemies/fc/mini_star";
 import {PoisonousStar} from "../classes/enemies/fc/poisonous_star";
 import {Crab} from "../classes/enemies/fc/crab";
+import {MasterSpider} from "../classes/enemies/ru/master_spider";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
@@ -378,7 +379,22 @@ export const RUEnemySets = [
     [BladeDemon, BladeDemon, WallSlime],
     [BladeDemon, BladeDemon, WallSlime, WallSlime],
     [MudMage, BladeDemon],
-    [TeleportMage, HexEye]
+    [TeleportMage, HexEye],
+    [MasterSpider],
+    [MasterSpider, MasterSpider],
+    [MasterSpider, BladeDemon],
+    [MasterSpider, HexEye],
+    [MasterSpider, LizardWarrior],
+    [MasterSpider, WallSlime],
+    [MasterSpider, MudMage],
+    [MasterSpider, TeleportMage],
+    [MasterSpider, MudMage, MudMage],
+    [MasterSpider, TeleportMage, TeleportMage],
+    [MasterSpider, MudMage, TeleportMage],
+    [MasterSpider, MasterSpider, MudMage],
+    [MasterSpider, HexEye, BladeDemon],
+    [MasterSpider, LavaSlime],
+    [MasterSpider, MasterSpider, MasterSpider]
 ];
 
 export const RUBossSets = [

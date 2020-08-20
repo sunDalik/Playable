@@ -1,4 +1,10 @@
-import {closestPlayer, otherPlayer, tileDistance} from "./utils/game_utils";
+import {
+    closestPlayer,
+    closestPlayerDiagonal,
+    otherPlayer,
+    tileDistance,
+    tileDistanceDiagonal
+} from "./utils/game_utils";
 import {
     getChasingOptions,
     getDiagonalChasingOptions,
@@ -117,10 +123,10 @@ export function randomAggressiveAI(enemy, noticeDistance, step = true) {
 }
 
 export function randomDiagonalAggressiveAI(enemy, noticeDistance, step = true) {
-    if (tileDistance(enemy, closestPlayer(enemy)) <= noticeDistance) {
-        const initPlayer = closestPlayer(enemy);
+    if (tileDistanceDiagonal(enemy, closestPlayerDiagonal(enemy), 1) <= noticeDistance) {
+        const initPlayer = closestPlayerDiagonal(enemy);
         let movementOptions = getDiagonalChasingOptions(enemy, initPlayer);
-        if (movementOptions.length === 0 && !otherPlayer(initPlayer).dead) {
+        if (movementOptions.length === 0 && !otherPlayer(initPlayer).dead && tileDistanceDiagonal(enemy, otherPlayer(initPlayer), 1) <= noticeDistance) {
             movementOptions = getDiagonalChasingOptions(enemy, otherPlayer(initPlayer));
         }
         if (movementOptions.length !== 0) {

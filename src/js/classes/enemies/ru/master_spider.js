@@ -1,9 +1,10 @@
 import {Spider} from "../fc/spider";
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {isEmpty} from "../../../map_checks";
-import {RUEnemiesSpriteSheet} from "../../../loader";
+import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import {randomDiagonalAggressiveAI} from "../../../enemy_movement_ai";
 import {randomShuffle} from "../../../utils/random_utils";
+import {closestPlayer, closestPlayerDiagonal, tileDistanceDiagonal} from "../../../utils/game_utils";
 
 export class MasterSpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["master_spider.png"]) {
@@ -12,7 +13,6 @@ export class MasterSpider extends Spider {
         this.atk = 1.25;
         this.name = "Master Spider";
         this.type = ENEMY_TYPE.MASTER_SPIDER;
-        this.noticeDistance = 6;
         this.setScaleModifier(1.1);
     }
 
@@ -34,6 +34,17 @@ export class MasterSpider extends Spider {
                     return;
                 }
             }
+        }
+    }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.thrown) {
+            this.intentIcon.texture = IntentsSpriteSheet["stun.png"];
+        } else if (tileDistanceDiagonal(this, closestPlayerDiagonal(this), 1) <= this.noticeDistance) {
+            this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
+        } else {
+            this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
         }
     }
 }

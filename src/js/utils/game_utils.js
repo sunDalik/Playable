@@ -19,6 +19,19 @@ export function closestPlayer(entity) {
     }
 }
 
+// use for enemies that can move diagonally
+export function closestPlayerDiagonal(entity) {
+    if (Game.player.dead) return Game.player2;
+    else if (Game.player2.dead) return Game.player;
+    else if (tileDistanceDiagonal(Game.player, entity, 1) === tileDistanceDiagonal(Game.player2, entity, 1)) {
+        return randomChoice([Game.player, Game.player2]);
+    } else if (tileDistanceDiagonal(Game.player, entity, 1) < tileDistanceDiagonal(Game.player2, entity, 1)) {
+        return Game.player;
+    } else {
+        return Game.player2;
+    }
+}
+
 export function tileDistance(a, b) {
     return Math.abs(a.tilePosition.x - b.tilePosition.x) + Math.abs(a.tilePosition.y - b.tilePosition.y);
 }
@@ -29,12 +42,12 @@ export function pointTileDistance(a, b) {
     return tileDistance({tilePosition: {x: a.x, y: a.y}}, {tilePosition: {x: b.x, y: b.y}});
 }
 
-export function tileDistanceDiagonal(a, b) {
+export function tileDistanceDiagonal(a, b, diagonalMultiplier = 1.5) {
     const tileDistX = Math.abs(a.tilePosition.x - b.tilePosition.x);
     const tileDistY = Math.abs(a.tilePosition.y - b.tilePosition.y);
     const diagonalTiles = Math.min(tileDistX, tileDistY);
     const cardinalTiles = Math.max(tileDistX, tileDistY) - diagonalTiles;
-    return diagonalTiles * 1.5 + cardinalTiles;
+    return diagonalTiles * diagonalMultiplier + cardinalTiles;
 }
 
 export function distance(a, b) {
