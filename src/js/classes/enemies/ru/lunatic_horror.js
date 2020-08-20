@@ -1,11 +1,9 @@
 import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums/enums";
-import {closestPlayer, getAngleForDirection, otherPlayer} from "../../../utils/game_utils";
+import {getAngleForDirection} from "../../../utils/game_utils";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import {Game} from "../../../game";
-import {getDiagonalChasingOptions} from "../../../utils/map_utils";
-import {randomChoice} from "../../../utils/random_utils";
-import {getPlayerOnTile} from "../../../map_checks";
+import {randomDiagonalAggressiveAI} from "../../../enemy_movement_ai";
 
 export class LunaticHorror extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["lunatic_horror.png"]) {
@@ -21,23 +19,7 @@ export class LunaticHorror extends Enemy {
 
     move() {
         if (this.currentTurnDelay <= 0) {
-            const initPlayer = closestPlayer(this);
-            let movementOptions = getDiagonalChasingOptions(this, initPlayer);
-            if (movementOptions.length === 0 && !otherPlayer(initPlayer).dead) {
-                movementOptions = getDiagonalChasingOptions(this, otherPlayer(initPlayer));
-            }
-            if (movementOptions.length !== 0) {
-                const dir = randomChoice(movementOptions);
-                const player = getPlayerOnTile(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y);
-                if (player) {
-                    this.slideBump(dir.x, dir.y);
-                    player.damage(this.atk, this, true);
-                } else {
-                    this.slide(dir.x, dir.y);
-                }
-            } else {
-                this.slideBump(Math.sign(initPlayer.tilePosition.x - this.tilePosition.x), Math.sign(initPlayer.tilePosition.y - this.tilePosition.y));
-            }
+            randomDiagonalAggressiveAI(this, 99, false);
             this.currentTurnDelay = this.turnDelay;
         } else this.currentTurnDelay--;
     }

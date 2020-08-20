@@ -1,6 +1,8 @@
 import {closestPlayer, otherPlayer, tileDistance} from "./utils/game_utils";
 import {
     getChasingOptions,
+    getDiagonalChasingOptions,
+    getDiagonalDirections,
     getDirectionsWithConditions,
     getEmptyCardinalDirections,
     getEmptyRunAwayOptions,
@@ -8,7 +10,7 @@ import {
     getRelativelyEmptyLitCardinalDirections
 } from "./utils/map_utils";
 import {randomChoice} from "./utils/random_utils";
-import {getPlayerOnTile, isEmpty} from "./map_checks";
+import {getPlayerOnTile, isEmpty, isLit, isRelativelyEmpty} from "./map_checks";
 
 export function randomAfraidAI(enemy, fearDistance = 2, panicDamage = true, slide = false) {
     let movementOptions;
@@ -106,6 +108,38 @@ export function randomAggressiveAI(enemy, noticeDistance, step = true) {
         }
     } else {
         const movementOptions = getRelativelyEmptyLitCardinalDirections(enemy);
+        if (movementOptions.length !== 0) {
+            const dir = randomChoice(movementOptions);
+            if (step) enemy.step(dir.x, dir.y);
+            else enemy.slide(dir.x, dir.y);
+        }
+    }
+}
+
+export function randomDiagonalAggressiveAI(enemy, noticeDistance, step = true) {
+    if (tileDistance(enemy, closestPlayer(enemy)) <= noticeDistance) {
+        const initPlayer = closestPlayer(enemy);
+        let movementOptions = getDiagonalChasingOptions(enemy, initPlayer);
+        if (movementOptions.length === 0 && !otherPlayer(initPlayer).dead) {
+            movementOptions = getDiagonalChasingOptions(enemy, otherPlayer(initPlayer));
+        }
+        if (movementOptions.length !== 0) {
+            const dir = randomChoice(movementOptions);
+            const player = getPlayerOnTile(enemy.tilePosition.x + dir.x, enemy.tilePosition.y + dir.y);
+            if (player) {
+                if (step) enemy.bump(dir.x, dir.y);
+                else enemy.slideBump(dir.x, dir.y);
+                player.damage(enemy.atk, enemy, true);
+            } else {
+                if (step) enemy.step(dir.x, dir.y);
+                else enemy.slide(dir.x, dir.y);
+            }
+        } else {
+            if (step) enemy.bump(Math.sign(initPlayer.tilePosition.x - enemy.tilePosition.x), Math.sign(initPlayer.tilePosition.y - enemy.tilePosition.y));
+            else enemy.slideBump(Math.sign(initPlayer.tilePosition.x - enemy.tilePosition.x), Math.sign(initPlayer.tilePosition.y - enemy.tilePosition.y));
+        }
+    } else {
+        const movementOptions = getDirectionsWithConditions(enemy, getDiagonalDirections(), isRelativelyEmpty, isLit);
         if (movementOptions.length !== 0) {
             const dir = randomChoice(movementOptions);
             if (step) enemy.step(dir.x, dir.y);

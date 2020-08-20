@@ -149,6 +149,7 @@ export class AnimatedTileElement extends ShadowTileElement {
     }
 
     bump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
+        // todo add diagonal bump?
         if (tileStepX !== 0) this.bumpX(tileStepX, onFrame, onEnd, animationTime);
         else if (tileStepY !== 0) this.bumpY(tileStepY, onFrame, onEnd, animationTime);
     }
