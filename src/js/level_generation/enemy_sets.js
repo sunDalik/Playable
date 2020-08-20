@@ -41,6 +41,7 @@ import {DryFrog} from "../classes/enemies/dc/dry_frog";
 import {DesertWorm} from "../classes/enemies/dc/desert_worm";
 import {MiniStar} from "../classes/enemies/fc/mini_star";
 import {PoisonousStar} from "../classes/enemies/fc/poisonous_star";
+import {Crab} from "../classes/enemies/fc/crab";
 
 export const FCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
@@ -191,7 +192,42 @@ export const FCEnemySets = [
     [PoisonousStar, Frog],
     [PoisonousStar, Frog, Frog],
     [PoisonousStar, Frog, Frog, Frog],
-    [PoisonousStar, Spider, Mushroom, DarkEel, PoisonEel, KingFrog]
+    [PoisonousStar, Spider, Mushroom, DarkEel, PoisonEel, KingFrog],
+    [Crab],
+    [Crab, Crab],
+    [Crab, Crab, Crab],
+    [Crab, Crab, Crab, Crab],
+    [Crab, Crab, Crab, Crab, Crab, Crab],
+    [Crab, Roller],
+    [Roller, Roller],
+    [Roller, Roller, Roller],
+    [Crab, Crab, Roller, Roller],
+    [Crab, Star, Crab, Star],
+    [Crab, MiniStar, Crab, MiniStar],
+    [Crab, Spider],
+    [Crab, GraySpider],
+    [Crab, Eel, Roller],
+    [Crab, Crab, Eel, Eel, Roller, Roller],
+    [Crab, SmallMushroom],
+    [Crab, Crab, SmallMushroom, SmallMushroom],
+    [Crab, Snail, Snail],
+    [Crab, Crab, Frog, Frog],
+    [Crab, SpiderSmall, SpiderSmall],
+    [Crab, Crab, Cocoon],
+    [Crab, Frog, Frog],
+    [Crab, Mushroom],
+    [Crab, SpikySnail],
+    [SpikySnail, SpikySnail],
+    [SpikySnail, SmallMushroom],
+    [SpikySnail, SmallMushroom, SmallMushroom, SmallMushroom],
+    [SpikySnail, Eel, Eel],
+    [SpikySnail, Frog, Frog],
+    [Crab, Star, MiniStar, Roller, Eel, DarkEel],
+    [SpikySnail, DarkEel],
+    [SpikySnail, Roller, Roller, Crab, Crab, Crab],
+    [SpikySnail, Roller, Roller, Roller, Crab, Crab],
+    [Crab, Crab, Roller, PoisonousStar],
+    [Snail, Spider, Crab, MiniStar, Eel, Frog]
 ];
 
 //boss comes first!
