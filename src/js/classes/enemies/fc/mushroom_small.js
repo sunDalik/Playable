@@ -14,6 +14,7 @@ export class SmallMushroom extends Mushroom {
         this.walkingTexture = FCEnemiesSpriteSheet["mushroom_small_walking.png"];
         this.normalTexture = FCEnemiesSpriteSheet["mushroom_small.png"];
         this.setScaleModifier(0.9);
+        this.tallModifier = -2;
     }
 
     getWalkDelay() {

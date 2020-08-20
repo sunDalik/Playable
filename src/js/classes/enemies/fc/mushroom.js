@@ -23,7 +23,7 @@ export class Mushroom extends Enemy {
         this.normalTexture = FCEnemiesSpriteSheet["mushroom.png"];
         this.standing = false;
         this.direction = null;
-        this.setScaleModifier(0.95);
+        this.tallModifier = -3;
     }
 
     immediateReaction() {
@@ -76,16 +76,6 @@ export class Mushroom extends Enemy {
 
     getWalkDelay() {
         return randomInt(8, 14);
-    }
-
-    onMoveFrame() {
-        super.onMoveFrame();
-        if (this.type !== ENEMY_TYPE.MUSHROOM && this.type !== ENEMY_TYPE.SMALL_MUSHROOM) return;
-        if (this.standing || this.walking) {
-            if (this.type === ENEMY_TYPE.SMALL_MUSHROOM) {
-                this.intentIcon.position.y = this.position.y - this.height / 5 - this.intentIcon.height / 2;
-            }
-        }
     }
 
     correctScale() {
