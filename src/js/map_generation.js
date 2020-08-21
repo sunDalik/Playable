@@ -8,6 +8,7 @@ import {RustySword} from "./classes/equipment/weapons/rusty_sword";
 import {Key} from "./classes/equipment/key";
 import {keysOnEnemies} from "./level_generation/standard_generation";
 import {RerollPotion} from "./classes/equipment/bag/reroll_potion";
+import {ManaPotion} from "./classes/equipment/bag/mana_potion";
 
 //todo change purpose of this file
 export function assignDrops() {
@@ -19,6 +20,8 @@ export function assignDrops() {
     if (Game.stage === STAGE.RUINS) {
         if (Math.random() < 0.5) {
             distributeDrops(RustySword, 1, ENEMY_TYPE.LIZARD_WARRIOR);
+        } else {
+            distributeDrops(ManaPotion, 1, ENEMY_TYPE.MUD_MAGE, ENEMY_TYPE.TELEPORT_MAGE);
         }
     }
 
@@ -30,7 +33,7 @@ export function assignDrops() {
     }
 }
 
-function distributeDrops(dropConstructor, amount, enemyType = undefined) {
+function distributeDrops(dropConstructor, amount, ...enemyTypes) {
     randomShuffle(Game.enemies);
     let enemyIndex = 0;
     while (amount > 0) {
@@ -41,12 +44,13 @@ function distributeDrops(dropConstructor, amount, enemyType = undefined) {
             } else break;
         } else {
             const enemy = Game.enemies[enemyIndex];
+            // don't give a drop if the enemy passes at least one of these checks
             if (enemy.drop !== null
                 || enemy.boss
                 || enemy.role === ROLE.WALL_TRAP
                 || enemy.type === ENEMY_TYPE.RABBIT && enemy.predator
                 || tileInsideTheBossRoom(enemy.tilePosition.x, enemy.tilePosition.y)
-                || (enemyType !== undefined && enemy.type !== enemyType)) {
+                || (enemyTypes.length > 0 && !enemyTypes.includes(enemy.type))) {
                 enemyIndex++;
             } else {
                 enemy.drop = new dropConstructor();
