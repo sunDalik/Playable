@@ -51,7 +51,8 @@ export const ENEMY_TYPE = Object.freeze({
     POISONOUS_STAR: 49,
     CRAB: 50,
     MASTER_SPIDER: 51,
-    DARK_CRAB: 52
+    DARK_CRAB: 52,
+    POISON_CACTUS: 53
 });
 
 export const RABBIT_TYPE = Object.freeze({
