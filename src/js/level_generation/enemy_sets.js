@@ -44,6 +44,8 @@ import {PoisonousStar} from "../classes/enemies/fc/poisonous_star";
 import {Crab} from "../classes/enemies/fc/crab";
 import {MasterSpider} from "../classes/enemies/ru/master_spider";
 import {DarkCrab} from "../classes/enemies/dt/dark_crab";
+import {PoisonCactus} from "../classes/enemies/dc/poison_cactus";
+import {FireCactus} from "../classes/enemies/dc/fire_cactus";
 
 // 6 max
 export const FCEnemySets = [
@@ -441,9 +443,9 @@ export const RUBossSets = [
 // Replacements:
 // Rollers are replaced with BombSkulls, SpikySnail is replaced with FireSnail,
 // Added enemies:
-// FireFrog, DeadStar, DesertWorm
+// FireFrog, DeadStar, DesertWorm, PoisonCactus, FireCactus
 // Removed enemies:
-// Eel, DarkEel, PoisonEel, KingFrog, MiniStar, PoisonousStar
+// Eel, DarkEel, PoisonEel, KingFrog, MiniStar, PoisonousStar, SmallMushroom, Mushroom
 export const DCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
     [BombSkull],
@@ -456,18 +458,18 @@ export const DCEnemySets = [
     [DryStar, GraySpider],
     [DrySnail, DrySnail],
     [DrySnail, DrySnail, DrySnail],
-    [SmallMushroom],
-    [SmallMushroom, SmallMushroom],
-    [SmallMushroom, FireFrog],
+    [PoisonCactus],
+    [PoisonCactus, PoisonCactus],
+    [FireCactus, FireFrog],
     [FireFrog, FireFrog],
-    [SmallMushroom, SmallMushroom, SmallMushroom, SmallMushroom, Frog],
+    [PoisonCactus, PoisonCactus, PoisonCactus, PoisonCactus, DryFrog],
     [DryFrog, DryFrog, DryFrog, DryFrog],
     [DryFrog, DryFrog],
     [DryFrog, BombSkull, BombSkull],
     [Spider, DeadStar],
     [DeadStar],
-    [Spider, GraySpider, SmallMushroom],
-    [DryFrog, SmallMushroom],
+    [Spider, GraySpider, PoisonCactus],
+    [DryFrog, PoisonCactus],
     [FireSnail, DrySnail, FireSnail, DrySnail],
     [FireSnail, Spider, GraySpider],
     [FireFrog],
@@ -501,23 +503,27 @@ export const DCEnemySets = [
     [DeadStar, DryStar],
     [DeadStar, BombSkull, BombSkull, BombSkull, BombSkull],
     [DeadStar, BombSkull, BombSkull],
-    [Mushroom],
-    [SmallMushroom, Mushroom],
-    [SmallMushroom, SmallMushroom, Mushroom],
-    [SmallMushroom, SmallMushroom, Mushroom, Mushroom],
-    [BombSkull, Mushroom, BombSkull],
-    [DryStar, Mushroom, DryStar, Mushroom],
-    [Mushroom, Mushroom],
-    [DryFrog, Mushroom, FireFrog],
-    [BombSkull, BombSkull, BombSkull, Mushroom, Mushroom],
-    [DryCocoon, Mushroom, Mushroom],
-    [Mushroom, Spider, Mushroom],
-    [Mushroom, GraySpider, GraySpider],
-    [Mushroom, DrySnail],
-    [Mushroom, DeadStar],
-    [DryFrog, Mushroom],
-    [FireFrog, Mushroom],
-    [Mushroom, FireSnail, DrySnail],
+    [FireCactus],
+    [PoisonCactus, FireCactus],
+    [PoisonCactus, PoisonCactus, FireCactus],
+    [PoisonCactus, PoisonCactus, FireCactus, FireCactus],
+    [BombSkull, FireCactus, BombSkull],
+    [BombSkull, PoisonCactus, BombSkull],
+    [DryStar, PoisonCactus, DryStar, FireCactus],
+    [FireCactus, FireCactus],
+    [DryFrog, PoisonCactus, FireFrog],
+    [DryFrog, FireCactus, FireFrog],
+    [DryFrog, FireCactus, PoisonCactus, FireFrog],
+    [DryFrog, FireCactus],
+    [FireFrog, PoisonCactus],
+    [BombSkull, BombSkull, BombSkull, PoisonCactus, FireCactus],
+    [DryCocoon, PoisonCactus, PoisonCactus],
+    [PoisonCactus, Spider, PoisonCactus],
+    [PoisonCactus, GraySpider, GraySpider],
+    [FireCactus, GraySpider],
+    [PoisonCactus, DrySnail],
+    [PoisonCactus, DeadStar],
+    [PoisonCactus, FireSnail, DrySnail],
     [SpiderSmall],
     [SpiderSmall, SpiderSmall],
     [SpiderSmall, SpiderSmall, SpiderSmall],
