@@ -200,7 +200,8 @@ export const EQUIPMENT_ID = Object.freeze({
     SUMMONER_BELT: 86,
     ESSENCE_OF_LIGHT: 87,
     BOOK_OF_WHIRLPOOLS: 88,
-    FALLEN_ANGEL_WINGS: 89
+    FALLEN_ANGEL_WINGS: 89,
+    MANA_POTION: 90
 });
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
