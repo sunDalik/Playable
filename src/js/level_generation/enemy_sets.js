@@ -43,7 +43,9 @@ import {MiniStar} from "../classes/enemies/fc/mini_star";
 import {PoisonousStar} from "../classes/enemies/fc/poisonous_star";
 import {Crab} from "../classes/enemies/fc/crab";
 import {MasterSpider} from "../classes/enemies/ru/master_spider";
+import {DarkCrab} from "../classes/enemies/dt/dark_crab";
 
+// 6 max
 export const FCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
     [Roller],
@@ -238,6 +240,7 @@ export const FCBossSets = [
     [ParanoidEel, PoisonEel]
 ];
 
+// 5 max
 export const DTEnemySets = [
     [Alligator, Alligator, Alligator, Alligator, Alligator],
     [Alligator, Alligator, Alligator, Alligator],
@@ -324,13 +327,43 @@ export const DTEnemySets = [
     [LostMage, Cocoon],
     [LostMage, LostMage, Rabbit, Rabbit, Rabbit],
     [LostMage, LostMage, LostMage, Rabbit, Rabbit],
-    [LostMage, LostMage, ExplosivePixie, ExplosivePixie]
+    [LostMage, LostMage, ExplosivePixie, ExplosivePixie],
+    [DarkCrab],
+    [DarkCrab, DarkCrab],
+    [DarkCrab, DarkCrab, DarkCrab],
+    [DarkCrab, DarkCrab, DarkCrab, DarkCrab],
+    [DarkCrab, DarkCrab, DarkCrab, DarkCrab, DarkCrab],
+    [DarkCrab, LostMage],
+    [DarkCrab, DarkCrab, LostMage, LostMage],
+    [DarkCrab, Alligator],
+    [DarkCrab, FireSnail],
+    [DarkCrab, DarkCrab, Alligator, FireSnail],
+    [DarkCrab, DarkCrab, LostMage],
+    [DarkCrab, LostMage, LostMage],
+    [DarkCrab, Rabbit],
+    [DarkCrab, DarkCrab, Rabbit, Rabbit],
+    [DarkCrab, DarkCrab, DarkCrab, Rabbit, Rabbit],
+    [DarkCrab, DarkCrab, Rabbit, Rabbit, Rabbit],
+    [DarkCrab, FireFrog],
+    [DarkCrab, FireFrog, FireFrog],
+    [DarkCrab, DarkCrab, FireFrog, FireFrog],
+    [DarkCrab, FireFrog, KingFireFrog],
+    [DarkCrab, Cocoon],
+    [DarkCrab, DarkCrab, DarkCrab, Alligator, Alligator],
+    [DarkCrab, DarkCrab, DarkCrab, FireSnail, FireSnail],
+    [DarkCrab, DarkCrab, Alligator, Alligator],
+    [DarkCrab, DarkCrab, FireSnail, FireSnail],
+    [DarkCrab, Alligator, FireSnail, ExplosivePixie, LostMage],
+    [DarkCrab, Cocoon, Rabbit, ExplosivePixie, LostMage],
+    [DarkCrab, GreenSpider, Rabbit, ExplosivePixie],
+    [DarkCrab, RedSpider, Rabbit, ExplosivePixie]
 ];
 
 export const DTBossSets = [
     [GuardianOfTheLight]
 ];
 
+// 4 max
 export const RUEnemySets = [
     [LavaSlime],
     [BladeDemon],
@@ -394,7 +427,8 @@ export const RUEnemySets = [
     [MasterSpider, MasterSpider, MudMage],
     [MasterSpider, HexEye, BladeDemon],
     [MasterSpider, LavaSlime],
-    [MasterSpider, MasterSpider, MasterSpider]
+    [MasterSpider, MasterSpider, MasterSpider],
+    [HexEye, BladeDemon, LizardWarrior, MasterSpider]
 ];
 
 export const RUBossSets = [
