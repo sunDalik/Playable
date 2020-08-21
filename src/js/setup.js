@@ -212,7 +212,7 @@ export function retry() {
 }
 
 function initGameState() {
-    Game.stage = STAGE.RUINS;
+    Game.stage = STAGE.DARK_TUNNEL;
     Game.time = 0;
     Game.keysAmount = 0;
     Game.enemiesKilled = 0;

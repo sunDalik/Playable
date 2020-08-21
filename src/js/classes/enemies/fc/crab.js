@@ -17,9 +17,8 @@ export class Crab extends Enemy {
         this.tallModifier = -3;
     }
 
-
     afterMapGen() {
-        const possibleDirections = randomShuffle([{x: 0, y: 1}, {x: 0, y: -1}, {x: 1, y: 0}, {x: -1, y: 0}]);
+        const possibleDirections = randomShuffle(this.getStartingDirections());
         for (const dir of possibleDirections) {
             let good = true;
             let checkDir = {x: dir.x, y: dir.y};
@@ -39,6 +38,10 @@ export class Crab extends Enemy {
             }
         }
         this.direction = randomChoice(possibleDirections);
+    }
+
+    getStartingDirections() {
+        return [{x: 0, y: 1}, {x: 0, y: -1}, {x: 1, y: 0}, {x: -1, y: 0}];
     }
 
     move() {
