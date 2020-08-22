@@ -17,7 +17,7 @@ export class Phantom extends Enemy {
         this.atk = 1;
         this.name = "Phantom";
         this.type = ENEMY_TYPE.PHANTOM;
-        this.currentTurnDelay = this.turnDelay = 2;
+        this.currentTurnDelay = this.turnDelay = 1;
         this.SLIDE_ANIMATION_TIME = 8;
         this.removeShadow();
     }
@@ -30,8 +30,9 @@ export class Phantom extends Enemy {
     }
 
     damage(source, dmg, inputX, inputY, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
+        if (this.dead) return;
         super.damage(source, dmg, inputX, inputY, damageType);
-        if (!this.dead && damageType.weaponal && source === Game.player || source === Game.player2 && tileDistance(source, this) <= 3) {
+        if (damageType.weaponal && (source === Game.player || source === Game.player2) && tileDistance(source, this) <= 3 && this.stun <= 0) {
             const tempPos = {x: this.tilePosition.x, y: this.tilePosition.y};
             source.removeFromMap();
             this.setTilePosition(source.tilePosition.x, source.tilePosition.y);

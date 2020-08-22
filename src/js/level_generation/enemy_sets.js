@@ -42,6 +42,7 @@ import {MasterSpider} from "../classes/enemies/ru/master_spider";
 import {DarkCrab} from "../classes/enemies/dt/dark_crab";
 import {PoisonCactus} from "../classes/enemies/dc/poison_cactus";
 import {FireCactus} from "../classes/enemies/dc/fire_cactus";
+import {Phantom} from "../classes/enemies/dt/phantom";
 
 // 6 max
 export const FCEnemySets = [
@@ -354,7 +355,32 @@ export const DTEnemySets = [
     [DarkCrab, Alligator, FireSnail, ExplosivePixie, LostMage],
     [DarkCrab, Cocoon, Rabbit, ExplosivePixie, LostMage],
     [DarkCrab, GreenSpider, Rabbit, ExplosivePixie],
-    [DarkCrab, RedSpider, Rabbit, ExplosivePixie]
+    [DarkCrab, RedSpider, Rabbit, ExplosivePixie],
+    [Phantom],
+    [Phantom, Phantom],
+    [Phantom, Phantom, Phantom],
+    [Phantom, Phantom, Phantom, Phantom],
+    [Phantom, FireFrog],
+    [Phantom, FireFrog, FireFrog],
+    [Phantom, Cocoon],
+    [Phantom, DarkCrab],
+    [Phantom, DarkCrab, DarkCrab],
+    [Phantom, Phantom, DarkCrab, DarkCrab],
+    [Phantom, LostMage],
+    [Phantom, Phantom, Phantom, LostMage, LostMage],
+    [Phantom, ExplosivePixie],
+    [Phantom, ExplosivePixie, ExplosivePixie],
+    [Phantom, ExplosivePixie, FireSnail, LostMage, DarkCrab],
+    [Phantom, Alligator, Rabbit, LostMage, DarkCrab],
+    [Phantom, Cocoon, LostMage, DarkCrab, DarkCrab],
+    [Phantom, GreenSpider],
+    [Phantom, RedSpider],
+    [Phantom, KingFireFrog],
+    [Phantom, Rabbit],
+    [Phantom, Rabbit, Rabbit],
+    [Phantom, Phantom, FireFrog, KingFireFrog],
+    [Phantom, Phantom, Rabbit, Rabbit],
+    [Phantom, Phantom, Rabbit, Rabbit, Rabbit]
 ];
 
 export const DTBossSets = [
