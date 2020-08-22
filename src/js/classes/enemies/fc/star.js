@@ -1,9 +1,10 @@
 import {Enemy} from "../enemy";
-import {DIRECTIONS, ENEMY_TYPE} from "../../../enums/enums";
+import {DIRECTIONS, ENEMY_TYPE, STAGE} from "../../../enums/enums";
 import {getPlayerOnTile, isNotAWall} from "../../../map_checks";
 import {createCrazySpikeAnimation, createEnemyAttackTile} from "../../../animations";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {DCEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {getCardinalDirections, getDiagonalDirections} from "../../../utils/map_utils";
+import {Game} from "../../../game";
 
 export class Star extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["star.png"]) {
@@ -21,6 +22,13 @@ export class Star extends Enemy {
         this.regenerateShadow();
         this.place();
         this.spikeColor = 0xa4d352;
+    }
+
+    afterMapGen() {
+        if (Game.stage === STAGE.DRY_CAVE && this.type === ENEMY_TYPE.STAR) {
+            this.texture = DCEnemiesSpriteSheet["dry_star.png"];
+            this.spikeColor = 0xc2d352;
+        }
     }
 
     setStun(stun) {

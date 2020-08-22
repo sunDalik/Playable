@@ -1,12 +1,12 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE, STAGE} from "../../../enums/enums";
 import {PoisonHazard} from "../../hazards/poison";
 import {getPlayerOnTile, isAnyWall, isInanimate} from "../../../map_checks";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {getChasingOptions, getRelativelyEmptyLitCardinalDirections} from "../../../utils/map_utils";
 import {randomChoice} from "../../../utils/random_utils";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {DCEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 
 export class Snail extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["snail.png"]) {
@@ -24,6 +24,10 @@ export class Snail extends Enemy {
         if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)
             || isInanimate(this.tilePosition.x + 1, this.tilePosition.y)) {
             this.scale.x *= -1;
+        }
+
+        if (Game.stage === STAGE.DRY_CAVE && this.type === ENEMY_TYPE.SNAIL) {
+            this.texture = DCEnemiesSpriteSheet["dry_snail.png"];
         }
     }
 

@@ -1,10 +1,10 @@
 import {Game} from "../../../game";
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE, STAGE} from "../../../enums/enums";
 import {getPlayerOnTile, isAnyWall, isInanimate, isNotAWall} from "../../../map_checks";
 import {PoisonHazard} from "../../hazards/poison";
 import {closestPlayer, tileDistance} from "../../../utils/game_utils";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {DCEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {randomAfraidAI} from "../../../enemy_movement_ai";
 
 export class Frog extends Enemy {
@@ -25,6 +25,10 @@ export class Frog extends Enemy {
         if (isAnyWall(this.tilePosition.x + 1, this.tilePosition.y)
             || isInanimate(this.tilePosition.x + 1, this.tilePosition.y)) {
             this.scale.x *= -1;
+        }
+
+        if (Game.stage === STAGE.DRY_CAVE && this.type === ENEMY_TYPE.FROG) {
+            this.texture = DCEnemiesSpriteSheet["dry_frog.png"];
         }
     }
 

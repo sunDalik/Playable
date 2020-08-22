@@ -8,7 +8,7 @@ import {GraySpider} from "./spider_gray";
 import {GreenSpider} from "../dt/spider_green";
 import {RedSpider} from "../dt/spider_red";
 import {ITEM_OUTLINE_FILTER_SMALL} from "../../../filters";
-import {DTEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {DCEnemiesSpriteSheet, DTEnemiesSpriteSheet, FCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {SpiderSmall} from "./spider_small";
 
 export class Cocoon extends Enemy {
@@ -22,6 +22,12 @@ export class Cocoon extends Enemy {
         this.setMinionType();
         this.minion = null;
         this.aboutToSpawn = false;
+    }
+
+    afterMapGen() {
+        if (Game.stage === STAGE.DRY_CAVE && this.type === ENEMY_TYPE.COCOON) {
+            this.texture = DCEnemiesSpriteSheet["dry_cocoon.png"];
+        }
     }
 
     move() {
