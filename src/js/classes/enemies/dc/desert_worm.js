@@ -5,11 +5,7 @@ import {getPlayerOnTile, isEmpty, isLit} from "../../../map_checks";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {shakeScreen} from "../../../animations";
 import {randomChoice, randomShuffle} from "../../../utils/random_utils";
-import {
-    getChasingBurrowedOptions,
-    getRelativelyEmptyLitCardinalDirections,
-    noBurrowedEnemies
-} from "../../../utils/map_utils";
+import {getChasingBurrowedOptions, getFreeBurrowedDirections, noBurrowedEnemies} from "../../../utils/map_utils";
 import {Game} from "../../../game";
 
 export class DesertWorm extends Enemy {
@@ -87,7 +83,7 @@ export class DesertWorm extends Enemy {
                     this.slide(dir.x, dir.y);
                 }
             } else {
-                const movementOptions = getRelativelyEmptyLitCardinalDirections(this);
+                const movementOptions = getFreeBurrowedDirections(this);
                 if (movementOptions.length !== 0) {
                     const dir = randomChoice(movementOptions);
                     this.slide(dir.x, dir.y);

@@ -1,5 +1,6 @@
 import {isAnyWallOrInanimate, isEmpty, isLit, isRelativelyEmpty} from "../map_checks";
 import {Game} from "../game";
+import {TILE_TYPE} from "../enums/enums";
 
 export function get8Directions() {
     return [{x: -1, y: -1}, {x: 0, y: -1}, {x: 1, y: -1},
@@ -116,6 +117,12 @@ export function getChasingOptions(chaser, runner) {
 
 export function getChasingBurrowedOptions(chaser, runner) {
     return getDirectionsWithConditions(chaser, getChasingDirections(chaser, runner), noBurrowedEnemies);
+}
+
+export function getFreeBurrowedDirections(tileElement) {
+    return getDirectionsWithConditions(tileElement, getCardinalDirections(), noBurrowedEnemies, (tilePosX, tilePosY) => {
+        return isLit(tilePosX, tilePosY) && Game.map[tilePosY][tilePosX].tileType !== TILE_TYPE.SUPER_WALL;
+    });
 }
 
 export function noBurrowedEnemies(tilePosX, tilePosY) {
