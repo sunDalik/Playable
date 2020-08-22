@@ -2,7 +2,7 @@ import {Game} from "../../../game";
 import * as PIXI from "pixi.js";
 import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {isEnemy, isRelativelyEmpty} from "../../../map_checks";
-import {createPlayerAttackTile, createWeaponAnimationSwing} from "../../../animations";
+import {createPlayerAttackTile, createWeaponAnimationStab} from "../../../animations";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {floorLevel} from "../../tile_elements/tile_element";
 import {Weapon} from "../weapon";
@@ -14,9 +14,9 @@ export class AssassinDagger extends Weapon {
         this.id = EQUIPMENT_ID.ASSASSIN_DAGGER;
         this.SLIDE_ANIMATION_TIME = 5;
         this.FINISH_SLIDE_TIME = 2;
-        this.atk = 1.25;
+        this.atk = 1.5;
         this.name = "Assassin's Dagger";
-        this.description = "Attack 1.25\nIf there is a space behind target, teleports you behind it and gives 1 stun. Otherwise attacks like a knife";
+        this.description = "Attack 1.5\nIf there is a space behind the target, teleports you behind it and gives it 1 stun";
         this.rarity = RARITY.S;
     }
 
@@ -30,7 +30,8 @@ export class AssassinDagger extends Weapon {
                 wielder.slide(tileDirX * 2, tileDirY * 2, null, null, this.SLIDE_ANIMATION_TIME);
                 if (Game.map[attackTileY][attackTileX].entity) Game.map[attackTileY][attackTileX].entity.addStun(1);
             } else {
-                createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4, 35, 1);
+                createWeaponAnimationStab(wielder, this, tileDirX, tileDirY, 5, 1, 1);
+                //createWeaponAnimationSwing(wielder, this, tileDirX, tileDirY, 4, 35, 1);
             }
             createPlayerAttackTile({x: attackTileX, y: attackTileY});
             this.damageEnemies([Game.map[attackTileY][attackTileX].entity], wielder, atk, tileDirX, tileDirY);
