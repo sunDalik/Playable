@@ -1,12 +1,13 @@
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {Enemy} from "../enemy";
 import {DCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
-import {getPlayerOnTile, isEmpty, isLit} from "../../../map_checks";
+import {getPlayerOnTile, isEmpty, isEnemy, isLit} from "../../../map_checks";
 import {closestPlayer, otherPlayer, tileDistance} from "../../../utils/game_utils";
 import {shakeScreen} from "../../../animations";
 import {randomChoice, randomShuffle} from "../../../utils/random_utils";
 import {getChasingBurrowedOptions, getFreeBurrowedDirections, noBurrowedEnemies} from "../../../utils/map_utils";
 import {Game} from "../../../game";
+import {DAMAGE_TYPE} from "../../../enums/damage_type";
 
 export class DesertWorm extends Enemy {
     constructor(tilePositionX, tilePositionY, texture = DCEnemiesSpriteSheet["desert_worm.png"]) {
@@ -92,33 +93,47 @@ export class DesertWorm extends Enemy {
         }
     }
 
-    attack() {
+    // called before we place worm on map
+    attack(allowRecursion = true) {
         const player = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y);
         if (player) {
             player.damage(this.atk, this, true, true, true);
             if (!player.dead) {
-                loop: for (const r of [4, 3, 2, 1]) {
-                    let xArray = [];
-                    let yArray = [];
-                    for (let i = -r; i <= r; i++) {
-                        xArray.push(i);
-                        yArray.push(i);
-                    }
-                    randomShuffle(xArray);
-                    randomShuffle(yArray);
-                    for (const x of xArray) {
-                        for (const y of yArray) {
-                            const tile = {x: this.tilePosition.x + x, y: this.tilePosition.y + y};
-                            if (Math.abs(x) + Math.abs(y) === r && isEmpty(tile.x, tile.y) && isLit(tile.x, tile.y)) {
-                                player.step(tile.x - player.tilePosition.x, tile.y - player.tilePosition.y);
-                                break loop;
-                            }
-                        }
+                this.throwEntity(player);
+            }
+            const player2 = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y);
+            if (player2 && player2 !== player && allowRecursion) this.attack(false);
+        } else if (isEnemy(this.tilePosition.x, this.tilePosition.y)) {
+            const enemy = Game.map[this.tilePosition.y][this.tilePosition.x].entity;
+            if (enemy && enemy !== this) {
+                enemy.damage(this, this.atk, 0, 0, DAMAGE_TYPE.HAZARDAL);
+                if (!enemy.dead) {
+                    enemy.addStun(2);
+                    this.throwEntity(enemy);
+                }
+            }
+        }
+    }
+
+    throwEntity(entity) {
+        loop: for (const r of [4, 3, 2, 1]) {
+            let xArray = [];
+            let yArray = [];
+            for (let i = -r; i <= r; i++) {
+                xArray.push(i);
+                yArray.push(i);
+            }
+            randomShuffle(xArray);
+            randomShuffle(yArray);
+            for (const x of xArray) {
+                for (const y of yArray) {
+                    const tile = {x: this.tilePosition.x + x, y: this.tilePosition.y + y};
+                    if (Math.abs(x) + Math.abs(y) === r && isEmpty(tile.x, tile.y) && isLit(tile.x, tile.y)) {
+                        entity.step(tile.x - entity.tilePosition.x, tile.y - entity.tilePosition.y);
+                        break loop;
                     }
                 }
             }
-            const player2 = getPlayerOnTile(this.tilePosition.x, this.tilePosition.y);
-            if (player2 && player2 !== player) this.attack();
         }
     }
 
