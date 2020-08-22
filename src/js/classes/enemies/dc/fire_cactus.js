@@ -1,6 +1,5 @@
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {DCEnemiesSpriteSheet} from "../../../loader";
-import {isNotAWall} from "../../../map_checks";
 import {Game} from "../../../game";
 import {PoisonCactus} from "./poison_cactus";
 import {FireHazard} from "../../hazards/fire";
@@ -14,14 +13,10 @@ export class FireCactus extends PoisonCactus {
         this.normalTexture = DCEnemiesSpriteSheet["fire_cactus.png"];
     }
 
-    burst() {
-        for (let i = -3; i <= 3; i++) {
-            if (isNotAWall(this.tilePosition.x, this.tilePosition.y + i)) {
-                const fire = new FireHazard(this.tilePosition.x, this.tilePosition.y + i, true);
-                fire.currentSpreadDelay= 0;
-                fire.tileSpread = 2;
-                Game.world.addHazard(fire);
-            }
-        }
+    putHazard(tilePosX, tilePosY) {
+        const fire = new FireHazard(tilePosX, tilePosY, true);
+        fire.currentSpreadDelay = 0;
+        fire.tileSpread = 2;
+        Game.world.addHazard(fire);
     }
 }

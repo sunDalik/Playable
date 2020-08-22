@@ -33,14 +33,17 @@ export class PoisonCactus extends SmallMushroom {
 
     die(source) {
         super.die(source);
-        this.burst();
-    }
-
-    burst() {
-        for (let i = -3; i <= 3; i++) {
-            if (isNotAWall(this.tilePosition.x, this.tilePosition.y + i)) {
-                Game.world.addHazard(new PoisonHazard(this.tilePosition.x, this.tilePosition.y + i, true));
+        // spill poison on two sides vertically, stop if meet a wall
+        for (const arr of [[-1, -2, -3], [0, 1, 2, 3]]) {
+            for (const i of arr) {
+                if (isNotAWall(this.tilePosition.x, this.tilePosition.y + i)) {
+                    this.putHazard(this.tilePosition.x, this.tilePosition.y + i);
+                } else break;
             }
         }
+    }
+
+    putHazard(tilePosX, tilePosY) {
+        Game.world.addHazard(new PoisonHazard(tilePosX, tilePosY, true));
     }
 }
