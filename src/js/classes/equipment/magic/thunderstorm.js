@@ -6,6 +6,7 @@ import {setTickTimeout, tileDistance} from "../../../utils/game_utils";
 import {createThunderAnimation} from "../../../animations";
 import {randomInt} from "../../../utils/random_utils";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
+import {isNotOutOfMap} from "../../../map_checks";
 
 export class Thunderstorm extends Magic {
     constructor() {
@@ -25,10 +26,7 @@ export class Thunderstorm extends Magic {
 
     cast(wielder) {
         if (this.uses <= 0) return false;
-        const vulnerableEnemies = Game.enemies.filter(
-            e => e.visible && e.role !== ROLE.WALL_TRAP
-                && Math.abs(e.tilePosition.x - wielder.tilePosition.x) <= this.horizontalRange
-                && Math.abs(e.tilePosition.y - wielder.tilePosition.y) <= this.verticalRange);
+        const vulnerableEnemies = this.getVulnerableEnemies(wielder);
         vulnerableEnemies.sort((a, b) => tileDistance(a, wielder) - tileDistance(b, wielder));
         let thundersAmount = this.thundersAmount;
         for (const enemy of vulnerableEnemies) {
@@ -43,5 +41,13 @@ export class Thunderstorm extends Magic {
         }
         if (vulnerableEnemies.length !== 0) this.uses--;
         return true;
+    }
+
+    getVulnerableEnemies(wielder) {
+        return Game.enemies.filter(
+            e => e.visible && e.role !== ROLE.WALL_TRAP
+                && Math.abs(e.tilePosition.x - wielder.tilePosition.x) <= this.horizontalRange
+                && Math.abs(e.tilePosition.y - wielder.tilePosition.y) <= this.verticalRange
+                && isNotOutOfMap(e.tilePosition.x, e.tilePosition.y) && Game.map[e.tilePosition.y][e.tilePosition.x].entity === e);
     }
 }

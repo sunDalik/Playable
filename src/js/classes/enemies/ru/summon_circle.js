@@ -5,6 +5,7 @@ import {removeObjectFromArray} from "../../../utils/basic_utils";
 import {getPlayerOnTile, isEmpty} from "../../../map_checks";
 import {RUEnemiesSpriteSheet} from "../../../loader";
 import {Z_INDEXES} from "../../../z_indexing";
+import {removeAllChildrenFromContainer} from "../../../drawing/draw_utils";
 
 export class SummonCircle extends Enemy {
     constructor(tilePositionX, tilePositionY, enemy, texture = RUEnemiesSpriteSheet["summon_circle.png"]) {
@@ -20,6 +21,10 @@ export class SummonCircle extends Enemy {
         this.removeShadow();
         this.setCenterPreservation();
         this.correctZIndex();
+    }
+
+    redrawHealth() {
+        removeAllChildrenFromContainer(this.healthContainer);
     }
 
     correctZIndex() {

@@ -1,7 +1,6 @@
-import {EQUIPMENT_ID, ROLE} from "../../../enums/enums";
+import {EQUIPMENT_ID} from "../../../enums/enums";
 import {MagicSpriteSheet} from "../../../loader";
 import {Thunderstorm} from "./thunderstorm";
-import {Game} from "../../../game";
 import {setTickTimeout, tileDistance} from "../../../utils/game_utils";
 import {createEmpyrealWrathAnimation} from "../../../animations";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
@@ -20,10 +19,7 @@ export class EmpyrealWrath extends Thunderstorm {
 
     cast(wielder) {
         if (this.uses <= 0) return false;
-        const vulnerableEnemies = Game.enemies.filter(
-            e => e.visible && e.role !== ROLE.WALL_TRAP
-                && Math.abs(e.tilePosition.x - wielder.tilePosition.x) <= this.horizontalRange
-                && Math.abs(e.tilePosition.y - wielder.tilePosition.y) <= this.verticalRange);
+        const vulnerableEnemies = this.getVulnerableEnemies(wielder);
         vulnerableEnemies.sort((a, b) => tileDistance(a, wielder) - tileDistance(b, wielder));
         let thundersAmount = this.thundersAmount;
         let iteration = 0;
