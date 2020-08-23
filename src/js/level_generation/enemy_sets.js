@@ -465,7 +465,7 @@ export const RUBossSets = [
 // Added enemies:
 // FireFrog, DeadStar, DesertWorm, PoisonCactus, FireCactus
 // Removed enemies:
-// Eel, DarkEel, PoisonEel, KingFrog, MiniStar, PoisonousStar, SmallMushroom, Mushroom
+// Eel, DarkEel, PoisonEel, KingFrog, MiniStar, PoisonousStar, SmallMushroom, Mushroom, Crab
 export const DCEnemySets = [
     [GraySpider, GraySpider, SpiderSmall],
     [BombSkull],

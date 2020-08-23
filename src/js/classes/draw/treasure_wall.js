@@ -9,6 +9,7 @@ import {HealingPotion} from "../equipment/bag/healing_potion";
 import {RerollPotion} from "../equipment/bag/reroll_potion";
 import {completeAchievement} from "../../achievements";
 import {DCTilesetSpriteSheet, DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
+import {redrawMiniMapPixel} from "../../drawing/minimap";
 
 export class TreasureWallTile extends WallTile {
     constructor(tilePositionX, tilePositionY, texture = FCTilesetSpriteSheet["flooded_cave_walls_treasure_0.png"]) {
@@ -40,6 +41,7 @@ export class TreasureWallTile extends WallTile {
             dropItem(new HealingPotion(), this.tilePosition.x, this.tilePosition.y);
         } else if (random > 84) {
             Game.world.addInanimate(new Chest(this.tilePosition.x, this.tilePosition.y));
+            redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
         } else {
             dropItem(new Key(), this.tilePosition.x, this.tilePosition.y);
         }
