@@ -12,7 +12,7 @@ import {
     isRelativelyEmpty,
     tileInsideTheBossRoom
 } from "../../../map_checks";
-import {randomChoice, randomChoiceSeveral, randomInt} from "../../../utils/random_utils";
+import {randomChoice, randomChoiceSeveral} from "../../../utils/random_utils";
 import {get8Directions, get8DirectionsInRadius} from "../../../utils/map_utils";
 import {PoisonHazard} from "../../hazards/poison";
 import {Eel} from "../fc/eel";
@@ -483,6 +483,7 @@ export class ParanoidEel extends Boss {
         if (!this.dead) {
             if (damageType.hazardal) return;
             if (this.triggeredSpinAttack || this.triggeredVerticalRush || this.triggeredSneezeAttack || this.triggeredHorizontalRush) return;
+            if (this.triggeredEelSpit || this.triggeredPoisonEelSpit || this.triggeredStraightPoisonAttack) return;
             if ((this.direction.x !== -inputX || this.direction.y !== -inputY)
                 && !this.triggeredStraightPoisonAttack && !this.triggeredEelSpit && !this.triggeredPoisonEelSpit) this.waitingToMove = true;
 
