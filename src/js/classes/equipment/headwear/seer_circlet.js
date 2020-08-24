@@ -4,6 +4,7 @@ import {otherPlayer} from "../../../utils/game_utils";
 import {HeadWearSpriteSheet} from "../../../loader";
 import {Equipment} from "../equipment";
 
+// todo buff somehow???
 export class SeerCirclet extends Equipment {
     constructor() {
         super();
