@@ -9,7 +9,7 @@ export class DogStaff extends MinionStaff {
         this.texture = WeaponsSpriteSheet["dog_staff.png"];
         this.id = EQUIPMENT_ID.DOG_STAFF;
         this.name = "Dog Staff";
-        this.description = "Dog minion will damage enemies that stand on its tile\nMinion's atk is 1 (2 if in WEAPON slot) and does not depend on normal atk stats";
+        this.createDescription("Dog minion deals 0.5 damage to enemies it touches");
         this.rarity = RARITY.C;
         this.minions = [new DogStaffMinion()];
     }

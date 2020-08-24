@@ -11,7 +11,7 @@ export class EggAmulet extends Equipment {
         this.equipmentType = EQUIPMENT_TYPE.ACCESSORY;
         this.id = EQUIPMENT_ID.EGG_AMULET;
         this.name = "Egg Amulet";
-        this.description = "Summons chicken minion that will damage enemies it touches by 1\nAdds one more chicken whenever you enter a new floor";
+        this.description = "Summons chicken minion that deals 0.5 damage to enemies it touches\nAdds one more chicken whenever you enter a new floor";
         this.rarity = RARITY.B;
         this.minions = [new ChickenMinion()];
     }

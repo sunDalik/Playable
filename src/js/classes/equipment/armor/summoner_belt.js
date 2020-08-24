@@ -13,7 +13,7 @@ export class SummonerBelt extends Equipment {
         this.passiveDef = 0.75;
         this.rarity = RARITY.A;
         this.name = "Summoner's Belt";
-        this.description = "Summons cat minions that will deal 1 damage to enemies they touch\n+0.75 defense\n+0.5 minion attack";
+        this.description = "Summons cat minions that deal 0.5 damage to enemies they touch\n+0.75 defense\n+0.5 minion attack";
         this.minions = [new CatMinion(), new CatMinion()];
     }
 }
@@ -23,6 +23,5 @@ class CatMinion extends Minion {
         super(texture);
         this.stepping = true;
         this.tallModifier -= 2;
-        this.setScaleModifier(1.05);
     }
 }

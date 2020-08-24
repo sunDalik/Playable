@@ -2,7 +2,6 @@ import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Minion} from "../minion";
 import {MinionStaff} from "./minion_staff";
-import {Game} from "../../../game";
 
 export class HiveStaff extends MinionStaff {
     constructor() {
@@ -10,7 +9,7 @@ export class HiveStaff extends MinionStaff {
         this.texture = WeaponsSpriteSheet["hive_staff.png"];
         this.id = EQUIPMENT_ID.HIVE_STAFF;
         this.name = "Hive Staff";
-        this.description = "Bee minions will damage enemies that stand on its tile\nMinion's atk is 1 (2 if in WEAPON slot) and does not depend on normal atk stats";
+        this.createDescription("Bee minions deals 0.5 damage to enemies they touch");
         this.rarity = RARITY.A;
         this.minions = [new BeeMinion(), new BeeMinion(), new BeeMinion(), new BeeMinion()];
         for (let i = 0; i < this.minions.length; i++) {
