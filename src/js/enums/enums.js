@@ -207,7 +207,8 @@ export const EQUIPMENT_ID = Object.freeze({
     FALLEN_ANGEL_WINGS: 89,
     MANA_POTION: 90,
     CROWN_OF_MALICE: 91,
-    SACRED_KNOWLEDGE: 92
+    SACRED_KNOWLEDGE: 92,
+    BARBARIAN_HELMET: 93
 });
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
