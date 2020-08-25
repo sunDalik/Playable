@@ -4,12 +4,12 @@ import {isEmpty} from "../../../map_checks";
 import {IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import {randomDiagonalAggressiveAI} from "../../../enemy_movement_ai";
 import {randomShuffle} from "../../../utils/random_utils";
-import {closestPlayer, closestPlayerDiagonal, tileDistanceDiagonal} from "../../../utils/game_utils";
+import {closestPlayerDiagonal, tileDistanceDiagonal} from "../../../utils/game_utils";
 
 export class MasterSpider extends Spider {
     constructor(tilePositionX, tilePositionY, texture = RUEnemiesSpriteSheet["master_spider.png"]) {
         super(tilePositionX, tilePositionY, texture);
-        this.health = this.maxHealth = 2;
+        this.health = this.maxHealth = 3;
         this.atk = 1.25;
         this.name = "Master Spider";
         this.type = ENEMY_TYPE.MASTER_SPIDER;
