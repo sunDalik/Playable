@@ -92,7 +92,7 @@ export class Equipment {
     //executes AFTER wielder changes its tilePosition (does step or slide)
     onMove(wielder, tileStepX, tileStepY) {
         for (const minion of this.minions) {
-            //minion.attack();
+            minion.attack(this);
             minion.move();
         }
     }

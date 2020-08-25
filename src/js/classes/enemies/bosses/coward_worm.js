@@ -129,7 +129,7 @@ export class CowardWorm extends Boss {
     applyRoomLayout(level, room) {
         for (let y = room.offsetY + 2; y <= room.offsetY + room.height - 3; y += 2) {
             for (let x = room.offsetX + 2; x <= room.offsetX + room.width - 3; x += 2) {
-                if (Math.random() < 0.75) {
+                if (Math.random() < 0.7) {
                     level[y][x].tile = new SuperWallTile(x, y);
                     level[y][x].tileType = TILE_TYPE.SUPER_WALL;
                 } else {
@@ -140,7 +140,7 @@ export class CowardWorm extends Boss {
         }
         for (let y = room.offsetY + 2; y <= room.offsetY + room.height - 3; y++) {
             for (let x = room.offsetX + 2; x <= room.offsetX + room.width - 3; x++) {
-                if (level[y][x].tileType === TILE_TYPE.NONE && Math.random() < 0.25) {
+                if (level[y][x].tileType === TILE_TYPE.NONE && Math.random() < 0.55) {
                     level[y][x].tile = new WallTile(x, y);
                     level[y][x].tileType = TILE_TYPE.WALL;
                 }
