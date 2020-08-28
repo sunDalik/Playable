@@ -88,6 +88,7 @@ import {Spear} from "./classes/equipment/weapons/spear";
 import {CrownOfMalice} from "./classes/equipment/headwear/crown_of_malice";
 import {SacredKnowledge} from "./classes/equipment/accessories/sacred_knowledge";
 import {BarbarianHelmet} from "./classes/equipment/headwear/barbarian_helmet";
+import {stageBeaten} from "./setup";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
@@ -157,7 +158,7 @@ export function incrementStage() {
 
 export function replaceStageWithAlt() {
     if (Game.stage === STAGE.FLOODED_CAVE) {
-        if (Math.random() < 0.4) {
+        if (Math.random() < 0.5 && stageBeaten(STAGE.FLOODED_CAVE) >= 7) {
             Game.stage = STAGE.DRY_CAVE;
         }
     }
