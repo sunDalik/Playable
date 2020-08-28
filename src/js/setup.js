@@ -213,7 +213,7 @@ export function retry() {
 
 function initGameState() {
     Game.stage = STAGE.FLOODED_CAVE;
-    replaceStageWithAlt();
+    if (Game.playMode !== PLAY_MODE.TUTORIAL) replaceStageWithAlt();
     Game.time = 0;
     Game.keysAmount = 0;
     Game.enemiesKilled = 0;
