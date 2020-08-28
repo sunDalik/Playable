@@ -33,8 +33,9 @@ import {PoisonousStar} from "../classes/enemies/fc/poisonous_star";
 import {Star} from "../classes/enemies/fc/star";
 import {PoisonEel} from "../classes/enemies/fc/eel_poison";
 import {Eel} from "../classes/enemies/fc/eel";
-import {SpikySnail} from "../classes/enemies/fc/snail_spiky";
-import {Snail} from "../classes/enemies/fc/snail";
+import {Phantom} from "../classes/enemies/dt/phantom";
+import {Rabbit} from "../classes/enemies/dt/rabbit";
+import {FireFrog} from "../classes/enemies/dt/frog_fire";
 
 let settings;
 let level;
@@ -691,8 +692,10 @@ function replaceEnemy(enemy) {
     } else if (enemy === PoisonEel && stageBeaten(STAGE.FLOODED_CAVE) < 1) {
         // also used in Paranoid Eel
         return Eel;
-    } else if (enemy === SpikySnail && stageBeaten(STAGE.FLOODED_CAVE) < 1) {
-        return Snail;
+    } else if (enemy === Phantom && stageBeaten(STAGE.DARK_TUNNEL) < 1) {
+        return Rabbit;
+    } else if (enemy === KingFireFrog && stageBeaten(STAGE.DARK_TUNNEL) < 2) {
+        return FireFrog;
     }
     return enemy;
 }
