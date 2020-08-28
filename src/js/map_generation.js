@@ -9,6 +9,7 @@ import {Key} from "./classes/equipment/key";
 import {keysOnEnemies} from "./level_generation/standard_generation";
 import {RerollPotion} from "./classes/equipment/bag/reroll_potion";
 import {ManaPotion} from "./classes/equipment/bag/mana_potion";
+import {stageBeaten} from "./setup";
 
 //todo change purpose of this file
 export function assignDrops() {
@@ -25,10 +26,12 @@ export function assignDrops() {
         }
     }
 
-    // assign quirks
-    for (const enemy of Game.enemies) {
-        if (Math.random() < 0.008 && !enemy.boss && enemy.role === ROLE.ENEMY) {
-            enemy.setQuirk(randomChoice([ENEMY_QUIRK.TINY, ENEMY_QUIRK.GIANT]));
+    if (stageBeaten(Game.stage) >= 1) {
+        // assign quirks
+        for (const enemy of Game.enemies) {
+            if (Math.random() < 0.008 && !enemy.boss && enemy.role === ROLE.ENEMY) {
+                enemy.setQuirk(randomChoice([ENEMY_QUIRK.TINY, ENEMY_QUIRK.GIANT]));
+            }
         }
     }
 }
