@@ -268,7 +268,8 @@ export const STORAGE = Object.freeze({
     SHOW_TIME: "ShowTimer",
     ACHIEVEMENTS: "Achievements",
     DISABLE_MOUSE: "DisableMouse",
-    SHOW_FPS: "ShowFPS"
+    SHOW_FPS: "ShowFPS",
+    STAGES_TIMES_BEATEN: "StagesTimesBeaten"
 });
 
 export const GAME_STATE = Object.freeze({MENU: 0, PLAYING: 1});

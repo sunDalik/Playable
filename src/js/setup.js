@@ -6,7 +6,7 @@ import {ACHIEVEMENT_ID, GAME_STATE, PLAY_MODE, STAGE, STORAGE, TILE_TYPE} from "
 import {generateLevel} from "./level_generation/level_generation";
 import {assignDrops} from "./map_generation";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
-import {initPools, setVariablesForStage} from "./game_changer";
+import {initPools, replaceStageWithAlt, setVariablesForStage} from "./game_changer";
 import {createDarkness, drawEntities, drawGrid, drawOther, drawTiles} from "./drawing/draw_init";
 import {drawHUD, drawInteractionKeys, drawMovementKeyBindings, setTimerRunning} from "./drawing/draw_hud";
 import {bindKeys} from "./keyboard/keyboard_binds";
@@ -213,6 +213,7 @@ export function retry() {
 
 function initGameState() {
     Game.stage = STAGE.FLOODED_CAVE;
+    replaceStageWithAlt();
     Game.time = 0;
     Game.keysAmount = 0;
     Game.enemiesKilled = 0;
@@ -241,8 +242,8 @@ function lightAll() {
 }
 
 function lightAllRealistic() {
-    for (let i = 1; i < Game.map.length-1; i++) {
-        for (let j = 1; j < Game.map[0].length-1; j++) {
+    for (let i = 1; i < Game.map.length - 1; i++) {
+        for (let j = 1; j < Game.map[0].length - 1; j++) {
             if ([TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[i][j].tileType)) {
                 for (const dir of get8Directions()) {
                     if (![TILE_TYPE.WALL, TILE_TYPE.SUPER_WALL].includes(Game.map[i + dir.y][j + dir.x].tileType)) {
@@ -267,6 +268,7 @@ function initLocalStorage(reset = false) {
     initLocalStorageKeys(reset);
     initLocalStorageOther(reset);
     initLocalStorageAchievements(reset);
+    initLocalStorageStages(reset);
     setupSettingsFromLocalStorage();
 }
 
@@ -322,6 +324,23 @@ export function initLocalStorageAchievements(reset = false) {
             if (achievements[id] !== 0 && achievements[id] !== 1) achievements[id] = 0;
         }
         window.localStorage[STORAGE.ACHIEVEMENTS] = JSON.stringify(achievements);
+    }
+}
+
+export function initLocalStorageStages(reset = false) {
+    if (reset || !window.localStorage[STORAGE.STAGES_TIMES_BEATEN]) {
+        const stagesArray = [];
+        for (const stage of Object.values(STAGE)) {
+            stagesArray[stage.id] = 0;
+        }
+        window.localStorage[STORAGE.STAGES_TIMES_BEATEN] = JSON.stringify(stagesArray);
+    } else {
+        // fill in missing stages
+        const stagesArray = JSON.parse(window.localStorage[STORAGE.STAGES_TIMES_BEATEN]);
+        for (const stage of Object.values(STAGE)) {
+            if (!Number.isInteger(stagesArray[stage.id])) stagesArray[stage.id] = 0;
+        }
+        window.localStorage[STORAGE.STAGES_TIMES_BEATEN] = JSON.stringify(stagesArray);
     }
 }
 

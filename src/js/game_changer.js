@@ -151,6 +151,16 @@ export function incrementStage() {
             //Game.stage = STAGE.FLOODED_CAVE;
             break;
     }
+
+    replaceStageWithAlt();
+}
+
+export function replaceStageWithAlt() {
+    if (Game.stage === STAGE.FLOODED_CAVE) {
+        if (Math.random() < 0.4) {
+            Game.stage = STAGE.DRY_CAVE;
+        }
+    }
 }
 
 export const BG_COLORS = {
