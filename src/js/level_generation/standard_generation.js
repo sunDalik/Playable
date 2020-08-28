@@ -26,6 +26,15 @@ import {HealingPotion} from "../classes/equipment/bag/healing_potion";
 import {getRandomShopItem} from "../utils/pool_utils";
 import {TreasureWallTile} from "../classes/draw/treasure_wall";
 import {CactusWallTrap} from "../classes/enemies/dc/cactus_wall_trap";
+import {stageBeaten} from "../setup";
+import {KingFrog} from "../classes/enemies/fc/frog_king";
+import {Frog} from "../classes/enemies/fc/frog";
+import {PoisonousStar} from "../classes/enemies/fc/poisonous_star";
+import {Star} from "../classes/enemies/fc/star";
+import {PoisonEel} from "../classes/enemies/fc/eel_poison";
+import {Eel} from "../classes/enemies/fc/eel";
+import {SpikySnail} from "../classes/enemies/fc/snail_spiky";
+import {Snail} from "../classes/enemies/fc/snail";
 
 let settings;
 let level;
@@ -656,7 +665,8 @@ function generateEnemies() {
             }
             if (pack === undefined) continue;
             const points = getValidRoomPoints(room);
-            for (const enemy of pack) {
+            for (let enemy of pack) {
+                enemy = replaceEnemy(enemy);
                 for (let i = points.length - 1; i >= 0; i--) {
                     const point = points[i];
                     removeObjectFromArray(point, points);
@@ -671,6 +681,20 @@ function generateEnemies() {
             }
         }
     }
+}
+
+function replaceEnemy(enemy) {
+    if (enemy === KingFrog && stageBeaten(STAGE.FLOODED_CAVE) < 2) {
+        return Frog;
+    } else if (enemy === PoisonousStar && stageBeaten(STAGE.FLOODED_CAVE) < 3) {
+        return Star;
+    } else if (enemy === PoisonEel && stageBeaten(STAGE.FLOODED_CAVE) < 1) {
+        // also used in Paranoid Eel
+        return Eel;
+    } else if (enemy === SpikySnail && stageBeaten(STAGE.FLOODED_CAVE) < 1) {
+        return Snail;
+    }
+    return enemy;
 }
 
 function nearShopkeeper(point) {
@@ -806,6 +830,8 @@ function generateBoss(set) {
 
     const points = getValidRoomPoints(room);
     for (let e = 0; e < set.length; e++) {
+        let enemy = set[e];
+        enemy = replaceEnemy(enemy);
         for (let i = points.length - 1; i >= 0; i--) {
             let point;
             if (e === 0) {
@@ -818,7 +844,7 @@ function generateBoss(set) {
             if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
                 if (e !== 0 && pointTileDistance(point, bossPos) < 3) continue;
                 if (e !== 0 && isNearEntrance(point, room)) continue;
-                else level[point.y][point.x].entity = new set[e](point.x, point.y);
+                else level[point.y][point.x].entity = new enemy(point.x, point.y);
                 if (e === 0 && level[point.y][point.x].entity.applyRoomLayout) level[point.y][point.x].entity.applyRoomLayout(level, room);
                 break;
             }

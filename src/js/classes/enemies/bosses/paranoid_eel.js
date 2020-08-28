@@ -1,5 +1,5 @@
 import {Game} from "../../../game";
-import {ENEMY_TYPE, HAZARD_TYPE, TILE_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {
     getPlayerOnTile,
@@ -21,6 +21,7 @@ import {shakeScreen} from "../../../animations";
 import {DarkEel} from "../fc/eel_dark";
 import {ParanoidEelSpriteSheet} from "../../../loader";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
+import {stageBeaten} from "../../../setup";
 
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = ParanoidEelSpriteSheet["paranoid_eel_neutral.png"]) {
@@ -145,7 +146,8 @@ export class ParanoidEel extends Boss {
             //bugs when it slides into wall then spits and all that happens quickly because you double tap player. Dont know why.
             if (roll < 2) {
                 if (this.emptyInFront()) {
-                    if (this.canSpawnMinions()) {
+                    // see also replaceEnemy()
+                    if (this.canSpawnMinions() && stageBeaten(STAGE.FLOODED_CAVE) >= 1) {
                         this.triggeredPoisonEelSpit = true;
                         this.waitingToMove = true;
                         this.correctLook();
