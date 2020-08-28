@@ -11,7 +11,7 @@ export class CactiStaff extends MinionStaff {
         this.texture = WeaponsSpriteSheet["cacti_staff.png"];
         this.id = EQUIPMENT_ID.CACTI_STAFF;
         this.name = "Cacti Staff";
-        this.createDescription("Cactus minions deal 0.5 damage to enemies they touch");
+        this.createDescription("Cactus minions deal 0.5 damage to enemies they touch", "Cacti");
         this.rarity = RARITY.B;
         this.minions = [new CactiStaffMinion(), new CactiStaffMinion()];
         for (const minion of this.minions) {
