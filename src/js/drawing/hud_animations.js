@@ -138,7 +138,7 @@ function createGameOverScreen(victory = false) {
     // stats
     const time = getTimeFromMs(Game.time);
     const timeString = `${padTime(time.minutes, 1)}:${padTime(time.seconds, 2)}`;
-    const entries = [["Level", Game.stage],
+    const entries = [["Level", Game.stage.name],
         ["Time", timeString],
         ["Creatures Slain", Game.enemiesKilled]];
     const initPosY = topTextObject.position.y + topTextObject.height + 40;
