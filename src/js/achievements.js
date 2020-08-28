@@ -64,7 +64,8 @@ export const achievements = [
     }
  */
 
-export function completeBeatStageAchievements(stage) {
+export function beatStage(stage) {
+    // complete beat stage achievements
     switch (stage) {
         case STAGE.FLOODED_CAVE:
             completeAchievement(ACHIEVEMENT_ID.BEAT_FC);
@@ -77,6 +78,11 @@ export function completeBeatStageAchievements(stage) {
             completeAchievement(ACHIEVEMENT_ID.BEAT_RU);
             break;
     }
+
+    // increment the number of times the stage was beaten
+    const stagesArray = JSON.parse(window.localStorage[STORAGE.STAGES_TIMES_BEATEN]);
+    stagesArray[stage.id]++;
+    window.localStorage[STORAGE.STAGES_TIMES_BEATEN] = JSON.stringify(stagesArray);
 }
 
 export function completeAchievementForEquippingAllItems() {

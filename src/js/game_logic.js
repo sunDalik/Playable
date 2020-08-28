@@ -43,7 +43,7 @@ import {removeObjectFromArray} from "./utils/basic_utils";
 import {
     completeAchievement,
     completeAchievementForEquippingAllItems,
-    completeBeatStageAchievements
+    beatStage
 } from "./achievements";
 import {Z_INDEXES} from "./z_indexing";
 import {SuperWallTile} from "./classes/draw/super_wall";
@@ -426,7 +426,7 @@ export function gotoNextLevel() {
     Game.world.clean();
     returnShopItems();
     cleanGameState();
-    completeBeatStageAchievements(Game.stage);
+    beatStage(Game.stage);
     incrementStage();
     regenerateWeaponPool();
     initializeLevel();

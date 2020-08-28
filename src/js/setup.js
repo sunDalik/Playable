@@ -366,3 +366,9 @@ export function setMousePrivileges() {
         }
     }
 }
+
+// returns how many times a stage has been beaten
+export function stageBeaten(stage) {
+    const stagesArray = JSON.parse(window.localStorage[STORAGE.STAGES_TIMES_BEATEN]);
+    return stagesArray[stage.id];
+}

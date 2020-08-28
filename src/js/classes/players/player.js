@@ -27,7 +27,7 @@ import {CrystalGuardian} from "../equipment/magic/crystal_guardian";
 import {roundToQuarter} from "../../utils/math_utils";
 import {getCardinalDirectionsWithNoWallsOrInanimates} from "../../utils/map_utils";
 import {DAMAGE_TYPE} from "../../enums/damage_type";
-import {completeBeatStageAchievements} from "../../achievements";
+import {beatStage} from "../../achievements";
 
 export class Player extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -108,7 +108,7 @@ export class Player extends AnimatedTileElement {
                 if (Game.map[this.tilePosition.y + tileStepY][this.tilePosition.x + tileStepX].tileType === TILE_TYPE.EXIT) {
                     Game.unplayable = true;
                     if (Game.stage === STAGE.RUINS) {
-                        completeBeatStageAchievements(Game.stage);
+                        beatStage(Game.stage);
                         this.step(tileStepX, tileStepY);
                         pullUpGameOverScreen(true);
                     } else {
