@@ -70,8 +70,6 @@ export const STAGE = Object.freeze({
     FLOODED_CAVE: "Flooded Caves",
     DARK_TUNNEL: "Dark Tunnel",
     RUINS: "Ruins",
-    JUNGLE: "???",
-    FINALE: "???",
     DRY_CAVE: "Dry Cave"
 });
 export const TILE_TYPE = Object.freeze({VOID: 0, NONE: 1, WALL: 2, ENTRY: 4, SUPER_WALL: 5, EXIT: 6});

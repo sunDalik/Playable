@@ -148,10 +148,7 @@ export function incrementStage() {
             Game.stage = STAGE.RUINS;
             break;
         case STAGE.RUINS:
-            Game.stage = STAGE.FLOODED_CAVE;
-            break;
-        case STAGE.JUNGLE:
-            Game.stage = STAGE.FINALE;
+            //Game.stage = STAGE.FLOODED_CAVE;
             break;
     }
 }
@@ -159,9 +156,11 @@ export function incrementStage() {
 export const BG_COLORS = {
     FLOODED_CAVE: 0xabcfd1,
     DARK_TUNNEL: 0x666666,
-    RUINS: 0xd8d9d7,
+    RUINS: 0xd8d9d7
+    /*
     DUNNO: 0x75c978,
     FINALE: 0xcc76cc
+     */
 };
 
 export function setVariablesForStage() {
@@ -184,14 +183,17 @@ export function setVariablesForStage() {
             Game.BGColor = BG_COLORS.RUINS;
             assignRarityChances(10, 55, 91); // 10% 45% 36% 9%
             break;
-        case STAGE.JUNGLE:
-            Game.BGColor = BG_COLORS.DUNNO;
-            assignRarityChances(2, 36, 87); // 2% 34% 51% 13%
-            break;
-        case STAGE.FINALE:
-            Game.BGColor = BG_COLORS.FINALE;
-            assignRarityChances(0, 10, 75); // 0% 10% 65% 25%
-            break;
+
+        /*
+    case STAGE.4:
+        Game.BGColor = BG_COLORS.DUNNO;
+        assignRarityChances(2, 36, 87); // 2% 34% 51% 13%
+        break;
+    case STAGE.5:
+        Game.BGColor = BG_COLORS.FINALE;
+        assignRarityChances(0, 10, 75); // 0% 10% 65% 25%
+        break;
+         */
     }
 }
 
