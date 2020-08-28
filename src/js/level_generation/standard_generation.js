@@ -877,6 +877,7 @@ function generateKeys() {
         if (level[point.y][point.x].tileType === TILE_TYPE.NONE
             && level[point.y][point.x].entity === null
             && !isNearEntrance(point, room)
+            && !nearShopkeeper(point)
             && (room.type === ROOM_TYPE.MAIN || room.type === ROOM_TYPE.SECONDARY)) {
             level[point.y][point.x].item = new LyingItem(point.x, point.y, new Key());
             keysOnMap--;
