@@ -4,7 +4,6 @@ import {STAGE} from "../../enums/enums";
 import {randomChoice} from "../../utils/random_utils";
 import {DCTilesetSpriteSheet, DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
 
-
 export class FloorTile extends TileElement {
     constructor(tilePositionX, tilePositionY, texture = RUTilesetSpriteSheet["ruins_floor_tile_3.png"]) {
         super(texture, tilePositionX, tilePositionY, true);

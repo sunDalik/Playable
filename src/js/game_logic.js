@@ -1,6 +1,6 @@
 import {Game} from "./game";
 import {incrementStage, regenerateWeaponPool} from "./game_changer";
-import {initializeLevel} from "./setup";
+import {initializeLevel, stageBeaten} from "./setup";
 import {
     ACHIEVEMENT_ID,
     EQUIPMENT_ID,
@@ -651,6 +651,7 @@ export function getItemLabelColor(item) {
 
 export function randomlyEnchantItem(item) {
     if (!item) return;
+    if (stageBeaten(STAGE.FLOODED_CAVE) < 1) return; // you need to beat the first level at least once to unlock enchantments
     if (Math.random() < 0.018) {
         const possibleEnchantments = [];
         if ([EQUIPMENT_TYPE.WEAPON, EQUIPMENT_TYPE.ACCESSORY, EQUIPMENT_TYPE.HEAD, EQUIPMENT_TYPE.ARMOR, EQUIPMENT_TYPE.FOOT, EQUIPMENT_TYPE.SHIELD].includes(item.equipmentType)) {
