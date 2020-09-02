@@ -65,6 +65,7 @@ export class ShadowTileElement extends TileElement {
     placeShadow() {
         if (this.noShadow || this.shadow === null) return;
         this.shadow.zIndex = this.zIndex - 1;
+        this.shadow.tilePosition = this.tilePosition;
         this.shadow.position.x = this.position.x;
         if (this.shadowStepping === false || Math.abs(this.position.x - this.getTilePositionX()) < 2) {
             this.shadow.position.y = (this.tilePosition.y + 1) * Game.TILESIZE - floorLevel - (this.getTilePositionY() - this.position.y);
