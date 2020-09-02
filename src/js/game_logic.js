@@ -40,11 +40,7 @@ import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER, NIGHTMARE_FILTER_1, N
 import {TileElement} from "./classes/tile_elements/tile_element";
 import {randomChoice, randomShuffle} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
-import {
-    completeAchievement,
-    completeAchievementForEquippingAllItems,
-    beatStage
-} from "./achievements";
+import {beatStage, completeAchievement, completeAchievementForEquippingAllItems} from "./achievements";
 import {Z_INDEXES} from "./z_indexing";
 import {SuperWallTile} from "./classes/draw/super_wall";
 import {CommonSpriteSheet} from "./loader";
@@ -52,6 +48,7 @@ import {LyingItem} from "./classes/equipment/lying_item";
 import * as PIXI from "pixi.js";
 import {DAMAGE_TYPE} from "./enums/damage_type";
 import {ENCHANTMENT_TYPE} from "./enums/enchantments";
+import {animateHUDBump} from "./drawing/hud_animations";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -339,11 +336,13 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
             if (player.bag && player.bag.id === equipment.id) {
                 player.bag.amount += equipment.amount;
                 redrawBag(player);
+                animateHUDBump(player, SLOT.BAG);
                 return null;
             } else {
                 const swappedItem = player.bag;
                 player.bag = equipment;
                 redrawSlotContents(player, SLOT.BAG); //???
+                animateHUDBump(player, SLOT.BAG);
                 if (showHelp) showHelpBox(player.bag);
                 return swappedItem;
             }
@@ -375,6 +374,7 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
         if (eq && eq.onEquipmentReceive) eq.onEquipmentReceive(player, equipment);
     }
     redrawSlotContents(player, slot);
+    animateHUDBump(player, slot);
     if (showHelp) showHelpBox(player[slot]);
     if (equipment.enchantment && equipment.enchantment !== ENCHANTMENT_TYPE.NONE) completeAchievement(ACHIEVEMENT_ID.FIND_ENCHANTED_ITEM);
     completeAchievementForEquippingAllItems();

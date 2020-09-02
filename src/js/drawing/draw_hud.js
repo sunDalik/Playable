@@ -27,7 +27,7 @@ import * as PIXI from "pixi.js";
 import {getHealthArray, getHeartTexture, removeAllChildrenFromContainer} from "./draw_utils";
 import {HUD} from "./hud_object";
 import {EQUIPMENT_ID, EQUIPMENT_TYPE, SLOT, STORAGE} from "../enums/enums";
-import {CURSED_FILTER, DIVINE_FILTER, ITEM_OUTLINE_FILTER} from "../filters";
+import {ITEM_OUTLINE_FILTER} from "../filters";
 import {getTimeFromMs} from "../utils/game_utils";
 import {CommonSpriteSheet} from "../loader";
 import {ENCHANTMENT_TYPE} from "../enums/enchantments";
@@ -191,16 +191,12 @@ export function redrawSlotContents(player, slot) {
         const sprite = new PIXI.Sprite(item.texture);
         const size = slotSize - slotContentSizeMargin;
         sprite.position.set(slotContentSizeMargin / 2, slotContentSizeMargin / 2);
-        if (false && sprite.texture.trim) {
-            const mul = sprite.texture.trim.width > sprite.texture.trim.height ?
-                sprite.texture.width / sprite.texture.trim.width
-                : sprite.texture.height / sprite.texture.trim.height;
-            sprite.width = sprite.height = slotSize * mul - slotContentSizeMargin;
-            sprite.position.x -= (sprite.width - size) / 2;
-            sprite.position.y -= (sprite.height - size) / 2;
-        } else {
-            sprite.width = sprite.height = size;
-        }
+        sprite.width = sprite.height = size;
+
+        //set anchor to the center
+        sprite.anchor.set(0.5, 0.5);
+        sprite.position.x += sprite.width / 2;
+        sprite.position.y += sprite.height / 2;
 
         if (item.enchantment !== ENCHANTMENT_TYPE.NONE) {
             sprite.filters = getEnchantmentFilters(item.enchantment);

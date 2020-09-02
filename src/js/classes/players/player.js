@@ -18,7 +18,12 @@ import {randomChoice} from "../../utils/random_utils";
 import {otherPlayer, setTickTimeout, tileDistance} from "../../utils/game_utils";
 import {camera} from "../game/camera";
 import {updateChain} from "../../drawing/draw_dunno";
-import {animateHUDWeaponSwapOut, closeBlackBars, pullUpGameOverScreen} from "../../drawing/hud_animations";
+import {
+    animateHUDBump,
+    animateHUDWeaponSwapOut,
+    closeBlackBars,
+    pullUpGameOverScreen
+} from "../../drawing/hud_animations";
 import {DEATH_FILTER} from "../../filters";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import {HUD} from "../../drawing/hud_object";
@@ -516,6 +521,7 @@ export class Player extends AnimatedTileElement {
         }
         if (magic.onWear) magic.onWear(this);
         this.redrawEquipmentSlot(magic);
+        animateHUDBump(this, this.getSlotNameOfItem(magic));
         if (showHelp) showHelpBox(magic);
     }
 

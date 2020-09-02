@@ -11,7 +11,7 @@ import {SLOT} from "../enums/enums";
 import {getKeyBindSymbol, padTime} from "./draw_hud";
 import {getRandomTip} from "../menu/tips";
 import {removeAllObjectsFromArray} from "../utils/basic_utils";
-import {easeOutQuad} from "../utils/math_utils";
+import {easeInQuad, easeOutQuad} from "../utils/math_utils";
 
 const blackBarLeft = initBlackBar();
 const blackBarRight = initBlackBar();
@@ -242,6 +242,7 @@ export function animateHUDWeaponSwapOut(player) {
             counter += delta;
             cont.sprite.position.x = initPositionX + easeOutQuad(counter / animationTime) * (newPositionX - initPositionX);
             if (counter >= animationTime) {
+                Game.app.ticker.remove(animation);
                 cont.sprite.position.x = newPositionX;
             }
         };
@@ -252,4 +253,42 @@ export function animateHUDWeaponSwapOut(player) {
             cont.sprite.position.x = newPositionX;
         };
     }
+}
+
+export function animateHUDBump(player, slot) {
+    const container = player === Game.player ? HUD.slots1[slot] : HUD.slots2[slot];
+    const sprite = container.sprite.children[0];
+    if (!sprite) return;
+    const initScale = sprite.scale.x; //assuming sprite is not distorted lol
+    const bigScale = initScale * 1.2;
+    const halfAnimationTime = 4;
+    const stayTime = 3;
+    let counter = 0;
+
+    container.cancelAnimation();
+
+    const animation = delta => {
+        counter += delta;
+        if (counter >= halfAnimationTime * 2 + stayTime || sprite._destroyed) {
+            Game.app.ticker.remove(animation);
+            if (!sprite._destroyed) sprite.scale.set(initScale, initScale);
+        } else {
+            let newScale;
+            if (counter < halfAnimationTime) {
+                newScale = initScale + easeInQuad(counter / halfAnimationTime) * (bigScale - initScale);
+            } else if (counter < halfAnimationTime + stayTime) {
+                newScale = bigScale;
+            } else if (counter < halfAnimationTime + stayTime + halfAnimationTime) {
+                newScale = bigScale - easeInQuad((counter - halfAnimationTime - stayTime) / (halfAnimationTime * 2 + stayTime)) * (bigScale - initScale);
+            }
+
+            sprite.scale.set(newScale, newScale);
+        }
+    };
+    Game.app.ticker.add(animation);
+
+    container.cancelAnimation = () => {
+        Game.app.ticker.remove(animation);
+        if (!sprite._destroyed) sprite.scale.set(initScale, initScale);
+    };
 }
