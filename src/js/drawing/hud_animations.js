@@ -7,13 +7,11 @@ import {redrawPauseBG, SUPER_HUD} from "./super_hud";
 import {keyboard} from "../keyboard/keyboard_handler";
 import {retry} from "../setup";
 import {BigHUDKeyBindSize, HUDTextStyleGameOver, HUDTextStyleTitle, slotBorderOffsetX} from "./draw_constants";
-import {CommonSpriteSheet} from "../loader";
-import {EQUIPMENT_TYPE} from "../enums/enums";
+import {SLOT} from "../enums/enums";
 import {getKeyBindSymbol, padTime} from "./draw_hud";
-import {ENCHANTMENT_TYPE} from "../enums/enchantments";
-import {getEnchantmentFilters} from "../game_logic";
 import {getRandomTip} from "../menu/tips";
 import {removeAllObjectsFromArray} from "../utils/basic_utils";
+import {easeOutQuad} from "../utils/math_utils";
 
 const blackBarLeft = initBlackBar();
 const blackBarRight = initBlackBar();
@@ -224,4 +222,34 @@ function getBigKey(keyBind, label) {
     labelObject.position.y = rectHeight / 2 - labelObject.height / 2;
     key.addChild(labelObject);
     return key;
+}
+
+// call it AFTER swapping out weapon and extra slots internally
+export function animateHUDWeaponSwapOut(player) {
+    const slotsContainer = player === Game.player ? HUD.slots1 : HUD.slots2;
+    const containerWeapon = slotsContainer[SLOT.WEAPON];
+    const containerExtra = slotsContainer[SLOT.EXTRA];
+    containerWeapon.cancelAnimation();
+    containerExtra.cancelAnimation();
+    for (const cont of [containerWeapon, containerExtra]) {
+        const initPositionX = cont === containerWeapon ? containerExtra.sprite.position.x : containerWeapon.sprite.position.x;
+        const newPositionX = cont.sprite.position.x;
+
+        let counter = 0;
+        const animationTime = 7;
+
+        const animation = delta => {
+            counter += delta;
+            cont.sprite.position.x = initPositionX + easeOutQuad(counter / animationTime) * (newPositionX - initPositionX);
+            if (counter >= animationTime) {
+                cont.sprite.position.x = newPositionX;
+            }
+        };
+        Game.app.ticker.add(animation);
+
+        cont.cancelAnimation = () => {
+            Game.app.ticker.remove(animation);
+            cont.sprite.position.x = newPositionX;
+        };
+    }
 }

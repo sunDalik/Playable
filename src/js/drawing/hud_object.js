@@ -56,6 +56,7 @@ function generateSlotsContainer() {
         container[slot].slot = new PIXI.Container();
         container[slot].meta = new PIXI.Container();
         container.addChild(container[slot].sprite, container[slot].slot, container[slot].meta);
+        container[slot].cancelAnimation = () => {};
     }
     return container;
 }

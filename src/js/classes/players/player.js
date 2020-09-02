@@ -18,7 +18,7 @@ import {randomChoice} from "../../utils/random_utils";
 import {otherPlayer, setTickTimeout, tileDistance} from "../../utils/game_utils";
 import {camera} from "../game/camera";
 import {updateChain} from "../../drawing/draw_dunno";
-import {closeBlackBars, pullUpGameOverScreen} from "../../drawing/hud_animations";
+import {animateHUDWeaponSwapOut, closeBlackBars, pullUpGameOverScreen} from "../../drawing/hud_animations";
 import {DEATH_FILTER} from "../../filters";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import {HUD} from "../../drawing/hud_object";
@@ -639,17 +639,18 @@ export class Player extends AnimatedTileElement {
 
     useSecondHand() {
         if (this.charging) return false;
-        if (!this.secondHand) return false;
-        if (this.secondHand.equipmentType === EQUIPMENT_TYPE.WEAPON) {
-            if (this.weapon === null || this.secondHand.id !== this.weapon.id) {
+        if (!this[SLOT.EXTRA]) return false;
+        if (this[SLOT.EXTRA].equipmentType === EQUIPMENT_TYPE.WEAPON) {
+            if (this.weapon === null || this[SLOT.EXTRA].id !== this.weapon.id) {
                 //switch weapons
-                [this.secondHand, this.weapon] = [this.weapon, this.secondHand];
+                [this[SLOT.EXTRA], this[SLOT.WEAPON]] = [this[SLOT.WEAPON], this[SLOT.EXTRA]];
                 redrawSlotContents(this, SLOT.WEAPON);
                 redrawSlotContents(this, SLOT.EXTRA);
                 if (this[SLOT.ACCESSORY] && this[SLOT.ACCESSORY].id === EQUIPMENT_ID.WEAPON_MASTER_EMBLEM) {
                     this[SLOT.ACCESSORY].onWeaponSwitch(this);
                     return false;
                 }
+                animateHUDWeaponSwapOut(this);
                 return true;
             } else if (this.weapon && this.weapon.id === this.secondHand.id && this.secondHand.focus && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {
                 this.secondHand.focus(this);
