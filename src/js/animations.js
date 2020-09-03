@@ -499,6 +499,7 @@ export function showHelpBox(item) {
 export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul = 0.1, scaleMod = undefined) {
     //todo: BUGGED with rotated textures!!!!
     // todo bugged with paranoid eel rn
+    // todo particles are not correctly combined after slicing
     const YBorders = [0, undefined, undefined, tileElement.texture.frame.height];
     const XBorders = [0, undefined, undefined, tileElement.texture.frame.width];
     const maxOffsetMul = 1 / 9;

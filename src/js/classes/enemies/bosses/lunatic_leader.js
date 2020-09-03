@@ -618,7 +618,7 @@ export class LunaticLeader extends Boss {
         const beak = new TileElement(LunaticLeaderSpriteSheet["lunatic_leader_beak.png"], this.tilePosition.x, this.tilePosition.y);
         beak.setScaleModifier(this.scaleModifier);
         beak.zIndex = this.zIndex + 1;
-        beak.tallModifier = Game.TILESIZE * 0.9;
+        beak.tallModifier = Game.TILESIZE * 1.9;
         beak.place();
         runDestroyAnimation(beak, false, 0, 1);
     }
@@ -627,7 +627,7 @@ export class LunaticLeader extends Boss {
         const head = new TileElement(LunaticLeaderSpriteSheet["lunatic_leader_beakless_head.png"], this.tilePosition.x, this.tilePosition.y);
         head.setScaleModifier(this.scaleModifier);
         head.zIndex = this.zIndex + 1;
-        head.tallModifier = Game.TILESIZE * 0.75;
+        head.tallModifier = Game.TILESIZE * 1.75;
         head.place();
         runDestroyAnimation(head, false, 0, 1);
     }
