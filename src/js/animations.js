@@ -527,6 +527,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         particle.position.set(tileElement.position.x, tileElement.position.y);
         if (playerDeath) particle.zIndex = 2;
         else particle.zIndex = -1;
+        //particle.zIndex = getZIndexForLayer(tileElement.tilePosition.y) - 2;
         if (playerDeath) Game.world.upWorld.addChild(particle);
         else Game.world.addChild(particle);
 

@@ -16,6 +16,7 @@ export class CerberusBow extends BowLikeWeapon {
         this.rarity = RARITY.A;
     }
 
+    // todo should damage all enemies in one go
     attack(wielder, dirX, dirY) {
         if (super.attack(wielder, dirX, dirY)) {
             const tileSets = [this.getDiagonalTiles(dirX, dirY, 1), this.getDiagonalTiles(dirX, dirY, -1)];

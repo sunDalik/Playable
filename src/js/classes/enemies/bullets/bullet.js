@@ -145,6 +145,9 @@ export class Bullet extends TileElement {
             this.position.y += stepY * delta;
             this.angle = oldAngle + easeInQuad(counter / animationTime) * (newAngle - oldAngle);
             this.moveIntentIcon();
+            if (counter >= animationTime / 2) {
+                this.correctZIndex();
+            }
             if (!wiggled && this.wiggling && counter >= animationTime / 2) {
                 this.scale.y *= -1;
                 wiggled = true;
@@ -153,6 +156,7 @@ export class Bullet extends TileElement {
                 this.angle = newAngle;
                 Game.app.ticker.remove(animation);
                 this.place();
+                this.correctZIndex();
             }
         };
         this.animation = animation;
