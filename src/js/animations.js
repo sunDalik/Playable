@@ -498,6 +498,7 @@ export function showHelpBox(item) {
 
 export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul = 0.1, scaleMod = undefined) {
     //todo: BUGGED with rotated textures!!!!
+    // todo bugged with paranoid eel rn
     const YBorders = [0, undefined, undefined, tileElement.texture.frame.height];
     const XBorders = [0, undefined, undefined, tileElement.texture.frame.width];
     const maxOffsetMul = 1 / 9;
@@ -550,11 +551,13 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         const flyHeight = randomInt(Game.TILESIZE, Game.TILESIZE * 2);
         const oldPosX = particle.position.x;
         const oldPosY = particle.position.y;
-        const distX = randomInt(-tileElement.width / 4, tileElement.width / 1.5) * flyDir;
+        const distX = randomInt(-tileElement.width / 6, tileElement.width / 1.7) * flyDir / (region.y + 1);
         const middlePoint = {x: oldPosX + distX / 2, y: oldPosY - flyHeight};
+
+        const distY = Game.TILESIZE / (1.9 + region.y * 2);
         const finalPoint = {
             x: oldPosX + distX,
-            y: tileElement.getTilePositionY() + (1 - tileElement.anchor.y) * Game.TILESIZE - randomInt(0, Game.TILESIZE / 2)
+            y: tileElement.tilePosition.y * Game.TILESIZE + Game.TILESIZE / 2 + randomInt(-distY, distY)
         };
 
         const animationTime = randomInt(10, 14);
