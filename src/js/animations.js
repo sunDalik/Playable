@@ -499,7 +499,6 @@ export function showHelpBox(item) {
 export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul = 0.1, scaleMod = undefined) {
     //todo: BUGGED with rotated textures!!!!
     // todo bugged with paranoid eel rn
-    // todo particles are not correctly combined after slicing
     const YBorders = [0, undefined, undefined, tileElement.texture.frame.height];
     const XBorders = [0, undefined, undefined, tileElement.texture.frame.width];
     const maxOffsetMul = 1 / 9;
@@ -507,11 +506,20 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         YBorders[i] = YBorders[i - 1] + tileElement.texture.frame.height / 3 + randomInt(-tileElement.texture.frame.height * maxOffsetMul, tileElement.texture.frame.height * maxOffsetMul);
         XBorders[i] = XBorders[i - 1] + tileElement.texture.frame.width / 3 + randomInt(-tileElement.texture.frame.width * maxOffsetMul, tileElement.texture.frame.width * maxOffsetMul);
     }
+
+    const startCorner = {
+        x: tileElement.position.x - tileElement.texture.frame.width * Math.abs(tileElement.scale.x) * tileElement.anchor.x,
+        y: tileElement.position.y - tileElement.texture.frame.height * Math.abs(tileElement.scale.y) * tileElement.anchor.y
+    };
+    let posOffsetX = 0;
+    let posOffsetY = 0;
+
     const particles = [];
     for (const region of [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0},
         {x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1},
         {x: 0, y: 2}, {x: 1, y: 2}, {x: 2, y: 2}]) {
         const particle = new PIXI.Sprite(new PIXI.Texture(tileElement.texture.baseTexture, tileElement.texture.frame));
+        if (region.x === 0) posOffsetX = 0;
         //hack to enable culling for death particles
         particle.tilePosition = {x: tileElement.tilePosition.x, y: tileElement.tilePosition.y};
         let scaleMul = 1;
@@ -525,8 +533,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         const initScaleY = particle.scale.y;
         particle.angle = tileElement.angle;
         if (tileElement.texture.rotate === 2) particle.angle -= 90;
-        particle.anchor.set(tileElement.anchor.x, tileElement.anchor.y);
-        particle.position.set(tileElement.position.x, tileElement.position.y);
+        particle.anchor.set(0.5, 0.5);
         //if (playerDeath) particle.zIndex = 2;
         //else particle.zIndex = -1;
         particle.zIndex = getZIndexForLayer(tileElement.tilePosition.y) - 2;
@@ -540,13 +547,13 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         if (Math.sign(tileElement.scale.x) === -1) offsetX = tileElement.texture.frame.width - offsetX - trimTexWidth;
         if (Math.sign(tileElement.scale.y) === -1) offsetY = tileElement.texture.frame.height - offsetY - trimTexHeight;
         particle.texture.frame = new PIXI.Rectangle(tileElement.texture.frame.x + offsetX, tileElement.texture.frame.y + offsetY, trimTexWidth, trimTexHeight);
-        const trimWidth = trimTexWidth / tileElement.texture.frame.width * tileElement.width;
-        const trimHeight = trimTexHeight / tileElement.texture.frame.height * tileElement.height;
-        const posOffsetX = trimWidth * (region.x - 1.5) + trimWidth * tileElement.anchor.x;
-        const posOffsetY = trimHeight * (region.y - 1.5) + trimHeight * tileElement.anchor.y;
-        particle.position.x += posOffsetX;
-        particle.position.y += posOffsetY;
+
+        particle.position.x = startCorner.x + posOffsetX + particle.width * particle.anchor.x;
+        particle.position.y = startCorner.y + posOffsetY + particle.height * particle.anchor.y;
         particle.texture.updateUvs();
+
+        posOffsetX += particle.width;
+        if (region.x === 2) posOffsetY += particle.height;
 
         const flyDir = region.x === 1 ? randomChoice([-1, 1]) : region.x - 1;
         const flyHeight = randomInt(Game.TILESIZE, Game.TILESIZE * 2);
