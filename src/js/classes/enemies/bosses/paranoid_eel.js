@@ -22,6 +22,7 @@ import {DarkEel} from "../fc/eel_dark";
 import {ParanoidEelSpriteSheet} from "../../../loader";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
 import {stageBeaten} from "../../../setup";
+import {getZIndexForLayer} from "../../../z_indexing";
 
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = ParanoidEelSpriteSheet["paranoid_eel_neutral.png"]) {
@@ -78,6 +79,15 @@ export class ParanoidEel extends Boss {
     cancelAnimation() {
         super.cancelAnimation();
         this.correctLook();
+    }
+
+    correctZIndex() {
+        super.correctZIndex();
+        if (this.type !== ENEMY_TYPE.PARANOID_EEL) return;
+        // if vertical then zIndex is set corresponding to the lowest point
+        if (this.direction.y !== 0) {
+            this.zIndex = getZIndexForLayer(this.tilePosition.y + 1) + this.ownZIndex;
+        }
     }
 
     afterMapGen() {
@@ -238,6 +248,7 @@ export class ParanoidEel extends Boss {
             }
             this.wiggled = false;
         }, animationTime);
+        if (tileStepY > 0) this.correctZIndex();
     }
 
     turnAround() {
@@ -705,6 +716,7 @@ export class ParanoidEel extends Boss {
         if (this.direction.y === 1) this.angle = 0;
         else if (this.direction.y === -1) this.angle = 180;
         else this.angle = 0;
+        this.correctZIndex();
     }
 
     canPlaceWithDirection(direction) {
