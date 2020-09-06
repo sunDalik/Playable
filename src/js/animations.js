@@ -522,15 +522,18 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
         if (region.x === 0) posOffsetX = 0;
         //hack to enable culling for death particles
         particle.tilePosition = {x: tileElement.tilePosition.x, y: tileElement.tilePosition.y};
-        let scaleMul = 1;
+
+        let scaleMul;
         if (scaleMod !== undefined) scaleMul = scaleMod;
         else if (playerDeath) scaleMul = 1;
         else if (tileElement.role === ROLE.INANIMATE) scaleMul = 1;
         else if (tileElement.role !== undefined) scaleMul = 0.8;
         else scaleMul = 0.4;
+
         particle.scale.set(tileElement.scale.x, tileElement.scale.y);
         const initScaleX = particle.scale.x;
         const initScaleY = particle.scale.y;
+
         particle.angle = tileElement.angle;
         if (tileElement.texture.rotate === 2) particle.angle -= 90;
         particle.anchor.set(0.5, 0.5);

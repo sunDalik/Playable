@@ -212,7 +212,7 @@ export function retry() {
 }
 
 function initGameState() {
-    Game.stage = STAGE.FLOODED_CAVE;
+    Game.stage = STAGE.DRY_CAVE;
     if (Game.playMode !== PLAY_MODE.TUTORIAL) replaceStageWithAlt();
     Game.time = 0;
     Game.keysAmount = 0;

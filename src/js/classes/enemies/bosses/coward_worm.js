@@ -14,7 +14,7 @@ export class CowardWorm extends Boss {
     constructor(tilePositionX, tilePositionY, texture = DCEnemiesSpriteSheet["desert_worm.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 15;
-        this.type = ENEMY_TYPE.COWARD_WORM;
+        //this.type = ENEMY_TYPE.COWARD_WORM;
         this.atk = 1;
         this.name = "Coward Worm";
 
