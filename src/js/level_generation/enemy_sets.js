@@ -464,7 +464,7 @@ export const RUBossSets = [
 // Replacements:
 // Rollers are replaced with BombSkulls, SpikySnail is replaced with FireSnail,
 // Added enemies:
-// FireFrog, DeadStar, DesertWorm, PoisonCactus, FireCactus
+// FireFrog, DeadStar, DesertWorm, PoisonCactus, FireCactus, Scorpion
 // Removed enemies:
 // Eel, DarkEel, PoisonEel, KingFrog, MiniStar, PoisonousStar, SmallMushroom, Mushroom, Crab
 export const DCEnemySets = [
