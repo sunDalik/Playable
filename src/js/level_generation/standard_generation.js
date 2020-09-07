@@ -739,7 +739,7 @@ function generateSpecificEnemies() {
     } else if (Game.stage === STAGE.DARK_TUNNEL) {
         generateLaserTurrets();
     } else if (Game.stage === STAGE.DRY_CAVE) {
-        generateSpikyWallTraps(0.009, true);
+        generateSpikyWallTraps(0.008, true);
     }
 }
 

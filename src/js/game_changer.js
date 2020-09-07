@@ -180,11 +180,9 @@ export function setVariablesForStage() {
 
     switch (Game.stage) {
         case STAGE.FLOODED_CAVE:
+        case STAGE.DRY_CAVE:
             Game.BGColor = BG_COLORS.FLOODED_CAVE;
             assignRarityChances(55, 88, 97); // 55% 33% 9% 3%
-            break;
-        case STAGE.DRY_CAVE:
-            assignRarityChances(50, 86, 97); // 50% 36% 11% 3%
             break;
         case STAGE.DARK_TUNNEL:
             Game.BGColor = BG_COLORS.DARK_TUNNEL;
@@ -196,6 +194,9 @@ export function setVariablesForStage() {
             break;
 
         /*
+        case STAGE.DRY_CAVE:
+            assignRarityChances(50, 86, 97); // 50% 36% 11% 3%
+            break;
     case STAGE.4:
         Game.BGColor = BG_COLORS.DUNNO;
         assignRarityChances(2, 36, 87); // 2% 34% 51% 13%
