@@ -55,7 +55,8 @@ export const ENEMY_TYPE = Object.freeze({
     POISON_CACTUS: 53,
     FIRE_CACTUS: 54,
     PHANTOM: 55,
-    SCORPION: 56
+    SCORPION: 56,
+    RED_SCORPION: 57
 });
 
 export const RABBIT_TYPE = Object.freeze({

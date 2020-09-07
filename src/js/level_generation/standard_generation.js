@@ -36,6 +36,8 @@ import {Eel} from "../classes/enemies/fc/eel";
 import {Phantom} from "../classes/enemies/dt/phantom";
 import {Rabbit} from "../classes/enemies/dt/rabbit";
 import {FireFrog} from "../classes/enemies/dt/frog_fire";
+import {RedScorpion} from "../classes/enemies/dc/red_scorpion";
+import {Scorpion} from "../classes/enemies/dc/scorpion";
 
 let settings;
 let level;
@@ -696,6 +698,8 @@ function replaceEnemy(enemy) {
         return Rabbit;
     } else if (enemy === KingFireFrog && stageBeaten(STAGE.DARK_TUNNEL) < 2) {
         return FireFrog;
+    } else if (enemy === RedScorpion && stageBeaten(STAGE.DRY_CAVE) < 1) {
+        return Scorpion;
     }
     return enemy;
 }
