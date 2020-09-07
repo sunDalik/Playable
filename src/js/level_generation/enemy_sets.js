@@ -44,6 +44,7 @@ import {PoisonCactus} from "../classes/enemies/dc/poison_cactus";
 import {FireCactus} from "../classes/enemies/dc/fire_cactus";
 import {Phantom} from "../classes/enemies/dt/phantom";
 import {CowardWorm} from "../classes/enemies/bosses/coward_worm";
+import {Scorpion} from "../classes/enemies/dc/scorpion";
 
 // 6 max
 export const FCEnemySets = [
@@ -586,7 +587,49 @@ export const DCEnemySets = [
     [DeadStar, DeadStar],
     [DeadStar, Frog],
     [DeadStar, FireFrog],
-    [DeadStar, Frog, FireFrog]
+    [DeadStar, Frog, FireFrog],
+    [Scorpion],
+    [Scorpion, Scorpion],
+    [Scorpion, Scorpion, Scorpion],
+    [Scorpion, Scorpion, Scorpion, Scorpion],
+    [Scorpion, Scorpion, Scorpion, Scorpion, Scorpion],
+    [Scorpion, Scorpion, Scorpion, Scorpion, Scorpion, Scorpion],
+    [Scorpion, PoisonCactus],
+    [Scorpion, FireCactus],
+    [Scorpion, FireCactus, PoisonCactus],
+    [Scorpion, Scorpion, PoisonCactus, FireCactus],
+    [Scorpion, Scorpion, Scorpion, BombSkull, BombSkull, BombSkull],
+    [Scorpion, DesertWorm],
+    [Scorpion, Scorpion, DesertWorm],
+    [Scorpion, DeadStar],
+    [Scorpion, Scorpion, DeadStar],
+    [Scorpion, DesertWorm, BombSkull, FireCactus, FireFrog, FireSnail],
+    [Scorpion, DesertWorm, BombSkull, PoisonCactus, Frog, Snail],
+    [Scorpion, Cocoon],
+    [Scorpion, Scorpion, Cocoon],
+    [Scorpion, Scorpion, SpiderSmall, SpiderSmall],
+    [Scorpion, Scorpion, Scorpion, SpiderSmall, SpiderSmall, SpiderSmall],
+    [Scorpion, Scorpion, Scorpion, SpiderSmall, SpiderSmall],
+    [Scorpion, Scorpion, SpiderSmall, SpiderSmall, SpiderSmall],
+    [Scorpion, DesertWorm, DesertWorm],
+    [Scorpion, Spider],
+    [Scorpion, GraySpider],
+    [Scorpion, SpiderSmall],
+    [Scorpion, Scorpion, Spider],
+    [Scorpion, Scorpion, GraySpider],
+    [Scorpion, Snail],
+    [Scorpion, Scorpion, Snail],
+    [Scorpion, Star],
+    [Scorpion, Scorpion, Star],
+    [Scorpion, BombSkull, BombSkull],
+    [Scorpion, Scorpion, BombSkull, BombSkull],
+    [Scorpion, Scorpion, Scorpion, BombSkull, BombSkull],
+    [Scorpion, Frog],
+    [Scorpion, FireFrog],
+    [Scorpion, Scorpion, Frog],
+    [Scorpion, Scorpion, FireFrog],
+    [Scorpion, Scorpion, Scorpion, Star],
+    [Scorpion, Scorpion, Scorpion, Star, Star]
 ];
 
 export const DCBossSets = [

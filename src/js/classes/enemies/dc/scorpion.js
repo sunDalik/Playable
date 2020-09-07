@@ -1,6 +1,6 @@
 import {Enemy} from "../enemy";
 import {ENEMY_TYPE} from "../../../enums/enums";
-import {closestPlayer} from "../../../utils/game_utils";
+import {closestPlayer, closestPlayerDiagonal, tileDistanceDiagonal} from "../../../utils/game_utils";
 import {DCEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {randomDiagonalAggressiveAI} from "../../../enemy_movement_ai";
 import {randomChoice} from "../../../utils/random_utils";
@@ -48,8 +48,10 @@ export class Scorpion extends Enemy {
         super.updateIntentIcon();
         if (this.currentTurnDelay > 0) {
             this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
-        } else {
+        } else if (tileDistanceDiagonal(this, closestPlayerDiagonal(this), 1) <= this.noticeDistance) {
             this.intentIcon.texture = IntentsSpriteSheet["anger.png"];
+        } else {
+            this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
         }
     }
 }
