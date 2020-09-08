@@ -6,12 +6,20 @@ import {DEATH_FILTER} from "../filters";
 import {redrawPauseBG, SUPER_HUD} from "./super_hud";
 import {keyboard} from "../keyboard/keyboard_handler";
 import {retry} from "../setup";
-import {BigHUDKeyBindSize, HUDTextStyleGameOver, HUDTextStyleTitle, slotBorderOffsetX} from "./draw_constants";
+import {
+    BigHUDKeyBindSize,
+    HUDTextStyleGameOver,
+    HUDTextStyleTitle,
+    slotBorderOffsetX,
+    slotsColOffset
+} from "./draw_constants";
 import {SLOT} from "../enums/enums";
 import {getKeyBindSymbol, padTime} from "./draw_hud";
 import {getRandomTip} from "../menu/tips";
 import {removeAllObjectsFromArray} from "../utils/basic_utils";
 import {easeInQuad, easeOutQuad} from "../utils/math_utils";
+import {CommonSpriteSheet} from "../loader";
+import {fadeOutAndDie} from "../animations";
 
 const blackBarLeft = initBlackBar();
 const blackBarRight = initBlackBar();
@@ -259,14 +267,42 @@ export function animateHUDBump(player, slot) {
     const container = player === Game.player ? HUD.slots1[slot] : HUD.slots2[slot];
     const sprite = container.sprite.children[0];
     if (!sprite) return;
-    const initScale = sprite.scale.x; //assuming sprite is not distorted lol
-    const bigScale = initScale * 1.2;
-    const halfAnimationTime = 4;
-    const stayTime = 3;
-    let counter = 0;
-
     container.cancelAnimation();
+    const initScale = {x: sprite.scale.x, y: sprite.scale.y};
+    const animation = getHUDBumpAnimation(sprite);
+    Game.app.ticker.add(animation);
 
+    container.cancelAnimation = () => {
+        Game.app.ticker.remove(animation);
+        if (!sprite._destroyed) sprite.scale.set(initScale.x, initScale.y);
+    };
+}
+
+export function animateHUDWeaponLink(player) {
+    const slotsContainer = player === Game.player ? HUD.slots1 : HUD.slots2;
+    const weaponContainer = slotsContainer[SLOT.WEAPON];
+    const chain = new PIXI.Sprite(CommonSpriteSheet["follow_chain.png"]);
+    const slot = weaponContainer.slot;
+    if (!slot) return;
+    chain.anchor.set(0.5, 0.5);
+    chain.width = chain.height = slot.width * 0.8;
+    chain.angle = 45;
+    chain.position.set(slot.position.x + slot.width + slotsColOffset / 2 - 3, slot.position.y + slot.height / 2 - 2);
+    setTickTimeout(() => {
+        HUD.addChild(chain);
+        Game.app.ticker.add(getHUDBumpAnimation(chain, 1.15));
+        setTickTimeout(() => {
+            fadeOutAndDie(chain, false, 10, HUD);
+        }, 6, 99, false);
+    }, 4);
+}
+
+export function getHUDBumpAnimation(sprite, scaleMul = 1.2) {
+    const initScale = sprite.scale.x; //assuming sprite is not distorted lol
+    const bigScale = initScale * scaleMul;
+    const halfAnimationTime = 4;
+    const stayTime = 4;
+    let counter = 0;
     const animation = delta => {
         counter += delta;
         if (counter >= halfAnimationTime * 2 + stayTime || sprite._destroyed) {
@@ -278,17 +314,13 @@ export function animateHUDBump(player, slot) {
                 newScale = initScale + easeInQuad(counter / halfAnimationTime) * (bigScale - initScale);
             } else if (counter < halfAnimationTime + stayTime) {
                 newScale = bigScale;
-            } else if (counter < halfAnimationTime + stayTime + halfAnimationTime) {
-                newScale = bigScale - easeInQuad((counter - halfAnimationTime - stayTime) / (halfAnimationTime * 2 + stayTime)) * (bigScale - initScale);
+            } else {
+                newScale = bigScale - easeInQuad((counter - halfAnimationTime - stayTime) / halfAnimationTime) * (bigScale - initScale);
             }
 
             sprite.scale.set(newScale, newScale);
         }
     };
-    Game.app.ticker.add(animation);
 
-    container.cancelAnimation = () => {
-        Game.app.ticker.remove(animation);
-        if (!sprite._destroyed) sprite.scale.set(initScale, initScale);
-    };
+    return animation;
 }

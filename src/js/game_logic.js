@@ -48,7 +48,7 @@ import {LyingItem} from "./classes/equipment/lying_item";
 import * as PIXI from "pixi.js";
 import {DAMAGE_TYPE} from "./enums/damage_type";
 import {ENCHANTMENT_TYPE} from "./enums/enchantments";
-import {animateHUDBump} from "./drawing/hud_animations";
+import {animateHUDBump, animateHUDWeaponLink} from "./drawing/hud_animations";
 
 export function setEnemyTurnTimeout() {
     for (const enemy of Game.enemies) {
@@ -375,6 +375,12 @@ export function swapEquipmentWithPlayer(player, equipment, showHelp = true) {
     }
     redrawSlotContents(player, slot);
     animateHUDBump(player, slot);
+    if ((slot === SLOT.WEAPON || slot === SLOT.EXTRA)
+        && player[SLOT.WEAPON] && player[SLOT.EXTRA] &&
+        player[slot].equipmentType === EQUIPMENT_TYPE.WEAPON
+        && player[SLOT.WEAPON].id === player[SLOT.EXTRA].id) {
+        animateHUDWeaponLink(player);
+    }
     if (showHelp) showHelpBox(player[slot]);
     if (equipment.enchantment && equipment.enchantment !== ENCHANTMENT_TYPE.NONE) completeAchievement(ACHIEVEMENT_ID.FIND_ENCHANTED_ITEM);
     completeAchievementForEquippingAllItems();

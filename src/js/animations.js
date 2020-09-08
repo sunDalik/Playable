@@ -612,7 +612,7 @@ export function runDestroyAnimation(tileElement, playerDeath = false, sloMoMul =
     if (!tileElement.fadingDestructionParticles) Game.destroyParticles.push(particles);
 }
 
-export function fadeOutAndDie(object, destroyTexture = false, animationTime = 10) {
+export function fadeOutAndDie(object, destroyTexture = false, animationTime = 10, container = Game.world) {
     let counter = 0;
 
     const animation = (delta) => {
@@ -621,7 +621,7 @@ export function fadeOutAndDie(object, destroyTexture = false, animationTime = 10
         object.alpha = 1 - easeInQuad(counter / animationTime);
         if (counter >= animationTime) {
             Game.app.ticker.remove(animation);
-            Game.world.removeChild(object);
+            container.removeChild(object);
             if (destroyTexture) object.texture.destroy();
             object.destroy();
         }

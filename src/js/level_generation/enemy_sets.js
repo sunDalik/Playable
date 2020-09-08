@@ -635,6 +635,7 @@ export const DCEnemySets = [
     [RedScorpion],
     [RedScorpion, RedScorpion],
     [RedScorpion, RedScorpion, RedScorpion],
+    [RedScorpion, RedScorpion, RedScorpion, RedScorpion],
     [RedScorpion, Scorpion],
     [RedScorpion, RedScorpion, Scorpion, Scorpion, Scorpion],
     [RedScorpion, RedScorpion, Scorpion, Scorpion, Scorpion, Scorpion],
@@ -660,7 +661,8 @@ export const DCEnemySets = [
     [Scorpion, Scorpion, Snail, Snail],
     [RedScorpion, Cocoon],
     [RedScorpion, Spider, Scorpion, Star],
-    [RedScorpion, GraySpider, Scorpion, Star]
+    [RedScorpion, GraySpider, Scorpion, Star],
+    [RedScorpion, RedScorpion, SpiderSmall, Frog, FireFrog]
 ];
 
 export const DCBossSets = [
