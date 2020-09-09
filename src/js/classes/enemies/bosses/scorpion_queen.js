@@ -22,6 +22,7 @@ export class ScorpionQueen extends Boss {
     }
 
     afterMapGen() {
+        this.removeFromMap();
         this.placeOnMap();
     }
 

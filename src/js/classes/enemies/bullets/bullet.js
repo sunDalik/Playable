@@ -44,6 +44,11 @@ export class Bullet extends TileElement {
         }
     }
 
+    correctZIndex() {
+        super.correctZIndex();
+        if (this.intentIcon) this.intentIcon.zIndex = this.zIndex + 1;
+    }
+
     getBulletAngle(future = false) {
         const patternIndex = future ? this.patternIndex + 1 : this.patternIndex;
         const trueIndex = patternIndex >= this.pattern.length ? 0 : patternIndex;
