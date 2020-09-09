@@ -43,9 +43,9 @@ import {DarkCrab} from "../classes/enemies/dt/dark_crab";
 import {PoisonCactus} from "../classes/enemies/dc/poison_cactus";
 import {FireCactus} from "../classes/enemies/dc/fire_cactus";
 import {Phantom} from "../classes/enemies/dt/phantom";
-import {CowardWorm} from "../classes/enemies/bosses/coward_worm";
 import {Scorpion} from "../classes/enemies/dc/scorpion";
 import {RedScorpion} from "../classes/enemies/dc/red_scorpion";
+import {ScorpionQueen} from "../classes/enemies/bosses/scorpion_queen";
 
 // 6 max
 export const FCEnemySets = [
@@ -666,5 +666,5 @@ export const DCEnemySets = [
 ];
 
 export const DCBossSets = [
-    [CowardWorm]
+    [ScorpionQueen]
 ];

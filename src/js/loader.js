@@ -7,7 +7,7 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
     HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet, OneTimeSpriteSheet,
     AccessoriesSpriteSheet, LunaticLeaderSpriteSheet,
     FCTilesetSpriteSheet, DTTilesetSpriteSheet, RUTilesetSpriteSheet, DCTilesetSpriteSheet,
-    DiscordSpriteSheet;
+    DiscordSpriteSheet, ScorpionQueenSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
@@ -34,6 +34,7 @@ export function loadAll(afterLoad) {
         .add("src/textures/paranoid_eel.json")
         .add("src/textures/gotl.json")
         .add("src/textures/lunatic_leader.json")
+        .add("src/textures/scorpion_queen.json")
 
         .add("src/textures/bullets.json")
         .add("src/textures/hud.json")
@@ -87,4 +88,5 @@ function setSpriteSheets() {
     RUTilesetSpriteSheet = Game.loader.resources["src/textures/ru_tileset.json"].textures;
     DCTilesetSpriteSheet = Game.loader.resources["src/textures/dc_tileset.json"].textures;
     DiscordSpriteSheet = Game.loader.resources["src/textures/discord_logos.json"].textures;
+    ScorpionQueenSpriteSheet = Game.loader.resources["src/textures/scorpion_queen.json"].textures
 }
