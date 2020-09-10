@@ -3,7 +3,7 @@ import {Boss} from "./boss";
 import {ScorpionQueenSpriteSheet} from "../../../loader";
 import {Game} from "../../../game";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
-import {get8Directions, getDiagonalChasingOptions, getDirectionsWithConditions} from "../../../utils/map_utils";
+import {get8Directions, getDirectionsWithConditions} from "../../../utils/map_utils";
 import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../../map_checks";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {closestPlayerDiagonal, otherPlayer} from "../../../utils/game_utils";
@@ -21,7 +21,12 @@ export class ScorpionQueen extends Boss {
         this.triggeredRage = false;
         this.rageCounter = 6;
         this.currentRageCounter = 0;
+
+        this.triggeredEggSpawning = false;
+        this.currentEggCounter = this.getEggCounter();
+
         this.shakeWaiting = 0;
+
         this.setScaleModifier(2.2);
 
         this.shadowHeight = 12;
@@ -67,17 +72,29 @@ export class ScorpionQueen extends Boss {
                 this.triggeredRage = false;
                 this.tint = 0xffffff;
             }
+        } else if (this.triggeredEggSpawning) {
+            this.spawnEgg();
+            this.currentEggCounter--;
+            if (this.currentRageCounter <= 0) {
+                this.triggeredEggSpawning = false;
+            }
+        } else {
+            if (Math.random() < 0) {
+                this.triggerEggSpawning();
+            }
         }
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         const previousHealth = this.health;
         super.damage(source, dmg, inputX, inputY, damageType);
-        const rageMarks = [this.maxHealth * 3 / 4, this.maxHealth / 2, this.maxHealth / 4];
-        for (const rageMark of rageMarks) {
-            if (previousHealth > rageMark && this.health <= rageMark) {
-                this.triggerRage();
-                break;
+        if (!this.triggeredRage) {
+            const rageMarks = [this.maxHealth * 3 / 4, this.maxHealth / 2, this.maxHealth / 4];
+            for (const rageMark of rageMarks) {
+                if (previousHealth > rageMark && this.health <= rageMark) {
+                    this.triggerRage();
+                    break;
+                }
             }
         }
     }
@@ -88,6 +105,17 @@ export class ScorpionQueen extends Boss {
         this.shake(1, 0);
         this.currentRageCounter = 0;
         this.tint = 0xff0000;
+    }
+
+    triggerEggSpawning() {
+        this.triggeredEggSpawning = true;
+        this.shakeWaiting = 1;
+        this.shake(1, 0);
+        this.currentEggCounter = this.getEggCounter();
+    }
+
+    getEggCounter() {
+        return randomInt(4, 8);
     }
 
     rageChase() {
@@ -102,6 +130,10 @@ export class ScorpionQueen extends Boss {
                 this.step(dir.x, dir.y);
             }
         }
+    }
+
+    spawnEgg() {
+
     }
 
     randomWalk() {
@@ -120,11 +152,9 @@ export class ScorpionQueen extends Boss {
             if (player) {
                 this.bump(dirObj.bumpDir.x, dirObj.bumpDir.y);
                 player.damage(this.atk, this, true);
-                console.log("yes");
                 return true;
             }
         }
-        console.log("no");
         return false;
     }
 
