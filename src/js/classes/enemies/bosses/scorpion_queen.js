@@ -1,12 +1,14 @@
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
-import {ScorpionQueenSpriteSheet} from "../../../loader";
+import {FCEnemiesSpriteSheet, IntentsSpriteSheet, ScorpionQueenSpriteSheet} from "../../../loader";
 import {Game} from "../../../game";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
 import {get8Directions, getDirectionsWithConditions} from "../../../utils/map_utils";
 import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../../map_checks";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {closestPlayerDiagonal, otherPlayer} from "../../../utils/game_utils";
+import {Enemy} from "../enemy";
+import {Scorpion} from "../dc/scorpion";
 
 // tilePosition refers to rightmost tile
 export class ScorpionQueen extends Boss {
@@ -75,11 +77,11 @@ export class ScorpionQueen extends Boss {
         } else if (this.triggeredEggSpawning) {
             this.spawnEgg();
             this.currentEggCounter--;
-            if (this.currentRageCounter <= 0) {
+            if (this.currentEggCounter <= 0) {
                 this.triggeredEggSpawning = false;
             }
         } else {
-            if (Math.random() < 0) {
+            if (Math.random() < 0.3) {
                 this.triggerEggSpawning();
             }
         }
@@ -133,7 +135,10 @@ export class ScorpionQueen extends Boss {
     }
 
     spawnEgg() {
-
+        const spawnPos = {x: this.tilePosition.x + 1, y: this.tilePosition.y};
+        if (isEmpty(spawnPos.x, spawnPos.y)) {
+            Game.world.addEnemy(new ScorpionQueenEgg(spawnPos.x, spawnPos.y, Scorpion));
+        }
     }
 
     randomWalk() {
@@ -204,5 +209,47 @@ export class ScorpionQueen extends Boss {
     isTileEmptyForQueen(tilePosX, tilePosY) {
         return (isEmpty(tilePosX, tilePosY) || Game.map[tilePosY][tilePosX].entity === this)
             && (isEmpty(tilePosX - 1, tilePosY) || Game.map[tilePosY][tilePosX - 1].entity === this);
+    }
+}
+
+// todo add texture
+class ScorpionQueenEgg extends Enemy {
+    constructor(tilePositionX, tilePositionY, enemyType, texture = FCEnemiesSpriteSheet["cocoon.png"]) {
+        super(texture, tilePositionX, tilePositionY);
+        this.health = this.maxHealth = 2;
+        this.name = "Scorpion Queen's Egg";
+        this.type = ENEMY_TYPE.SCORPION_QUEEN_EGG;
+        this.atk = 0;
+        this.isMinion = true;
+        this.currentDelay = 3;
+        this.summonedEnemyType = enemyType;
+        this.hatched = false;
+    }
+
+    move() {
+        if (this.currentDelay === 1) {
+            this.shake(1, 0);
+        }
+        if (this.currentDelay <= 0) {
+            this.hatched = true;
+            this.die();
+            Game.world.addEnemy(new this.summonedEnemyType(this.tilePosition.x, this.tilePosition.y), true);
+        }
+        this.currentDelay--;
+    }
+
+    runDestroyAnimation() {
+        if (!this.hatched) {
+            super.runDestroyAnimation();
+        }
+    }
+
+    updateIntentIcon() {
+        super.updateIntentIcon();
+        if (this.currentDelay <= 0) {
+            this.intentIcon.texture = IntentsSpriteSheet["magic.png"];
+        } else {
+            this.intentIcon.texture = IntentsSpriteSheet["hourglass.png"];
+        }
     }
 }
