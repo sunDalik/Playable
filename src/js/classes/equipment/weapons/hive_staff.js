@@ -9,7 +9,7 @@ export class HiveStaff extends MinionStaff {
         this.texture = WeaponsSpriteSheet["hive_staff.png"];
         this.id = EQUIPMENT_ID.HIVE_STAFF;
         this.name = "Hive Staff";
-        this.createDescription("Bee minions deals 0.5 damage to enemies they touch", "Bees");
+        this.createDescription("Bee minions deal 0.5 damage to enemies they touch", "Bees");
         this.rarity = RARITY.A;
         this.minions = [new BeeMinion(), new BeeMinion(), new BeeMinion(), new BeeMinion()];
         for (let i = 0; i < this.minions.length; i++) {

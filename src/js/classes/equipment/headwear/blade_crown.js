@@ -18,7 +18,7 @@ export class BladeCrown extends Equipment {
         this.id = EQUIPMENT_ID.BLADE_CROWN;
         this.bladeAtk = 1;
         this.name = "Blade Crown";
-        this.description = "Whenever you attack with a weapon, a cursed blade appears and damages all enemies around you by 1 dmg";
+        this.description = "Whenever you attack with a weapon, a blade appears and deals 1 damage to all enemies around you";
         this.rarity = RARITY.S;
     }
 
