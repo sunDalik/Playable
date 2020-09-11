@@ -4,7 +4,7 @@ import {FCEnemiesSpriteSheet, IntentsSpriteSheet, ScorpionQueenSpriteSheet} from
 import {Game} from "../../../game";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
 import {get8Directions, getDirectionsWithConditions} from "../../../utils/map_utils";
-import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../../map_checks";
+import {getPlayerOnTile, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {closestPlayer, closestPlayerDiagonal, otherPlayer} from "../../../utils/game_utils";
 import {Enemy} from "../enemy";
@@ -34,6 +34,7 @@ export class ScorpionQueen extends Boss {
         this.shadowHeight = 12;
         this.shadowInside = true;
         this.regenerateShadow();
+        this.minions = [];
     }
 
     static getBossRoomStats() {
@@ -43,6 +44,18 @@ export class ScorpionQueen extends Boss {
     afterMapGen() {
         this.removeFromMap();
         this.placeOnMap();
+
+        // push all scorpions inside boss room to minions list
+        for (let x = Game.endRoomBoundaries[0].x + 1; x < Game.endRoomBoundaries[1].x; x++) {
+            for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
+                if (isEnemy(x, y)) {
+                    const entity = Game.map[y][x].entity;
+                    if ([ENEMY_TYPE.SCORPION, ENEMY_TYPE.RED_SCORPION].includes(entity.type)) {
+                        this.minions.push(entity);
+                    }
+                }
+            }
+        }
     }
 
     getTilePositionX() {
@@ -81,7 +94,7 @@ export class ScorpionQueen extends Boss {
                 this.triggeredEggSpawning = false;
             }
         } else {
-            if (Math.random() < 0.3) {
+            if (Math.random() < 0.3 && this.canSpawnEggs()) {
                 this.triggerEggSpawning();
             }
         }
@@ -134,10 +147,21 @@ export class ScorpionQueen extends Boss {
         }
     }
 
+    canSpawnEggs() {
+        this.minions = this.minions.filter(m => !m.dead);
+        return this.minions.length < 7;
+    }
+
     spawnEgg() {
-        const spawnPos = {x: this.tilePosition.x + 1, y: this.tilePosition.y};
+        const walkDir = randomChoice(this.getEmptyMoveDirections());
+        if (walkDir === undefined) return;
+        let spawnPos = {x: this.tilePosition.x, y: this.tilePosition.y};
+        this.step(walkDir.x, walkDir.y);
+        if (Math.sign(this.scale.x) > 0) spawnPos.x--;
         if (isEmpty(spawnPos.x, spawnPos.y)) {
-            Game.world.addEnemy(new ScorpionQueenEgg(spawnPos.x, spawnPos.y, Scorpion));
+            const egg = new ScorpionQueenEgg(spawnPos.x, spawnPos.y, Scorpion, this);
+            Game.world.addEnemy(egg);
+            this.minions.push(egg);
         }
     }
 
@@ -227,11 +251,18 @@ export class ScorpionQueen extends Boss {
             this.scale.x *= -1;
         }
     }
+
+    die(source) {
+        super.die(source);
+        for (const minion of this.minions) {
+            minion.die(null);
+        }
+    }
 }
 
 // todo add texture
 class ScorpionQueenEgg extends Enemy {
-    constructor(tilePositionX, tilePositionY, enemyType, texture = FCEnemiesSpriteSheet["cocoon.png"]) {
+    constructor(tilePositionX, tilePositionY, enemyType, queen, texture = FCEnemiesSpriteSheet["cocoon.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 2;
         this.name = "Scorpion Queen's Egg";
@@ -240,6 +271,7 @@ class ScorpionQueenEgg extends Enemy {
         this.isMinion = true;
         this.currentDelay = 3;
         this.summonedEnemyType = enemyType;
+        this.queen = queen;
     }
 
     move() {
@@ -248,7 +280,9 @@ class ScorpionQueenEgg extends Enemy {
         }
         if (this.currentDelay <= 0) {
             this.die();
-            Game.world.addEnemy(new this.summonedEnemyType(this.tilePosition.x, this.tilePosition.y), true);
+            const enemy = new this.summonedEnemyType(this.tilePosition.x, this.tilePosition.y);
+            Game.world.addEnemy(enemy, true);
+            this.queen.minions.push(enemy);
         }
         this.currentDelay--;
     }
