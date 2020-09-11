@@ -20,6 +20,15 @@ export class HexEye extends Enemy {
         this.shadowInside = true;
     }
 
+    setStun(stun) {
+        super.setStun(stun);
+        if (this.aboutToCast) {
+            this.aboutToCast = false;
+            this.texture = RUEnemiesSpriteSheet["hex_eye.png"];
+            this.currentCooldown = randomInt(1, 3);
+        }
+    }
+
     move() {
         this.correctScale();
         if (this.controlling) {
@@ -31,7 +40,7 @@ export class HexEye extends Enemy {
         } else if (this.aboutToCast) {
             this.aboutToCast = false;
             this.currentCooldown = this.getCooldown();
-            this.createBullet();
+            this.createBullets();
             this.controlling = true;
         } else if (this.currentCooldown <= 0) {
             this.aboutToCast = true;
@@ -40,7 +49,7 @@ export class HexEye extends Enemy {
         this.currentCooldown--;
     }
 
-    createBullet() {
+    createBullets() {
         this.bullets = [];
         for (const dir of getCardinalDirections()) {
             if (isEmpty(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y)) {

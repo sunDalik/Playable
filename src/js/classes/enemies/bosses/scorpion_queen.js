@@ -6,7 +6,7 @@ import {DAMAGE_TYPE} from "../../../enums/damage_type";
 import {get8Directions, getDirectionsWithConditions} from "../../../utils/map_utils";
 import {getPlayerOnTile, isEmpty, isRelativelyEmpty} from "../../../map_checks";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
-import {closestPlayerDiagonal, otherPlayer} from "../../../utils/game_utils";
+import {closestPlayer, closestPlayerDiagonal, otherPlayer} from "../../../utils/game_utils";
 import {Enemy} from "../enemy";
 import {Scorpion} from "../dc/scorpion";
 
@@ -210,6 +210,23 @@ export class ScorpionQueen extends Boss {
         return (isEmpty(tilePosX, tilePosY) || Game.map[tilePosY][tilePosX].entity === this)
             && (isEmpty(tilePosX - 1, tilePosY) || Game.map[tilePosY][tilePosX - 1].entity === this);
     }
+
+    step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {
+        super.step(tileStepX, tileStepY, onFrame, onEnd, animationTime);
+        this.correctScale(tileStepX, tileStepY);
+    }
+
+    bump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
+        super.bump(tileStepX, tileStepY, onFrame, onEnd, animationTime);
+        this.correctScale(tileStepX, tileStepY);
+    }
+
+    correctScale(tileStepX, tileStepY) {
+        if ((tileStepX !== 0 && Math.sign(tileStepX) !== Math.sign(this.scale.x))
+            || (tileStepX === 0 && tileStepY !== 0 && Math.sign(closestPlayer(this).tilePosition.x - this.tilePosition.x) !== Math.sign(this.scale.x))) {
+            this.scale.x *= -1;
+        }
+    }
 }
 
 // todo add texture
@@ -223,7 +240,6 @@ class ScorpionQueenEgg extends Enemy {
         this.isMinion = true;
         this.currentDelay = 3;
         this.summonedEnemyType = enemyType;
-        this.hatched = false;
     }
 
     move() {
@@ -231,17 +247,10 @@ class ScorpionQueenEgg extends Enemy {
             this.shake(1, 0);
         }
         if (this.currentDelay <= 0) {
-            this.hatched = true;
             this.die();
             Game.world.addEnemy(new this.summonedEnemyType(this.tilePosition.x, this.tilePosition.y), true);
         }
         this.currentDelay--;
-    }
-
-    runDestroyAnimation() {
-        if (!this.hatched) {
-            super.runDestroyAnimation();
-        }
     }
 
     updateIntentIcon() {

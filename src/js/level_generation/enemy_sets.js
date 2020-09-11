@@ -666,5 +666,6 @@ export const DCEnemySets = [
 ];
 
 export const DCBossSets = [
-    [ScorpionQueen]
+    [ScorpionQueen, Scorpion, Scorpion, Scorpion, Scorpion],
+    [ScorpionQueen, RedScorpion, RedScorpion, RedScorpion]
 ];

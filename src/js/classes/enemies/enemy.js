@@ -236,18 +236,18 @@ export class Enemy extends AnimatedTileElement {
         }
     }
 
-    step(tileStepX, tileStepY, onFrame = null, onEnd = null) {
+    step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {
         super.step(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
             this.onMoveFrame();
-        }, onEnd);
+        }, onEnd, animationTime);
     }
 
-    bump(tileStepX, tileStepY, onFrame = null, onEnd = null) {
+    bump(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.BUMP_ANIMATION_TIME) {
         super.bump(tileStepX, tileStepY, () => {
             if (onFrame) onFrame();
             this.onMoveFrame();
-        }, onEnd);
+        }, onEnd, animationTime);
     }
 
     slide(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.SLIDE_ANIMATION_TIME) {
