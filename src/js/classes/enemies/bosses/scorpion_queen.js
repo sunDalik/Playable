@@ -143,6 +143,8 @@ export class ScorpionQueen extends Boss {
             if (movementOptions.length !== 0) {
                 const dir = randomChoice(movementOptions);
                 this.step(dir.x, dir.y);
+            } else {
+                this.bump(Math.sign(initPlayer.tilePosition.x - this.tilePosition.x), Math.sign(initPlayer.tilePosition.y - this.tilePosition.y));
             }
         }
     }
