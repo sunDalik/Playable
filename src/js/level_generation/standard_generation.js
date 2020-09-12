@@ -38,6 +38,7 @@ import {Rabbit} from "../classes/enemies/dt/rabbit";
 import {FireFrog} from "../classes/enemies/dt/frog_fire";
 import {RedScorpion} from "../classes/enemies/dc/red_scorpion";
 import {Scorpion} from "../classes/enemies/dc/scorpion";
+import {ShrineOfBalance} from "../classes/inanimate_objects/shrines/shrine_of_balance";
 
 let settings;
 let level;
@@ -466,7 +467,7 @@ function setStartPosition(startRoom) {
     }
 
     //for tests
-    if (true) {
+    if (false) {
         const bossRoom = rooms.find(r => r.type === ROOM_TYPE.BOSS);
         Game.startPos = {x: bossRoom.offsetX + 2, y: bossRoom.offsetY + 2};
     }
@@ -475,7 +476,8 @@ function setStartPosition(startRoom) {
     }
     if (false) {
         //level[startRoom.offsetY + 2][startRoom.offsetX + 2].entity = new KingFrog(startRoom.offsetX + 2, startRoom.offsetY + 2);
-        level[startRoom.offsetY + startRoom.height - 3][startRoom.offsetX + startRoom.width - 3].entity = new KingFireFrog(startRoom.offsetX + startRoom.width - 3, startRoom.offsetY + startRoom.height - 3);
+        //level[startRoom.offsetY + startRoom.height - 3][startRoom.offsetX + startRoom.width - 3].entity = new KingFireFrog(startRoom.offsetX + startRoom.width - 3, startRoom.offsetY + startRoom.height - 3);
+        //level[startRoom.offsetY + 3][startRoom.offsetX + 3].entity = new ShrineOfBalance(startRoom.offsetX + 3, startRoom.offsetY + 3);
     }
 }
 

@@ -364,12 +364,22 @@ export class Player extends AnimatedTileElement {
         }
     }
 
-    voluntaryDamage(damage, toShake = true) {
+    voluntaryDamage(damage, source, canKill = false) {
         if (!this.dead) {
             this.health -= damage;
-            if (this.health <= 0) this.health = 0.25;
-            if (toShake) shakeScreen();
-            this.runHitAnimation();
+            if (this.health <= 0) {
+                if (!canKill) {
+                    this.health = 0.25;
+                } else {
+                    this.health = 0;
+                    this.dieAnimationWait(source);
+                }
+            }
+
+            if (!this.dead) {
+                shakeScreen();
+                this.runHitAnimation();
+            }
         }
     }
 
