@@ -94,7 +94,7 @@ export function generateStandard() {
     const unconnectedRooms = rooms.filter(room => !path.includes(room));
     unconnectedRooms.forEach(r => r.type = ROOM_TYPE.SECONDARY);
     let attempt = 0;
-    const secretRoomsAmount = Game.stage === STAGE.FLOODED_CAVE || Game.stage === STAGE.DRY_CAVE ? 1 : 0;
+    const secretRoomsAmount = Game.stage === STAGE.FLOODED_CAVE || Game.stage === STAGE.DRY_CAVE ? 0 : 0;
     while (unconnectedRooms.length > secretRoomsAmount) {
         const room = randomChoice(unconnectedRooms);
         const nextRoom = randomChoice(getAdjacentRooms(room).filter(r => !unconnectedRooms.includes(r) && r !== bossRoom));

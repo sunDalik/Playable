@@ -14,7 +14,6 @@ export function getRandomTip() {
         "If you hold SHIFT while moving, you will move without attacking. This allows to escape tricky situations when you have a long-range weapon",
         "Using bag while holding shift drops your bag item instead of using it",
         "When both characters stand on the same tile, only the top one takes damage from enemies and can attack. Press Z to switch positions",
-        "There is a secret room in Flooded Caves. You can spot it if you open a minimap after clearing the entire level",
         "Magic and shields restore half of their max uses every floor if their wielder is alive",
         "Obelisks have 100% chance to contain Necromancy magic if one of the characters is dead upon obelisk's activation",
         "Bosses can't be stunned by any mean",
