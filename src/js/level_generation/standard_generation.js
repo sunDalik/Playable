@@ -1,4 +1,4 @@
-import {randomChoice, randomInt, randomShuffle} from "../utils/random_utils";
+import {randomChoice, randomInt, randomShuffle, weightedRandomChoice} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
 import {EQUIPMENT_TYPE, INANIMATE_TYPE, LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums/enums";
 import {Game} from "../game";
@@ -499,9 +499,13 @@ function generateInanimates() {
     const obelisksAmount = 1;
     const shopAmount = 1;
     chestsAmount = Game.stage === STAGE.DARK_TUNNEL ? 2 : 3;
+    const shrineAmounts = weightedRandomChoice([{item: 0, weight: 5}, {item: 1, weight: 4}, {item: 2, weight: 1}]);
     placeInanimate(placeObelisk, obelisksAmount);
     placeInanimate(placeShop, shopAmount);
     placeInanimate(placeChest, chestsAmount);
+    if (stageBeaten(STAGE.FLOODED_CAVE) >= 2) {
+        placeInanimate(placeShrine, shrineAmounts);
+    }
 }
 
 function placeInanimate(placeMethod, amount) {
@@ -561,6 +565,29 @@ function placeChest(point, room) {
 
         ensureInanimateSurroundings(point.x, point.y);
         level[point.y][point.x].entity = new Chest(point.x, point.y);
+        return true;
+    }
+    return false;
+}
+
+function placeShrine(point, room) {
+    const shrineConstructor = randomChoice([ShrineOfBalance]);
+    if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
+        //not near a door
+        if (isNearEntrance(point, room)) return false;
+
+        //no inanimates on 8 tiles nearby
+        for (const dir of get8Directions()) {
+            if (level[point.y + dir.y][point.x + dir.x].entity && level[point.y + dir.y][point.x + dir.x].entity.role === ROLE.INANIMATE) {
+                return false;
+            }
+        }
+
+        //a shrine needs at least 1 tile gap between the lower wall
+        if (level[point.y + 1][point.x].tileType !== TILE_TYPE.NONE) return false;
+
+        ensureInanimateSurroundings(point.x, point.y);
+        level[point.y][point.x].entity = new shrineConstructor(point.x, point.y);
         return true;
     }
     return false;
