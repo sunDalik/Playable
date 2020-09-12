@@ -5,7 +5,9 @@ import {HUDTextStyle} from "../../../drawing/draw_constants";
 import {Game} from "../../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../../z_indexing";
 import {getCardinalDirections} from "../../../utils/map_utils";
-import {getPlayerOnTile} from "../../../map_checks";
+import {getPlayerOnTile, isEmpty} from "../../../map_checks";
+import {randomShuffle} from "../../../utils/random_utils";
+import {dropItem} from "../../../game_logic";
 
 export class Shrine extends TileElement {
     constructor(tilePositionX, tilePositionY, texture) {
@@ -31,6 +33,22 @@ export class Shrine extends TileElement {
     }
 
     interact(player) {
+    }
+
+    dropItemOnFreeTile(item) {
+        let droppedItem = false;
+        for (const dir of randomShuffle(getCardinalDirections())) {
+            const tile = {x: this.tilePosition.x + dir.x, y: this.tilePosition.y + dir.y};
+            if (isEmpty(tile.x, tile.y)) {
+                dropItem(item, tile.x, tile.y);
+                droppedItem = true;
+                break;
+            }
+        }
+
+        if (!droppedItem) {
+            dropItem(item, this.tilePosition.x, this.tilePosition.y);
+        }
     }
 
     onUpdate() {

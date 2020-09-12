@@ -1,10 +1,11 @@
-import {Game} from "../../game"
+import {Game} from "../../game";
 import {createFloatingItemAnimation} from "../../animations";
-import {swapEquipmentWithPlayer} from "../../game_logic";
+import {getEnchantmentFilters, swapEquipmentWithPlayer} from "../../game_logic";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 import * as PIXI from "pixi.js";
 import {HUDTextStyle} from "../../drawing/draw_constants";
 import {ShadowTileElement} from "../tile_elements/shadow_tile_element";
+import {ENCHANTMENT_TYPE} from "../../enums/enchantments";
 
 export class LyingItem extends ShadowTileElement {
     constructor(tilePositionX, tilePositionY, item) {
@@ -12,7 +13,7 @@ export class LyingItem extends ShadowTileElement {
         this.item = item;
         this.width = Game.TILESIZE * 0.9;
         this.height = Game.TILESIZE * 0.9;
-        this.addAmountNumber();
+        this.changeItem();
         this.place();
         this.animation = createFloatingItemAnimation(this);
     }
@@ -34,11 +35,16 @@ export class LyingItem extends ShadowTileElement {
             this.texture = this.item.texture;
             this.width = Game.TILESIZE * 0.9;
             this.height = Game.TILESIZE * 0.9;
-            this.addAmountNumber();
+            this.changeItem();
             //this.regenerateShadow();
             //if (this.item.amount > 1) this.texture.trim = this.texture.frame;
             //this.placeShadow();
         }
+    }
+
+    changeItem() {
+        this.addAmountNumber();
+        this.applyEnchantmentFilters();
     }
 
     addAmountNumber() {
@@ -53,6 +59,14 @@ export class LyingItem extends ShadowTileElement {
             container.addChild(text);
             text.position.set(sprite.width - text.width, 0);
             this.texture = Game.app.renderer.generateTexture(container);
+        }
+    }
+
+    applyEnchantmentFilters() {
+        if (this.item.enchantment && this.item.enchantment !== ENCHANTMENT_TYPE.NONE) {
+            this.filters = getEnchantmentFilters(this.item.enchantment);
+        } else {
+            this.filters = [];
         }
     }
 }

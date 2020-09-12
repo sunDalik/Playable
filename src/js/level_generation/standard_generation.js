@@ -39,6 +39,7 @@ import {FireFrog} from "../classes/enemies/dt/frog_fire";
 import {RedScorpion} from "../classes/enemies/dc/red_scorpion";
 import {Scorpion} from "../classes/enemies/dc/scorpion";
 import {ShrineOfBalance} from "../classes/inanimate_objects/shrines/shrine_of_balance";
+import {ShrineOfCurse} from "../classes/inanimate_objects/shrines/shrine_of_curse";
 
 let settings;
 let level;
@@ -571,7 +572,7 @@ function placeChest(point, room) {
 }
 
 function placeShrine(point, room) {
-    const shrineConstructor = randomChoice([ShrineOfBalance]);
+    const shrineConstructor = randomChoice([ShrineOfBalance, ShrineOfCurse]);
     if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
         //not near a door
         if (isNearEntrance(point, room)) return false;

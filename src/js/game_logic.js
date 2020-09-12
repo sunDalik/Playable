@@ -392,29 +392,32 @@ export function addKeys(keyAmount) {
     redrawKeysAmount();
 }
 
-export function removeEquipmentFromPlayer(player, equipmentType) {
+export function removeEquipmentFromPlayer(player, equipmentType, slotName = null) {
     let slot;
-    switch (equipmentType) {
-        case EQUIPMENT_TYPE.WEAPON:
-            if (player[SLOT.EXTRA] && player[SLOT.EXTRA].equipmentType === EQUIPMENT_TYPE.WEAPON && !player[SLOT.EXTRA].nonremoveable) slot = SLOT.EXTRA;
-            else slot = SLOT.WEAPON;
-            break;
-        case EQUIPMENT_TYPE.TOOL:
-        case EQUIPMENT_TYPE.SHIELD:
-            slot = SLOT.EXTRA;
-            break;
-        case EQUIPMENT_TYPE.HEAD:
-            slot = SLOT.HEADWEAR;
-            break;
-        case EQUIPMENT_TYPE.ARMOR:
-            slot = SLOT.ARMOR;
-            break;
-        case EQUIPMENT_TYPE.FOOT:
-            slot = SLOT.FOOTWEAR;
-            break;
-        case EQUIPMENT_TYPE.ACCESSORY:
-            slot = SLOT.ACCESSORY;
-            break;
+    if (slotName) slot = slotName;
+    else {
+        switch (equipmentType) {
+            case EQUIPMENT_TYPE.WEAPON:
+                if (player[SLOT.EXTRA] && player[SLOT.EXTRA].equipmentType === EQUIPMENT_TYPE.WEAPON && !player[SLOT.EXTRA].nonremoveable) slot = SLOT.EXTRA;
+                else slot = SLOT.WEAPON;
+                break;
+            case EQUIPMENT_TYPE.TOOL:
+            case EQUIPMENT_TYPE.SHIELD:
+                slot = SLOT.EXTRA;
+                break;
+            case EQUIPMENT_TYPE.HEAD:
+                slot = SLOT.HEADWEAR;
+                break;
+            case EQUIPMENT_TYPE.ARMOR:
+                slot = SLOT.ARMOR;
+                break;
+            case EQUIPMENT_TYPE.FOOT:
+                slot = SLOT.FOOTWEAR;
+                break;
+            case EQUIPMENT_TYPE.ACCESSORY:
+                slot = SLOT.ACCESSORY;
+                break;
+        }
     }
     if (!slot || !player[slot]) return null;
     if (player[slot].nonremoveable) return null;
