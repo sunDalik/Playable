@@ -1,4 +1,4 @@
-import {randomChoice, randomInt, randomShuffle, weightedRandomChoice} from "../utils/random_utils";
+import {randomChoice, randomChoiceSeveral, randomInt, randomShuffle, weightedRandomChoice} from "../utils/random_utils";
 import {init2dArray, removeObjectFromArray} from "../utils/basic_utils";
 import {EQUIPMENT_TYPE, INANIMATE_TYPE, LEVEL_SYMBOLS, PLANE, ROLE, STAGE, TILE_TYPE} from "../enums/enums";
 import {Game} from "../game";
@@ -505,7 +505,10 @@ function generateInanimates() {
     placeInanimate(placeShop, shopAmount);
     placeInanimate(placeChest, chestsAmount);
     if (stageBeaten(STAGE.FLOODED_CAVE) >= 2) {
-        placeInanimate(placeShrine, shrineAmounts);
+        const shrines = randomChoiceSeveral([ShrineOfBalance, ShrineOfCurse], shrineAmounts);
+        for (let i = 0; i < shrineAmounts; i++) {
+            placeInanimate((point, room) => placeShrine(point, room, shrines[i]), 1);
+        }
     }
 }
 
@@ -571,8 +574,7 @@ function placeChest(point, room) {
     return false;
 }
 
-function placeShrine(point, room) {
-    const shrineConstructor = randomChoice([ShrineOfBalance, ShrineOfCurse]);
+function placeShrine(point, room, shrineConstructor) {
     if (level[point.y][point.x].entity === null && level[point.y][point.x].tileType === TILE_TYPE.NONE) {
         //not near a door
         if (isNearEntrance(point, room)) return false;
