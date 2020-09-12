@@ -85,7 +85,8 @@ export const INANIMATE_TYPE = Object.freeze({
     FIRE_GOBLET: 4,
     PEDESTAL: 5,
     SHOP_STAND: 6,
-    SHOPKEEPER: 7
+    SHOPKEEPER: 7,
+    SHRINE: 8
 });
 
 export const EQUIPMENT_TYPE = Object.freeze({

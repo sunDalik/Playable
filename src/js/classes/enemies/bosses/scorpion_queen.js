@@ -19,13 +19,17 @@ export class ScorpionQueen extends Boss {
         this.atk = 1;
         this.name = "Scorpion Queen";
 
-        this.startNoActionCounter = 4;
         this.triggeredRage = false;
         this.rageCounter = 6;
         this.currentRageCounter = 0;
 
         this.triggeredEggSpawning = false;
         this.currentEggCounter = this.getEggCounter();
+
+        this.noSpecialAttacksTime = 12;
+        this.currentNoSpecialAttacksTime = this.noSpecialAttacksTime - 5;
+
+        this.currentTurnDelay = this.turnDelay = 3;
 
         this.shakeWaiting = 0;
 
@@ -86,18 +90,25 @@ export class ScorpionQueen extends Boss {
             if (this.currentRageCounter >= this.rageCounter) {
                 this.triggeredRage = false;
                 this.tint = 0xffffff;
+                this.stopSpecialAttack(false);
             }
         } else if (this.triggeredEggSpawning) {
             this.spawnEgg();
             this.currentEggCounter--;
             if (this.currentEggCounter <= 0) {
                 this.triggeredEggSpawning = false;
+                this.stopSpecialAttack();
             }
         } else {
-            if (Math.random() < 0.3 && this.canSpawnEggs()) {
+            if (Math.random() < 1 && this.canSpawnEggs() && this.currentNoSpecialAttacksTime > this.noSpecialAttacksTime) {
                 this.triggerEggSpawning();
+            } else if (this.currentTurnDelay <= 0) {
+                this.randomWalk();
+                this.currentTurnDelay = this.turnDelay;
             }
         }
+        this.currentTurnDelay--;
+        this.currentNoSpecialAttacksTime++;
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
@@ -114,12 +125,24 @@ export class ScorpionQueen extends Boss {
         }
     }
 
+    stopSpecialAttack(resetAttackTime = true) {
+        this.texture = ScorpionQueenSpriteSheet["scorpion_queen_neutral.png"];
+        this.currentTurnDelay = this.turnDelay;
+        if (resetAttackTime) this.currentNoSpecialAttacksTime = 0;
+    }
+
     triggerRage() {
+        this.unTriggerEverything();
         this.triggeredRage = true;
         this.shakeWaiting = 3;
         this.shake(1, 0);
         this.currentRageCounter = 0;
         this.tint = 0xff0000;
+    }
+
+    unTriggerEverything() {
+        this.triggeredEggSpawning = false;
+        this.triggeredRage = false;
     }
 
     triggerEggSpawning() {
