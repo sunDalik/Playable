@@ -1,20 +1,16 @@
-import {TileElement} from "../../tile_elements/tile_element";
 import {InanimatesSpriteSheet} from "../../../loader";
-import {INANIMATE_TYPE, ROLE} from "../../../enums/enums";
 import {dropItem} from "../../../game_logic";
 import {Key} from "../../equipment/key";
 import {getCardinalDirections} from "../../../utils/map_utils";
 import {randomShuffle} from "../../../utils/random_utils";
 import {isEmpty} from "../../../map_checks";
+import {Shrine} from "./shrine";
 
-export class ShrineOfBalance extends TileElement {
+export class ShrineOfBalance extends Shrine {
     constructor(tilePositionX, tilePositionY, texture = InanimatesSpriteSheet["shrine_of_balance.png"]) {
-        super(texture, tilePositionX, tilePositionY);
-        this.role = ROLE.INANIMATE;
-        this.type = INANIMATE_TYPE.SHRINE; //should it possible have shrineType?
+        super(tilePositionX, tilePositionY, texture);
         this.name = "Shrine of Balance";
-        this.setScaleModifier(1.1);
-        this.tallModifier = -8;
+        this.description = "Lose 1 HP\nGain 1 Key";
     }
 
     interact(player) {
@@ -32,8 +28,5 @@ export class ShrineOfBalance extends TileElement {
         if (!droppedKey) {
             dropItem(new Key(), this.tilePosition.x, this.tilePosition.y);
         }
-    }
-
-    onUpdate() {
     }
 }
