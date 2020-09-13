@@ -40,6 +40,7 @@ import {RedScorpion} from "../classes/enemies/dc/red_scorpion";
 import {Scorpion} from "../classes/enemies/dc/scorpion";
 import {ShrineOfBalance} from "../classes/inanimate_objects/shrines/shrine_of_balance";
 import {ShrineOfCurse} from "../classes/inanimate_objects/shrines/shrine_of_curse";
+import {ShrineOfDice} from "../classes/inanimate_objects/shrines/shrine_of_dice";
 
 let settings;
 let level;
@@ -505,7 +506,7 @@ function generateInanimates() {
     placeInanimate(placeShop, shopAmount);
     placeInanimate(placeChest, chestsAmount);
     if (stageBeaten(STAGE.FLOODED_CAVE) >= 2) {
-        const shrines = randomChoiceSeveral([ShrineOfBalance, ShrineOfCurse], shrineAmounts);
+        const shrines = randomChoiceSeveral([ShrineOfBalance, ShrineOfCurse, ShrineOfDice], shrineAmounts);
         for (let i = 0; i < shrineAmounts; i++) {
             placeInanimate((point, room) => placeShrine(point, room, shrines[i]), 1);
         }

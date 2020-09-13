@@ -231,7 +231,7 @@ export function createFadingText(caption, positionX, positionY, fontSize = Game.
         fill: 0xffffff,
         fontWeight: "bold",
         stroke: 0x000000,
-        strokeThickness: 1
+        strokeThickness: 2
     });
     text.position.set(positionX - text.width / 2, positionY - text.height * 1.5);
     text.zIndex = getZIndexForLayer(positionY / Game.TILESIZE) + Z_INDEXES.META;
