@@ -41,6 +41,7 @@ import {Scorpion} from "../classes/enemies/dc/scorpion";
 import {ShrineOfBalance} from "../classes/inanimate_objects/shrines/shrine_of_balance";
 import {ShrineOfCurse} from "../classes/inanimate_objects/shrines/shrine_of_curse";
 import {ShrineOfDice} from "../classes/inanimate_objects/shrines/shrine_of_dice";
+import {ShrineOfSeraph} from "../classes/inanimate_objects/shrines/shrine_of_seraph";
 
 let settings;
 let level;
@@ -479,7 +480,7 @@ function setStartPosition(startRoom) {
     if (false) {
         //level[startRoom.offsetY + 2][startRoom.offsetX + 2].entity = new KingFrog(startRoom.offsetX + 2, startRoom.offsetY + 2);
         //level[startRoom.offsetY + startRoom.height - 3][startRoom.offsetX + startRoom.width - 3].entity = new KingFireFrog(startRoom.offsetX + startRoom.width - 3, startRoom.offsetY + startRoom.height - 3);
-        //level[startRoom.offsetY + 3][startRoom.offsetX + 3].entity = new ShrineOfBalance(startRoom.offsetX + 3, startRoom.offsetY + 3);
+        //level[startRoom.offsetY + 3][startRoom.offsetX + 3].entity = new ShrineOfSeraph(startRoom.offsetX + 3, startRoom.offsetY + 3);
     }
 }
 
@@ -506,7 +507,7 @@ function generateInanimates() {
     placeInanimate(placeShop, shopAmount);
     placeInanimate(placeChest, chestsAmount);
     if (stageBeaten(STAGE.FLOODED_CAVE) >= 2) {
-        const shrines = randomChoiceSeveral([ShrineOfBalance, ShrineOfCurse, ShrineOfDice], shrineAmounts);
+        const shrines = randomChoiceSeveral([ShrineOfBalance, ShrineOfCurse, ShrineOfDice, ShrineOfSeraph], shrineAmounts);
         for (let i = 0; i < shrineAmounts; i++) {
             placeInanimate((point, room) => placeShrine(point, room, shrines[i]), 1);
         }

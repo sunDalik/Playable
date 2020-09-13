@@ -504,6 +504,7 @@ export class Player extends AnimatedTileElement {
         return this._maxHealth;
     }
 
+    // todo turn it into a function
     set maxHealth(value) {
         if (value < 1) this._maxHealth = 1;
         else if (value > 10) this._maxHealth = 10;

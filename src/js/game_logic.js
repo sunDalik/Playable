@@ -650,6 +650,28 @@ export function applyEnchantment(item, enchantmentType) {
     }
 }
 
+export function removeEnchantment(item) {
+    if (item.enchantment === ENCHANTMENT_TYPE.NONE) return;
+    item.name = item.name.replace(item.enchantment.prefix + " ", "");
+    switch (item.enchantment) {
+        case ENCHANTMENT_TYPE.DIVINE:
+            item.atk -= 0.5;
+            break;
+        case ENCHANTMENT_TYPE.CURSED:
+            item.nonremoveable = false;
+            break;
+        case ENCHANTMENT_TYPE.NIGHTMARE:
+            const killedMinions = item.minions.filter(m => m.temporary === true);
+            for (const minion of killedMinions) {
+                minion.deactivate();
+                removeObjectFromArray(minion, item.minions);
+            }
+            break;
+    }
+
+    item.enchantment = ENCHANTMENT_TYPE.NONE;
+}
+
 //todo put color info into enchantment enum?
 export function getItemLabelColor(item) {
     if (item.enchantment === ENCHANTMENT_TYPE.DIVINE) return 0x5ff0f0;
