@@ -7,6 +7,7 @@ import {
     EQUIPMENT_TYPE,
     HAZARD_TYPE,
     INANIMATE_TYPE,
+    ROLE,
     SLOT,
     STAGE,
     TILE_TYPE
@@ -31,6 +32,7 @@ import {
     isAnyWall,
     isDiggable,
     isEnemy,
+    isEntity,
     isInanimate,
     isNotAWall,
     isObelisk,
@@ -609,6 +611,8 @@ export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
         }
         if (isObelisk(posX, posY)) {
             Game.map[posY][posX].entity.destroy();
+        } else if (isEntity(posX, posY, ROLE.INANIMATE, INANIMATE_TYPE.CHEST)) {
+            Game.map[posY][posX].entity.explode();
         }
         if (Game.map[posY][posX].hazard) {
             Game.map[posY][posX].hazard.removeFromWorld();

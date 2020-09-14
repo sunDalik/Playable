@@ -12,6 +12,8 @@ import {getRandomSpell} from "../../utils/pool_utils";
 import {Grail} from "./grail";
 import {clearWall} from "../../level_generation/standard_generation";
 import {completeAchievement} from "../../achievements";
+import {redrawMiniMapPixel} from "../../drawing/minimap";
+import {removeObjectFromArray} from "../../utils/basic_utils";
 
 export class Obelisk extends TileElement {
     constructor(tilePositionX, tilePositionY, level) {
@@ -173,6 +175,8 @@ export class Obelisk extends TileElement {
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
             this.texture = InanimatesSpriteSheet["obelisk_used.png"];
             runDestroyAnimation(this);
+            redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
+            removeObjectFromArray(this, Game.inanimates);
         }
         if (this.working) {
             this.working = false;

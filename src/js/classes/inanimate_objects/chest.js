@@ -1,6 +1,6 @@
 import {Game} from "../../game";
 import {EQUIPMENT_ID, INANIMATE_TYPE, SLOT} from "../../enums/enums";
-import {addKeys, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
+import {addKeys, dropItem, removeEquipmentFromPlayer, swapEquipmentWithPlayer} from "../../game_logic";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
 import {getPlayerOnTile} from "../../map_checks";
@@ -10,6 +10,10 @@ import {redrawKeysAmount} from "../../drawing/draw_hud";
 import {ItemInanimate} from "./item_inanimate";
 import {getRandomChestItem} from "../../utils/pool_utils";
 import {AccessoriesSpriteSheet, CommonSpriteSheet, InanimatesSpriteSheet} from "../../loader";
+import {runDestroyAnimation} from "../../animations";
+import {Key} from "../equipment/key";
+import {redrawMiniMapPixel} from "../../drawing/minimap";
+import {removeObjectFromArray} from "../../utils/basic_utils";
 
 export class Chest extends ItemInanimate {
     constructor(tilePositionX, tilePositionY, content = undefined) {
@@ -39,6 +43,7 @@ export class Chest extends ItemInanimate {
         this.heroKeyed = false;
 
         this.updateKeysRequiredSprite();
+        this.cracked = false;
     }
 
     interact(player) {
@@ -50,7 +55,9 @@ export class Chest extends ItemInanimate {
     }
 
     takeItem(player) {
-        this.texture = InanimatesSpriteSheet["chest_opened.png"];
+        if (this.cracked) this.texture = InanimatesSpriteSheet["chest_opened_cracked.png"];
+        else this.texture = InanimatesSpriteSheet["chest_opened.png"];
+
         if (this.opened) {
             if (this.contents) this.contents = swapEquipmentWithPlayer(player, this.contents);
             else this.contents = removeEquipmentFromPlayer(player, this.contentsType);
@@ -128,5 +135,22 @@ export class Chest extends ItemInanimate {
             container.addChild(keySprite);
         }
         this.keysRequiredSprite.texture = Game.app.renderer.generateTexture(container);
+    }
+
+    explode() {
+        if (this.cracked) {
+            this.visible = false;
+            Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
+            redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
+            runDestroyAnimation(this);
+            this.hideItem();
+            if (!this.opened) dropItem(new Key(), this.tilePosition.x, this.tilePosition.y);
+            else if (this.contents) dropItem(this.contents, this.tilePosition.x, this.tilePosition.y);
+            removeObjectFromArray(this, Game.inanimates);
+        } else {
+            this.cracked = true;
+            if (this.opened) this.texture = InanimatesSpriteSheet["chest_opened_cracked.png"];
+            else this.texture = InanimatesSpriteSheet["chest_cracked.png"];
+        }
     }
 }
