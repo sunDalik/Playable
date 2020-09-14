@@ -15,19 +15,23 @@ export class ShrineOfSeraph extends Shrine {
     }
 
     interact(player) {
-        if (player.maxHealth < 2) {
-            createFadingText("You are weak", this.position.x, this.position.y);
+        const weapon = player[SLOT.WEAPON];
+        let errorMessage = "";
+        if (!weapon) {
+            errorMessage = "Bring me a weapon";
+        } else if (weapon.enchantment === ENCHANTMENT_TYPE.DIVINE) {
+            errorMessage = "You are already divine";
+        } else if (weapon.isMinionStaff) {
+            errorMessage = "Minion staves cannot be divine";
+        } else if (player.maxHealth < 2) {
+            errorMessage = "You are weak";
+        }
+
+        if (errorMessage !== "") {
+            createFadingText(errorMessage, this.position.x, this.position.y);
             return;
         }
 
-        const weapon = player[SLOT.WEAPON];
-        if (!weapon) {
-            createFadingText("Bring me a weapon", this.position.x, this.position.y);
-            return;
-        } else if (weapon.enchantment === ENCHANTMENT_TYPE.DIVINE) {
-            createFadingText("You are already divine", this.position.x, this.position.y);
-            return;
-        }
         removeEnchantment(weapon);
         removeEquipmentFromPlayer(player, weapon.equipmentType, player.getSlotNameOfItem(weapon));
         applyEnchantment(weapon, ENCHANTMENT_TYPE.DIVINE);
