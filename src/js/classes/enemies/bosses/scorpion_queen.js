@@ -26,7 +26,7 @@ export class ScorpionQueen extends Boss {
         this.name = "Scorpion Queen";
 
         this.triggeredRage = false;
-        this.rageCounter = 6;
+        this.rageCounter = 5;
         this.currentRageCounter = 0;
 
         this.triggeredEggSpawning = false;
@@ -55,7 +55,9 @@ export class ScorpionQueen extends Boss {
     }
 
     static getBossRoomStats() {
-        return {width: randomInt(12, 15), height: randomInt(10, 12)};
+        const height = randomInt(10, 11);
+        const width = height === 10 ? randomInt(12, 13) : randomInt(11, 13);
+        return {width: width, height: height};
     }
 
     afterMapGen() {
