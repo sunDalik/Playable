@@ -126,7 +126,6 @@ export class ScorpionQueen extends Boss {
             this.currentRageCounter++;
             if (this.currentRageCounter >= this.rageCounter) {
                 this.triggeredRage = false;
-                this.tint = 0xffffff;
                 this.stopSpecialAttack(false);
             }
         } else if (this.triggeredEggSpawning) {
@@ -198,9 +197,7 @@ export class ScorpionQueen extends Boss {
         else this.shakeWaiting = 3;
         this.shake(1, 0);
         this.currentRageCounter = 0;
-        //todo rage texture
-        this.tint = 0xff0000;
-        this.texture = ScorpionQueenSpriteSheet["scorpion_queen_neutral.png"];
+        this.texture = ScorpionQueenSpriteSheet["scorpion_queen_rage.png"];
     }
 
     unTriggerEverything() {
