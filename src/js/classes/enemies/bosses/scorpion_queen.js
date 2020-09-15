@@ -1,4 +1,4 @@
-import {ENEMY_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE, HAZARD_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {FCEnemiesSpriteSheet, IntentsSpriteSheet, ScorpionQueenSpriteSheet} from "../../../loader";
 import {Game} from "../../../game";
@@ -57,6 +57,17 @@ export class ScorpionQueen extends Boss {
                     if ([ENEMY_TYPE.SCORPION, ENEMY_TYPE.RED_SCORPION].includes(entity.type)) {
                         this.minions.push(entity);
                     }
+                }
+            }
+        }
+    }
+
+    damageWithHazards() {
+        for (const x of [this.tilePosition.x, this.tilePosition.x - 1]) {
+            const hazard = Game.map[this.tilePosition.y][x].hazard;
+            if (hazard) {
+                if (hazard.type === HAZARD_TYPE.DARK_FIRE || hazard.type === HAZARD_TYPE.DARK_POISON) {
+                    this.damage(hazard, hazard.atk, 0, 0, DAMAGE_TYPE.HAZARDAL);
                 }
             }
         }
