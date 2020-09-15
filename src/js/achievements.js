@@ -10,7 +10,7 @@ import {AchievementsSpriteSheet} from "./loader";
 export const achievements = [
     {
         id: ACHIEVEMENT_ID.BEAT_FC,
-        description: "Beat Flooded Caves",
+        description: "Beat Flooded Cave",
         image: "beat_fc.png"
     },
     {
@@ -23,6 +23,11 @@ export const achievements = [
         id: ACHIEVEMENT_ID.BEAT_RU,
         description: "Beat Ruins",
         image: "beat_ru.png"
+    },
+    {
+        id: ACHIEVEMENT_ID.BEAT_DC,
+        description: "Beat Dry Cave",
+        image: "beat_dc.png"
     },
     {
         id: ACHIEVEMENT_ID.BEAT_ANY_BOSS_NO_DAMAGE,
@@ -43,6 +48,11 @@ export const achievements = [
         id: ACHIEVEMENT_ID.FIND_ENCHANTED_ITEM,
         description: "Find an enchanted item",
         image: "find_enchanted_item.png"
+    },
+    {
+        id: ACHIEVEMENT_ID.ACTIVATE_SHRINE,
+        description: "Activate a shrine",
+        image: "activate_shrine.png"
     }];
 
 /*
@@ -65,6 +75,9 @@ export function beatStage(stage) {
             break;
         case STAGE.RUINS:
             completeAchievement(ACHIEVEMENT_ID.BEAT_RU);
+            break;
+        case STAGE.DRY_CAVE:
+            completeAchievement(ACHIEVEMENT_ID.BEAT_DC);
             break;
     }
 
