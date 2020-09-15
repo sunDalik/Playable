@@ -416,7 +416,7 @@ export class GuardianOfTheLight extends Boss {
 
     updatePatience() {
         this.patience.turns = randomInt(24, 31) - this.phase * 2;
-        this.patience.damage = randomInt(3, 4);
+        this.patience.damage = randomInt(4, 5);
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
