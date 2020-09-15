@@ -14,7 +14,7 @@ import {Scorpion} from "../dc/scorpion";
 export class ScorpionQueen extends Boss {
     constructor(tilePositionX, tilePositionY, texture = ScorpionQueenSpriteSheet["scorpion_queen_neutral.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 15;
+        this.health = this.maxHealth = 20;
         this.type = ENEMY_TYPE.SCORPION_QUEEN;
         this.atk = 1;
         this.name = "Scorpion Queen";

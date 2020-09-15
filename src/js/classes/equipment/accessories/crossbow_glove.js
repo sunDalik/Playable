@@ -18,7 +18,8 @@ export class CrossbowGlove extends Equipment {
     }
 
     afterAttack(wielder, dirX, dirY) {
-        for (const dir of randomShuffle(getCardinalDirections().filter(d => d.x !== dirX || d.y !== dirY))) {
+        const directions = randomShuffle(getCardinalDirections().filter(d => d.x !== dirX || d.y !== dirY));
+        for (const dir of directions) {
             if (this.shooter.attack(wielder, dir.x, dir.y)) break;
         }
     }
