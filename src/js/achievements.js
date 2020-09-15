@@ -35,11 +35,6 @@ export const achievements = [
         image: "explode_treasure_wall.png"
     },
     {
-        id: ACHIEVEMENT_ID.DESTROY_OBELISK,
-        description: "Destroy an Obelisk",
-        image: "explode_the_obelisk.png"
-    },
-    {
         id: ACHIEVEMENT_ID.EQUIP_ALL_ITEMS,
         description: "Equip items in all non-magic slots",
         image: "equip_all_items.png"
@@ -48,11 +43,6 @@ export const achievements = [
         id: ACHIEVEMENT_ID.FIND_ENCHANTED_ITEM,
         description: "Find an enchanted item",
         image: "find_enchanted_item.png"
-    },
-    {
-        id: ACHIEVEMENT_ID.BEAT_FC_FAST,
-        description: "Beat Flooded Caves in under 2 minutes",
-        image: "beat_fc_fast.png"
     }];
 
 /*
@@ -69,7 +59,6 @@ export function beatStage(stage) {
     switch (stage) {
         case STAGE.FLOODED_CAVE:
             completeAchievement(ACHIEVEMENT_ID.BEAT_FC);
-            if (Game.time <= 120000) completeAchievement(ACHIEVEMENT_ID.BEAT_FC_FAST);
             break;
         case STAGE.DARK_TUNNEL:
             completeAchievement(ACHIEVEMENT_ID.BEAT_DT);

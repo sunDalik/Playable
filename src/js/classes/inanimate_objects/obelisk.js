@@ -191,7 +191,6 @@ export class Obelisk extends TileElement {
                     enemy.setStun(2);
                 } else enemy.atk += 0.25;
             }
-            completeAchievement(ACHIEVEMENT_ID.DESTROY_OBELISK);
             //createFadingText("Live with it... you will not...", this.position.x, this.position.y);
         }
         this.onUpdate();
