@@ -1,4 +1,4 @@
-import {ENEMY_TYPE, HAZARD_TYPE} from "../../../enums/enums";
+import {ENEMY_TYPE, HAZARD_TYPE, STAGE, TILE_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
 import {IntentsSpriteSheet, ScorpionQueenSpriteSheet} from "../../../loader";
 import {Game} from "../../../game";
@@ -9,6 +9,9 @@ import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {closestPlayer, closestPlayerDiagonal, otherPlayer} from "../../../utils/game_utils";
 import {Enemy} from "../enemy";
 import {Scorpion} from "../dc/scorpion";
+import {RedScorpion} from "../dc/red_scorpion";
+import {stageBeaten} from "../../../setup";
+import {WallTile} from "../../draw/wall";
 
 // tilePosition refers to rightmost tile
 export class ScorpionQueen extends Boss {
@@ -36,6 +39,8 @@ export class ScorpionQueen extends Boss {
 
         this.setScaleModifier(2.2);
 
+        this.phase = 1;
+
         this.shadowHeight = 12;
         this.shadowInside = true;
         this.regenerateShadow();
@@ -58,6 +63,19 @@ export class ScorpionQueen extends Boss {
                     if ([ENEMY_TYPE.SCORPION, ENEMY_TYPE.RED_SCORPION].includes(entity.type)) {
                         this.minions.push(entity);
                     }
+                }
+            }
+        }
+    }
+
+    onBossModeActivate() {
+        // replace super walls with walls
+        for (let x = Game.endRoomBoundaries[0].x; x <= Game.endRoomBoundaries[1].x; x++) {
+            for (let y = Game.endRoomBoundaries[0].y; y <= Game.endRoomBoundaries[1].y; y++) {
+                if (Game.map[y][x].tileType === TILE_TYPE.SUPER_WALL &&
+                    (x === Game.endRoomBoundaries[0].x || x === Game.endRoomBoundaries[1].x || y === Game.endRoomBoundaries[0].y || y === Game.endRoomBoundaries[1].y)) {
+                    Game.world.removeTile(x, y, null, false);
+                    Game.world.addTile(new WallTile(x, y), TILE_TYPE.WALL);
                 }
             }
         }
@@ -125,15 +143,14 @@ export class ScorpionQueen extends Boss {
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
-        const previousHealth = this.health;
         super.damage(source, dmg, inputX, inputY, damageType);
         if (!this.triggeredRage) {
-            const rageMarks = [this.maxHealth * 3 / 4, this.maxHealth / 2, this.maxHealth / 4];
-            for (const rageMark of rageMarks) {
-                if (previousHealth > rageMark && this.health <= rageMark) {
-                    this.triggerRage();
-                    break;
-                }
+            if (this.phase === 1 && this.health <= this.maxHealth * 2 / 3) {
+                this.phase = 2;
+                this.triggerRage();
+            } else if (this.phase === 2 && this.health <= this.maxHealth / 3) {
+                this.phase = 3;
+                this.triggerRage();
             }
         }
     }
@@ -198,7 +215,10 @@ export class ScorpionQueen extends Boss {
         this.step(walkDir.x, walkDir.y);
         if (Math.sign(this.scale.x) > 0) spawnPos.x--;
         if (isEmpty(spawnPos.x, spawnPos.y)) {
-            const egg = new ScorpionQueenEgg(spawnPos.x, spawnPos.y, Scorpion, this);
+            let enemyType = Scorpion;
+            // see also replaceEnemy()
+            if (this.phase >= 2 && Math.random() < 0.25 && stageBeaten(STAGE.DRY_CAVE) >= 1) enemyType = RedScorpion;
+            const egg = new ScorpionQueenEgg(spawnPos.x, spawnPos.y, enemyType, this);
             Game.world.addEnemy(egg);
             this.minions.push(egg);
         }
@@ -311,6 +331,7 @@ class ScorpionQueenEgg extends Enemy {
         this.currentDelay = 3;
         this.summonedEnemyType = enemyType;
         this.queen = queen;
+        if (enemyType === RedScorpion) this.setScaleModifier(1.1);
         this.shadowInside = true;
         this.regenerateShadow();
     }

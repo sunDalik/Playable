@@ -740,6 +740,7 @@ function replaceEnemy(enemy) {
     } else if (enemy === KingFireFrog && stageBeaten(STAGE.DARK_TUNNEL) < 2) {
         return FireFrog;
     } else if (enemy === RedScorpion && stageBeaten(STAGE.DRY_CAVE) < 1) {
+        // also used in Scorpion Queen
         return Scorpion;
     }
     return enemy;
