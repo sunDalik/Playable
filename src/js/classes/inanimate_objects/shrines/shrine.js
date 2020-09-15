@@ -37,7 +37,13 @@ export class Shrine extends TileElement {
 
     dropItemOnFreeTile(item) {
         let droppedItem = false;
-        for (const dir of randomShuffle(getCardinalDirections())) {
+        const directions = randomShuffle(getCardinalDirections());
+        directions.sort((a, b) => {
+            if (a.y === -1) return 1;
+            else if (b.y === -1) return -1;
+            else return 0;
+        });
+        for (const dir of directions) {
             const tile = {x: this.tilePosition.x + dir.x, y: this.tilePosition.y + dir.y};
             if (isEmpty(tile.x, tile.y)) {
                 dropItem(item, tile.x, tile.y);
