@@ -143,11 +143,11 @@ export class ScorpionQueen extends Boss {
         } else {
             if (this.phase === 3) {
                 if (this.currentRageTurnDelay === 1) {
-                    this.tint = 0xff0000;
+                    this.texture = ScorpionQueenSpriteSheet["scorpion_queen_crownless_about_to_move.png"];
                 }
                 if (this.currentRageTurnDelay <= 0) {
                     this.phase3Chase();
-                    this.tint = 0xffffff;
+                    this.texture = ScorpionQueenSpriteSheet["scorpion_queen_crownless.png"];
                     this.currentRageTurnDelay = this.rageTurnDelay;
                 } else this.currentRageTurnDelay--;
             } else {
@@ -189,7 +189,8 @@ export class ScorpionQueen extends Boss {
     }
 
     stopSpecialAttack(resetAttackTime = true) {
-        this.texture = ScorpionQueenSpriteSheet["scorpion_queen_neutral.png"];
+        if (this.phase === 3) this.texture = ScorpionQueenSpriteSheet["scorpion_queen_crownless.png"];
+        else this.texture = ScorpionQueenSpriteSheet["scorpion_queen_neutral.png"];
         this.currentTurnDelay = this.turnDelay;
         if (resetAttackTime) this.currentNoSpecialAttacksTime = 0;
     }
@@ -257,6 +258,7 @@ export class ScorpionQueen extends Boss {
 
     triggerEggSpawning() {
         this.triggeredEggSpawning = true;
+        this.texture = ScorpionQueenSpriteSheet["scorpion_queen_egg_spawning.png"];
         this.shakeWaiting = 1;
         this.shake(1, 0);
         this.currentEggCounter = 0;
