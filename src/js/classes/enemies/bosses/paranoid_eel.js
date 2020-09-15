@@ -27,7 +27,7 @@ import {getZIndexForLayer} from "../../../z_indexing";
 export class ParanoidEel extends Boss {
     constructor(tilePositionX, tilePositionY, texture = ParanoidEelSpriteSheet["paranoid_eel_neutral.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 21;
+        this.health = this.maxHealth = 25;
         this.type = ENEMY_TYPE.PARANOID_EEL;
         this.name = "Paranoid Eel";
         this.atk = 1;
