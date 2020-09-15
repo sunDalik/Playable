@@ -1,5 +1,5 @@
 import {Game} from "../../game";
-import {ACHIEVEMENT_ID, INANIMATE_TYPE, ROLE, TILE_TYPE} from "../../enums/enums";
+import {INANIMATE_TYPE, ROLE, TILE_TYPE} from "../../enums/enums";
 import {createFadingText, runDestroyAnimation} from "../../animations";
 import * as PIXI from "pixi.js";
 import {getCardinalDirections} from "../../utils/map_utils";
@@ -11,7 +11,6 @@ import {Necromancy} from "../equipment/magic/necromancy";
 import {getRandomSpell} from "../../utils/pool_utils";
 import {Grail} from "./grail";
 import {clearWall} from "../../level_generation/standard_generation";
-import {completeAchievement} from "../../achievements";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
 import {removeObjectFromArray} from "../../utils/basic_utils";
 
@@ -172,6 +171,7 @@ export class Obelisk extends TileElement {
         if (!this.destroyed) {
             this.destroyed = true;
             this.visible = false;
+            this.icon.visible = false;
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
             this.texture = InanimatesSpriteSheet["obelisk_used.png"];
             runDestroyAnimation(this);

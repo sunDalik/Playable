@@ -140,6 +140,7 @@ export class Chest extends ItemInanimate {
     explode() {
         if (this.cracked) {
             this.visible = false;
+            this.keysRequiredSprite.visible = false;
             Game.map[this.tilePosition.y][this.tilePosition.x].entity = null;
             redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
             runDestroyAnimation(this);
