@@ -27,13 +27,15 @@ export class ScorpionQueen extends Boss {
         this.currentRageCounter = 0;
 
         this.triggeredEggSpawning = false;
-        this.eggCounter = this.getEggCounter();
+        this.eggCounter = 4;
         this.currentEggCounter = 0;
 
         this.noSpecialAttacksTime = 7;
         this.currentNoSpecialAttacksTime = 0;
 
-        this.currentTurnDelay = this.turnDelay = 3;
+        this.turnDelay = 2;
+        this.currentTurnDelay = this.turnDelay + 1;
+        this.currentRageTurnDelay = this.rageTurnDelay = 2;
 
         this.shakeWaiting = 0;
 
@@ -45,10 +47,11 @@ export class ScorpionQueen extends Boss {
         this.shadowInside = true;
         this.regenerateShadow();
         this.minions = [];
+        this.minionsLimit = 0;
     }
 
     static getBossRoomStats() {
-        return {width: randomInt(11, 14), height: randomInt(10, 12)};
+        return {width: randomInt(12, 15), height: randomInt(10, 12)};
     }
 
     afterMapGen() {
@@ -66,6 +69,10 @@ export class ScorpionQueen extends Boss {
                 }
             }
         }
+
+        this.minionsLimit = (Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x - 1) *
+            (Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y - 1) * 0.085;
+        console.log(this.minionsLimit);
     }
 
     onBossModeActivate() {
@@ -129,16 +136,27 @@ export class ScorpionQueen extends Boss {
                 this.triggeredEggSpawning = false;
                 this.stopSpecialAttack();
                 this.noSpecialAttacksTime = this.eggCounter * 3;
+                this.incrementEggCounter();
             }
         } else {
-            if (Math.random() < 1 && this.canSpawnEggs() && this.currentNoSpecialAttacksTime > this.noSpecialAttacksTime) {
-                this.triggerEggSpawning();
-            } else if (this.currentTurnDelay <= 0) {
-                this.randomWalk();
-                this.currentTurnDelay = this.turnDelay;
+            if (this.phase === 3) {
+                if (this.currentRageTurnDelay === 1) {
+                    this.tint = 0xff0000;
+                }
+                if (this.currentRageTurnDelay <= 0) {
+                    this.phase3Chase();
+                    this.tint = 0xffffff;
+                    this.currentRageTurnDelay = this.rageTurnDelay;
+                } else this.currentRageTurnDelay--;
+            } else {
+                if (Math.random() < 1 && this.canSpawnMinions(this.eggCounter) && this.currentNoSpecialAttacksTime > this.noSpecialAttacksTime) {
+                    this.triggerEggSpawning();
+                } else if (this.currentTurnDelay <= 0) {
+                    this.randomWalk();
+                    this.currentTurnDelay = this.turnDelay;
+                } else this.currentTurnDelay--;
             }
         }
-        this.currentTurnDelay--;
         this.currentNoSpecialAttacksTime++;
     }
 
@@ -179,12 +197,12 @@ export class ScorpionQueen extends Boss {
         this.triggeredEggSpawning = true;
         this.shakeWaiting = 1;
         this.shake(1, 0);
-        this.eggCounter = this.getEggCounter();
         this.currentEggCounter = 0;
     }
 
-    getEggCounter() {
-        return randomInt(4, 7);
+    incrementEggCounter() {
+        this.eggCounter++;
+        if (this.eggCounter > 7) this.eggCounter = 4;
     }
 
     rageChase() {
@@ -203,9 +221,18 @@ export class ScorpionQueen extends Boss {
         }
     }
 
-    canSpawnEggs() {
+    phase3Chase() {
+        let spawnPos = {x: this.tilePosition.x, y: this.tilePosition.y};
+        if (Math.sign(this.scale.x) > 0) spawnPos.x--;
+        this.rageChase();
+        if (this.canSpawnMinions(1)) {
+            this.layEgg(spawnPos.x, spawnPos.y);
+        }
+    }
+
+    canSpawnMinions(amount) {
         this.minions = this.minions.filter(m => !m.dead);
-        return this.minions.length < 7;
+        return this.minions.length + amount <= this.minionsLimit;
     }
 
     spawnEgg() {
@@ -214,11 +241,15 @@ export class ScorpionQueen extends Boss {
         let spawnPos = {x: this.tilePosition.x, y: this.tilePosition.y};
         this.step(walkDir.x, walkDir.y);
         if (Math.sign(this.scale.x) > 0) spawnPos.x--;
-        if (isEmpty(spawnPos.x, spawnPos.y)) {
+        this.layEgg(spawnPos.x, spawnPos.y);
+    }
+
+    layEgg(tilePosX, tilePosY) {
+        if (isEmpty(tilePosX, tilePosY)) {
             let enemyType = Scorpion;
             // see also replaceEnemy()
-            if (this.phase >= 2 && Math.random() < 0.25 && stageBeaten(STAGE.DRY_CAVE) >= 1) enemyType = RedScorpion;
-            const egg = new ScorpionQueenEgg(spawnPos.x, spawnPos.y, enemyType, this);
+            if (this.phase >= 2 && Math.random() < 0.20 && stageBeaten(STAGE.DRY_CAVE) >= 1) enemyType = RedScorpion;
+            const egg = new ScorpionQueenEgg(tilePosX, tilePosY, enemyType, this);
             Game.world.addEnemy(egg);
             this.minions.push(egg);
         }
