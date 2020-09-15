@@ -1,5 +1,5 @@
 import {TileElement} from "../../tile_elements/tile_element";
-import {INANIMATE_TYPE, ROLE} from "../../../enums/enums";
+import {ACHIEVEMENT_ID, INANIMATE_TYPE, ROLE} from "../../../enums/enums";
 import * as PIXI from "pixi.js";
 import {HUDTextStyle} from "../../../drawing/draw_constants";
 import {Game} from "../../../game";
@@ -8,6 +8,7 @@ import {getCardinalDirections} from "../../../utils/map_utils";
 import {getPlayerOnTile, isEmpty} from "../../../map_checks";
 import {randomShuffle} from "../../../utils/random_utils";
 import {dropItem} from "../../../game_logic";
+import {completeAchievement} from "../../../achievements";
 
 export class Shrine extends TileElement {
     constructor(tilePositionX, tilePositionY, texture) {
@@ -55,6 +56,10 @@ export class Shrine extends TileElement {
         if (!droppedItem) {
             dropItem(item, this.tilePosition.x, this.tilePosition.y);
         }
+    }
+
+    successfullyActivate() {
+        completeAchievement(ACHIEVEMENT_ID.ACTIVATE_SHRINE);
     }
 
     onUpdate() {

@@ -26,5 +26,6 @@ export class ShrineOfCurse extends Shrine {
         this.dropItemOnFreeTile(item);
         shakeScreen(8, 8);
         this.texture = InanimatesSpriteSheet["shrine_of_curse_activated.png"];
+        this.successfullyActivate();
     }
 }

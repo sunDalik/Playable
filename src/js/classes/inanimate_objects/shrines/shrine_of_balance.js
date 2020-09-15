@@ -12,5 +12,6 @@ export class ShrineOfBalance extends Shrine {
     interact(player) {
         player.voluntaryDamage(1, this, true);
         this.dropItemOnFreeTile(new Key());
+        this.successfullyActivate();
     }
 }

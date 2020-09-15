@@ -16,6 +16,7 @@ export class ShrineOfDice extends Shrine {
         if (Game.keysAmount > 0) {
             addKeys(-1);
             this.dropItemOnFreeTile(new RerollPotion());
+            this.successfullyActivate();
         } else {
             createFadingText("You have no keys", this.position.x, this.position.y);
         }

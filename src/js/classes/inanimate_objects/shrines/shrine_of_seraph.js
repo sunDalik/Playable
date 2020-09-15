@@ -36,6 +36,7 @@ export class ShrineOfSeraph extends Shrine {
         removeEquipmentFromPlayer(player, weapon.equipmentType, player.getSlotNameOfItem(weapon));
         applyEnchantment(weapon, ENCHANTMENT_TYPE.DIVINE);
         this.dropItemOnFreeTile(weapon);
+        this.successfullyActivate();
         if (player.maxHealth === 2) {
             player.removeHealthContainers(1);
             player.voluntaryDamage(1, this, true);
