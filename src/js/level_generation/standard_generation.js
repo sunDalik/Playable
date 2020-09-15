@@ -588,8 +588,15 @@ function placeShrine(point, room, shrineConstructor) {
             }
         }
 
-        //a shrine needs at least 1 tile gap between the lower wall
-        if (level[point.y + 1][point.x].tileType !== TILE_TYPE.NONE) return false;
+        //a shrine either stands with a wall behind it or in a completely open area
+        if (!(level[point.y + 1][point.x].tileType === TILE_TYPE.NONE
+            && level[point.y - 1][point.x].tileType === TILE_TYPE.WALL)) {
+            for (const dir of get8Directions()) {
+                if (level[point.y + dir.y][point.x + dir.x].tileType !== TILE_TYPE.NONE) {
+                    return false;
+                }
+            }
+        }
 
         ensureInanimateSurroundings(point.x, point.y);
         level[point.y][point.x].entity = new shrineConstructor(point.x, point.y);
