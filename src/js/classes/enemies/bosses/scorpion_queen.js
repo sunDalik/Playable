@@ -24,10 +24,11 @@ export class ScorpionQueen extends Boss {
         this.currentRageCounter = 0;
 
         this.triggeredEggSpawning = false;
-        this.currentEggCounter = this.getEggCounter();
+        this.eggCounter = this.getEggCounter();
+        this.currentEggCounter = 0;
 
-        this.noSpecialAttacksTime = 12;
-        this.currentNoSpecialAttacksTime = this.noSpecialAttacksTime - 5;
+        this.noSpecialAttacksTime = 7;
+        this.currentNoSpecialAttacksTime = 0;
 
         this.currentTurnDelay = this.turnDelay = 3;
 
@@ -105,10 +106,11 @@ export class ScorpionQueen extends Boss {
             }
         } else if (this.triggeredEggSpawning) {
             this.spawnEgg();
-            this.currentEggCounter--;
-            if (this.currentEggCounter <= 0) {
+            this.currentEggCounter++;
+            if (this.currentEggCounter >= this.eggCounter) {
                 this.triggeredEggSpawning = false;
                 this.stopSpecialAttack();
+                this.noSpecialAttacksTime = this.eggCounter * 3;
             }
         } else {
             if (Math.random() < 1 && this.canSpawnEggs() && this.currentNoSpecialAttacksTime > this.noSpecialAttacksTime) {
@@ -160,11 +162,12 @@ export class ScorpionQueen extends Boss {
         this.triggeredEggSpawning = true;
         this.shakeWaiting = 1;
         this.shake(1, 0);
-        this.currentEggCounter = this.getEggCounter();
+        this.eggCounter = this.getEggCounter();
+        this.currentEggCounter = 0;
     }
 
     getEggCounter() {
-        return randomInt(4, 8);
+        return randomInt(4, 7);
     }
 
     rageChase() {
