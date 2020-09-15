@@ -4,7 +4,7 @@ import {IntentsSpriteSheet, ScorpionQueenSpriteSheet} from "../../../loader";
 import {Game} from "../../../game";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
 import {get8Directions, getDirectionsWithConditions} from "../../../utils/map_utils";
-import {getPlayerOnTile, isEmpty, isEnemy, isRelativelyEmpty} from "../../../map_checks";
+import {getPlayerOnTile, isEmpty, isEnemy, isNotAWall, isRelativelyEmpty} from "../../../map_checks";
 import {randomChoice, randomInt} from "../../../utils/random_utils";
 import {closestPlayer, closestPlayerDiagonal, otherPlayer} from "../../../utils/game_utils";
 import {Enemy} from "../enemy";
@@ -12,6 +12,9 @@ import {Scorpion} from "../dc/scorpion";
 import {RedScorpion} from "../dc/red_scorpion";
 import {stageBeaten} from "../../../setup";
 import {WallTile} from "../../draw/wall";
+import * as PIXI from "pixi.js";
+import {quadraticBezier} from "../../../utils/math_utils";
+import {getZIndexForLayer} from "../../../z_indexing";
 
 // tilePosition refers to rightmost tile
 export class ScorpionQueen extends Boss {
@@ -180,6 +183,7 @@ export class ScorpionQueen extends Boss {
             } else if (this.phase === 2 && this.health <= this.maxHealth / 3) {
                 this.phase = 3;
                 this.triggerRage();
+                this.dropCrown();
             }
         }
     }
@@ -197,7 +201,53 @@ export class ScorpionQueen extends Boss {
         else this.shakeWaiting = 3;
         this.shake(1, 0);
         this.currentRageCounter = 0;
-        this.texture = ScorpionQueenSpriteSheet["scorpion_queen_rage.png"];
+        if (this.phase === 3) this.texture = ScorpionQueenSpriteSheet["scorpion_queen_rage_crownless.png"];
+        else this.texture = ScorpionQueenSpriteSheet["scorpion_queen_rage.png"];
+    }
+
+    dropCrown() {
+        const crown = new PIXI.Sprite(ScorpionQueenSpriteSheet["scorpion_queen_crown.png"]);
+        crown.anchor.set(this.anchor.x, this.anchor.y);
+        crown.scale.set(this.scale.x, this.scale.y);
+        Game.world.addChild(crown);
+        crown.position.y = this.position.y + this.height * 0.02;
+        crown.position.x = this.position.x + this.width * 0.21 * Math.sign(this.scale.x);
+        crown.zIndex = this.zIndex + 1;
+
+        const centerTilePositionX = Math.sign(this.scale.x) === 1 ? this.tilePosition.x : this.tilePosition.x - 1;
+        const centerTilePosition = {x: centerTilePositionX, y: this.tilePosition.y};
+        const dropTiles = get8Directions().map(tile => {
+            return {x: tile.x + centerTilePosition.x, y: tile.y + centerTilePosition.y};
+        }).filter(tile => isNotAWall(tile.x, tile.y));
+        if (dropTiles.length === 0) {
+            Game.world.removeChild(crown);
+            return;
+        }
+        const dropTile = randomChoice(dropTiles);
+
+        const oldPos = {x: crown.position.x, y: crown.position.y};
+        const newPos = {
+            x: dropTile.x * Game.TILESIZE + Game.TILESIZE / 2 + randomInt(-Game.TILESIZE / 4, Game.TILESIZE / 4),
+            y: dropTile.y * Game.TILESIZE + Game.TILESIZE / 2 + randomInt(-Game.TILESIZE / 4, Game.TILESIZE / 4)
+        };
+        const middlePoint = {x: oldPos.x + (newPos.x - oldPos.x) / 2, y: oldPos.y - Game.TILESIZE};
+        const animationTime = 10;
+        const step = 1 / animationTime;
+        let counter = 0;
+        const animation = delta => {
+            counter += delta;
+            const t = counter * step;
+            crown.position.x = quadraticBezier(t, oldPos.x, middlePoint.x, newPos.x);
+            crown.position.y = quadraticBezier(t, oldPos.y, middlePoint.y, newPos.y);
+            if (counter >= animationTime / 2) {
+                crown.zIndex = getZIndexForLayer(dropTile.y) - 2;
+            }
+            if (counter >= animationTime) {
+                Game.app.ticker.remove(animation);
+                crown.position.set(newPos.x, newPos.y);
+            }
+        };
+        Game.app.ticker.add(animation);
     }
 
     unTriggerEverything() {
