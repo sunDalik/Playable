@@ -1,6 +1,6 @@
 import {ENEMY_TYPE, HAZARD_TYPE} from "../../../enums/enums";
 import {Boss} from "./boss";
-import {FCEnemiesSpriteSheet, IntentsSpriteSheet, ScorpionQueenSpriteSheet} from "../../../loader";
+import {IntentsSpriteSheet, ScorpionQueenSpriteSheet} from "../../../loader";
 import {Game} from "../../../game";
 import {DAMAGE_TYPE} from "../../../enums/damage_type";
 import {get8Directions, getDirectionsWithConditions} from "../../../utils/map_utils";
@@ -298,7 +298,7 @@ export class ScorpionQueen extends Boss {
 
 // todo add texture
 class ScorpionQueenEgg extends Enemy {
-    constructor(tilePositionX, tilePositionY, enemyType, queen, texture = FCEnemiesSpriteSheet["cocoon.png"]) {
+    constructor(tilePositionX, tilePositionY, enemyType, queen, texture = ScorpionQueenSpriteSheet["scorpion_queen_egg.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.health = this.maxHealth = 2;
         this.name = "Scorpion Queen's Egg";
@@ -308,13 +308,15 @@ class ScorpionQueenEgg extends Enemy {
         this.currentDelay = 3;
         this.summonedEnemyType = enemyType;
         this.queen = queen;
+        this.shadowInside = true;
+        this.regenerateShadow();
     }
 
     move() {
         if (this.currentDelay === 1) {
             this.shake(1, 0);
-        }
-        if (this.currentDelay <= 0) {
+            this.texture = ScorpionQueenSpriteSheet["scorpion_queen_egg_cracked.png"];
+        } else if (this.currentDelay <= 0) {
             this.die();
             const enemy = new this.summonedEnemyType(this.tilePosition.x, this.tilePosition.y);
             Game.world.addEnemy(enemy, true);
