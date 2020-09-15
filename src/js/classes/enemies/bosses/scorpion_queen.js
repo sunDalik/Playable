@@ -17,7 +17,7 @@ import {WallTile} from "../../draw/wall";
 export class ScorpionQueen extends Boss {
     constructor(tilePositionX, tilePositionY, texture = ScorpionQueenSpriteSheet["scorpion_queen_neutral.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 20;
+        this.health = this.maxHealth = 25;
         this.type = ENEMY_TYPE.SCORPION_QUEEN;
         this.atk = 1;
         this.name = "Scorpion Queen";
@@ -36,6 +36,7 @@ export class ScorpionQueen extends Boss {
         this.turnDelay = 2;
         this.currentTurnDelay = this.turnDelay + 1;
         this.currentRageTurnDelay = this.rageTurnDelay = 2;
+        this.laidRageEgg = false;
 
         this.shakeWaiting = 0;
 
@@ -148,9 +149,16 @@ export class ScorpionQueen extends Boss {
                     this.currentRageTurnDelay = this.rageTurnDelay;
                 } else this.currentRageTurnDelay--;
             } else {
-                if (Math.random() < 1 && this.canSpawnMinions(this.eggCounter) && this.currentNoSpecialAttacksTime > this.noSpecialAttacksTime) {
-                    this.triggerEggSpawning();
-                } else {
+                if (this.currentNoSpecialAttacksTime > this.noSpecialAttacksTime) {
+                    if (this.canSpawnMinions(this.eggCounter)) {
+                        this.triggerEggSpawning();
+                    } else if (this.currentNoSpecialAttacksTime - this.noSpecialAttacksTime > 7 && this.canSpawnMinions(4)) {
+                        this.eggCounter = 4;
+                        this.triggerEggSpawning();
+                    }
+                }
+
+                if (!this.triggeredEggSpawning) {
                     if (this.currentTurnDelay === 1) {
                         this.texture = ScorpionQueenSpriteSheet["scorpion_queen_about_to_move.png"];
                     }
@@ -186,10 +194,13 @@ export class ScorpionQueen extends Boss {
     triggerRage() {
         this.unTriggerEverything();
         this.triggeredRage = true;
-        this.shakeWaiting = 3;
+        if (this.phase === 3) this.shakeWaiting = 2;
+        else this.shakeWaiting = 3;
         this.shake(1, 0);
         this.currentRageCounter = 0;
+        //todo rage texture
         this.tint = 0xff0000;
+        this.texture = ScorpionQueenSpriteSheet["scorpion_queen_neutral.png"];
     }
 
     unTriggerEverything() {
@@ -206,7 +217,7 @@ export class ScorpionQueen extends Boss {
 
     incrementEggCounter() {
         this.eggCounter++;
-        if (this.eggCounter > 7) this.eggCounter = 4;
+        if (this.eggCounter > 6) this.eggCounter = 4;
     }
 
     rageChase() {
@@ -230,7 +241,11 @@ export class ScorpionQueen extends Boss {
         if (Math.sign(this.scale.x) > 0) spawnPos.x--;
         this.rageChase();
         if (this.canSpawnMinions(1)) {
-            this.layEgg(spawnPos.x, spawnPos.y);
+            if (this.laidRageEgg) this.laidRageEgg = false;
+            else {
+                this.layEgg(spawnPos.x, spawnPos.y);
+                this.laidRageEgg = true;
+            }
         }
     }
 
