@@ -72,7 +72,6 @@ export class ScorpionQueen extends Boss {
 
         this.minionsLimit = (Game.endRoomBoundaries[1].x - Game.endRoomBoundaries[0].x - 1) *
             (Game.endRoomBoundaries[1].y - Game.endRoomBoundaries[0].y - 1) * 0.085;
-        console.log(this.minionsLimit);
     }
 
     onBossModeActivate() {
@@ -151,10 +150,15 @@ export class ScorpionQueen extends Boss {
             } else {
                 if (Math.random() < 1 && this.canSpawnMinions(this.eggCounter) && this.currentNoSpecialAttacksTime > this.noSpecialAttacksTime) {
                     this.triggerEggSpawning();
-                } else if (this.currentTurnDelay <= 0) {
-                    this.randomWalk();
-                    this.currentTurnDelay = this.turnDelay;
-                } else this.currentTurnDelay--;
+                } else {
+                    if (this.currentTurnDelay === 1) {
+                        this.texture = ScorpionQueenSpriteSheet["scorpion_queen_about_to_move.png"];
+                    }
+                    if (this.currentTurnDelay <= 0) {
+                        this.randomWalk();
+                        this.currentTurnDelay = this.turnDelay;
+                    } else this.currentTurnDelay--;
+                }
             }
         }
         this.currentNoSpecialAttacksTime++;
@@ -256,6 +260,7 @@ export class ScorpionQueen extends Boss {
     }
 
     randomWalk() {
+        this.texture = ScorpionQueenSpriteSheet["scorpion_queen_neutral.png"];
         const dir = randomChoice(this.getEmptyMoveDirections());
         if (dir === undefined) return;
         this.step(dir.x, dir.y);
