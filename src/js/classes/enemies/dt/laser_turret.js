@@ -6,8 +6,9 @@ import {closestPlayer, tileDistance} from "../../../utils/game_utils";
 import {getPlayerOnTile, isAnyWall} from "../../../map_checks";
 import {createFadingAttack} from "../../../animations";
 import {TileElement} from "../../tile_elements/tile_element";
-import {DTEnemiesSpriteSheet, IntentsSpriteSheet} from "../../../loader";
+import {DTEnemiesSpriteSheet, EffectsSpriteSheet, IntentsSpriteSheet} from "../../../loader";
 import {redrawMiniMapPixel} from "../../../drawing/minimap";
+import {Z_INDEXES} from "../../../z_indexing";
 
 // this is a long sprite and it behaves weird if you rotate it in the texture pack. Why?
 export class LaserTurret extends Enemy {
@@ -68,11 +69,8 @@ export class LaserTurret extends Enemy {
     attack() {
         for (let x = this.directionX; ; x += this.directionX) {
             if (isAnyWall(this.tilePosition.x + x, this.tilePosition.y)) break;
-            const attackSprite = new TileElement(PIXI.Texture.WHITE, this.tilePosition.x + x, this.tilePosition.y, true);
-            attackSprite.zIndex = 5;
-            attackSprite.tint = 0xFF0000;
-            attackSprite.width = Game.TILESIZE;
-            attackSprite.height = Game.TILESIZE / 3;
+            const attackSprite = new TileElement(EffectsSpriteSheet["laser_effect.png"], this.tilePosition.x + x, this.tilePosition.y);
+            attackSprite.setOwnZIndex(Z_INDEXES.ENEMY + 1);
             if (Game.stage === STAGE.DARK_TUNNEL) attackSprite.maskLayer = {};
             createFadingAttack(attackSprite);
             const player = getPlayerOnTile(this.tilePosition.x + x, this.tilePosition.y);

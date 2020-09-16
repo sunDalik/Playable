@@ -12,7 +12,7 @@ export class Bomb extends BagEquipment {
         this.texture = BagSpriteSheet["bomb.png"];
         this.id = EQUIPMENT_ID.BOMB;
         this.name = "Bomb";
-        this.description = "Creates explosion that destroys walls\nIt also deals 3 damage to enemies and 1 damage to players that got caught in the blast";
+        this.description = "Creates 3x3 explosion that destroys walls\nIt also deals 3 damage to enemies and 1 damage to players that got caught in the blast";
         this.fuseDelay = 3;
         this.currentFuseDelay = this.fuseDelay;
         this.bombAtk = 3;
