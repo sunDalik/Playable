@@ -18,10 +18,6 @@ export class MaidenShortSword extends Weapon {
         this.rarity = RARITY.B;
     }
 
-    onWear(player) {
-        //player.voluntaryDamage(0.25);
-    }
-
     // todo if extra maiden dagger is enchanted with divine you should display its attack instead of the weapon attack on the hud
     attack(wielder, tileDirX, tileDirY) {
         if (wielder[SLOT.EXTRA] && wielder[SLOT.EXTRA].id === this.id) {

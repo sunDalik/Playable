@@ -847,3 +847,21 @@ export function reviveItemAnimation(texture, player) {
 
     Game.app.ticker.add(animation);
 }
+
+export function animateFrames(object, frames, animationTime, onEnd = null) {
+    object.texture = frames[0];
+    let counter = 0;
+
+    const animation = delta => {
+        if (Game.paused) return;
+        counter += delta;
+        const index = Math.floor((counter / animationTime) * frames.length);
+        object.texture = frames[index];
+        if (counter >= animationTime) {
+            Game.app.ticker.remove(animation);
+            if (onEnd) onEnd();
+        }
+    };
+
+    Game.app.ticker.add(animation);
+}

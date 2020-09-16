@@ -52,6 +52,9 @@ export function loadAll(afterLoad) {
         .add("src/textures/magic.json")
         .add("src/textures/discord_logos.json")
 
+        .add("src/textures/explosion_animation-0.json")
+        .add("src/textures/explosion_animation-1.json")
+
         .load(() => {
             setSpriteSheets();
             afterLoad();

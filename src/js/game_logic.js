@@ -19,7 +19,7 @@ import {
     redrawSlotContents,
     setTimerRunning
 } from "./drawing/draw_hud";
-import {createFadingAttack, createKissHeartAnimation, fadeOutAndDie, shakeScreen, showHelpBox} from "./animations";
+import {animateFrames, createKissHeartAnimation, fadeOutAndDie, shakeScreen, showHelpBox} from "./animations";
 import {otherPlayer, setTickTimeout, tileDistance, tileDistanceDiagonal} from "./utils/game_utils";
 import {updateChain} from "./drawing/draw_dunno";
 import {lightPlayerPosition, lightPosition, lightTile} from "./drawing/lighting";
@@ -43,7 +43,7 @@ import {TileElement} from "./classes/tile_elements/tile_element";
 import {randomChoice, randomShuffle} from "./utils/random_utils";
 import {removeObjectFromArray} from "./utils/basic_utils";
 import {beatStage, completeAchievement, completeAchievementForEquippingAllItems} from "./achievements";
-import {Z_INDEXES} from "./z_indexing";
+import {getZIndexForLayer, Z_INDEXES} from "./z_indexing";
 import {SuperWallTile} from "./classes/draw/super_wall";
 import {CommonSpriteSheet} from "./loader";
 import {LyingItem} from "./classes/equipment/lying_item";
@@ -594,17 +594,32 @@ export function dropItem(item, tilePosX, tilePosY) {
 }
 
 export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
+    const ExplosionSpriteSheet0 = Game.loader.resources["src/textures/explosion_animation-0.json"].textures;
+    const ExplosionSpriteSheet1 = Game.loader.resources["src/textures/explosion_animation-1.json"].textures;
+    const frames = [ExplosionSpriteSheet0["explosion_00.png"], ExplosionSpriteSheet0["explosion_0.png"],
+        ExplosionSpriteSheet0["explosion_1.png"], ExplosionSpriteSheet0["explosion_2.png"],
+        ExplosionSpriteSheet1["explosion_3.png"], ExplosionSpriteSheet1["explosion_4.png"],
+        ExplosionSpriteSheet1["explosion_5.png"], ExplosionSpriteSheet1["explosion_6.png"]];
+
+    const explosion = new TileElement(frames[0], tilePosX, tilePosY, true);
+    explosion.setScaleModifier(3);
+    explosion.name = "Explosion";
+    explosion.angle = randomChoice([0, 90, 180, 270]);
+    explosion.zIndex = getZIndexForLayer(tilePosY + 1) + Z_INDEXES.ENEMY + 1;
+    Game.world.addChild(explosion);
+    animateFrames(explosion, frames, 12, () => {
+        Game.world.removeChild(explosion);
+        explosion.texture = randomChoice(frames);
+    });
+
     for (const dir of get8Directions().concat({x: 0, y: 0})) {
         const posX = tilePosX + dir.x;
         const posY = tilePosY + dir.y;
-        const sprite = new TileElement(PIXI.Texture.WHITE, posX, posY, true);
-        sprite.tint = 0xfa794d;
-        sprite.name = "Explosion";
         if (isEnemy(posX, posY)) {
-            Game.map[posY][posX].entity.damage(this, enemyDamage, 0, 0, DAMAGE_TYPE.HAZARDAL);
+            Game.map[posY][posX].entity.damage(explosion, enemyDamage, 0, 0, DAMAGE_TYPE.HAZARDAL);
         }
         if (isWallTrap(posX, posY)) {
-            Game.map[posY][posX].entity.die(this);
+            Game.map[posY][posX].entity.die(explosion);
         }
         if (isDiggable(posX, posY)) {
             Game.world.removeTile(posX, posY);
@@ -624,9 +639,8 @@ export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
         }
         const player = getPlayerOnTile(posX, posY);
         if (player && player.bombImmunity <= 0) {
-            player.damage(playerDamage, sprite, false, true);
+            player.damage(playerDamage, explosion, false, true);
         }
-        createFadingAttack(sprite, 9);
         shakeScreen(10, 5);
     }
     if (!Game.player.dead) lightPlayerPosition(Game.player);
