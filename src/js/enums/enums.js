@@ -160,7 +160,7 @@ export const EQUIPMENT_ID = Object.freeze({
     OLD_BALLET_SHOES: 38,
     BLADE_CROWN: 39,
     CROSSBOW: 40,
-    DIVINE_BOW: 41,
+    EMPYREAL_BOW: 41,
     BOOK_OF_WEBS: 42,
     BOOK_OF_THUNDERS: 43,
     BOOK_OF_ICE: 44,

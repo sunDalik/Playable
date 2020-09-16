@@ -2,14 +2,14 @@ import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {PiercingBowLikeWeapon} from "./piercing_bow_like_weapon";
 
-export class DivineBow extends PiercingBowLikeWeapon {
+export class EmpyrealBow extends PiercingBowLikeWeapon {
     constructor() {
         super(WeaponsSpriteSheet["divine_bow.png"]);
         this.arrowTexture = WeaponsSpriteSheet["divine_arrow.png"];
-        this.id = EQUIPMENT_ID.DIVINE_BOW;
+        this.id = EQUIPMENT_ID.EMPYREAL_BOW;
         this.atk = 1.5;
         this.range = 4;
-        this.name = "Divine Bow";
+        this.name = "Empyreal Bow";
         this.description = "Range 4\nPiercing\nAttack = 1.5 at full range | 1.25 at range 3 | 1 at range 2 | 0.75 at range 1";
         this.rarity = RARITY.S;
     }

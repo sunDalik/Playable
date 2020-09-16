@@ -34,7 +34,6 @@ import {FellStarShield} from "./classes/equipment/shields/fell_star_shield";
 import {OldBalletShoes} from "./classes/equipment/footwear/old_ballet_shoes";
 import {BladeCrown} from "./classes/equipment/headwear/blade_crown";
 import {Crossbow} from "./classes/equipment/weapons/crossbow";
-import {DivineBow} from "./classes/equipment/weapons/divine_bow";
 import {BookOfWebs} from "./classes/equipment/weapons/book_of_webs";
 import {BookOfThunders} from "./classes/equipment/weapons/book_of_thunders";
 import {BookOfIce} from "./classes/equipment/weapons/book_of_ice";
@@ -89,11 +88,12 @@ import {CrownOfMalice} from "./classes/equipment/headwear/crown_of_malice";
 import {SacredKnowledge} from "./classes/equipment/accessories/sacred_knowledge";
 import {BarbarianHelmet} from "./classes/equipment/headwear/barbarian_helmet";
 import {stageBeaten} from "./setup";
+import {EmpyrealBow} from "./classes/equipment/weapons/empyreal_bow";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
     Game.weaponPool = [Knife, Spear, GoldenDagger, Boomeraxe, AssassinDagger, LongSword, Bow, Scythe, MaidenShortSword, BookOfFlames, Hammer, Pickaxe,
-        PawnSwords, Crossbow, DivineBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow, GiantSword, DogStaff, CactiStaff, HiveStaff,
+        PawnSwords, Crossbow, EmpyrealBow, BookOfWebs, BookOfThunders, BookOfIce, Prismaxe, CerberusBow, GiantSword, DogStaff, CactiStaff, HiveStaff,
         BookOfWhirlPools];
 
     // remove weapon from pool if players already have two of them
