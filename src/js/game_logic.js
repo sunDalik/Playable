@@ -602,7 +602,7 @@ export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
         ExplosionSpriteSheet1["explosion_5.png"], ExplosionSpriteSheet1["explosion_6.png"]];
 
     const explosion = new TileElement(frames[0], tilePosX, tilePosY, true);
-    explosion.setScaleModifier(3);
+    explosion.setScaleModifier(3.2);
     explosion.name = "Explosion";
     explosion.angle = randomChoice([0, 90, 180, 270]);
     explosion.zIndex = getZIndexForLayer(tilePosY + 1) + Z_INDEXES.ENEMY + 1;
