@@ -26,11 +26,11 @@ export function getRandomShopItem(forceWeapon = false, forceNonWeapon = false) {
 }
 
 export function getRandomBossPedestalItem() {
-    return Math.random() < 0.6 ? getRandomNonWeaponItem() : getRandomWeapon();
+    return Math.random() < 0.75 ? getRandomNonWeaponItem() : getRandomWeapon();
 }
 
 export function getRandomChestItem() {
-    return Math.random() < 0.7 ? getRandomNonWeaponItem() : getRandomWeapon();
+    return Math.random() < 0.75 ? getRandomNonWeaponItem() : getRandomWeapon();
 }
 
 export function getRandomSpell() {
