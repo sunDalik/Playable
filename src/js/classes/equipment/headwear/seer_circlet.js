@@ -12,8 +12,8 @@ export class SeerCirclet extends Equipment {
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.id = EQUIPMENT_ID.SEER_CIRCLET;
         this.name = "Seer Circlet";
-        this.description = "Shows chest contents before opening them";
-        this.rarity = RARITY.A;
+        this.description = "See chest contents before opening them";
+        this.rarity = RARITY.B;
     }
 
     onWear(wielder) {
