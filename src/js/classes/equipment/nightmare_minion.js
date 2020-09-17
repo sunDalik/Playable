@@ -12,11 +12,13 @@ export class NightmareMinion extends Minion {
         this.temporary = true;
         this.fadingDestructionParticles = true;
         this.tallModifier = 5;
+        this.life = 2;
     }
 
     attack(summonItem) {
         if (super.attack(summonItem)) {
-            this.die(summonItem);
+            this.life--;
+            if (this.life <= 0) this.die(summonItem);
         }
     }
 

@@ -76,14 +76,16 @@ export class Equipment {
 
     //executes BEFORE enemy turn
     onPlayerTurnEnd(wielder) {
-        for (const minion of this.minions) {
+        for (let i = this.minions.length - 1; i >= 0; i--) {
+            const minion = this.minions[i];
             minion.attack(this);
         }
     }
 
     //executes AFTER enemy turn
     onNewTurn(wielder) {
-        for (const minion of this.minions) {
+        for (let i = this.minions.length - 1; i >= 0; i--) {
+            const minion = this.minions[i];
             minion.attack(this);
             minion.resetAttackedEnemies();
         }
@@ -91,7 +93,9 @@ export class Equipment {
 
     //executes AFTER wielder changes its tilePosition (does step or slide)
     onMove(wielder, tileStepX, tileStepY) {
-        for (const minion of this.minions) {
+        // iterate from the end because nightmare minions can die and remove themself from the minion array
+        for (let i = this.minions.length - 1; i >= 0; i--) {
+            const minion = this.minions[i];
             minion.attack(this);
             minion.move();
         }
