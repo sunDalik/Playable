@@ -158,13 +158,21 @@ export function drawStatsForPlayer(player) {
     //hack to display flask of fire's atk
     if (player[SLOT.ACCESSORY] && player[SLOT.ACCESSORY].id === EQUIPMENT_ID.FLASK_OF_FIRE
         && player[SLOT.WEAPON] && !player[SLOT.WEAPON].magical && !player[SLOT.WEAPON].isMinionStaff) atk += 0.25;
+    const textAtk = new PIXI.Text(`ATK ${atk}`, HUDTextStyle);
 
-    const text = new PIXI.Text(`ATK ${atk}\nDEF ${player.getDef()}`, HUDTextStyle);
+    const def = player.getDef();
 
-    if (player === Game.player) text.position.x = slotBorderOffsetX + slotSize * 2 + slotsColOffset + statsOffsetX;
-    else text.position.x = Game.app.renderer.screen.width - slotBorderOffsetX - slotSize * 2 - slotsColOffset - text.width - statsOffsetX;
-    text.position.y = heartYOffset + heartRowOffset + heartSize + slotOffsetFromHeartsY + slotSize + slotsRowOffset + slotSize / 2 - text.height / 2;
-    container.addChild(text);
+    const textDef = new PIXI.Text(`DEF ${def}`, HUDTextStyle);
+    if (def < 0) textDef.style.fill = 0xea4155; //cursed color
+
+    for (const text of [textAtk, textDef]) {
+        if (player === Game.player) text.position.x = slotBorderOffsetX + slotSize * 2 + slotsColOffset + statsOffsetX;
+        else text.position.x = Game.app.renderer.screen.width - slotBorderOffsetX - slotSize * 2 - slotsColOffset - text.width - statsOffsetX;
+    }
+    textAtk.position.y = heartYOffset + heartRowOffset + heartSize + slotOffsetFromHeartsY + slotSize + slotsRowOffset + slotSize / 2 - ((textAtk.height + textDef.height) / 2);
+    textDef.position.y = textAtk.position.y + textAtk.height;
+    container.addChild(textAtk);
+    container.addChild(textDef);
 }
 
 export function redrawSlotContents(player, slot) {
