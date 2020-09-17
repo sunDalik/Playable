@@ -502,7 +502,7 @@ function generateInanimates() {
     const obelisksAmount = 1;
     const shopAmount = 1;
     chestsAmount = Game.stage === STAGE.DARK_TUNNEL ? 2 : 3;
-    const shrineAmounts = weightedRandomChoice([{item: 0, weight: 5}, {item: 1, weight: 4}, {item: 2, weight: 1}]);
+    const shrineAmounts = weightedRandomChoice([{item: 0, weight: 60}, {item: 1, weight: 32}, {item: 2, weight: 8}]);
     placeInanimate(placeObelisk, obelisksAmount);
     placeInanimate(placeShop, shopAmount);
     placeInanimate(placeChest, chestsAmount);
