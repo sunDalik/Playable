@@ -209,7 +209,14 @@ export class Player extends AnimatedTileElement {
     }
 
     getDef() {
-        return roundToQuarter(this.defBase * this.defMul);
+        // if you have a negative defense then your def is divided by your def multiplier (and not multiplied)
+        let def;
+        if (this.defBase >= 0 || this.defMul === 0) {
+            def = this.defBase * this.defMul;
+        } else {
+            def = this.defBase / this.defMul;
+        }
+        return roundToQuarter(def);
     }
 
     step(tileStepX, tileStepY, onFrame = null, onEnd = null, animationTime = this.STEP_ANIMATION_TIME) {
