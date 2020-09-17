@@ -66,8 +66,6 @@ export function bindKeys() {
     switchKey.press = () => playerTurn(null, switchPlayers, true);
     mapKey.press = () => toggleMiniMap();
 
-    //keyboard("KeyN").press = gotoNextLevel
-
     /*
     keyboard("BracketRight").press = () => {
         Game.world.scale.x = Game.world.scale.y = Game.world.scale.x + 0.05;
@@ -79,3 +77,5 @@ export function bindKeys() {
     }
      */
 }
+
+//keyboard("KeyN").press = gotoNextLevel

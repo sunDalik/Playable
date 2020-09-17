@@ -11,6 +11,8 @@ export class MiniStar extends Star {
         this.atk = 0.75;
         this.type = ENEMY_TYPE.MINI_STAR;
         this.spikeColor = 0x47b4c4;
+        this.shadowHeight = 6;
+        this.regenerateShadow();
     }
 
 
