@@ -419,6 +419,9 @@ export function removeEquipmentFromPlayer(player, equipmentType, slotName = null
             case EQUIPMENT_TYPE.ACCESSORY:
                 slot = SLOT.ACCESSORY;
                 break;
+            case EQUIPMENT_TYPE.BAG_ITEM:
+                slot = SLOT.BAG;
+                break;
         }
     }
     if (!slot || !player[slot]) return null;
