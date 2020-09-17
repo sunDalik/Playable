@@ -29,7 +29,6 @@ import {AbyssalSpit} from "./classes/equipment/magic/abyssal_spit";
 import {PawnSwords} from "./classes/equipment/weapons/pawn_swords";
 import {Immortality} from "./classes/equipment/magic/immortality";
 import {LifeFruit} from "./classes/equipment/one_time/life_fruit";
-import {BattleHelmet} from "./classes/equipment/headwear/battle_helmet";
 import {FellStarShield} from "./classes/equipment/shields/fell_star_shield";
 import {OldBalletShoes} from "./classes/equipment/footwear/old_ballet_shoes";
 import {BladeCrown} from "./classes/equipment/headwear/blade_crown";
@@ -89,6 +88,7 @@ import {SacredKnowledge} from "./classes/equipment/accessories/sacred_knowledge"
 import {BarbarianHelmet} from "./classes/equipment/headwear/barbarian_helmet";
 import {stageBeaten} from "./setup";
 import {EmpyrealBow} from "./classes/equipment/weapons/empyreal_bow";
+import {GuardHelmet} from "./classes/equipment/headwear/guard_helmet";
 
 //we don't want for the same weapon to appear twice on a level so we remove objects from this pool once picked but restore the pool completely on a new level
 export function regenerateWeaponPool() {
@@ -124,7 +124,7 @@ export function initPools() {
         Necromancy];
     Game.chestItemPool = [Whistle, FlaskOfFire, RingOfProtection, QuiverOfTheForestSpirit, WeaponMasterEmblem, EggAmulet, HeroKey, CrossbowGlove, SacredKnowledge,
         WoodenShield, SpikyShield, StunningShield, FellStarShield, GoldenShield,
-        WizardHat, WitchHat, CrownOfMalice, VampireCrown, BattleHelmet, BarbarianHelmet, SeerCirclet, KitsuneMask, BladeCrown,
+        WizardHat, WitchHat, CrownOfMalice, VampireCrown, GuardHelmet, BarbarianHelmet, SeerCirclet, KitsuneMask, BladeCrown,
         LeatherArmor, ThornsArmor, FallenAngelWings, BronzeArmor, ElectricArmor, WizardRobe, HeavyArmor, SummonerBelt, Wings,
         AdventurerBoots, MushroomGreaves, DamagingBoots, DarkBoots, OldBalletShoes, PossessedSandals, KnightBoots,
         DemonHeart, HeartCookie, LifeFruit, HeartShapedKey, VialOfIchor];
