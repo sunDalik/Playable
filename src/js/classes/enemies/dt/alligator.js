@@ -44,7 +44,7 @@ export class Alligator extends Enemy {
             rabbit.predator = this;
             this.prey = rabbit;
         } else {
-            if (Math.random() < 0.9) this.setAlligatorType(getRandomValue(RABBIT_TYPE));
+            if (Math.random() < 0.75) this.setAlligatorType(getRandomValue(RABBIT_TYPE));
         }
     }
 
