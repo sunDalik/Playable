@@ -8,7 +8,7 @@ export class ShrineOfImp extends Shrine {
     constructor(tilePositionX, tilePositionY, texture = InanimatesSpriteSheet["shrine_of_imp.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.name = "Shrine of Imp";
-        this.description = "Get 2 random items\nDecrease your defense by 0.5";
+        this.description = "Get 2 random items\nLose 0.5 defense";
         this.working = true;
         this.setScaleModifier(1.17);
     }

@@ -157,7 +157,7 @@ export function drawStatsForPlayer(player) {
     let atk = player.getAtk(player[SLOT.WEAPON]);
     //hack to display flask of fire's atk
     if (player[SLOT.ACCESSORY] && player[SLOT.ACCESSORY].id === EQUIPMENT_ID.FLASK_OF_FIRE
-        && player[SLOT.WEAPON] && !player[SLOT.WEAPON].magical && !player[SLOT.WEAPON].isMinionStaff) atk += 0.25;
+        && player[SLOT.WEAPON] && !player[SLOT.WEAPON].magical && !player[SLOT.WEAPON].isMinionStaff) atk += 0.5;
     const textAtk = new PIXI.Text(`ATK ${atk}`, HUDTextStyle);
 
     const def = player.getDef();
