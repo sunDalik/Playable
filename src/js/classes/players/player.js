@@ -189,11 +189,6 @@ export class Player extends AnimatedTileElement {
             if (weapon.equipmentType === EQUIPMENT_TYPE.WEAPON) atkBase += this.atkBase;
             if (weapon.magical) atkBase += this.magAtkBase;
             if (weapon.equipmentType === EQUIPMENT_TYPE.MAGIC) multiplier = 1;
-
-            //bad hack
-            if (weapon.bowLike && this[SLOT.ACCESSORY] && this[SLOT.ACCESSORY].id === EQUIPMENT_ID.QUIVER_OF_THE_FOREST_SPIRIT) {
-                atkBase += this[SLOT.ACCESSORY].bowAtk;
-            }
         }
         return roundToQuarter(atkBase * multiplier);
     }

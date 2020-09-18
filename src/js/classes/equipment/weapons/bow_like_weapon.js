@@ -5,6 +5,7 @@ import {TileElement} from "../../tile_elements/tile_element";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Weapon} from "../weapon";
 import {getAngleForDirection} from "../../../utils/game_utils";
+import {removeObjectFromArray} from "../../../utils/basic_utils";
 
 export class BowLikeWeapon extends Weapon {
     constructor(texture) {
@@ -61,7 +62,7 @@ export class BowLikeWeapon extends Weapon {
         Game.app.ticker.add(bowAnimation);
     }
 
-    createArrowAnimation(wielder, atkOffsetX, atkOffsetY) {
+    createArrowAnimation(wielder, atkOffsetX, atkOffsetY, diagonal = false) {
         const arrowSprite = new TileElement(this.arrowTexture, wielder.tilePosition.x, wielder.tilePosition.y);
         arrowSprite.position.set(wielder.getTilePositionX(), wielder.getTilePositionY());
         Game.world.addChild(arrowSprite);
@@ -73,7 +74,7 @@ export class BowLikeWeapon extends Weapon {
 
         const arrowAnimationTime = this.getArrowAnimationTime(atkOffsetX, atkOffsetY);
         const arrowDelay = 1;
-        if (!this.piercingBow) {
+        if (!this.piercingBow || diagonal) {
             createPlayerAttackTile({x: wielder.tilePosition.x + atkOffsetX, y: wielder.tilePosition.y + atkOffsetY},
                 arrowAnimationTime + arrowDelay + 2);
         }
@@ -104,5 +105,50 @@ export class BowLikeWeapon extends Weapon {
 
     getAtk(wielder, range) {
         return wielder.getAtk(this);
+    }
+
+    shootDiagonally(wielder, dirX, dirY, sign) {
+        const tileSet = this.getDiagonalTiles(dirX, dirY, sign);
+        for (let i = 0; i < tileSet.length; i++) {
+            const tile = tileSet[i];
+            const atkPos = {x: wielder.tilePosition.x + tile.x, y: wielder.tilePosition.y + tile.y};
+            if (isAnyWall(atkPos.x, atkPos.y)) {
+                if (i === 0) break;
+                else if (i === 1) {
+                    [tileSet[2], tileSet[4]].map(t => removeObjectFromArray(t, tileSet));
+                    continue;
+                } else if (i === 3) {
+                    [tileSet[4], tileSet[5]].map(t => removeObjectFromArray(t, tileSet));
+                    continue;
+                }
+            }
+            if (isEnemy(atkPos.x, atkPos.y) && isLit(atkPos.x, atkPos.y)) {
+                const atk = this.getDiagonalAtk(wielder, atkPos);
+                this.damageEnemies([Game.map[atkPos.y][atkPos.x].entity], wielder, atk, dirX, dirY);
+                this.createArrowAnimation(wielder, tile.x, tile.y, true);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    getDiagonalTiles(dirX, dirY, sign) {
+        const dir = dirX !== 0 ? dirX : dirY;
+        const tiles = [{x: dir, y: sign}, {x: dir * 2, y: sign}, {x: dir * 3, y: sign},
+            {x: dir * 2, y: sign * 2}, {x: dir * 3, y: sign * 2}, {x: dir * 3, y: sign * 3}];
+
+        if (dir === dirY) {
+            for (const tile of tiles) {
+                const temp = tile.x;
+                tile.x = tile.y;
+                tile.y = temp;
+            }
+        }
+        return tiles;
+    }
+
+    getDiagonalAtk(wielder, atkTile) {
+        const range = Math.max(Math.abs(atkTile.x - wielder.tilePosition.x), Math.abs(atkTile.y - wielder.tilePosition.y));
+        return this.getAtk(wielder, range);
     }
 }
