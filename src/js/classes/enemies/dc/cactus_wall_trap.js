@@ -19,7 +19,7 @@ export class CactusWallTrap extends Enemy {
         this.triggered = false;
         this.type = ENEMY_TYPE.CACTUS_WALL_TRAP;
         this.turnDelay = 4;
-        this.currentTurnDelay = 0;
+        this.currentTurnDelay = 1;
         this.movable = false;
         this.role = ROLE.WALL_TRAP;
         this.generateSpikes();
