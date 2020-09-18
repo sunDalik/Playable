@@ -627,6 +627,16 @@ export function explode(tilePosX, tilePosY, enemyDamage = 3, playerDamage = 1) {
         if (isDiggable(posX, posY)) {
             Game.world.removeTile(posX, posY);
         }
+        /*
+        //doors explosion
+        //the world isnt ready for it however
+        if (Game.map[posY][posX].tile && Game.map[posY][posX].tile.door2) {
+            const tile = Game.map[posY][posX].tile;
+            Game.world.removeTile(posX, posY);
+            runDestroyAnimation(tile.door2);
+            Game.world.removeChild(tile.door2);
+        }
+         */
         if (isObelisk(posX, posY)) {
             Game.map[posY][posX].entity.destroy();
         } else if (isEntity(posX, posY, ROLE.INANIMATE, INANIMATE_TYPE.CHEST)) {
