@@ -665,11 +665,11 @@ export class Player extends AnimatedTileElement {
                 [this[SLOT.EXTRA], this[SLOT.WEAPON]] = [this[SLOT.WEAPON], this[SLOT.EXTRA]];
                 redrawSlotContents(this, SLOT.WEAPON);
                 redrawSlotContents(this, SLOT.EXTRA);
+                animateHUDWeaponSwapOut(this);
                 if (this[SLOT.ACCESSORY] && this[SLOT.ACCESSORY].id === EQUIPMENT_ID.WEAPON_MASTER_EMBLEM) {
                     this[SLOT.ACCESSORY].onWeaponSwitch(this);
                     return false;
                 }
-                animateHUDWeaponSwapOut(this);
                 return true;
             } else if (this.weapon && this.weapon.id === this.secondHand.id && this.secondHand.focus && this.secondHand.uses < this.weapon.uses && this.weapon.uses === this.weapon.maxUses) {
                 this.secondHand.focus(this);
