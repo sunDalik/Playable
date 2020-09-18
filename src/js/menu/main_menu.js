@@ -3,10 +3,10 @@ import * as PIXI from "pixi.js";
 import {easeInQuad, easeOutQuad} from "../utils/math_utils";
 import {randomChoice} from "../utils/random_utils";
 import {setTickTimeout} from "../utils/game_utils";
-import {createLoadingText, retry, setupGame} from "../setup";
+import {createLoadingText, retry, setupGame, stageBeaten} from "../setup";
 import {closeBlackBars} from "../drawing/hud_animations";
 import {keyboard, keyboardS} from "../keyboard/keyboard_handler";
-import {GAME_STATE, PLAY_MODE, STORAGE} from "../enums/enums";
+import {GAME_STATE, PLAY_MODE, STAGE, STORAGE} from "../enums/enums";
 import {setupSubSettings} from "./subsettings";
 import {createDiscordButton, createSimpleButtonSet, createVersionNumber} from "./menu_common";
 import {redrawPauseBG, SUPER_HUD} from "../drawing/super_hud";
@@ -21,13 +21,14 @@ const playerSize = 270;
 const playerOffset = 70;
 let player1, player2;
 
-export const menuBgColor = 0x7eb5a6;
+export let menuBgColor = 0x7eb5a6;
 export const settingsMenuColor = 0x2c293d;
 export const achievementsMenuColor = 0xcfc1a5;
 export let currentMenuBgColor = menuBgColor;
 let stopTilingAnimation = false;
 
 export function setupMenu() {
+    assignRandomMenuColor();
     if (Game.loadingText) Game.app.stage.removeChild(Game.loadingText);
     if (Game.loadingTextAnimation) Game.app.ticker.remove(Game.loadingTextAnimation);
     Game.state = GAME_STATE.MENU;
@@ -75,6 +76,15 @@ export function setupMenu() {
             createVersionNumber("v0.34+", 16);
         }, ppUpAnimationTime * 2 / 3);
     }, ppAnimationTime1 + ppAnimationTime2 * 2 / 3);
+}
+
+function assignRandomMenuColor() {
+    const possibleColors = [0x7eb5a6];
+    if (stageBeaten(STAGE.FLOODED_CAVE) >= 1) possibleColors.push(0x727579); // dt color
+    if (stageBeaten(STAGE.DARK_TUNNEL) >= 1) possibleColors.push(0xcdccc1); // ru color
+    if (stageBeaten(STAGE.FLOODED_CAVE) >= 5) possibleColors.push(0xf2d16b); // dc color
+    menuBgColor = randomChoice(possibleColors);
+    currentMenuBgColor = menuBgColor;
 }
 
 export function changeBGColor(color) {

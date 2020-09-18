@@ -158,6 +158,7 @@ export function incrementStage() {
 }
 
 export function replaceStageWithAlt() {
+    //also used in main menu
     if (Game.stage === STAGE.FLOODED_CAVE) {
         if (Math.random() < 0.5 && stageBeaten(STAGE.FLOODED_CAVE) >= 5) {
             Game.stage = STAGE.DRY_CAVE;
