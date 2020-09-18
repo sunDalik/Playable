@@ -2,6 +2,7 @@ import {EQUIPMENT_ID, RARITY} from "../../../enums/enums";
 import {WeaponsSpriteSheet} from "../../../loader";
 import {Minion} from "../minion";
 import {MinionStaff} from "./minion_staff";
+import {randomShuffle} from "../../../utils/random_utils";
 
 export class HiveStaff extends MinionStaff {
     constructor() {
@@ -11,9 +12,12 @@ export class HiveStaff extends MinionStaff {
         this.name = "Hive Staff";
         this.createDescription("Bee minions deal 0.5 damage to enemies they touch", "Bees");
         this.rarity = RARITY.A;
-        this.minions = [new BeeMinion(), new BeeMinion(), new BeeMinion(), new BeeMinion()];
+        this.minions = [new BeeMinion(), new BeeMinion(), new BeeMinion()];
+
+        const orderArray = [0, 1, 2, 3];
+        randomShuffle(orderArray);
         for (let i = 0; i < this.minions.length; i++) {
-            this.minions[i].order = i;
+            this.minions[i].order = orderArray[i];
         }
     }
 }
