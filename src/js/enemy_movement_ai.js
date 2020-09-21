@@ -48,7 +48,6 @@ export function moveEnemyInDirection(enemy, direction, slide = false) {
         const player = getPlayerOnTile(enemy.tilePosition.x + direction.x, enemy.tilePosition.y + direction.y);
         if (player) {
             player.damage(enemy.atk, enemy);
-            if (enemy.healOnHit) enemy.heal(enemy.healOnHit);
         }
         return false;
     }

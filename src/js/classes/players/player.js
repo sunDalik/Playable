@@ -486,6 +486,9 @@ export class Player extends AnimatedTileElement {
             if ((this.linkedHealing > 0 || otherPlayer(this).linkedHealing > 0) && linkEnabled) {
                 otherPlayer(this).heal(healHP, showHeart, false);
             }
+
+            // stone mask wielders still heal others for full value via linked healing ^
+            if (this[SLOT.HEADWEAR] && this[SLOT.HEADWEAR].id === EQUIPMENT_ID.STONE_MASK) healHP = 0.25;
             this.health += healHP;
             if (showHeart) createHeartAnimation(this.position.x, this.position.y);
         }

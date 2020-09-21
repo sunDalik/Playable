@@ -214,7 +214,8 @@ export const EQUIPMENT_ID = Object.freeze({
     SACRED_KNOWLEDGE: 92,
     BARBARIAN_HELMET: 93,
     SAPPHIRE_RING: 94,
-    OBSIDIAN_CUFFS: 95
+    OBSIDIAN_CUFFS: 95,
+    STONE_MASK: 96
 });
 
 export const DIRECTIONS = Object.freeze({CARDINAL: 0, DIAGONAL: 1});
