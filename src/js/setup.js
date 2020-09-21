@@ -16,7 +16,7 @@ import {get8Directions, get8DirectionsWithoutItems, getCardinalDirectionsWithout
 import {cleanGameState, kiss, swapEquipmentWithPlayer} from "./game_logic";
 import {World} from "./classes/game/world";
 import {setTickTimeout} from "./utils/game_utils";
-import {closeBlackBars, retreatBlackBars} from "./drawing/hud_animations";
+import {closeBlackBars, retreatBlackBars, showStageTitle} from "./drawing/hud_animations";
 import {Torch} from "./classes/equipment/tools/torch";
 import {redrawPauseBG, setupSuperHud, SUPER_HUD} from "./drawing/super_hud";
 import {removeAllObjectsFromArray} from "./utils/basic_utils";
@@ -163,6 +163,8 @@ export function initializeLevel() {
                 10, 2.5);
             kiss();
         } else Game.unplayable = false;
+
+        showStageTitle();
     }, 8);
 
     if (Game.stage === STAGE.RUINS) {

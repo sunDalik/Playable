@@ -29,6 +29,8 @@ HUD.minimapBG.zIndex = -1;
 HUD.addChild(HUD.minimapBG);
 HUD.minimap.sortableChildren = true;
 
+HUD.stageTitle = new PIXI.Container();
+
 HUD.addChild(HUD.hearts1);
 HUD.addChild(HUD.hearts2);
 HUD.addChild(HUD.slots1);
@@ -43,6 +45,7 @@ HUD.addChild(HUD.other);
 HUD.addChild(HUD.bossHealth);
 HUD.addChild(HUD.speedrunTime);
 HUD.addChild(HUD.keysAmount);
+HUD.addChild(HUD.stageTitle);
 
 HUD.sortableChildren = true;
 HUD.interactionGuide.sortableChildren = true;
@@ -57,7 +60,8 @@ function generateSlotsContainer() {
         container[slot].slot = new PIXI.Container();
         container[slot].meta = new PIXI.Container();
         container.addChild(container[slot].sprite, container[slot].slot, container[slot].meta);
-        container[slot].cancelAnimation = () => {};
+        container[slot].cancelAnimation = () => {
+        };
     }
     return container;
 }

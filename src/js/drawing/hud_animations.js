@@ -20,6 +20,7 @@ import {removeAllObjectsFromArray} from "../utils/basic_utils";
 import {easeInQuad, easeOutQuad} from "../utils/math_utils";
 import {CommonSpriteSheet} from "../loader";
 import {fadeOutAndDie} from "../animations";
+import {removeAllChildrenFromContainer} from "./draw_utils";
 
 const blackBarLeft = initBlackBar();
 const blackBarRight = initBlackBar();
@@ -58,6 +59,7 @@ export function closeBlackBars(callback) {
             }
             Game.app.ticker.remove(animation);
             setTickTimeout(callback, 0);
+            removeStageTitle();
         }
     };
     Game.app.ticker.add(animation);
@@ -323,4 +325,50 @@ export function getHUDBumpAnimation(sprite, scaleMul = 1.2) {
     };
 
     return animation;
+}
+
+export function showStageTitle() {
+    const container = HUD.stageTitle;
+    removeStageTitle();
+
+    const stageName = Game.stage.tier + ". " + Game.stage.name;
+    const text = new PIXI.Text(stageName, Object.assign({}, HUDTextStyleTitle, {fontSize: 34, strokeThickness: 3}));
+    container.addChild(text);
+    text.alpha = 0;
+    text.position.set(Game.app.renderer.screen.width / 2 - text.width / 2, Game.app.renderer.screen.height / 5);
+    let counter = 0;
+    const animationTime = 15;
+    const stayTime = 120;
+
+    const initTurns = Game.turns;
+    const stayTurns = 2;
+
+    const animation = delta => {
+        counter += delta;
+
+        if ((Game.turns >= initTurns + stayTurns || Game.turns < initTurns)
+            && counter < animationTime + stayTime) {
+            counter = animationTime + stayTime;
+        }
+
+        if (counter < animationTime) {
+            text.alpha = easeInQuad(counter / animationTime);
+        } else if (counter < animationTime + stayTime) {
+            text.alpha = 1;
+        } else if (counter < animationTime + stayTime + animationTime) {
+            text.alpha = 1 - easeInQuad((counter - animationTime - stayTime) / animationTime);
+        } else {
+            Game.app.ticker.remove(animation);
+            text.alpha = 0;
+        }
+    };
+
+    container.animation = animation;
+    Game.app.ticker.add(animation);
+}
+
+export function removeStageTitle() {
+    const container = HUD.stageTitle;
+    if (container.animation) Game.app.ticker.remove(container.animation);
+    removeAllChildrenFromContainer(container, true);
 }
