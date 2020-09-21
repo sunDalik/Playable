@@ -179,10 +179,10 @@ export class ScorpionQueen extends Boss {
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {
         super.damage(source, dmg, inputX, inputY, damageType);
         if (!this.triggeredRage) {
-            if (this.phase === 1 && this.health <= this.maxHealth * 2 / 3) {
+            if (this.phase === 1 && this.health <= this.maxHealth * 6.5 / 9) {
                 this.phase = 2;
                 this.triggerRage();
-            } else if (this.phase === 2 && this.health <= this.maxHealth / 3) {
+            } else if (this.phase === 2 && this.health <= this.maxHealth * 4 / 9) {
                 this.phase = 3;
                 this.triggerRage();
                 this.dropCrown();
