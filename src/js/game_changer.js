@@ -158,12 +158,21 @@ export function incrementStage() {
 }
 
 export function replaceStageWithAlt() {
-    //also used in main menu
-    if (Game.stage === STAGE.FLOODED_CAVE) {
-        if (Math.random() < 0.5 && stageBeaten(STAGE.FLOODED_CAVE) >= 5) {
+    if (Game.stage === STAGE.FLOODED_CAVE && isAltStageUnlocked(STAGE.DRY_CAVE)) {
+        // FC is always replaced by DC if you have unlocked DC but never beat it
+        // After beating DC once its 50% chance
+        if (stageBeaten(STAGE.DRY_CAVE) <= 0 || Math.random() < 0.5) {
             Game.stage = STAGE.DRY_CAVE;
         }
     }
+}
+
+export function isAltStageUnlocked(stage) {
+    switch (stage) {
+        case STAGE.DRY_CAVE:
+            return stageBeaten(STAGE.FLOODED_CAVE) >= 5;
+    }
+    return false;
 }
 
 export const BG_COLORS = {

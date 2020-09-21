@@ -12,6 +12,7 @@ import {createDiscordButton, createSimpleButtonSet, createVersionNumber} from ".
 import {redrawPauseBG, SUPER_HUD} from "../drawing/super_hud";
 import {setupAchievementsScreen, updateAchievementsScreen} from "./achievements_screen";
 import {CommonSpriteSheet} from "../loader";
+import {isAltStageUnlocked} from "../game_changer";
 
 const ppAnimationTime1 = 35;
 const ppAnimationTime2 = 35;
@@ -82,7 +83,7 @@ function assignRandomMenuColor() {
     const possibleColors = [0x7eb5a6];
     if (stageBeaten(STAGE.FLOODED_CAVE) >= 1) possibleColors.push(0x727579); // dt color
     if (stageBeaten(STAGE.DARK_TUNNEL) >= 1) possibleColors.push(0xcdccc1); // ru color
-    if (stageBeaten(STAGE.FLOODED_CAVE) >= 5) possibleColors.push(0xf2d16b); // dc color
+    if (isAltStageUnlocked(STAGE.DRY_CAVE)) possibleColors.push(0xf2d16b); // dc color
     menuBgColor = randomChoice(possibleColors);
     currentMenuBgColor = menuBgColor;
 }

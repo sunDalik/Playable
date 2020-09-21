@@ -507,7 +507,7 @@ function generateInanimates() {
     placeInanimate(placeObelisk, obelisksAmount);
     placeInanimate(placeShop, shopAmount);
     placeInanimate(placeChest, chestsAmount);
-    if (stageBeaten(STAGE.FLOODED_CAVE) >= 2) {
+    if (stageBeaten(STAGE.DARK_TUNNEL) >= 1) {
         const allShrines = [ShrineOfBalance, ShrineOfCurse, ShrineOfDice, ShrineOfSeraph, ShrineOfImp];
         const shrines = randomChoiceSeveral(allShrines, shrineAmounts);
         for (let i = 0; i < shrineAmounts; i++) {
