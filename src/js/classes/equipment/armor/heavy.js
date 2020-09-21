@@ -9,9 +9,10 @@ export class HeavyArmor extends Equipment {
         this.equipmentType = EQUIPMENT_TYPE.ARMOR;
         this.id = EQUIPMENT_ID.HEAVY_ARMOR;
         this.passiveDef = 2;
+        this.passiveMagAtk = -0.5;
         this.magicPunishment = 0.25;
         this.name = "Heavy Armor";
-        this.description = "+2 defense\nYou take 0.25 damage whenever you cast magic";
+        this.description = "+2 defense\n-0.5 magic attack\nYou take 0.25 damage whenever you cast magic";
         this.rarity = RARITY.A;
     }
 

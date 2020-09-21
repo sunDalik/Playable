@@ -190,6 +190,7 @@ export class Player extends AnimatedTileElement {
             if (weapon.magical) atkBase += this.magAtkBase;
             if (weapon.equipmentType === EQUIPMENT_TYPE.MAGIC) multiplier = 1;
         }
+        if (atkBase < 0) atkBase = 0;
         return roundToQuarter(atkBase * multiplier);
     }
 
