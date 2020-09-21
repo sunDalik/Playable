@@ -244,9 +244,9 @@ export const FCBossSets = [
 
 // 5 max
 export const DTEnemySets = [
-    [Alligator, Alligator, Alligator, Alligator, Alligator],
-    [Alligator, Alligator, Alligator, Alligator],
-    [Alligator, Alligator, Alligator],
+    [Alligator, Alligator, Alligator, Rabbit, Rabbit],
+    [Alligator, Alligator, Rabbit, Rabbit],
+    [Alligator, Alligator, Rabbit],
     [Alligator, Alligator],
     [Alligator],
     [Rabbit],
@@ -306,9 +306,9 @@ export const DTEnemySets = [
     [RedSpider, FireSnail],
     [RedSpider, FireFrog, FireFrog],
     [ExplosivePixie, ExplosivePixie, Alligator, Alligator],
-    [ExplosivePixie, Alligator, Alligator, Alligator, FireSnail],
-    [ExplosivePixie, Alligator, Alligator, Alligator, Alligator],
-    [FireSnail, Alligator, Alligator, Alligator, Alligator],
+    [ExplosivePixie, Alligator, Alligator, Rabbit, FireSnail],
+    [ExplosivePixie, ExplosivePixie, ExplosivePixie, Alligator, Alligator],
+    [FireSnail, Alligator, Alligator, Rabbit, Rabbit],
     [FireSnail, Alligator, Alligator],
     [ExplosivePixie, Alligator],
     [LostMage],

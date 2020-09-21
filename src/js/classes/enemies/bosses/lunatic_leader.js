@@ -694,6 +694,7 @@ export class LunaticLeader extends Boss {
     }
 
     animateSpirit() {
+        this.spiritFire.zIndex = this.zIndex + 1;
         const angleChange = 0.5;
         const animation = delta => {
             this.angle += angleChange * delta;
