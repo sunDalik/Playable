@@ -36,7 +36,7 @@ import {TileElement} from "../../tile_elements/tile_element";
 export class LunaticLeader extends Boss {
     constructor(tilePositionX, tilePositionY, texture = LunaticLeaderSpriteSheet["lunatic_leader_neutral.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 21;
+        this.health = this.maxHealth = 18;
         this.type = ENEMY_TYPE.LUNATIC_LEADER;
         this.atk = 1.25;
         this.name = "Lunatic Leader";
@@ -398,7 +398,7 @@ export class LunaticLeader extends Boss {
     }
 
     updatePatience() {
-        this.damagePatience = randomInt(5, 8);
+        this.damagePatience = randomInt(4, 7);
     }
 
     teleport(nearPlayers = false) {
@@ -588,9 +588,9 @@ export class LunaticLeader extends Boss {
     }
 
     getPhaseHealth(phase) {
-        if (phase === 2) return 29;
+        if (phase === 2) return 24;
         else if (phase === 3) return 6;
-        else if (phase === 4) return 32;
+        else if (phase === 4) return 30;
     }
 
     changePhase(newPhase) {

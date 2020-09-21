@@ -23,7 +23,7 @@ import {EssenceOfLight} from "../../equipment/one_time/essence_of_light";
 export class GuardianOfTheLight extends Boss {
     constructor(tilePositionX, tilePositionY, texture = GotLSpriteSheet["gotl_neutral.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 33;
+        this.health = this.maxHealth = 28;
         this.type = ENEMY_TYPE.GUARDIAN_OF_THE_LIGHT;
         this.atk = 1.5; //??
         this.name = "Guardian of the Light";
@@ -416,7 +416,7 @@ export class GuardianOfTheLight extends Boss {
 
     updatePatience() {
         this.patience.turns = randomInt(24, 31) - this.phase * 2;
-        this.patience.damage = randomInt(4, 5);
+        this.patience.damage = randomInt(3, 4);
     }
 
     damage(source, dmg, inputX = 0, inputY = 0, damageType = DAMAGE_TYPE.PHYSICAL_WEAPON) {

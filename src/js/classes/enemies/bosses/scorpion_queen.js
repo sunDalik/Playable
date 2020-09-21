@@ -20,7 +20,7 @@ import {getZIndexForLayer} from "../../../z_indexing";
 export class ScorpionQueen extends Boss {
     constructor(tilePositionX, tilePositionY, texture = ScorpionQueenSpriteSheet["scorpion_queen_neutral.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 25;
+        this.health = this.maxHealth = 24;
         this.type = ENEMY_TYPE.SCORPION_QUEEN;
         this.atk = 1;
         this.name = "Scorpion Queen";
