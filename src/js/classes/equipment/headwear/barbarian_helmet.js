@@ -8,9 +8,9 @@ export class BarbarianHelmet extends Equipment {
         this.texture = HeadWearSpriteSheet["barbarian_helmet.png"];
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.id = EQUIPMENT_ID.BARBARIAN_HELMET;
-        this.passiveAtk = 1;
+        this.passiveAtk = 0.75;
         this.name = "Barbarian Helmet";
-        this.description = "+1 attack";
+        this.description = "+0.75 attack";
         this.rarity = RARITY.B;
     }
 }

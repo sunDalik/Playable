@@ -8,9 +8,9 @@ export class CrownOfMalice extends Equipment {
         this.texture = HeadWearSpriteSheet["crown_of_malice.png"];
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.id = EQUIPMENT_ID.CROWN_OF_MALICE;
-        this.passiveAtk = 0.5;
+        this.passiveAtk = 0.25;
         this.name = "Crown of Malice";
-        this.description = "+0.5 attack";
+        this.description = "+0.25 attack";
         this.rarity = RARITY.C;
     }
 }
