@@ -202,7 +202,7 @@ export class PoisonHazard extends Hazard {
 export class DarkPoisonHazard extends PoisonHazard {
     constructor(tilePositionX, tilePositionY, startAt0Atk = false, texture = PIXI.Texture.WHITE) {
         super(tilePositionX, tilePositionY, startAt0Atk, texture);
-        this.turnsLeft = this.LIFETIME = 11;
+        this.turnsLeft = this.LIFETIME = 12;
         this.type = HAZARD_TYPE.DARK_POISON;
         this.dark = true;
         this.particleTexture = EffectsSpriteSheet["dark_poison_bubble.png"];
