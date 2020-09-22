@@ -479,7 +479,7 @@ export class ParanoidEel extends Boss {
         for (let x = -1; x <= 1; x++) {
             for (let y = -1; y <= 1; y++) {
                 if (Game.map[this.tilePosition.y + y][this.tilePosition.x + x].entity === this) {
-                    const hazard = Game.map[this.tilePosition.y][this.tilePosition.x].hazard;
+                    const hazard = Game.map[this.tilePosition.y + y][this.tilePosition.x + x].hazard;
                     if (hazard) {
                         if (hazard.type === HAZARD_TYPE.DARK_FIRE || hazard.type === HAZARD_TYPE.DARK_POISON) {
                             this.damage(hazard, hazard.atk, 0, 0, DAMAGE_TYPE.HAZARDAL);
