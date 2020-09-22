@@ -13,7 +13,7 @@ import {
     slotBorderOffsetX,
     slotsColOffset
 } from "./draw_constants";
-import {SLOT} from "../enums/enums";
+import {PLAY_MODE, SLOT} from "../enums/enums";
 import {getKeyBindSymbol, padTime} from "./draw_hud";
 import {getRandomTip} from "../menu/tips";
 import {removeAllObjectsFromArray} from "../utils/basic_utils";
@@ -330,6 +330,7 @@ export function getHUDBumpAnimation(sprite, scaleMul = 1.2) {
 export function showStageTitle() {
     const container = HUD.stageTitle;
     removeStageTitle();
+    if (Game.playMode === PLAY_MODE.TUTORIAL) return;
 
     const stageName = Game.stage.tier + ". " + Game.stage.name;
     const text = new PIXI.Text(stageName, Object.assign({}, HUDTextStyleTitle, {fontSize: 34, strokeThickness: 3}));
