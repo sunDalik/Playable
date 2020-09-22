@@ -5,7 +5,7 @@ import {Equipment} from "../equipment";
 export class GuardHelmet extends Equipment{
     constructor() {
         super();
-        this.texture = HeadWearSpriteSheet["battle_helmet.png"];
+        this.texture = HeadWearSpriteSheet["guard_helmet.png"];
         this.equipmentType = EQUIPMENT_TYPE.HEAD;
         this.id = EQUIPMENT_ID.GUARD_HELMET;
         this.name = "Guard Helmet";
