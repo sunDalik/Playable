@@ -4,17 +4,17 @@ import {Game} from "../game";
 
 export function getRandomTip() {
     const tips = [
-        "Every time your characters die, they both lose 1 health container",
+        "Every time your characters die, they both lose 1 heart container",
         "Destroying active obelisk causes dead enemies to revive and alive enemies to get +0.25 attack",
         "Destroying active obelisk gives you 2 random magic, but you can pick up both",
         "Wielding two identical weapons causes you to attack twice in one turn: before and after enemies",
         "You can make a sacrifice to an obelisk. You will lose a heart, but get 2 more magic to choose from",
-        "The maximum amount of health containers you can get is 10",
+        "The maximum amount of heart containers you can get is 10",
         "White triangle has x0.5 ATK multiplier and x1 DEF multiplier",
         "Black triangle has x1 ATK multiplier and x0.5 DEF multiplier",
         "Treasure walls drop a key most of the time, but they can also drop a chest or a potion",
         "If you hold SHIFT while moving, you will move without attacking. This allows to escape tricky situations when you have a long-range weapon",
-        "Using bag while holding shift drops your bag item instead of using it",
+        "Using bag while holding SHIFT drops your bag item instead of using it",
         "When both characters stand on the same tile, only the top one takes damage from enemies and can attack. Press Z to switch positions",
         "Magic and shields restore half of their max uses every floor if their wielder is alive",
         "Obelisks have 100% chance to offer Necromancy magic if one of the characters is dead upon obelisk's activation",
