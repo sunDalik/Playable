@@ -6,7 +6,6 @@ export class DarkCrab extends Crab {
     constructor(tilePositionX, tilePositionY, texture = DTEnemiesSpriteSheet["dark_crab.png"]) {
         super(tilePositionX, tilePositionY, texture);
         this.name = "Dark Crab";
-        this.health = this.maxHealth = 2;
         this.direction = {x: 1, y: 1};
         this.type = ENEMY_TYPE.DARK_CRAB;
     }
