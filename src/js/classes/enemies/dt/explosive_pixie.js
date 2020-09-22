@@ -83,7 +83,7 @@ export class ExplosivePixie extends Enemy {
     }
 
     explode() {
-        explode(this.tilePosition.x, this.tilePosition.y, 2, 1);
+        explode(this.tilePosition.x, this.tilePosition.y);
         this.die();
     }
 

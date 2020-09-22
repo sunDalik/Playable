@@ -19,7 +19,7 @@ export class ExplosiveRage extends Magic {
 
     cast(wielder) {
         if (this.uses <= 0) return false;
-        explode(wielder.tilePosition.x, wielder.tilePosition.y, this.atk, 1);
+        explode(wielder.tilePosition.x, wielder.tilePosition.y, wielder.getAtk(this), 1);
         this.uses--;
         return true;
     }
