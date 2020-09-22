@@ -32,7 +32,8 @@ export function getRandomTip() {
         "Shields don't protect you from floor hazards",
         "The rarer a chest is, the more keys you will need to open it",
         "Items from shops are 1 key more expensive than corresponding items from chests",
-        "It takes two explosions to destroy a chest. If you destroy an unopened chest, it will drop 1 key"
+        "It takes two explosions to destroy a chest. If you destroy an unopened chest, it will drop 1 key",
+        "If you have a negative defense, you will take more damage"
     ];
 
     if (Game.stage === STAGE.DARK_TUNNEL) {
