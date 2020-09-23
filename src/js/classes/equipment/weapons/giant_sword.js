@@ -14,7 +14,7 @@ export class GiantSword extends Weapon {
         this.id = EQUIPMENT_ID.GIANT_SWORD;
         this.atk = 1;
         this.name = "Giant Sword";
-        this.description = "Piercing weapon that attacks both enemies in range 2\nAttack 1, deals +0.5 damage to the enemy that stands directly near you";
+        this.description = "Piercing weapon that attacks both enemies in range 2\nAttack 1 at range 2\nAttack 1.5 at range 1";
         this.rarity = RARITY.A;
     }
 

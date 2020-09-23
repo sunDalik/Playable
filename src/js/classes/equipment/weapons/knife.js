@@ -12,7 +12,7 @@ export class Knife extends Weapon {
         this.id = EQUIPMENT_ID.KNIFE;
         this.atk = 1;
         this.name = "Knife";
-        this.description = "Attack 1\nClose combat only";
+        this.description = "Attack 1\nRange 1";
         this.rarity = RARITY.C;
     }
 
