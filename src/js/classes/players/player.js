@@ -165,6 +165,7 @@ export class Player extends AnimatedTileElement {
                 toCloseBlackBars = false;
             }
         });
+        this.pickUpItems();
     }
 
     castMagic(magic) {
