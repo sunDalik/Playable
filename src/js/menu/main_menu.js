@@ -74,7 +74,7 @@ export function setupMenu() {
                 window.open("https://discord.com/invite/KBjcrR6");
             };
             discordButton.on("click", discordButton.clickButton);
-            createVersionNumber("v0.34+", 16);
+            createVersionNumber("v0.43", 16);
         }, ppUpAnimationTime * 2 / 3);
     }, ppAnimationTime1 + ppAnimationTime2 * 2 / 3);
 }
