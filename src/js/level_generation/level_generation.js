@@ -8,6 +8,8 @@ import {
     DTEnemySets,
     FCBossSets,
     FCEnemySets,
+    MMBossSets,
+    MMEnemySets,
     RUBossSets,
     RUEnemySets
 } from "./enemy_sets";
@@ -26,6 +28,9 @@ export function generateLevel() {
             return generateStandard();
         case STAGE.DARK_TUNNEL:
             setupGenerator(new Settings(40, 55, 20, 25, DTEnemySets, DTBossSets));
+            return generateStandard();
+        case STAGE.MARBLE_MAUSOLEUM:
+            setupGenerator(new Settings(40, 55, 20, 25, MMEnemySets, MMBossSets));
             return generateStandard();
         case STAGE.RUINS:
             setupGenerator(new Settings(40, 50, 40, 50, RUEnemySets, RUBossSets, true));

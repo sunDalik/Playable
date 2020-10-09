@@ -669,3 +669,11 @@ export const DCBossSets = [
     [ScorpionQueen, Scorpion, Scorpion, Scorpion, Scorpion],
     [ScorpionQueen, RedScorpion, RedScorpion, RedScorpion]
 ];
+
+export const MMEnemySets = [
+    [SpiderSmall]
+];
+
+export const MMBossSets = [
+    [ParanoidEel]
+];

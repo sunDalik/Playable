@@ -149,6 +149,7 @@ export function incrementStage() {
             Game.stage = STAGE.DARK_TUNNEL;
             break;
         case STAGE.DARK_TUNNEL:
+        case STAGE.MARBLE_MAUSOLEUM:
             Game.stage = STAGE.RUINS;
             break;
         case STAGE.RUINS:
@@ -160,11 +161,19 @@ export function incrementStage() {
 }
 
 export function replaceStageWithAlt() {
-    if (Game.stage === STAGE.FLOODED_CAVE && isAltStageUnlocked(STAGE.DRY_CAVE)) {
-        // FC is always replaced by DC if you have unlocked DC but never beat it
-        // After beating DC once its 50% chance
-        if (stageBeaten(STAGE.DRY_CAVE) <= 0 || Math.random() < 0.5) {
-            Game.stage = STAGE.DRY_CAVE;
+    const stageReplacements = [
+        {main: STAGE.FLOODED_CAVE, alt: STAGE.DRY_CAVE},
+        {main: STAGE.DARK_TUNNEL, alt: STAGE.MARBLE_MAUSOLEUM}];
+    for (const stageReplacement of stageReplacements) {
+        if (Game.stage === stageReplacement.main) {
+            if (isAltStageUnlocked(stageReplacement.alt)) {
+                // Main level is always replaced by Alt if you have unlocked Alt but never beat it
+                // After beating Alt once its 50% chance
+                if (stageBeaten(stageReplacement.alt) <= 0 || Math.random() < 0.5) {
+                    Game.stage = stageReplacement.alt;
+                }
+            }
+            break;
         }
     }
 }
@@ -173,6 +182,8 @@ export function isAltStageUnlocked(stage) {
     switch (stage) {
         case STAGE.DRY_CAVE:
             return stageBeaten(STAGE.FLOODED_CAVE) >= 5;
+        case STAGE.MARBLE_MAUSOLEUM:
+            return stageBeaten(STAGE.DARK_TUNNEL) >= 5;
     }
     return false;
 }
@@ -198,6 +209,7 @@ export function setVariablesForStage() {
             assignRarityChances(55, 88, 97); // 55% 33% 9% 3%
             break;
         case STAGE.DARK_TUNNEL:
+        case STAGE.MARBLE_MAUSOLEUM:
             Game.BGColor = BG_COLORS.DARK_TUNNEL;
             assignRarityChances(22, 78, 94); // 22% 56% 16% 6%
             break;

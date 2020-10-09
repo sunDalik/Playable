@@ -73,6 +73,8 @@ export class FloorTile extends TileElement {
                 DCTilesetSpriteSheet["dry_cave_floor_tile_1.png"],
                 DCTilesetSpriteSheet["dry_cave_floor_tile_2.png"],
                 DCTilesetSpriteSheet["dry_cave_floor_tile_3.png"]]);
+        } else if (Game.stage === STAGE.MARBLE_MAUSOLEUM) {
+            this.texture = Game.resources["src/images/tilesets/test/marble_floor_tile_0.png"].texture;
         }
     }
 }
