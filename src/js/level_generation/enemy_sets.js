@@ -46,6 +46,7 @@ import {Phantom} from "../classes/enemies/dt/phantom";
 import {Scorpion} from "../classes/enemies/dc/scorpion";
 import {RedScorpion} from "../classes/enemies/dc/red_scorpion";
 import {ScorpionQueen} from "../classes/enemies/bosses/scorpion_queen";
+import {MarbleChess} from "../classes/enemies/bosses/marble_chess";
 
 // 6 max
 export const FCEnemySets = [
@@ -675,5 +676,5 @@ export const MMEnemySets = [
 ];
 
 export const MMBossSets = [
-    [ParanoidEel]
+    [MarbleChess]
 ];

@@ -451,6 +451,7 @@ export function gotoNextLevel() {
 export function cleanGameState() {
     Game.enemies = [];
     Game.burrowedEnemies = [];
+    Game.floorTiles = [];
     Game.savedTiles = [];
     Game.darkTiles = [];
     Game.hazards = [];

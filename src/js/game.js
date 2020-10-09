@@ -82,5 +82,6 @@ export const Game = {
     enemiesKilled: 0,
     gameOver: false,
     buttons: [],
-    burrowedEnemies: []
+    burrowedEnemies: [],
+    floorTiles: []
 };

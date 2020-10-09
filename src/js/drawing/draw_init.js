@@ -24,7 +24,9 @@ export function drawTiles() {
             }
             if (floorAreas.includes(Game.stage)) {
                 if (i !== 0 && i !== Game.map.length - 1 && j !== 0 && j !== Game.map[0].length - 1) {
-                    Game.world.addChild(new FloorTile(j, i));
+                    const floorTile = new FloorTile(j, i);
+                    Game.world.addChild(floorTile);
+                    Game.floorTiles.push(floorTile);
                 }
             }
 
