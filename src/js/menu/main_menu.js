@@ -84,6 +84,7 @@ function assignRandomMenuColor() {
     if (stageBeaten(STAGE.FLOODED_CAVE) >= 1) possibleColors.push(0x727579); // dt color
     if (stageBeaten(STAGE.DARK_TUNNEL) >= 1) possibleColors.push(0xcdccc1); // ru color
     if (isAltStageUnlocked(STAGE.DRY_CAVE)) possibleColors.push(0xf2d16b); // dc color
+    if (isAltStageUnlocked(STAGE.MARBLE_MAUSOLEUM)) possibleColors.push(0xededed); // mm color
     menuBgColor = randomChoice(possibleColors);
     currentMenuBgColor = menuBgColor;
 }
