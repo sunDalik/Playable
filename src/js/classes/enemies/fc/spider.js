@@ -96,4 +96,13 @@ export class Spider extends Enemy {
             this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
         }
     }
+
+    canBeGolden() {
+        return this.type === ENEMY_TYPE.SPIDER;
+    }
+
+    becomeGolden() {
+        super.becomeGolden();
+        this.texture = FCEnemiesSpriteSheet["golden_spider.png"];
+    }
 }

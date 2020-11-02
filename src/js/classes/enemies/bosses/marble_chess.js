@@ -1,8 +1,8 @@
 import {Boss} from "./boss";
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {Game} from "../../../game";
-import {tileInsideTheBossRoom} from "../../../map_checks";
-import {FCEnemiesSpriteSheet, LunaticLeaderSpriteSheet} from "../../../loader";
+import {tileInsideTheBossRoomExcludingWalls} from "../../../map_checks";
+import {FCEnemiesSpriteSheet} from "../../../loader";
 
 export class MarbleChess extends Boss {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spider.png"]) {
@@ -17,7 +17,7 @@ export class MarbleChess extends Boss {
 
     afterMapGen() {
         for (const floorTile of Game.floorTiles) {
-            if (tileInsideTheBossRoom(floorTile.tilePosition.x, floorTile.tilePosition.y)) {
+            if (tileInsideTheBossRoomExcludingWalls(floorTile.tilePosition.x, floorTile.tilePosition.y)) {
                 const relativePos = {
                     x: floorTile.tilePosition.x - Game.endRoomBoundaries[0].x + 1,
                     y: floorTile.tilePosition.y - Game.endRoomBoundaries[0].y + 1

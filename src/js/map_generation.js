@@ -28,9 +28,13 @@ export function assignDrops() {
 
     if (stageBeaten(Game.stage) >= 1) {
         // assign quirks
+        let goldenSlotsLeft = 1;
         for (const enemy of Game.enemies) {
             if (Math.random() < 0.008 && !enemy.boss && enemy.role === ROLE.ENEMY) {
                 enemy.setQuirk(randomChoice([ENEMY_QUIRK.TINY, ENEMY_QUIRK.GIANT]));
+            } else if (goldenSlotsLeft > 0 && enemy.canBeGolden && enemy.canBeGolden() && Math.random() && Math.random() < 0.001) {
+                enemy.setQuirk(ENEMY_QUIRK.GOLDEN);
+                goldenSlotsLeft--;
             }
         }
     }

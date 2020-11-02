@@ -156,3 +156,8 @@ export function tileInsideTheBossRoom(x, y) {
     return x >= Game.endRoomBoundaries[0].x && y >= Game.endRoomBoundaries[0].y
         && x <= Game.endRoomBoundaries[1].x && y <= Game.endRoomBoundaries[1].y;
 }
+
+export function tileInsideTheBossRoomExcludingWalls(x, y) {
+    return x >= Game.endRoomBoundaries[0].x + 1 && y >= Game.endRoomBoundaries[0].y + 1
+        && x <= Game.endRoomBoundaries[1].x - 1 && y <= Game.endRoomBoundaries[1].y - 1;
+}

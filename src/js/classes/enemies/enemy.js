@@ -10,6 +10,7 @@ import {removeObjectFromArray} from "../../utils/basic_utils";
 import {dropItem} from "../../game_logic";
 import {DAMAGE_TYPE} from "../../enums/damage_type";
 import {roundToQuarter} from "../../utils/math_utils";
+import {Key} from "../equipment/key";
 
 export class Enemy extends AnimatedTileElement {
     constructor(texture, tilePositionX, tilePositionY) {
@@ -40,7 +41,8 @@ export class Enemy extends AnimatedTileElement {
         this.setOwnZIndex(Z_INDEXES.ENEMY);
     }
 
-    move() {}
+    move() {
+    }
 
     correctZIndex() {
         super.correctZIndex();
@@ -158,6 +160,11 @@ export class Enemy extends AnimatedTileElement {
         if (this.drop) {
             dropItem(this.drop, this.tilePosition.x, this.tilePosition.y);
             this.drop = null;
+        }
+        if (this.quirk === ENEMY_QUIRK.GOLDEN) {
+            for (let i = 0; i < 2; i++) {
+                dropItem(new Key(), this.tilePosition.x, this.tilePosition.y);
+            }
         }
         Game.world.removeChild(this.shadow);
         this.shadow = null;
@@ -290,6 +297,8 @@ export class Enemy extends AnimatedTileElement {
             this.becomeTiny();
         } else if (quirk === ENEMY_QUIRK.GIANT) {
             this.becomeGiant();
+        } else if (quirk === ENEMY_QUIRK.GOLDEN && this.canBeGolden()) {
+            this.becomeGolden();
         }
         this.quirk = quirk;
     }
@@ -314,5 +323,15 @@ export class Enemy extends AnimatedTileElement {
         this.atk *= 2;
         this.shadowHeight *= multiplier;
         this.regenerateShadow();
+    }
+
+    becomeGolden() {
+        // override textures in child classes
+        this.maxHealth = this.maxHealth + 4;
+        this.health = this.maxHealth;
+    }
+
+    canBeGolden() {
+        return false;
     }
 }

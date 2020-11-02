@@ -54,4 +54,13 @@ export class Scorpion extends Enemy {
             this.intentIcon.texture = IntentsSpriteSheet["neutral.png"];
         }
     }
+
+    canBeGolden() {
+        return this.type === ENEMY_TYPE.SCORPION;
+    }
+
+    becomeGolden() {
+        super.becomeGolden();
+        this.texture = DCEnemiesSpriteSheet["golden_scorpion.png"];
+    }
 }

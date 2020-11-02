@@ -18,13 +18,16 @@ export class HexEye extends Enemy {
         this.currentCooldown = 2;
         this.bullets = [];
         this.shadowInside = true;
+        this.controlling = false;
+        this.neutralTexture = RUEnemiesSpriteSheet["hex_eye.png"];
+        this.controllingTexture = RUEnemiesSpriteSheet["hex_eye_center.png"];
     }
 
     setStun(stun) {
         super.setStun(stun);
         if (this.aboutToCast) {
             this.aboutToCast = false;
-            this.texture = RUEnemiesSpriteSheet["hex_eye.png"];
+            this.texture = this.neutralTexture;
             this.currentCooldown = randomInt(1, 3);
         }
     }
@@ -34,7 +37,7 @@ export class HexEye extends Enemy {
         if (this.controlling) {
             if (this.allBulletsDead()) {
                 this.controlling = false;
-                this.texture = RUEnemiesSpriteSheet["hex_eye.png"];
+                this.texture = this.neutralTexture;
                 this.currentCooldown = this.getCooldown();
             }
         } else if (this.aboutToCast) {
@@ -44,7 +47,7 @@ export class HexEye extends Enemy {
             this.controlling = true;
         } else if (this.currentCooldown <= 0) {
             this.aboutToCast = true;
-            this.texture = RUEnemiesSpriteSheet["hex_eye_center.png"];
+            this.texture = this.controllingTexture;
         }
         this.currentCooldown--;
     }
@@ -86,5 +89,16 @@ export class HexEye extends Enemy {
             return true;
         }
         return false;
+    }
+
+    canBeGolden() {
+        return this.type === ENEMY_TYPE.HEX_EYE;
+    }
+
+    becomeGolden() {
+        super.becomeGolden();
+        this.neutralTexture = RUEnemiesSpriteSheet["golden_hex_eye.png"];
+        this.controllingTexture = RUEnemiesSpriteSheet["golden_hex_eye_center.png"];
+        this.texture = this.neutralTexture;
     }
 }

@@ -1,5 +1,5 @@
 import {Enemy} from "../enemy";
-import {ENEMY_TYPE} from "../../../enums/enums";
+import {ENEMY_QUIRK, ENEMY_TYPE} from "../../../enums/enums";
 import {EffectsSpriteSheet, IntentsSpriteSheet, RUEnemiesSpriteSheet} from "../../../loader";
 import {randomAggressiveAI} from "../../../enemy_movement_ai";
 import {TileElement} from "../../tile_elements/tile_element";
@@ -25,6 +25,8 @@ export class BladeDemon extends Enemy {
         this.STEP_ANIMATION_TIME = 7;
         this.shadowInside = true;
         this.setScaleModifier(1.2);
+        this.neutralTexture = RUEnemiesSpriteSheet["blade_demon.png"];
+        this.noHandsTexture = RUEnemiesSpriteSheet["blade_demon_no_hands.png"];
     }
 
     setStun(stun) {
@@ -103,10 +105,11 @@ export class BladeDemon extends Enemy {
 
     //I dunno I just mostly copied it from spike animation
     createAttackAnimation(offsetX, offsetY) {
-        this.texture = RUEnemiesSpriteSheet["blade_demon_no_hands.png"];
+        this.texture = this.noHandsTexture;
         const spike = new TileElement(EffectsSpriteSheet["spike.png"], this.tilePosition.x, this.tilePosition.y);
         const sword = new TileElement(RUEnemiesSpriteSheet["blade_demon_sword.png"], this.tilePosition.x, this.tilePosition.y);
         spike.tint = 0xd35941;
+        if (this.quirk === ENEMY_QUIRK.GOLDEN) spike.tint = 0xebcd26;
         spike.position.set(this.getTilePositionX(), this.getTilePositionY());
         sword.position.set(spike.position.x + Math.sign(offsetX) * sword.width / 2, spike.position.y + Math.sign(offsetY) * sword.height / 2);
         spike.zIndex = this.zIndex + 1;
@@ -143,7 +146,7 @@ export class BladeDemon extends Enemy {
                 if (spike.width <= 0) spike.width = 1;
             }
             if (counter >= animationTime + delay) {
-                this.texture = RUEnemiesSpriteSheet["blade_demon.png"];
+                this.texture = this.neutralTexture;
                 Game.app.ticker.remove(animation);
                 Game.world.removeChild(spike);
                 Game.world.removeChild(sword);
@@ -173,4 +176,14 @@ export class BladeDemon extends Enemy {
         }
     }
 
+    canBeGolden() {
+        return this.type === ENEMY_TYPE.BLADE_DEMON;
+    }
+
+    becomeGolden() {
+        super.becomeGolden();
+        this.neutralTexture = RUEnemiesSpriteSheet["golden_blade_demon.png"];
+        this.noHandsTexture = RUEnemiesSpriteSheet["golden_blade_demon_no_hands.png"];
+        this.texture = this.neutralTexture;
+    }
 }
