@@ -111,6 +111,7 @@ export class ParanoidEel extends Boss {
             if (Game.map[y][Game.endRoomBoundaries[0].x].tileType === TILE_TYPE.ENTRY
                 || Game.map[y][Game.endRoomBoundaries[1].x].tileType === TILE_TYPE.ENTRY) {
                 this.direction = {x: 0, y: randomChoice([-1, 1])};
+                break;
             }
         }
         this.correctLook();
