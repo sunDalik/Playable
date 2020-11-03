@@ -35,13 +35,8 @@ export class Pawn extends ChessFigure {
             }
         }
 
-        const killerTiles = [{
-            x: this.tilePosition.x + this.direction.x - this.direction.y,
-            y: this.tilePosition.y + this.direction.y - this.direction.x
-        }, {
-            x: this.tilePosition.x + this.direction.x + this.direction.y,
-            y: this.tilePosition.y + this.direction.y + this.direction.x
-        }];
+        const killerTiles = [{x: x + this.direction.x - this.direction.y, y: y + this.direction.y - this.direction.x},
+            {x: x + this.direction.x + this.direction.y, y: y + this.direction.y + this.direction.x}];
         for (const killerTile of killerTiles) {
             if (getPlayerOnTile(killerTile.x, killerTile.y) !== null) {
                 moves.push(killerTile);
