@@ -1,7 +1,7 @@
 import {Boss} from "./boss";
 import {ENEMY_TYPE, TILE_TYPE} from "../../../enums/enums";
 import {Game} from "../../../game";
-import {tileInsideTheBossRoomExcludingWalls} from "../../../map_checks";
+import {getPlayerOnTile, tileInsideTheBossRoomExcludingWalls} from "../../../map_checks";
 import {FCEnemiesSpriteSheet} from "../../../loader";
 import {randomChoice} from "../../../utils/random_utils";
 import {Pawn} from "../mm/pawn";
@@ -14,6 +14,7 @@ export class MarbleChess extends Boss {
         this.whiteFigures = [];
         this.blackFigures = [];
         this.currentAlignment = CHESS_ALIGNMENT.WHITE;
+        this.canMoveInvisible = true;
         this.removeShadow();
     }
 
@@ -90,14 +91,49 @@ export class MarbleChess extends Boss {
 
     move() {
         if (this.whiteFigures.every(f => f.dead) && this.blackFigures.every(f => f.dead)) return;
-        const figuresArray = this.currentAlignment === CHESS_ALIGNMENT.WHITE ? this.whiteFigures : this.blackFigures;
-        if (figuresArray.every(f => f.dead)) {
+        let figuresArray = this.currentAlignment === CHESS_ALIGNMENT.WHITE ? this.whiteFigures : this.blackFigures;
+        figuresArray = figuresArray.filter(f => !f.dead);
+        if (figuresArray.length === 0) {
             this.switchAlignment();
             return this.move();
         }
 
+        let usedTurn = false;
+
+        // try to find a killer move first
         for (const figure of figuresArray) {
-            const possibleMoves = figure.getMoves();
+            const possibleMoves = figure.getMoves(figure.tilePosition.x, figure.tilePosition.y);
+            figure.cachedMoves = possibleMoves;
+            const playerKillerMove = possibleMoves.find(move => getPlayerOnTile(move.x, move.y) !== null);
+            if (playerKillerMove) {
+                usedTurn = true;
+                figure.moveTo(playerKillerMove.x, playerKillerMove.y);
+                break;
+            }
+        }
+
+        // then try to find a move that would kill on the next turn
+        if (!usedTurn) {
+            for (const figure of figuresArray) {
+                const potentialKillerMove = figure.cachedMoves.find(move => {
+                    const nextTurnMoves = figure.getMoves(move.x, move.y);
+                    return nextTurnMoves.find(nextTurnMove => getPlayerOnTile(nextTurnMove.x, nextTurnMove.y) !== null);
+                });
+                if (potentialKillerMove) {
+                    usedTurn = true;
+                    figure.moveTo(potentialKillerMove.x, potentialKillerMove.y);
+                    break;
+                }
+            }
+        }
+
+        // if nothing works, do a random move
+        if (!usedTurn) {
+            const figure = randomChoice(figuresArray.filter(f => f.cachedMoves.length !== 0));
+            if (figure) {
+                const move = randomChoice(figure.cachedMoves);
+                figure.moveTo(move.x, move.y);
+            }
         }
 
         this.switchAlignment();

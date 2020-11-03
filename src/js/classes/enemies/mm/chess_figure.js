@@ -1,17 +1,29 @@
 import {Enemy} from "../enemy";
+import {getPlayerOnTile} from "../../../map_checks";
 
 export class ChessFigure extends Enemy {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
         this.shadowInside = true;
+        this.cachedMoves = [];
         this.regenerateShadow();
     }
 
     setUpChessFigure(alignment, direction) {
     }
 
-    getMoves() {
+    getMoves(x, y) {
+        return [];
+    }
 
+    moveTo(x, y) {
+        const player = getPlayerOnTile(x, y);
+        if (player) {
+            player.damage(this.atk, this, true);
+        } else {
+            this.slide(x - this.tilePosition.x, y - this.tilePosition.y);
+        }
+        this.cancellable = false;
     }
 
     setStun(stun) {
