@@ -10,6 +10,10 @@ export class ChessFigure extends Enemy {
     setUpChessFigure(alignment, direction) {
     }
 
+    getMoves() {
+
+    }
+
     setStun(stun) {
     }
 
@@ -21,5 +25,8 @@ export class ChessFigure extends Enemy {
     updateIntentIcon() {
         super.updateIntentIcon();
         this.intentIcon.visible = false;
+    }
+
+    setQuirk(quirk) {
     }
 }

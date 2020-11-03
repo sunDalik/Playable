@@ -14,13 +14,18 @@ export class MarbleChess extends Boss {
         this.whiteFigures = [];
         this.blackFigures = [];
         this.currentAlignment = CHESS_ALIGNMENT.WHITE;
+        this.removeShadow();
     }
 
     static getBossRoomStats() {
         return {width: 10, height: 10};
     }
 
+    placeOnMap() {
+    }
+
     afterMapGen() {
+        this.removeFromMap();
         for (const floorTile of Game.floorTiles) {
             if (tileInsideTheBossRoomExcludingWalls(floorTile.tilePosition.x, floorTile.tilePosition.y)) {
                 const relativePos = {
@@ -80,6 +85,29 @@ export class MarbleChess extends Boss {
         super.onBossModeActivate();
         for (const figure of this.whiteFigures.concat(this.blackFigures)) {
             figure.isMinion = false;
+        }
+    }
+
+    move() {
+        if (this.whiteFigures.every(f => f.dead) && this.blackFigures.every(f => f.dead)) return;
+        const figuresArray = this.currentAlignment === CHESS_ALIGNMENT.WHITE ? this.whiteFigures : this.blackFigures;
+        if (figuresArray.every(f => f.dead)) {
+            this.switchAlignment();
+            return this.move();
+        }
+
+        for (const figure of figuresArray) {
+            const possibleMoves = figure.getMoves();
+        }
+
+        this.switchAlignment();
+    }
+
+    switchAlignment() {
+        if (this.currentAlignment === CHESS_ALIGNMENT.WHITE) {
+            this.currentAlignment = CHESS_ALIGNMENT.BLACK;
+        } else {
+            this.currentAlignment = CHESS_ALIGNMENT.WHITE;
         }
     }
 }
