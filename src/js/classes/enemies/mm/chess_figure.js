@@ -5,6 +5,7 @@ import {tileDistanceDiagonal} from "../../../utils/game_utils";
 export class ChessFigure extends Enemy {
     constructor(texture, tilePositionX, tilePositionY) {
         super(texture, tilePositionX, tilePositionY);
+        this.atk = 1;
         this.shadowInside = true;
         this.cachedMoves = [];
         this.regenerateShadow();

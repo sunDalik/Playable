@@ -10,7 +10,6 @@ export class Pawn extends ChessFigure {
         this.health = this.maxHealth = 2;
         this.name = "Pawn";
         this.type = ENEMY_TYPE.PAWN;
-        this.atk = 1;
         this.direction = {x: 1, y: 0};
         this.initialPos = {x: tilePositionX, y: tilePositionY};
     }

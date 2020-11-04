@@ -60,7 +60,8 @@ export const ENEMY_TYPE = Object.freeze({
     SCORPION_QUEEN: 58,
     SCORPION_QUEEN_EGG: 59,
     MARBLE_CHESS: 60,
-    PAWN: 61
+    PAWN: 61,
+    KNIGHT: 62
 });
 
 export const RABBIT_TYPE = Object.freeze({

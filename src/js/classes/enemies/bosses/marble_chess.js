@@ -5,6 +5,7 @@ import {getPlayerOnTile, tileInsideTheBossRoomExcludingWalls} from "../../../map
 import {FCEnemiesSpriteSheet} from "../../../loader";
 import {randomChoice} from "../../../utils/random_utils";
 import {Pawn} from "../mm/pawn";
+import {Knight} from "../mm/knight";
 
 export class MarbleChess extends Boss {
     constructor(tilePositionX, tilePositionY, texture = FCEnemiesSpriteSheet["spider.png"]) {
@@ -55,29 +56,51 @@ export class MarbleChess extends Boss {
         ])
             if (figureSet.direction.y !== 0) {
                 let pawnY;
+                let figuresY;
                 if (figureSet.direction.y === 1) {
                     pawnY = Game.endRoomBoundaries[0].y + 2;
+                    figuresY = pawnY - 1;
                 } else {
                     pawnY = Game.endRoomBoundaries[1].y - 2;
+                    figuresY = pawnY + 1;
                 }
-                for (let x = Game.endRoomBoundaries[0].x + 1; x < Game.endRoomBoundaries[1].x; x++) {
+                for (let i = 0; i < 8; i++) {
+                    const x = Game.endRoomBoundaries[0].x + 1 + i;
                     const pawn = new Pawn(x, pawnY);
                     pawn.setUpChessFigure(figureSet.alignment, figureSet.direction);
                     Game.world.addEnemy(pawn, true);
                     figureSet.array.push(pawn);
+                    if (i === 1 || i === 6) {
+                        const knight = new Knight(x, figuresY);
+                        knight.setUpChessFigure(figureSet.alignment);
+                        Game.world.addEnemy(knight, true);
+                        figureSet.array.push(knight);
+                        if (i === 1) knight.scale.x = -Math.abs(knight.scale.x);
+                    }
                 }
             } else {
                 let pawnX;
+                let figuresX;
                 if (figureSet.direction.x === 1) {
                     pawnX = Game.endRoomBoundaries[0].x + 2;
+                    figuresX = pawnX - 1;
                 } else {
                     pawnX = Game.endRoomBoundaries[1].x - 2;
+                    figuresX = pawnX + 1;
                 }
-                for (let y = Game.endRoomBoundaries[0].y + 1; y < Game.endRoomBoundaries[1].y; y++) {
+                for (let i = 0; i < 8; i++) {
+                    const y = Game.endRoomBoundaries[0].y + 1 + i;
                     const pawn = new Pawn(pawnX, y);
                     pawn.setUpChessFigure(figureSet.alignment, figureSet.direction);
                     Game.world.addEnemy(pawn, true);
                     figureSet.array.push(pawn);
+                    if (i === 1 || i === 6) {
+                        const knight = new Knight(figuresX, y);
+                        knight.setUpChessFigure(figureSet.alignment);
+                        Game.world.addEnemy(knight, true);
+                        figureSet.array.push(knight);
+                        if (figureSet.direction.x === 1) knight.scale.x = -Math.abs(knight.scale.x);
+                    }
                 }
             }
     }
