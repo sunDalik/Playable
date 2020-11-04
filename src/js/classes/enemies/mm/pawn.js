@@ -7,7 +7,7 @@ import {getPlayerOnTile, isEmpty} from "../../../map_checks";
 export class Pawn extends ChessFigure {
     constructor(tilePositionX, tilePositionY, texture = MarbleChessSpriteSheet["white_pawn.png"]) {
         super(texture, tilePositionX, tilePositionY);
-        this.health = this.maxHealth = 2;
+        this.health = this.maxHealth = 1;
         this.name = "Pawn";
         this.type = ENEMY_TYPE.PAWN;
         this.direction = {x: 1, y: 0};

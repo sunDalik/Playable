@@ -1,5 +1,5 @@
 import {Enemy} from "../enemy";
-import {getPlayerOnTile} from "../../../map_checks";
+import {getPlayerOnTile, isEmpty} from "../../../map_checks";
 import {tileDistanceDiagonal} from "../../../utils/game_utils";
 
 export class ChessFigure extends Enemy {
@@ -26,7 +26,8 @@ export class ChessFigure extends Enemy {
             if (tileDistanceDiagonal(this, player, 1) === 1) {
                 this.bumpOrSlideBumpTo(x, y);
             } else {
-                const moveDir = {x: x - this.tilePosition.x, y: y - this.tilePosition.y};
+                //todo fix
+                const moveDir = {x: Math.sign(x - this.tilePosition.x), y: Math.sign(y - this.tilePosition.y)};
                 this.stepOrSlideTo(x - moveDir.x, y - moveDir.y);
             }
         } else {
@@ -36,6 +37,7 @@ export class ChessFigure extends Enemy {
     }
 
     stepOrSlideTo(x, y) {
+        if (!isEmpty(x, y)) return;
         if (this.sliding) {
             this.slide(x - this.tilePosition.x, y - this.tilePosition.y);
         } else {
