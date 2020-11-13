@@ -1,6 +1,5 @@
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {MarbleChessSpriteSheet} from "../../../loader";
-import {CHESS_ALIGNMENT} from "../bosses/marble_chess";
 import {ChessFigure} from "./chess_figure";
 import {isEmpty, isRelativelyEmpty, tileInsideTheBossRoom} from "../../../map_checks";
 
@@ -11,14 +10,6 @@ export class Knight extends ChessFigure {
         this.name = "Knight";
         this.type = ENEMY_TYPE.KNIGHT;
         this.sliding = false;
-    }
-
-    setUpChessFigure(alignment) {
-        if (alignment === CHESS_ALIGNMENT.WHITE) {
-            this.texture = MarbleChessSpriteSheet["white_knight.png"];
-        } else {
-            this.texture = MarbleChessSpriteSheet["black_knight.png"];
-        }
     }
 
     getMoves(x, y) {

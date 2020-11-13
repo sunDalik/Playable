@@ -43,30 +43,31 @@ export function redrawMiniMapPixel(x, y) {
     if (Game.minimap[y][x]) {
         HUD.minimap.removeChild(Game.minimap[y][x]);
     }
-    const pixel = new PIXI.Graphics();
+    const pixel = new PIXI.Sprite(PIXI.Texture.WHITE);
     if (Game.map[y][x].tileType === TILE_TYPE.WALL) {
-        pixel.beginFill(0x7a5916);
+        pixel.tint = 0x7a5916;
     } else if (Game.map[y][x].tileType === TILE_TYPE.ENTRY) {
-        pixel.beginFill(0x73f05d);
+        pixel.tint = 0x73f05d;
     } else if (Game.map[y][x].tileType === TILE_TYPE.SUPER_WALL) {
-        pixel.beginFill(0x757167);
+        pixel.tint = 0x757167;
     } else if (Game.map[y][x].tileType === TILE_TYPE.VOID) {
         return;
         //pixel.beginFill(0x000000);
     } else if (Game.map[y][x].entity && Game.map[y][x].entity.role === ROLE.INANIMATE
         && Game.map[y][x].entity.type === INANIMATE_TYPE.SHOPKEEPER) {
-        pixel.beginFill(0xfcf514);
+        pixel.tint = 0xfcf514;
     } else if (Game.map[y][x].entity && Game.map[y][x].entity.role === ROLE.INANIMATE
         && Game.map[y][x].entity.type !== INANIMATE_TYPE.GRAIL
         && Game.map[y][x].entity.type !== INANIMATE_TYPE.FIRE_GOBLET
         && Game.map[y][x].entity.type !== INANIMATE_TYPE.SHOP_STAND) {
-        pixel.beginFill(0xffb03b);
+        pixel.tint = 0xffb03b;
     } else if (Game.map[y][x].tileType === TILE_TYPE.EXIT) {
-        pixel.beginFill(0xff4adb);
+        pixel.tint = 0xff4adb;
     } else if (Game.map[y][x].entity === Game.player || Game.map[y][x].entity === Game.player2) {
-        pixel.beginFill(0x0000ff);
-    } else pixel.beginFill(0xffffff);
-    pixel.drawRect(miniMapPixelSize * x, miniMapPixelSize * y, miniMapPixelSize, miniMapPixelSize);
+        pixel.tint = 0x0000ff;
+    } else pixel.tint = 0xffffff;
+    pixel.position.set(miniMapPixelSize * x, miniMapPixelSize * y);
+    pixel.width = pixel.height = miniMapPixelSize;
     HUD.minimap.addChild(pixel);
     Game.minimap[y][x] = pixel;
     if (!Game.map[y][x].lit) {

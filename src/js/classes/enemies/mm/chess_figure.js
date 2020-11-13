@@ -12,9 +12,6 @@ export class ChessFigure extends Enemy {
         this.sliding = true;
     }
 
-    setUpChessFigure(alignment, direction) {
-    }
-
     getMoves(x, y) {
         return [];
     }

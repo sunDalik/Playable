@@ -1,9 +1,9 @@
 import {ENEMY_TYPE} from "../../../enums/enums";
 import {MarbleChessSpriteSheet} from "../../../loader";
-import {CHESS_ALIGNMENT} from "../bosses/marble_chess";
 import {ChessFigure} from "./chess_figure";
 import {getPlayerOnTile, isEmpty} from "../../../map_checks";
 
+// needs direction to be set up
 export class Pawn extends ChessFigure {
     constructor(tilePositionX, tilePositionY, texture = MarbleChessSpriteSheet["white_pawn.png"]) {
         super(texture, tilePositionX, tilePositionY);
@@ -12,15 +12,6 @@ export class Pawn extends ChessFigure {
         this.type = ENEMY_TYPE.PAWN;
         this.direction = {x: 1, y: 0};
         this.initialPos = {x: tilePositionX, y: tilePositionY};
-    }
-
-    setUpChessFigure(alignment, direction) {
-        if (alignment === CHESS_ALIGNMENT.WHITE) {
-            this.texture = MarbleChessSpriteSheet["white_pawn.png"];
-        } else {
-            this.texture = MarbleChessSpriteSheet["black_pawn.png"];
-        }
-        this.direction = direction;
     }
 
     getMoves(x, y) {
