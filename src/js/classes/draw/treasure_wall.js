@@ -8,7 +8,13 @@ import {Chest} from "../inanimate_objects/chest";
 import {HealingPotion} from "../equipment/bag/healing_potion";
 import {RerollPotion} from "../equipment/bag/reroll_potion";
 import {completeAchievement} from "../../achievements";
-import {DCTilesetSpriteSheet, DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
+import {
+    DCTilesetSpriteSheet,
+    DTTilesetSpriteSheet,
+    FCTilesetSpriteSheet,
+    MMTilesetSpriteSheet,
+    RUTilesetSpriteSheet
+} from "../../loader";
 import {redrawMiniMapPixel} from "../../drawing/minimap";
 
 export class TreasureWallTile extends WallTile {
@@ -29,6 +35,8 @@ export class TreasureWallTile extends WallTile {
         } else if (Game.stage === STAGE.DRY_CAVE) {
             this.texture = randomChoice([DCTilesetSpriteSheet["dry_cave_treasure_wall_0.png"],
                 DCTilesetSpriteSheet["dry_cave_treasure_wall_1.png"]]);
+        } else if (Game.stage === STAGE.MARBLE_MAUSOLEUM) {
+            // assign on afterMapGen :)
         }
     }
 
@@ -44,6 +52,16 @@ export class TreasureWallTile extends WallTile {
             redrawMiniMapPixel(this.tilePosition.x, this.tilePosition.y);
         } else {
             dropItem(new Key(), this.tilePosition.x, this.tilePosition.y);
+        }
+    }
+
+    afterMapGen() {
+        if (Game.stage === STAGE.MARBLE_MAUSOLEUM) {
+            let choices = [MMTilesetSpriteSheet["marble_wall_treasure_0.png"]];
+            if (this.isDownFree()) {
+                choices.push(MMTilesetSpriteSheet["marble_wall_treasure_banner_0.png"]);
+            }
+            this.texture = randomChoice(choices);
         }
     }
 }

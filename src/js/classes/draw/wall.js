@@ -99,7 +99,18 @@ export class WallTile extends TileElement {
                     DCTilesetSpriteSheet["dry_cave_walls_5.png"]]);
             }
         } else if (Game.stage === STAGE.MARBLE_MAUSOLEUM) {
-            this.texture = randomChoice([MMTilesetSpriteSheet["marble_wall_0.png"]]);
+            if (random > 99.5) {
+                // mouse hole
+                this.texture = MMTilesetSpriteSheet["marble_wall_mouse_hole.png"];
+            } else if (random > 90) {
+                // indented bricks
+                this.texture = randomChoice([MMTilesetSpriteSheet["marble_wall_1.png"]]);
+            } else {
+                // normal or extruded
+                this.texture = randomChoice([MMTilesetSpriteSheet["marble_wall_0.png"],
+                    MMTilesetSpriteSheet["marble_wall_2.png"],
+                    MMTilesetSpriteSheet["marble_wall_3.png"]]);
+            }
         }
     }
 
@@ -117,31 +128,46 @@ export class WallTile extends TileElement {
     }
 
     afterMapGen() {
-        let freeDown = false;
-        if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + 1) && Game.map[this.tilePosition.y + 1][this.tilePosition.x].tileType === TILE_TYPE.NONE) {
-            freeDown = true;
-        }
-
-        let free4 = true;
-        for (let dir of getCardinalDirections()) {
-            if (isOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y) || Game.map[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].tileType !== TILE_TYPE.NONE) {
-                free4 = false;
-            }
-        }
-
         if (Game.stage === STAGE.MARBLE_MAUSOLEUM) {
-            if (free4) {
+            if (this.isFree4Sides()) {
                 // todo make pillars and stuff a separate thing from walls?
-                // pillar
-                this.texture = randomChoice([MMTilesetSpriteSheet["marble_pillar.png"]]);
+                if (Math.random() > 0.9) {
+                    // broken pillar
+                    this.texture = MMTilesetSpriteSheet["marble_pillar_broken.png"];
+                } else {
+                    // pillar
+                    this.texture = MMTilesetSpriteSheet["marble_pillar.png"];
+                }
                 this.trueWallPlacement = false;
                 this.tallModifier = -5;
                 this.place();
-            } else if (freeDown && Math.random() < 0.15) {
+            } else if (this.isDownFree() && Math.random() < 0.15) {
                 //todo check that neighbor walls dont have banner
-                // red banner
-                this.texture = randomChoice([MMTilesetSpriteSheet["marble_wall_1.png"]]);
+                // or not?
+                if (Math.random() > 0.9) {
+                    // torn banner
+                    this.texture = MMTilesetSpriteSheet["marble_wall_banner_1.png"];
+                } else {
+                    // banner
+                    this.texture = randomChoice([MMTilesetSpriteSheet["marble_wall_banner_0.png"]]);
+                }
             }
         }
+    }
+
+    isDownFree() {
+        if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + 1) && Game.map[this.tilePosition.y + 1][this.tilePosition.x].tileType === TILE_TYPE.NONE) {
+            return true;
+        }
+        return false;
+    }
+
+    isFree4Sides() {
+        for (let dir of getCardinalDirections()) {
+            if (isOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y) || Game.map[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].tileType !== TILE_TYPE.NONE) {
+                return false;
+            }
+        }
+        return true;
     }
 }

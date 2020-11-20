@@ -47,6 +47,7 @@ import {Scorpion} from "../classes/enemies/dc/scorpion";
 import {RedScorpion} from "../classes/enemies/dc/red_scorpion";
 import {ScorpionQueen} from "../classes/enemies/bosses/scorpion_queen";
 import {MarbleKing} from "../classes/enemies/bosses/marble_king";
+import {TrainingDummy} from "../classes/enemies/training_dummy";
 
 // 6 max
 export const FCEnemySets = [
@@ -672,7 +673,7 @@ export const DCBossSets = [
 ];
 
 export const MMEnemySets = [
-    [SpiderSmall]
+    [TrainingDummy]
 ];
 
 export const MMBossSets = [
