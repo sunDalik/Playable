@@ -2,7 +2,7 @@ import {Boss} from "./boss";
 import {ENEMY_TYPE, TILE_TYPE} from "../../../enums/enums";
 import {Game} from "../../../game";
 import {getPlayerOnTile, tileInsideTheBossRoomExcludingWalls} from "../../../map_checks";
-import {randomChoice} from "../../../utils/random_utils";
+import {randomChoice, randomShuffle} from "../../../utils/random_utils";
 import {Pawn} from "../mm/pawn";
 import {Knight} from "../mm/knight";
 import {MarbleChessSpriteSheet} from "../../../loader";
@@ -29,7 +29,7 @@ export class MarbleKing extends Boss {
                     y: floorTile.tilePosition.y - Game.endRoomBoundaries[0].y + 1
                 };
                 if ((relativePos.x + relativePos.y) % 2 === 1) {
-                    floorTile.texture = Game.resources["src/images/tilesets/mm_tileset/black_marble_floor_tile_0.png"].texture;
+                    //floorTile.texture = Game.resources["src/images/tilesets/mm_tileset/black_marble_floor_tile_0.png"].texture;
                 }
             }
         }
@@ -119,7 +119,7 @@ export class MarbleKing extends Boss {
     }
 
     move() {
-        const figureArray = this.figures.filter(f => !f.dead);
+        const figureArray = randomShuffle(this.figures.filter(f => !f.dead));
         if (figureArray.length === 0) return;
         let usedTurn = false;
 
@@ -136,7 +136,7 @@ export class MarbleKing extends Boss {
         }
 
         // then try to find a move that would kill on the next turn
-        if (!usedTurn) {
+        if (!usedTurn && Math.random() < 0.7) {
             for (const figure of figureArray) {
                 const potentialKillerMove = figure.cachedMoves.find(move => {
                     const nextTurnMoves = figure.getMoves(move.x, move.y);

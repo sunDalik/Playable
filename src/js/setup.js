@@ -135,9 +135,7 @@ export function initializeLevel() {
     drawTiles();
     drawEntities();
     createDarkness();
-    for (const enemy of Game.enemies.concat(Game.inanimates)) {
-        if (enemy.afterMapGen) enemy.afterMapGen();
-    }
+    callAfterMapGens();
     drawOther();
     drawMiniMap();
     if (!Game.player.dead) lightPlayerPosition(Game.player);
@@ -175,6 +173,23 @@ export function initializeLevel() {
         camera.setup(Game.world.width / 2, Game.world.height / 2);
     }
     setTimerRunning(false);
+}
+
+function callAfterMapGens() {
+    for (const enemy of Game.enemies) {
+        if (enemy.afterMapGen) enemy.afterMapGen();
+    }
+    for (const inanimate of Game.inanimates) {
+        if (inanimate.afterMapGen) inanimate.afterMapGen();
+    }
+
+    for (let i = 0; i < Game.map.length; i++) {
+        for (let j = 0; j < Game.map[0].length; j++) {
+            if (Game.map[i][j].tile && Game.map[i][j].tile.afterMapGen) {
+                Game.map[i][j].tile.afterMapGen();
+            }
+        }
+    }
 }
 
 function initPlayers() {

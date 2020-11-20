@@ -7,7 +7,7 @@ export let CommonSpriteSheet, FCEnemiesSpriteSheet, DTEnemiesSpriteSheet, RUEnem
     HeadWearSpriteSheet, BagSpriteSheet, MagicSpriteSheet, EffectsSpriteSheet, OneTimeSpriteSheet,
     AccessoriesSpriteSheet, LunaticLeaderSpriteSheet,
     FCTilesetSpriteSheet, DTTilesetSpriteSheet, RUTilesetSpriteSheet, DCTilesetSpriteSheet,
-    DiscordSpriteSheet, ScorpionQueenSpriteSheet, MarbleChessSpriteSheet;
+    DiscordSpriteSheet, ScorpionQueenSpriteSheet, MarbleChessSpriteSheet, MMTilesetSpriteSheet;
 
 export function loadAll(afterLoad) {
     Game.loader
@@ -22,8 +22,7 @@ export function loadAll(afterLoad) {
         .add("src/textures/dt_tileset.json")
         .add("src/textures/ru_tileset.json")
         .add("src/textures/dc_tileset.json")
-        .add("src/images/tilesets/mm_tileset/marble_floor_tile_0.png")
-        .add("src/images/tilesets/mm_tileset/black_marble_floor_tile_0.png")
+        .add("src/textures/mm_tileset.json")
         .add("src/textures/effects.json")
         .add("src/textures/intents.json")
         .add("src/textures/achievements.json")
@@ -93,6 +92,7 @@ function setSpriteSheets() {
     DTTilesetSpriteSheet = Game.loader.resources["src/textures/dt_tileset.json"].textures;
     RUTilesetSpriteSheet = Game.loader.resources["src/textures/ru_tileset.json"].textures;
     DCTilesetSpriteSheet = Game.loader.resources["src/textures/dc_tileset.json"].textures;
+    MMTilesetSpriteSheet = Game.loader.resources["src/textures/mm_tileset.json"].textures;
     DiscordSpriteSheet = Game.loader.resources["src/textures/discord_logos.json"].textures;
     ScorpionQueenSpriteSheet = Game.loader.resources["src/textures/scorpion_queen.json"].textures;
     MarbleChessSpriteSheet = Game.loader.resources["src/textures/marble_chess.json"].textures; //maybe should have just one spritesheet for both marble enemies and marble chess?

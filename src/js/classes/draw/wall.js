@@ -1,9 +1,17 @@
 import {TileElement} from "../tile_elements/tile_element";
 import {Game} from "../../game";
 import {getZIndexForLayer, Z_INDEXES} from "../../z_indexing";
-import {STAGE} from "../../enums/enums";
+import {STAGE, TILE_TYPE} from "../../enums/enums";
 import {randomChoice} from "../../utils/random_utils";
-import {DCTilesetSpriteSheet, DTTilesetSpriteSheet, FCTilesetSpriteSheet, RUTilesetSpriteSheet} from "../../loader";
+import {
+    DCTilesetSpriteSheet,
+    DTTilesetSpriteSheet,
+    FCTilesetSpriteSheet,
+    MMTilesetSpriteSheet,
+    RUTilesetSpriteSheet
+} from "../../loader";
+import {isNotOutOfMap, isOutOfMap} from "../../map_checks";
+import {getCardinalDirections} from "../../utils/map_utils";
 
 export let wallTallness = 0;
 
@@ -11,10 +19,11 @@ export class WallTile extends TileElement {
     constructor(tilePositionX, tilePositionY, texture = FCTilesetSpriteSheet["flooded_cave_walls_0.png"]) {
         super(texture, tilePositionX, tilePositionY);
         this.setOwnZIndex(Z_INDEXES.WALL);
-        this.setCenterPreservation();
         this.setTexture();
         this.setScaleModifier(1.02);
         if (wallTallness === 0) wallTallness = 128 * this.scale.y * 1.01; // in theory it might initialize AFTER someone will need it... keep it in mind
+        this.trueWallPlacement = true;
+        this.place();
     }
 
     setTexture() {
@@ -89,6 +98,8 @@ export class WallTile extends TileElement {
                     DCTilesetSpriteSheet["dry_cave_walls_3.png"],
                     DCTilesetSpriteSheet["dry_cave_walls_5.png"]]);
             }
+        } else if (Game.stage === STAGE.MARBLE_MAUSOLEUM) {
+            this.texture = randomChoice([MMTilesetSpriteSheet["marble_wall_0.png"]]);
         }
     }
 
@@ -97,8 +108,40 @@ export class WallTile extends TileElement {
         this.zIndex = getZIndexForLayer(this.tilePosition.y, true) + this.ownZIndex;
     }
 
-    place() {
-        this.position.x = Game.TILESIZE * this.tilePosition.x + (Game.TILESIZE - this.width) / 2 + this.width * this.anchor.x;
-        this.position.y = Game.TILESIZE * this.tilePosition.y - Game.TILESIZE + (Game.TILESIZE * 2 - this.height) + this.height * this.anchor.y;
+    getTilePositionY() {
+        if (this.trueWallPlacement) {
+            return Game.TILESIZE * this.tilePosition.y - Game.TILESIZE + (Game.TILESIZE * 2 - this.height) + this.height * this.anchor.y;
+        } else {
+            return super.getTilePositionY();
+        }
+    }
+
+    afterMapGen() {
+        let freeDown = false;
+        if (isNotOutOfMap(this.tilePosition.x, this.tilePosition.y + 1) && Game.map[this.tilePosition.y + 1][this.tilePosition.x].tileType === TILE_TYPE.NONE) {
+            freeDown = true;
+        }
+
+        let free4 = true;
+        for (let dir of getCardinalDirections()) {
+            if (isOutOfMap(this.tilePosition.x + dir.x, this.tilePosition.y + dir.y) || Game.map[this.tilePosition.y + dir.y][this.tilePosition.x + dir.x].tileType !== TILE_TYPE.NONE) {
+                free4 = false;
+            }
+        }
+
+        if (Game.stage === STAGE.MARBLE_MAUSOLEUM) {
+            if (free4) {
+                // todo make pillars and stuff a separate thing from walls?
+                // pillar
+                this.texture = randomChoice([MMTilesetSpriteSheet["marble_pillar.png"]]);
+                this.trueWallPlacement = false;
+                this.tallModifier = -5;
+                this.place();
+            } else if (freeDown && Math.random() < 0.15) {
+                //todo check that neighbor walls dont have banner
+                // red banner
+                this.texture = randomChoice([MMTilesetSpriteSheet["marble_wall_1.png"]]);
+            }
+        }
     }
 }

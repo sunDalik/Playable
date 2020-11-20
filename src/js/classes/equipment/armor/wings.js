@@ -17,7 +17,12 @@ export class Wings extends Equipment {
         this.failedDodges = 0;
     }
 
+    afterAttack(wielder, dirX, dirY) {
+        wielder.dodged = true;
+    }
+
     dodge() {
+        return false;
         if (Math.random() < 0.5) {
             //success
             this.failedDodges = 0;
