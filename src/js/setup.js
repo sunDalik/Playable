@@ -176,11 +176,9 @@ export function initializeLevel() {
 }
 
 function callAfterMapGens() {
-    for (const enemy of Game.enemies) {
-        if (enemy.afterMapGen) enemy.afterMapGen();
-    }
-    for (const inanimate of Game.inanimates) {
-        if (inanimate.afterMapGen) inanimate.afterMapGen();
+    // concat is essential here because it creates a new array and enemies can modify Game.enemies...
+    for (const object of Game.enemies.concat(Game.inanimates)) {
+        if (object.afterMapGen) object.afterMapGen();
     }
 
     for (let i = 0; i < Game.map.length; i++) {
