@@ -61,7 +61,8 @@ export const ENEMY_TYPE = Object.freeze({
     SCORPION_QUEEN_EGG: 59,
     MARBLE_KING: 60,
     PAWN: 61,
-    KNIGHT: 62
+    KNIGHT: 62,
+    IMP: 63
 });
 
 export const RABBIT_TYPE = Object.freeze({
@@ -77,7 +78,8 @@ export const STAGE = Object.freeze({
     DARK_TUNNEL: {id: 1, name: "Dark Tunnel", tier: "II"},
     RUINS: {id: 2, name: "Ruins", tier: "III"},
     DRY_CAVE: {id: 3, name: "Dry Cave", tier: "I"},
-    MARBLE_MAUSOLEUM: {id: 4, name: "Marble Mausoleum", tier: "II"}
+    MARBLE_MAUSOLEUM: {id: 4, name: "Marble Mausoleum", tier: "II"},
+    IMP_BATTLE: {id: 5, name: "Void"}
 });
 
 export const TILE_TYPE = Object.freeze({VOID: 0, NONE: 1, WALL: 2, ENTRY: 4, SUPER_WALL: 5, EXIT: 6});

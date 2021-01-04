@@ -50,6 +50,7 @@ export function redrawMiniMapPixel(x, y) {
         pixel.tint = 0x73f05d;
     } else if (Game.map[y][x].tileType === TILE_TYPE.SUPER_WALL) {
         pixel.tint = 0x757167;
+        if (Game.stage === STAGE.IMP_BATTLE) pixel.tint = 0x000000;
     } else if (Game.map[y][x].tileType === TILE_TYPE.VOID) {
         return;
         //pixel.beginFill(0x000000);

@@ -332,7 +332,7 @@ export function showStageTitle() {
     removeStageTitle();
     if (Game.playMode === PLAY_MODE.TUTORIAL) return;
 
-    const stageName = Game.stage.tier + ". " + Game.stage.name;
+    const stageName = Game.stage.tier ? Game.stage.tier + ". " + Game.stage.name : Game.stage.name;
     const text = new PIXI.Text(stageName, Object.assign({}, HUDTextStyleTitle, {fontSize: 34, strokeThickness: 3}));
     container.addChild(text);
     text.alpha = 0;

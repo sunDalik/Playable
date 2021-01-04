@@ -9,7 +9,7 @@ import {DarknessTile} from "../classes/draw/darkness";
 import {FloorTile} from "../classes/draw/floor_tile";
 import {TileElement} from "../classes/tile_elements/tile_element";
 
-const floorAreas = [STAGE.RUINS, STAGE.DARK_TUNNEL, STAGE.FLOODED_CAVE, STAGE.DRY_CAVE, STAGE.MARBLE_MAUSOLEUM];
+const floorAreas = [STAGE.RUINS, STAGE.DARK_TUNNEL, STAGE.FLOODED_CAVE, STAGE.DRY_CAVE, STAGE.MARBLE_MAUSOLEUM, STAGE.IMP_BATTLE];
 
 export function drawTiles() {
     for (let i = 0; i < Game.map.length; ++i) {

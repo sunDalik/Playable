@@ -227,7 +227,7 @@ export function retry() {
 }
 
 function initGameState() {
-    Game.stage = STAGE.MARBLE_MAUSOLEUM;
+    Game.stage = STAGE.FLOODED_CAVE;
     if (Game.playMode !== PLAY_MODE.TUTORIAL) replaceStageWithAlt();
     Game.time = 0;
     Game.keysAmount = 0;

@@ -11,10 +11,10 @@ import {
 } from "../../loader";
 
 export class FloorTile extends TileElement {
-    constructor(tilePositionX, tilePositionY, texture = RUTilesetSpriteSheet["ruins_floor_tile_3.png"]) {
+    constructor(tilePositionX, tilePositionY, texture = FCTilesetSpriteSheet["flooded_cave_floor_tile_0.png"]) {
         super(texture, tilePositionX, tilePositionY, true);
-        this.setTexture();
         this.setScaleModifier(1.002);
+        this.setTexture();
     }
 
     correctZIndex() {
@@ -81,6 +81,32 @@ export class FloorTile extends TileElement {
                 DCTilesetSpriteSheet["dry_cave_floor_tile_3.png"]]);
         } else if (Game.stage === STAGE.MARBLE_MAUSOLEUM) {
             this.texture = MMTilesetSpriteSheet["marble_floor_tile_0.png"];
+        } else if (Game.stage === STAGE.IMP_BATTLE) {
+            this.texture = randomChoice([Game.resources["src/images/tilesets/void_tileset/void_floor_tile_0.png"].texture,
+                Game.resources["src/images/tilesets/void_tileset/void_floor_tile_1.png"].texture]);
+            if (this.tilePosition.x <= 1 || this.tilePosition.y <= 1 || this.tilePosition.y >= Game.map.length - 2 || this.tilePosition.x >= Game.map[0].length - 2) {
+                this.renderable = false;
+            }
+            //this.angle = randomChoice([0, 90, -90, 180]);
+            //this.scale.x *= randomChoice([-1, 1]);
+
+            if (this.tilePosition.x === 2 && this.tilePosition.y === 2
+                || this.tilePosition.x === 2 && this.tilePosition.y === Game.map.length - 3
+                || this.tilePosition.x === Game.map[0].length - 3 && this.tilePosition.y === 2
+                || this.tilePosition.x === Game.map[0].length - 3 && this.tilePosition.y === Game.map.length - 3) {
+                this.texture = randomChoice([Game.resources["src/images/tilesets/void_tileset/void_floor_tile_corner_0.png"].texture,
+                    Game.resources["src/images/tilesets/void_tileset/void_floor_tile_corner_1.png"].texture]);
+                if (this.tilePosition.x === Game.map[0].length - 3) this.scale.x *= -1;
+                if (this.tilePosition.y === Game.map.length - 3) this.scale.y *= -1;
+            } else if (this.tilePosition.x === 2 || this.tilePosition.x === Game.map[0].length - 3) {
+                this.texture = randomChoice([Game.resources["src/images/tilesets/void_tileset/void_floor_tile_side_0.png"].texture,
+                    Game.resources["src/images/tilesets/void_tileset/void_floor_tile_side_1.png"].texture]);
+                if (this.tilePosition.x === Game.map[0].length - 3) this.scale.x *= -1;
+            } else if (this.tilePosition.y === 2 || this.tilePosition.y === Game.map.length - 3) {
+                this.texture = randomChoice([Game.resources["src/images/tilesets/void_tileset/void_floor_tile_up_0.png"].texture,
+                    Game.resources["src/images/tilesets/void_tileset/void_floor_tile_up_1.png"].texture]);
+                if (this.tilePosition.y === Game.map.length - 3) this.scale.y *= -1;
+            }
         }
     }
 }

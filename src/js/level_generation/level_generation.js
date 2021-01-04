@@ -15,6 +15,7 @@ import {
 } from "./enemy_sets";
 import {Settings} from "./settings";
 import {generateTutorialLevel} from "../tutorial/tutorial_generation";
+import {generateVoid} from "./void_generation";
 
 export function generateLevel() {
     if (Game.playMode === PLAY_MODE.TUTORIAL) return generateTutorialLevel();
@@ -35,6 +36,8 @@ export function generateLevel() {
         case STAGE.RUINS:
             setupGenerator(new Settings(40, 50, 40, 50, RUEnemySets, RUBossSets, true));
             return generateStandard();
+        case STAGE.IMP_BATTLE:
+            return generateVoid();
         default:
             return generateStandard();
     }
